@@ -26,6 +26,10 @@ const userAttributes = {
     allowNull: false,
     unique: true,
   },
+  profilePicture: {
+    type: DataTypes.STRING(1000),
+    allowNull: true,
+  },
   role: {
     type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT"),
   }
