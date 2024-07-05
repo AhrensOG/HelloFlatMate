@@ -7,26 +7,14 @@ const Comment = require("./comment.js");
 const ToDo = require("./toDo.js");
 
 const propertyInit = (sequelize, DataTypes) => {
-    class Property extends Model {
-        static associate(models) {
-            // Relaciones
-            //Uno a Muchos
-            Property.hasMany(LeaseOrder, { as: "leaseOrders", foreignKey: "propert_id" });
-            Property.hasMany(Comment, { as: "comments", foreignKey: "property_id" });
-            Property.hasMany(ToDo, { as: "toDos", foreignKey: "propertyId" });
-            Property.hasMany(ToDo, { as: "toDos", foreignKey: "propertyId" });
-
-            //Muchos a Uno
-            Property.belongsTo(Owner, { as: "owner", foreignKey: "owner_id" });
-        }
-    }
+    class Property extends Model { }
 
     Property.init(
         {
             // CUSTOMIZED ID
             id: {
-                type: DataTypes.TEXT,
-                autoIncrement: false,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true,
             },
             name: {
@@ -42,19 +30,19 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             bedrooms: {
-                type: DataTypes.INTERGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             bathrooms: {
-                type: DataTypes.INTERGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             bed: {
-                type: DataTypes.INTERGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             maximunOccupants: {
-                type: DataTypes.INTERGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             price: {
@@ -73,7 +61,7 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             category: {
-                type: DataTypes.ENU('helloroom', 'hellocoliving', 'hellostudio', 'hellolandlord'),
+                type: DataTypes.ENUM('HELLOROOM', 'HELLOSTUDIO', 'HELLOCOLIVING', 'HELLOLANDLORD'),
                 allowNull: false,
             },
             images: {
@@ -85,6 +73,12 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
 
+        },
+        {
+            sequelize,
+            modelName: "Property",
+            freezeTableName: true,
+            timestamps: false,
         }
     )
     return Property

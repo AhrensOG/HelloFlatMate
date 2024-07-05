@@ -5,19 +5,13 @@ const User = require("./user");
 const Chat = require("./chat");
 
 const messageInit = (sequelize, DataTypes) => {
-    class Message extends Model {
-        static associate(models) {
-            //Relaciones
-            Message.belongsTo(User, { as: "user", foreignKey: "user_id" });
-            Message.belongsTo(Chat, { as: "chat", foreignKey: "chat_id" });
-        }
-    }
+    class Message extends Model { }
 
     Message.init(
         {
             id: {
-                type: DataTypes.TEXT,
-                autoIncrement: false,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true,
             },
             body: {
@@ -27,13 +21,22 @@ const messageInit = (sequelize, DataTypes) => {
             date: {
                 type: DataTypes.DATE,
                 allowNull: false,
+            },
+            nameUser: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+            }
+            ,
+            userId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
             }
         },
         {
             sequelize,
             modelName: "Message",
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         }
     );
 

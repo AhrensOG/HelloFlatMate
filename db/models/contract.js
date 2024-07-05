@@ -4,32 +4,30 @@ const connection = require("../index");
 const User = require("./user");
 
 const contractInit = (sequelize, DataTypes) => {
-    class Contract extends Model {
-        static associate(models) {
-            // Relaciones
-            Contract.belongsTo(User, { as: "user", foreignKey: "userId" });
-
-        }
-    }
+    class Contract extends Model { }
 
     Contract.init(
         {
             // CUSTOMIZED ID
             id: {
-                type: DataTypes.TEXT,
-                autoIncrement: false,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true,
             },
             contract: {
-                type: DataTypes.Array(DataTypes.TEXT),
+                type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,
             },
+            userId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            }
         },
         {
             sequelize,
             modelName: "Contract",
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         }
     );
 

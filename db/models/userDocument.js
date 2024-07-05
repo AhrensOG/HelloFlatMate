@@ -4,22 +4,20 @@ const connection = require("../index");
 const User = require("./user");
 
 const userDocumentInit = (sequelize, DataTypes) => {
-    class UserDocument extends Model {
-        static associate(models) {
-
-            // Relaciones
-            UserDocument.hasOne(User, { as: "user", foreignKey: "user_id" });
-        }
-    }
+    class UserDocument extends Model { }
 
     UserDocument.init({
         id: {
-            type: DataTypes.TEXT,
-            autoIncrement: false,
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
         },
         documents: {
-            type: DataTypes.Array(DataTypes.TEXT),
+            type: DataTypes.ARRAY(DataTypes.TEXT),
+            allowNull: false,
+        },
+        userId: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         }
     },
@@ -27,7 +25,7 @@ const userDocumentInit = (sequelize, DataTypes) => {
             sequelize,
             modelName: "UserDocument",
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         }
     );
 

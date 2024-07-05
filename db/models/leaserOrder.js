@@ -1,26 +1,15 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const Owner = require("./owner.js");
-const Property = require("./property");
-const Client = require("./client");
 
 const leaserOrderInit = (sequelize, DataTypes) => {
-    class LeaseOrder extends Model {
-        static associate(models) {
-            //Relaciones
-            //Muchos a Uno
-            LeaseOrder.belongsTo(Owner, { foreignKey: "owner_id", as: "owner" });
-            LeaseOrder.belongsTo(Property, { foreignKey: "propert_id", as: "property" });
-            LeaseOrder.belongsTo(Client, { foreignKey: "client_id", as: "client" });
-        }
-    }
+    class LeaseOrder extends Model { }
 
     LeaseOrder.init({
         // CUSTOMIZED ID
         id: {
-            type: DataTypes.TEXT,
-            autoIncrement: false,
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
         },
         date: {
@@ -36,13 +25,13 @@ const leaserOrderInit = (sequelize, DataTypes) => {
             allowNull: false,
         },
         price: {
-            type: DataTypes.FLOAT(10, 2),
+            type: DataTypes.REAL,
         }
     }, {
         sequelize,
         modelName: "LeaseOrder",
         freezeTableName: true,
-        timestamps: true,
+        timestamps: false,
     });
 
     return LeaseOrder;

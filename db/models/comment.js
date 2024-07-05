@@ -6,21 +6,14 @@ const Property = require("./property");
 
 const commentInit = (sequelize, DataTypes) => {
 
-    class Comment extends Model {
-        static associate(models) {
-            // Relaciones
-            //Muchos a Uno
-            Comment.belongsTo(Property, { as: "property", foreignKey: "property_id" });
-            Comment.belongsTo(User, { as: "user", foreignKey: "user_id" });
-        }
-    }
+    class Comment extends Model { }
 
     Comment.init(
         {
             // CUSTOMIZED ID
             id: {
-                type: DataTypes.TEXT,
-                autoIncrement: false,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true,
             },
             body: {
@@ -36,7 +29,7 @@ const commentInit = (sequelize, DataTypes) => {
             sequelize,
             modelName: "Comment",
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         }
     );
 

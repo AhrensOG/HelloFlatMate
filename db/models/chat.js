@@ -1,30 +1,16 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const Client = require("./client");
-const Message = require("./message");
-const Owner = require("./owner");
 
 const chatInit = (sequelize, DataTypes) => {
-    class Chat extends Model {
-        static associate(models) {
-
-            //Relaciones
-            // Uno a Muchos
-            Chat.hasToMany(Message, { as: "messages", foreignKey: "chat_id" });
-            Chat.hasToMany(Client, { as: "participants", foreignKey: "chat_id" });
-
-            // Muchos a Uno
-            Chat.belongsTo(Owner, { as: "owner", foreignKey: "owner_id" });
-        }
-    }
+    class Chat extends Model { }
 
     Chat.init(
         {
             // CUSTOMIZED ID
             id: {
-                type: DataTypes.TEXT,
-                autoIncrement: false,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true,
             },
             type: {
@@ -36,7 +22,7 @@ const chatInit = (sequelize, DataTypes) => {
             sequelize,
             modelName: "Chat",
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         }
     );
 

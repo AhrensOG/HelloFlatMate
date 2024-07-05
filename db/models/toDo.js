@@ -5,22 +5,14 @@ const Client = require("./client");
 const Property = require("./property");
 
 const toDoInit = (sequelize, DataTypes) => {
-    class ToDo extends Model {
-        static associate(models) {
-
-            //Relaciones
-            //Muchos a Uno
-            ToDo.belongsTo(Client, { as: "client", foreignKey: "client_id" });
-            ToDo.belongsTo(Property, { as: "property", foreignKey: "property_id" });
-        }
-    }
+    class ToDo extends Model { }
 
     ToDo.init(
         {
             // CUSTOMIZED ID
             id: {
-                type: DataTypes.TEXT,
-                autoIncrement: false,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true,
             },
             title: {
@@ -40,7 +32,7 @@ const toDoInit = (sequelize, DataTypes) => {
             sequelize,
             modelName: "ToDo",
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         }
     );
 

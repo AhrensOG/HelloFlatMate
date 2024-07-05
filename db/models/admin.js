@@ -1,26 +1,22 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const User = require("./user");
-const ToDo = require("./toDo");
+const { User, userAttributes } = require("./user");
+
 
 const adminInit = (sequelize, DataTypes) => {
 
-    class Admin extends User {
-        static associate(models) {
-
-            // Relaciones
-            Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDo_id" });
-        }
-    }
+    class Admin extends User { }
 
     Admin.init(
-        {},
+        {
+            ...userAttributes
+        },
         {
             sequelize,
             modelName: "Admin",
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         }
     );
 
