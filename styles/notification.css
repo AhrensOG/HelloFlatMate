@@ -1,0 +1,11 @@
+@import url("./font-family.css");
+
+.notification-title {
+    font-size: 1rem;
+    color: #000000cc;
+}
+
+.notification-text {
+    font-size: 1rem;
+    color: #919191;
+}
