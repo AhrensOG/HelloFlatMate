@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { logInWithGoogle } from '@/app/firebase/logInWithGoogle';
 import { logInWithFacebook } from '@/app/firebase/logInWithFacebook';
 import AuthModal from './AuthModal';
+import { plus_jakarta } from '@/font';
 
 export default function Auth() {
     const [register, setRegister] = useState(false);
@@ -36,7 +37,7 @@ export default function Auth() {
     };
 
     return (
-        <section className="auth-card flex flex-col m-3 gap-5 items-center">
+        <section className={`${plus_jakarta.className} auth-card flex flex-col m-3 gap-5 items-center font-normal text-base`}>
             <img className="logo-auth" src="/logo-auth.svg" alt="logo" />
             <h4 className="title-auth pb-5">{register ? "Crear una Cuenta" : "Iniciar Sesion"}</h4>
             <div className="buttons-auth flex flex-col gap-5 w-max items-center">
@@ -56,10 +57,10 @@ export default function Auth() {
                     <span><img src="/google-logo.svg" alt="Google logo" /></span>
                     {register ? "Registrarse con Google" : "Iniciar Sesion con Google"}
                 </button>
-                <h6 className="register-or-login-auth text-wrap">
+                <h6 className="register-or-login-auth text-wrap text-xs">
                     {register ? "¿Ya tienes una cuenta?" : "¿No tienes cuenta una cuenta?"}
                     <a onClick={handleIsRegister} className="a-auth" href="#">
-                        {register ? "Iniciar Sesion" : "Registrarse"}
+                        {register ? " Iniciar Sesion" : " Registrarse"}
                     </a>
                 </h6>
             </div>
