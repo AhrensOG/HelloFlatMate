@@ -19,6 +19,10 @@ module.exports = {
       "resolution-blue": "#0E1863",
       "gris-antracita": "#3E3E3E"
     }
+    ,
+    boxShadow: {
+      'google-auth': '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
+    }
   },
   plugins: [],
 };

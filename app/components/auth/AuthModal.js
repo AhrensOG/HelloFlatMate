@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const modalVariants = {
     hidden: { opacity: 0, y: '100%' },
     visible: { opacity: 1, y: '0%' },
-    exit: { opacity: 0, y: '-100%' }
+    exit: { opacity: 0 }
 };
 
 export default function AuthModal({ isOpen, handleAccept, handleReject }) {
@@ -18,22 +18,21 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                     style={{ height: '90vh' }}
                     initial="hidden"
                     animate="visible"
-                    exit="exit"
+                    exit={modalVariants.exit}
                     variants={modalVariants}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 1.5 }}
                 >
-                    <div className="fixed inset-0 transition-opacity self-end" aria-hidden="true" style={{ height: '90vh' }}>
+                    <div className="h-[90vh] fixed inset-0 transition-opacity self-end" aria-hidden="true">
                         <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
                     </div>
 
                     <div
-                        className="bg-white rounded-lg text-left overflow-auto transform transition-all sm:max-w-lg sm:w-full"
-                        style={{ height: '90vh' }}
+                        className="h-[90vh] bg-white rounded-lg text-left overflow-auto transform transition-all sm:max-w-lg sm:w-full"
                         role="dialog"
                         aria-labelledby="modal-title"
                         aria-describedby="modal-description"
                     >
-                        <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 overflow-auto flex flex-col" style={{ height: '80vh' }}>
+                        <div className=" h-[80vh] bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 overflow-auto flex flex-col">
                             <button className='self-center pb-5' onClick={handleReject}>
                                 <Image src={"/icon-close-modal-auth.svg"} width={36} height={5} alt="Boton para cerrar el modal" />
                             </button>

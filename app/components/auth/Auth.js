@@ -1,5 +1,4 @@
 "use client";
-import '../../../styles/auth.component.css';
 import { toast } from "sonner";
 import { useState } from 'react';
 import { logInWithGoogle } from '@/app/firebase/logInWithGoogle';
@@ -46,7 +45,7 @@ export default function Auth() {
                 <button
                     type='button'
                     onClick={register ? () => openModal('facebook') : logInWithFacebook}
-                    className="facebook-auth flex px-0.5 items-center justify-center text-center"
+                    className="facebook-auth flex px-0.5 items-center justify-center text-center text-white bg-resolution-blue gap-4 rounded-xl w-[19.5rem] h-[3.25rem] text-base"
                     aria-label={register ? "Registrarse con Facebook" : "Iniciar Sesión con Facebook"}
                 >
                     <span className='pl-0.5'><Image src="/face-logo.svg" alt="Logo de Facebook" width={24} height={24} /></span>
@@ -55,7 +54,7 @@ export default function Auth() {
                 <button
                     type='button'
                     onClick={register ? () => openModal('google') : logInWithGoogle}
-                    className="google-auth flex px-0.5 items-center justify-center text-center"
+                    className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[19.5rem] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
                     aria-label={register ? "Registrarse con Google" : "Iniciar Sesión con Google"}
                 >
                     <span><Image src="/google-logo.svg" alt="Logo de Google" width={24} height={24} /></span>
@@ -63,7 +62,7 @@ export default function Auth() {
                 </button>
                 <p className="register-or-login-auth text-wrap text-xs">
                     {register ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?"}
-                    <Link onClick={handleIsRegister} className="a-auth" href="#">
+                    <Link onClick={handleIsRegister} className="a-auth text-resolution-blue" href="#">
                         {register ? " Iniciar Sesión" : " Registrarse"}
                     </Link>
                 </p>
