@@ -17,7 +17,7 @@ export default function SideBarDropdown({ tittle, icon, info }) {
 
             <MenuItems
                 transition
-                className="absolute left-[20px] z-10 ml-3 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in  bg-white-nav"
+                className="absolute left-[10px] z-10 w-[95%] origin-top-right rounded-md drop-shadow-2xl ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in  bg-white-nav"
             >
                 <div className="p-1">
                     <p>elemento1</p>
