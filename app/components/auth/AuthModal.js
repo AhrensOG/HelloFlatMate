@@ -6,21 +6,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 const modalVariants = {
     hidden: { opacity: 0, y: '100%' },
     visible: { opacity: 1, y: '0%' },
-    exit: { opacity: 0 }
 };
 
 export default function AuthModal({ isOpen, handleAccept, handleReject }) {
     return (
-        <AnimatePresence>
-            {isOpen && (
+        <AnimatePresence mode='wait'>
+            {isOpen &&
                 <motion.div
                     className="fixed z-50 inset-0 flex items-center justify-center overflow-auto bg-white self-end"
+                    variants={modalVariants}
                     style={{ height: '90vh' }}
                     initial="hidden"
                     animate="visible"
-                    exit={modalVariants.exit}
-                    variants={modalVariants}
-                    transition={{ duration: 1.5 }}
+                    exit="hidden"
+                    transition={{ duration: 1 }}
                 >
                     <div className="h-[90vh] fixed inset-0 transition-opacity self-end" aria-hidden="true">
                         <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -92,7 +91,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                         </div>
                     </div>
                 </motion.div>
-            )}
+            }
         </AnimatePresence>
     );
 }
