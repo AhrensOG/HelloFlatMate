@@ -15,16 +15,16 @@ export default function SideBar({ handleClose, isOpen }) {
                     animate={{ opacity: 1, x: "0" }}
                     exit={{ opacity: 0, x: "-100%" }}
                     transition={{ duration: 0.5 }}
-                    className={`${plus_jakarta.className} flex flex-col items-start fixed inset-0 z-10 bg-white`}>
-                    <div className="flex m-3 w-[14.75rem] justify-between">
+                    className={`${plus_jakarta.className} flex flex-col items-start fixed inset-0 z-10 w-full`}>
+                    <div className="flex p-3 bg-white w-full h-[8vh]">
                         <button onClick={handleClose} aria-label="Cerrar menú">
-                            <Image src={"/nav_bar/side_bar/btn-close.svg"} width={24} height={24} alt="Botón para cerrar menú" />
+                            <Image src={"/nav_bar/side_bar/btn-close.svg"} layout="responsive" width={24} height={24} alt="Botón para cerrar menú" />
                         </button>
-                        <Image className="self-center" src={"/nav_bar/nav-bar-logo.svg"} width={125} height={41} alt="Logo de FlatMate" />
+                        <div className="h-[100%] w-[7.82rem] ml-[25%] self-center"> <Image src={"/nav_bar/nav-bar-logo.svg"} layout="responsive" width={125} height={41} alt="Logo de FlatMate" /></div>
                     </div>
-                    <nav className="flex flex-col w-full">
-                        <div className="flex gap-2 items-center px-4 py-3">
-                            <Image src={"/nav_bar/side_bar/black-house.svg"} width={20} height={20} alt="Botón para ir al inicio" />
+                    <nav className="flex flex-col w-full gap-4">
+                        <div className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]">
+                            <div><Image src={"/nav_bar/side_bar/black-house.svg"} layout="responsive" width={20} height={20} alt="Botón para ir al inicio" /></div>
                             <h2 className="text-xl font-medium text-licorice-black">
                                 <Link href="#">
                                     Inicio

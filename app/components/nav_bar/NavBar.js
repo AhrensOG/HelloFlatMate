@@ -15,7 +15,7 @@ export default function NavBar() {
     return (
         <>
             <button onClick={handleOpen}><Image src="/nav_bar/burger-btn-nav-bar.svg" width={24} height={24} alt="Boton para abrir menu" /></button>
-            <Image className="ml-[40px]" src="/nav_bar/nav-bar-logo.svg" width={125} height={41} alt="Logo de FlatMate" />
+            <div className="h-full"> <Image className="ml-[3%]" src="/nav_bar/nav-bar-logo.svg" layout="responsive" width={125} height={41} alt="Logo de FlatMate" /></div>
             <div className="flex items-center gap-2 w-[87px] h-[34px]">
                 <button><Image src="/nav_bar/notification-logo.svg" width={34} height={34} alt="Boton para notificaciones" /></button>
                 <Dropdown p-0 />
