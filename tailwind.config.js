@@ -15,6 +15,7 @@ module.exports = {
     },
     colors: {
       "gris-español": "#919191",
+
       "white": "#ffffff",
       "resolution-blue": "#0E1863",
       "gris-antracita": "#3E3E3E"
