@@ -1,3 +1,4 @@
+
 import SearchBar from "./components/search_bar/SearchBar";
 import NavBar from "./components/nav_bar/NavBar";
 
