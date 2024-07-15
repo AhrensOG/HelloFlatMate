@@ -4,7 +4,6 @@ import { plus_jakarta, poppins } from "@/font";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AddPaymentMethod({ handleContinue, handleBack }) {
-    console.log(handleContinue, handleBack);
     return (
         <motion.section
             initial={{ opacity: 0 }}
@@ -131,6 +130,7 @@ export default function AddPaymentMethod({ handleContinue, handleBack }) {
             </h2>
             <button
                 onClick={handleContinue}
+                alt="Continuar"
                 type="button"
                 className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient hover:bg-payment-button-gradient-hover transition-all duration-300"
             >

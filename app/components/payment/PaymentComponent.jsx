@@ -44,7 +44,11 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
                 <p className="text-base font-normal">
                     Esta reserva no es reembolsable.
                 </p>
-                <Link href="#" className="underline text-base font-normal">
+                <Link
+                    href="#"
+                    className="underline text-base font-normal"
+                    alt="Política de cancelación"
+                >
                     Más información
                 </Link>
             </div>
@@ -60,6 +64,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
             <div className="h-[1px] bg-[#DDDDDD]"></div>
             <button
                 onClick={handleContinue}
+                alt="Confirmar y pagar"
                 type="button"
                 className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient hover:bg-payment-button-gradient-hover transition-all duration-300"
             >

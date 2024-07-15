@@ -4,7 +4,6 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Reserve({ handleContinue, handleBack }) {
-    console.log(handleContinue, handleBack);
     return (
         <motion.section
             initial={{ opacity: 0 }}
@@ -60,6 +59,7 @@ export default function Reserve({ handleContinue, handleBack }) {
                     </div>
                     <button
                         onClick={handleContinue}
+                        alt="Reservar"
                         type="button"
                         className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient hover:bg-payment-button-gradient-hover transition-all duration-300"
                     >
