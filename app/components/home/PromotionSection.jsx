@@ -6,7 +6,7 @@ import Slider from "./auxiliarComponents/Slider";
 const PromotionSection = () => {
   return (
     <section className="p-4 flex justify-center items-center">
-      <div className="space-y-2 flex flex-col justify-center items-start max-w-screen-sm">
+      <div className="space-y-2 flex flex-col justify-center items-start max-w-screen-sm w-full">
         <h2 className="text-xl font-bold">Promociones</h2>
         <Slider>
           {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
