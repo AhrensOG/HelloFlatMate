@@ -28,20 +28,20 @@ export default function PriceRange() {
             <h3 className="text-base mb-3 font-medium text-[#1C1C21]">
                 Rango de Precio
             </h3>
-            {/* <div className="h-full flex justify-between mb-2">
+            <div className="h-full flex justify-between mb-2">
                 <input
                     type="number"
                     value={minValue}
                     onChange={handleMinChange}
-                    className="w-[9%] px-2 py-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                    className="w-[18%] px-2 py-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
                 />
                 <input
                     type="number"
                     value={maxValue}
                     onChange={handleMaxChange}
-                    className="w-[9%] px-2 py-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                    className="w-[18%] px-2 py-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
                 />
-            </div> */}
+            </div>
             <div className="w-[98%] h-1.5 rounded-md bg-[#D6D6DE] relative">
                 <div
                     className="h-1.5 rounded-md bg-[#0E1863] absolute left-0 right-0 top-0 bottom-0 z-[100]"
