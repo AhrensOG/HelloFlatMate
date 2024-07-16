@@ -7,7 +7,15 @@ import "@egjs/flicking-plugins/dist/pagination.css";
 import SliderItem from "./slider/SliderItem";
 
 export default function SliderDetails({ children }) {
-  const plugins = [new Pagination({ type: "bullet" })];
+  const plugins = [
+    new Pagination({ type: "bullet" }),
+    new AutoPlay({
+      duration: 2000,
+      direction: "NEXT",
+      stopOnHover: false,
+      animationDuration: 3500,
+    }),
+  ];
 
   return (
     <Flicking plugins={plugins} circular={true}>

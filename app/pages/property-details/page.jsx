@@ -13,9 +13,9 @@ import { plus_jakarta } from "@/font";
 export default function PropertyDetails() {
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="flex flex-col max-w-screen-sm h-[100vh]">
-        <header className="w-full">
-          <div className="w-full h-[25vh]">
+      <div className="flex flex-col max-w-screen-sm gap-2">
+        <header className="w-full space-y-4">
+          <div className="w-full">
             <SliderDetails>
               <SliderItem img="/property_details/nav_bar_details/slider/slider-stock-1.svg" />
               <SliderItem img="/property_details/nav_bar_details/slider/slider-stock-1.svg" />

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function NavBarDetails() {
   return (
-    <nav className="h-[7vh] flex justify-between items-center py-3 px-4">
+    <nav className="flex justify-between items-center py-3 px-4">
       <button>
         <Image
           src={"/property_details/nav_bar_details/back-icon.svg"}
