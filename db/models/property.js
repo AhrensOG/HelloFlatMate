@@ -21,8 +21,20 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: false,
             },
-            location: {
+            city: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+            },
+            street: {
                 type: DataTypes.STRING(700),
+                allowNull: false,
+            },
+            street_number: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            postal_code: {
+                type: DataTypes.STRING(10),
                 allowNull: false,
             },
             size: {
