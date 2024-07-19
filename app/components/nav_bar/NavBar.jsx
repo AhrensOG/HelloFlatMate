@@ -16,7 +16,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="flex justify-between items-center p-2">
+    <div className="flex justify-between items-center w-full h-[7vh]">
       <button onClick={handleOpen}>
         <Image
           src="/nav_bar/burger-btn-nav-bar.svg"
@@ -25,8 +25,10 @@ export default function NavBar() {
           alt="Boton para abrir menu"
         />
       </button>
-      <div className="h-full">
+      <div className="h-full flex">
+        {" "}
         <Image
+          className="ml-[4%] self-center"
           src="/nav_bar/nav-bar-logo.svg"
           layout="responsive"
           width={125}
@@ -38,12 +40,12 @@ export default function NavBar() {
         <button>
           <Image
             src="/nav_bar/notification-logo.svg"
-            width={24}
-            height={30}
+            width={34}
+            height={34}
             alt="Boton para notificaciones"
           />
         </button>
-        <Dropdown />
+        <Dropdown p-0 />
       </div>
 
       <SideBar handleClose={handleClose} isOpen={isOpen} />
