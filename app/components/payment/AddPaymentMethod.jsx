@@ -10,7 +10,7 @@ export default function AddPaymentMethod({ handleContinue, handleBack }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className={`${plus_jakarta.className} w-full h-[90vh] flex flex-col gap-7 p-6`}
+            className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
         >
             <div className="flex items-center gap-5">
                 <button
@@ -26,9 +26,9 @@ export default function AddPaymentMethod({ handleContinue, handleBack }) {
                     />
                 </button>
                 <h1
-                    className={`${poppins.className} text-[#191B23] font-semibold text-xl`}
+                    className={`${poppins.className} text-[#191B23] w-full font-semibold text-base`}
                 >
-                    ¿Cómo te gustaría paga?
+                    ¿Cómo te gustaría pagar?
                 </h1>
             </div>
             <h2 className="font-normal text-base text-[#767676]">

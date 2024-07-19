@@ -16,7 +16,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="flex justify-between items-center w-full h-[7vh]">
+    <div className="flex justify-between items-center w-full p-1.5">
       <button onClick={handleOpen}>
         <Image
           src="/nav_bar/burger-btn-nav-bar.svg"
