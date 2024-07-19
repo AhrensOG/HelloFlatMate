@@ -13,7 +13,7 @@ export default function SearchBar() {
         role="search"
       >
         <div className="px-2 flex gap-2 items-center justify-center max-w-screen-sm w-full">
-          <form className="bg-black flex align-center w-full h-[2.2rem] rounded-[0.6rem] border-[1px] border-[#00000033] gap-2">
+          <form className="flex align-center w-full h-[2.2rem] rounded-[0.6rem] border-[1px] border-[#00000033] gap-2">
             <span className="self-center ml-2">
               <Image
                 src={"/search/search-icon.svg"}
