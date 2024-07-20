@@ -9,12 +9,12 @@ export default function Contract() {
   return (
     <GlobalContext>
       <>
-        <header className="px-2">
+        <header>
           <NavBar />
         </header>
-        <main className={`${plus_jakarta.className} px-2 text-[#000000]`}>
-          {/* <ContractFirstView /> */}
-          <ContractSecondView />
+        <main className={`${plus_jakarta.className} p-2 text-[#000000]`}>
+          <ContractFirstView />
+          {/* <ContractSecondView /> */}
         </main>
       </>
     </GlobalContext>
