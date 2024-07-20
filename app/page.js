@@ -1,10 +1,23 @@
+import FeaturedSection from "./components/home/FeaturedSection";
+import Hero from "./components/home/Hero";
+import PromotionSection from "./components/home/PromotionSection";
 import NavBar from "./components/nav_bar/NavBar";
+import SearchBar from "./components/search_bar/SearchBar";
 
 export default function Home() {
-  return <div className="flex justify-between w-full h-[7vh] px-1.5 pt-1.5">
-    <header className="w-full flex justify-between items-center">
-      <NavBar />
-    </header>
-  </div>
-  // return <main className=""><h1>Hello, World!</h1></main>;
+  return (
+    <div>
+      <header className="px-2">
+        <NavBar />
+      </header>
+      <main>
+        <Hero />
+        <div className="w-full pt-4">
+          <SearchBar />
+        </div>
+        <FeaturedSection />
+        <PromotionSection />
+      </main>
+    </div>
+  );
 }
