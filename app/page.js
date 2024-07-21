@@ -1,3 +1,4 @@
+import GuestHome from "./components/guest-home/GuestHome";
 import FeaturedSection from "./components/home/FeaturedSection";
 import Hero from "./components/home/Hero";
 import PromotionSection from "./components/home/PromotionSection";
@@ -10,14 +11,15 @@ export default function Home() {
       <header className="px-2">
         <NavBar />
       </header>
-      <main>
+      {/* <main>
         <Hero />
         <div className="w-full pt-4">
           <SearchBar />
         </div>
         <FeaturedSection />
         <PromotionSection />
-      </main>
+      </main> */}
+      <GuestHome />
     </div>
   );
 }
