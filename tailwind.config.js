@@ -13,7 +13,8 @@ module.exports = {
         "payment-button-gradient": "radial-gradient(103.95% 1413.54% at -3.95% 100%, #0C1660 0%, #111C68 52.83%, #1B2467 100%)",
         "payment-button-gradient-hover": "radial-gradient(103.95% 1413.54% at -3.95% 100%, #0d1870 0%, #121d78 52.83%, #1c266f 100%)",
         "banner-guest-home": "linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0.5%, rgba(0, 0, 0, 0.7) 86%)",
-        "offers": "linear-gradient(180deg, #FFF06D 50%, #999041 100%)"
+        "offers": "linear-gradient(180deg, #FFF06D 50%, #999041 100%)",
+        "type-room-gradient": "linear-gradient(270deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.53) 72.82%)"
       },
       colors: {
         "gris-español": "#919191",

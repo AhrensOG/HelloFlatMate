@@ -1,11 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Banner() {
   return (
     <section className="w-full h-[30vh] relative">
       <Image
         src="/guest_home/banner/banner.png"
-        layout="fill"
+        fill
+        style={{ objectFit: "cover", objectPosition: "center" }}
         alt="banner-image"
       />
       <div className="absolute inset-0 bg-banner-guest-home"></div>
@@ -14,7 +16,10 @@ export default function Banner() {
         <p className="pb-4 font-semibold text-sm">
           Simplificamos la forma de compartir tu hogar
         </p>
-        <button className="w-[18.9rem] h-[3rem] border rounded-lg text-center flex justify-between items-center mt-3 p-4 font-bold text-base">
+        <Link
+          href={"/pages/auth"}
+          className="w-[18.9rem] h-[3rem] border rounded-lg text-center flex justify-between items-center mt-3 p-4 font-bold text-base"
+        >
           Reservar ahora{" "}
           <span className="">
             <Image
@@ -24,7 +29,7 @@ export default function Banner() {
               alt="ir a reservas"
             />
           </span>
-        </button>
+        </Link>
       </div>
     </section>
   );

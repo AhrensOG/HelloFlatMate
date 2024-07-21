@@ -20,7 +20,7 @@ export default function Offers() {
             />
           </div>
 
-          <p className="text-2xl font-medium text-start bg-[#D9D9D9] py-4 pl-11 text-[#171412] w-[60%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+          <p className="text-2xl font-medium text-start bg-[#D9D9D9] py-4 pl-10 text-[#171412] w-[60%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
             10% de <br />
             descuento <br />
             en tu <br />
