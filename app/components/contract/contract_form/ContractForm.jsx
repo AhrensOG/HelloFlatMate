@@ -1,9 +1,11 @@
 import { useFormik } from "formik";
 import React from "react";
 import { toast } from "sonner";
-import Head from "next/head";
+import { motion } from "framer-motion";
+import { plus_jakarta } from "@/font";
+import TitleSection from "../TitleSection";
 
-const ContractForm = () => {
+const ContractForm = ({ handleContinue, handleBack }) => {
   const initialValues = {
     name: "",
     lastName: "",
@@ -19,18 +21,24 @@ const ContractForm = () => {
     onSubmit: (values) => {
       console.log(values);
       toast.success("Información almacenada");
+      return handleContinue();
     },
   });
 
   return (
-    <>
-      <Head>
-        <title>Formulario de Contrato - HelloFlatMate</title>
-        <meta
-          name="description"
-          content="Complete el formulario de contrato para reservar."
-        />
-      </Head>
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+    >
+      <TitleSection
+        title={"Contrato de renta"}
+        action={() => {
+          handleBack();
+        }}
+      />
       <div className="w-full grid place-items-center">
         <div className="w-full p-2 space-y-8 max-w-screen-sm">
           <section className="w-full">
@@ -165,13 +173,13 @@ const ContractForm = () => {
                 type="submit"
                 className="w-full text-white bg-[#0C1660] rounded-lg px-4 py-2"
               >
-                Reservar
+                Continuar
               </button>
             </form>
           </section>
         </div>
       </div>
-    </>
+    </motion.section>
   );
 };
 
