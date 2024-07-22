@@ -6,14 +6,23 @@ import AmenitiesSection from "@/app/components/property-details/main/AmenitiesSe
 import DescriptionSection from "@/app/components/property-details/main/DescriptionSection";
 import GuestInfo from "@/app/components/property-details/main/GuestInfo";
 import LocationSection from "@/app/components/property-details/main/LocationSection";
+import ReservationModal from "@/app/components/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/property-details/main/ReservationButton";
 import RoomSection from "@/app/components/property-details/main/RoomSection";
 import { plus_jakarta } from "@/font";
 
+import { useState } from "react";
+
 export default function PropertyDetails() {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="flex flex-col max-w-screen-sm gap-2">
+    <div className="flex flex-col justify-center items-center relative">
+      <div className="flex flex-col max-w-screen-sm gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderDetails>
@@ -35,12 +44,13 @@ export default function PropertyDetails() {
           </h4>
           <div className="flex flex-col gap-6">
             <GuestInfo />
-            <ReservationButton />
+            <ReservationButton callback={handleShowModal} />
           </div>
           <DescriptionSection />
           <RoomSection />
           <AmenitiesSection />
           <LocationSection />
+          {showModal && <ReservationModal callback={handleShowModal} />}
         </main>
       </div>
     </div>

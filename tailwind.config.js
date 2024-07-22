@@ -26,7 +26,11 @@ module.exports = {
     },
     boxShadow: {
       "google-auth": "0px 2px 3px 0px rgba(0, 0, 0, 0.2)",
+      "reservation-list": "0px 0px 16px 0px #0000000F",
+      "reservation-drop": "0px 2px 3px 0px #6B6B6B2A"
     },
   },
-  plugins: [require("tailwind-scrollbar")],
+  plugins: [
+    require("tailwind-scrollbar")
+  ],
 };
