@@ -27,7 +27,7 @@ const userAttributes = {
     unique: true,
   },
   profilePicture: {
-    type: DataTypes.STRING(1000),
+    type: DataTypes.STRING(10000),
     allowNull: true,
   },
   role: {
