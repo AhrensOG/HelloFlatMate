@@ -1,3 +1,5 @@
+"use client"
+import GuestHome from "./components/guest-home/GuestHome";
 import FeaturedSection from "./components/home/FeaturedSection";
 import Hero from "./components/home/Hero";
 import PromotionSection from "./components/home/PromotionSection";
