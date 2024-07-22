@@ -2,6 +2,7 @@ import Image from "next/image";
 import CheckBox from "./select_contract/CheckBox";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
 export default function SelectContract() {
   const [showUl, setShowUl] = useState(false);
@@ -29,12 +30,7 @@ export default function SelectContract() {
             showUl ? "bg-[#1C8CD65E]" : ""
           }`}
         >
-          <Image
-            src="/property_details/reservation/arrow-boton.svg"
-            alt=""
-            width={15}
-            height={15}
-          />
+          <ChevronUpIcon />
         </span>
       </div>
       <AnimatePresence>
