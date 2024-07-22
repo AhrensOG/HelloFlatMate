@@ -87,5 +87,8 @@ module.exports = {
     Message,
     Property,
     LeaseOrder,
-    Chat
+    Chat,
+    Client,
+    Admin,
+    ToDo
 };

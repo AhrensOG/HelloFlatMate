@@ -1,5 +1,6 @@
-import { register } from "./register/route";
+const login = require("./login/login.js");
+
 
 export async function POST(req) {
-    return await register(req);
+    return login(req)
 }

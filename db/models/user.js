@@ -8,9 +8,9 @@ const userAttributes = {
 
   // CUSTOMIZED ID
   id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.STRING(300),
     primaryKey: true,
+    allowNull: true,
   },
   name: {
     type: DataTypes.STRING(100),
