@@ -234,9 +234,17 @@ const ContractDetail = ({ handleContinue, handleBack }) => {
             <p className="mb-4 text-sm break-words">Firma ARRENDATARIA:</p>
           </div>
         </div>
-        <ButtonReadAndSingContract action={() => setSignatureModal(true)} title={"Firmar contrato"} />
+        <ButtonReadAndSingContract
+          action={() => setSignatureModal(true)}
+          title={"Firmar contrato"}
+        />
       </div>
-      {signatureModal && <SignaturePad setModal={setSignatureModal} handleContinue={handleContinue}/>}
+      {signatureModal && (
+        <SignaturePad
+          setModal={setSignatureModal}
+          handleContinue={handleContinue}
+        />
+      )}
     </motion.section>
   );
 };

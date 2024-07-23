@@ -28,7 +28,7 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
           <DocumentsSection
             id="dni"
             img={"/contract/second_view/dni-icon.svg"}
-            description={"Sube una foto de tu DNI o pasaporte"}
+            description={"DNI (Frente y Dorso) o Pasaporte."}
             width={104}
             height={73}
           />
@@ -36,7 +36,7 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
             id="nomina"
             img={"/contract/second_view/file-icon.svg"}
             description={
-              "Sube una fotografía de tu Nomina, recibo de sueldo, etc."
+              "Nomina o Recibo de sueldo"
             }
             width={135}
             height={135}

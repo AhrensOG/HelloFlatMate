@@ -8,6 +8,7 @@ import { plus_jakarta } from "@/font";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import ContractDetail from "@/app/components/contract/contract_detail/ContractDetail";
+import { Toaster } from "sonner";
 
 export default function Contract() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -25,6 +26,7 @@ export default function Contract() {
   return (
     <GlobalContext>
       <div>
+        <Toaster richColors={true} duration={3000} />
         <header>
           <NavBar />
         </header>
