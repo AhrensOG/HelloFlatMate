@@ -15,7 +15,7 @@ export default function Home() {
       <main>
         <Hero />
         <div className="w-full pt-4">
-          <SearchBar value={"Buscar..."} />
+          <SearchBar />
         </div>
         <FeaturedSection />
         <PromotionSection />

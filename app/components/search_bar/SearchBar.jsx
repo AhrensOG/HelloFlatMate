@@ -3,9 +3,14 @@ import { plus_jakarta } from "@/font";
 import Image from "next/image";
 import Filter from "../filter/Filter";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function SearchBar({ value }) {
+export default function SearchBar() {
   const [openFilters, setOpenFilters] = useState(false);
+  const route = useRouter();
+  const handleRedirect = () => {
+    route.push("/pages/filtered");
+  };
   return (
     <div className="w-full">
       <div
@@ -13,7 +18,13 @@ export default function SearchBar({ value }) {
         role="search"
       >
         <div className="px-2 flex gap-2 items-center justify-center max-w-screen-sm w-full">
-          <form className="flex align-center w-full h-[2.2rem] rounded-[0.6rem] border-[1px] border-[#00000033] gap-2">
+          <form
+            className="flex align-center w-full h-[2.2rem] rounded-[0.6rem] border-[1px] border-[#00000033] gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleRedirect();
+            }}
+          >
             <span className="self-center ml-2">
               <Image
                 src={"/search/search-icon.svg"}
@@ -30,7 +41,6 @@ export default function SearchBar({ value }) {
               type="text"
               placeholder="Buscar..."
               aria-label="Buscar"
-              value={value}
             ></input>
           </form>
 
