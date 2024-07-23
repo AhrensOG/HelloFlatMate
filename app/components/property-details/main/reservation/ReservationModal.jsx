@@ -11,7 +11,7 @@ export default function ReservationModal({ callback }) {
   const router = useRouter();
 
   const handleRedirect = () => {
-    router.push("/pages/payment");
+    router.push("/pages/contract");
   };
 
   return (
