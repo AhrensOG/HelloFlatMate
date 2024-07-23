@@ -10,7 +10,7 @@ const clientInit = (sequelize, DataTypes) => {
     Client.init(
         {
             ...userAttributes,
-            id_num: {
+            idNum: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },
@@ -30,11 +30,11 @@ const clientInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(700),
                 allowNull: true,
             },
-            street_number: {
+            streetNumber: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },
-            postal_code: {
+            postalCode: {
                 type: DataTypes.STRING(10),
                 allowNull: true,
             },

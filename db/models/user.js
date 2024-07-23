@@ -8,9 +8,9 @@ const userAttributes = {
 
   // CUSTOMIZED ID
   id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.STRING(300),
     primaryKey: true,
+    allowNull: true,
   },
   name: {
     type: DataTypes.STRING(100),
@@ -27,7 +27,7 @@ const userAttributes = {
     unique: true,
   },
   profilePicture: {
-    type: DataTypes.STRING(1000),
+    type: DataTypes.STRING(10000),
     allowNull: true,
   },
   role: {

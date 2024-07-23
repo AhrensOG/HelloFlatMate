@@ -63,7 +63,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData } = require("
         await connection.sync({ force: true });
         console.log("Initializing DB");
 
-        console.log(Comment, Contract, Owner, Document, Message, Property, LeaseOrder, Chat, ToDo, Client, Admin);
 
 
 
@@ -88,5 +87,8 @@ module.exports = {
     Message,
     Property,
     LeaseOrder,
-    Chat
+    Chat,
+    Client,
+    Admin,
+    ToDo
 };
