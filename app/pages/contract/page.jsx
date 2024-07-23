@@ -8,9 +8,13 @@ import { plus_jakarta } from "@/font";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import ContractDetail from "@/app/components/contract/contract_detail/ContractDetail";
+import { useRouter } from "next/navigation";
+import ThankYou from "@/app/components/thank_you/ThankYou";
 
 export default function Contract() {
   const [currentStep, setCurrentStep] = useState(1);
+
+  const router = useRouter();
 
   const handleContinue = () => {
     setCurrentStep(currentStep + 1);
@@ -22,6 +26,11 @@ export default function Contract() {
     }
     setCurrentStep(currentStep - 1);
   };
+
+  const handleRedirect = () => {
+    router.push("/pages/payment");
+  };
+
   return (
     <GlobalContext>
       <div>
@@ -49,9 +58,13 @@ export default function Contract() {
               />
             )}
             {currentStep === 4 && (
-              <PaymentComponent
-                handleContinue={handleContinue}
-                handleBack={handleBack}
+              <ThankYou
+                title={"Firma recibida con exito"}
+                body={
+                  "Serás redirigido para realizar el pago en breve o haga clic en el botón de abajo."
+                }
+                action={"Ir a pagar"}
+                callback={handleRedirect}
               />
             )}
           </AnimatePresence>
