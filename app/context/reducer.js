@@ -16,6 +16,11 @@ export const reducer = (state, action) => {
           [action.payload.id]: action.payload.files,
         },
       };
+    case "CONTRACT_PDF_DATA":
+      return {
+        ...state,
+        contractPdfData: action.payload,
+      };
 
     default:
       return { ...state };

@@ -3,6 +3,7 @@ import { useRef, useState, useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { saveUserContractDocuments } from "@/app/context/actions";
 import { toast } from "sonner";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
 export default function UploadFileButton({ description, id }) {
   const fileInputRef = useRef(null);
@@ -25,7 +26,7 @@ export default function UploadFileButton({ description, id }) {
   const handleFileChange = (event) => {
     const files = event.target.files;
     if (files.length > 2) {
-      return toast.info("Máximo permitido: 2 Imagenes")
+      return toast.info("Máximo permitido: 2 Imagenes");
     }
     if (files.length) {
       const values = {
@@ -34,7 +35,7 @@ export default function UploadFileButton({ description, id }) {
       };
       setFileName(files.length);
       saveUserContractDocuments(dispatch, values);
-      return toast.success("Documentos almacenados") 
+      return toast.success("Documentos almacenados");
     }
   };
 
@@ -49,12 +50,7 @@ export default function UploadFileButton({ description, id }) {
           : fileName}
         {typeof fileName !== "number" ? (
           <span>
-            <Image
-              src={"/contract/second_view/upload-file-icon.svg"}
-              width={14}
-              height={14}
-              alt={"upload_view"}
-            />
+            <ArrowUpTrayIcon className="size-4" />
           </span>
         ) : null}
       </button>
