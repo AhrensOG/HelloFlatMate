@@ -17,7 +17,7 @@ export default function ReservationModal({ callback }) {
   return (
     <AnimatePresence>
       <motion.aside
-        className={`${plus_jakarta.className} flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem] `}
+        className={`${plus_jakarta.className} flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem] `}
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}

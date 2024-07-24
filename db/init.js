@@ -60,7 +60,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData } = require("
         //ADMIN
         Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDoId" });
 
-        await connection.sync({ force: true });
+        await connection.sync({ alter: true });
         console.log("Initializing DB");
 
 
