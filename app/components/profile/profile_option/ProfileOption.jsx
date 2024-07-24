@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function ProfileOption({ title, icon, action }) {
   return (
-    <button
+    <article
       onClick={action}
       type="button"
       className="flex gap-3 justify-between items-center p-1 text-[#000000CC]"
@@ -15,6 +15,6 @@ export default function ProfileOption({ title, icon, action }) {
       <button type="button" className="h-8 w-8">
         <ChevronRightIcon />
       </button>
-    </button>
+    </article>
   );
 }
