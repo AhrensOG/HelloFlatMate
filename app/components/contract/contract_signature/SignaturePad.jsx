@@ -5,7 +5,11 @@ import SignatureCanvas from "react-signature-canvas";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
 
-const SignaturePad = ({ setModal, handleContinue }) => {
+const SignaturePad = ({
+  setModal,
+  createContractPDFAndContinue,
+  handleContinue,
+}) => {
   const sigCanvas = useRef(null);
   const [loader, setLoader] = useState(false);
 
@@ -18,8 +22,9 @@ const SignaturePad = ({ setModal, handleContinue }) => {
     const signatureDataUrl = sigCanvas.current.toDataURL();
     const response = await fetch(signatureDataUrl);
     const blob = await response.blob();
-    // const res = await uploadFiles([blob]);
-    // console.log(res);
+    const res = await uploadFiles([blob], "Firmas", "ClientSignature");
+    const clientSignature = res[0].url;
+    await createContractPDFAndContinue(clientSignature);
     setModal(false);
     setLoader(false);
     return handleContinue();
@@ -66,7 +71,11 @@ const SignaturePad = ({ setModal, handleContinue }) => {
               onClick={uploadSignature}
               className="mt-2 px-4 py-2 bg-resolution-blue text-white rounded-md text-sm w-full min-h-9 flex justify-center items-center"
             >
-              {loader ? <CloudArrowUpIcon className="size-5 animate-pulse" /> : "Confirmar"}
+              {loader ? (
+                <CloudArrowUpIcon className="size-5 animate-pulse" />
+              ) : (
+                "Confirmar"
+              )}
             </button>
           </div>
         </div>

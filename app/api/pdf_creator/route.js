@@ -1,6 +1,6 @@
 import { handleGetRequest } from "./controller/pdfController";
 
-export async function GET(request) {
+export async function POST(request) {
     return handleGetRequest(request);
 }
 

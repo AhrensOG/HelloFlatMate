@@ -8,6 +8,7 @@ import { plus_jakarta } from "@/font";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import ContractDetail from "@/app/components/contract/contract_detail/ContractDetail";
+import { Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import ThankYou from "@/app/components/thank_you/ThankYou";
 
@@ -28,12 +29,13 @@ export default function Contract() {
   };
 
   const handleRedirect = () => {
-    router.push("/pages/payment");
+    router.push("/");
   };
 
   return (
     <GlobalContext>
       <div>
+        <Toaster richColors={true} duration={3000} />
         <header>
           <NavBar />
         </header>
@@ -58,12 +60,16 @@ export default function Contract() {
               />
             )}
             {currentStep === 4 && (
+              <PaymentComponent
+                handleContinue={handleContinue}
+                handleBack={handleBack}
+              />
+            )}
+            {currentStep === 5 && (
               <ThankYou
-                title={"Firma recibida con exito"}
-                body={
-                  "Serás redirigido para realizar el pago en breve o haga clic en el botón de abajo."
-                }
-                action={"Ir a pagar"}
+                title={"Firma y Pago Exitoso"}
+                body={"Serás redirigido a la pagina principal."}
+                action={"Regresar "}
                 callback={handleRedirect}
               />
             )}
