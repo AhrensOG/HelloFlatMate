@@ -1,3 +1,4 @@
+"use client";
 import DocumentsList from "@/app/components/documents/DocumentsList";
 import NavBar from "@/app/components/nav_bar/NavBar";
 
