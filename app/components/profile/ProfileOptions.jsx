@@ -12,21 +12,21 @@ export default function ProfileOptions() {
         icon="/profile/profile_option/bx-home.svg"
         title="Historial de renta"
         action={() => {
-          handleRedirect("/pages/history?param=rent");
+          handleRedirect("/pages/history/rent");
         }}
       />
       <ProfileOption
         icon="/profile/profile_option/bx-home-smile.svg"
         title="Solicitudes"
         action={() => {
-          handleRedirect("/pages/history?param=applications");
+          handleRedirect("/pages/history/applications");
         }}
       />
       <ProfileOption
         icon="/profile/profile_option/history-line.svg"
         title="Historial de Transacciones"
         action={() => {
-          handleRedirect("/pages/history?param=transactions");
+          handleRedirect("/pages/history/transactions");
         }}
       />
       <ProfileOption
