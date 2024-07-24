@@ -1,0 +1,35 @@
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import CheckBadgeIconMini from "./check_icon/CheckBadgeIconMini";
+import Image from "next/image";
+
+export default function ProfileCard({ name, email, action }) {
+  return (
+    <section
+      onClick={action}
+      className="flex justify-between items-center rounded-3xl shadow-profile p-2 pt-3"
+    >
+      <div className="h-16 w-16 rounded-full relative">
+        <Image
+          className="rounded-full"
+          src={"/profile/profile.jfif"}
+          fill
+          alt="Ilustracion de perfil"
+          objectPosition="center"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+      <div>
+        <h1 className="font-bold text-lg">{name}</h1>
+        <p className="text-center font-normal text-sm flex gap-1 items-center text-[#919191]">
+          {email}{" "}
+          <span className="text-[#0C1660]">
+            <CheckBadgeIconMini />
+          </span>
+        </p>
+      </div>
+      <button type="button" className="opacity-50 h-10 w-10">
+        <ChevronRightIcon />
+      </button>
+    </section>
+  );
+}
