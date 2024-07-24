@@ -5,7 +5,6 @@ export default function ProfileOption({ title, icon, action }) {
   return (
     <article
       onClick={action}
-      type="button"
       className="flex gap-3 justify-between items-center p-1 text-[#000000CC]"
     >
       <div>
