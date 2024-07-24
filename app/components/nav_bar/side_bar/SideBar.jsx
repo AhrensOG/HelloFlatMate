@@ -72,6 +72,11 @@ export default function SideBar({ handleClose, isOpen }) {
               // redirect={() => handleRedirect("/pages/my-bedrooms")}
             />
             <SideBarButton
+              title="Mis contratos"
+              icon="/nav_bar/side_bar/contract-icon.svg"
+              redirect={() => handleRedirect("/pages/contract/history")}
+            />
+            <SideBarButton
               title="Mis viajes"
               icon="/nav_bar/side_bar/paper.svg"
               // redirect={handleRedirect("/pages/my-travels")}

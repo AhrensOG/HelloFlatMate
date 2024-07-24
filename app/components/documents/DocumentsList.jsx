@@ -1,14 +1,23 @@
 import { plus_jakarta } from "@/font";
 import DocumentListItem from "./DocumentListItem";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
+import { motion } from "framer-motion";
 
-export default function DocumentsList() {
+export default function DocumentsList({ action }) {
   return (
-    <main
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8 }}
       className={`${plus_jakarta.className} flex flex-col justify-center gap-6 items-center`}
     >
       <div className="flex items-center justify-between w-full  mt-7">
-        <button type="button" className="h-7 w-7 ml-3 opacity-70">
+        <button
+          onClick={action}
+          type="button"
+          className="h-7 w-7 ml-3 opacity-70"
+        >
           <ArrowLeftIcon />
         </button>
         <h1 className="font-semibold text-xl text-[#191B23] grow text-center ">
@@ -34,6 +43,6 @@ export default function DocumentsList() {
       >
         Subir documentacion
       </button>
-    </main>
+    </motion.main>
   );
 }
