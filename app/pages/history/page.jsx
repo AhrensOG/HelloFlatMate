@@ -13,7 +13,7 @@ export default function History() {
   };
 
   return (
-    <Suspense>
+    <Suspense fallback={<div className="text-center">Loading...</div>}>
       {param == "rent" ? (
         <RentHistory redirect={() => handleRedirect("/pages/profile")} />
       ) : param == "applications" ? (
