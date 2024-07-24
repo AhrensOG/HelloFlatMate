@@ -491,7 +491,7 @@ const ContractDetail = ({ handleContinue, handleBack }) => {
             <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
               Firma ARRENDADORA:{" "}
               <Image
-                src={"/contract/signature.svg"}
+                src={"/contract/signature.png"}
                 width={200}
                 height={100}
                 alt="Owner Signature"

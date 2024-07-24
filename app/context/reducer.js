@@ -21,7 +21,7 @@ export const reducer = (state, action) => {
         ...state,
         contractPdfData: action.payload,
       };
-    case "SET_USER":
+    case "IS_USER_LOGGED":
       return {
         ...state,
         user: action.payload,
