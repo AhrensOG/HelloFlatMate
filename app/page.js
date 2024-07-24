@@ -10,7 +10,7 @@ import { Context } from "./context/GlobalContext";
 
 export default function Home() {
   const { state } = useContext(Context);
-  if (state.user) {
+  if (!state.user) {
     return <GuestHome />;
   } else {
     return (

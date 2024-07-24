@@ -16,6 +16,7 @@ module.exports = {
         "offers": "linear-gradient(180deg, #FFF06D 50%, #999041 100%)",
         "type-room-gradient": "linear-gradient(270deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.53) 72.82%)",
         "thank-you": "linear-gradient(90deg, #182167 -19.36%, rgba(23, 33, 103, 0.3) 126.33%);",
+
       },
       colors: {
         "gris-español": "#919191",
@@ -23,13 +24,17 @@ module.exports = {
         "white-nav": "#ffffff",
         "resolution-blue": "#0E1863",
         "gris-antracita": "#3E3E3E",
-        "thank-you": "linear-gradient(90deg, #182167 -19.36%, rgba(23, 33, 103, 0.3) 126.33%)",
+
       },
     },
     boxShadow: {
       "google-auth": "0px 2px 3px 0px rgba(0, 0, 0, 0.2)",
       "reservation-list": "0px 0px 16px 0px #0000000F",
-      "reservation-drop": "0px 2px 3px 0px #6B6B6B2A"
+      "reservation-drop": "0px 2px 3px 0px #6B6B6B2A",
+      "profile": "2px 2px 10px 0px #00000026",
+      "item-profile": "0px 4px 4px 0px #333333",
+      "card-action": "0px 4px 4px 0px #82828240"
+
     },
   },
   plugins: [
