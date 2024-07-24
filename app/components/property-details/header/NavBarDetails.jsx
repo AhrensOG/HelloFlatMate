@@ -1,9 +1,14 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function NavBarDetails() {
+  const route = useRouter();
+  const handleBack = () => {
+    route.push(`/pages/filtered`);
+  };
   return (
     <nav className="flex justify-between items-center py-3 px-4">
-      <button>
+      <button onClick={handleBack}>
         <Image
           src={"/property_details/nav_bar_details/back-icon.svg"}
           width={24}

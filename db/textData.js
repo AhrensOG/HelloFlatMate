@@ -163,18 +163,21 @@ const propertyData = [
 
 const testClientData = [
     {
+        id: "23",
         name: 'John',
         lastName: 'Doe',
         email: 'john.doe@example.com',
         role: 'CLIENT',
     },
     {
+        id: "34",
         name: 'Charlie',
         lastName: 'Brown',
         email: 'charlie.brown@example.com',
         role: 'CLIENT',
     },
     {
+        id: "45",
         name: 'Grace',
         lastName: 'Moore',
         email: 'grace.moore@example.com',
@@ -183,18 +186,21 @@ const testClientData = [
 ];
 const testOwnerData = [
     {
+        id: "56",
         name: 'Jane',
         lastName: 'Smith',
         email: 'jane.smith@example.com',
         role: 'OWNER',
     },
     {
+        id: "67",
         name: 'David',
         lastName: 'Davis',
         email: 'david.davis@example.com',
         role: 'OWNER',
     },
     {
+        id: "78",
         name: 'Hannah',
         lastName: 'Taylor',
         email: 'hannah.taylor@example.com',
@@ -203,18 +209,21 @@ const testOwnerData = [
 ];
 const testAdminData = [
     {
+        id: "89",
         name: 'Alice',
         lastName: 'Johnson',
         email: 'alice.johnson@example.com',
         role: 'ADMIN',
     },
     {
+        id: "90",
         name: 'Emily',
         lastName: 'Wilson',
         email: 'emily.wilson@example.com',
         role: 'ADMIN',
     },
     {
+        id: "91",
         name: 'Frank',
         lastName: 'Miller',
         email: 'frank.miller@example.com',

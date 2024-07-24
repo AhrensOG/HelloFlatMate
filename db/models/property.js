@@ -23,19 +23,19 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             city: {
                 type: DataTypes.STRING(100),
-                allowNull: false,
+                allowNull: true,
             },
             street: {
                 type: DataTypes.STRING(700),
-                allowNull: false,
+                allowNull: true,
             },
-            street_number: {
+            streetNumber: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
-            postal_code: {
+            postalCode: {
                 type: DataTypes.STRING(10),
-                allowNull: false,
+                allowNull: true,
             },
             size: {
                 type: DataTypes.STRING(10),

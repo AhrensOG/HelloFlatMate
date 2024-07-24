@@ -621,7 +621,6 @@ const ContractDetail = ({ handleContinue, handleBack }) => {
             </li>
           </ol>
         </div>
-
         <ButtonReadAndSingContract
           action={() => setSignatureModal(true)}
           title={"Firmar contrato"}

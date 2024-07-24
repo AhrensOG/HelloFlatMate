@@ -48,3 +48,11 @@ export const createContractPDF = async (
     throw new Error("Internal Server Error: SAVE_USER_CONTRACT_INFORMATION");
   }
 };
+
+export const initialImageState = {
+    imageUrl: {}
+}
+
+export const initialUserState = {
+    user: {}
+}

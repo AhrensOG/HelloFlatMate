@@ -5,9 +5,12 @@ import Reserve from "@/app/components/payment/Reserve";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import NavBar from "@/app/components/nav_bar/NavBar";
+import { useRouter } from "next/navigation";
+import ThankYou from "@/app/components/thank_you/ThankYou";
 
 export default function Payment() {
   const [currentStep, setCurrentStep] = useState(1);
+  const route = useRouter();
 
   const handleContinue = () => {
     setCurrentStep(currentStep + 1);
@@ -15,6 +18,10 @@ export default function Payment() {
 
   const handleBack = () => {
     setCurrentStep(currentStep - 1);
+  };
+
+  const handleRedirect = () => {
+    route.push("/");
   };
 
   return (
@@ -25,7 +32,10 @@ export default function Payment() {
       <main className="flex flex-col items-center">
         <AnimatePresence mode="wait">
           {currentStep === 1 && (
-            <Reserve handleContinue={handleContinue} handleBack={handleBack} />
+            <Reserve
+              handleContinue={handleContinue}
+              handleBack={handleRedirect}
+            />
           )}
           {currentStep === 2 && (
             <AddPaymentMethod
@@ -37,6 +47,16 @@ export default function Payment() {
             <PaymentComponent
               handleContinue={handleContinue}
               handleBack={handleBack}
+            />
+          )}
+          {currentStep === 4 && (
+            <ThankYou
+              title={"Pago realizado con exito"}
+              body={
+                "Serás redirigido a la página de inicio en breve o haga clic en el botón de abajo."
+              }
+              action={"Volver a inicio"}
+              callback={handleRedirect}
             />
           )}
         </AnimatePresence>
