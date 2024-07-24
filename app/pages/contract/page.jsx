@@ -29,7 +29,7 @@ export default function Contract() {
   };
 
   const handleRedirect = () => {
-    router.push("/pages/payment");
+    router.push("/");
   };
 
   return (
@@ -60,12 +60,16 @@ export default function Contract() {
               />
             )}
             {currentStep === 4 && (
+              <PaymentComponent
+                handleContinue={handleContinue}
+                handleBack={handleBack}
+              />
+            )}
+            {currentStep === 5 && (
               <ThankYou
-                title={"Firma recibida con exito"}
-                body={
-                  "Serás redirigido para realizar el pago en breve o haga clic en el botón de abajo."
-                }
-                action={"Ir a pagar"}
+                title={"Firma y Pago Exitoso"}
+                body={"Serás redirigido a la pagina principal."}
+                action={"Regresar "}
                 callback={handleRedirect}
               />
             )}

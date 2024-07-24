@@ -7,6 +7,9 @@ import { Context } from "@/app/context/GlobalContext";
 import TitleSection from "../contract/TitleSection";
 
 export default function PaymentComponent({ handleContinue, handleBack }) {
+  const { state } = useContext(Context);
+  const pdfUrl = state.contractPdfData?.url;
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -53,11 +56,21 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
         </h4>
       </div>
       <div className="h-[1px] bg-[#DDDDDD]"></div>
+      <Link
+        href={pdfUrl}
+        target="_blank"
+        alt="Descargar Contrato (PDF)"
+        type="button"
+        className="self-center text-base font-normal text-resolution-blue h-[3.25rem] rounded-lg w-[90%] bg-white border border-resolution-blue transition-all duration-300 grid place-items-center"
+      >
+        Descargar Contrato (PDF)
+      </Link>
+
       <button
         onClick={handleContinue}
         alt="Confirmar y pagar"
         type="button"
-        className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient hover:bg-payment-button-gradient-hover transition-all duration-300"
+        className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient border border-resolution-blue hover:bg-payment-button-gradient-hover transition-all duration-300"
       >
         Confirmar y pagar
       </button>

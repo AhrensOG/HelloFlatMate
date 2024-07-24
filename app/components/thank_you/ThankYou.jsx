@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function ThankYou({ title, body, action, callback }) {
   return (
     <>
-      <div className="flex flex-col items-center m-6 grow h-[85vh]">
+      <div className="flex flex-col items-center grow h-[70vh]">
         <div className="grow flex flex-col items-center justify-center gap-8 ">
           <div className="w-20 h-20">
             <Image src={"/check-icon.svg"} width={80} height={80} />
@@ -19,9 +19,9 @@ export default function ThankYou({ title, body, action, callback }) {
             </h3>
           </div>
         </div>
-        <div className="flex items-end">
+        <div className="flex items-end w-full">
           <button
-            className="text-white w-[21.3rem] h-[3rem] bg-payment-button-gradient rounded-lg hover:bg-payment-button-gradient-hover border border-[#162067]"
+            className="text-white w-full h-[3rem] bg-payment-button-gradient rounded-lg hover:bg-payment-button-gradient-hover border border-[#162067]"
             onClick={callback}
           >
             {action}
