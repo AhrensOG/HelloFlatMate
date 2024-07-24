@@ -1,8 +1,11 @@
 import Image from "next/image";
 
-export default function ActionCard({ title, body, img }) {
+export default function ActionCard({ action, title, body, img }) {
   return (
-    <section className="flex items-center justify-between shadow-card-action m-2 rounded-lg h-[6.87rem] w-[90%] text-[#010F07]">
+    <section
+      onClick={action}
+      className="flex items-center justify-between shadow-card-action m-2 rounded-lg h-[6.87rem] w-[90%] text-[#010F07]"
+    >
       <div className="rounded-2xl relative h-[6.85rem] w-[6.85rem]">
         <Image
           className="rounded-2xl"

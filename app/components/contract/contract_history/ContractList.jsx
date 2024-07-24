@@ -1,11 +1,23 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import ContractListItem from "./ContractListItem";
+import { motion } from "framer-motion";
+import { plus_jakarta } from "@/font";
 
-export default function ContractList() {
+export default function ContractList({ action }) {
   return (
-    <main className=" mx-4">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8 }}
+      className={`${plus_jakarta.className} mx-4`}
+    >
       <div className="flex items-center justify-between w-full  mt-7">
-        <button type="button" className="h-7 w-7 ml-3 opacity-70">
+        <button
+          onClick={action}
+          type="button"
+          className="h-7 w-7 ml-3 opacity-70"
+        >
           <ArrowLeftIcon />
         </button>
         <h1 className="font-semibold text-xl text-[#191B23] grow text-center pr-7">
@@ -24,6 +36,6 @@ export default function ContractList() {
         <ContractListItem status="completed" />
         <ContractListItem status="completed" />
       </section>
-    </main>
+    </motion.main>
   );
 }
