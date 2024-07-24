@@ -1,11 +1,18 @@
 "use client";
 import Image from "next/image";
-import SideBarDropdown from "./SideBarDropdown";
 import Link from "next/link";
 import { plus_jakarta } from "@/font";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import SideBarButton from "./SideBarButton";
 
 export default function SideBar({ handleClose, isOpen }) {
+  const route = useRouter();
+
+  const handleRedirect = (url) => {
+    route.push(url);
+  };
+
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
@@ -36,7 +43,11 @@ export default function SideBar({ handleClose, isOpen }) {
             </div>
           </div>
           <nav className="flex flex-col w-full gap-4">
-            <div className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]">
+            <button
+              onClick={() => handleRedirect("/")}
+              type="button"
+              className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+            >
               <div>
                 <Image
                   src={"/nav_bar/side_bar/black-house.svg"}
@@ -49,36 +60,46 @@ export default function SideBar({ handleClose, isOpen }) {
               <h2 className="text-xl font-medium text-licorice-black">
                 <Link href="#">Inicio</Link>
               </h2>
-            </div>
-            <SideBarDropdown
-              tittle="Mi dormitorio"
+            </button>
+            <SideBarButton
+              title={"Mi perfil"}
+              icon={""}
+              redirect={() => handleRedirect("/pages/profile")}
+            />
+            <SideBarButton
+              title="Mi dormitorio"
               icon="/nav_bar/side_bar/ligth-house.svg"
-              info={[]}
+              // redirect={() => handleRedirect("/pages/my-bedrooms")}
             />
-            <SideBarDropdown
-              tittle="Mis viajes"
+            <SideBarButton
+              title="Mis contratos"
+              icon="/nav_bar/side_bar/contract-icon.svg"
+              redirect={() => handleRedirect("/pages/contract/history")}
+            />
+            <SideBarButton
+              title="Mis viajes"
               icon="/nav_bar/side_bar/paper.svg"
-              info={[]}
+              // redirect={handleRedirect("/pages/my-travels")}
             />
-            <SideBarDropdown
-              tittle="Chats"
+            <SideBarButton
+              title="Chats"
               icon="/nav_bar/side_bar/chat-icon.svg"
-              info={[]}
+              // redirect={handleRedirect("/pages/chats")}
             />
-            <SideBarDropdown
-              tittle="Servicios"
+            <SideBarButton
+              title="Servicios"
               icon="/nav_bar/side_bar/question.svg"
-              info={[]}
+              // redirect={handleRedirect("/pages/services")}
             />
-            <SideBarDropdown
-              tittle="Configuración"
+            <SideBarButton
+              title="Configuración"
               icon="/nav_bar/side_bar/config-icon.svg"
-              info={[]}
+              // redirect={handleRedirect("/pages/settings")}
             />
-            <SideBarDropdown
-              tittle="Soporte"
+            <SideBarButton
+              title="Soporte"
               icon="/nav_bar/side_bar/headphone-icon.svg"
-              info={[]}
+              // redirect={handleRedirect("/pages/support")}
             />
           </nav>
         </motion.aside>
