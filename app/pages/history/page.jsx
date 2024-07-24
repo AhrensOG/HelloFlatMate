@@ -13,7 +13,7 @@ export default function History() {
   };
 
   return (
-    <>
+    <Suspense>
       {param == "rent" ? (
         <RentHistory redirect={() => handleRedirect("/pages/profile")} />
       ) : param == "applications" ? (
@@ -23,6 +23,6 @@ export default function History() {
       ) : param == "transactions" ? (
         <TransactionHistory redirect={() => handleRedirect("/pages/profile")} />
       ) : null}
-    </>
+    </Suspense>
   );
 }
