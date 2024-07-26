@@ -1,5 +1,7 @@
+"use client";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import GlobalContext from "./context/GlobalContext";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -9,7 +11,9 @@ const roboto = Roboto({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <GlobalContext>
+        <body className={roboto.className}>{children}</body>
+      </GlobalContext>
     </html>
   );
 }

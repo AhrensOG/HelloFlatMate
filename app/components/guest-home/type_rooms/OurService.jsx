@@ -9,8 +9,8 @@ export default function OurService() {
         fill
         style={{ objectFit: "cover", objectPosition: "center" }}
       />
-      <div className="absolute bottom-0 right-0 px-3 pb-5 z-50 flex justify-end items-end">
-        <h3 className="text-white font-bold text-[2.5rem] text-center h-[30%] w-[50%] leading-none">
+      <div className="absolute w-full h-full bottom-0 right-0 z-50 flex justify-end items-end">
+        <h3 className="text-white font-extrabold text-4xl pb-5 text-center leading-none max-w-48">
           Nuestros Servicios
         </h3>
       </div>

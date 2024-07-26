@@ -3,9 +3,15 @@ import Image from "next/image";
 import Dropdown from "../auth/Dropdown";
 import { useState } from "react";
 import SideBar from "./side_bar/SideBar";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const route = useRouter();
+
+  const handleRedirect = (url) => {
+    route.push(url);
+  };
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -37,7 +43,10 @@ export default function NavBar() {
         />
       </div>
       <div className="flex items-center gap-2 w-[87px] h-[34px]">
-        <button>
+        <button
+          onClick={() => handleRedirect("/pages/notification")}
+          type="button"
+        >
           <Image
             src="/nav_bar/notification-logo.svg"
             width={34}

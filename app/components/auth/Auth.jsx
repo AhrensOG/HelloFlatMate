@@ -7,11 +7,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { logInWithGoogle } from "@/app/firebase/logInWithGoogle";
 import { logInWithFacebook } from "@/app/firebase/logInWithFacebook";
+import { useRouter } from "next/navigation";
 
 export default function Auth() {
   const [register, setRegister] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [registerProvider, setRegisterProvider] = useState(null);
+  const router = useRouter();
 
   const handleIsRegister = () => {
     setRegister(!register);
@@ -22,11 +24,13 @@ export default function Auth() {
     setIsOpen(true);
   };
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     if (registerProvider === "google") {
-      logInWithGoogle();
+      await logInWithGoogle();
+      return router.push("/");
     } else if (registerProvider === "facebook") {
-      logInWithFacebook();
+      await logInWithFacebook();
+      return router.push("/");
     } else {
       toast.error("No se reconoce el proveedor de registro");
     }
@@ -35,6 +39,24 @@ export default function Auth() {
 
   const handleReject = () => {
     setIsOpen(false); // Cerrar el modal al rechazar
+  };
+
+  const handleLoginFacebook = async () => {
+    try {
+      await logInWithFacebook();
+      return router.push("/");
+    } catch (error) {
+      toast.error("Fallo la autenticación. Intente nuevamente.");
+    }
+  };
+
+  const handleLoginGoogle = async () => {
+    try {
+      await logInWithGoogle();
+      return router.push("/");
+    } catch (error) {
+      toast.error("Fallo la autenticación. Intente nuevamente.");
+    }
   };
 
   return (
@@ -55,7 +77,7 @@ export default function Auth() {
       <div className="buttons-auth flex flex-col gap-5 items-center w-full">
         <button
           type="button"
-          onClick={register ? () => openModal("facebook") : logInWithFacebook}
+          onClick={register ? () => openModal("facebook") : handleLoginFacebook}
           className="facebook-auth flex px-0.5 items-center justify-center text-center text-white bg-resolution-blue gap-4 rounded-xl w-[100%] h-[3.25rem] text-base"
           aria-label={
             register
@@ -77,7 +99,7 @@ export default function Auth() {
         </button>
         <button
           type="button"
-          onClick={register ? () => openModal("google") : logInWithGoogle}
+          onClick={register ? () => openModal("google") : handleLoginGoogle}
           className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
           aria-label={
             register ? "Registrarse con Google" : "Iniciar Sesión con Google"

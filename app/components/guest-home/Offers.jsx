@@ -20,7 +20,7 @@ export default function Offers() {
             />
           </div>
 
-          <p className="text-2xl font-medium text-start bg-[#D9D9D9] py-4 pl-10 text-[#171412] w-[60%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+          <p className="text-base font-medium text-start bg-[#D9D9D9] py-4 pl-10 text-[#171412] w-[60%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
             10% de <br />
             descuento <br />
             en tu <br />
@@ -29,7 +29,7 @@ export default function Offers() {
           </p>
         </article>
         <article className="flex justify-between items-start bg-transparent relative">
-          <p className="text-xl text-[#000000] font-medium text-start pt-6 pb-3 pl-6 pr-3 bg-transparent w-[50%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)] -mr-[6rem]">
+          <p className="text-base text-[#000000] font-medium text-start pt-6 pb-3 pl-6 pr-3 bg-transparent w-[50%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)] -mr-[6rem]">
             Promoción de <br />
             verano,
             <br />

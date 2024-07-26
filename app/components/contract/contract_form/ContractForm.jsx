@@ -1,27 +1,47 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
 import TitleSection from "../TitleSection";
+import { Context } from "@/app/context/GlobalContext";
+import { saveUserContractInformation } from "@/app/context/actions";
 
 const ContractForm = ({ handleContinue, handleBack }) => {
-  const initialValues = {
+  const { state, dispatch } = useContext(Context);
+
+  const initialValues = state.reservationInfo?.userContractInformation || {
     name: "",
     lastName: "",
     dni: "",
     phone: "",
     location: "",
     address: "",
+    email: "",
   };
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values);
-      toast.success("Información almacenada");
-      return handleContinue();
+      if (
+        values.name === "" ||
+        values.lastName === "" ||
+        values.dni === "" ||
+        values.phone === "" ||
+        values.location === "" ||
+        values.address === ""
+      ) {
+        return toast.info("¡Recuerda completar todos los campos!");
+      }
+
+      try {
+        saveUserContractInformation(dispatch, values);
+        toast.success("Información almacenada");
+        return handleContinue();
+      } catch (error) {
+        return toast.error("Error al guardar informacion");
+      }
     },
   });
 
@@ -70,6 +90,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     name="name"
                     type="text"
                     onChange={formik.handleChange}
+                    value={formik.values.name}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
@@ -85,6 +106,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     name="lastName"
                     type="text"
                     onChange={formik.handleChange}
+                    value={formik.values.lastName}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
@@ -103,6 +125,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     name="phone"
                     type="text"
                     onChange={formik.handleChange}
+                    value={formik.values.phone}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
@@ -118,6 +141,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     name="dni"
                     type="text"
                     onChange={formik.handleChange}
+                    value={formik.values.dni}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
@@ -136,6 +160,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     name="location"
                     type="text"
                     onChange={formik.handleChange}
+                    value={formik.values.location}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
@@ -151,6 +176,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     name="address"
                     type="text"
                     onChange={formik.handleChange}
+                    value={formik.values.address}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
@@ -166,6 +192,8 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                   id="email"
                   name="email"
                   type="email"
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
                   className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                 />
               </div>
