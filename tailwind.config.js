@@ -33,7 +33,8 @@ module.exports = {
       "reservation-drop": "0px 2px 3px 0px #6B6B6B2A",
       "profile": "2px 2px 10px 0px #00000026",
       "item-profile": "0px 4px 4px 0px #333333",
-      "card-action": "0px 4px 4px 0px #82828240"
+      "card-action": "0px 4px 4px 0px #82828240",
+      "activity-item": "1px 1px 10px 0px #00000040"
 
     },
   },
