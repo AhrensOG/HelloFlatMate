@@ -39,7 +39,8 @@ module.exports = {
       "item-profile": "0px 4px 4px 0px #333333",
       "card-action": "0px 4px 4px 0px #82828240",
       "activity-item": "1px 1px 10px 0px #00000040",
-    }
+      "supplie-card": "0px 2px 3px 0px #7575754D"
+    },
   },
   plugins: [
     require("tailwind-scrollbar")
