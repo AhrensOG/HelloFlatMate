@@ -1,4 +1,4 @@
-import { Abhaya_Libre, Plus_Jakarta_Sans, Poppins, Inter } from "next/font/google";
+import { Abhaya_Libre, Plus_Jakarta_Sans, Poppins, Inter, Bebas_Neue } from "next/font/google";
 
 export const Abhaya = Abhaya_Libre({
     subsets: ["latin"],
@@ -18,4 +18,9 @@ export const poppins = Poppins({
 export const inter = Inter({
     subsets: ["latin"],
     weight: ["200", "300", "400", "500", "700", "800"],
+})
+
+export const bebas_neue = Bebas_Neue({
+    subsets: ["latin"],
+    weight: ["400"],
 })

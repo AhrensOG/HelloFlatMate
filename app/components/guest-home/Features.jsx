@@ -9,7 +9,7 @@ export default function Features() {
   return (
     <section className={`${plus_jakarta.className}`}>
       <OurService />
-      <section className="flex flex-col gap-3 justify-center items-center my-11">
+      <section className="flex flex-col gap-3 justify-center items-center py-10 px-2 bg-[url('/guest_home/features/bg.svg')] bg-no-repeat bg-cover">
         {featureData.map((feature, index) => (
           <React.Fragment key={feature.title}>
             <Feature data={feature} />
