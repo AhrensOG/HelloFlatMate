@@ -2,10 +2,17 @@ import {
   AdjustmentsHorizontalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
+import { motion } from "framer-motion";
 
 export default function SearchChat() {
   return (
-    <section className="flex items-center justify-between gap-3">
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8 }}
+      className="flex items-center justify-between gap-3"
+    >
       <form
         action=""
         className="flex items-center bg-[#F5F5F5] p-2 rounded-2xl grow"
@@ -25,6 +32,6 @@ export default function SearchChat() {
       <div className="h-8 w-8">
         <AdjustmentsHorizontalIcon />
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -1,8 +1,19 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-export default function ChatCard({ name, image }) {
+export default function ChatsCard({ name, image }) {
+  const router = useRouter();
+
   return (
-    <article className="flex justify-between items-center gap-1 h-[5rem] p-1">
+    <motion.article
+      onClick={() => router.push("/chats/chat")}
+      className="flex justify-between items-center gap-1 h-[5rem] p-1 cursor-pointer"
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 100 }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="relative w-[4.4rem] h-[4.4rem] rounded-full">
         <Image
           className="rounded-full"
@@ -24,6 +35,6 @@ export default function ChatCard({ name, image }) {
         </span>
         <p className="font-normal text-xs text-[#919191]">14:05</p>
       </div>
-    </article>
+    </motion.article>
   );
 }
