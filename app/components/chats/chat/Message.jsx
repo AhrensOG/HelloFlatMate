@@ -20,7 +20,7 @@ export default function Message({ type, body, time }) {
       <p
         className={`${
           type === "sender" ? "text-[#919191]" : ""
-        }w-full text-end font-normal text-xs`}
+        } w-full text-end font-normal text-xs`}
       >
         {time}
       </p>
