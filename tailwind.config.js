@@ -26,6 +26,10 @@ module.exports = {
         "gris-antracita": "#3E3E3E",
 
       },
+      borderRadius: {
+        'sender': '1.25rem 1.25rem 0 1.25rem',
+        "receiver": '1.25rem 1.25rem 1.25rem 0',
+      }
     },
     boxShadow: {
       "google-auth": "0px 2px 3px 0px rgba(0, 0, 0, 0.2)",

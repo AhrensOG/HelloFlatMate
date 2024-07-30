@@ -84,7 +84,7 @@ export default function SideBar({ handleClose, isOpen }) {
             <SideBarButton
               title="Chats"
               icon="/nav_bar/side_bar/chat-icon.svg"
-              // redirect={handleRedirect("/pages/chats")}
+              redirect={handleRedirect("/pages/chats")}
             />
             <SideBarButton
               title="Servicios"
