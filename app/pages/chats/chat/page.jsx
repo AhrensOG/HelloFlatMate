@@ -1,3 +1,4 @@
+"use client";
 import MessageContainer from "@/app/components/chats/chat/MessageContainer";
 import MessageInput from "@/app/components/chats/chat/MessageInput";
 import NavBar from "@/app/components/nav_bar/NavBar";
