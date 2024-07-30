@@ -5,7 +5,7 @@ export default function Message({ type, body, time }) {
     <article
       className={`${
         type === "sender" ? sender : receiver
-      } flex flex-col justify-between items-center gap-1 p-3 min-w-[5rem] max-w-[15rem] break-words z-20`}
+      } flex flex-col justify-between items-center gap-1 p-3 min-w-[5rem] max-w-[15rem] break-words`}
       style={{
         boxShadow: `-1px -1px 5px 0px #0000000D, 1px 1px 5px 0px #0000000D`,
       }}

@@ -8,7 +8,7 @@ export default function ChatPage() {
       <header className="px-2">
         <NavBar />
       </header>
-      <main className="flex flex-col justify-center items-center m-2 relative">
+      <main className="flex flex-col justify-center items-center m-2">
         <MessageContainer />
         <MessageInput />
       </main>
