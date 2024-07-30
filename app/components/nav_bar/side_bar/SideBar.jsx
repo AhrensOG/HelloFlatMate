@@ -89,7 +89,7 @@ export default function SideBar({ handleClose, isOpen }) {
             <SideBarButton
               title="Servicios"
               icon="/nav_bar/side_bar/question.svg"
-              // redirect={handleRedirect("/pages/services")}
+              redirect={handleRedirect("/pages/services")}
             />
             <SideBarButton
               title="Configuración"
