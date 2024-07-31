@@ -9,11 +9,13 @@ import { AnimatePresence } from "framer-motion";
 export default function GuestHome() {
   return (
     <AnimatePresence>
-      <main>
-        <Banner />
-        <Offers />
-        <TypeRooms data={data} />
-        <Features />
+      <main className="flex justify-center items-center">
+        <div className="w-full max-w-screen-sm">
+          <Banner />
+          <Offers />
+          <TypeRooms data={data} />
+          <Features />
+        </div>
       </main>
     </AnimatePresence>
   );

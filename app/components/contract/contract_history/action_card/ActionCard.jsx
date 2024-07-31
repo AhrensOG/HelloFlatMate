@@ -1,6 +1,12 @@
 import Image from "next/image";
 
-export default function ActionCard({ action, title, body, img }) {
+export default function ActionCard({
+  action,
+  title,
+  body,
+  img,
+  position = "center",
+}) {
   return (
     <section
       onClick={action}
@@ -12,7 +18,7 @@ export default function ActionCard({ action, title, body, img }) {
           src={img}
           alt="Imagen de referencia"
           fill
-          style={{ objectFit: "cover", objectPosition: "center" }}
+          style={{ objectFit: "cover", objectPosition: { position } }}
         />
       </div>
       <div className="flex flex-col items-start h-full pl-4 pt-2 grow">

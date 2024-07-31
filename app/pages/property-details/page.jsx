@@ -6,6 +6,7 @@ import AmenitiesSection from "@/app/components/property-details/main/AmenitiesSe
 import DescriptionSection from "@/app/components/property-details/main/DescriptionSection";
 import GuestInfo from "@/app/components/property-details/main/GuestInfo";
 import LocationSection from "@/app/components/property-details/main/LocationSection";
+import MoreInfoSection from "@/app/components/property-details/main/MoreInfoSection";
 import ReservationModal from "@/app/components/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/property-details/main/ReservationButton";
 import RoomSection from "@/app/components/property-details/main/RoomSection";
@@ -50,6 +51,7 @@ export default function PropertyDetails() {
           <RoomSection />
           <AmenitiesSection />
           <LocationSection />
+          <MoreInfoSection />
           {showModal && <ReservationModal callback={handleShowModal} />}
         </main>
       </div>

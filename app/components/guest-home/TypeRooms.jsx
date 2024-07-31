@@ -28,9 +28,6 @@ export default function TypeRooms({ data }) {
           transition={{ duration: 0.8 }}
           className="flex flex-col"
         >
-          <h2 className="bg-black text-white text-[1.37rem] font-bold text-center">
-            Mucho más que una habitación
-          </h2>
           <Room
             title={data.helloRoom.title}
             body={data.helloRoom.body}
