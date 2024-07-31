@@ -1,8 +1,8 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import UserSerivceNavBar from "./UserServiceNavBar";
 import { useRouter } from "next/navigation";
+import UserSerivceNavBar from "./UserServiceNavBar";
 
 export default function HistoryUserProfileNavBar({ title }) {
   const router = useRouter();

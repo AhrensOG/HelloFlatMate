@@ -13,7 +13,7 @@ export default function ProfileCard({
       onClick={action}
       className="flex justify-between items-center rounded-3xl shadow-profile p-2 pt-3"
     >
-      <div className="h-16 w-16 rounded-full relative">
+      <div className="h-16 w-16 rounded-full relative bg-[#875252]">
         <Image
           className="rounded-full"
           src={image}

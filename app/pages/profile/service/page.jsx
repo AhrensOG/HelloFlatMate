@@ -1,9 +1,9 @@
 "use client";
 import BaseWorkerPanelTemplate from "@/app/components/workerPanel/BaseWorkerPanelTemplate";
-import ServiceProfile from "@/app/components/workerPanel/profile/ServiceProfile";
+import WorkerProfile from "@/app/components/workerPanel/profile/WorkerProfile";
 
 export default function UserServiceProfile() {
   return (
-    <BaseWorkerPanelTemplate children={<ServiceProfile />} section={"home"} />
+    <BaseWorkerPanelTemplate children={<WorkerProfile />} section={"home"} />
   );
 }

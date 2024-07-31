@@ -2,8 +2,8 @@ import { plus_jakarta } from "@/font";
 import SideModal from "./SideModal";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
-import TodayTaskSection from "./TodayTaskSection";
 import NewsItem from "./NewsItem";
+import TodayTaskSection from "./TodayTaskSection";
 
 export default function WorkerHome() {
   const [showModal, setShowModal] = useState(false);

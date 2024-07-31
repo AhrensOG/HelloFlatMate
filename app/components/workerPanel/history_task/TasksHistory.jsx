@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
-import ApplicationDetails from "../../history/application/details/ApplicationDetails";
-import TaskCardHistory from "./TaskCardHistory";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
+import TaskCardHistory from "./TaskCardHistory";
 
 export default function TasksHistory({ redirect }) {
   const [showDetails, setShowDetails] = useState(false);
