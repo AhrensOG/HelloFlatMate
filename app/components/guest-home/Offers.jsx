@@ -9,6 +9,7 @@ export default function Offers() {
       <div className="grid grid-cols-2 grid-rows-2 place-items-center">
         <div className="h-48 w-full relative ">
           <Image
+            priority={true}
             src={"/guest_home/offerts/oferta-1.svg"}
             fill
             alt="First Offer"
@@ -30,6 +31,7 @@ export default function Offers() {
           </Link>
           <div className="relative w-full h-[87px]">
             <Image
+              priority={true}
               src={"/guest_home/offerts/oferta-2.svg"}
               fill
               alt="First Offer"
@@ -46,6 +48,7 @@ export default function Offers() {
         </div>
         <div className="h-48 w-full relative ">
           <Image
+            priority={true}
             src={"/guest_home/offerts/oferta-3.svg"}
             fill
             alt="First Offer"
