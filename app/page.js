@@ -1,5 +1,5 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import GuestHome from "./components/guest-home/GuestHome";
 import FeaturedSection from "./components/home/FeaturedSection";
 import Hero from "./components/home/Hero";
@@ -7,10 +7,18 @@ import PromotionSection from "./components/home/PromotionSection";
 import NavBar from "./components/nav_bar/NavBar";
 import SearchBar from "./components/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
+import { toast } from "sonner";
 
 export default function Home() {
   const { state } = useContext(Context);
-  if (true) {
+  const [home, setHome] = useState(false);
+  useEffect(() => {
+    if (state.user) {
+      setHome(true);
+    }
+  }, [state.user]);
+
+  if (!home) {
     return <GuestHome />;
   } else {
     return (
