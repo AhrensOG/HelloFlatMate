@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
-import ProfileOption from "../profile/profile_option/ProfileOption";
+import ProfileOption from "../../profile/profile_option/ProfileOption";
 
-export default function ProfileServiceOptions() {
+export default function ProfileWorkerOptions() {
   const route = useRouter();
   const handleRedirect = (url) => {
     route.push(url);

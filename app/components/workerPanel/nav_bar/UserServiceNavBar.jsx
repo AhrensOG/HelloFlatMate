@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Dropdown from "../../auth/Dropdown";
+import { plus_jakarta } from "@/font";
 
 export default function UserSerivceNavBar() {
   return (
-    <div className="flex w-full justify-between p-1.5">
+    <nav
+      className={`${plus_jakarta.className} flex w-full justify-between p-1.5`}
+    >
       <div className="h-full flex m-auto">
         {" "}
         <Image
@@ -29,6 +32,6 @@ export default function UserSerivceNavBar() {
         </button>
         <Dropdown p-0 />
       </div>
-    </div>
+    </nav>
   );
 }
