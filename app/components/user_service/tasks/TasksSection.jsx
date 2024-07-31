@@ -1,18 +1,17 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { plus_jakarta } from "@/font";
-import ApplicationDetails from "../../history/application/details/ApplicationDetails";
-import TaskCardHistory from "./TaskCardHistory";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
+import ApplicationCardHistory from "../../history/application/ApplicationCardHistory";
 
-export default function TasksHistory({ redirect }) {
-  const [showDetails, setShowDetails] = useState(false);
+export default function TasksSection() {
   const [detailsInfo, setDetailsInfo] = useState({});
   const route = useRouter();
+
   const handleShowdetails = (info) => {
     setDetailsInfo(info);
-    setShowDetails(!showDetails);
+    route.push("/pages/worker-panel/tasks/details");
   };
 
   return (
@@ -21,7 +20,7 @@ export default function TasksHistory({ redirect }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className={`${plus_jakarta.className} flex flex-col items-center justify-center gap-2 py-4 m-4`}
+      className={`${plus_jakarta.className} flex flex-col gap-2 py-4 m-4`}
     >
       <div className="flex justify-center items-center mb-4 w-full">
         <button
@@ -33,30 +32,31 @@ export default function TasksHistory({ redirect }) {
         >
           <ArrowLeftIcon />
         </button>
-        <h2 className=" text-[#000000CC] font-bold text-xl mx-auto">
-          Historial de tareas
-        </h2>
+        <h2 className=" text-[#000000CC] font-bold text-xl mx-auto">Tareas</h2>
       </div>
-      <div className="border bg-gris-español w-full"></div>
-      <TaskCardHistory
+      <div className="border bg-gris-español "></div>
+      <ApplicationCardHistory
         action={handleShowdetails}
         type={"clean"}
+        status={"in_process"}
         title={"Limpieza de habitacion"}
         resumen={"Limpieza de habitacion"}
         date={"Lunes 1 de Julio 2024 a las 09:12"}
       />
-      <div className="border bg-gris-español w-full"></div>
-      <TaskCardHistory
+      <div className="border bg-gris-español "></div>
+      <ApplicationCardHistory
         action={handleShowdetails}
         type={"repair"}
+        status={"completed"}
         title={"Reparar puerta"}
         resumen={"Reparar puerta de entrada"}
         date={"Lunes 1 de Julio 2024 a las 09:12"}
       />
-      <div className="border bg-gris-español w-full"></div>
-      <TaskCardHistory
+      <div className="border bg-gris-español "></div>
+      <ApplicationCardHistory
         action={handleShowdetails}
         type={"clean"}
+        status={"pending"}
         title={"Limpieza de habitacion"}
         resumen={"Limpieza de habitacion"}
         date={"Lunes 1 de Julio 2024 a las 09:12"}

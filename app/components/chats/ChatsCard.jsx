@@ -2,12 +2,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-export default function ChatsCard({ name, image }) {
+export default function ChatsCard({ name, image, action = null }) {
   const router = useRouter();
 
   return (
     <motion.article
-      onClick={() => router.push("/chats/chat")}
+      onClick={action ? () => action() : () => router.push("/pages/chats/chat")}
       className="flex justify-between items-center gap-1 h-[5rem] p-1 cursor-pointer"
       initial={{ opacity: 0, x: -100 }}
       animate={{ opacity: 1, x: 0 }}

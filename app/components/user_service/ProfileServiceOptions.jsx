@@ -11,9 +11,9 @@ export default function ProfileServiceOptions() {
       <ProfileOption
         icon="/profile/profile_option/bx-home.svg"
         title="Historial de tareas"
-        //   action={() => {
-        //     handleRedirect("/pages/history/rent");
-        //   }}
+        action={() => {
+          handleRedirect("/pages/history/service/tasks");
+        }}
       />
       <ProfileOption
         icon="/profile/profile_option/headphonesalt.svg"

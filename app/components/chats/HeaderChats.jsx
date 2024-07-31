@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function HeaderChats() {
   const router = useRouter();
   return (
-    <motion.header
+    <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -20,6 +20,6 @@ export default function HeaderChats() {
       <button className="h-7 w-7" type="button">
         <QuestionMarkCircleIcon />
       </button>
-    </motion.header>
+    </motion.section>
   );
 }
