@@ -15,12 +15,12 @@ export const buttonsList = [
     img: "/worker-panel/chat.svg",
     alt: "Chat Icon",
     title: "Mensajes",
-    link: "/pages/worker-panel/chat"
+    link: "/pages/worker-panel/chats"
   },
   {
     img: "/worker-panel/profile.svg",
     alt: "Profile Icon",
     title: "Mi Perfil",
-    link: "/pages/worker-panel/profile"
+    link: "/pages/profile/service"
   }
 ]

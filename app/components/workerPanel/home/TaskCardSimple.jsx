@@ -1,26 +1,9 @@
 import Image from "next/image";
 
-export default function ApplicationCardHistory({
-  type,
-  status,
-  title,
-  resumen,
-  date,
-  body,
-  action,
-}) {
+export default function TaskCardSimple({ type, status, title, action }) {
   return (
     <section
-      onClick={() => {
-        action({
-          type: type,
-          status: status,
-          title: title,
-          resumen: resumen,
-          date: date,
-          body: body || null,
-        });
-      }}
+      onClick={action}
       className="flex items-center justify-between gap-1"
     >
       <div className=" w-14">
@@ -42,27 +25,20 @@ export default function ApplicationCardHistory({
           )}
         </div>
       </div>
-
-      <div className="flex flex-col grow p-2">
-        <h2 className="font-semibold text-lg">{title}</h2>
-        <div className="flex justify-between">
-          <div>
-            <p className="font-normal text-sm text-[#000000B2] pb-1">
-              {resumen}
-            </p>
-            <p className="font-normal text-[0.67rem] text-[#919191]">{date}</p>
-          </div>
-          <div className="flex items-end">
+      <div className="flex flex-col p-2">
+        <h2 className="font-semibold text-base break-words">{title}</h2>
+        <div className="flex justify-between w-full">
+          <div className="flex items-end w-full">
             {status === "in_process" ? (
-              <h3 className="font-bold text-sm text-[#0E165C] align-text-bottom">
+              <h3 className="font-bold text-sm text-[#0E165C] align-text-bottom w-full text-end">
                 En Proceso
               </h3>
             ) : status === "completed" ? (
-              <h3 className="font-bold text-sm text-[#214802] align-text-bottom">
+              <h3 className="font-bold text-sm text-[#214802] align-text-bottom w-full text-end">
                 Completado
               </h3>
             ) : (
-              <h3 className="font-bold text-sm text-[#FF0000] align-text-bottom">
+              <h3 className="font-bold text-sm text-[#FF0000] align-text-bottom w-full text-end">
                 Pendiente
               </h3>
             )}

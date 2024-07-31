@@ -2,7 +2,12 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import CheckBadgeIconMini from "./check_icon/CheckBadgeIconMini";
 import Image from "next/image";
 
-export default function ProfileCard({ name, email, action }) {
+export default function ProfileCard({
+  name,
+  email,
+  action,
+  image = "/profile/profile.jfif",
+}) {
   return (
     <section
       onClick={action}
@@ -11,10 +16,10 @@ export default function ProfileCard({ name, email, action }) {
       <div className="h-16 w-16 rounded-full relative">
         <Image
           className="rounded-full"
-          src={"/profile/profile.jfif"}
+          src={image}
           fill
           alt="Ilustracion de perfil"
-          objectPosition="center"
+          objectPosition="top"
           style={{ objectFit: "cover" }}
         />
       </div>
