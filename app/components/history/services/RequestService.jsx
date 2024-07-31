@@ -8,7 +8,7 @@ import ModalService from "./modal/ModalService";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function RequestService() {
+export default function RequestService({ title }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {

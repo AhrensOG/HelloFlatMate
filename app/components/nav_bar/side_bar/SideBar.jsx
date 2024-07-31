@@ -69,7 +69,7 @@ export default function SideBar({ handleClose, isOpen }) {
             <SideBarButton
               title="Mi dormitorio"
               icon="/nav_bar/side_bar/ligth-house.svg"
-              // redirect={() => handleRedirect("/pages/my-bedrooms")}
+              redirect={() => handleRedirect("/pages/my-bedrooms")}
             />
             <SideBarButton
               title="Mis contratos"
@@ -84,12 +84,16 @@ export default function SideBar({ handleClose, isOpen }) {
             <SideBarButton
               title="Chats"
               icon="/nav_bar/side_bar/chat-icon.svg"
-              redirect={handleRedirect("/pages/chats")}
+              redirect={() => {
+                handleRedirect("/pages/chats");
+              }}
             />
             <SideBarButton
               title="Servicios"
               icon="/nav_bar/side_bar/question.svg"
-              redirect={handleRedirect("/pages/services")}
+              redirect={() => {
+                handleRedirect("/pages/services");
+              }}
             />
             <SideBarButton
               title="Configuración"

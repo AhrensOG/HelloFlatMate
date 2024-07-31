@@ -3,11 +3,16 @@ import {
   ArrowTurnRightDownIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function NavServices() {
+  const route = useRouter();
   return (
-    <nav className="flex justify-between h-[4.5rem] bg-[#F7FAFA]">
-      <button className="h-7 w-7 m-3 cursor-pointer opacity-70">
+    <nav className="flex justify-between items-center h-[4.5rem] bg-[#F7FAFA]">
+      <button
+        onClick={() => route.back()}
+        className="h-7 w-7 m-3 cursor-pointer opacity-70"
+      >
         <ArrowLeftIcon />
       </button>
 

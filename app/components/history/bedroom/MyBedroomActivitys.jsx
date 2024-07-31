@@ -34,7 +34,7 @@ export default function MyBedroomActivitys() {
           title={"Servicios"}
           img={"/my_bedrooms/activitys/services.svg"}
           action={() => {
-            route.push("/pages/history/applications");
+            route.push("/pages/services");
           }}
         />
         <ActivityItem

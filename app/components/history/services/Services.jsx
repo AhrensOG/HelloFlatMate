@@ -23,9 +23,9 @@ export default function Services() {
         <section className="flex w-full mt-7">
           <button
             onClick={handleBack}
-            className="h-7 w-7 m-3 cursor-pointer opacity-70"
+            className="h-7 w-7 m-3 mr-4 flex justify-center items-center cursor-pointer opacity-70"
           >
-            <ArrowLeftIcon />
+            <ArrowLeftIcon className="h-7 w-7" />
           </button>
           <h1 className="font-semibold text-xl self-center  text-[#191B23]">
             Servicios
@@ -40,7 +40,7 @@ export default function Services() {
           img={"/services/clean-stock-1.jfif"}
           position={"rigth"}
           action={() => {
-            console.log("holis");
+            route.push("/pages/services/request");
           }}
         />
         <ActionServiceCard
@@ -50,7 +50,7 @@ export default function Services() {
           }
           img={"/services/repair-stock.jfif"}
           action={() => {
-            console.log("holis");
+            route.push("/pages/services/request");
           }}
         />
 
@@ -64,9 +64,6 @@ export default function Services() {
           }
           img={"/services/clean-stock-1.jfif"}
           position="rigth"
-          action={() => {
-            console.log("holis");
-          }}
         />
       </motion.main>
     </AnimatePresence>
