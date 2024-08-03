@@ -1,35 +1,46 @@
-import AmenitiesSection from "@/app/components/property-details/main/AmenitiesSection";
 import EditButton from "../../shared/EditButton";
 import AmenityTemplate from "./amenities_section/AmenityTemplate";
-import { useState } from "react";
 
-export default function AmenitiesSectionTemplate({ data }) {
-  const [update, setUpdate] = useState(false);
+export default function AmenitiesSectionTemplate({ data, setData }) {
+  const amenities = [
+    "wifi",
+    "cocina",
+    "lavadero",
+    "piscina",
+    "amueblado",
+    "jardin",
+    "estacionamiento",
+    "otros",
+  ];
 
-  const showUpdate = () => {
-    setUpdate(!update);
+  const handleCheckboxChange = (name, checked) => {
+    let newData;
+    if (checked) {
+      newData = [...data, name];
+    } else {
+      newData = data.filter((amenity) => amenity !== name);
+    }
+    setData(newData);
   };
+
   return (
-    <>
-      {update ? (
-        <section className="flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <h2 className="font-bold text-[1.37rem]">Que ofrece este lugar</h2>
-            <EditButton action={showUpdate} />
-          </div>
-          <AmenityTemplate name="wifi" />
-          <AmenityTemplate name="cocina" />
-          <AmenityTemplate name="lavadero" />
-          <AmenityTemplate name="piscina" />
-          <AmenityTemplate name="amueblado" />
-          <AmenityTemplate name="jardin" />
-          <AmenityTemplate name="otros" />
-        </section>
-      ) : (
-        <AmenitiesSection
-          edit={<EditButton action={showUpdate} data={data} />}
-        />
-      )}
-    </>
+    <section className="flex flex-col gap-3 w-full">
+      <article className="w-full flex justify-between items-center">
+        <h2 className="font-bold text-[1.37rem] w-full text-start">
+          Que ofrece este lugar
+        </h2>
+        <EditButton />
+      </article>
+      <article className="flex flex-col gap-2 w-full">
+        {amenities.map((amenity) => (
+          <AmenityTemplate
+            key={amenity}
+            checked={data.includes(amenity)}
+            name={amenity}
+            onChange={handleCheckboxChange}
+          />
+        ))}
+      </article>
+    </section>
   );
 }

@@ -1,14 +1,14 @@
 import DescriptionItem from "@/app/components/property-details/main/description_section/DescriptionItem";
 import EditButton from "../../shared/EditButton";
 
-export default function DescriptionSectionTemplate({ data = null }) {
+export default function DescriptionSectionTemplate({ data, action }) {
   return (
     <section>
       <div className="flex justify-between items-center gap-3">
         <h2 className="font-bold text-[1.37rem]">Descripcion</h2>
-        <EditButton />
+        <EditButton action={action} />
       </div>
-      {data ? (
+      {data.length > 0 ? (
         <ul className="list-disc p-3 pl-[1.6rem]">
           {data.map((item, index) => (
             <li key={index} className="font-normal text-base py-1">

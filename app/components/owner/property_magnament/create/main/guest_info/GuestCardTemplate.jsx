@@ -7,7 +7,7 @@ export default function GuestCardTemplate({ action, quantity, type }) {
         onChange={(e) => action(e.target.value)}
         className="font-bold text-2xl appearance-none outline-none w-full"
         type="text"
-        value={quantity}
+        value={quantity || ""}
         name="quantity"
         id="quantity"
         placeholder="..."

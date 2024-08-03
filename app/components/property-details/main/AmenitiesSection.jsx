@@ -5,7 +5,7 @@ export default function AmenitiesSection({ edit = null, data = null }) {
   return (
     <section className="flex flex-col gap-3">
       {edit ? (
-        <div className="flex justify-between items-center">
+        <div className="w-full flex justify-between items-center">
           <h2 className="font-bold text-[1.37rem]">Que ofrece este lugar</h2>
           {edit}
         </div>
@@ -24,7 +24,7 @@ export default function AmenitiesSection({ edit = null, data = null }) {
         <>
           <Amenity
             name="Piscina disponible"
-            image={"/property_details/amenities/pool-icon.svg"}
+            image={"/property_details/amenities/piscina-icon.svg"}
           />
           <Amenity
             name="Wifi"
@@ -32,7 +32,7 @@ export default function AmenitiesSection({ edit = null, data = null }) {
           />
           <Amenity
             name="Estacionamiento"
-            image={"/property_details/amenities/parking-icon.svg"}
+            image={"/property_details/amenities/estacionamiento-icon.svg"}
           />{" "}
         </>
       )}
