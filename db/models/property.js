@@ -63,6 +63,7 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             puntuation: {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),
+                allowNull: false,
             },
             isActive: {
                 type: DataTypes.BOOLEAN,
@@ -73,14 +74,14 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             category: {
-                type: DataTypes.ENUM('HELLOROOM', 'HELLOSTUDIO', 'HELLOCOLIVING', 'HELLOLANDLORD'),
+                type: DataTypes.ENUM('HELLO_ROOM', 'HELLO_STUDIO', 'HELLO_COLIVING', 'HELLO_LANDLORD'),
                 allowNull: false,
             },
             images: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,
             },
-            facilities: {
+            amenities: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,
             },

@@ -16,6 +16,8 @@ import AddressModal from "./main/address_modal/AddressModal";
 import MoreInfoModal from "./main/more_info_section/MoreInfoModal";
 import { toast } from "sonner";
 import validateData from "./validateData";
+import axios from "axios";
+import { error } from "pdf-lib";
 
 export default function NewProperty() {
   const [name, setName] = useState("");
@@ -68,27 +70,58 @@ export default function NewProperty() {
 
   //validacion
   const handleSubmit = () => {
-    // Combina todos los datos en un solo objeto
     const allData = {
       ...address,
       ...guestInfo,
       ...description,
       ...sliderImage,
       ...amenities,
-      ...moreInfo, // assuming moreInfo is an array with one object
+      ...moreInfo,
     };
+
+    console.log(allData);
 
     const validationResult = validateData(allData);
 
     if (!validationResult.isValid) {
       // Maneja el caso en el que los datos no son válidos
-      console.log(validationResult.message);
-      toast.error("No dejes datos incompletos");
+      return false;
     } else {
       // Maneja el caso en el que los datos son válidos
-      console.log(allData);
-      toast.success("Propiedad creada correctamente");
-      // Aquí iría la lógica para enviar los datos
+      return true;
+    }
+  };
+
+  const property = {
+    name: name,
+    city: address.city,
+    street: address.street,
+    streetNumber: address.streetNumber,
+    postalCode: address.postalCode,
+    size: "60mt2",
+    bedrooms: 5,
+    bathrooms: parseInt(guestInfo.bathrooms),
+    bed: parseInt(guestInfo.beds),
+    maximunOccupants: parseInt(guestInfo.ocupants),
+    price: 100,
+    puntuation: [],
+    isActive: true,
+    isBussy: false,
+    category: "HELLO_ROOM",
+    images: sliderImage,
+    amenities: amenities,
+  };
+
+  const createProperty = async () => {
+    if (handleSubmit()) {
+      try {
+        const response = await axios.post("/api/property", property);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error.response.data);
+      }
+    } else {
+      toast.error("No dejes datos incompletos");
     }
   };
 
@@ -128,7 +161,7 @@ export default function NewProperty() {
           setData={setMoreInfo}
           action={handleShowMoreInfoModal}
         />
-        <SaveButton action={handleSubmit} />
+        <SaveButton action={createProperty} />
       </main>
       {showDescriptionModal && (
         <DescriptionModal
