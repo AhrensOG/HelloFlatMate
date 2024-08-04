@@ -2,7 +2,7 @@ import { plus_jakarta } from "@/font";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 
-export default function DocumentListItem({ type, title, date }) {
+export default function DocumentListItem({ type, title, date, button }) {
   return (
     <article
       className={`${plus_jakarta.className} flex flex-col w-full gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
@@ -31,9 +31,13 @@ export default function DocumentListItem({ type, title, date }) {
           <h3 className="font-semibold text-base">{title}</h3>
           <p className="text-sm text-[#A6A6A6] font-normal">{date}</p>
         </div>
-        <div className="h-6 w-6">
-          <EllipsisVerticalIcon />
-        </div>
+        {button ? (
+          button
+        ) : (
+          <button type="button" className="h-6 w-6">
+            <EllipsisVerticalIcon />
+          </button>
+        )}
       </div>
     </article>
   );
