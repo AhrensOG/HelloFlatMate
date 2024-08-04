@@ -41,8 +41,8 @@ export default function PieGraphic() {
   };
 
   return (
-    <div className="w-[17rem] flex justify-center items-center">
-      <Pie data={data} options={options} />;
+    <div>
+      <Pie data={data} options={options} />
     </div>
   );
 }

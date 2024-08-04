@@ -1,14 +1,15 @@
 "use client";
-import DashBoardAdmin from "@/app/components/admin/dashboard/DashBoardAdmin";
+
+import AdminProfile from "@/app/components/admin/profile/AdminProfile";
 import NavBar from "@/app/components/nav_bar/NavBar";
 
 export default function AdminProfilePage() {
   return (
     <>
-      <headear className="">
+      <headear>
         <NavBar />
       </headear>
-      <DashBoardAdmin />
+      <AdminProfile />
     </>
   );
 }
