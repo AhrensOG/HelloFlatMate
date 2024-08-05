@@ -1,11 +1,11 @@
 import { Property } from "@/db/init";
 import { NextResponse } from "next/server";
 
-export async function updateProperty(data) {
+export async function updateProperty(id, data) {
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
-    if (!data.id || typeof data.id !== "number") {
+    if (!id) {
         return NextResponse.json({ error: "El id no puede estar vacío o no es un número" }, { status: 400 });
     }
     if (data.name.trim() === "") {
@@ -23,10 +23,10 @@ export async function updateProperty(data) {
     if (data.postalCode.trim() === "") {
         return NextResponse.json({ error: "El Código Postal no puede estar vacío" }, { status: 400 });
     }
-    if (data.size.trim() === "") {
+    if (data.size <= 0) {
         return NextResponse.json({ error: "El tamaño no puede estar vacío" }, { status: 400 });
     }
-    if (typeof data.bedrooms !== "number" || data.bedrooms <= 0) {
+    if (typeof data.roomsCount !== "number" || data.bedrooms <= 0) {
         return NextResponse.json({ error: "El número de habitaciones no puede estar vacío o no es un número" }, { status: 400 });
     }
     if (typeof data.bathrooms !== "number" || data.bathrooms <= 0) {
@@ -52,7 +52,7 @@ export async function updateProperty(data) {
         return NextResponse.json({ error: "Las amenidades no pueden estar vacías" }, { status: 400 });
     }
     try {
-        const property = await Property.findByPk(data.id);
+        const property = await Property.findByPk(id);
         if (!property) {
             return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
         }

@@ -23,11 +23,11 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             city: {
                 type: DataTypes.STRING(100),
-                allowNull: true,
+                allowNull: false,
             },
             street: {
                 type: DataTypes.STRING(700),
-                allowNull: true,
+                allowNull: false,
             },
             streetNumber: {
                 type: DataTypes.INTEGER,
@@ -35,13 +35,13 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             postalCode: {
                 type: DataTypes.STRING(10),
-                allowNull: true,
-            },
-            size: {
-                type: DataTypes.STRING(10),
                 allowNull: false,
             },
-            bedrooms: {
+            size: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            roomsCount: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
@@ -85,6 +85,42 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,
             },
+            description: {
+                type: DataTypes.ARRAY(DataTypes.TEXT),
+                allowNull: false,
+            },
+            incomeConditionDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            roomDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            billDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            maintenanceDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            aboutUse: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            houseRules: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            checkIn: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            checkOut: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            }
 
         },
         {

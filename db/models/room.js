@@ -21,6 +21,10 @@ const roomInit = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            image: {
+                type: DataTypes.STRING(10000),
+                allowNull: false,
+            }
         },
         {
             sequelize,

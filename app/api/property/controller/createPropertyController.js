@@ -2,6 +2,10 @@ import { Owner, Property } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
+
+    console.log(data);
+
+
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -20,10 +24,12 @@ const createProperty = async (data) => {
     if (data.postalCode.trim() === "") {
         return NextResponse.json({ error: "El Código Postal no puede estar vacío" }, { status: 400 });
     }
-    if (data.size.trim() === "") {
+    if (data.size <= 0) {
         return NextResponse.json({ error: "El tamaño no puede estar vacío" }, { status: 400 });
     }
-    if (data.bedrooms <= 0 || typeof data.bedrooms !== "number") {
+    if (data.roomsCount <= 0) {
+        console.log(typeof data.roomsCount);
+
         return NextResponse.json({ error: "El número de habitaciones no puede estar vacío o no es un número" }, { status: 400 });
     }
     if (data.bathrooms <= 0 || typeof data.bathrooms !== "number") {
@@ -33,6 +39,8 @@ const createProperty = async (data) => {
         return NextResponse.json({ error: "El número de camas no puede estar vacío o no es un número" }, { status: 400 });
     }
     if (data.maximunOccupants <= 0 || typeof data.maximunOccupants !== "number") {
+        console.log(typeof data.maximunOccupants);
+
         return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
     }
     if (data.price <= 0 || typeof data.price !== "number") {
@@ -48,6 +56,9 @@ const createProperty = async (data) => {
     if (data.amenities.length === 0) {
         return NextResponse.json({ error: "Las amenidades no pueden estar vacías" }, { status: 400 });
     }
+    if (data.description.length <= 0) {
+        return NextResponse.json({ error: "La descripción no puede estar vacía" }, { status: 400 });
+    }
 
     try {
         const property = await Property.create({
@@ -57,7 +68,7 @@ const createProperty = async (data) => {
             streetNumber: data.streetNumber,
             postalCode: data.postalCode,
             size: data.size,
-            bedrooms: data.bedrooms,
+            roomsCount: data.roomsCount,
             bathrooms: data.bathrooms,
             bed: data.bed,
             maximunOccupants: data.maximunOccupants,
@@ -68,6 +79,7 @@ const createProperty = async (data) => {
             category: data.category,
             images: data.images,
             amenities: data.amenities,
+            description: data.description,
             ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
         });
 

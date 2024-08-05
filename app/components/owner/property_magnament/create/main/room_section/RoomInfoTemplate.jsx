@@ -6,8 +6,22 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 
-export default function RoomInfoTemplate({ data, room, bed }) {
+export default function RoomInfoTemplate({
+  img,
+  name,
+  bedNumber,
+  setRoom,
+  showModal,
+}) {
   const [showPencil, setShowPencil] = useState(false);
+  const [room, setRooom] = useState({});
+
+  const handleChange = (name, event) => {
+    setRoom({
+      ...room,
+      [name]: event.target.value,
+    });
+  };
 
   return (
     <article className="flex flex-col gap-1 min-w-[8.7rem] max-w-[10rem]">
@@ -16,12 +30,12 @@ export default function RoomInfoTemplate({ data, room, bed }) {
         onMouseLeave={() => setShowPencil(false)}
         className="relative  h-[5.63rem] bg-[#d6d6d6ff] rounded-lg"
       >
-        {data ? (
+        {img ? (
           <div className="absolute inset-0 flex justify-center items-center w-full h-full">
             <div className="relative w-full h-full">
               <Image
                 className="rounded-lg"
-                src={data}
+                src={img}
                 alt="Imagen"
                 fill
                 style={{ objectFit: "cover", objectPosition: "center" }}
@@ -40,30 +54,32 @@ export default function RoomInfoTemplate({ data, room, bed }) {
           </div>
         )}
         <div className="absolute inset-0 w-full h-full flex justify-center items-center z-50">
-          <div
+          <button
+            onClick={showModal}
+            type="button"
             className={`${
               showPencil ? "" : "hidden"
             }  flex justify-center items-center ${
-              data ? "h-16 w-16 rounded-full bg-[#82828266]" : "w-full h-full"
+              img ? "h-16 w-16 rounded-full bg-[#82828266]" : "w-full h-full"
             }`}
           >
             <PencilSquareIcon className="w-9 h-9 text-white" />
-          </div>
+          </button>
         </div>
       </div>
       <div className="flex flex-col gap-1">
         <label htmlFor="bed" hidden></label>
         <input
-          value={room}
+          value={name}
           className="text-base font-medium pl-2 appearance-none outline-none w-full"
           type="text"
-          name="room"
-          id="room"
+          name="name"
+          id="name"
           placeholder="Habitacion N°"
         />
         <label htmlFor="bedNumber" hidden></label>
         <input
-          value={bed}
+          value={bedNumber}
           className="font-normal text-sm text-[#4F7A94] pl-2 appearance-none outline-none"
           type="text"
           id="bedNumber"

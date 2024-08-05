@@ -7,6 +7,7 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
 
     // Actualiza el estado con los nuevos datos
     setData(updatedData);
+    console.log(data);
   };
 
   return (

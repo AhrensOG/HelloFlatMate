@@ -13,13 +13,16 @@ import SliderCreateTemplate from "./header/SliderCreateTemplate";
 import DescriptionModal from "./main/description_section/DescriptionModal";
 import SliderModal from "./header/slider/SliderModal";
 import AddressModal from "./main/address_modal/AddressModal";
-import MoreInfoModal from "./main/more_info_section/MoreInfoModal";
 import { toast } from "sonner";
 import validateData from "./validateData";
 import axios from "axios";
-import { error } from "pdf-lib";
+import FinalModal from "./main/FinalModal";
+import RoomAddModal from "./main/room_section/RoomAddModal";
+import { useRouter } from "next/navigation";
 
 export default function NewProperty() {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [address, setAddress] = useState({
     city: "",
@@ -28,9 +31,9 @@ export default function NewProperty() {
     postalCode: "",
   });
   const [guestInfo, setGuestInfo] = useState({
-    occupants: "",
-    beds: "",
-    bathrooms: "",
+    occupants: null,
+    beds: null,
+    bathrooms: null,
   });
   const [description, setDescription] = useState([]);
   const [sliderImage, setSliderImage] = useState([]);
@@ -45,30 +48,36 @@ export default function NewProperty() {
     checkIn: "",
     checkOut: "",
   });
+  const [finalData, setFinalData] = useState({});
+  const [dataRoom, setDataRoom] = useState([]);
 
-  //modal
+  const setRoomData = (data) => {
+    setDataRoom(data);
+  };
+
+  // Modal states
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [showSliderModal, setShowSliderModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showMoreInfoModal, setShowMoreInfoModal] = useState(false);
+  const [showFinalModal, setShowFinalModal] = useState(false);
+  const [showRoomEditModal, setShowRoomEditModal] = useState(false);
 
-  const handleShowDescriptionModal = () => {
+  // Modal handlers
+  const handleShowDescriptionModal = () =>
     setShowDescriptionModal(!showDescriptionModal);
-  };
-
-  const handleShowSliderModal = () => {
-    setShowSliderModal(!showSliderModal);
-  };
-
-  const handleShowAddressModal = () => {
-    setShowAddressModal(!showAddressModal);
-  };
-
+  const handleShowSliderModal = () => setShowSliderModal(!showSliderModal);
+  const handleShowAddressModal = () => setShowAddressModal(!showAddressModal);
   const handleShowMoreInfoModal = () => {
+    console.log(moreInfo);
     setShowMoreInfoModal(!showMoreInfoModal);
   };
+  const handleShowFinalModal = () => setShowFinalModal(!showFinalModal);
+  const handleShowRoomEditModal = () => {
+    setShowRoomEditModal(!showRoomEditModal);
+  };
 
-  //validacion
+  // Validation and submission
   const handleSubmit = () => {
     const allData = {
       ...address,
@@ -78,18 +87,13 @@ export default function NewProperty() {
       ...amenities,
       ...moreInfo,
     };
-
-    console.log(allData);
-
     const validationResult = validateData(allData);
 
     if (!validationResult.isValid) {
-      // Maneja el caso en el que los datos no son válidos
+      toast.error("No dejes datos incompletos");
       return false;
-    } else {
-      // Maneja el caso en el que los datos son válidos
-      return true;
     }
+    return true;
   };
 
   const property = {
@@ -98,30 +102,66 @@ export default function NewProperty() {
     street: address.street,
     streetNumber: address.streetNumber,
     postalCode: address.postalCode,
-    size: "60mt2",
-    bedrooms: 5,
+    size: parseInt(finalData.size) || "",
+    roomsCount: dataRoom.length,
     bathrooms: parseInt(guestInfo.bathrooms),
     bed: parseInt(guestInfo.beds),
-    maximunOccupants: parseInt(guestInfo.ocupants),
-    price: 100,
+    maximunOccupants: parseInt(guestInfo.occupants),
+    price: parseInt(finalData.price) || 10,
     puntuation: [],
     isActive: true,
     isBussy: false,
-    category: "HELLO_ROOM",
+    category: finalData.category || "HELLO_ROOM",
     images: sliderImage,
     amenities: amenities,
+    description: description,
+    incomeConditionDescription: moreInfo.condicionDeRenta || "",
+    maintanceDescription: moreInfo.mantenimiento || "",
+    roomDescription: moreInfo.habitacion || "",
+    billDescription: moreInfo.facturas || "",
+    aboutUs: moreInfo.sobreNosotros || "",
+    houseRules: moreInfo.normasDeConvivencia || "",
+    checkIn: moreInfo.checkIn || "",
+    checkOut: moreInfo.checkOut || "",
   };
 
   const createProperty = async () => {
+    console.log(moreInfo);
+
     if (handleSubmit()) {
       try {
-        const response = await axios.post("/api/property", property);
-        console.log(response.data);
+        // Crear propiedad
+        const propertyResponse = await axios.post("/api/property", property);
+        const propertyId = propertyResponse.data.property.id;
+        console.log(propertyResponse.data.property.id);
+
+        // Crear habitaciones
+        const rooms = dataRoom.map((room) => ({
+          name: room.name,
+          image: room.image,
+          numberBeds: parseInt(room.numberBeds),
+          propertyId: propertyId,
+        }));
+        console.log(rooms);
+
+        try {
+          await axios.post("/api/room", rooms);
+          toast.success("Habitación/es creada/s con éxito");
+        } catch (error) {
+          toast.error("Error en la creación de habitaciones");
+          throw error; // Propagar el error para que se capture en el catch externo
+        }
+
+        toast.success("Propiedad creada con éxito");
+
+        // Redirigir después de un retraso
+        setTimeout(() => {
+          router.push(`/pages/owner/update?id=${propertyId}`);
+        }, 3000);
       } catch (error) {
-        console.error(error.response.data);
+        toast.error("Ocurrió un error");
+        console.error(error);
       }
-    } else {
-      toast.error("No dejes datos incompletos");
     }
   };
 
@@ -153,7 +193,11 @@ export default function NewProperty() {
           action={handleShowDescriptionModal}
           data={description}
         />
-        <RoomSectionTemplate />
+        <RoomSectionTemplate
+          data={dataRoom}
+          setData={setRoomData}
+          showModal={handleShowRoomEditModal}
+        />
         <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
         <LocationSectionTemplate />
         <MoreInfoSectionTemplate
@@ -161,7 +205,7 @@ export default function NewProperty() {
           setData={setMoreInfo}
           action={handleShowMoreInfoModal}
         />
-        <SaveButton action={createProperty} />
+        <SaveButton action={handleShowFinalModal} />
       </main>
       {showDescriptionModal && (
         <DescriptionModal
@@ -177,11 +221,25 @@ export default function NewProperty() {
           showModal={handleShowSliderModal}
         />
       )}
+      {showRoomEditModal && (
+        <RoomAddModal
+          data={dataRoom}
+          setData={setRoomData}
+          showModal={handleShowRoomEditModal}
+        />
+      )}
       {showAddressModal && (
         <AddressModal
           data={address}
           setData={setAddress}
           showModal={handleShowAddressModal}
+        />
+      )}
+      {showFinalModal && (
+        <FinalModal
+          setData={setFinalData}
+          action={createProperty}
+          showModal={handleShowFinalModal}
         />
       )}
     </div>

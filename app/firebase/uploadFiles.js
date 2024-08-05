@@ -18,7 +18,7 @@ const uploadFiles = async (files, folder = "Documentos", name = false) => {
 
     return uploadedFiles;
   } catch (error) {
-    return console.log(error);
+    return new Error(error);
   }
 };
 

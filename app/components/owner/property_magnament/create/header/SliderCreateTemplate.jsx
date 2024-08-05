@@ -11,7 +11,7 @@ export default function SliderCreateTemplate({ action, img }) {
   };
 
   return (
-    <div className="relative w-full h-40">
+    <div className="relative w-full h-[12.5rem]">
       <div className="absolute inset-0 bg-gradient-to-t from-custom-light to-custom-light"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-custom-dark to-transparent"></div>
       <div
@@ -25,9 +25,8 @@ export default function SliderCreateTemplate({ action, img }) {
               <Image
                 src={img}
                 alt="slider-img"
-                layout="responsive"
-                width={200}
-                height={200}
+                layout="fill"
+                objectFit="cover"
               />
             </div>
           ) : (
