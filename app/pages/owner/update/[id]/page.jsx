@@ -2,19 +2,17 @@
 
 import UpdateProperty from "@/app/components/owner/property_magnament/update/UpdateProperty";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 
-export default function UpdatePropertyPage() {
-  const params = useSearchParams();
+export default function UpdatePropertyPage({ params }) {
+  const id = params.id;
+
   const [initialData, setInitialData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `/api/property?id=${params.get("id")}`
-        );
+        const response = await axios.get(`/api/property?id=${id}`);
         setInitialData(response.data.property);
       } catch (error) {
         console.error("Error fetching property data:", error);
@@ -22,7 +20,7 @@ export default function UpdatePropertyPage() {
     };
 
     fetchData();
-  }, [params]);
+  }, [id]);
 
   // Muestra un mensaje de carga mientras se obtienen los datos
   if (!initialData) {
