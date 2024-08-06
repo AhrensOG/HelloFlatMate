@@ -32,6 +32,11 @@ const userAttributes = {
   },
   role: {
     type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT"),
+  },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
   }
 }
 

@@ -1,25 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
-import axios from "axios";
 
-export default function RoomEditModal({
-  data,
-  setData,
-  showModal,
-  selectedRoom,
-}) {
+export default function RoomAddModal({ data, setData, showModal }) {
   const [dataRoom, setDataRoom] = useState({});
-
-  useEffect(() => {
-    if (selectedRoom) {
-      setDataRoom(selectedRoom); // Setea los datos de la habitación seleccionada al estado
-    }
-  }, [selectedRoom]);
 
   const handleSubmit = async () => {
     const array = [...data];
-
     if (!dataRoom?.name) {
       return toast.error("Por favor, especifique un nombre");
     }
@@ -29,30 +17,9 @@ export default function RoomEditModal({
     if (!dataRoom?.image) {
       return toast.error("Por favor, agrega una imagen.");
     }
-
     const uploadedImage = await submitImage(dataRoom.image);
     dataRoom.image = uploadedImage;
-
-    if (selectedRoom) {
-      // Edita la habitación existente
-      const index = data.findIndex((room) => room === selectedRoom);
-      if (index !== -1) {
-        array[index] = dataRoom;
-      }
-    } else {
-      // Añade una nueva habitación
-      array.push(dataRoom);
-    }
-
-    try {
-      const response = await axios.put(`/api/room?id=${dataRoom.id}`, dataRoom);
-      console.log(response.data);
-      toast.success("Habitación editada");
-    } catch (err) {
-      console.log(err);
-      toast.error("Error al editar la habitación");
-    }
-
+    array.push(dataRoom);
     setData(array);
     showModal(); // Cierra el modal después de guardar
   };
@@ -60,6 +27,7 @@ export default function RoomEditModal({
   const submitImage = async (file) => {
     const response = await uploadFiles([file]);
     console.log(response);
+
     return response[0].url;
   };
 
@@ -119,10 +87,7 @@ export default function RoomEditModal({
           <button
             className="text-black px-4 py-2 border border-[#0C1660] rounded-lg"
             type="button"
-            onClick={() => {
-              showModal();
-              console.log(dataRoom);
-            }}
+            onClick={showModal}
           >
             Cancelar
           </button>

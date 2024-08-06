@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const SliderItem = ({ img }) => {
   return (
-    <div className="w-full relative">
+    <div className="w-full relative h-[12.5rem]">
       <div className="absolute w-full h-full z-10" />
       <Image
         className="object-cover object-center"

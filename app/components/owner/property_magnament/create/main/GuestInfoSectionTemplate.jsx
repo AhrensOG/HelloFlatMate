@@ -1,16 +1,16 @@
 import GuestCardTemplate from "./guest_info/GuestCardTemplate";
 
 export default function GuestInfoSectionTemplate({ data, setData }) {
-  const { ocupants, beds, bathrooms } = data;
+  const { occupants, beds, bathrooms } = data;
 
   const setOcupants = (newData) => {
-    handleData({ ocupants: newData, beds, bathrooms });
+    handleData({ occupants: newData, beds, bathrooms });
   };
   const setBeds = (newData) => {
-    handleData({ ocupants, beds: newData, bathrooms });
+    handleData({ occupants, beds: newData, bathrooms });
   };
   const setBathrooms = (newData) => {
-    handleData({ ocupants, beds, bathrooms: newData });
+    handleData({ occupants, beds, bathrooms: newData });
   };
 
   const handleData = (newData) => {
@@ -21,7 +21,7 @@ export default function GuestInfoSectionTemplate({ data, setData }) {
       <GuestCardTemplate
         type={"Huespedes"}
         action={setOcupants}
-        quantity={ocupants}
+        quantity={occupants}
       />
       <GuestCardTemplate
         type={"Báños"}
