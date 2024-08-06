@@ -126,8 +126,6 @@ export default function NewProperty() {
   };
 
   const createProperty = async () => {
-    console.log(moreInfo);
-
     if (handleSubmit()) {
       try {
         // Crear propiedad
@@ -197,6 +195,7 @@ export default function NewProperty() {
           data={dataRoom}
           setData={setRoomData}
           showModal={handleShowRoomEditModal}
+          action={handleShowRoomEditModal}
         />
         <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
         <LocationSectionTemplate />

@@ -16,5 +16,7 @@ export async function POST(req) {
 
 export async function PUT(req) {
     const data = await req.json();
-    return updateRoom(data.id, data)
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    return updateRoom(id, data)
 }

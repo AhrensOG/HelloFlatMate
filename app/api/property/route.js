@@ -25,6 +25,7 @@ export async function GET(req) {
 
 export async function PUT(req) {
     const data = await req.json();
+    const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 
     const result = await updateProperty(id, data);

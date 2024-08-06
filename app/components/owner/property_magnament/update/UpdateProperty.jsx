@@ -56,11 +56,16 @@ export default function UpdateProperty() {
     checkIn: "Informacion",
     checkOut: "Informacion",
   });
-  const [roomImages, setRoomImages] = useState([
-    "/owner/room/room-stock-1.jfif",
-    "/owner/room/room-stock-2.png",
-  ]);
+  const [roomImages, setRoomImages] = useState([]);
   const [finalData, setFinalData] = useState(null);
+
+  //funcion para manejar la edicion de habitaciones
+  const handleRoomUpdate = (updatedRoom) => {
+    const updatedRooms = rooms.map((room) =>
+      room.id === updatedRoom.id ? updatedRoom : room
+    );
+    setRooms(updatedRooms);
+  };
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -69,13 +74,13 @@ export default function UpdateProperty() {
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showMoreInfoModal, setShowMoreInfoModal] = useState(false);
   const [showFinalModal, setShowFinalModal] = useState(false);
+  const [editRoomsModal, setEditRoomsModal] = useState(false);
 
   useEffect(() => {
     console.log("Fetching property data...");
     axios
       .get(`/api/property?id=${id}`)
       .then((res) => {
-        console.log("Data fetched successfully:", res.data);
         const data = res.data.property;
         // Asegúrate de que la estructura de res.data coincide con lo que esperas
         setProperty(data);
@@ -126,8 +131,6 @@ export default function UpdateProperty() {
   };
 
   const handleShowAddressModal = () => {
-    console.log(address, sliderImage);
-
     setShowAddressModal(!showAddressModal);
   };
 
@@ -139,6 +142,8 @@ export default function UpdateProperty() {
     setShowMoreInfoModal(!showMoreInfoModal);
   };
   const handleShowFinalModal = () => setShowFinalModal(!showFinalModal);
+
+  const handleEditRoomsModal = () => setEditRoomsModal(!editRoomsModal);
 
   const handleDescriptionInfo = (data) => {
     setDescription(data);
@@ -192,12 +197,12 @@ export default function UpdateProperty() {
     }
   };
 
-  const updateProperty = () => {
+  const updateProperty = async () => {
     console.log(finalData);
 
     if (handleSubmit()) {
-      axios
-        .put(`/api/property?id=${id}`, {
+      try {
+        const response = await axios.put(`/api/property?id=${id}`, {
           name: name,
           city: address.city,
           street: address.street,
@@ -211,22 +216,17 @@ export default function UpdateProperty() {
           price: parseInt(finalData.price),
           puntuation: [],
           category: finalData.category,
-          images: [
-            "https://th.bing.com/th/id/OIP.wJLz7YmzEq7__L9ccwr_WQHaE8?rs=1&pid=ImgDetMain",
-            "https://th.bing.com/th/id/OIP.wJLz7YmzEq7__L9ccwr_WQHaE8?rs=1&pid=ImgDetMain",
-          ],
+          images: sliderImage,
           amenities: amenities,
           description: description,
-        })
-        .then((res) => {
-          console.log("Property data updated successfully:", res.data);
-          toast.success("Propiedad actualizada correctamente");
-          router.push("/pages/owner/update");
-        })
-        .catch((err) => {
-          console.error("Error updating property data:", err);
-          toast.error("Error al actualizar la propiedad");
         });
+        console.log("Property data updated successfully:", response.data);
+        toast.success("Propiedad actualizada correctamente");
+        router.push(`/pages/owner/update?id=${id}`);
+      } catch (error) {
+        console.error("Error updating property data:", error);
+        toast.error("Error al actualizar la propiedad");
+      }
     } else {
       toast.error("No dejes datos incompletos");
     }
@@ -268,7 +268,11 @@ export default function UpdateProperty() {
           data={description} // Actualiza aquí para usar el estado description
           action={handleShowDescriptionModal}
         />
-        <RoomSectionTemplate data={roomImages} />
+        <RoomSectionTemplate
+          data={roomImages}
+          onEditRoom={handleRoomUpdate}
+          setData={setRoomImages}
+        />
         <AmenitiesSection
           data={amenities}
           edit={<EditButton action={handleShowAmenitiesModal} />}

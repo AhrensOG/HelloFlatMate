@@ -1,8 +1,4 @@
-import {
-  PencilIcon,
-  PencilSquareIcon,
-  PhotoIcon,
-} from "@heroicons/react/24/outline";
+import { PencilSquareIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -10,18 +6,10 @@ export default function RoomInfoTemplate({
   img,
   name,
   bedNumber,
-  setRoom,
   showModal,
+  type,
 }) {
   const [showPencil, setShowPencil] = useState(false);
-  const [room, setRooom] = useState({});
-
-  const handleChange = (name, event) => {
-    setRoom({
-      ...room,
-      [name]: event.target.value,
-    });
-  };
 
   return (
     <article className="flex flex-col gap-1 min-w-[8.7rem] max-w-[10rem]">
@@ -54,21 +42,17 @@ export default function RoomInfoTemplate({
           </div>
         )}
         <div className="absolute inset-0 w-full h-full flex justify-center items-center z-50">
-          <button
-            onClick={showModal}
-            type="button"
-            className={`${
-              showPencil ? "" : "hidden"
-            }  flex justify-center items-center ${
-              img ? "h-16 w-16 rounded-full bg-[#82828266]" : "w-full h-full"
-            }`}
-          >
-            <PencilSquareIcon className="w-9 h-9 text-white" />
-          </button>
+          {!type === "empty" ? (
+            <div onClick={() => showModal()} className="w-9 h-9 text-white">
+              <PencilSquareIcon />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <label htmlFor="bed" hidden></label>
+        <label htmlFor="name" hidden></label>
         <input
           value={name}
           className="text-base font-medium pl-2 appearance-none outline-none w-full"

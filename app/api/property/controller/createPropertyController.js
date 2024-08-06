@@ -80,6 +80,14 @@ const createProperty = async (data) => {
             images: data.images,
             amenities: data.amenities,
             description: data.description,
+            incomeConditionDescription: data.incomeConditionDescription || "",
+            maintanceDescription: data.maintanceDescription || "",
+            roomDescription: data.roomDescription || "",
+            billDescription: data.billDescription || "",
+            aboutUs: data.aboutUs || "",
+            houseRules: data.houseRules || "",
+            checkIn: data.checkIn || "",
+            checkOut: data.checkOut || "",
             ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
         });
 
