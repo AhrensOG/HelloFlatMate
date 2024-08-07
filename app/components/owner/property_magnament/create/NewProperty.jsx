@@ -69,7 +69,6 @@ export default function NewProperty() {
   const handleShowSliderModal = () => setShowSliderModal(!showSliderModal);
   const handleShowAddressModal = () => setShowAddressModal(!showAddressModal);
   const handleShowMoreInfoModal = () => {
-    console.log(moreInfo);
     setShowMoreInfoModal(!showMoreInfoModal);
   };
   const handleShowFinalModal = () => setShowFinalModal(!showFinalModal);
@@ -79,6 +78,8 @@ export default function NewProperty() {
 
   // Validation and submission
   const handleSubmit = () => {
+    console.log(finalData);
+
     const allData = {
       ...address,
       ...guestInfo,
@@ -116,9 +117,9 @@ export default function NewProperty() {
     amenities: amenities,
     description: description,
     incomeConditionDescription: moreInfo.condicionDeRenta || "",
-    maintanceDescription: moreInfo.mantenimiento || "",
+    maintenanceDescription: moreInfo.mantenimiento || "",
     roomDescription: moreInfo.habitacion || "",
-    billDescription: moreInfo.facturas || "",
+    feeDescription: moreInfo.facturas || "",
     aboutUs: moreInfo.sobreNosotros || "",
     houseRules: moreInfo.normasDeConvivencia || "",
     checkIn: moreInfo.checkIn || "",
@@ -154,8 +155,8 @@ export default function NewProperty() {
 
         // Redirigir después de un retraso
         setTimeout(() => {
-          router.push(`/pages/owner/update?id=${propertyId}`);
-        }, 3000);
+          router.push(`/pages/owner/update/${propertyId}`);
+        }, 1000);
       } catch (error) {
         toast.error("Ocurrió un error");
         console.error(error);
@@ -236,6 +237,7 @@ export default function NewProperty() {
       )}
       {showFinalModal && (
         <FinalModal
+          data={finalData}
           setData={setFinalData}
           action={createProperty}
           showModal={handleShowFinalModal}

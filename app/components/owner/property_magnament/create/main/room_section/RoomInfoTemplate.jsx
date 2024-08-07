@@ -1,3 +1,4 @@
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { PencilSquareIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useState } from "react";
@@ -8,11 +9,12 @@ export default function RoomInfoTemplate({
   bedNumber,
   showModal,
   type,
+  onDelete,
 }) {
   const [showPencil, setShowPencil] = useState(false);
 
   return (
-    <article className="flex flex-col gap-1 min-w-[8.7rem] max-w-[10rem]">
+    <article className="flex flex-col gap-1 min-w-[8.7rem] max-w-[10rem] relative">
       <div
         onMouseMove={() => setShowPencil(true)}
         onMouseLeave={() => setShowPencil(false)}
@@ -70,6 +72,16 @@ export default function RoomInfoTemplate({
           placeholder="Número de camas"
         />
       </div>
+      {onDelete ? (
+        <button
+          className="absolute z-50 top-0 right-0 bg-red-500 text-white rounded-full p-1"
+          onClick={() => onDelete()}
+        >
+          <XMarkIcon className="h-4 w-4" />
+        </button>
+      ) : (
+        ""
+      )}
     </article>
   );
 }

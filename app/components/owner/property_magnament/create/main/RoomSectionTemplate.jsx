@@ -3,7 +3,13 @@ import RoomInfoTemplate from "./room_section/RoomInfoTemplate";
 import RoomEditModal from "./room_section/RoomEditModal";
 import { useState } from "react";
 
-export default function RoomSectionTemplate({ data, setData, action }) {
+export default function RoomSectionTemplate({
+  data,
+  setData,
+  action,
+  deleteRooms,
+  setDeleteRooms,
+}) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -21,8 +27,16 @@ export default function RoomSectionTemplate({ data, setData, action }) {
     action(); // Abre el modal para añadir una nueva habitación
   };
 
+  const handleDeletRoom = (room) => {
+    if (room.id) {
+      setDeleteRooms([...deleteRooms, room.id]);
+    }
+    setData(data.filter((item) => item !== room));
+    console.log(deleteRooms);
+  };
+
   return (
-    <section className="flex flex-col gap-3 items-center w-full">
+    <section className="flex flex-col gap-3 items-center w-full overflow-x-auto">
       <article className="w-full flex justify-between items-center">
         <h2 className="font-bold text-[1.37rem] w-full text-start">
           Habitaciones
@@ -39,6 +53,7 @@ export default function RoomSectionTemplate({ data, setData, action }) {
               name={item.name}
               bedNumber={item.numberBeds}
               showModal={() => handleEditRoom(item)} // Pasa la habitación a editar al modal
+              onDelete={() => handleDeletRoom(item)}
             />
           ))
         ) : (
