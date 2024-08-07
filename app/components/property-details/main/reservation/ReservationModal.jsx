@@ -6,6 +6,7 @@ import { plus_jakarta } from "@/font";
 import SelectContract from "./SelectContract";
 import ReservationButton from "../ReservationButton";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import DatePicker from "./date_picker/DatePicker";
 
 export default function ReservationModal({ callback }) {
   const router = useRouter();
@@ -41,9 +42,10 @@ export default function ReservationModal({ callback }) {
           </div>
         </div>
         <h2 className="font-medium text-[1.75rem]">Estadía</h2>
-        <div className="flex flex-col gap-5 m">
+        <div className="flex flex-col justify-center items-center gap-5">
           {/* Contenido del modal */}
           <SelectContract />
+          <DatePicker />
           <div className=" self-center w-[90%]">
             <ReservationButton callback={handleRedirect} />
           </div>

@@ -1,8 +1,17 @@
 "use client";
+import NavBar from "@/app/components/nav_bar/NavBar";
+import OwnerProfile from "@/app/components/owner/owner_profile/OwnerProfile";
+import React from "react";
 
-import DocumentsPanel from "@/app/components/owner/owner-panel/DocumentsPanel";
+const OwnerPage = () => {
+  return (
+    <>
+      <header>
+        <NavBar />
+      </header>
+      <OwnerProfile />
+    </>
+  );
+};
 
-export default function AddProperty() {
-  // return <UpdateProperty />;
-  return <DocumentsPanel />;
-}
+export default OwnerPage;
