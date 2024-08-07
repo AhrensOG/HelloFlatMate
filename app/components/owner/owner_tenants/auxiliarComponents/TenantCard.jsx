@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const TenantCard = ({
@@ -6,6 +7,7 @@ const TenantCard = ({
   location = "Villa Edén",
   action,
   image = "/profile/profile.jfif",
+  link = "/pages/owner/my-tenants/detail",
 }) => {
   return (
     <div className="w-full p-2 rounded-lg flex justify-between items-center gap-2 shadow-profile shadow-black/40">
@@ -24,12 +26,16 @@ const TenantCard = ({
         <span>{location}</span>
       </div>
       <div className="w-full max-w-20 flex flex-col justify-between items-center gap-2">
-        <button className="bg-resolution-blue border border-resolution-blue text-sm text-white font-light w-full p-1 rounded-lg">
-          Detalles
-        </button>
-        <button className="bg-white border border-resolution-blue text-sm text-black font-light w-full p-1 rounded-lg">
-          Contactar
-        </button>
+        <Link href={link} className="w-full">
+          <button className="bg-resolution-blue border border-resolution-blue text-sm text-white font-light w-full p-1 rounded-lg">
+            Detalles
+          </button>
+        </Link>
+        <Link href={link} className="w-full">
+          <button className="bg-white border border-resolution-blue text-sm text-black font-light w-full p-1 rounded-lg">
+            Contactar
+          </button>
+        </Link>
       </div>
     </div>
   );

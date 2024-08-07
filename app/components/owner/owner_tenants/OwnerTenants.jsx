@@ -6,15 +6,19 @@ import Link from "next/link";
 
 const OwnerTenants = () => {
   return (
-    <section className="w-full flex flex-col justify-center items-center">
-      <div className="w-full max-w-screen-sm flex flex-col justify-center items-center p-4 space-y-6">
+    <section className="w-full h-full flex flex-col justify-center items-center">
+      <div className="w-full h-full max-w-screen-sm flex flex-col justify-start items-center p-4 space-y-6">
         <div className="w-full flex justify-start items-center gap-6">
           <Link href={"/pages/owner/"}>
             <ArrowLeftIcon className="size-6" />
           </Link>
           <h1 className="text-lg font-bold">Tus Inquilinos</h1>
         </div>
-        <div className="w-full max-w-80 flex flex-col justify-start items-center gap-4 h-[70vh] overflow-y-scroll scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-400 p-1">
+        <div className="w-full max-h-[75vh] max-w-80 flex flex-grow flex-col justify-start items-center gap-4 overflow-y-scroll scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-400 p-1">
+          <TenantCard />
+          <TenantCard />
+          <TenantCard />
+          <TenantCard />
           <TenantCard />
           <TenantCard />
           <TenantCard />
