@@ -97,7 +97,7 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(5500),
                 allowNull: true
             },
-            billDescription: {
+            feeDescription: {
                 type: DataTypes.STRING(5500),
                 allowNull: true
             },
@@ -105,7 +105,7 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(5500),
                 allowNull: true
             },
-            aboutUse: {
+            aboutUs: {
                 type: DataTypes.STRING(5500),
                 allowNull: true
             },

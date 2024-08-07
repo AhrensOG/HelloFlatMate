@@ -22,14 +22,10 @@ import { toast } from "sonner";
 import validateData from "../create/validateData";
 import { useRouter, useSearchParams } from "next/navigation";
 import FinalModal from "../create/main/FinalModal";
+import RoomAddModal from "../create/main/room_section/RoomAddModal";
 
 export default function UpdateProperty({ data }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  console.log(id);
-  console.log(data);
-
   // Establecer valores predeterminados
   const [property, setProperty] = useState(data);
   const [name, setName] = useState(data.name);
@@ -50,19 +46,20 @@ export default function UpdateProperty({ data }) {
   const [moreInfo, setMoreInfo] = useState({
     condicionDeRenta: data.incomeConditionDescription || "Informacion",
     habitacion: data.roomDescription || "Informacion",
-    facturas: data.billDescription || "Informacion",
+    facturas: data.feesDescription || "Informacion",
     mantenimiento: data.maintenanceDescription || "Informacion",
     sobreNosotros: data.aboutUs || "Informacion",
     normasDeConvivencia: data.houseRules || "Informacion",
     checkIn: data.checkIn || "Informacion",
     checkOut: data.checkOut || "Informacion",
   });
-  const [roomImages, setRoomImages] = useState(data.rooms);
+  const [dataRooms, setDataRooms] = useState(data.rooms);
   const [finalData, setFinalData] = useState({
     price: data.price || 0,
     size: data.size || 0,
     category: data.category || "",
   });
+  const [deleteRooms, setDeleteRooms] = useState([]);
 
   //funcion para manejar la edicion de habitaciones
   const handleRoomUpdate = (updatedRoom) => {
@@ -80,52 +77,8 @@ export default function UpdateProperty({ data }) {
   const [showMoreInfoModal, setShowMoreInfoModal] = useState(false);
   const [showFinalModal, setShowFinalModal] = useState(false);
   const [editRoomsModal, setEditRoomsModal] = useState(false);
+  const [showAddRoom, setShowAddRoom] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("Fetching property data...");
-  //   axios
-  //     .get(`/api/property?id=${id}`)
-  //     .then((res) => {
-  //       const data = res.data.property;
-  //       // Asegúrate de que la estructura de res.data coincide con lo que esperas
-  //       setProperty(data);
-  //       setName(data.name || "");
-  //       setAddress({
-  //         city: data.city || "",
-  //         street: data.street || "",
-  //         streetNumber: data.streetNumber || "",
-  //         postalCode: data.postalCode || "",
-  //       });
-  //       setSliderImage(data.images || []);
-  //       setDescription(data.description || []);
-  //       setAmenities(data.amenities || []);
-  //       setGuestInfo({
-  //         occupants: data.maximunOccupants || "1",
-  //         beds: data.bed || "1",
-  //         bathrooms: data.bathrooms || "1",
-  //       });
-  //       setFinalData({
-  //         price: data.price || 0,
-  //         size: data.size || 0,
-  //         category: data.category || "",
-  //       });
-  //       setMoreInfo(
-  //         data.moreInfo || {
-  //           condicionDeRenta: "Informacion",
-  //           habitacion: "Informacion",
-  //           facturas: "Informacion",
-  //           mantenimiento: "Informacion",
-  //           sobreNosotros: "Informacion",
-  //           normasDeConvivencia: "Informacion",
-  //           checkIn: "Informacion",
-  //           checkOut: "Informacion",
-  //         }
-  //       );
-  //       setRoomImages(data.rooms);
-  //       // Si es necesario, actualiza el estado con más datos
-  //     })
-  //     .catch((err) => console.error("Error fetching property data:", err));
-  // }, []);
   // Manejadores de modales
   const handleShowDescriptionModal = () => {
     setShowDescriptionModal(!showDescriptionModal);
@@ -149,6 +102,8 @@ export default function UpdateProperty({ data }) {
   const handleShowFinalModal = () => setShowFinalModal(!showFinalModal);
 
   const handleEditRoomsModal = () => setEditRoomsModal(!editRoomsModal);
+
+  const handleAddRoomModal = () => setShowAddRoom(!showAddRoom);
 
   const handleDescriptionInfo = (data) => {
     setDescription(data);
@@ -204,10 +159,47 @@ export default function UpdateProperty({ data }) {
 
   const updateProperty = async () => {
     console.log(finalData);
+    console.log(dataRooms);
 
     if (handleSubmit()) {
       try {
-        const response = await axios.put(`/api/property?id=${id}`, {
+        try {
+          if (deleteRooms.length > 0) {
+            console.log(deleteRooms);
+
+            const deletedRooms = await axios.delete(`/api/room`, {
+              data: { deleteRooms },
+            });
+            console.log(deletedRooms);
+            toast.success("Habitaciones eliminadas");
+          }
+        } catch (error) {
+          toast.error("Error en la eliminación de habitaciones");
+          throw error;
+        }
+
+        try {
+          const newRooms = dataRooms.filter(
+            (room) => !room.hasOwnProperty("id")
+          );
+
+          const roomsFormated = newRooms.map((room) => {
+            return {
+              ...room,
+              propertyId: property.id,
+            };
+          });
+          if (newRooms.length > 0) {
+            const createdRooms = await axios.post("/api/room", roomsFormated);
+            console.log(createdRooms);
+            toast.success("Habitaciones creadas");
+          }
+        } catch (err) {
+          toast.error("Error en la creación de habitaciones");
+          throw err;
+        }
+
+        const response = await axios.put(`/api/property?id=${property.id}`, {
           name: name,
           city: address.city,
           street: address.street,
@@ -225,9 +217,9 @@ export default function UpdateProperty({ data }) {
           amenities: amenities,
           description: description,
           incomeConditionDescription: moreInfo.condicionDeRenta,
-          maintanceDescription: moreInfo.mantenimiento,
+          maintenanceDescription: moreInfo.mantenimiento,
           roomDescription: moreInfo.habitacion,
-          billDescription: moreInfo.facturas,
+          feesDescription: moreInfo.facturas,
           aboutUs: moreInfo.sobreNosotros,
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
@@ -235,7 +227,7 @@ export default function UpdateProperty({ data }) {
         });
         console.log("Property data updated successfully:", response.data);
         toast.success("Propiedad actualizada correctamente");
-        router.push(`/pages/owner/update?id=${id}`);
+        // router.push(`/pages/owner/update/${property.id}`);
       } catch (error) {
         console.error("Error updating property data:", error);
         toast.error("Error al actualizar la propiedad");
@@ -283,9 +275,12 @@ export default function UpdateProperty({ data }) {
             action={handleShowDescriptionModal}
           />
           <RoomSectionTemplate
-            data={roomImages}
+            data={dataRooms}
             onEditRoom={handleRoomUpdate}
-            setData={setRoomImages}
+            setData={setDataRooms}
+            action={handleAddRoomModal}
+            deleteRooms={deleteRooms}
+            setDeleteRooms={setDeleteRooms}
           />
           <AmenitiesSection
             data={amenities}
@@ -333,6 +328,13 @@ export default function UpdateProperty({ data }) {
             showModal={handleShowFinalModal}
             setData={setFinalData}
             data={finalData}
+          />
+        )}
+        {showAddRoom && (
+          <RoomAddModal
+            data={dataRooms}
+            setData={setDataRooms}
+            showModal={handleAddRoomModal}
           />
         )}
       </div>
