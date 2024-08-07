@@ -9,7 +9,7 @@ import RoomSectionTemplate from "../create/main/RoomSectionTemplate";
 import TitleSectionTemplate from "../create/main/TitleSectionTemplate";
 import SaveButton from "../shared/SaveButton";
 import { plus_jakarta } from "@/font";
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import SliderUpdateTemplate from "./header/SliderUpdateTemplate";
 import DescriptionModal from "../create/main/description_section/DescriptionModal";
 import SliderModal from "../create/header/slider/SliderModal";
@@ -17,74 +17,116 @@ import AddressModal from "../create/main/address_modal/AddressModal";
 import AmenitiesModalEdit from "../create/main/amenities_section/AmenitiesModalEdit";
 import AmenitiesSection from "@/app/components/property-details/main/AmenitiesSection";
 import EditButton from "../shared/EditButton";
+import axios from "axios";
+import { toast } from "sonner";
+import validateData from "../create/validateData";
+import { useRouter, useSearchParams } from "next/navigation";
+import FinalModal from "../create/main/FinalModal";
 
-export default function UpdateProperty() {
-  const property = {
-    name: "Jardines del eden",
-    city: "Formosa",
-    street: "Coronel bogado",
-    streetNumber: 155,
-    postalCode: 3600,
-    size: "",
-    bedrooms: null,
-    bathrooms: null,
-    bed: null,
-    maximunOccupants: null,
-    price: null,
-    puntuation: [],
-    isActive: false,
-    isBussy: false,
-    category: "",
-    images: [
-      "/property_details/nav_bar_details/slider/slider-stock-1.svg",
-      "/property_details/nav_bar_details/slider/slider-stock-1.svg",
-      "/property_details/nav_bar_details/slider/slider-stock-1.svg",
-    ],
-    facilities: ["wifi", "piscina", "estacionamiento"],
-    roomImages: [
-      "/owner/room/room-stock-1.jfif",
-      "/owner/room/room-stock-2.png",
-    ],
-    description: [
-      "2 Habitaciones dobles, con decoración sencilla y armoniosa.",
-      "El tamaño es de unos 11 - 12 m2 aproximadamente. Cuentan con un armario para organizar todo tu equipaje.",
-      "Queremos resaltar que la mayoría del mobiliario es totalmente nuevo a estrenar.",
-    ],
-  };
+export default function UpdateProperty({ data }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  console.log(id);
+  console.log(data);
 
-  const [name, setName] = useState(property.name);
+  // Establecer valores predeterminados
+  const [property, setProperty] = useState(data);
+  const [name, setName] = useState(data.name);
   const [address, setAddress] = useState({
-    city: property.city,
-    street: property.street,
-    streetNumber: property.streetNumber,
-    postalCode: property.postalCode,
+    city: data.city,
+    street: data.street,
+    streetNumber: data.streetNumber,
+    postalCode: data.postalCode,
   });
   const [guestInfo, setGuestInfo] = useState({
-    ocupants: "4",
-    beds: "2",
-    bathrooms: "2",
+    occupants: data.maximunOccupants,
+    beds: data.bed,
+    bathrooms: data.bathrooms,
   });
-  const [sliderImage, setSliderImage] = useState(property.images);
-  const [description, setDescription] = useState(property.description);
-  const [amenities, setAmenities] = useState(property.facilities);
+  const [sliderImage, setSliderImage] = useState(data.images);
+  const [description, setDescription] = useState(data.description);
+  const [amenities, setAmenities] = useState(data.amenities);
   const [moreInfo, setMoreInfo] = useState({
-    condicionDeRenta: "Informacion",
-    habitacion: "Informacion",
-    facturas: "Informacion",
-    mantenimiento: "Informacion",
-    sobreNosotros: "Informacion",
-    normasDeConvivencia: "Informacion",
-    checkIn: "Informacion",
-    checkOut: "Informacion",
+    condicionDeRenta: data.incomeConditionDescription || "Informacion",
+    habitacion: data.roomDescription || "Informacion",
+    facturas: data.billDescription || "Informacion",
+    mantenimiento: data.maintenanceDescription || "Informacion",
+    sobreNosotros: data.aboutUs || "Informacion",
+    normasDeConvivencia: data.houseRules || "Informacion",
+    checkIn: data.checkIn || "Informacion",
+    checkOut: data.checkOut || "Informacion",
+  });
+  const [roomImages, setRoomImages] = useState(data.rooms);
+  const [finalData, setFinalData] = useState({
+    price: data.price || 0,
+    size: data.size || 0,
+    category: data.category || "",
   });
 
-  //modal
+  //funcion para manejar la edicion de habitaciones
+  const handleRoomUpdate = (updatedRoom) => {
+    const updatedRooms = rooms.map((room) =>
+      room.id === updatedRoom.id ? updatedRoom : room
+    );
+    setRooms(updatedRooms);
+  };
+
+  // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showMoreInfoModal, setShowMoreInfoModal] = useState(false);
+  const [showFinalModal, setShowFinalModal] = useState(false);
+  const [editRoomsModal, setEditRoomsModal] = useState(false);
 
+  // useEffect(() => {
+  //   console.log("Fetching property data...");
+  //   axios
+  //     .get(`/api/property?id=${id}`)
+  //     .then((res) => {
+  //       const data = res.data.property;
+  //       // Asegúrate de que la estructura de res.data coincide con lo que esperas
+  //       setProperty(data);
+  //       setName(data.name || "");
+  //       setAddress({
+  //         city: data.city || "",
+  //         street: data.street || "",
+  //         streetNumber: data.streetNumber || "",
+  //         postalCode: data.postalCode || "",
+  //       });
+  //       setSliderImage(data.images || []);
+  //       setDescription(data.description || []);
+  //       setAmenities(data.amenities || []);
+  //       setGuestInfo({
+  //         occupants: data.maximunOccupants || "1",
+  //         beds: data.bed || "1",
+  //         bathrooms: data.bathrooms || "1",
+  //       });
+  //       setFinalData({
+  //         price: data.price || 0,
+  //         size: data.size || 0,
+  //         category: data.category || "",
+  //       });
+  //       setMoreInfo(
+  //         data.moreInfo || {
+  //           condicionDeRenta: "Informacion",
+  //           habitacion: "Informacion",
+  //           facturas: "Informacion",
+  //           mantenimiento: "Informacion",
+  //           sobreNosotros: "Informacion",
+  //           normasDeConvivencia: "Informacion",
+  //           checkIn: "Informacion",
+  //           checkOut: "Informacion",
+  //         }
+  //       );
+  //       setRoomImages(data.rooms);
+  //       // Si es necesario, actualiza el estado con más datos
+  //     })
+  //     .catch((err) => console.error("Error fetching property data:", err));
+  // }, []);
+  // Manejadores de modales
   const handleShowDescriptionModal = () => {
     setShowDescriptionModal(!showDescriptionModal);
   };
@@ -104,31 +146,42 @@ export default function UpdateProperty() {
   const handleShowMoreInfoModal = () => {
     setShowMoreInfoModal(!showMoreInfoModal);
   };
+  const handleShowFinalModal = () => setShowFinalModal(!showFinalModal);
+
+  const handleEditRoomsModal = () => setEditRoomsModal(!editRoomsModal);
 
   const handleDescriptionInfo = (data) => {
     setDescription(data);
-    property.description = data;
   };
 
   const handleSliderImage = (data) => {
     setSliderImage(data);
-    property.images = data;
+    if (property) {
+      setProperty({ ...property, images: data });
+    }
   };
 
-  const handleAdrressInfo = (data) => {
+  const handleAddressInfo = (data) => {
     setAddress(data);
-    property.city = data.city;
-    property.street = data.street;
-    property.streetNumber = data.streetNumber;
-    property.postalCode = data.postalCode;
+    if (property) {
+      setProperty({
+        ...property,
+        city: data.city,
+        street: data.street,
+        streetNumber: data.streetNumber,
+        postalCode: data.postalCode,
+      });
+    }
   };
 
   const handleAmenitiesInfo = (data) => {
     setAmenities(data);
-    property.facilities = data;
+    if (property) {
+      setProperty({ ...property, amenities: data });
+    }
   };
 
-  //validacion
+  // Validación
   const handleSubmit = () => {
     // Combina todos los datos en un solo objeto
     const allData = {
@@ -143,86 +196,146 @@ export default function UpdateProperty() {
     const validationResult = validateData(allData);
 
     if (!validationResult.isValid) {
-      // Maneja el caso en el que los datos no son válidos
-      console.log(validationResult.message);
-      toast.error("No dejes datos incompletos");
+      return false;
     } else {
-      // Maneja el caso en el que los datos son válidos
-      console.log(allData);
-      toast.success("Propiedad creada correctamente");
-      // Aquí iría la lógica para enviar los datos
+      return true;
     }
   };
 
+  const updateProperty = async () => {
+    console.log(finalData);
+
+    if (handleSubmit()) {
+      try {
+        const response = await axios.put(`/api/property?id=${id}`, {
+          name: name,
+          city: address.city,
+          street: address.street,
+          streetNumber: parseInt(address.streetNumber),
+          postalCode: address.postalCode,
+          size: parseInt(finalData.size),
+          roomsCount: property.roomsCount,
+          bathrooms: parseInt(guestInfo.bathrooms),
+          bed: parseInt(guestInfo.beds),
+          maximunOccupants: parseInt(guestInfo.occupants),
+          price: parseInt(finalData.price),
+          puntuation: [],
+          category: finalData.category,
+          images: sliderImage,
+          amenities: amenities,
+          description: description,
+          incomeConditionDescription: moreInfo.condicionDeRenta,
+          maintanceDescription: moreInfo.mantenimiento,
+          roomDescription: moreInfo.habitacion,
+          billDescription: moreInfo.facturas,
+          aboutUs: moreInfo.sobreNosotros,
+          houseRules: moreInfo.normasDeConvivencia,
+          checkIn: moreInfo.checkIn,
+          checkOut: moreInfo.checkOut,
+        });
+        console.log("Property data updated successfully:", response.data);
+        toast.success("Propiedad actualizada correctamente");
+        router.push(`/pages/owner/update?id=${id}`);
+      } catch (error) {
+        console.error("Error updating property data:", error);
+        toast.error("Error al actualizar la propiedad");
+      }
+    } else {
+      toast.error("No dejes datos incompletos");
+    }
+  };
+
+  if (!property) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col max-w-screen-sm gap-2 ">
-      <header className="w-full space-y-4">
-        <div className="w-full">
-          <SliderUpdateTemplate
-            data={sliderImage}
-            action={handleShowSliderModal}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="flex flex-col max-w-screen-sm gap-2 ">
+        <header className="w-full space-y-4">
+          <div className="w-full">
+            <SliderUpdateTemplate
+              data={sliderImage}
+              action={handleShowSliderModal}
+            />
+          </div>
+          <NavBarDetails />
+        </header>
+        <main
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
+        >
+          <TitleSectionTemplate
+            name={name}
+            setName={setName}
+            address={address}
+            setAddress={setAddress}
+            action={handleShowAddressModal}
           />
-        </div>
-        <NavBarDetails />
-      </header>
-      <main
-        className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
-      >
-        <TitleSectionTemplate
-          name={name}
-          setName={setName}
-          address={address}
-          setAdress={setAddress}
-          action={handleShowAddressModal}
-        />
-        <div className="flex flex-col gap-6">
-          <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
-        </div>
-        <DescriptionSectionTemplate
-          data={description} // Actualiza aquí para usar el estado description
-          action={handleShowDescriptionModal}
-        />
-        <RoomSectionTemplate data={property.roomImages} />
-        <AmenitiesSection
-          data={amenities}
-          edit={<EditButton action={handleShowAmenitiesModal} />}
-        />
-        <LocationSectionTemplate data={"hola"} />
-        <MoreInfoSectionTemplate
-          data={moreInfo}
-          setData={setMoreInfo}
-          action={handleShowMoreInfoModal}
-        />
-        <SaveButton />
-      </main>
-      {showDescriptionModal && (
-        <DescriptionModal
-          data={description} // Pasa el estado description aquí
-          setData={handleDescriptionInfo}
-          showModal={handleShowDescriptionModal}
-        />
-      )}
-      {showSliderModal && (
-        <SliderModal
-          data={sliderImage}
-          setData={handleSliderImage}
-          showModal={handleShowSliderModal}
-        />
-      )}
-      {showAddressModal && (
-        <AddressModal
-          data={address}
-          setData={handleAdrressInfo}
-          showModal={handleShowAddressModal}
-        />
-      )}
-      {showAmenitiesModal && (
-        <AmenitiesModalEdit
-          data={amenities}
-          setData={handleAmenitiesInfo}
-          showModal={handleShowAmenitiesModal}
-        />
-      )}
-    </div>
+          <div className="flex flex-col gap-6">
+            <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
+          </div>
+          <DescriptionSectionTemplate
+            data={description} // Actualiza aquí para usar el estado description
+            action={handleShowDescriptionModal}
+          />
+          <RoomSectionTemplate
+            data={roomImages}
+            onEditRoom={handleRoomUpdate}
+            setData={setRoomImages}
+          />
+          <AmenitiesSection
+            data={amenities}
+            edit={<EditButton action={handleShowAmenitiesModal} />}
+          />
+          <LocationSectionTemplate data={"hola"} />
+          <MoreInfoSectionTemplate
+            data={moreInfo}
+            setData={setMoreInfo}
+            action={handleShowMoreInfoModal}
+          />
+          <SaveButton action={handleShowFinalModal} />
+        </main>
+        {showDescriptionModal && (
+          <DescriptionModal
+            data={description} // Pasa el estado description aquí
+            setData={handleDescriptionInfo}
+            showModal={handleShowDescriptionModal}
+          />
+        )}
+        {showSliderModal && (
+          <SliderModal
+            data={sliderImage}
+            setData={handleSliderImage}
+            showModal={handleShowSliderModal}
+          />
+        )}
+        {showAddressModal && (
+          <AddressModal
+            data={address}
+            setData={handleAddressInfo}
+            showModal={handleShowAddressModal}
+          />
+        )}
+        {showAmenitiesModal && (
+          <AmenitiesModalEdit
+            data={amenities}
+            setData={handleAmenitiesInfo}
+            showModal={handleShowAmenitiesModal}
+          />
+        )}
+        {showFinalModal && (
+          <FinalModal
+            action={updateProperty}
+            showModal={handleShowFinalModal}
+            setData={setFinalData}
+            data={finalData}
+          />
+        )}
+      </div>
+    </Suspense>
   );
 }

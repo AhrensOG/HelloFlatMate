@@ -42,7 +42,8 @@ module.exports = {
       "activity-item": "1px 1px 10px 0px #00000040",
       "supplie-card": "0px 2px 3px 0px #7575754D",
       "amenity-template": "0px 2px 3px 0px #82828240",
-      "amenity-check": "0px 4px 4px 0px #00000040"
+      "amenity-check": "0px 4px 4px 0px #00000040",
+      "double-shadow": '0px 3px 1px 0px #0000000A, 0px 3px 8px 0px #0000001F'
     },
   },
   plugins: [

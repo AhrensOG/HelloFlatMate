@@ -4,7 +4,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 export default function SliderUpdateTemplate({ data, action }) {
   return (
-    <div className="relative">
+    <div className="relative h-[12.5rem]">
       <SliderDetails>
         {data.map((item, index) => (
           <SliderItem key={index} img={item} />
