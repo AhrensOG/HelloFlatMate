@@ -2,7 +2,7 @@
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 const Owner = require("./owner.js");
-const LeaseOrder = require("./leaserOrder.js");
+const LeaseOrder = require("./leaseOrder.js");
 const Comment = require("./comment.js");
 const ToDo = require("./toDo.js");
 
@@ -60,6 +60,10 @@ const propertyInit = (sequelize, DataTypes) => {
             price: {
                 type: DataTypes.FLOAT,
                 allowNull: false,
+            },
+            offer: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
             },
             puntuation: {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),

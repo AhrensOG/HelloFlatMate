@@ -8,33 +8,65 @@ import NavBar from "./components/nav_bar/NavBar";
 import SearchBar from "./components/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
+import { getAllProperties } from "./context/actions";
 
 export default function Home() {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [home, setHome] = useState(false);
+  const [properties, setProperties] = useState([]);
+  const [propertiesInOffer, setPropertiesInOffer] = useState([]);
+
+  const filterOffer = (properties) => {
+    return properties.filter(property => property.offer !== null);
+  }
+
   useEffect(() => {
-    if (state.user) {
-      setHome(true);
+    const fetchProperties = async () => {
+      if (state.user) {
+        try {
+          // Actualiza el estado del usuario
+          setHome(true);
+
+          // Obtén las propiedades y actualiza el estado global
+          await getAllProperties(dispatch);
+        } catch (error) {
+          toast.error("Error al obtener propiedades");
+        }
+      }
+    };
+
+    fetchProperties();
+  }, [state.user, dispatch]);
+
+  useEffect(() => {
+    console.log(state.properties);
+
+    // Solo actualiza si hay un cambio en state.properties
+    if (state.properties && state.properties !== properties) {
+      setProperties(state.properties);
+      setPropertiesInOffer(filterOffer(state.properties));
+      toast.success("Propiedades actualizadas");
     }
-  }, [state.user]);
+  }, [state.properties]);
 
   if (!home) {
     return <GuestHome />;
-  } else {
-    return (
-      <div>
-        <header className="px-2">
-          <NavBar />
-        </header>
-        <main>
-          <Hero />
-          <div className="w-full pt-4">
-            <SearchBar />
-          </div>
-          <FeaturedSection />
-          <PromotionSection />
-        </main>
-      </div>
-    );
   }
+
+
+  return (
+    <div>
+      <header className="px-2">
+        <NavBar />
+      </header>
+      <main>
+        <Hero />
+        <div className="w-full pt-4">
+          <SearchBar />
+        </div>
+        <FeaturedSection data={properties} />
+        <PromotionSection data={propertiesInOffer} />
+      </main>
+    </div>
+  );
 }

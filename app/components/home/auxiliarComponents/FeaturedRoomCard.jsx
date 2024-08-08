@@ -4,7 +4,11 @@ import React from "react";
 
 const FeaturedRoomCard = React.forwardRef(
   (
-    { img = "/home/featuredRoom.svg", title = "Cerca de la estación de tren" },
+    {
+      img = "/home/featuredRoom.svg",
+      title = "Cerca de la estación de tren",
+      id,
+    },
     ref
   ) => {
     return (
@@ -12,7 +16,7 @@ const FeaturedRoomCard = React.forwardRef(
         ref={ref}
         className="cursor-pointer w-full min-w-56 max-w-56 flex flex-col justify-center items-start gap-2"
       >
-        <Link href={'/pages/property-details'} className="w-full">
+        <Link href={`/pages/property-details/${id}`} className="w-full">
           <div className="relative w-full">
             <div className="absolute w-56 h-56" />
             <Image
