@@ -39,32 +39,32 @@ export default function DatePicker() {
   };
 
   return (
-    <div className="relative rounded-lg shadow-reservation-drop my-2 cursor-pointer">
-      <div className="p-3 rounded-lg  text-base border bg-white border-white w-[19.4rem] flex justify-between items-center">
-        <input
-          defaultValue={selectedDate}
-          onClick={handleShowDatePicker}
-          value={selectedDate}
-          className="aparence-none outline-none w-full"
-          type="text"
-          placeholder="Seleccione la fecha"
-        />
-        <span
-          onClick={handleShowDatePicker}
-          className={`${
-            showDatePicker ? "bg-[#1C8CD65E]" : ""
-          } h-5 w-5 rounded-full`}
-        >
-          <ChevronUpIcon />
-        </span>
-      </div>
-      {showDatePicker && (
-        <AnimatePresence>
+    <AnimatePresence>
+      <div className="relative rounded-lg shadow-reservation-drop my-2 cursor-pointer">
+        <div className="p-3 rounded-lg  text-base border bg-white border-white w-[19.4rem] flex justify-between items-center">
+          <input
+            defaultValue={selectedDate}
+            onClick={handleShowDatePicker}
+            value={selectedDate}
+            className="aparence-none outline-none w-full"
+            type="text"
+            placeholder="Seleccione la fecha"
+          />
+          <span
+            onClick={handleShowDatePicker}
+            className={`${
+              showDatePicker ? "bg-[#1C8CD65E]" : ""
+            } h-5 w-5 rounded-full`}
+          >
+            <ChevronUpIcon />
+          </span>
+        </div>
+        {showDatePicker && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
             className=" my-1 bg-white p-3 rounded-md w-[19.4rem] min-h-[19.4rem]"
           >
             {/* header */}
@@ -97,8 +97,8 @@ export default function DatePicker() {
             />
             <FooterDatePicker callback={handleCancel} />
           </motion.div>
-        </AnimatePresence>
-      )}
-    </div>
+        )}
+      </div>
+    </AnimatePresence>
   );
 }

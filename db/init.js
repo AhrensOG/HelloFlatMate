@@ -5,7 +5,7 @@ const Owner = require("./models/owner");
 const Document = require("./models/userDocument");
 const Message = require("./models/message");
 const Property = require("./models/property");
-const LeaseOrder = require("./models/leaserOrder");
+const LeaseOrder = require("./models/leaseOrder");
 const Chat = require("./models/chat");
 const ToDo = require("./models/toDo");
 const Client = require("./models/client");
@@ -68,15 +68,15 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
-        // // DATA DE PRUEBA
-        // await Property.bulkCreate(propertyData)
-        // await Client.bulkCreate(testClientData)
-        // await Admin.bulkCreate(testAdminData)
-        // await Owner.bulkCreate(testOwnerData)
-        // await Room.bulkCreate(testRoom)
+        //     // DATA DE PRUEBA
+        //     await Property.bulkCreate(propertyData)
+        //     await Client.bulkCreate(testClientData)
+        //     await Admin.bulkCreate(testAdminData)
+        //     await Owner.bulkCreate(testOwnerData)
+        //     await Room.bulkCreate(testRoom)
 
 
-        // console.log("Data inserted");
+        //     console.log("Data inserted");
     } catch (error) {
         console.log(error);
     }

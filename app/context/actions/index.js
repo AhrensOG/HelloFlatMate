@@ -49,10 +49,21 @@ export const createContractPDF = async (
   }
 };
 
+export const getAllProperties = async (dispatch) => {
+  try {
+    const properties = await axios.get("/api/property")
+    return dispatch({
+      type: "GET_ALL_PROPERTIES",
+      payload: properties.data
+    })
+  } catch (error) {
+    throw new Error({ message: "Internal Server Error: GET_ALL_PROPERTIES", error: error })
+  }
+}
 export const initialImageState = {
-    imageUrl: {}
+  imageUrl: {}
 }
 
 export const initialUserState = {
-    user: {}
+  user: {}
 }

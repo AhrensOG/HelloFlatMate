@@ -25,7 +25,12 @@ const leaserOrderInit = (sequelize, DataTypes) => {
             allowNull: false,
         },
         price: {
-            type: DataTypes.REAL,
+            type: DataTypes.FLOAT,
+            allowNull: false,
+        },
+        status: {
+            type: DataTypes.ENUM("PENDING", "APPROVED", "REJECTED"),
+            allowNull: false,
         }
     }, {
         sequelize,
