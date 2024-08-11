@@ -7,7 +7,7 @@ export default function PropertiesPanelPage() {
   return (
     <>
       <headear>
-        <NavBar />
+        <NavBar client={false} admin={true} owner={false} />
       </headear>
       <PropertiesPanel />
     </>

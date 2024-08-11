@@ -6,7 +6,7 @@ export default function AdminProfilePage() {
   return (
     <>
       <headear className="">
-        <NavBar />
+        <NavBar client={false} admin={true} owner={false} />
       </headear>
       <DashBoardAdmin />
     </>

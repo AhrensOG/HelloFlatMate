@@ -10,7 +10,11 @@ const OwnerProfile = () => {
       <div className="w-full max-w-screen-sm p-4 space-y-6">
         <div className="w-full">
           <h1 className="text-lg font-bold">Mi Perfil</h1>
-          <ProfileCard name={"Propietario"} email={"propietario@gmail.com"} />
+          <ProfileCard
+            link="/pages/admin/profile"
+            name={"Propietario"}
+            email={"propietario@gmail.com"}
+          />
         </div>
         <Wallet />
         <ChatSection />

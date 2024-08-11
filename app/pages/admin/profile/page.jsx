@@ -7,7 +7,7 @@ export default function AdminProfilePage() {
   return (
     <>
       <headear>
-        <NavBar />
+        <NavBar client={false} admin={true} owner={false} />
       </headear>
       <AdminProfile />
     </>
