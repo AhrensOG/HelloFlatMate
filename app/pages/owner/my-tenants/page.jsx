@@ -6,7 +6,7 @@ const MyTenantsPage = () => {
   return (
     <div className="flex flex-col h-screen">
       <header>
-        <NavBar />
+        <NavBar client={false} admin={false} owner={true} />
       </header>
       <main className="flex-1">
         <OwnerTenants />

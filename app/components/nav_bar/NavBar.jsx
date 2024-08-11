@@ -5,7 +5,11 @@ import { useState } from "react";
 import SideBar from "./side_bar/SideBar";
 import { useRouter } from "next/navigation";
 
-export default function NavBar() {
+export default function NavBar({
+  client = true,
+  admin = false,
+  owner = false,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
 
@@ -57,7 +61,13 @@ export default function NavBar() {
         <Dropdown p-0 />
       </div>
 
-      <SideBar handleClose={handleClose} isOpen={isOpen} />
+      <SideBar
+        handleClose={handleClose}
+        isOpen={isOpen}
+        client={client}
+        admin={admin}
+        owner={owner}
+      />
     </div>
   );
 }

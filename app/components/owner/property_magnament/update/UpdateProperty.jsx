@@ -26,6 +26,7 @@ import RoomAddModal from "../create/main/room_section/RoomAddModal";
 
 export default function UpdateProperty({ data }) {
   const router = useRouter();
+  console.log(data)
   // Establecer valores predeterminados
   const [property, setProperty] = useState(data);
   const [name, setName] = useState(data.name);
@@ -46,7 +47,7 @@ export default function UpdateProperty({ data }) {
   const [moreInfo, setMoreInfo] = useState({
     condicionDeRenta: data.incomeConditionDescription || "Informacion",
     habitacion: data.roomDescription || "Informacion",
-    facturas: data.feesDescription || "Informacion",
+    facturas: data.feeDescription || "Informacion",
     mantenimiento: data.maintenanceDescription || "Informacion",
     sobreNosotros: data.aboutUs || "Informacion",
     normasDeConvivencia: data.houseRules || "Informacion",
@@ -219,7 +220,7 @@ export default function UpdateProperty({ data }) {
           incomeConditionDescription: moreInfo.condicionDeRenta,
           maintenanceDescription: moreInfo.mantenimiento,
           roomDescription: moreInfo.habitacion,
-          feesDescription: moreInfo.facturas,
+          feeDescription: moreInfo.facturas,
           aboutUs: moreInfo.sobreNosotros,
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
@@ -255,7 +256,7 @@ export default function UpdateProperty({ data }) {
               action={handleShowSliderModal}
             />
           </div>
-          <NavBarDetails />
+          <NavBarDetails link="/pages/owner" />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}

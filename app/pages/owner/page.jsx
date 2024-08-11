@@ -7,7 +7,7 @@ const OwnerPage = () => {
   return (
     <>
       <header>
-        <NavBar />
+        <NavBar client={false} admin={false} owner={true} />
       </header>
       <OwnerProfile />
     </>

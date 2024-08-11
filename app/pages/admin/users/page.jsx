@@ -7,7 +7,7 @@ export default function UsersPanelPage() {
   return (
     <>
       <headear>
-        <NavBar />
+        <NavBar client={false} admin={true} owner={false} />
       </headear>
       <UsersPanel />
     </>

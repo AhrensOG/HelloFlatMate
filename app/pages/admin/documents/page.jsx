@@ -7,7 +7,7 @@ export default function DocumentsPanelPage() {
   return (
     <>
       <headear>
-        <NavBar />
+        <NavBar client={false} admin={true} owner={false} />
       </headear>
       <DocumentsPanel />
     </>
