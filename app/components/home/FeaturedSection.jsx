@@ -4,8 +4,6 @@ import FeaturedRoomCard from "./auxiliarComponents/FeaturedRoomCard";
 import Slider from "./auxiliarComponents/Slider";
 
 const FeaturedSection = ({ data }) => {
-  console.log(data);
-
   const [properties, setProperties] = useState(null);
 
   useEffect(() => {

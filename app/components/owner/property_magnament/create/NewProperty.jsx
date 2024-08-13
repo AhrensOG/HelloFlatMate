@@ -19,6 +19,7 @@ import axios from "axios";
 import FinalModal from "./main/FinalModal";
 import RoomAddModal from "./main/room_section/RoomAddModal";
 import { useRouter } from "next/navigation";
+import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
 
 export default function NewProperty() {
   const router = useRouter();
@@ -78,8 +79,6 @@ export default function NewProperty() {
 
   // Validation and submission
   const handleSubmit = () => {
-    console.log(finalData);
-
     const allData = {
       ...address,
       ...guestInfo,
@@ -165,84 +164,87 @@ export default function NewProperty() {
   };
 
   return (
-    <div className="flex flex-col max-w-screen-sm gap-2 ">
-      <header className="w-full space-y-4">
-        <div className="w-full">
+    <div className="w-full flex justify-center items-center">
+      <div className="flex flex-col w-full max-w-screen-sm gap-2 p-1">
+        <header className="w-full space-y-4">
+          {/* <div className="w-full">
           <SliderCreateTemplate
             action={handleShowSliderModal}
             img={sliderImage[0]}
           />
-        </div>
-        <NavBarDetails />
-      </header>
-      <main
-        className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
-      >
-        <TitleSectionTemplate
-          name={name}
-          setName={setName}
-          address={address}
-          setAdress={setAddress}
-          action={handleShowAddressModal}
-        />
-        <div className="flex flex-col gap-6">
-          <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
-        </div>
-        <DescriptionSectionTemplate
-          action={handleShowDescriptionModal}
-          data={description}
-        />
-        <RoomSectionTemplate
-          data={dataRoom}
-          setData={setRoomData}
-          showModal={handleShowRoomEditModal}
-          action={handleShowRoomEditModal}
-        />
-        <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
-        <LocationSectionTemplate />
-        <MoreInfoSectionTemplate
-          data={moreInfo}
-          setData={setMoreInfo}
-          action={handleShowMoreInfoModal}
-        />
-        <SaveButton action={handleShowFinalModal} />
-      </main>
-      {showDescriptionModal && (
-        <DescriptionModal
-          data={description}
-          setData={setDescription}
-          showModal={handleShowDescriptionModal}
-        />
-      )}
-      {showSliderModal && (
+        </div> */}
+          <ImageUploader setImages={setSliderImage} images={sliderImage} />
+          <NavBarDetails />
+        </header>
+        <main
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
+        >
+          <TitleSectionTemplate
+            name={name}
+            setName={setName}
+            address={address}
+            setAdress={setAddress}
+            action={handleShowAddressModal}
+          />
+          <div className="flex flex-col gap-6">
+            <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
+          </div>
+          <DescriptionSectionTemplate
+            action={handleShowDescriptionModal}
+            data={description}
+          />
+          <RoomSectionTemplate
+            data={dataRoom}
+            setData={setRoomData}
+            showModal={handleShowRoomEditModal}
+            action={handleShowRoomEditModal}
+          />
+          <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
+          <LocationSectionTemplate />
+          <MoreInfoSectionTemplate
+            data={moreInfo}
+            setData={setMoreInfo}
+            action={handleShowMoreInfoModal}
+          />
+          <SaveButton action={handleShowFinalModal} />
+        </main>
+        {showDescriptionModal && (
+          <DescriptionModal
+            data={description}
+            setData={setDescription}
+            showModal={handleShowDescriptionModal}
+          />
+        )}
+        {/* {showSliderModal && (
         <SliderModal
           data={sliderImage}
           setData={setSliderImage}
           showModal={handleShowSliderModal}
         />
-      )}
-      {showRoomEditModal && (
-        <RoomAddModal
-          data={dataRoom}
-          setData={setRoomData}
-          showModal={handleShowRoomEditModal}
-        />
-      )}
-      {showAddressModal && (
-        <AddressModal
-          data={address}
-          setData={setAddress}
-          showModal={handleShowAddressModal}
-        />
-      )}
-      {showFinalModal && (
-        <FinalModal
-          data={finalData}
-          setData={setFinalData}
-          action={createProperty}
-          showModal={handleShowFinalModal}
-        />
-      )}
+      )} */}
+        {showRoomEditModal && (
+          <RoomAddModal
+            data={dataRoom}
+            setData={setRoomData}
+            showModal={handleShowRoomEditModal}
+          />
+        )}
+        {showAddressModal && (
+          <AddressModal
+            data={address}
+            setData={setAddress}
+            showModal={handleShowAddressModal}
+          />
+        )}
+        {showFinalModal && (
+          <FinalModal
+            data={finalData}
+            setData={setFinalData}
+            action={createProperty}
+            showModal={handleShowFinalModal}
+          />
+        )}
+      </div>
     </div>
   );
 }
