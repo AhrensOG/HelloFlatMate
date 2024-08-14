@@ -2,7 +2,7 @@ import { CSS } from "@dnd-kit/utilities";
 import Image from "next/image";
 import { useSortable } from "@dnd-kit/sortable";
 
-function DraggableImage({ id, url }) {
+function DraggableImage({ id, url, remove }) {
   const {
     attributes,
     listeners,
@@ -20,6 +20,7 @@ function DraggableImage({ id, url }) {
 
   return (
     <div
+      onDoubleClick={() => remove(id)}
       ref={setNodeRef}
       style={style}
       {...attributes}
