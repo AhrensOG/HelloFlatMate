@@ -16,9 +16,10 @@ import AddressModal from "./main/address_modal/AddressModal";
 import { toast } from "sonner";
 import validateData from "./validateData";
 import axios from "axios";
-import FinalModal from "./main/FinalModal";
 import RoomAddModal from "./main/room_section/RoomAddModal";
 import { useRouter } from "next/navigation";
+import SizeAndCategorySection from "./main/SizeAndCategorySection";
+import PriceSection from "./main/PriceSection";
 
 export default function NewProperty() {
   const router = useRouter();
@@ -48,8 +49,13 @@ export default function NewProperty() {
     checkIn: "",
     checkOut: "",
   });
-  const [finalData, setFinalData] = useState({});
+  const [catAndSize, setCatAndSize] = useState({});
   const [dataRoom, setDataRoom] = useState([]);
+  const [price, setPrice] = useState({
+    price: null,
+    priceOwner: null,
+    priceHelloflatmate: null,
+  });
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -60,7 +66,6 @@ export default function NewProperty() {
   const [showSliderModal, setShowSliderModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showMoreInfoModal, setShowMoreInfoModal] = useState(false);
-  const [showFinalModal, setShowFinalModal] = useState(false);
   const [showRoomEditModal, setShowRoomEditModal] = useState(false);
 
   // Modal handlers
@@ -71,15 +76,12 @@ export default function NewProperty() {
   const handleShowMoreInfoModal = () => {
     setShowMoreInfoModal(!showMoreInfoModal);
   };
-  const handleShowFinalModal = () => setShowFinalModal(!showFinalModal);
   const handleShowRoomEditModal = () => {
     setShowRoomEditModal(!showRoomEditModal);
   };
 
   // Validation and submission
   const handleSubmit = () => {
-    console.log(finalData);
-
     const allData = {
       ...address,
       ...guestInfo,
@@ -103,30 +105,30 @@ export default function NewProperty() {
     street: address.street,
     streetNumber: address.streetNumber,
     postalCode: address.postalCode,
-    size: parseInt(finalData.size) || "",
+    size: parseInt(catAndSize.size),
     roomsCount: dataRoom.length,
     bathrooms: parseInt(guestInfo.bathrooms),
     bed: parseInt(guestInfo.beds),
     maximunOccupants: parseInt(guestInfo.occupants),
-    price: parseInt(finalData.price) || 10,
+    price: parseInt(price.price),
     puntuation: [],
     isActive: true,
-    isBussy: false,
-    category: finalData.category || "HELLO_ROOM",
+    category: catAndSize.category,
     images: sliderImage,
     amenities: amenities,
     description: description,
-    incomeConditionDescription: moreInfo.condicionDeRenta || "",
-    maintenanceDescription: moreInfo.mantenimiento || "",
-    roomDescription: moreInfo.habitacion || "",
-    feeDescription: moreInfo.facturas || "",
-    aboutUs: moreInfo.sobreNosotros || "",
-    houseRules: moreInfo.normasDeConvivencia || "",
-    checkIn: moreInfo.checkIn || "",
-    checkOut: moreInfo.checkOut || "",
+    incomeConditionDescription: moreInfo.condicionDeRenta,
+    maintenanceDescription: moreInfo.mantenimiento,
+    roomDescription: moreInfo.habitacion,
+    feeDescription: moreInfo.facturas,
+    aboutUs: moreInfo.sobreNosotros,
+    houseRules: moreInfo.normasDeConvivencia,
+    checkIn: moreInfo.checkIn,
+    checkOut: moreInfo.checkOut,
   };
 
   const createProperty = async () => {
+    console.log(price, catAndSize);
     if (handleSubmit()) {
       try {
         // Crear propiedad
@@ -139,6 +141,9 @@ export default function NewProperty() {
           name: room.name,
           image: room.image,
           numberBeds: parseInt(room.numberBeds),
+          couple: room.couple,
+          bathroom: room.bathroom,
+          serial: room.serial,
           propertyId: propertyId,
         }));
         console.log(rooms);
@@ -185,6 +190,8 @@ export default function NewProperty() {
           setAdress={setAddress}
           action={handleShowAddressModal}
         />
+        <PriceSection data={price} setData={setPrice} />
+        <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
         <div className="flex flex-col gap-6">
           <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
         </div>
@@ -205,7 +212,7 @@ export default function NewProperty() {
           setData={setMoreInfo}
           action={handleShowMoreInfoModal}
         />
-        <SaveButton action={handleShowFinalModal} />
+        <SaveButton action={createProperty} />
       </main>
       {showDescriptionModal && (
         <DescriptionModal
@@ -233,14 +240,6 @@ export default function NewProperty() {
           data={address}
           setData={setAddress}
           showModal={handleShowAddressModal}
-        />
-      )}
-      {showFinalModal && (
-        <FinalModal
-          data={finalData}
-          setData={setFinalData}
-          action={createProperty}
-          showModal={handleShowFinalModal}
         />
       )}
     </div>

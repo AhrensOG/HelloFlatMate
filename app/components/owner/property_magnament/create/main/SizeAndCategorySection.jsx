@@ -1,11 +1,8 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
-export default function FinalModal({ data, setData }) {
+export default function SizeAndCategorySection({ data, setData }) {
   // Estado inicial para formData
   const initialFormData = {
-    price: null,
     size: null,
     category: null,
   };
@@ -23,42 +20,29 @@ export default function FinalModal({ data, setData }) {
 
   // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
-    console.log(data);
-
     const { name, value } = e.target;
+
+    // Actualiza el estado local del form
     setFormData({
       ...formData,
       [name]: value,
     });
+
+    // También actualiza el estado en el componente padre
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
-    <section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
-      className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
-    >
-      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem]">
-        <h2 className="text-2xl mb-4">Dirección</h2>
+    <section className="flex justify-center w-full">
+      <div className="bg-white rounded-lg shadow-lg w-full">
         <div className="flex flex-col w-full space-y-4">
-          <div>
-            <label htmlFor="price" className="block text-sm mb-1">
-              Precio:
-            </label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price || ""} // Asegúrate de que el valor no sea undefined
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-            {errors.price && (
-              <p className="text-red-500 text-xs mt-1">{errors.price}</p>
-            )}
-          </div>
-          <div>
+          <h2 className="font-medium text-[#000000CC] text-base">
+            Tamaño y Categoria
+          </h2>
+          <div className="w-full">
             <label htmlFor="size" className="block text-sm mb-1">
               Tamaño:
             </label>
@@ -74,7 +58,7 @@ export default function FinalModal({ data, setData }) {
               <p className="text-red-500 text-xs mt-1">{errors.size}</p>
             )}
           </div>
-          <div>
+          <div className="w-full">
             <label htmlFor="category" className="block text-sm mb-1">
               Categoría:
             </label>

@@ -9,6 +9,7 @@ export default function RoomSectionTemplate({
   action,
   deleteRooms,
   setDeleteRooms,
+  onEditRoom,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);

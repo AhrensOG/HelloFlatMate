@@ -13,6 +13,10 @@ const roomInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            serial: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+            },
             name: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
@@ -24,7 +28,20 @@ const roomInit = (sequelize, DataTypes) => {
             image: {
                 type: DataTypes.STRING(10000),
                 allowNull: false,
-            }
+            },
+            status: {
+                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
+                defaultValue: "FREE",
+                allowNull: false
+            },
+            bathroom: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
+            couple: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
         },
         {
             sequelize,

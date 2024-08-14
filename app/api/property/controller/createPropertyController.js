@@ -9,54 +9,50 @@ const createProperty = async (data) => {
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
-    if (data.name.trim() === "") {
+    if (!data.name || data.name.trim() === "") {
         return NextResponse.json({ error: "El nombre no puede estar vacío" }, { status: 400 });
     }
-    if (data.city.trim() === "") {
+    if (!data.city || data.city.trim() === "") {
         return NextResponse.json({ error: "La ciudad no puede estar vacío" }, { status: 400 });
     }
-    if (data.street.trim() === "") {
+    if (!data.street || data.street.trim() === "") {
         return NextResponse.json({ error: "La calle no puede estar vacío" }, { status: 400 });
     }
-    if (!data.streetNumber) {
+    if (!data.streetNumber || data.streetNumber <= 0) {
         return NextResponse.json({ error: "El número no puede estar vacío" }, { status: 400 });
     }
-    if (data.postalCode.trim() === "") {
+    if (!data.postalCode || data.postalCode.trim() === "") {
         return NextResponse.json({ error: "El Código Postal no puede estar vacío" }, { status: 400 });
     }
-    if (data.size <= 0) {
+    if (!data.size || data.size <= 0) {
         return NextResponse.json({ error: "El tamaño no puede estar vacío" }, { status: 400 });
     }
-    if (data.roomsCount <= 0) {
-        console.log(typeof data.roomsCount);
-
+    if (!data.roomsCount || data.roomsCount <= 0) {
         return NextResponse.json({ error: "El número de habitaciones no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (data.bathrooms <= 0 || typeof data.bathrooms !== "number") {
+    if (!data.bathrooms || data.bathrooms <= 0 || typeof data.bathrooms !== "number") {
         return NextResponse.json({ error: "El número de baños no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (data.bed <= 0 || typeof data.bed !== "number") {
+    if (!data.bed || data.bed <= 0 || typeof data.bed !== "number") {
         return NextResponse.json({ error: "El número de camas no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (data.maximunOccupants <= 0 || typeof data.maximunOccupants !== "number") {
-        console.log(typeof data.maximunOccupants);
-
+    if (!data.maximunOccupants || data.maximunOccupants <= 0 || typeof data.maximunOccupants !== "number") {
         return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (data.price <= 0 || typeof data.price !== "number") {
+    if (!data.price || data.price <= 0 || typeof data.price !== "number") {
         return NextResponse.json({ error: "El precio no puede estar vacío o no es un número" }, { status: 400 });
     }
     const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
     }
-    if (data.images.length === 0) {
+    if (!data.images || data.images.length === 0) {
         return NextResponse.json({ error: "Las imágenes no pueden estar vacías" }, { status: 400 });
     }
-    if (data.amenities.length === 0) {
+    if (!data.amenities || data.amenities.length === 0) {
         return NextResponse.json({ error: "Las amenidades no pueden estar vacías" }, { status: 400 });
     }
-    if (data.description.length <= 0) {
+    if (!data.description || data.description.length <= 0) {
         return NextResponse.json({ error: "La descripción no puede estar vacía" }, { status: 400 });
     }
 
@@ -75,19 +71,19 @@ const createProperty = async (data) => {
             price: data.price,
             puntuation: [],
             isActive: true,
-            isBussy: false,
+            status: "FREE",
             category: data.category,
             images: data.images,
             amenities: data.amenities,
             description: data.description,
-            incomeConditionDescription: data.incomeConditionDescription || "",
-            maintanceDescription: data.maintanceDescription || "",
-            roomDescription: data.roomDescription || "",
-            billDescription: data.billDescription || "",
-            aboutUs: data.aboutUs || "",
-            houseRules: data.houseRules || "",
-            checkIn: data.checkIn || "",
-            checkOut: data.checkOut || "",
+            incomeConditionDescription: data.incomeConditionDescription,
+            maintenanceDescription: data.maintenanceDescription,
+            roomDescription: data.roomDescription,
+            feeDescription: data.feeDescription,
+            aboutUs: data.aboutUs,
+            houseRules: data.houseRules,
+            checkIn: data.checkIn,
+            checkOut: data.checkOut,
             ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
         });
 

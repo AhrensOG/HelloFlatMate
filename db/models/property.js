@@ -73,9 +73,10 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
-            isBussy: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
+            status: {
+                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
+                defaultValue: "FREE",
+                allowNull: false
             },
             category: {
                 type: DataTypes.ENUM('HELLO_ROOM', 'HELLO_STUDIO', 'HELLO_COLIVING', 'HELLO_LANDLORD'),

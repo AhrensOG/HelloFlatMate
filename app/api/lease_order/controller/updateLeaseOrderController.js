@@ -3,16 +3,16 @@ import { Admin, Client, LeaseOrder, Owner, Property } from "@/db/init";
 
 export async function updateLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
-    if (data.adminId == null || data.adminId.trim() === "") return NextResponse.json({ message: "No admin id provided" }, { status: 400 })
-    if (data.id == null || data.id <= 0) return NextResponse.json({ message: "No order id provided" }, { status: 400 })
-    if (data.date == null) return NextResponse.json({ message: "No date provided" }, { status: 400 })
-    if (data.startDate == null) return NextResponse.json({ message: "No start date provided" }, { status: 400 })
-    if (data.endDate == null) return NextResponse.json({ message: "No end date provided" }, { status: 400 })
-    if (data.price == null || data.price <= 0) return NextResponse.json({ message: "No price provided" }, { status: 400 })
-    if (data.ownerId == null || data.ownerId.trim() === "") return NextResponse.json({ message: "No owner id provided" }, { status: 400 })
-    if (data.clientId == null || data.clientId.trim() === "") return NextResponse.json({ message: "No client id provided" }, { status: 400 })
-    if (data.propertyId == null || data.propertyId <= 0) return NextResponse.json({ message: "No property id provided" }, { status: 400 })
-    if (data.status !== "PENDING" && data.status !== "APPROVED" && data.status !== "REJECTED") return NextResponse.json({ message: "No status provided" }, { status: 400 })
+    if (!data.adminId || data.adminId.trim() === "") return NextResponse.json({ message: "No admin id provided" }, { status: 400 })
+    if (!data.id || data.id <= 0) return NextResponse.json({ message: "No order id provided" }, { status: 400 })
+    if (!data.date) return NextResponse.json({ message: "No date provided" }, { status: 400 })
+    if (!data.startDate) return NextResponse.json({ message: "No start date provided" }, { status: 400 })
+    if (!data.endDate) return NextResponse.json({ message: "No end date provided" }, { status: 400 })
+    if (!data.price || data.price <= 0) return NextResponse.json({ message: "No price provided" }, { status: 400 })
+    if (!data.ownerId || data.ownerId.trim() === "") return NextResponse.json({ message: "No owner id provided" }, { status: 400 })
+    if (!data.clientId || data.clientId.trim() === "") return NextResponse.json({ message: "No client id provided" }, { status: 400 })
+    if (!data.propertyId || data.propertyId <= 0) return NextResponse.json({ message: "No property id provided" }, { status: 400 })
+    if (!data.status || data.status !== "PENDING" && data.status !== "APPROVED" && data.status !== "REJECTED") return NextResponse.json({ message: "No status provided" }, { status: 400 })
 
     try {
         //Buscar y verificar que la orden exista
@@ -39,11 +39,11 @@ export async function updateLeaseOrder(data) {
     }
 }
 
-export async function approvedLeaseOrder(data) {
+export async function updateStatusLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
-    if (data.action !== "APPROVED") return NextResponse.json({ message: "No action provided" }, { status: 400 })
-    if (data.leaseOrderId == null || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 })
-    if (data.adminId == null || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 })
+    if (!data.action || data.status !== "REJECTED" && data.status !== "APPROVED") return NextResponse.json({ message: "No status provided" }, { status: 400 })
+    if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 })
+    if (!data.adminId || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 })
 
     try {
         //Buscar y verificar que la orden exista
@@ -54,29 +54,7 @@ export async function approvedLeaseOrder(data) {
         if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 })
 
         //Cambiar el estado de la orden
-        const approvedLeaseOrder = await leaseOrder.update({ status: "APPROVED" })
-        return NextResponse.json(approvedLeaseOrder, { message: "Orden aprobada con exito" }, { status: 200 })
-    } catch (error) {
-        return NextResponse.json({ message: error.message }, { status: 500 })
-    }
-}
-
-export async function rejectedLeaseOrder(data) {
-    if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
-    if (data.action !== "REJECTED") return NextResponse.json({ message: "No action provided" }, { status: 400 })
-    if (data.leaseOrderId == null || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 })
-    if (data.adminId == null || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 })
-
-    try {
-        //Buscar y verificar que la orden exista
-        const leaseOrder = await LeaseOrder.findByPk(data.leaseOrderId)
-        if (!leaseOrder) return NextResponse.json({ message: "Lease order not found" }, { status: 404 })
-        //Buscar y verificar que el admin exista
-        const admin = await Admin.findByPk(data.adminId)
-        if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 })
-
-        //Cambiar el estado de la orden
-        const approvedLeaseOrder = await leaseOrder.update({ status: "REJECTED" })
+        const approvedLeaseOrder = await leaseOrder.update({ status: data.status })
         return NextResponse.json(approvedLeaseOrder, { message: "Orden rechazada con exito" }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 })

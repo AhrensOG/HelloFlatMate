@@ -352,52 +352,82 @@ const testRoom = [
     {
         name: "Habitación Deluxe",
         numberBeds: 2,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Estándar",
         numberBeds: 1,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Suite Ejecutiva",
         numberBeds: 3,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Familiar",
         numberBeds: 4,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Individual",
         numberBeds: 1,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Doble",
         numberBeds: 2,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Triple",
         numberBeds: 3,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Cuádruple",
         numberBeds: 4,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Premium",
         numberBeds: 2,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     },
     {
         name: "Habitación Económica",
         numberBeds: 1,
-        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"
+        image: "https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain",
+        serial: "AS-2",
+        couple: true,
+        bathroom: true
     }
 ];
 

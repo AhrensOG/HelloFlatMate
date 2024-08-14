@@ -3,16 +3,15 @@ import { Client, LeaseOrder, Owner, Property } from "@/db/init";
 
 export async function createLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
-    if (data.date == null) return NextResponse.json({ message: "No date provided" }, { status: 400 })
-    if (data.startDate == null) return NextResponse.json({ message: "No start date provided" }, { status: 400 })
-    if (data.endDate == null) return NextResponse.json({ message: "No end date provided" }, { status: 400 })
-    if (data.price == null || data.price <= 0) return NextResponse.json({ message: "No price provided" }, { status: 400 })
-    if (data.ownerId == null || data.ownerId.trim() === "") return NextResponse.json({ message: "No owner id provided" }, { status: 400 })
-    if (data.clientId == null || data.clientId.trim() === "") return NextResponse.json({ message: "No client id provided" }, { status: 400 })
-    if (data.propertyId == null || data.propertyId <= 0) return NextResponse.json({ message: "No property id provided" }, { status: 400 })
+    if (!data.date) return NextResponse.json({ message: "No date provided" }, { status: 400 })
+    if (!data.startDate) return NextResponse.json({ message: "No start date provided" }, { status: 400 })
+    if (!data.endDate) return NextResponse.json({ message: "No end date provided" }, { status: 400 })
+    if (!data.price || data.price <= 0) return NextResponse.json({ message: "No price provided" }, { status: 400 })
+    if (!data.ownerId || data.ownerId.trim() === "") return NextResponse.json({ message: "No owner id provided" }, { status: 400 })
+    if (!data.clientId || data.clientId.trim() === "") return NextResponse.json({ message: "No client id provided" }, { status: 400 })
+    if (!data.propertyId || data.propertyId <= 0) return NextResponse.json({ message: "No property id provided" }, { status: 400 })
 
     try {
-
         //Buscar y verificar que la propiedad exista
         const property = await Property.findByPk(data.propertyId)
         if (!property) return NextResponse.json({ message: "Property not found" }, { status: 404 })

@@ -26,7 +26,6 @@ import RoomAddModal from "../create/main/room_section/RoomAddModal";
 
 export default function UpdateProperty({ data }) {
   const router = useRouter();
-  console.log(data)
   // Establecer valores predeterminados
   const [property, setProperty] = useState(data);
   const [name, setName] = useState(data.name);
