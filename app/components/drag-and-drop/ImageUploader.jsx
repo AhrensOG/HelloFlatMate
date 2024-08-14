@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -10,6 +10,8 @@ import DraggableImage from "./DraggableImage";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
 function ImageUploader({ initialImages = false, setImages, images }) {
+  const fileInputRef = useRef(null);
+
   useEffect(() => {
     if (initialImages && initialImages.length > 0) {
       const mappedImages = initialImages.map((url) => ({
@@ -32,6 +34,16 @@ function ImageUploader({ initialImages = false, setImages, images }) {
     setImages((prevImages) => [...prevImages, ...newImages]);
   };
 
+  const handleFiles = (files) => {
+    const newImages = Array.from(files).map((file) => ({
+      id: uuidv4(),
+      name: file.name,
+      fileData: file,
+      url: URL.createObjectURL(file),
+    }));
+    setImages((prevImages) => [...prevImages, ...newImages]);
+  };
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
@@ -46,6 +58,14 @@ function ImageUploader({ initialImages = false, setImages, images }) {
     }
   };
 
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleInputChange = (event) => {
+    handleFiles(event.target.files);
+  };
+
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
@@ -55,15 +75,25 @@ function ImageUploader({ initialImages = false, setImages, images }) {
         <div
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
-          className="flex flex-wrap justify-center items-center w-full p-4 border-2 border-dashed border-gray-300 rounded-lg min-h-60"
+          onClick={handleClick}
+          className="flex flex-wrap justify-center items-center w-full p-4 border-2 border-dashed border-gray-300 rounded-lg min-h-60 cursor-pointer"
         >
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleInputChange}
+          />
           {images.length > 0 ? (
             images.map((image) => (
               <DraggableImage key={image.id} id={image.id} url={image.url} />
             ))
           ) : (
             <span className="w-full flex flex-col justify-center items-center text-sm font-bold text-slate-300 gap-2">
-              <ArrowUpTrayIcon className="size-10" /> Arrastra tus imagenes aquí
+              <ArrowUpTrayIcon className="size-10" /> Haz click o arrastra tus
+              imagenes aquí
             </span>
           )}
         </div>
