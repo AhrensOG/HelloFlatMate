@@ -66,6 +66,10 @@ function ImageUploader({ initialImages = false, setImages, images }) {
     handleFiles(event.target.files);
   };
 
+  const handleRemoveImage = (id) => {
+    setImages((prevImages) => prevImages.filter((image) => image.id !== id));
+  };
+
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
@@ -88,12 +92,22 @@ function ImageUploader({ initialImages = false, setImages, images }) {
           />
           {images.length > 0 ? (
             images.map((image) => (
-              <DraggableImage key={image.id} id={image.id} url={image.url} />
+              <DraggableImage
+                key={image.id}
+                id={image.id}
+                url={image.url}
+                remove={handleRemoveImage}
+              />
             ))
           ) : (
             <span className="w-full flex flex-col justify-center items-center text-sm font-bold text-slate-300 gap-2">
               <ArrowUpTrayIcon className="size-10" /> Haz click o arrastra tus
               imagenes aquí
+            </span>
+          )}
+          {images.length > 0 && (
+            <span className="w-full flex flex-col justify-center items-center text-sm font-bold text-slate-300 py-1">
+              Doble click para eliminar
             </span>
           )}
         </div>
