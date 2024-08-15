@@ -46,7 +46,7 @@ export async function updateProperty(id, data) {
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
     }
-    if (!data.image || data.images.length === 0) {
+    if (!data.images || data.images.length === 0) {
         return NextResponse.json({ error: "Las imágenes no pueden estar vacías" }, { status: 400 });
     }
     if (!data.amenities || data.amenities.length === 0) {

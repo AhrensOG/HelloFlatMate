@@ -39,9 +39,13 @@ const createProperty = async (data) => {
     if (!data.maximunOccupants || data.maximunOccupants <= 0 || typeof data.maximunOccupants !== "number") {
         return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (!data.price || data.price <= 0 || typeof data.price !== "number") {
-        return NextResponse.json({ error: "El precio no puede estar vacío o no es un número" }, { status: 400 });
+    if (!data.amountHelloflatmate || data.amountHelloflatmate <= 0 || typeof data.amountHelloflatmate !== "number") {
+        return NextResponse.json({ error: "El monto de HelloFlatmate no puede estar vacío o no es un número" }, { status: 400 });
     }
+    if (!data.amountOwner || data.amountOwner <= 0 || typeof data.amountOwner !== "number") {
+        return NextResponse.json({ error: "El monto del Dueño no puede estar vacío o no es un número" }, { status: 400 });
+    }
+
     const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
@@ -68,7 +72,9 @@ const createProperty = async (data) => {
             bathrooms: data.bathrooms,
             bed: data.bed,
             maximunOccupants: data.maximunOccupants,
-            price: data.price,
+            price: data.amountOwner + data.amountHelloflatmate,
+            amountHelloflatmate: data.amountHelloflatmate,
+            amountOwner: data.amountOwner,
             puntuation: [],
             isActive: true,
             status: "FREE",

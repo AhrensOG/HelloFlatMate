@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 export default function PriceSection({ data, setData }) {
   const initialFormData = {
     price: 0,
-    priceOwner: 0,
-    priceHelloflatmate: 0,
+    amountOwner: 0,
+    amountHelloflatmate: 0,
   };
 
   // Inicializa el estado con los datos proporcionados
@@ -23,14 +23,14 @@ export default function PriceSection({ data, setData }) {
       ...formData,
       [name]: value,
       price:
-        parseInt(formData.priceOwner) + parseInt(formData.priceHelloflatmate),
+        parseInt(formData.amountOwner) + parseInt(formData.amountHelloflatmate),
     });
 
     setData((prevData) => ({
       ...prevData,
       [name]: value,
       price:
-        parseInt(formData.priceOwner) + parseInt(formData.priceHelloflatmate),
+        parseInt(formData.amountOwner) + parseInt(formData.amountHelloflatmate),
     }));
   };
 
@@ -43,8 +43,8 @@ export default function PriceSection({ data, setData }) {
         </label>
         <input
           type="number"
-          name="priceOwner"
-          value={formData.priceOwner || ""} // Asegúrate de que el valor no sea undefined
+          name="amountOwner"
+          value={formData.amountOwner || ""} // Asegúrate de que el valor no sea undefined
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded"
         />
@@ -55,8 +55,8 @@ export default function PriceSection({ data, setData }) {
         </label>
         <input
           type="number"
-          name="priceHelloflatmate"
-          value={formData.priceHelloflatmate || ""} // Asegúrate de que el valor no sea undefined
+          name="amountHelloflatmate"
+          value={formData.amountHelloflatmate || ""} // Asegúrate de que el valor no sea undefined
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded"
         />
@@ -66,8 +66,8 @@ export default function PriceSection({ data, setData }) {
           Precio total:
         </h2>
         <p className="text-2xl border border-[#D1DEE5] p-2 rounded-lg px-3">
-          {(parseInt(formData.priceOwner) || 0) +
-            (parseInt(formData.priceHelloflatmate) || 0) || 0}
+          {(parseInt(formData.amountOwner) || 0) +
+            (parseInt(formData.amountHelloflatmate) || 0) || 0}
         </p>
       </div>
     </section>

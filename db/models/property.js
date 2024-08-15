@@ -61,6 +61,14 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: false,
             },
+            amountOwner: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+            amountHelloflatmate: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
             offer: {
                 type: DataTypes.FLOAT,
                 allowNull: true,

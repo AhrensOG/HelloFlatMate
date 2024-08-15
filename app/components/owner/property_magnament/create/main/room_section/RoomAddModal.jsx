@@ -37,6 +37,7 @@ export default function RoomAddModal({ data, setData, showModal, propertyId }) {
 
   const submitImage = async (file) => {
     const response = await uploadFiles([file]);
+    console.log(response);
 
     return response[0].url;
   };

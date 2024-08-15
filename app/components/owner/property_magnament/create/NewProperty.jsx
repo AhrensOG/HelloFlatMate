@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
 import SizeAndCategorySection from "./main/SizeAndCategorySection";
 import PriceSection from "./main/PriceSection";
+import { uploadFiles } from "@/app/firebase/uploadFiles";
 
 export default function NewProperty() {
   const router = useRouter();
@@ -54,9 +55,10 @@ export default function NewProperty() {
   const [dataRoom, setDataRoom] = useState([]);
   const [price, setPrice] = useState({
     price: null,
-    priceOwner: null,
-    priceHelloflatmate: null,
+    amountOwner: null,
+    amountHelloflatmate: null,
   });
+  const [urlImages, setUrlImages] = useState([]);
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -100,6 +102,27 @@ export default function NewProperty() {
     return true;
   };
 
+  const saveImages = async (images) => {
+    if (images.length > 0) {
+      try {
+        const response = await uploadFiles(images);
+        if (response instanceof Error) {
+          toast.error("Error al cargar archivos");
+          return;
+        } else {
+          const imagesUrl = response.map((file) => file.url);
+          console.log(response);
+
+          setUrlImages(imagesUrl);
+          toast.success("Imagenes cargadas correctamente");
+          return;
+        }
+      } catch (error) {
+        toast.error("Error al cargar archivos");
+      }
+    }
+  };
+
   const property = {
     name: name,
     city: address.city,
@@ -111,11 +134,12 @@ export default function NewProperty() {
     bathrooms: parseInt(guestInfo.bathrooms),
     bed: parseInt(guestInfo.beds),
     maximunOccupants: parseInt(guestInfo.occupants),
-    price: parseInt(price.price),
+    amountHelloflatmate: parseInt(price.amountHelloflatmate),
+    amountOwner: parseInt(price.amountOwner),
     puntuation: [],
     isActive: true,
     category: catAndSize.category,
-    images: sliderImage,
+    images: urlImages,
     amenities: amenities,
     description: description,
     incomeConditionDescription: moreInfo.condicionDeRenta,
@@ -129,9 +153,10 @@ export default function NewProperty() {
   };
 
   const createProperty = async () => {
-    console.log(price, catAndSize);
     if (handleSubmit()) {
       try {
+        //Guardar Imagenes
+        await saveImages(sliderImage);
         // Crear propiedad
         const propertyResponse = await axios.post("/api/property", property);
         const propertyId = propertyResponse.data.property.id;
@@ -194,8 +219,8 @@ export default function NewProperty() {
             action={handleShowAddressModal}
           />
           <PriceSection data={price} setData={setPrice} />
-        <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
-        <div className="flex flex-col gap-6">
+          <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
+          <div className="flex flex-col gap-6">
             <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
           </div>
           <DescriptionSectionTemplate
@@ -224,27 +249,21 @@ export default function NewProperty() {
             showModal={handleShowDescriptionModal}
           />
         )}
-        {/* {showSliderModal && (
-        <SliderModal
-          data={sliderImage}
-          setData={setSliderImage}
-          showModal={handleShowSliderModal}
-        />
-      )}
-      {showRoomEditModal && (
-        <RoomAddModal
-          data={dataRoom}
-          setData={setRoomData}
-          showModal={handleShowRoomEditModal}
-        />
-      )}
-      {showAddressModal && (
-        <AddressModal
-          data={address}
-          setData={setAddress}
-          showModal={handleShowAddressModal}
-        />
-      )}
+        {showRoomEditModal && (
+          <RoomAddModal
+            data={dataRoom}
+            setData={setRoomData}
+            showModal={handleShowRoomEditModal}
+          />
+        )}
+        {showAddressModal && (
+          <AddressModal
+            data={address}
+            setData={setAddress}
+            showModal={handleShowAddressModal}
+          />
+        )}
+      </div>
     </div>
   );
 }
