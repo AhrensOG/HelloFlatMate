@@ -12,13 +12,13 @@ import { getAllProperties } from "./context/actions";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
-  const [home, setHome] = useState(false);
+  const [home, setHome] = useState(true);
   const [properties, setProperties] = useState([]);
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
 
   const filterOffer = (properties) => {
-    return properties.filter(property => property.offer !== null);
-  }
+    return properties.filter((property) => property.offer !== null);
+  };
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -39,8 +39,6 @@ export default function Home() {
   }, [state.user, dispatch]);
 
   useEffect(() => {
-    console.log(state.properties);
-
     // Solo actualiza si hay un cambio en state.properties
     if (state.properties && state.properties !== properties) {
       setProperties(state.properties);
@@ -52,7 +50,6 @@ export default function Home() {
   if (!home) {
     return <GuestHome />;
   }
-
 
   return (
     <div>
