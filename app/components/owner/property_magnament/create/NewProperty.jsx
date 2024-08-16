@@ -23,7 +23,7 @@ import SizeAndCategorySection from "./main/SizeAndCategorySection";
 import PriceSection from "./main/PriceSection";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 
-export default function NewProperty() {
+export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -162,7 +162,6 @@ export default function NewProperty() {
         // Crear propiedad
         const propertyResponse = await axios.post("/api/property", property);
         const propertyId = propertyResponse.data.property.id;
-        console.log(propertyResponse.data.property.id);
 
         // Crear habitaciones
         const rooms = dataRoom.map((room) => ({
@@ -174,7 +173,6 @@ export default function NewProperty() {
           serial: room.serial,
           propertyId: propertyId,
         }));
-        console.log(rooms);
 
         try {
           await axios.post("/api/room", rooms);
@@ -202,7 +200,7 @@ export default function NewProperty() {
       <div className="flex flex-col w-full max-w-screen-sm gap-2 p-1">
         <header className="w-full space-y-4">
           <ImageUploader setImages={setSliderImage} images={sliderImage} />
-          <NavBarDetails />
+          <NavBarDetails callBack={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
