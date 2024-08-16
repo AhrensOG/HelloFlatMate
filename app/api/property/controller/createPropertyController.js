@@ -1,10 +1,8 @@
 import { Owner, Property } from "@/db/init";
+import PropertyWithPrice from "@/db/models/propertyWithPrice";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
-
-    console.log(data);
-
 
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
@@ -39,17 +37,6 @@ const createProperty = async (data) => {
     if (!data.maximunOccupants || data.maximunOccupants <= 0 || typeof data.maximunOccupants !== "number") {
         return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (!data.amountHelloflatmate || data.amountHelloflatmate <= 0 || typeof data.amountHelloflatmate !== "number") {
-        return NextResponse.json({ error: "El monto de HelloFlatmate no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (!data.amountOwner || data.amountOwner <= 0 || typeof data.amountOwner !== "number") {
-        return NextResponse.json({ error: "El monto del Dueño no puede estar vacío o no es un número" }, { status: 400 });
-    }
-
-    const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
-    if (!validCategories.includes(data.category)) {
-        return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
-    }
     if (!data.images || data.images.length === 0) {
         return NextResponse.json({ error: "Las imágenes no pueden estar vacías" }, { status: 400 });
     }
@@ -60,42 +47,93 @@ const createProperty = async (data) => {
         return NextResponse.json({ error: "La descripción no puede estar vacía" }, { status: 400 });
     }
 
-    try {
-        const property = await Property.create({
-            name: data.name,
-            city: data.city,
-            street: data.street,
-            streetNumber: data.streetNumber,
-            postalCode: data.postalCode,
-            size: data.size,
-            roomsCount: data.roomsCount,
-            bathrooms: data.bathrooms,
-            bed: data.bed,
-            maximunOccupants: data.maximunOccupants,
-            price: data.amountOwner + data.amountHelloflatmate,
-            amountHelloflatmate: data.amountHelloflatmate,
-            amountOwner: data.amountOwner,
-            puntuation: [],
-            isActive: true,
-            status: "FREE",
-            category: data.category,
-            images: data.images,
-            amenities: data.amenities,
-            description: data.description,
-            incomeConditionDescription: data.incomeConditionDescription,
-            maintenanceDescription: data.maintenanceDescription,
-            roomDescription: data.roomDescription,
-            feeDescription: data.feeDescription,
-            aboutUs: data.aboutUs,
-            houseRules: data.houseRules,
-            checkIn: data.checkIn,
-            checkOut: data.checkOut,
-            ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
-        });
 
-        return NextResponse.json({ message: "Propiedad cargada con éxito", property });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
+    if (!validCategories.includes(data.category)) {
+        return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
+    }
+
+    if (data.category === "HELLO_LANDLORD" || data.category === "HELLO_STUDIO") {
+        if (!data.amountHelloflatmate || data.amountHelloflatmate <= 0 || typeof data.amountHelloflatmate !== "number") {
+            return NextResponse.json({ error: "El monto de HelloFlatmate no puede estar vacío o no es un número" }, { status: 400 });
+        }
+        if (!data.amountOwner || data.amountOwner <= 0 || typeof data.amountOwner !== "number") {
+            return NextResponse.json({ error: "El monto del Dueño no puede estar vacío o no es un número" }, { status: 400 });
+        }
+
+        try {
+            const propertyWithPrice = await PropertyWithPrice.create({
+                name: data.name,
+                city: data.city,
+                street: data.street,
+                streetNumber: data.streetNumber,
+                postalCode: data.postalCode,
+                size: data.size,
+                roomsCount: data.roomsCount,
+                bathrooms: data.bathrooms,
+                bed: data.bed,
+                maximunOccupants: data.maximunOccupants,
+                price: data.amountOwner + data.amountHelloflatmate,
+                amountHelloflatmate: data.amountHelloflatmate,
+                amountOwner: data.amountOwner,
+                puntuation: [],
+                isActive: true,
+                status: "FREE",
+                category: data.category,
+                images: data.images,
+                amenities: data.amenities,
+                description: data.description,
+                incomeConditionDescription: data.incomeConditionDescription,
+                maintenanceDescription: data.maintenanceDescription,
+                roomDescription: data.roomDescription,
+                feeDescription: data.feeDescription,
+                aboutUs: data.aboutUs,
+                houseRules: data.houseRules,
+                checkIn: data.checkIn,
+                checkOut: data.checkOut,
+                ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
+            });
+
+            return NextResponse.json({ message: "Propiedad cargada con éxito", propertyWithPrice }, { status: 200 });
+        } catch (error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+    } else {
+
+        try {
+            const property = await Property.create({
+                name: data.name,
+                city: data.city,
+                street: data.street,
+                streetNumber: data.streetNumber,
+                postalCode: data.postalCode,
+                size: data.size,
+                roomsCount: data.roomsCount,
+                bathrooms: data.bathrooms,
+                bed: data.bed,
+                maximunOccupants: data.maximunOccupants,
+                puntuation: [],
+                isActive: true,
+                status: "FREE",
+                category: data.category,
+                images: data.images,
+                amenities: data.amenities,
+                description: data.description,
+                incomeConditionDescription: data.incomeConditionDescription,
+                maintenanceDescription: data.maintenanceDescription,
+                roomDescription: data.roomDescription,
+                feeDescription: data.feeDescription,
+                aboutUs: data.aboutUs,
+                houseRules: data.houseRules,
+                checkIn: data.checkIn,
+                checkOut: data.checkOut,
+                ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
+            });
+
+            return NextResponse.json({ message: "Propiedad cargada con éxito", property });
+        } catch (error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
     }
 }
 

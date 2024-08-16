@@ -5,76 +5,95 @@ const Owner = require("./models/owner");
 const Document = require("./models/userDocument");
 const Message = require("./models/message");
 const Property = require("./models/property");
-const LeaseOrder = require("./models/leaseOrder");
+const LeaseOrderProperty = require("./models/leaseOrderProperty");
+const LeaseOrderRoom = require("./models/leaseOrderRoom");
 const Chat = require("./models/chat");
 const ToDo = require("./models/toDo");
 const Client = require("./models/client");
 const Admin = require("./models/admin");
 const Room = require("./models/room");
-const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
+const PropertyWithPrice = require("./models/propertyWithPrice");
+const RoomWithPrice = require("./models/roomWithPrice");
+const { propertyWithPriceData, testAdminData, testClientData, testOwnerData, testRoom, roomWithPriceData, propertyData } = require("./textData");
 
 (async () => {
     try {
         // RELATIONSHIPS
 
-        //OWNER
-        Owner.hasMany(LeaseOrder, { as: "leaseOrders", foreignKey: "ownerId" });
+        // OWNER
+        Owner.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "ownerId" });
+        Owner.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "ownerId" });
         Owner.hasMany(Chat, { as: "chats", foreignKey: "ownerId" });
         Owner.hasMany(Property, { as: "properties", foreignKey: "ownerId" });
+        Owner.hasMany(PropertyWithPrice, { as: "propertyWithPrices", foreignKey: "ownerId" }); // Cambiado el alias para evitar conflicto
 
-        //PROPERTY
-        Property.hasMany(LeaseOrder, { as: "leaseOrders", foreignKey: "propertyId" });
+        // PROPERTY
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
-        Property.hasMany(Room, { as: "rooms", foreignKey: "propertyId" });
+        Property.hasMany(RoomWithPrice, { as: "roomsWithPrice", foreignKey: "propertyId" });
+        Property.belongsTo(Owner, { as: "propertyOwner", foreignKey: "ownerId" }); // Cambiado el alias a "propertyOwner" para evitar conflicto
+        Property.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "propertyId" });
 
-        Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+        // PROPERTY WITH PRICE
+        PropertyWithPrice.hasMany(LeaseOrderProperty, { as: "leaseOrdersPropertyWithPrice", foreignKey: "propertyWithPriceId" });
+        PropertyWithPrice.hasMany(Comment, { as: "propertyWithPriceComments", foreignKey: "propertyWithPriceId" });
+        PropertyWithPrice.hasMany(Room, { as: "rooms", foreignKey: "propertyWithPriceId" });
+        PropertyWithPrice.belongsTo(Owner, { as: "propertyWithPriceOwner", foreignKey: "ownerId" }); // Cambiado el alias a "propertyWithPriceOwner" para evitar conflicto
 
-        //Room
-        Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        // ROOM
+        Room.belongsTo(PropertyWithPrice, { as: "propertyWithPrice", foreignKey: "propertyWithPriceId" });
 
-        //ToDo
+        // ROOM WITH PRICE
+        RoomWithPrice.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        RoomWithPrice.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoomWithPrice", foreignKey: "roomWithPriceId" });
+
+        // ToDo
         ToDo.belongsTo(Client, { as: "client", foreignKey: "clientId" });
         ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         ToDo.belongsTo(Admin, { as: "admin", foreignKey: "adminId" });
 
-        //MESSAGE
+        // MESSAGE
         Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
 
-        //leaseOrder
-        LeaseOrder.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
-        LeaseOrder.belongsTo(Property, { foreignKey: "propertyId", as: "property" });
-        LeaseOrder.belongsTo(Client, { foreignKey: "clientId", as: "client" });
+        // LeaseOrderProperty
+        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderPropertyOwner" });
+        LeaseOrderProperty.belongsTo(PropertyWithPrice, { foreignKey: "propertyWithPriceId", as: "leaseOrderProperty" }); // Usar el correcto foreignKey
+        LeaseOrderProperty.belongsTo(Client, { foreignKey: "clientId", as: "leaseOrderPropertyClient" });
 
-        //COMMENT
+        // LeaseOrderRoom
+        LeaseOrderRoom.belongsTo(RoomWithPrice, { foreignKey: "roomWithPriceId", as: "leaseOrderRoomRoom" });
+        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderRoomOwner" });
+        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "leaseOrderRoomProperty" });
+        LeaseOrderRoom.belongsTo(Client, { foreignKey: "clientId", as: "leaseOrderRoomClient" });
+
+        // COMMENT
         Comment.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Comment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
-        //CLIENT
-        Client.hasMany(LeaseOrder, { as: "leaseOrders", foreignKey: "clientId" });
+        // CLIENT
+        Client.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "clientId" });
+        Client.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "clientId" });
         Client.hasMany(ToDo, { as: "toDos", foreignKey: "clientId" });
         Client.hasMany(Chat, { as: "chats", foreignKey: "chatParticipant" });
 
-        //CHAT
-        // Uno a Muchos
+        // CHAT
         Chat.hasMany(Message, { as: "messages", foreignKey: "chatId" });
         Chat.hasMany(Client, { as: "participants", foreignKey: "chatId" });
+        Chat.belongsTo(Owner, { as: "chatOwner", foreignKey: "ownerId" }); // Cambiado el alias a "chatOwner"
 
-        // Muchos a Uno
-        Chat.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
-
-        //ADMIN
-        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDoId" });
+        // ADMIN
+        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "adminId" });
 
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
-        //     // DATA DE PRUEBA
-        // await Property.bulkCreate(propertyData)
-        // await Client.bulkCreate(testClientData)
-        // await Admin.bulkCreate(testAdminData)
-        // await Owner.bulkCreate(testOwnerData)
-        // await Room.bulkCreate(testRoom)
-
+        // DATA DE PRUEBA
+        // await Property.bulkCreate(propertyData);
+        // await PropertyWithPrice.bulkCreate(propertyWithPriceData);
+        // await Client.bulkCreate(testClientData);
+        // await Admin.bulkCreate(testAdminData);
+        // await Owner.bulkCreate(testOwnerData);
+        // await Room.bulkCreate(testRoom);
+        // await RoomWithPrice.bulkCreate(roomWithPriceData);
 
         // console.log("Data inserted");
     } catch (error) {
@@ -89,10 +108,13 @@ module.exports = {
     Document,
     Message,
     Property,
-    LeaseOrder,
+    LeaseOrderRoom,
+    LeaseOrderProperty,
     Chat,
     Client,
     Admin,
     ToDo,
-    Room
+    Room,
+    PropertyWithPrice,
+    RoomWithPrice
 };

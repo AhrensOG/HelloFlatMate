@@ -6,10 +6,10 @@ const LeaseOrder = require("./leaseOrderProperty.js");
 const Comment = require("./comment.js");
 const ToDo = require("./toDo.js");
 
-const propertyInit = (sequelize, DataTypes) => {
-    class Property extends Model { }
+const propertyWithPriceInit = (sequelize, DataTypes) => {
+    class PropertyWithPrice extends Model { }
 
-    Property.init(
+    PropertyWithPrice.init(
         {
             // CUSTOMIZED ID
             id: {
@@ -57,6 +57,22 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            price: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+            amountOwner: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+            amountHelloflatmate: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+            offer: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
             puntuation: {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),
                 allowNull: false,
@@ -71,7 +87,7 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: false
             },
             category: {
-                type: DataTypes.ENUM('HELLO_ROOM', 'HELLO_COLIVING',),
+                type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD'),
                 allowNull: false,
             },
             images: {
@@ -122,12 +138,12 @@ const propertyInit = (sequelize, DataTypes) => {
         },
         {
             sequelize,
-            modelName: "Property",
+            modelName: "PropertyWithPrice",
             freezeTableName: true,
             timestamps: false,
         }
     )
-    return Property
+    return PropertyWithPrice
 }
 
-module.exports = propertyInit(connection, DataTypes)
+module.exports = propertyWithPriceInit(connection, DataTypes)

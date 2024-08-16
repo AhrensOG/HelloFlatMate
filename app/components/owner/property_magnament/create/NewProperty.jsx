@@ -104,14 +104,16 @@ export default function NewProperty() {
 
   const saveImages = async (images) => {
     if (images.length > 0) {
+      const prevImages = images.map((image) => image.fileData);
       try {
-        const response = await uploadFiles(images);
+        const response = await uploadFiles(prevImages);
         if (response instanceof Error) {
           toast.error("Error al cargar archivos");
           return;
         } else {
           const imagesUrl = response.map((file) => file.url);
           console.log(response);
+          console.log(imagesUrl);
 
           setUrlImages(imagesUrl);
           toast.success("Imagenes cargadas correctamente");
@@ -199,12 +201,6 @@ export default function NewProperty() {
     <div className="w-full flex justify-center items-center">
       <div className="flex flex-col w-full max-w-screen-sm gap-2 p-1">
         <header className="w-full space-y-4">
-          {/* <div className="w-full">
-          <SliderCreateTemplate
-            action={handleShowSliderModal}
-            img={sliderImage[0]}
-          />
-        </div> */}
           <ImageUploader setImages={setSliderImage} images={sliderImage} />
           <NavBarDetails />
         </header>
