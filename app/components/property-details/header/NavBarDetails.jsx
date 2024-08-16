@@ -1,9 +1,13 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function NavBarDetails({ link = `/pages/filtered` }) {
+export default function NavBarDetails({
+  link = `/pages/filtered`,
+  callBack = false,
+}) {
   const route = useRouter();
   const handleBack = (link) => {
+    if (callBack) return callBack();
     route.push(link);
   };
   return (
