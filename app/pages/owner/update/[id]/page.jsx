@@ -1,10 +1,17 @@
 "use client";
 
+import CategorySelectSection from "@/app/components/owner/property_magnament/create/CategorySelectSection";
 import UpdateProperty from "@/app/components/owner/property_magnament/update/UpdateProperty";
 import axios from "axios";
+import { AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 
 export default function UpdatePropertyPage({ params }) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const router = useRouter();
+  const [currentCategory, setCurrentCategory] = useState(false);
+
   const id = params.id;
 
   const [initialData, setInitialData] = useState(null);
@@ -14,6 +21,7 @@ export default function UpdatePropertyPage({ params }) {
       try {
         const response = await axios.get(`/api/property?id=${id}`);
         setInitialData(response.data.property);
+        setCurrentCategory(response.data.property.category);
       } catch (error) {
         console.error("Error fetching property data:", error);
       }
@@ -21,6 +29,29 @@ export default function UpdatePropertyPage({ params }) {
 
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    const updateInitialData = () => {
+      setInitialData((current) => {
+        return {
+          ...current,
+          category: currentCategory,
+        };
+      });
+    };
+    updateInitialData();
+  }, [currentCategory]);
+
+  const handleContinue = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handleBack = () => {
+    if (currentStep - 1 === 0) {
+      return router.push("/pages/owner");
+    }
+    setCurrentStep(currentStep - 1);
+  };
 
   // Muestra un mensaje de carga mientras se obtienen los datos
   if (!initialData) {
@@ -33,7 +64,19 @@ export default function UpdatePropertyPage({ params }) {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <UpdateProperty data={initialData} />
+      <AnimatePresence mode="wait">
+        {currentStep === 1 && (
+          <CategorySelectSection
+            handleContinue={handleContinue}
+            handleBack={handleBack}
+            currentCategory={currentCategory}
+            setCurrentCategory={setCurrentCategory}
+          />
+        )}
+        {currentStep === 2 && (
+          <UpdateProperty data={initialData} handleBack={handleBack} />
+        )}
+      </AnimatePresence>
     </Suspense>
   );
 }

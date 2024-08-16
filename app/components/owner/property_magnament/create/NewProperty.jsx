@@ -21,7 +21,7 @@ import RoomAddModal from "./main/room_section/RoomAddModal";
 import { useRouter } from "next/navigation";
 import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
 
-export default function NewProperty() {
+export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -111,7 +111,7 @@ export default function NewProperty() {
     puntuation: [],
     isActive: true,
     isBussy: false,
-    category: finalData.category || "HELLO_ROOM",
+    category: category,
     images: sliderImage,
     amenities: amenities,
     description: description,
@@ -131,7 +131,6 @@ export default function NewProperty() {
         // Crear propiedad
         const propertyResponse = await axios.post("/api/property", property);
         const propertyId = propertyResponse.data.property.id;
-        console.log(propertyResponse.data.property.id);
 
         // Crear habitaciones
         const rooms = dataRoom.map((room) => ({
@@ -140,7 +139,6 @@ export default function NewProperty() {
           numberBeds: parseInt(room.numberBeds),
           propertyId: propertyId,
         }));
-        console.log(rooms);
 
         try {
           await axios.post("/api/room", rooms);
@@ -174,7 +172,7 @@ export default function NewProperty() {
           />
         </div> */}
           <ImageUploader setImages={setSliderImage} images={sliderImage} />
-          <NavBarDetails />
+          <NavBarDetails callBack={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}

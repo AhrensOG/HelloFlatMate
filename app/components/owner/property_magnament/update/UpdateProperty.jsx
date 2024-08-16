@@ -1,6 +1,4 @@
 import NavBarDetails from "@/app/components/property-details/header/NavBarDetails";
-import SliderTemplate from "../create/header/SliderCreateTemplate";
-import AmenitiesSectionTemplate from "../create/main/AmenitiesSectionTemplate";
 import DescriptionSectionTemplate from "../create/main/DescriptionSectionTemplate";
 import GuestInfoSectionTemplate from "../create/main/GuestInfoSectionTemplate";
 import LocationSectionTemplate from "../create/main/LocationSectionTemplate";
@@ -9,7 +7,7 @@ import RoomSectionTemplate from "../create/main/RoomSectionTemplate";
 import TitleSectionTemplate from "../create/main/TitleSectionTemplate";
 import SaveButton from "../shared/SaveButton";
 import { plus_jakarta } from "@/font";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import SliderUpdateTemplate from "./header/SliderUpdateTemplate";
 import DescriptionModal from "../create/main/description_section/DescriptionModal";
 import SliderModal from "../create/header/slider/SliderModal";
@@ -20,13 +18,12 @@ import EditButton from "../shared/EditButton";
 import axios from "axios";
 import { toast } from "sonner";
 import validateData from "../create/validateData";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import FinalModal from "../create/main/FinalModal";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
 
-export default function UpdateProperty({ data }) {
+export default function UpdateProperty({ data, handleBack }) {
   const router = useRouter();
-  console.log(data)
   // Establecer valores predeterminados
   const [property, setProperty] = useState(data);
   const [name, setName] = useState(data.name);
@@ -159,19 +156,15 @@ export default function UpdateProperty({ data }) {
   };
 
   const updateProperty = async () => {
-    console.log(finalData);
-    console.log(dataRooms);
 
     if (handleSubmit()) {
       try {
         try {
           if (deleteRooms.length > 0) {
-            console.log(deleteRooms);
 
             const deletedRooms = await axios.delete(`/api/room`, {
               data: { deleteRooms },
             });
-            console.log(deletedRooms);
             toast.success("Habitaciones eliminadas");
           }
         } catch (error) {
@@ -192,7 +185,6 @@ export default function UpdateProperty({ data }) {
           });
           if (newRooms.length > 0) {
             const createdRooms = await axios.post("/api/room", roomsFormated);
-            console.log(createdRooms);
             toast.success("Habitaciones creadas");
           }
         } catch (err) {
@@ -226,7 +218,6 @@ export default function UpdateProperty({ data }) {
           checkIn: moreInfo.checkIn,
           checkOut: moreInfo.checkOut,
         });
-        console.log("Property data updated successfully:", response.data);
         toast.success("Propiedad actualizada correctamente");
         // router.push(`/pages/owner/update/${property.id}`);
       } catch (error) {
@@ -256,7 +247,7 @@ export default function UpdateProperty({ data }) {
               action={handleShowSliderModal}
             />
           </div>
-          <NavBarDetails link="/pages/owner" />
+          <NavBarDetails link="/pages/owner" callBack={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
