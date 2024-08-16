@@ -16,7 +16,7 @@ export default function RoomInfoTemplate({
   return (
     <article className="flex flex-col gap-1 min-w-[8.7rem] max-w-[10rem] relative">
       <div
-        onMouseMove={() => setShowPencil(true)}
+        onMouseEnter={() => setShowPencil(true)}
         onMouseLeave={() => setShowPencil(false)}
         className="relative  h-[5.63rem] bg-[#d6d6d6ff] rounded-lg"
       >
@@ -44,7 +44,7 @@ export default function RoomInfoTemplate({
           </div>
         )}
         <div className="absolute inset-0 w-full h-full flex justify-center items-center z-50">
-          {!type === "empty" ? (
+          {!(type === "empty") ? (
             <div onClick={() => showModal()} className="w-9 h-9 text-white">
               <PencilSquareIcon />
             </div>

@@ -31,6 +31,8 @@ function ImageUploader({ initialImages = false, setImages, images }) {
       fileData: file,
       url: URL.createObjectURL(file),
     }));
+    console.log(newImages);
+
     setImages((prevImages) => [...prevImages, ...newImages]);
   };
 

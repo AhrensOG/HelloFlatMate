@@ -28,23 +28,17 @@ export async function getPropertyById(id) {
     }
 }
 
-export async function getPropertiesActive() {
+export async function getPropertiesByStatus(status) {
+    if (!status) { return NextResponse.json({ error: "Se requiere el estado" }, { status: 400 }); }
+    if (status !== "FREE" && status !== "RESERVED" && status !== "OCCUPIED") { return NextResponse.json({ error: "El estado no es valido" }, { status: 400 }); }
     try {
-        const properties = await Property.findAll({ where: { isActive: true } });
+        const properties = await Property.findAll({ where: { status: status } });
         return NextResponse.json(properties, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
     }
 }
 
-export async function getPropertiesInactive() {
-    try {
-        const properties = await Property.findAll({ where: { isActive: false } });
-        return NextResponse.json(properties, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
-    }
-}
 
 export async function getPropertiesByCategory(category) {
     if (!category) return NextResponse.json({ error: "Se requiere la categoria" }, { status: 400 });

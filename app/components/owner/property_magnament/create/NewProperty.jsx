@@ -16,10 +16,12 @@ import AddressModal from "./main/address_modal/AddressModal";
 import { toast } from "sonner";
 import validateData from "./validateData";
 import axios from "axios";
-import FinalModal from "./main/FinalModal";
 import RoomAddModal from "./main/room_section/RoomAddModal";
 import { useRouter } from "next/navigation";
 import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
+import SizeAndCategorySection from "./main/SizeAndCategorySection";
+import PriceSection from "./main/PriceSection";
+import { uploadFiles } from "@/app/firebase/uploadFiles";
 
 export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
@@ -49,8 +51,14 @@ export default function NewProperty({ category, handleBack }) {
     checkIn: "",
     checkOut: "",
   });
-  const [finalData, setFinalData] = useState({});
+  const [catAndSize, setCatAndSize] = useState({});
   const [dataRoom, setDataRoom] = useState([]);
+  const [price, setPrice] = useState({
+    price: null,
+    amountOwner: null,
+    amountHelloflatmate: null,
+  });
+  const [urlImages, setUrlImages] = useState([]);
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -61,7 +69,6 @@ export default function NewProperty({ category, handleBack }) {
   const [showSliderModal, setShowSliderModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showMoreInfoModal, setShowMoreInfoModal] = useState(false);
-  const [showFinalModal, setShowFinalModal] = useState(false);
   const [showRoomEditModal, setShowRoomEditModal] = useState(false);
 
   // Modal handlers
@@ -72,7 +79,6 @@ export default function NewProperty({ category, handleBack }) {
   const handleShowMoreInfoModal = () => {
     setShowMoreInfoModal(!showMoreInfoModal);
   };
-  const handleShowFinalModal = () => setShowFinalModal(!showFinalModal);
   const handleShowRoomEditModal = () => {
     setShowRoomEditModal(!showRoomEditModal);
   };
@@ -96,38 +102,63 @@ export default function NewProperty({ category, handleBack }) {
     return true;
   };
 
+  const saveImages = async (images) => {
+    if (images.length > 0) {
+      const prevImages = images.map((image) => image.fileData);
+      try {
+        const response = await uploadFiles(prevImages);
+        if (response instanceof Error) {
+          toast.error("Error al cargar archivos");
+          return;
+        } else {
+          const imagesUrl = response.map((file) => file.url);
+          console.log(response);
+          console.log(imagesUrl);
+
+          setUrlImages(imagesUrl);
+          toast.success("Imagenes cargadas correctamente");
+          return;
+        }
+      } catch (error) {
+        toast.error("Error al cargar archivos");
+      }
+    }
+  };
+
   const property = {
     name: name,
     city: address.city,
     street: address.street,
     streetNumber: address.streetNumber,
     postalCode: address.postalCode,
-    size: parseInt(finalData.size) || "",
+    size: parseInt(catAndSize.size),
     roomsCount: dataRoom.length,
     bathrooms: parseInt(guestInfo.bathrooms),
     bed: parseInt(guestInfo.beds),
     maximunOccupants: parseInt(guestInfo.occupants),
-    price: parseInt(finalData.price) || 10,
+    amountHelloflatmate: parseInt(price.amountHelloflatmate),
+    amountOwner: parseInt(price.amountOwner),
     puntuation: [],
     isActive: true,
-    isBussy: false,
-    category: category,
-    images: sliderImage,
+    category: catAndSize.category,
+    images: urlImages,
     amenities: amenities,
     description: description,
-    incomeConditionDescription: moreInfo.condicionDeRenta || "",
-    maintenanceDescription: moreInfo.mantenimiento || "",
-    roomDescription: moreInfo.habitacion || "",
-    feeDescription: moreInfo.facturas || "",
-    aboutUs: moreInfo.sobreNosotros || "",
-    houseRules: moreInfo.normasDeConvivencia || "",
-    checkIn: moreInfo.checkIn || "",
-    checkOut: moreInfo.checkOut || "",
+    incomeConditionDescription: moreInfo.condicionDeRenta,
+    maintenanceDescription: moreInfo.mantenimiento,
+    roomDescription: moreInfo.habitacion,
+    feeDescription: moreInfo.facturas,
+    aboutUs: moreInfo.sobreNosotros,
+    houseRules: moreInfo.normasDeConvivencia,
+    checkIn: moreInfo.checkIn,
+    checkOut: moreInfo.checkOut,
   };
 
   const createProperty = async () => {
     if (handleSubmit()) {
       try {
+        //Guardar Imagenes
+        await saveImages(sliderImage);
         // Crear propiedad
         const propertyResponse = await axios.post("/api/property", property);
         const propertyId = propertyResponse.data.property.id;
@@ -137,6 +168,9 @@ export default function NewProperty({ category, handleBack }) {
           name: room.name,
           image: room.image,
           numberBeds: parseInt(room.numberBeds),
+          couple: room.couple,
+          bathroom: room.bathroom,
+          serial: room.serial,
           propertyId: propertyId,
         }));
 
@@ -165,12 +199,6 @@ export default function NewProperty({ category, handleBack }) {
     <div className="w-full flex justify-center items-center">
       <div className="flex flex-col w-full max-w-screen-sm gap-2 p-1">
         <header className="w-full space-y-4">
-          {/* <div className="w-full">
-          <SliderCreateTemplate
-            action={handleShowSliderModal}
-            img={sliderImage[0]}
-          />
-        </div> */}
           <ImageUploader setImages={setSliderImage} images={sliderImage} />
           <NavBarDetails callBack={handleBack} />
         </header>
@@ -184,6 +212,8 @@ export default function NewProperty({ category, handleBack }) {
             setAdress={setAddress}
             action={handleShowAddressModal}
           />
+          <PriceSection data={price} setData={setPrice} />
+          <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
           <div className="flex flex-col gap-6">
             <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
           </div>
@@ -204,7 +234,7 @@ export default function NewProperty({ category, handleBack }) {
             setData={setMoreInfo}
             action={handleShowMoreInfoModal}
           />
-          <SaveButton action={handleShowFinalModal} />
+          <SaveButton action={createProperty} />
         </main>
         {showDescriptionModal && (
           <DescriptionModal
@@ -213,13 +243,6 @@ export default function NewProperty({ category, handleBack }) {
             showModal={handleShowDescriptionModal}
           />
         )}
-        {/* {showSliderModal && (
-        <SliderModal
-          data={sliderImage}
-          setData={setSliderImage}
-          showModal={handleShowSliderModal}
-        />
-      )} */}
         {showRoomEditModal && (
           <RoomAddModal
             data={dataRoom}
@@ -232,14 +255,6 @@ export default function NewProperty({ category, handleBack }) {
             data={address}
             setData={setAddress}
             showModal={handleShowAddressModal}
-          />
-        )}
-        {showFinalModal && (
-          <FinalModal
-            data={finalData}
-            setData={setFinalData}
-            action={createProperty}
-            showModal={handleShowFinalModal}
           />
         )}
       </div>

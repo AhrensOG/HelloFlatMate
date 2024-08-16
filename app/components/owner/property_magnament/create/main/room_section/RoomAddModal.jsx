@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 
-export default function RoomAddModal({ data, setData, showModal }) {
+export default function RoomAddModal({ data, setData, showModal, propertyId }) {
   const [dataRoom, setDataRoom] = useState({});
 
   const handleSubmit = async () => {
     const array = [...data];
+
     if (!dataRoom?.name) {
       return toast.error("Por favor, especifique un nombre");
     }
@@ -17,9 +18,19 @@ export default function RoomAddModal({ data, setData, showModal }) {
     if (!dataRoom?.image) {
       return toast.error("Por favor, agrega una imagen.");
     }
+
     const uploadedImage = await submitImage(dataRoom.image);
-    dataRoom.image = uploadedImage;
-    array.push(dataRoom);
+    const roomData = {
+      ...dataRoom,
+      image: uploadedImage,
+      serial: dataRoom.serial,
+      numberBeds: parseInt(dataRoom.numberBeds),
+      couple: dataRoom.couple === "yes",
+      bathroom: dataRoom.bathroom === "yes",
+      propertyId,
+    };
+
+    array.push(roomData);
     setData(array);
     showModal(); // Cierra el modal después de guardar
   };
@@ -29,6 +40,11 @@ export default function RoomAddModal({ data, setData, showModal }) {
     console.log(response);
 
     return response[0].url;
+  };
+
+  const handleRadioChange = (event) => {
+    const { name, value } = event.target;
+    setDataRoom({ ...dataRoom, [name]: value });
   };
 
   return (
@@ -51,6 +67,21 @@ export default function RoomAddModal({ data, setData, showModal }) {
           />
         </div>
         <div>
+          <label className="block text-sm mb-1" htmlFor="name">
+            Serial
+          </label>
+          <input
+            type="text"
+            id="serial"
+            name="serial"
+            value={dataRoom?.serial || ""}
+            onChange={(event) =>
+              setDataRoom({ ...dataRoom, serial: event.target.value })
+            }
+            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div>
           <label className="block text-sm mb-1" htmlFor="numberBeds">
             Numero de camas
           </label>
@@ -64,6 +95,52 @@ export default function RoomAddModal({ data, setData, showModal }) {
             }
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
+        </div>
+        <div className="w-full flex gap-3 justify-center items-center flex-wrap">
+          <h3 className="w-full">¿Tiene baños?</h3>
+          <div className="flex gap-2 px-3">
+            <input
+              type="radio"
+              name="bathroom"
+              value="yes"
+              checked={dataRoom.bathroom === "yes"}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="bathroom">Si</label>
+          </div>
+          <div className="flex  gap-2 px-3">
+            <input
+              type="radio"
+              name="bathroom"
+              value="no"
+              checked={dataRoom.bathroom === "no"}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="bathroom">No</label>
+          </div>
+        </div>
+        <div className="w-full flex gap-3 justify-center items-center flex-wrap">
+          <h3 className="w-full">¿Es para pareja?</h3>
+          <div className="flex gap-2 px-3">
+            <input
+              type="radio"
+              name="couple"
+              value="yes"
+              checked={dataRoom.couple === "yes"}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="couple">Si</label>
+          </div>
+          <div className="flex  gap-2 px-3">
+            <input
+              type="radio"
+              name="couple"
+              value="no"
+              checked={dataRoom.couple === "no"}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="couple">No</label>
+          </div>
         </div>
         <div className="w-full">
           <label className="block text-sm mb-1" htmlFor="image">

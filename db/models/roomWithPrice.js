@@ -1,17 +1,29 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const roomInit = (sequelize, DataTypes) => {
+const roomWithPriceInit = (sequelize, DataTypes) => {
 
-    class Room extends Model { }
+    class RoomWithPrice extends Model { }
 
-    Room.init(
+    RoomWithPrice.init(
         {
             // CUSTOMIZED ID
             id: {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
                 primaryKey: true,
+            },
+            price: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            amountOwner: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            amountHelloflatmate: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
             },
             serial: {
                 type: DataTypes.STRING(100),
@@ -45,12 +57,12 @@ const roomInit = (sequelize, DataTypes) => {
         },
         {
             sequelize,
-            modelName: "Room",
+            modelName: "RoomWithPrice",
             freezeTableName: true,
             timestamps: false,
         }
     )
-    return Room
+    return RoomWithPrice
 }
 
-module.exports = roomInit(connection, DataTypes)
+module.exports = roomWithPriceInit(connection, DataTypes)

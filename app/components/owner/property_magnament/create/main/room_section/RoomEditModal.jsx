@@ -18,6 +18,12 @@ export default function RoomEditModal({
   }, [selectedRoom]);
 
   const handleSubmit = async () => {
+    // Compara dataRoom con selectedRoom para ver si hubo cambios
+    if (!isModified(dataRoom, selectedRoom)) {
+      showModal(); // Cierra el modal sin hacer la petición
+      return;
+    }
+
     const array = [...data];
 
     if (!dataRoom?.name) {
@@ -30,8 +36,11 @@ export default function RoomEditModal({
       return toast.error("Por favor, agrega una imagen.");
     }
 
-    const uploadedImage = await submitImage(dataRoom.image);
-    dataRoom.image = uploadedImage;
+    // Solo sube la imagen si es un archivo (nueva imagen)
+    if (dataRoom.image instanceof File) {
+      const uploadedImage = await submitImage(dataRoom.image);
+      dataRoom.image = uploadedImage;
+    }
 
     if (selectedRoom) {
       // Edita la habitación existente
@@ -61,6 +70,30 @@ export default function RoomEditModal({
     const response = await uploadFiles([file]);
     console.log(response);
     return response[0].url;
+  };
+
+  const handleRadioChange = (event) => {
+    const { name, value } = event.target;
+    setDataRoom({ ...dataRoom, [name]: value === "yes" });
+  };
+
+  // Función para comparar si hubo cambios en los datos
+  const isModified = (newData, originalData) => {
+    const originalDataWithoutImage = { ...originalData };
+    delete originalDataWithoutImage.image; // Se elimina la imagen porque podría no ser un archivo
+    const newDataWithoutImage = { ...newData };
+    delete newDataWithoutImage.image;
+
+    // Si las imágenes son URLs y no cambiaron, se consideran iguales
+    const isImageModified =
+      newData.image instanceof File || newData.image !== originalData?.image;
+
+    // Compara los datos restantes
+    return (
+      isImageModified ||
+      JSON.stringify(originalDataWithoutImage) !==
+        JSON.stringify(newDataWithoutImage)
+    );
   };
 
   return (
@@ -96,6 +129,54 @@ export default function RoomEditModal({
             }
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
+        </div>
+        <div className="w-full flex gap-3 justify-center items-center flex-wrap">
+          <h3 className="w-full">¿Tiene baños?</h3>
+          <div className="flex gap-2 px-3">
+            <input
+              type="radio"
+              name="bathroom"
+              id="bathroom"
+              value="yes"
+              checked={dataRoom?.bathroom === true}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="bathroom">Si</label>
+          </div>
+          <div className="flex gap-2 px-3">
+            <input
+              type="radio"
+              name="bathroom"
+              id="bathroom"
+              value="no"
+              onChange={handleRadioChange}
+              checked={dataRoom?.bathroom === false}
+            />
+            <label htmlFor="bathroom">No</label>
+          </div>
+        </div>
+        <div className="w-full flex gap-3 justify-center items-center flex-wrap">
+          <h3 className="w-full">¿Es para pareja?</h3>
+          <div className="flex gap-2 px-3">
+            <input
+              type="radio"
+              name="couple"
+              value="yes"
+              onChange={handleRadioChange}
+              checked={dataRoom?.couple === true}
+            />
+            <label htmlFor="couple">Si</label>
+          </div>
+          <div className="flex  gap-2 px-3">
+            <input
+              type="radio"
+              name="couple"
+              value="no"
+              onChange={handleRadioChange}
+              checked={dataRoom?.couple === false}
+            />
+            <label htmlFor="couple">No</label>
+          </div>
         </div>
         <div className="w-full">
           <label className="block text-sm mb-1" htmlFor="image">

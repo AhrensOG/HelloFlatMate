@@ -18,9 +18,10 @@ import EditButton from "../shared/EditButton";
 import axios from "axios";
 import { toast } from "sonner";
 import validateData from "../create/validateData";
-import { useRouter } from "next/navigation";
-import FinalModal from "../create/main/FinalModal";
+import { useRouter, useSearchParams } from "next/navigation";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
+import PriceSection from "../create/main/PriceSection";
+import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
 
 export default function UpdateProperty({ data, handleBack }) {
   const router = useRouter();
@@ -58,6 +59,15 @@ export default function UpdateProperty({ data, handleBack }) {
     category: data.category || "",
   });
   const [deleteRooms, setDeleteRooms] = useState([]);
+  const [catAndSize, setCatAndSize] = useState({
+    category: data.category || "",
+    size: data.size || 0,
+  });
+  const [price, setPrice] = useState({
+    price: data.price || 0,
+    amountOwner: data.amountOwner || 0,
+    amountHelloflatmate: data.amountHelloflatmate || 0,
+  });
 
   //funcion para manejar la edicion de habitaciones
   const handleRoomUpdate = (updatedRoom) => {
@@ -156,7 +166,6 @@ export default function UpdateProperty({ data, handleBack }) {
   };
 
   const updateProperty = async () => {
-
     if (handleSubmit()) {
       try {
         try {
@@ -198,14 +207,17 @@ export default function UpdateProperty({ data, handleBack }) {
           street: address.street,
           streetNumber: parseInt(address.streetNumber),
           postalCode: address.postalCode,
-          size: parseInt(finalData.size),
+          size: parseInt(catAndSize.size),
           roomsCount: property.roomsCount,
           bathrooms: parseInt(guestInfo.bathrooms),
           bed: parseInt(guestInfo.beds),
           maximunOccupants: parseInt(guestInfo.occupants),
-          price: parseInt(finalData.price),
+          price:
+            parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner),
+          amountHelloflatmate: parseInt(price.amountHelloflatmate),
+          amountOwner: parseInt(price.amountOwner),
           puntuation: [],
-          category: finalData.category,
+          category: catAndSize.category,
           images: sliderImage,
           amenities: amenities,
           description: description,
@@ -259,6 +271,8 @@ export default function UpdateProperty({ data, handleBack }) {
             setAddress={setAddress}
             action={handleShowAddressModal}
           />
+          <PriceSection data={price} setData={setPrice} />
+          <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
           <div className="flex flex-col gap-6">
             <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
           </div>
@@ -284,7 +298,7 @@ export default function UpdateProperty({ data, handleBack }) {
             setData={setMoreInfo}
             action={handleShowMoreInfoModal}
           />
-          <SaveButton action={handleShowFinalModal} />
+          <SaveButton action={updateProperty} />
         </main>
         {showDescriptionModal && (
           <DescriptionModal
@@ -312,14 +326,6 @@ export default function UpdateProperty({ data, handleBack }) {
             data={amenities}
             setData={handleAmenitiesInfo}
             showModal={handleShowAmenitiesModal}
-          />
-        )}
-        {showFinalModal && (
-          <FinalModal
-            action={updateProperty}
-            showModal={handleShowFinalModal}
-            setData={setFinalData}
-            data={finalData}
           />
         )}
         {showAddRoom && (

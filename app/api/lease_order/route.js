@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
 import { createLeaseOrder } from "./controller/createLeaseOrderController";
 import { getAllLeaseOrders } from "./controller/getLeaseOrderController";
-import { approvedLeaseOrder, rejectedLeaseOrder, updateLeaseOrder } from "./controller/updateLeaseOrderController";
+import { updateLeaseOrder, updateStatusLeaseOrder } from "./controller/updateLeaseOrderController";
 import { deleteLeaseOrder } from "./controller/deleteLeaseOrderController";
 
 export async function POST(req) {
@@ -24,16 +23,8 @@ export async function PUT(req) {
 
 export async function PATCH(req) {
     const data = await req.json()
-    if (data.action === "APPROVED") {
-        const result = await approvedLeaseOrder(data)
-        return result
-    } else if (data.action === "REJECTED") {
-        const result = await rejectedLeaseOrder(data)
-        return result
-    } else {
-        return NextResponse.json({ message: "No action provided" }, { status: 400 })
-    }
-
+    const result = await updateStatusLeaseOrder(data)
+    return result
 }
 
 export async function DELETE(req) {

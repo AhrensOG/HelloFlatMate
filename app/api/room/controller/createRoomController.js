@@ -17,8 +17,10 @@ export async function createRoom(data) {
 
     try {
         console.log("Datos recibidos:", data);  // Imprimir datos para verificación
-
-        const rooms = await Room.bulkCreate(data);
+        let addStatus = data.map((room) => {
+            return { ...room, status: "FREE" }
+        })
+        const rooms = await Room.bulkCreate(addStatus);
         return NextResponse.json({ rooms }, { status: 201 });
     } catch (error) {
         console.error("Error al crear habitaciones:", error);  // Registrar el error
