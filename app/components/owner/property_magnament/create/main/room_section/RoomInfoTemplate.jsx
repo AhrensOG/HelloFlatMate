@@ -54,23 +54,23 @@ export default function RoomInfoTemplate({
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <label htmlFor="name" hidden></label>
-        <input
-          value={name}
-          className="text-base font-medium pl-2 appearance-none outline-none w-full"
-          type="text"
-          name="name"
-          id="name"
-          placeholder="Habitacion N°"
-        />
-        <label htmlFor="bedNumber" hidden></label>
-        <input
-          value={bedNumber}
-          className="font-normal text-sm text-[#4F7A94] pl-2 appearance-none outline-none"
-          type="text"
-          id="bedNumber"
-          placeholder="Número de camas"
-        />
+        {/* Nombre */}
+        <div
+          className={`text-base font-medium pl-2 w-full ${
+            !name ? "text-gray-500" : "text-black"
+          }`}
+        >
+          {name || "Habitacion N°"}
+        </div>
+
+        {/* Número de camas */}
+        <div
+          className={`font-normal text-sm text-[#4F7A94] pl-2 w-full ${
+            !bedNumber ? "text-gray-500" : "text-black"
+          }`}
+        >
+          {bedNumber || "Número de camas"}
+        </div>
       </div>
       {onDelete ? (
         <button

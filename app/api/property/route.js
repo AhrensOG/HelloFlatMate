@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import createProperty from './controller/createPropertyController';
 import { deleteProperty } from './controller/deletePropertyController';
 import { getAllProperties, getPropertyById } from './controller/getPropertyController';
@@ -13,10 +14,13 @@ export async function POST(req) {
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
+    const data = {
+        id: searchParams.get('id'),
+        price: searchParams.get('price'),
+    }
 
-    if (id) {
-        const result = await getPropertyById(id);
+    if (data) {
+        const result = await getPropertyById(data);
         return result
     }
     const result = await getAllProperties();

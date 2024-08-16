@@ -1,28 +1,55 @@
-import { Property, Room } from "@/db/init";
+import { Property, PropertyWithPrice, Room, RoomWithPrice } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
 export async function getAllProperties() {
     try {
         const properties = await Property.findAll();
-        return NextResponse.json(properties, { status: 200 });
+        const propertiesWithPrice = await PropertyWithPrice.findAll();
+        return NextResponse.json([...properties, ...propertiesWithPrice], { status: 200 });
 
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
     }
 }
 
-export async function getPropertyById(id) {
-    try {
-        const property = await Property.findByPk(id, {
-            include: {
-                model: Room,
-                as: 'rooms'
-            }
-        });
-        if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
+export async function getPropertyById(data) {
+    console.log(data);
 
-        return NextResponse.json({ property }, { status: 200 });
+    try {
+        let propertyWhitPrice
+        let property
+        if (data) {
+            if (data.price) {
+                propertyWhitPrice = await PropertyWithPrice.findByPk(data.id, {
+                    include: {
+                        model: Room,
+                        as: 'rooms'
+                    }
+                }
+                );
+
+                if (propertyWhitPrice) {
+                    return NextResponse.json({ propertyWhitPrice }, { status: 200 });
+                }
+            } else {
+                property = await Property.findByPk(data.id, {
+                    include: {
+                        model: RoomWithPrice,
+                        as: 'roomsWithPrice'
+                    }
+                });
+                if (property) {
+                    return NextResponse.json({ property }, { status: 200 });
+                }
+            }
+        } else {
+            return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
+        }
+        if (!property && !propertyWhitPrice) {
+            return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
+        }
+
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener la propiedad" }, { status: 500 });
     }

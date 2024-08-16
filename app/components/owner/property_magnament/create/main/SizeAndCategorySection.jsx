@@ -59,24 +59,16 @@ export default function SizeAndCategorySection({ data, setData }) {
             )}
           </div>
           <div className="w-full">
-            <label htmlFor="category" className="block text-sm mb-1">
-              Categoría:
-            </label>
-            <select
-              name="category"
-              id="category"
-              className="w-full p-2 border border-gray-300 rounded"
-              onChange={handleChange}
-              value={formData.category || ""}
-            >
-              <option value="">Selecciona una categoría</option>
-              <option value="HELLO_ROOM">HelloRoom</option>
-              <option value="HELLO_STUDIO">HelloStudio</option>
-              <option value="HELLO_COLIVING">HelloColiving</option>
-            </select>
-            {errors.category && (
-              <p className="text-red-500 text-xs mt-1">{errors.category}</p>
-            )}
+            <h3 className="font-medium text-[#000000CC] text-base">
+              Categoria
+            </h3>
+            <p className="text-base border border-gray-300 p-2 font-medium">
+              {data.category
+                .toLowerCase()
+                .split("_")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
+            </p>
           </div>
         </div>
       </div>

@@ -51,7 +51,10 @@ export default function NewProperty({ category, handleBack }) {
     checkIn: "",
     checkOut: "",
   });
-  const [catAndSize, setCatAndSize] = useState({});
+  const [catAndSize, setCatAndSize] = useState({
+    category: category,
+    size: null,
+  });
   const [dataRoom, setDataRoom] = useState([]);
   const [price, setPrice] = useState({
     price: null,
@@ -112,8 +115,6 @@ export default function NewProperty({ category, handleBack }) {
           return;
         } else {
           const imagesUrl = response.map((file) => file.url);
-          console.log(response);
-          console.log(imagesUrl);
 
           setUrlImages(imagesUrl);
           toast.success("Imagenes cargadas correctamente");
@@ -125,7 +126,62 @@ export default function NewProperty({ category, handleBack }) {
     }
   };
 
-  const property = {
+  const submitRoom = async (data) => {
+    let rooms;
+    if (data.price) {
+      rooms = data.map((room) => ({
+        name: room.name,
+        images: room.images,
+        numberBeds: parseInt(room.numberBeds),
+        couple: room.couple,
+        bathroom: room.bathroom,
+        serial: room.serial,
+        price: parseInt(room.price),
+        amountOwner: parseInt(room.amountOwner),
+        amountHelloflatmate: parseInt(room.amountHelloflatmate),
+      }));
+    } else {
+      rooms = data.map((room) => ({
+        name: room.name,
+        images: room.images,
+        numberBeds: parseInt(room.numberBeds),
+        couple: room.couple,
+        bathroom: room.bathroom,
+        serial: room.serial,
+      }));
+    }
+
+    try {
+      console.log(rooms);
+
+      const response = await axios.post("/api/room", rooms); // Cambia rooms por response para evitar la redeclaración
+      toast.success("Habitación/es creada/s con éxito");
+      return response; // Devuelve el response si todo va bien
+    } catch (error) {
+      toast.error("Error en la creación de habitaciones");
+      throw error; // Propaga el error para que se capture en el catch externo
+    }
+  };
+  const setProperty = (data, id, category) => {
+    const ids = data.map((room) => room.id);
+    try {
+      const response = axios.patch(`/api/room`, {
+        ids: ids,
+        propertyId: id,
+        category: category,
+      });
+      if (response) {
+        toast.success("Habitación/es asignada/s con exito");
+
+        return response.data.rooms;
+      }
+      toast.error("Error en la asignacion de la habitaciones");
+    } catch (error) {
+      toast.error("Error en la creación de habitaciones");
+    }
+  };
+
+  let property = {
     name: name,
     city: address.city,
     street: address.street,
@@ -155,39 +211,46 @@ export default function NewProperty({ category, handleBack }) {
   };
 
   const createProperty = async () => {
+    if (
+      catAndSize.category === "HELLO_ROOM" ||
+      catAndSize.category === "HELLO_COLIVING"
+    ) {
+      property = {
+        ...property,
+        price:
+          parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner),
+        amountHelloflatmate: parseInt(price.amountHelloflatmate),
+        amountOwner: parseInt(price.amountOwner),
+      };
+      console.log(property);
+    }
     if (handleSubmit()) {
       try {
         //Guardar Imagenes
         await saveImages(sliderImage);
+
+        console.log(dataRoom);
+
+        //Crear habitaciones
+        const rooms = await submitRoom(dataRoom);
+        console.log(rooms);
+
         // Crear propiedad
         const propertyResponse = await axios.post("/api/property", property);
+
         const propertyId = propertyResponse.data.property.id;
 
-        // Crear habitaciones
-        const rooms = dataRoom.map((room) => ({
-          name: room.name,
-          image: room.image,
-          numberBeds: parseInt(room.numberBeds),
-          couple: room.couple,
-          bathroom: room.bathroom,
-          serial: room.serial,
-          propertyId: propertyId,
-        }));
-
-        try {
-          await axios.post("/api/room", rooms);
-          toast.success("Habitación/es creada/s con éxito");
-        } catch (error) {
-          toast.error("Error en la creación de habitaciones");
-          throw error; // Propagar el error para que se capture en el catch externo
-        }
-
-        toast.success("Propiedad creada con éxito");
+        // Asignar habitaciones
+        const roomsResponse = await setProperty(
+          rooms.data.rooms,
+          propertyId,
+          propertyResponse.data.property.category
+        );
 
         // Redirigir después de un retraso
-        setTimeout(() => {
-          router.push(`/pages/owner/update/${propertyId}`);
-        }, 1000);
+        // setTimeout(() => {
+        //   router.push(`/pages/owner/update/${propertyId}`);
+        // }, 1000);
       } catch (error) {
         toast.error("Ocurrió un error");
         console.error(error);
@@ -248,6 +311,7 @@ export default function NewProperty({ category, handleBack }) {
             data={dataRoom}
             setData={setRoomData}
             showModal={handleShowRoomEditModal}
+            category={catAndSize.category}
           />
         )}
         {showAddressModal && (

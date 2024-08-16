@@ -37,20 +37,19 @@ export default function RoomSectionTemplate({
   };
 
   return (
-    <section className="flex flex-col gap-3 items-center w-full overflow-x-auto">
+    <section className="flex flex-col gap-3 items-center w-full">
       <article className="w-full flex justify-between items-center">
         <h2 className="font-bold text-[1.37rem] w-full text-start">
           Habitaciones
         </h2>
         <EditButton action={handleAddRoom} />{" "}
-        {/* Cambia el action para manejar añadir habitación */}
       </article>
-      <article className="flex justify-evenly gap-1 w-full">
+      <article className="flex justify-evenly gap-1 w-full overflow-x-auto">
         {data && data.length > 0 ? (
           data.map((item, index) => (
             <RoomInfoTemplate
               key={index}
-              img={item?.image || "/property-details/stock-1.svg"}
+              img={item?.images[0] || "/property-details/stock-1.svg"}
               name={item.name}
               bedNumber={item.numberBeds}
               showModal={() => handleEditRoom(item)} // Pasa la habitación a editar al modal

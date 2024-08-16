@@ -16,27 +16,27 @@ export default function UpdatePropertyPage({ params }) {
 
   const [initialData, setInitialData] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/api/property?id=${id}`);
-        setInitialData(response.data.property);
-        setCurrentCategory(response.data.property.category);
-      } catch (error) {
-        console.error("Error fetching property data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/property?id=${id}`);
+  //       setInitialData(response.data.property);
+  //       console.log(response.data.property);
 
-    fetchData();
-  }, [id]);
+  //       setCurrentCategory(response.data.property.category);
+  //     } catch (error) {
+  //       console.error("Error fetching property data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [id]);
 
   useEffect(() => {
     const updateInitialData = () => {
-      setInitialData((current) => {
-        return {
-          ...current,
-          category: currentCategory,
-        };
+      setInitialData({
+        id: id,
+        category: currentCategory,
       });
     };
     updateInitialData();

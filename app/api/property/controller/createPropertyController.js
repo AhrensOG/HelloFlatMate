@@ -94,7 +94,7 @@ const createProperty = async (data) => {
                 ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
             });
 
-            return NextResponse.json({ message: "Propiedad cargada con éxito", propertyWithPrice }, { status: 200 });
+            return NextResponse.json({ message: "Propiedad cargada con éxito", property: { ...propertyWithPrice } }, { status: 200 });
         } catch (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
