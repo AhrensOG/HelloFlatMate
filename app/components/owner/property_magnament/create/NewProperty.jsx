@@ -7,7 +7,7 @@ import MoreInfoSectionTemplate from "./main/MoreInfoSectionTemplate";
 import RoomSectionTemplate from "./main/RoomSectionTemplate";
 import SaveButton from "../shared/SaveButton";
 import { plus_jakarta } from "@/font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleSectionTemplate from "./main/TitleSectionTemplate";
 import SliderCreateTemplate from "./header/SliderCreateTemplate";
 import DescriptionModal from "./main/description_section/DescriptionModal";
@@ -116,7 +116,7 @@ export default function NewProperty({ category, handleBack }) {
         } else {
           const imagesUrl = response.map((file) => file.url);
 
-          setUrlImages(imagesUrl);
+          setUrlImages(() => imagesUrl);
           toast.success("Imagenes cargadas correctamente");
           return;
         }
@@ -128,7 +128,7 @@ export default function NewProperty({ category, handleBack }) {
 
   const submitRoom = async (data) => {
     let rooms;
-    if (data.price) {
+    if (data[0].amountOwner || data[0].amountHelloflatmate) {
       rooms = data.map((room) => ({
         name: room.name,
         images: room.images,
@@ -136,7 +136,7 @@ export default function NewProperty({ category, handleBack }) {
         couple: room.couple,
         bathroom: room.bathroom,
         serial: room.serial,
-        price: parseInt(room.price),
+        price: parseInt(room.amountOwner) + parseInt(room.amountHelloflatmate),
         amountOwner: parseInt(room.amountOwner),
         amountHelloflatmate: parseInt(room.amountHelloflatmate),
       }));
@@ -152,8 +152,6 @@ export default function NewProperty({ category, handleBack }) {
     }
 
     try {
-      console.log(rooms);
-
       const response = await axios.post("/api/room", rooms); // Cambia rooms por response para evitar la redeclaración
       toast.success("Habitación/es creada/s con éxito");
       return response; // Devuelve el response si todo va bien
@@ -173,7 +171,7 @@ export default function NewProperty({ category, handleBack }) {
       if (response) {
         toast.success("Habitación/es asignada/s con exito");
 
-        return response.data.rooms;
+        return response.data;
       }
       toast.error("Error en la asignacion de la habitaciones");
     } catch (error) {
@@ -212,8 +210,8 @@ export default function NewProperty({ category, handleBack }) {
 
   const createProperty = async () => {
     if (
-      catAndSize.category === "HELLO_ROOM" ||
-      catAndSize.category === "HELLO_COLIVING"
+      catAndSize.category === "HELLO_LANDLORD" ||
+      catAndSize.category === "HELLO_STUDIO"
     ) {
       property = {
         ...property,
@@ -222,7 +220,6 @@ export default function NewProperty({ category, handleBack }) {
         amountHelloflatmate: parseInt(price.amountHelloflatmate),
         amountOwner: parseInt(price.amountOwner),
       };
-      console.log(property);
     }
     if (handleSubmit()) {
       try {
@@ -235,16 +232,19 @@ export default function NewProperty({ category, handleBack }) {
         const rooms = await submitRoom(dataRoom);
         console.log(rooms);
 
+        console.log(property);
+
         // Crear propiedad
         const propertyResponse = await axios.post("/api/property", property);
+        console.log(propertyResponse);
 
-        const propertyId = propertyResponse.data.property.id;
+        const propertyId = propertyResponse.data.dataValues.id;
 
         // Asignar habitaciones
         const roomsResponse = await setProperty(
-          rooms.data.rooms,
+          rooms.data,
           propertyId,
-          propertyResponse.data.property.category
+          propertyResponse.data.dataValues.category
         );
 
         // Redirigir después de un retraso

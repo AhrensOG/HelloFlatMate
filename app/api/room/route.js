@@ -10,13 +10,9 @@ export async function GET() {
 }
 
 export async function POST(req) {
-    try {
-        const data = await req.json();
-        const newRoom = await createRoom(data);
-        return NextResponse.json(newRoom, { status: 201 });
-    } catch (error) {
-        return NextResponse.json({ error: 'Error creating room', details: error.message }, { status: 500 });
-    }
+    const data = await req.json();
+    const newRoom = await createRoom(data);
+    return newRoom;
 }
 
 export async function PUT(req) {
@@ -48,14 +44,10 @@ export async function DELETE(req) {
 }
 
 export async function PATCH(req) {
-    try {
-        const data = await req.json();
-        let result;
-        if (data) {
-            result = await setProperty(data);
-        }
-        return NextResponse.json(result);
-    } catch (error) {
-        return NextResponse.json({ error: 'Error updating property', details: error.message }, { status: 500 });
+    const data = await req.json();
+    let result;
+    if (data) {
+        result = await setProperty(data);
     }
+    return result
 }

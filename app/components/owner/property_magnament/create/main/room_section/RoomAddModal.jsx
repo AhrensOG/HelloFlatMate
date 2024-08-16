@@ -47,7 +47,7 @@ export default function RoomAddModal({
     if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
       roomData = {
         ...dataRoom,
-        image: upLoadedUrls,
+        images: upLoadedUrls,
         serial: dataRoom.serial,
         numberBeds: parseInt(dataRoom.numberBeds),
         couple: dataRoom.couple === "yes",

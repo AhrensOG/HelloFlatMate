@@ -38,7 +38,7 @@ export async function createRoom(data) {
 
         console.log("Habitaciones creadas:", rooms);
 
-        return Response.json({ message: "Habitaciones creadas" }, { status: 200 });
+        return NextResponse.json(rooms, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al crear las habitaciones", details: error.message }, { status: 500 });
     }
