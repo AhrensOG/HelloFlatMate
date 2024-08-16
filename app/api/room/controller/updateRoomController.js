@@ -1,4 +1,4 @@
-import { Room } from "@/db/init";
+import { Room, RoomWithPrice } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function updateRoom(id, data) {
@@ -44,5 +44,45 @@ export async function updateStatusRoom(data) {
         return NextResponse.json(room, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al actualizar la habitación" }, { status: 500 });
+    }
+}
+
+
+export async function setProperty(data) {
+    console.log(data);
+
+    if (!data || !data.ids || !data.propertyId || !data.category) {
+        return NextResponse.json({ error: "Se requiere la informacion" }, { status: 400 });
+    }
+    if (Array.isArray(data.ids)) {
+        if (data.category === "HELLO_ROOM" || data.category === "HELLO_COLIVING") {
+            for (let i = 0; i < data.ids.length; i++) {
+                try {
+                    const room = await RoomWithPrice.findByPk(data.ids[i]);
+                    if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
+                    room.propertyId = data.propertyId;
+                    await room.save();
+                } catch (error) {
+                    return NextResponse.json({ error: error.message }, { status: 500 });
+                }
+            }
+            return NextResponse.json(data, { status: 200 });
+        }
+        if (data.category === "HELLO_STUDIO" || data.category === "HELLO_LANDLORD") {
+            for (let i = 0; i < data.ids.length; i++) {
+                try {
+                    const room = await Room.findByPk(data.ids[i]);
+                    if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
+                    room.propertyWithPriceId = data.propertyId;
+                    await room.save();
+                    return NextResponse.json(data, { status: 200 });
+                } catch (error) {
+                    return NextResponse.json({ error: error.message }, { status: 500 });
+                }
+            }
+            return NextResponse.json(data, { status: 200 });
+        }
+    } else {
+        return NextResponse.json({ error: "Se requiere la informacion" }, { status: 400 });
     }
 }

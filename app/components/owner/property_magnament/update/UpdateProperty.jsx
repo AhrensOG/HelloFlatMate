@@ -24,6 +24,8 @@ import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
 
 export default function UpdateProperty({ data, handleBack }) {
+  console.log(data);
+
   const router = useRouter();
   // Establecer valores predeterminados
   const [property, setProperty] = useState(data);
@@ -39,9 +41,9 @@ export default function UpdateProperty({ data, handleBack }) {
     beds: data.bed,
     bathrooms: data.bathrooms,
   });
-  const [sliderImage, setSliderImage] = useState(data.images);
-  const [description, setDescription] = useState(data.description);
-  const [amenities, setAmenities] = useState(data.amenities);
+  const [sliderImage, setSliderImage] = useState(data.images || []);
+  const [description, setDescription] = useState(data.description || []);
+  const [amenities, setAmenities] = useState(data.amenities || []);
   const [moreInfo, setMoreInfo] = useState({
     condicionDeRenta: data.incomeConditionDescription || "Informacion",
     habitacion: data.roomDescription || "Informacion",
@@ -52,7 +54,7 @@ export default function UpdateProperty({ data, handleBack }) {
     checkIn: data.checkIn || "Informacion",
     checkOut: data.checkOut || "Informacion",
   });
-  const [dataRooms, setDataRooms] = useState(data.rooms);
+  const [dataRooms, setDataRooms] = useState(data.rooms || []);
   const [finalData, setFinalData] = useState({
     price: data.price || 0,
     size: data.size || 0,
@@ -153,7 +155,7 @@ export default function UpdateProperty({ data, handleBack }) {
       ...description,
       ...sliderImage,
       ...amenities,
-      ...moreInfo, // assuming moreInfo is an array with one object
+      ...moreInfo,
     };
 
     const validationResult = validateData(allData);
@@ -170,7 +172,6 @@ export default function UpdateProperty({ data, handleBack }) {
       try {
         try {
           if (deleteRooms.length > 0) {
-
             const deletedRooms = await axios.delete(`/api/room`, {
               data: { deleteRooms },
             });
@@ -231,7 +232,6 @@ export default function UpdateProperty({ data, handleBack }) {
           checkOut: moreInfo.checkOut,
         });
         toast.success("Propiedad actualizada correctamente");
-        // router.push(`/pages/owner/update/${property.id}`);
       } catch (error) {
         console.error("Error updating property data:", error);
         toast.error("Error al actualizar la propiedad");
