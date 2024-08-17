@@ -13,33 +13,40 @@ export default function SliderModal({ data, setData, showModal }) {
   }, [data]);
 
   const saveData = async () => {
-    // Extraer solo los archivos de imagen de los objetos devueltos por ImageUploader
-    const validFiles = files
-      .map((fileObj) => fileObj.fileData)
-      .filter((file) => file.size > 0);
+    const validFiles = files.filter((file) => file.size > 0);
+    console.log(validFiles);
 
     if (validFiles.length > 0) {
       try {
         const response = await uploadFiles(validFiles);
         if (response instanceof Error) {
-          toast.error("Error al cargar archivos");
+          toast.error("Error al cargar archivos" + response.message);
           return;
         }
 
-        const newImages = response.map((file) => file.url);
-        setExistingImages((prevImages) => {
-          const updatedImages = [...prevImages, ...newImages];
-          setData(updatedImages);
-          return updatedImages;
-        });
+        // Construimos nuevas imágenes con la estructura correcta
+        const newImages = response.map((file, index) => ({
+          id: existingImages.length + index,
+          url: file.url,
+        }));
+
+        // Aseguramos que todas las imágenes tengan la estructura correcta
+        const sanitizedPrevImages = existingImages.map((img) =>
+          typeof img.url === "object" ? img.url : img
+        );
+
+        const updatedImages = [...sanitizedPrevImages, ...newImages];
+        setExistingImages(updatedImages);
+        setData(updatedImages);
 
         toast.success("Archivos cargados");
       } catch (error) {
         console.error("Error al cargar archivos:", error);
         toast.error("Error al cargar archivos");
-        return;
       }
     } else {
+      console.log(existingImages);
+
       setData(existingImages);
     }
 

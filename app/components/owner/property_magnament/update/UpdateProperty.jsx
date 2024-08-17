@@ -294,7 +294,6 @@ export default function UpdateProperty({ data, handleBack }) {
     }
   };
 
-  // Renderizado condicional basado en dataIsReady
   if (!dataIsReady) {
     return (
       <div className="flex items-center justify-center h-screen">
