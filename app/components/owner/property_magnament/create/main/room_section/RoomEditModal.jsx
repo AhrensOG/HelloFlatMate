@@ -116,6 +116,21 @@ export default function RoomEditModal({
           />
         </div>
         <div>
+          <label className="block text-sm mb-1" htmlFor="serial">
+            Serial
+          </label>
+          <input
+            type="text"
+            id="serial"
+            name="serial"
+            value={dataRoom?.serial || ""}
+            onChange={(event) =>
+              setDataRoom({ ...dataRoom, serial: event.target.value })
+            }
+            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div>
           <label className="block text-sm mb-1" htmlFor="numberBeds">
             Numero de camas
           </label>

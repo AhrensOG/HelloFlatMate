@@ -61,7 +61,6 @@ export default function NewProperty({ category, handleBack }) {
     amountOwner: null,
     amountHelloflatmate: null,
   });
-  const [urlImages, setUrlImages] = useState([]);
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -115,10 +114,8 @@ export default function NewProperty({ category, handleBack }) {
           return;
         } else {
           const imagesUrl = response.map((file) => file.url);
-
-          setUrlImages(() => imagesUrl);
           toast.success("Imagenes cargadas correctamente");
-          return;
+          return imagesUrl;
         }
       } catch (error) {
         toast.error("Error al cargar archivos");
@@ -195,7 +192,6 @@ export default function NewProperty({ category, handleBack }) {
     puntuation: [],
     isActive: true,
     category: catAndSize.category,
-    images: urlImages,
     amenities: amenities,
     description: description,
     incomeConditionDescription: moreInfo.condicionDeRenta,
@@ -224,9 +220,8 @@ export default function NewProperty({ category, handleBack }) {
     if (handleSubmit()) {
       try {
         //Guardar Imagenes
-        await saveImages(sliderImage);
-
-        console.log(dataRoom);
+        const imagesList = await saveImages(sliderImage);
+        property.images = imagesList;
 
         //Crear habitaciones
         const rooms = await submitRoom(dataRoom);
@@ -275,7 +270,11 @@ export default function NewProperty({ category, handleBack }) {
             setAdress={setAddress}
             action={handleShowAddressModal}
           />
-          <PriceSection data={price} setData={setPrice} />
+          {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
+            ""
+          ) : (
+            <PriceSection data={price} setData={setPrice} />
+          )}
           <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
           <div className="flex flex-col gap-6">
             <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
