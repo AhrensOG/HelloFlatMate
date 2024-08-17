@@ -23,9 +23,8 @@ import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
 
-export default function UpdateProperty({ data, handleBack }) {
-  const [property, setProperty] = useState(null);
-  const [dataIsReady, setDataIsReady] = useState(false);
+export default function UpdateProperty({ data = false, category, handleBack }) {
+  const [property, setProperty] = useState(data ? data : null);
 
   const router = useRouter();
 
@@ -52,32 +51,9 @@ export default function UpdateProperty({ data, handleBack }) {
   const [editRoomsModal, setEditRoomsModal] = useState(false);
   const [showAddRoom, setShowAddRoom] = useState(false);
 
-  //Obtencion de datos
-  useEffect(() => {
-    if (data) {
-      const getData = async () => {
-        try {
-          const response = await axios.get(
-            `/api/property?id=${data.id}&price=${
-              data.category === "HELLO_ROOM" ||
-              data.category === "HELLO_COLIVING"
-                ? false
-                : true
-            }`
-          );
-          setProperty(response.data);
-          setDataIsReady(true); // Aquí establecemos que los datos están listos
-        } catch (error) {
-          console.error("Error fetching property data:", error);
-        }
-      };
-      getData();
-    }
-  }, [data]);
-
   //Asignacion de datos
   useEffect(() => {
-    if (property && dataIsReady) {
+    if (property) {
       setName(property?.name || "");
       setDescription(property?.description || "");
       setSliderImage(property?.images || []);
@@ -105,7 +81,7 @@ export default function UpdateProperty({ data, handleBack }) {
       });
       setDataRooms(property?.roomsWithPrice || property?.rooms || []);
       setCatAndSize({
-        category: property?.category || "",
+        category: category || "",
         size: property?.size || 0,
       });
       setPrice({
@@ -114,7 +90,7 @@ export default function UpdateProperty({ data, handleBack }) {
         amountHelloflatmate: property?.amountHelloflatmate || 0,
       });
     }
-  }, [property, dataIsReady]);
+  }, [property]);
 
   //funcion para manejar la edicion de habitaciones
   const handleRoomUpdate = (updatedRoom) => {
@@ -294,7 +270,7 @@ export default function UpdateProperty({ data, handleBack }) {
     }
   };
 
-  if (!dataIsReady) {
+  if (!data) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -308,11 +284,11 @@ export default function UpdateProperty({ data, handleBack }) {
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderUpdateTemplate
-              data={sliderImage || property.images}
+              data={sliderImage}
               action={handleShowSliderModal}
             />
           </div>
-          <NavBarDetails link="/pages/owner" action={handleBack} />
+          <NavBarDetails link="/pages/owner" callBack={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
