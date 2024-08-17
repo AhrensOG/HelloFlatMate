@@ -9,7 +9,6 @@ export default function RoomSectionTemplate({
   action,
   deleteRooms,
   setDeleteRooms,
-  onEditRoom,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -33,7 +32,6 @@ export default function RoomSectionTemplate({
       setDeleteRooms([...deleteRooms, room.id]);
     }
     setData(data.filter((item) => item !== room));
-    console.log(deleteRooms);
   };
 
   return (

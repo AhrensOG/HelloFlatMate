@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
-import Image from "next/image";
-import { XMarkIcon } from "@heroicons/react/20/solid";
+import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
 
 export default function SliderModal({ data, setData, showModal }) {
   const [files, setFiles] = useState([]);
@@ -13,13 +12,11 @@ export default function SliderModal({ data, setData, showModal }) {
     setExistingImages(data);
   }, [data]);
 
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setFiles([...files, ...selectedFiles]);
-  };
-
   const saveData = async () => {
-    const validFiles = files.filter((file) => file.size > 0);
+    // Extraer solo los archivos de imagen de los objetos devueltos por ImageUploader
+    const validFiles = files
+      .map((fileObj) => fileObj.fileData)
+      .filter((file) => file.size > 0);
 
     if (validFiles.length > 0) {
       try {
@@ -32,7 +29,6 @@ export default function SliderModal({ data, setData, showModal }) {
         const newImages = response.map((file) => file.url);
         setExistingImages((prevImages) => {
           const updatedImages = [...prevImages, ...newImages];
-          // Actualiza el estado con las imágenes nuevas
           setData(updatedImages);
           return updatedImages;
         });
@@ -41,10 +37,9 @@ export default function SliderModal({ data, setData, showModal }) {
       } catch (error) {
         console.error("Error al cargar archivos:", error);
         toast.error("Error al cargar archivos");
-        return; // Detén la ejecución si hay un error
+        return;
       }
     } else {
-      // Si no hay archivos válidos, actualiza directamente el estado
       setData(existingImages);
     }
 
@@ -69,59 +64,9 @@ export default function SliderModal({ data, setData, showModal }) {
       transition={{ duration: 0.8 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
-      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 overflow-auto h-[95%]">
         <h2 className="text-2xl mb-4">Archivos de Imágenes</h2>
-        <div className="flex flex-col w-full">
-          <input
-            type="file"
-            multiple
-            onChange={handleFileChange}
-            className="mb-4 appearance-none outline-none border border-[#0C1660] rounded-lg p-2"
-          />
-        </div>
-        <div className="w-full flex gap-1 flex-wrap justify-center items-center">
-          {existingImages.length > 0 &&
-            existingImages.map((file, index) => (
-              <div key={index} className="w-20 h-20 p-2 relative rounded-md">
-                <Image
-                  src={
-                    typeof file === "string" ? file : URL.createObjectURL(file)
-                  }
-                  alt="file"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="rounded-md"
-                />
-                <button
-                  onClick={() => deleteImage(index)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                >
-                  <XMarkIcon className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-          {files.length > 0 &&
-            files.map((file, index) => (
-              <div
-                key={`new-${index}`}
-                className="w-20 h-20 p-2 relative rounded-md"
-              >
-                <Image
-                  src={URL.createObjectURL(file)}
-                  alt="file"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="rounded-md"
-                />
-                <button
-                  onClick={() => deleteImage(index + existingImages.length)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                >
-                  <XMarkIcon className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-        </div>
+        <ImageUploader setImages={setFiles} images={existingImages} />
         <div className="flex justify-between w-full">
           <button
             onClick={() => showModal(false)}

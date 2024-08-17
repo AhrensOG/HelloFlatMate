@@ -7,7 +7,7 @@ import RoomSectionTemplate from "../create/main/RoomSectionTemplate";
 import TitleSectionTemplate from "../create/main/TitleSectionTemplate";
 import SaveButton from "../shared/SaveButton";
 import { plus_jakarta } from "@/font";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import SliderUpdateTemplate from "./header/SliderUpdateTemplate";
 import DescriptionModal from "../create/main/description_section/DescriptionModal";
 import SliderModal from "../create/header/slider/SliderModal";
@@ -18,66 +18,29 @@ import EditButton from "../shared/EditButton";
 import axios from "axios";
 import { toast } from "sonner";
 import validateData from "../create/validateData";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
 
 export default function UpdateProperty({ data, handleBack }) {
-  console.log(data);
+  const [property, setProperty] = useState(null);
+  const [dataIsReady, setDataIsReady] = useState(false);
 
   const router = useRouter();
-  // Establecer valores predeterminados
-  const [property, setProperty] = useState(data);
-  const [name, setName] = useState(data.name);
-  const [address, setAddress] = useState({
-    city: data.city,
-    street: data.street,
-    streetNumber: data.streetNumber,
-    postalCode: data.postalCode,
-  });
-  const [guestInfo, setGuestInfo] = useState({
-    occupants: data.maximunOccupants,
-    beds: data.bed,
-    bathrooms: data.bathrooms,
-  });
-  const [sliderImage, setSliderImage] = useState(data.images || []);
-  const [description, setDescription] = useState(data.description || []);
-  const [amenities, setAmenities] = useState(data.amenities || []);
-  const [moreInfo, setMoreInfo] = useState({
-    condicionDeRenta: data.incomeConditionDescription || "Informacion",
-    habitacion: data.roomDescription || "Informacion",
-    facturas: data.feeDescription || "Informacion",
-    mantenimiento: data.maintenanceDescription || "Informacion",
-    sobreNosotros: data.aboutUs || "Informacion",
-    normasDeConvivencia: data.houseRules || "Informacion",
-    checkIn: data.checkIn || "Informacion",
-    checkOut: data.checkOut || "Informacion",
-  });
-  const [dataRooms, setDataRooms] = useState(data.rooms || []);
-  const [finalData, setFinalData] = useState({
-    price: data.price || 0,
-    size: data.size || 0,
-    category: data.category || "",
-  });
-  const [deleteRooms, setDeleteRooms] = useState([]);
-  const [catAndSize, setCatAndSize] = useState({
-    category: data.category || "",
-    size: data.size || 0,
-  });
-  const [price, setPrice] = useState({
-    price: data.price || 0,
-    amountOwner: data.amountOwner || 0,
-    amountHelloflatmate: data.amountHelloflatmate || 0,
-  });
 
-  //funcion para manejar la edicion de habitaciones
-  const handleRoomUpdate = (updatedRoom) => {
-    const updatedRooms = rooms.map((room) =>
-      room.id === updatedRoom.id ? updatedRoom : room
-    );
-    setRooms(updatedRooms);
-  };
+  // Estados para los diferentes datos de la propiedad
+  const [name, setName] = useState();
+  const [address, setAddress] = useState();
+  const [guestInfo, setGuestInfo] = useState();
+  const [sliderImage, setSliderImage] = useState();
+  const [description, setDescription] = useState();
+  const [amenities, setAmenities] = useState();
+  const [moreInfo, setMoreInfo] = useState();
+  const [dataRooms, setDataRooms] = useState();
+  const [deleteRooms, setDeleteRooms] = useState([]);
+  const [catAndSize, setCatAndSize] = useState();
+  const [price, setPrice] = useState();
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -88,6 +51,78 @@ export default function UpdateProperty({ data, handleBack }) {
   const [showFinalModal, setShowFinalModal] = useState(false);
   const [editRoomsModal, setEditRoomsModal] = useState(false);
   const [showAddRoom, setShowAddRoom] = useState(false);
+
+  //Obtencion de datos
+  useEffect(() => {
+    if (data) {
+      const getData = async () => {
+        try {
+          const response = await axios.get(
+            `/api/property?id=${data.id}&price=${
+              data.category === "HELLO_ROOM" ||
+              data.category === "HELLO_COLIVING"
+                ? false
+                : true
+            }`
+          );
+          setProperty(response.data);
+          setDataIsReady(true); // Aquí establecemos que los datos están listos
+        } catch (error) {
+          console.error("Error fetching property data:", error);
+        }
+      };
+      getData();
+    }
+  }, [data]);
+
+  //Asignacion de datos
+  useEffect(() => {
+    if (property && dataIsReady) {
+      setName(property?.name || "");
+      setDescription(property?.description || "");
+      setSliderImage(property?.images || []);
+      setGuestInfo({
+        occupants: property?.maximunOccupants,
+        beds: property?.bed,
+        bathrooms: property?.bathrooms,
+      });
+      setAddress({
+        city: property?.city,
+        street: property?.street,
+        streetNumber: property?.streetNumber,
+        postalCode: property?.postalCode,
+      });
+      setAmenities(property?.amenities || []);
+      setMoreInfo({
+        condicionDeRenta: property?.incomeConditionDescription || "Informacion",
+        habitacion: property?.roomDescription || "Informacion",
+        facturas: property?.feeDescription || "Informacion",
+        mantenimiento: property?.maintenanceDescription || "Informacion",
+        sobreNosotros: property?.aboutUs || "Informacion",
+        normasDeConvivencia: property?.houseRules || "Informacion",
+        checkIn: property?.checkIn || "Informacion",
+        checkOut: property?.checkOut || "Informacion",
+      });
+      setDataRooms(property?.roomsWithPrice || property?.rooms || []);
+      setCatAndSize({
+        category: property?.category || "",
+        size: property?.size || 0,
+      });
+      setPrice({
+        price: property?.price || 0,
+        amountOwner: property?.amountOwner || 0,
+        amountHelloflatmate: property?.amountHelloflatmate || 0,
+      });
+    }
+  }, [property, dataIsReady]);
+
+  //funcion para manejar la edicion de habitaciones
+  const handleRoomUpdate = (updatedRoom) => {
+    const updatedRooms = rooms.map((room) =>
+      room.id === updatedRoom.id ? updatedRoom : room
+    );
+    setRooms(updatedRooms);
+  };
 
   // Manejadores de modales
   const handleShowDescriptionModal = () => {
@@ -172,8 +207,15 @@ export default function UpdateProperty({ data, handleBack }) {
       try {
         try {
           if (deleteRooms.length > 0) {
-            const deletedRooms = await axios.delete(`/api/room`, {
-              data: { deleteRooms },
+            await axios.delete(`/api/room`, {
+              data: {
+                rooms: deleteRooms,
+                havePrice:
+                  catAndSize.category === "HELLO_ROOM" ||
+                  catAndSize.category === "HELLO_COLIVING"
+                    ? true
+                    : false,
+              },
             });
             toast.success("Habitaciones eliminadas");
           }
@@ -190,7 +232,7 @@ export default function UpdateProperty({ data, handleBack }) {
           const roomsFormated = newRooms.map((room) => {
             return {
               ...room,
-              propertyId: property.id,
+              propertyId: property?.id,
             };
           });
           if (newRooms.length > 0) {
@@ -202,7 +244,8 @@ export default function UpdateProperty({ data, handleBack }) {
           throw err;
         }
 
-        const response = await axios.put(`/api/property?id=${property.id}`, {
+        //DATOS DE LA PROPIEDAD
+        let updateDataProperty = {
           name: name,
           city: address.city,
           street: address.street,
@@ -213,10 +256,6 @@ export default function UpdateProperty({ data, handleBack }) {
           bathrooms: parseInt(guestInfo.bathrooms),
           bed: parseInt(guestInfo.beds),
           maximunOccupants: parseInt(guestInfo.occupants),
-          price:
-            parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner),
-          amountHelloflatmate: parseInt(price.amountHelloflatmate),
-          amountOwner: parseInt(price.amountOwner),
           puntuation: [],
           category: catAndSize.category,
           images: sliderImage,
@@ -230,6 +269,20 @@ export default function UpdateProperty({ data, handleBack }) {
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
           checkOut: moreInfo.checkOut,
+        };
+
+        if (price.amountHelloflatmate > 0 && price.amountOwner > 0) {
+          updateDataProperty = {
+            ...updateDataProperty,
+            price:
+              parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner),
+            amountHelloflatmate: parseInt(price.amountHelloflatmate),
+            amountOwner: parseInt(price.amountOwner),
+          };
+        }
+        const response = await axios.put(`/api/property`, {
+          property: updateDataProperty,
+          id: property.id,
         });
         toast.success("Propiedad actualizada correctamente");
       } catch (error) {
@@ -241,7 +294,8 @@ export default function UpdateProperty({ data, handleBack }) {
     }
   };
 
-  if (!property) {
+  // Renderizado condicional basado en dataIsReady
+  if (!dataIsReady) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -255,33 +309,57 @@ export default function UpdateProperty({ data, handleBack }) {
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderUpdateTemplate
-              data={sliderImage}
+              data={sliderImage || property.images}
               action={handleShowSliderModal}
             />
           </div>
-          <NavBarDetails link="/pages/owner" callBack={handleBack} />
+          <NavBarDetails link="/pages/owner" action={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
         >
           <TitleSectionTemplate
-            name={name}
+            name={name || property.name}
             setName={setName}
-            address={address}
+            address={
+              address || {
+                street: property.street,
+                streetNumber: property.streetNumber,
+                postalCode: property.postalCode,
+                city: property.city,
+              }
+            }
             setAddress={setAddress}
             action={handleShowAddressModal}
           />
-          <PriceSection data={price} setData={setPrice} />
-          <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
+          {(property.category === "HELLO_STUDIO" ||
+            property.category === "HELLO_LANDLORD") && (
+            <PriceSection data={price || property.price} setData={setPrice} />
+          )}
+          <SizeAndCategorySection
+            data={
+              catAndSize || { size: property.size, category: property.category }
+            }
+            setData={setCatAndSize}
+          />
           <div className="flex flex-col gap-6">
-            <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
+            <GuestInfoSectionTemplate
+              data={
+                guestInfo || {
+                  occupants: property.maximunOccupants,
+                  beds: property.bed,
+                  bathrooms: property.bathrooms,
+                }
+              }
+              setData={setGuestInfo}
+            />
           </div>
           <DescriptionSectionTemplate
-            data={description} // Actualiza aquí para usar el estado description
+            data={description || property.description}
             action={handleShowDescriptionModal}
           />
           <RoomSectionTemplate
-            data={dataRooms}
+            data={dataRooms || property.rooms}
             onEditRoom={handleRoomUpdate}
             setData={setDataRooms}
             action={handleAddRoomModal}
@@ -289,12 +367,24 @@ export default function UpdateProperty({ data, handleBack }) {
             setDeleteRooms={setDeleteRooms}
           />
           <AmenitiesSection
-            data={amenities}
+            data={amenities || property.amenities}
             edit={<EditButton action={handleShowAmenitiesModal} />}
           />
           <LocationSectionTemplate data={"hola"} />
           <MoreInfoSectionTemplate
-            data={moreInfo}
+            data={
+              moreInfo || {
+                condicionDeRenta:
+                  property.incomeConditionDescription || "Informacion",
+                habitacion: property.roomDescription || "Informacion",
+                facturas: property.feeDescription || "Informacion",
+                mantenimiento: property.maintenanceDescription || "Informacion",
+                sobreNosotros: property.aboutUs || "Informacion",
+                normasDeConvivencia: property.houseRules || "Informacion",
+                checkIn: property.checkIn || "Informacion",
+                checkOut: property.checkOut || "Informacion",
+              }
+            }
             setData={setMoreInfo}
             action={handleShowMoreInfoModal}
           />
@@ -302,14 +392,17 @@ export default function UpdateProperty({ data, handleBack }) {
         </main>
         {showDescriptionModal && (
           <DescriptionModal
-            data={description} // Pasa el estado description aquí
+            data={description || property.description} // Pasa el estado description aquí
             setData={handleDescriptionInfo}
             showModal={handleShowDescriptionModal}
           />
         )}
         {showSliderModal && (
           <SliderModal
-            data={sliderImage}
+            data={sliderImage.map((image, index) => ({
+              id: index,
+              url: image,
+            }))}
             setData={handleSliderImage}
             showModal={handleShowSliderModal}
           />
@@ -333,6 +426,8 @@ export default function UpdateProperty({ data, handleBack }) {
             data={dataRooms}
             setData={setDataRooms}
             showModal={handleAddRoomModal}
+            propertyId={property.id}
+            category={catAndSize.category || property.category}
           />
         )}
       </div>

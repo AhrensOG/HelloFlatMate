@@ -11,6 +11,7 @@ import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
 function ImageUploader({ initialImages = false, setImages, images }) {
   const fileInputRef = useRef(null);
+  console.log(images);
 
   useEffect(() => {
     if (initialImages && initialImages.length > 0) {
@@ -34,6 +35,8 @@ function ImageUploader({ initialImages = false, setImages, images }) {
     console.log(newImages);
 
     setImages((prevImages) => [...prevImages, ...newImages]);
+
+    console.log(images);
   };
 
   const handleFiles = (files) => {

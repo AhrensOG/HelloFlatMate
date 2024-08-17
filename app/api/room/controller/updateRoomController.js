@@ -75,7 +75,6 @@ export async function setProperty(data) {
                     if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
                     room.propertyWithPriceId = data.propertyId;
                     await room.save();
-                    return NextResponse.json(data, { status: 200 });
                 } catch (error) {
                     return NextResponse.json({ error: error.message }, { status: 500 });
                 }

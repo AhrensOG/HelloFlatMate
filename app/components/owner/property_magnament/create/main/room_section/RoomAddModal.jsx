@@ -26,8 +26,6 @@ export default function RoomAddModal({
     }
 
     const uploadedImages = await submitImage(images);
-    console.log(uploadedImages);
-
     const upLoadedUrls = uploadedImages.map((file) => file.url);
 
     let roomData;
@@ -67,13 +65,11 @@ export default function RoomAddModal({
 
   const submitImage = async (files) => {
     const filesFormated = files.map((file) => file.fileData);
-    console.log(filesFormated);
     const response = await uploadFiles(filesFormated);
     return response;
   };
 
   const handleRadioChange = (event) => {
-    console.log(data);
     const { name, value } = event.target;
     setDataRoom({ ...dataRoom, [name]: value });
   };

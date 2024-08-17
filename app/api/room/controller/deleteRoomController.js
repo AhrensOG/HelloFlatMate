@@ -1,12 +1,18 @@
-import { Room } from "@/db/init";
+import { Room, RoomWithPrice } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function deleteRoom(data) {
     if (data) {
-        if (Array.isArray(data)) {
-            for (let i = 0; i < data.length; i++) {
+        if (Array.isArray(data.rooms) && data.rooms.length > 0) {
+            for (let i = 0; i < data.rooms.length; i++) {
                 try {
-                    const room = await Room.findByPk(data[i]);
+                    let room
+                    if (!data.havePrice) {
+                        room = await Room.findByPk(data.rooms[i]);
+                    }
+                    if (data.havePrice) {
+                        room = await RoomWithPrice.findByPk(data.rooms[i]);
+                    }
                     if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
                     await room.destroy();
                 } catch (error) {
