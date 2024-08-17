@@ -17,7 +17,6 @@ export default function PriceSection({ data, setData }) {
 
   // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
-    console.log(formData);
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -36,7 +35,7 @@ export default function PriceSection({ data, setData }) {
 
   return (
     <section className="w-full flex justify-between items-center flex-wrap gap-3">
-      <h2 className="text-lg font-medium w-full">Precio</h2>
+      <h2 className="font-bold text-[1.37rem] w-full">Precio</h2>
       <div className="w-5/12">
         <label htmlFor="price" className="block text-sm mb-1">
           Dueño:
