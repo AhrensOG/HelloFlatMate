@@ -1,50 +1,52 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "@/app/components/stripe/CheckoutForm";
+import { useState } from "react";
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function PaymentPage() {
-  const [clientSecret, setClientSecret] = useState("");
+export default function ReservePage() {
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    fetch("/api/stripe/create-payment", {
+  const handleCheckout = async () => {
+    setLoading(true);
+
+    // Aquí puedes obtener roomId, userEmail y price desde tus datos
+    const roomId = "12";
+    const userEmail = "user@example.com";
+    const price = 5000; // Precio en centavos ($50.00)
+
+    const response = await fetch("/api/stripe/create-checkout-session", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ roomId, userEmail, price }),
+    });
 
-  const appearance = {
-    theme: "stripe",
-    variables: {
-      colorPrimary: "#006bd6",
-      colorText: "#2c2c35",
-    },
-  };
-  const options = {
-    clientSecret,
-    appearance,
+    const session = await response.json();
+
+    const stripe = await stripePromise;
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (result.error) {
+      console.error(result.error.message);
+    }
+
+    setLoading(false);
   };
 
   return (
-    <div className="App">
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
-        </Elements>
-      )}
+    <div>
+      <h1>Reserva tu Habitación</h1>
+      <button onClick={handleCheckout} disabled={loading}>
+        {loading ? "Redirigiendo..." : "Reservar y Pagar"}
+      </button>
     </div>
   );
 }
