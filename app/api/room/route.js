@@ -28,19 +28,9 @@ export async function PUT(req) {
 }
 
 export async function DELETE(req) {
-    try {
-        const data = await req.json();
-        const { searchParams } = new URL(req.url);
-        const id = searchParams.get('id');
-        if (id) {
-            await deleteRoom(id);
-        } else if (data.deleteRooms.length > 0) {
-            await deleteRoom(data.deleteRooms);
-        }
-        return NextResponse.json({ success: true });
-    } catch (error) {
-        return NextResponse.json({ error: 'Error deleting room(s)', details: error.message }, { status: 500 });
-    }
+    const data = await req.json();
+    const result = await deleteRoom(data);
+    return result
 }
 
 export async function PATCH(req) {

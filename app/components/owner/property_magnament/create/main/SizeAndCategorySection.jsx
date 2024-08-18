@@ -39,11 +39,12 @@ export default function SizeAndCategorySection({ data, setData }) {
     <section className="flex justify-center w-full">
       <div className="bg-white rounded-lg shadow-lg w-full">
         <div className="flex flex-col w-full space-y-4">
-          <h2 className="font-medium text-[#000000CC] text-base">
-            Tamaño y Categoria
-          </h2>
+          <h2 className="font-bold text-[1.37rem]">Tamaño y Categoria</h2>
           <div className="w-full">
-            <label htmlFor="size" className="block text-sm mb-1">
+            <label
+              htmlFor="size"
+              className="block text-base mb-1 font-semibold"
+            >
               Tamaño:
             </label>
             <input
@@ -59,7 +60,7 @@ export default function SizeAndCategorySection({ data, setData }) {
             )}
           </div>
           <div className="w-full">
-            <h3 className="font-medium text-[#000000CC] text-base">
+            <h3 className="text-[#000000CC] text-base  font-semibold">
               Categoria
             </h3>
             <p className="text-base border border-gray-300 p-2 font-medium">

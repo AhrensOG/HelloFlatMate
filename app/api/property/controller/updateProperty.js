@@ -1,7 +1,6 @@
 import { Property } from "@/db/init";
 import PropertyWithPrice from "@/db/models/propertyWithPrice";
 import { NextResponse } from "next/server";
-import { error } from "pdf-lib";
 
 export async function updateProperty(id, data) {
     if (!data) {
@@ -48,10 +47,13 @@ export async function updateProperty(id, data) {
     }
 
     const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
+
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
     }
     if (data.category === "HELLO_LANDLORD" || data.category === "HELLO_STUDIO") {
+
+        console.log("pase la validacion de categoria");
         if (!data.price || typeof data.price !== "number" || data.price <= 0) {
             return NextResponse.json({ error: "El precio no puede estar vacío o no es un número" }, { status: 400 });
         }
@@ -74,7 +76,7 @@ export async function updateProperty(id, data) {
         }
     } else {
         try {
-            const property = await property.findByPk(id);
+            const property = await Property.findByPk(id);
             if (!property) {
                 return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
             }

@@ -9,9 +9,7 @@ const SliderItem = ({ img }) => {
         className="object-cover object-center"
         src={img}
         alt="slider-img"
-        layout="responsive"
-        width={200}
-        height={200}
+        fill
         priority
       />
     </div>

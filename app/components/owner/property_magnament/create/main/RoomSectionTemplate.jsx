@@ -9,7 +9,6 @@ export default function RoomSectionTemplate({
   action,
   deleteRooms,
   setDeleteRooms,
-  onEditRoom,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -33,7 +32,6 @@ export default function RoomSectionTemplate({
       setDeleteRooms([...deleteRooms, room.id]);
     }
     setData(data.filter((item) => item !== room));
-    console.log(deleteRooms);
   };
 
   return (
@@ -48,6 +46,7 @@ export default function RoomSectionTemplate({
         {data && data.length > 0 ? (
           data.map((item, index) => (
             <RoomInfoTemplate
+              info={item}
               key={index}
               img={item?.images[0] || "/property-details/stock-1.svg"}
               name={item.name}

@@ -12,4 +12,23 @@ const deleteFiles = async (files, folder = "Products") => {
   }
 };
 
-export { deleteFiles };
+const extractFilePathFromUrl = (url) => {
+  const pathStart = url.indexOf("/o/") + 3;
+  const pathEnd = url.indexOf("?");
+  const filePath = url.substring(pathStart, pathEnd);
+  return decodeURIComponent(filePath);
+};
+
+const deleteFilesFromURL = async (files) => {
+  try {
+    for (const file of files) {
+      const filePath = extractFilePathFromUrl(file);
+      const storageRef = ref(storage, filePath);
+      await deleteObject(storageRef);
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export { deleteFiles, deleteFilesFromURL };

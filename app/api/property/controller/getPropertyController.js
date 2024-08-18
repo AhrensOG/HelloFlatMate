@@ -17,20 +17,21 @@ export async function getPropertyById(data) {
     console.log(data);
 
     try {
-        let propertyWhitPrice
-        let property
+        let propertyWhitPrice;
+        let property;
         if (data) {
-            if (data.price) {
+            if (data.price === "true") {
                 propertyWhitPrice = await PropertyWithPrice.findByPk(data.id, {
                     include: {
                         model: Room,
                         as: 'rooms'
                     }
-                }
-                );
+                });
 
                 if (propertyWhitPrice) {
-                    return NextResponse.json({ propertyWhitPrice }, { status: 200 });
+                    let plainPropertyWithPrice = propertyWhitPrice.get({ plain: true });
+                    delete plainPropertyWithPrice.someCircularProperty;  // Eliminar propiedad circular si es necesario
+                    return NextResponse.json(plainPropertyWithPrice, { status: 200 });
                 }
             } else {
                 property = await Property.findByPk(data.id, {
@@ -40,7 +41,9 @@ export async function getPropertyById(data) {
                     }
                 });
                 if (property) {
-                    return NextResponse.json({ property }, { status: 200 });
+                    let plainProperty = property.get({ plain: true });
+                    delete plainProperty.someCircularProperty;  // Eliminar propiedad circular si es necesario
+                    return NextResponse.json(plainProperty, { status: 200 });
                 }
             }
         } else {
@@ -51,10 +54,10 @@ export async function getPropertyById(data) {
         }
 
     } catch (error) {
+        console.log(error);
         return NextResponse.json({ error: "Error al obtener la propiedad" }, { status: 500 });
     }
 }
-
 export async function getPropertiesByStatus(status) {
     if (!status) { return NextResponse.json({ error: "Se requiere el estado" }, { status: 400 }); }
     if (status !== "FREE" && status !== "RESERVED" && status !== "OCCUPIED") { return NextResponse.json({ error: "El estado no es valido" }, { status: 400 }); }
