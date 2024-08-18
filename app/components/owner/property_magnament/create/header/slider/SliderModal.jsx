@@ -38,18 +38,14 @@ export default function SliderModal({ data, setData, showModal }) {
         const updatedImages = [...sanitizedPrevImages, ...newImages];
         setExistingImages(updatedImages);
         setData(updatedImages);
-
         toast.success("Archivos cargados");
       } catch (error) {
         console.error("Error al cargar archivos:", error);
         toast.error("Error al cargar archivos");
       }
     } else {
-      console.log(existingImages);
-
       setData(existingImages);
     }
-
     showModal(false);
   };
 
