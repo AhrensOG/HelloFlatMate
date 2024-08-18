@@ -13,7 +13,6 @@ export default function RoomInfoTemplate({
   info,
 }) {
   const [showPencil, setShowPencil] = useState(false);
-  console.log(info);
   return (
     <article className="flex flex-col gap-1 min-w-[8.7rem] max-w-[10rem] relative">
       <div

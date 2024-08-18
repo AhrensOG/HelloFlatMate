@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
+import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -32,7 +33,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   const [name, setName] = useState();
   const [address, setAddress] = useState();
   const [guestInfo, setGuestInfo] = useState();
-  const [sliderImage, setSliderImage] = useState();
+  const [sliderImage, setSliderImage] = useState([]);
+  const [newImages, setNewImages] = useState([]);
   const [description, setDescription] = useState();
   const [amenities, setAmenities] = useState();
   const [moreInfo, setMoreInfo] = useState();
@@ -374,11 +376,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         )}
         {showSliderModal && (
           <SliderModal
-            data={sliderImage.map((image, index) => ({
-              id: index,
-              url: image,
-            }))}
-            setData={handleSliderImage}
+            initialImages={sliderImage}
+            setNewImages={handleSliderImage}
             showModal={handleShowSliderModal}
           />
         )}
