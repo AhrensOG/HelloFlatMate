@@ -1,29 +1,38 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"; // Para generar IDs únicos
 import DraggableImage from "./DraggableImage";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 
 function ImageUploader({ initialImages = false, setImages, images }) {
   const fileInputRef = useRef(null);
-  const [uploadedImages, setUploadedImages] = useState(images);
-  console.log(images);
 
   useEffect(() => {
-    if (initialImages && initialImages.length > 0) {
-      setImages(initialImages);
+    if (initialImages && initialImages.length > 0 && images.length === 0) {
+      const mappedImages = initialImages.map((url) => ({
+        id: uuidv4(),
+        url,
+      }));
+      setImages(mappedImages);
     }
   }, [initialImages]);
 
   const handleDrop = (event) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
-    handleFiles(files);
+    const newImages = files.map((file) => ({
+      id: uuidv4(),
+      name: file.name,
+      fileData: file,
+      url: URL.createObjectURL(file),
+    }));
+    setImages((prevImages) => [...prevImages, ...newImages]);
   };
 
   const handleFiles = (files) => {
@@ -33,20 +42,7 @@ function ImageUploader({ initialImages = false, setImages, images }) {
       fileData: file,
       url: URL.createObjectURL(file),
     }));
-
-    const formatedImages = newImages.map((image) => {
-      return {
-        image: image.fileData,
-      };
-    });
-
-    console.log(formatedImages);
-
-    setImages((prevImages) => [...prevImages, ...formatedImages]);
-    console.log(images);
-
-    setUploadedImages((prevImages) => [...prevImages]);
-    console.log(uploadedImages);
+    setImages((prevImages) => [...prevImages, ...newImages]);
   };
 
   const handleDragEnd = (event) => {
@@ -72,14 +68,15 @@ function ImageUploader({ initialImages = false, setImages, images }) {
   };
 
   const handleRemoveImage = (id) => {
-    setUploadedImages((prevImages) =>
-      prevImages.filter((image) => image.id !== id)
-    );
     setImages((prevImages) => prevImages.filter((image) => image.id !== id));
   };
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      modifiers={[restrictToParentElement]}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       <SortableContext
         items={images.map((image) => image.id)}
         strategy={rectSortingStrategy}
@@ -98,8 +95,8 @@ function ImageUploader({ initialImages = false, setImages, images }) {
             style={{ display: "none" }}
             onChange={handleInputChange}
           />
-          {uploadedImages.length > 0 ? (
-            uploadedImages.map((image) => (
+          {images.length > 0 ? (
+            images.map((image) => (
               <DraggableImage
                 key={image.id}
                 id={image.id}

@@ -61,7 +61,6 @@ export default function NewProperty({ category, handleBack }) {
     amountOwner: null,
     amountHelloflatmate: null,
   });
-  const [urlImages, setUrlImages] = useState([]);
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -89,17 +88,31 @@ export default function NewProperty({ category, handleBack }) {
   // Validation and submission
   const handleSubmit = () => {
     const allData = {
-      ...address,
-      ...guestInfo,
-      ...description,
-      ...sliderImage,
-      ...amenities,
-      ...moreInfo,
+      name: name,
+      city: address.city,
+      street: address.street,
+      streetNumber: address.streetNumber,
+      postalCode: address.postalCode,
+      size: catAndSize.size,
+      roomsCount: dataRoom.length,
+      bathrooms: guestInfo.bathrooms,
+      bed: guestInfo.beds,
+      maximunOccupants: guestInfo.occupants,
+      price: price.price,
+      amountHelloflatmate: price.amountHelloflatmate,
+      amountOwner: price.amountOwner,
+      category: catAndSize.category,
+      amenities: amenities,
+      description: description,
+      checkIn: moreInfo.checkIn,
+      checkOut: moreInfo.checkOut,
+      images: sliderImage.map((image) => image.url), // Asegúrate de tener URLs aquí
     };
+
     const validationResult = validateData(allData);
 
     if (!validationResult.isValid) {
-      toast.error("No dejes datos incompletos");
+      toast.error(validationResult.message);
       return false;
     }
     return true;
@@ -115,10 +128,8 @@ export default function NewProperty({ category, handleBack }) {
           return;
         } else {
           const imagesUrl = response.map((file) => file.url);
-
-          setUrlImages(() => imagesUrl);
           toast.success("Imagenes cargadas correctamente");
-          return;
+          return imagesUrl;
         }
       } catch (error) {
         toast.error("Error al cargar archivos");
@@ -160,13 +171,12 @@ export default function NewProperty({ category, handleBack }) {
       throw error; // Propaga el error para que se capture en el catch externo
     }
   };
-  const setProperty = (data, id, category) => {
+  const setProperty = (data, id) => {
     const ids = data.map((room) => room.id);
     try {
       const response = axios.patch(`/api/room`, {
         ids: ids,
         propertyId: id,
-        category: category,
       });
       if (response) {
         toast.success("Habitación/es asignada/s con exito");
@@ -193,9 +203,7 @@ export default function NewProperty({ category, handleBack }) {
     amountHelloflatmate: parseInt(price.amountHelloflatmate),
     amountOwner: parseInt(price.amountOwner),
     puntuation: [],
-    isActive: true,
     category: catAndSize.category,
-    images: urlImages,
     amenities: amenities,
     description: description,
     incomeConditionDescription: moreInfo.condicionDeRenta,
@@ -206,50 +214,36 @@ export default function NewProperty({ category, handleBack }) {
     houseRules: moreInfo.normasDeConvivencia,
     checkIn: moreInfo.checkIn,
     checkOut: moreInfo.checkOut,
+    price:
+      parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner) || 0,
+    amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
+    amountOwner: parseInt(price.amountOwner) || 0,
   };
 
   const createProperty = async () => {
-    if (
-      catAndSize.category === "HELLO_LANDLORD" ||
-      catAndSize.category === "HELLO_STUDIO"
-    ) {
-      property = {
-        ...property,
-        price:
-          parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner),
-        amountHelloflatmate: parseInt(price.amountHelloflatmate),
-        amountOwner: parseInt(price.amountOwner),
-      };
-    }
     if (handleSubmit()) {
       try {
         //Guardar Imagenes
-        await saveImages(sliderImage);
-
-        console.log(dataRoom);
+        const imagesList = await saveImages(sliderImage);
+        property.images = imagesList;
 
         //Crear habitaciones
         const rooms = await submitRoom(dataRoom);
-        console.log(rooms);
-
-        console.log(property);
 
         // Crear propiedad
         const propertyResponse = await axios.post("/api/property", property);
         console.log(propertyResponse);
 
-        const propertyId = propertyResponse.data.dataValues.id;
+        const propertyId = propertyResponse.data.property.id;
 
         // Asignar habitaciones
-        const roomsResponse = await setProperty(
-          rooms.data,
-          propertyId,
-          propertyResponse.data.dataValues.category
-        );
+        const roomsResponse = await setProperty(rooms.data, propertyId);
 
         // Redirigir después de un retraso
         // setTimeout(() => {
-        //   router.push(`/pages/owner/update/${propertyId}`);
+        //   router.push(
+        //     `/pages/owner/update/${propertyId}/${catAndSize.category}`
+        //   );
         // }, 1000);
       } catch (error) {
         toast.error("Ocurrió un error");
@@ -275,7 +269,11 @@ export default function NewProperty({ category, handleBack }) {
             setAdress={setAddress}
             action={handleShowAddressModal}
           />
-          <PriceSection data={price} setData={setPrice} />
+          {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
+            ""
+          ) : (
+            <PriceSection data={price} setData={setPrice} />
+          )}
           <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
           <div className="flex flex-col gap-6">
             <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />

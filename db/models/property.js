@@ -1,10 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const Owner = require("./owner.js");
-const LeaseOrder = require("./leaseOrderProperty.js");
-const Comment = require("./comment.js");
-const ToDo = require("./toDo.js");
 
 const propertyInit = (sequelize, DataTypes) => {
     class Property extends Model { }
@@ -87,7 +83,7 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: false
             },
             category: {
-                type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD'),
+                type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD', 'HELLO_ROOM', 'HELLO_COLIVING'),
                 allowNull: false,
             },
             images: {

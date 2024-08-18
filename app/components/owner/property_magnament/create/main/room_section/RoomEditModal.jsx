@@ -2,29 +2,31 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import axios from "axios";
+import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
 
 export default function RoomEditModal({
   data,
   setData,
   showModal,
   selectedRoom,
+  category,
 }) {
   const [dataRoom, setDataRoom] = useState({});
+  const [files, setFiles] = useState([]);
+  const [initialImages, setInitialImages] = useState([]);
 
   useEffect(() => {
     if (selectedRoom) {
-      setDataRoom(selectedRoom); // Setea los datos de la habitación seleccionada al estado
+      setDataRoom(selectedRoom);
+      setInitialImages(selectedRoom.images || []); // Cargar imágenes iniciales
     }
   }, [selectedRoom]);
 
   const handleSubmit = async () => {
-    // Compara dataRoom con selectedRoom para ver si hubo cambios
-    if (!isModified(dataRoom, selectedRoom)) {
-      showModal(); // Cierra el modal sin hacer la petición
+    if (!isModified(dataRoom, selectedRoom) && files.length === 0) {
+      showModal();
       return;
     }
-
-    const array = [...data];
 
     if (!dataRoom?.name) {
       return toast.error("Por favor, especifique un nombre");
@@ -32,63 +34,89 @@ export default function RoomEditModal({
     if (!dataRoom?.numberBeds) {
       return toast.error("Por favor, especifique una cantidad de camas");
     }
-    if (!dataRoom?.image) {
-      return toast.error("Por favor, agrega una imagen.");
-    }
 
-    // Solo sube la imagen si es un archivo (nueva imagen)
-    if (dataRoom.image instanceof File) {
-      const uploadedImage = await submitImage(dataRoom.image);
-      dataRoom.image = uploadedImage;
-    }
+    // Subir nuevas imágenes si hay
+    console.log(files);
 
-    if (selectedRoom) {
-      // Edita la habitación existente
-      const index = data.findIndex((room) => room === selectedRoom);
-      if (index !== -1) {
-        array[index] = dataRoom;
-      }
-    } else {
-      // Añade una nueva habitación
-      array.push(dataRoom);
-    }
+    const newImageUrls = await uploadNewImages();
+
+    console.log(newImageUrls);
+
+    // Actualizar las URLs de las imágenes en dataRoom
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      images: [...newImageUrls, ...prevDataRoom.images],
+    }));
+
+    // Guardar los cambios en el array data
+    const updatedRooms = data.map((room) =>
+      room.id === dataRoom.id ? dataRoom : room
+    );
 
     try {
-      const response = await axios.put(`/api/room?id=${dataRoom.id}`, dataRoom);
-      console.log(response.data);
+      console.log(dataRoom);
+
+      await axios.put(`/api/room?id=${dataRoom.id}`, dataRoom);
       toast.success("Habitación editada");
+      setData(updatedRooms);
+      showModal(); // Cerrar el modal después de guardar
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Error al editar la habitación");
     }
-
-    setData(array);
-    showModal(); // Cierra el modal después de guardar
   };
 
-  const submitImage = async (file) => {
-    const response = await uploadFiles([file]);
-    console.log(response);
-    return response[0].url;
+  const uploadNewImages = async () => {
+    const filesToUpload = files.filter((file) => file.fileData);
+    const fileUrls = new Set(files.map((file) => file.url));
+    const deletedImages = initialImages.filter((url) => !fileUrls.has(url));
+    const remainingImages = initialImages.filter((url) => fileUrls.has(url));
+
+    if (deletedImages.length > 0) {
+      await handleDeletedImages(deletedImages, remainingImages);
+    }
+
+    if (filesToUpload.length > 0) {
+      const uploadedImages = await handleFileUpload(filesToUpload);
+      return [...remainingImages, ...uploadedImages];
+    } else {
+      return remainingImages;
+    }
   };
 
-  const handleRadioChange = (event) => {
-    const { name, value } = event.target;
-    setDataRoom({ ...dataRoom, [name]: value === "yes" });
+  const handleDeletedImages = async (deletedImages, remainingImages) => {
+    try {
+      await deleteFilesFromURL(deletedImages);
+    } catch (error) {
+      console.error("Error al borrar archivos:", error);
+      toast.error("Error al borrar archivos");
+      throw error;
+    }
   };
 
-  // Función para comparar si hubo cambios en los datos
+  const handleFileUpload = async (filesToUpload) => {
+    try {
+      const response = await uploadFiles(filesToUpload);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response.map((file) => file.url);
+    } catch (error) {
+      console.error("Error al cargar archivos:", error);
+      toast.error("Error al cargar archivos");
+      throw error;
+    }
+  };
+
   const isModified = (newData, originalData) => {
     const originalDataWithoutImage = { ...originalData };
-    delete originalDataWithoutImage.image; // Se elimina la imagen porque podría no ser un archivo
+    delete originalDataWithoutImage.image;
     const newDataWithoutImage = { ...newData };
     delete newDataWithoutImage.image;
 
-    // Si las imágenes son URLs y no cambiaron, se consideran iguales
     const isImageModified =
       newData.image instanceof File || newData.image !== originalData?.image;
 
-    // Compara los datos restantes
     return (
       isImageModified ||
       JSON.stringify(originalDataWithoutImage) !==
@@ -96,10 +124,15 @@ export default function RoomEditModal({
     );
   };
 
+  const handleRadioChange = (event) => {
+    const { name, value } = event.target;
+    setDataRoom({ ...dataRoom, [name]: value });
+  };
   return (
     <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem] flex flex-col">
-        <h2 className="text-2xl mb-4">Archivos de Imágenes</h2>
+      {console.log(dataRoom)}
+      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col h-[95%] overflow-auto">
+        <h2 className="text-2xl mb-4">Editar habitación</h2>
         <div>
           <label className="block text-sm mb-1" htmlFor="name">
             Nombre
@@ -111,6 +144,21 @@ export default function RoomEditModal({
             value={dataRoom?.name || ""}
             onChange={(event) =>
               setDataRoom({ ...dataRoom, name: event.target.value })
+            }
+            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-1" htmlFor="serial">
+            Serial
+          </label>
+          <input
+            type="text"
+            id="serial"
+            name="serial"
+            value={dataRoom?.serial || ""}
+            onChange={(event) =>
+              setDataRoom({ ...dataRoom, serial: event.target.value })
             }
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
@@ -130,27 +178,72 @@ export default function RoomEditModal({
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
+        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+          <>
+            <div>
+              <label className="block text-sm mb-1" htmlFor="amountOwner">
+                Monto del dueño
+              </label>
+              <input
+                type="number"
+                id="amountOwner"
+                name="amountOwner"
+                value={dataRoom?.amountOwner || ""}
+                onChange={(event) =>
+                  setDataRoom({ ...dataRoom, amountOwner: event.target.value })
+                }
+                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div>
+              <label
+                className="block text-sm mb-1"
+                htmlFor="amountHelloflatmate"
+              >
+                Monto de Helloflatmate
+              </label>
+              <input
+                type="number"
+                id="amountHelloflatmate"
+                name="amountHelloflatmate"
+                value={dataRoom?.amountHelloflatmate || ""}
+                onChange={(event) =>
+                  setDataRoom({
+                    ...dataRoom,
+                    amountHelloflatmate: event.target.value,
+                  })
+                }
+                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div>
+              <h3 className="block text-sm mb-1">Total</h3>
+              <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                {(parseInt(dataRoom?.amountOwner) || 0) +
+                  (parseInt(dataRoom?.amountHelloflatmate) || 0)}
+              </p>
+            </div>
+          </>
+        )}
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
           <h3 className="w-full">¿Tiene baños?</h3>
           <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="bathroom"
-              id="bathroom"
               value="yes"
-              checked={dataRoom?.bathroom === true}
+              checked={dataRoom.bathroom === true}
               onChange={handleRadioChange}
             />
             <label htmlFor="bathroom">Si</label>
           </div>
-          <div className="flex gap-2 px-3">
+          <div className="flex  gap-2 px-3">
             <input
               type="radio"
               name="bathroom"
-              id="bathroom"
               value="no"
+              checked={dataRoom.bathroom === false}
               onChange={handleRadioChange}
-              checked={dataRoom?.bathroom === false}
             />
             <label htmlFor="bathroom">No</label>
           </div>
@@ -162,8 +255,8 @@ export default function RoomEditModal({
               type="radio"
               name="couple"
               value="yes"
+              checked={dataRoom.couple === true}
               onChange={handleRadioChange}
-              checked={dataRoom?.couple === true}
             />
             <label htmlFor="couple">Si</label>
           </div>
@@ -172,38 +265,25 @@ export default function RoomEditModal({
               type="radio"
               name="couple"
               value="no"
+              checked={dataRoom.couple === false}
               onChange={handleRadioChange}
-              checked={dataRoom?.couple === false}
             />
             <label htmlFor="couple">No</label>
           </div>
         </div>
         <div className="w-full">
-          <label className="block text-sm mb-1" htmlFor="image">
-            Imagen
-          </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            placeholder="Seleccione un archivo"
-            onChange={(event) => {
-              const file = event.target.files[0];
-              if (file) {
-                setDataRoom({ ...dataRoom, image: file });
-              }
-            }}
-            className="mb-4 appearance-none outline-none border border-[#0C1660] rounded-lg p-2 w-full"
+          <h3 className="block text-sm mb-1">Imagenes</h3>
+          <ImageUploader
+            initialImages={initialImages}
+            images={files}
+            setImages={setFiles}
           />
         </div>
         <div className="flex justify-between w-full mt-4">
           <button
             className="text-black px-4 py-2 border border-[#0C1660] rounded-lg"
             type="button"
-            onClick={() => {
-              showModal();
-              console.log(dataRoom);
-            }}
+            onClick={() => showModal()}
           >
             Cancelar
           </button>

@@ -3,60 +3,78 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
+import { deleteFilesFromURL } from "@/app/firebase/deleteFiles";
 
-export default function SliderModal({ data, setData, showModal }) {
+export default function SliderModal({
+  initialImages = false,
+  setNewImages,
+  showModal,
+}) {
   const [files, setFiles] = useState([]);
-  const [existingImages, setExistingImages] = useState(data);
 
-  useEffect(() => {
-    setExistingImages(data);
-  }, [data]);
+  const uploadNewImages = async () => {
+    try {
+      const filesToUpload = files
+        .filter((file) => file.fileData)
+        .map((file) => file.fileData);
 
-  const saveData = async () => {
-    const validFiles = files.filter((file) => file.size > 0);
-    console.log(validFiles);
+      // Crear un set con las URLs actuales para comparación
+      const fileUrls = new Set(files.map((file) => file.url));
 
-    if (validFiles.length > 0) {
-      try {
-        const response = await uploadFiles(validFiles);
-        if (response instanceof Error) {
-          toast.error("Error al cargar archivos" + response.message);
-          return;
-        }
+      // Imágenes eliminadas (están en initialImages pero no en files)
+      const deletedImages = initialImages.filter((url) => !fileUrls.has(url));
 
-        // Construimos nuevas imágenes con la estructura correcta
-        const newImages = response.map((file, index) => ({
-          id: existingImages.length + index,
-          url: file.url,
-        }));
+      // Imágenes restantes (siguen presentes en files)
+      const remainingImages = initialImages.filter((url) => fileUrls.has(url));
 
-        // Aseguramos que todas las imágenes tengan la estructura correcta
-        const sanitizedPrevImages = existingImages.map((img) =>
-          typeof img.url === "object" ? img.url : img
-        );
-
-        const updatedImages = [...sanitizedPrevImages, ...newImages];
-        setExistingImages(updatedImages);
-        setData(updatedImages);
-        toast.success("Archivos cargados");
-      } catch (error) {
-        console.error("Error al cargar archivos:", error);
-        toast.error("Error al cargar archivos");
+      // Si hay imágenes eliminadas, eliminarlas de Firebase Storage
+      if (deletedImages.length > 0) {
+        await handleDeletedImages(deletedImages, remainingImages);
       }
-    } else {
-      setData(existingImages);
+
+      // Si hay nuevas imágenes, subirlas
+      if (filesToUpload.length > 0) {
+        const uploadedImages = await handleFileUpload(filesToUpload);
+        setNewImages([...remainingImages, ...uploadedImages]);
+      } else {
+        // Si no hay nuevas imágenes, actualizar solo con las imágenes restantes
+        setNewImages([...remainingImages]);
+      }
+
+      toast.success("Datos actualizados");
+      return showModal(false);
+    } catch (error) {
+      console.error(
+        "Error durante el proceso de carga/eliminación de imágenes:",
+        error
+      );
+      toast.error("Error durante el proceso de carga/eliminación de imágenes");
     }
-    showModal(false);
   };
 
-  const deleteImage = (index) => {
-    const newFiles = files.filter((_, i) => i !== index);
-    setFiles(newFiles);
+  const handleDeletedImages = async (deletedImages, remainingImages) => {
+    try {
+      await deleteFilesFromURL(deletedImages);
+      setNewImages([...remainingImages]);
+    } catch (error) {
+      console.error("Error al borrar archivos:", error);
+      toast.error("Error al borrar archivos");
+      throw error;
+    }
+  };
 
-    setExistingImages((prevImages) => {
-      const newExistingImages = prevImages.filter((_, i) => i !== index);
-      return newExistingImages;
-    });
+  const handleFileUpload = async (filesToUpload) => {
+    try {
+      const response = await uploadFiles(filesToUpload);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response.map((file) => file.url);
+    } catch (error) {
+      console.error("Error al cargar archivos:", error);
+      toast.error("Error al cargar archivos");
+      throw error;
+    }
   };
 
   return (
@@ -67,9 +85,13 @@ export default function SliderModal({ data, setData, showModal }) {
       transition={{ duration: 0.8 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
-      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 overflow-auto h-[95%]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 overflow-auto h-auto">
         <h2 className="text-2xl mb-4">Archivos de Imágenes</h2>
-        <ImageUploader setImages={setFiles} images={existingImages} />
+        <ImageUploader
+          initialImages={initialImages}
+          setImages={setFiles}
+          images={files}
+        />
         <div className="flex justify-between w-full">
           <button
             onClick={() => showModal(false)}
@@ -78,7 +100,7 @@ export default function SliderModal({ data, setData, showModal }) {
             Cerrar
           </button>
           <button
-            onClick={saveData}
+            onClick={uploadNewImages}
             className="bg-[#0C1660] text-white px-4 py-2 rounded-lg mt-4 ml-2"
           >
             Guardar

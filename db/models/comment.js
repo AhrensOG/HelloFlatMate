@@ -1,8 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const User = require("./user");
-const Property = require("./propertyWithPrice");
 
 const commentInit = (sequelize, DataTypes) => {
 

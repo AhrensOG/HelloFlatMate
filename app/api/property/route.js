@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import createProperty from './controller/createPropertyController';
 import { deleteProperty } from './controller/deletePropertyController';
 import { getAllProperties, getPropertyById } from './controller/getPropertyController';
@@ -14,13 +13,10 @@ export async function POST(req) {
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url);
-    const data = {
-        id: searchParams.get('id'),
-        price: searchParams.get('price'),
-    }
+    const id = searchParams.get('id');
 
-    if (data) {
-        const result = await getPropertyById(data);
+    if (id) {
+        const result = await getPropertyById(id);
         return result
     }
     const result = await getAllProperties();
@@ -29,9 +25,10 @@ export async function GET(req) {
 
 export async function PUT(req) {
     const data = await req.json();
-    const { id, property } = data;
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
 
-    const result = await updateProperty(id, property);
+    const result = await updateProperty(id, data);
     return result
 }
 

@@ -12,35 +12,28 @@ export default function UpdatePropertyPage({ params }) {
   const router = useRouter();
   const [currentCategory, setCurrentCategory] = useState(false);
 
-  const id = params.id;
+  const id = params.info[0];
+  const category = params.info[1];
 
   const [initialData, setInitialData] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`/api/property?id=${id}`);
-  //       setInitialData(response.data.property);
-  //       console.log(response.data.property);
-
-  //       setCurrentCategory(response.data.property.category);
-  //     } catch (error) {
-  //       console.error("Error fetching property data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [id]);
-
   useEffect(() => {
-    const updateInitialData = () => {
-      setInitialData({
-        id: id,
-        category: currentCategory,
-      });
-    };
-    updateInitialData();
-  }, [currentCategory]);
+    if (id && category) {
+      const getData = async () => {
+        try {
+          const response = await axios.get(`/api/property?id=${id}`);
+          console.log(response);
+
+          setInitialData(response.data.property);
+          setCurrentCategory(category);
+        } catch (error) {
+          console.error("Error fetching property data:", error);
+        }
+      };
+      getData();
+      console.log(initialData);
+    }
+  }, [id]);
 
   const handleContinue = () => {
     setCurrentStep(currentStep + 1);
@@ -74,7 +67,11 @@ export default function UpdatePropertyPage({ params }) {
           />
         )}
         {currentStep === 2 && (
-          <UpdateProperty data={initialData} handleBack={handleBack} />
+          <UpdateProperty
+            data={initialData}
+            handleBack={handleBack}
+            category={currentCategory}
+          />
         )}
       </AnimatePresence>
     </Suspense>

@@ -43,9 +43,7 @@ const createProperty = async (data) => {
 
         return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (data.price <= 0 || typeof data.price !== "number") {
-        return NextResponse.json({ error: "El precio no puede estar vacío o no es un número" }, { status: 400 });
-    }
+
     const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
@@ -72,7 +70,9 @@ const createProperty = async (data) => {
             bathrooms: data.bathrooms,
             bed: data.bed,
             maximunOccupants: data.maximunOccupants,
-            price: data.price,
+            price: data.amountOwner + data.amountHelloflatmate || 0,
+            amountOwner: data.amountOwner || 0,
+            amountHelloflatmate: data.amountHelloflatmate || 0,
             puntuation: [],
             isActive: true,
             isBussy: false,
@@ -81,9 +81,9 @@ const createProperty = async (data) => {
             amenities: data.amenities,
             description: data.description,
             incomeConditionDescription: data.incomeConditionDescription || "",
-            maintanceDescription: data.maintanceDescription || "",
+            maintenanceDescription: data.maintenanceDescription || "",
             roomDescription: data.roomDescription || "",
-            billDescription: data.billDescription || "",
+            feeDescription: data.feeDescription || "",
             aboutUs: data.aboutUs || "",
             houseRules: data.houseRules || "",
             checkIn: data.checkIn || "",

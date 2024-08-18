@@ -6,7 +6,7 @@ export default function SliderUpdateTemplate({ data, action }) {
   return (
     <div className="relative h-[12.5rem]">
       <SliderDetails>
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <SliderItem key={index} img={item} />
         ))}
       </SliderDetails>

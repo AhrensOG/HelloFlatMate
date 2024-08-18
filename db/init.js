@@ -1,3 +1,4 @@
+
 const connection = require(".");
 const Comment = require("./models/comment");
 const Contract = require("./models/contract");
@@ -12,88 +13,78 @@ const ToDo = require("./models/toDo");
 const Client = require("./models/client");
 const Admin = require("./models/admin");
 const Room = require("./models/room");
-const PropertyWithPrice = require("./models/propertyWithPrice");
-const RoomWithPrice = require("./models/roomWithPrice");
-const { propertyWithPriceData, testAdminData, testClientData, testOwnerData, testRoom, roomWithPriceData, propertyData } = require("./textData");
+const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
     try {
         // RELATIONSHIPS
 
-        // OWNER
+        //OWNER
         Owner.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "ownerId" });
         Owner.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "ownerId" });
         Owner.hasMany(Chat, { as: "chats", foreignKey: "ownerId" });
         Owner.hasMany(Property, { as: "properties", foreignKey: "ownerId" });
-        Owner.hasMany(PropertyWithPrice, { as: "propertyWithPrices", foreignKey: "ownerId" }); // Cambiado el alias para evitar conflicto
 
-        // PROPERTY
+        //PROPERTY
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
-        Property.hasMany(RoomWithPrice, { as: "roomsWithPrice", foreignKey: "propertyId" });
-        Property.belongsTo(Owner, { as: "propertyOwner", foreignKey: "ownerId" }); // Cambiado el alias a "propertyOwner" para evitar conflicto
+        Property.hasMany(Room, { as: "rooms", foreignKey: "propertyId" });
         Property.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "propertyId" });
+        Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
 
-        // PROPERTY WITH PRICE
-        PropertyWithPrice.hasMany(LeaseOrderProperty, { as: "leaseOrdersPropertyWithPrice", foreignKey: "propertyWithPriceId" });
-        PropertyWithPrice.hasMany(Comment, { as: "propertyWithPriceComments", foreignKey: "propertyWithPriceId" });
-        PropertyWithPrice.hasMany(Room, { as: "rooms", foreignKey: "propertyWithPriceId" });
-        PropertyWithPrice.belongsTo(Owner, { as: "propertyWithPriceOwner", foreignKey: "ownerId" }); // Cambiado el alias a "propertyWithPriceOwner" para evitar conflicto
+        //Room
+        Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        Room.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "roomId" });
 
-        // ROOM
-        Room.belongsTo(PropertyWithPrice, { as: "propertyWithPrice", foreignKey: "propertyWithPriceId" });
-
-        // ROOM WITH PRICE
-        RoomWithPrice.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
-        RoomWithPrice.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoomWithPrice", foreignKey: "roomWithPriceId" });
-
-        // ToDo
+        //ToDo
         ToDo.belongsTo(Client, { as: "client", foreignKey: "clientId" });
         ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         ToDo.belongsTo(Admin, { as: "admin", foreignKey: "adminId" });
 
-        // MESSAGE
+        //MESSAGE
         Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
 
         // LeaseOrderProperty
         LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderPropertyOwner" });
-        LeaseOrderProperty.belongsTo(PropertyWithPrice, { foreignKey: "propertyWithPriceId", as: "leaseOrderProperty" }); // Usar el correcto foreignKey
+        LeaseOrderProperty.belongsTo(Property, { foreignKey: "propertyId", as: "leaseOrderProperty" }); // Usar el correcto foreignKey
         LeaseOrderProperty.belongsTo(Client, { foreignKey: "clientId", as: "leaseOrderPropertyClient" });
 
         // LeaseOrderRoom
-        LeaseOrderRoom.belongsTo(RoomWithPrice, { foreignKey: "roomWithPriceId", as: "leaseOrderRoomRoom" });
+        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "leaseOrderRoomRoom" });
         LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderRoomOwner" });
         LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "leaseOrderRoomProperty" });
         LeaseOrderRoom.belongsTo(Client, { foreignKey: "clientId", as: "leaseOrderRoomClient" });
 
-        // COMMENT
+        //COMMENT
         Comment.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Comment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
-        // CLIENT
+        //CLIENT
         Client.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "clientId" });
         Client.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "clientId" });
         Client.hasMany(ToDo, { as: "toDos", foreignKey: "clientId" });
         Client.hasMany(Chat, { as: "chats", foreignKey: "chatParticipant" });
 
-        // CHAT
+        //CHAT
+        // Uno a Muchos
         Chat.hasMany(Message, { as: "messages", foreignKey: "chatId" });
         Chat.hasMany(Client, { as: "participants", foreignKey: "chatId" });
-        Chat.belongsTo(Owner, { as: "chatOwner", foreignKey: "ownerId" }); // Cambiado el alias a "chatOwner"
 
-        // ADMIN
-        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "adminId" });
+        // Muchos a Uno
+        Chat.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+
+        //ADMIN
+        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDoId" });
 
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
-        // DATA DE PRUEBA
-        // await Property.bulkCreate(propertyData);
-        // await PropertyWithPrice.bulkCreate(propertyWithPriceData);
-        // await Client.bulkCreate(testClientData);
-        // await Admin.bulkCreate(testAdminData);
-        // await Owner.bulkCreate(testOwnerData);
-        // await Room.bulkCreate(testRoom);
-        // await RoomWithPrice.bulkCreate(roomWithPriceData);
+        // // DATA DE PRUEBA
+        // await Property.bulkCreate(propertyData)
+        // await Client.bulkCreate(testClientData)
+        // await Admin.bulkCreate(testAdminData)
+        // await Owner.bulkCreate(testOwnerData)
+        // await Room.bulkCreate(testRoom)
+
 
         // console.log("Data inserted");
     } catch (error) {
@@ -108,13 +99,11 @@ module.exports = {
     Document,
     Message,
     Property,
-    LeaseOrderRoom,
     LeaseOrderProperty,
+    LeaseOrderRoom,
     Chat,
     Client,
     Admin,
     ToDo,
-    Room,
-    PropertyWithPrice,
-    RoomWithPrice
+    Room
 };

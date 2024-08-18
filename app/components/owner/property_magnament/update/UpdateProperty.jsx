@@ -22,10 +22,10 @@ import { useRouter } from "next/navigation";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
+import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
 
-export default function UpdateProperty({ data, handleBack }) {
-  const [property, setProperty] = useState(null);
-  const [dataIsReady, setDataIsReady] = useState(false);
+export default function UpdateProperty({ data = false, category, handleBack }) {
+  const [property, setProperty] = useState(data ? data : null);
 
   const router = useRouter();
 
@@ -33,7 +33,8 @@ export default function UpdateProperty({ data, handleBack }) {
   const [name, setName] = useState();
   const [address, setAddress] = useState();
   const [guestInfo, setGuestInfo] = useState();
-  const [sliderImage, setSliderImage] = useState();
+  const [sliderImage, setSliderImage] = useState([]);
+  const [newImages, setNewImages] = useState([]);
   const [description, setDescription] = useState();
   const [amenities, setAmenities] = useState();
   const [moreInfo, setMoreInfo] = useState();
@@ -52,32 +53,9 @@ export default function UpdateProperty({ data, handleBack }) {
   const [editRoomsModal, setEditRoomsModal] = useState(false);
   const [showAddRoom, setShowAddRoom] = useState(false);
 
-  //Obtencion de datos
-  useEffect(() => {
-    if (data) {
-      const getData = async () => {
-        try {
-          const response = await axios.get(
-            `/api/property?id=${data.id}&price=${
-              data.category === "HELLO_ROOM" ||
-              data.category === "HELLO_COLIVING"
-                ? false
-                : true
-            }`
-          );
-          setProperty(response.data);
-          setDataIsReady(true); // Aquí establecemos que los datos están listos
-        } catch (error) {
-          console.error("Error fetching property data:", error);
-        }
-      };
-      getData();
-    }
-  }, [data]);
-
   //Asignacion de datos
   useEffect(() => {
-    if (property && dataIsReady) {
+    if (property) {
       setName(property?.name || "");
       setDescription(property?.description || "");
       setSliderImage(property?.images || []);
@@ -105,7 +83,7 @@ export default function UpdateProperty({ data, handleBack }) {
       });
       setDataRooms(property?.roomsWithPrice || property?.rooms || []);
       setCatAndSize({
-        category: property?.category || "",
+        category: category || "",
         size: property?.size || 0,
       });
       setPrice({
@@ -114,7 +92,7 @@ export default function UpdateProperty({ data, handleBack }) {
         amountHelloflatmate: property?.amountHelloflatmate || 0,
       });
     }
-  }, [property, dataIsReady]);
+  }, [property]);
 
   //funcion para manejar la edicion de habitaciones
   const handleRoomUpdate = (updatedRoom) => {
@@ -210,11 +188,6 @@ export default function UpdateProperty({ data, handleBack }) {
             await axios.delete(`/api/room`, {
               data: {
                 rooms: deleteRooms,
-                havePrice:
-                  catAndSize.category === "HELLO_ROOM" ||
-                  catAndSize.category === "HELLO_COLIVING"
-                    ? true
-                    : false,
               },
             });
             toast.success("Habitaciones eliminadas");
@@ -244,6 +217,28 @@ export default function UpdateProperty({ data, handleBack }) {
           throw err;
         }
 
+        //UpdateRooms
+        try {
+          if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
+            console.log(dataRooms);
+
+            const roomsUpdate = dataRooms.map((room) => {
+              return {
+                ...room,
+                price: 0,
+                amountOwner: 0,
+                amountHelloflatmate: 0,
+                propertyId: property?.id,
+              };
+            });
+            await axios.put("/api/room", roomsUpdate);
+            toast.success("Habitaciones actualizadas");
+          }
+        } catch (error) {
+          toast.error("Error en la actualización de habitaciones");
+          throw error;
+        }
+
         //DATOS DE LA PROPIEDAD
         let updateDataProperty = {
           name: name,
@@ -269,21 +264,17 @@ export default function UpdateProperty({ data, handleBack }) {
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
           checkOut: moreInfo.checkOut,
+          price:
+            parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner) ||
+            0,
+          amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
+          amountOwner: parseInt(price.amountOwner) || 0,
         };
 
-        if (price.amountHelloflatmate > 0 && price.amountOwner > 0) {
-          updateDataProperty = {
-            ...updateDataProperty,
-            price:
-              parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner),
-            amountHelloflatmate: parseInt(price.amountHelloflatmate),
-            amountOwner: parseInt(price.amountOwner),
-          };
-        }
-        const response = await axios.put(`/api/property`, {
-          property: updateDataProperty,
-          id: property.id,
-        });
+        const response = await axios.put(
+          `/api/property?id=${data.id}`,
+          updateDataProperty
+        );
         toast.success("Propiedad actualizada correctamente");
       } catch (error) {
         console.error("Error updating property data:", error);
@@ -294,7 +285,7 @@ export default function UpdateProperty({ data, handleBack }) {
     }
   };
 
-  if (!dataIsReady) {
+  if (!data) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -308,11 +299,11 @@ export default function UpdateProperty({ data, handleBack }) {
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderUpdateTemplate
-              data={sliderImage || property.images}
+              data={sliderImage}
               action={handleShowSliderModal}
             />
           </div>
-          <NavBarDetails link="/pages/owner" action={handleBack} />
+          <NavBarDetails link="/pages/owner" callBack={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
@@ -331,8 +322,7 @@ export default function UpdateProperty({ data, handleBack }) {
             setAddress={setAddress}
             action={handleShowAddressModal}
           />
-          {(property.category === "HELLO_STUDIO" ||
-            property.category === "HELLO_LANDLORD") && (
+          {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
             <PriceSection data={price || property.price} setData={setPrice} />
           )}
           <SizeAndCategorySection
@@ -364,6 +354,7 @@ export default function UpdateProperty({ data, handleBack }) {
             action={handleAddRoomModal}
             deleteRooms={deleteRooms}
             setDeleteRooms={setDeleteRooms}
+            category={category}
           />
           <AmenitiesSection
             data={amenities || property.amenities}
@@ -398,11 +389,8 @@ export default function UpdateProperty({ data, handleBack }) {
         )}
         {showSliderModal && (
           <SliderModal
-            data={sliderImage.map((image, index) => ({
-              id: index,
-              url: image,
-            }))}
-            setData={handleSliderImage}
+            initialImages={sliderImage}
+            setNewImages={handleSliderImage}
             showModal={handleShowSliderModal}
           />
         )}

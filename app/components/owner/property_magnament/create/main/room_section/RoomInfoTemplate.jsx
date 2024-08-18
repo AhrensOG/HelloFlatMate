@@ -10,9 +10,9 @@ export default function RoomInfoTemplate({
   showModal,
   type,
   onDelete,
+  info,
 }) {
   const [showPencil, setShowPencil] = useState(false);
-
   return (
     <article className="flex flex-col gap-1 min-w-[8.7rem] max-w-[10rem] relative">
       <div
@@ -65,11 +65,53 @@ export default function RoomInfoTemplate({
 
         {/* Número de camas */}
         <div
-          className={`font-normal text-sm text-[#4F7A94] pl-2 w-full ${
+          className={`font-normal text-sm text-[#4F7A94] w-full flex justify-start gap-8 items-center ${
             !bedNumber ? "text-gray-500" : "text-black"
           }`}
         >
-          {bedNumber || "Número de camas"}
+          {bedNumber ? (
+            <div className="flex flex-row justify-center items-center gap-1">
+              {bedNumber}
+              <Image
+                src={"/create-property/bed.png"}
+                width={25}
+                height={25}
+                alt="bed-icon"
+              />
+            </div>
+          ) : (
+            "Número de camas"
+          )}
+          {info?.couple === false && (
+            <div className="flex flex-row justify-center items-center">
+              <Image
+                src={"/create-property/singleman.png"}
+                width={20}
+                height={20}
+                alt="bed-icon"
+              />
+            </div>
+          )}
+          {info?.couple === true && (
+            <div className="flex flex-row justify-center items-center">
+              <Image
+                src={"/create-property/couple.png"}
+                width={20}
+                height={20}
+                alt="bed-icon"
+              />
+            </div>
+          )}
+          {info?.bathroom ? (
+            <div className="flex flex-row justify-center items-center">
+              <Image
+                src={"/create-property/toilet.png"}
+                width={20}
+                height={20}
+                alt="bed-icon"
+              />
+            </div>
+          ) : null}
         </div>
       </div>
       {onDelete ? (
