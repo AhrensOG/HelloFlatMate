@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
-export default function SelectContract() {
+export default function SelectContract({ data, setData }) {
   const [showUl, setShowUl] = useState(false);
   const [selectedValue, setSelectedValue] = useState(
     "Seleccionar tipo de contrato"
@@ -16,6 +16,8 @@ export default function SelectContract() {
 
   const handleValue = (value) => {
     setSelectedValue(value);
+    setData({ ...data, duracion: value });
+    console.log(data);
   };
 
   return (

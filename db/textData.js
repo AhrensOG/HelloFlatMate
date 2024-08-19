@@ -257,7 +257,7 @@ const propertyData = [
         isActive: true,
         status: "RESERVED",
         category: "HELLO_COLIVING",
-        images: ["image19.jpg", "image20.jpg"],
+        images: ["https://th.bing.com/th/id/OIP.3r6tmFYqMGnVhLEbRbelbwHaE8?rs=1&pid=ImgDetMain"],
         amenities: ["Riverside View", "Boat Dock", "Wi-Fi"],
         description: ["Charming bungalow with river access"],
         incomeConditionDescription: "Stable income required",
