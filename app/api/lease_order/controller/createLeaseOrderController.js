@@ -13,22 +13,16 @@ export async function createLeasePropertyOrder(data) {
     if (!data.propertyId || data.propertyId <= 0) return NextResponse.json({ message: "No property id provided" }, { status: 400 })
 
     try {
-        console.log("Entre al try");
-
         //Buscar y verificar que la propiedad exista
         const property = await Property.findByPk(data.propertyId)
-        console.log("1");
-
         if (!property) return NextResponse.json({ message: "Property not found" }, { status: 404 })
         //Buscar y verificar que el dueño exista    
         const owner = await Owner.findByPk(data.ownerId)
-        console.log("2");
         if (!owner) return NextResponse.json({ message: "Owner not found" }, { status: 404 })
         //Verificar que el dueño sea el dueño de la propiedad
         if (owner.id !== property.ownerId) return NextResponse.json({ message: "Owner is not the owner of the property" }, { status: 400 })
         //Buscar y verificar que el cliente exista
         const client = await Client.findByPk(data.clientId)
-        console.log("3");
         if (!client) return NextResponse.json({ message: "Client not found" }, { status: 404 })
         const leaseOrder = await LeaseOrderProperty.create({ ...data, status: "IN_PROGRESS" })
         return NextResponse.json(leaseOrder, { message: "Orden creada con exito" }, { status: 201 })

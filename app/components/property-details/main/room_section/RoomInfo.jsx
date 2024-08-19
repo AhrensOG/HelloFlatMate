@@ -1,9 +1,20 @@
-import { data } from "@/app/components/guest-home/type_rooms/typesRoomsData";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function RoomInfo({ data }) {
+  const router = useRouter();
+  const handleRedirect = () => {
+    router.push(
+      `/pages/property-details/${data.propertyId}/room-details/${data.id}`
+    );
+  };
   return (
-    <article className="flex flex-col gap-2 min-w-[8.7rem] max-w-[10rem] items-center justify-between relative">
+    <article
+      onClick={data.price ? handleRedirect : null}
+      className={`${
+        data.price ? "cursor-pointer" : ""
+      } flex flex-col gap-2 min-w-[8.7rem] max-w-[10rem] items-center justify-between relative`}
+    >
       <div className="relative h-24 rounded-xl w-full">
         <Image
           src={data.images[0]}

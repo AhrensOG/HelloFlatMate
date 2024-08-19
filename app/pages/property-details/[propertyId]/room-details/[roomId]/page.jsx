@@ -11,6 +11,9 @@ import PriceSection from "@/app/components/property-details/main/PriceSection";
 import ReservationModal from "@/app/components/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/property-details/main/ReservationButton";
 import RoomSection from "@/app/components/property-details/main/RoomSection";
+import GuestInfoRoom from "@/app/components/room-details/GuestInfoRoom";
+import PropertyInfo from "@/app/components/room-details/PropertyInfo";
+import PropertySection from "@/app/components/room-details/PropertySection";
 import { Context } from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
 import axios from "axios";
@@ -27,11 +30,7 @@ export default function RoomDetails({ params }) {
       ? state.properties.find((property) => propertyId === property.id)
       : null
   );
-  const [roomData, setRoomData] = useState(
-    state.properties
-      ? state.properties.rooms.find((room) => roomId === room.id)
-      : null
-  );
+  const [roomData, setRoomData] = useState();
 
   useEffect(() => {
     if (!data) {
@@ -40,7 +39,7 @@ export default function RoomDetails({ params }) {
           const data = await axios.get(`/api/property?id=${propertyId}`);
           setData(data.data.property);
           setRoomData(
-            data.data.property.rooms.find((room) => roomId === room.id)
+            data.data.property.rooms.find((room) => roomId == room.id)
           );
         } catch (error) {
           console.error("Error fetching property data:", error);
@@ -48,7 +47,7 @@ export default function RoomDetails({ params }) {
       };
       fetchData();
     }
-  }, [data, propertyId, roomData]);
+  }, [data, propertyId]);
 
   if (!data) {
     return (
@@ -63,12 +62,13 @@ export default function RoomDetails({ params }) {
 
   return (
     <div className="flex flex-col justify-center items-center relative">
-      {console.log(roomData, data)}
+      {console.log(roomData)}
+
       <div className="flex flex-col max-w-screen-sm gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderDetails>
-              {data.images.map((image, index) => {
+              {roomData.images.map((image, index) => {
                 return <SliderItem key={index} img={image} />;
               })}
             </SliderDetails>
@@ -80,23 +80,25 @@ export default function RoomDetails({ params }) {
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C] w-screen px-3`}
         >
-          <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
+          <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street + " " + data.streetNumber}
           </h4>
-          <PriceSection data={data.price} />
+          {roomData.price && <PriceSection data={roomData.price} />}
           <div className="flex flex-col gap-6">
-            <GuestInfo
+            <GuestInfoRoom
               data={[
-                { quantity: data.maximunOccupants, type: "Huespedes" },
-                { quantity: data.bathrooms, type: "Baños" },
-                { quantity: data.bed, type: "Camas" },
+                { type: "bed", number: roomData.numberBeds },
+                { type: "bathroom", boolean: roomData.bathroom },
+                { type: "couple", boolean: roomData.couple },
               ]}
             />
             <ReservationButton callback={handleShowModal} />
           </div>
           <DescriptionSection data={data.description} />
-          <RoomSection data={data.rooms} />
+          <PropertySection
+            data={{ id: data.id, name: data.name, image: data.images[0] }}
+          />
           <AmenitiesSection data={data.amenities} />
           <LocationSection />
           <MoreInfoSection
@@ -121,10 +123,11 @@ export default function RoomDetails({ params }) {
                 date: null,
                 startDate: null,
                 endDate: null,
-                price: data.price,
+                price: roomData.price,
                 propertyId: data.id,
                 clientId: "23",
                 ownerId: data.ownerId,
+                roomId: roomData.id,
               }}
             />
           )}

@@ -86,7 +86,11 @@ export default function PropertyDetails({ params }) {
             <ReservationButton callback={handleShowModal} />
           </div>
           <DescriptionSection data={data.description} />
-          <RoomSection data={data.rooms} />
+          <RoomSection
+            data={data.rooms.map((room) => {
+              return { ...room, propertyId: data.id };
+            })}
+          />
           <AmenitiesSection data={data.amenities} />
           <LocationSection />
           <MoreInfoSection
