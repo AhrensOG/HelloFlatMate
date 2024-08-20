@@ -1,19 +1,14 @@
 import RoomInfo from "./room_section/RoomInfo";
 
 export default function RoomSection({ data }) {
-  console.log(data);
-
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="font-bold text-[1.37rem]">Habitaciones</h2>
-      <div className="flex gap-3">
+    <section className="flex flex-col gap-3 items-center w-full">
+      <h2 className="font-bold text-[1.37rem] w-full text-start">
+        Habitaciones
+      </h2>
+      <div className="flex justify-evenly gap-1 w-full overflow-x-auto">
         {data.map((item, index) => (
-          <RoomInfo
-            key={index}
-            title={item.name}
-            info={item.numberBeds}
-            image={item.image}
-          />
+          <RoomInfo key={item.id} data={item} />
         ))}
       </div>
     </section>

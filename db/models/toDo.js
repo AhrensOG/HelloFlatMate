@@ -1,8 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const Client = require("./client");
-const Property = require("./propertyWithPrice");
 
 const toDoInit = (sequelize, DataTypes) => {
     class ToDo extends Model { }
