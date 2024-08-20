@@ -19,8 +19,19 @@ export async function updateClient(data) {
     try {
         const user = await Client.findByPk(data.id);
         if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        const updatedUser = await user.update(data);
-        return NextResponse.json("Usuario actualizado", { status: 200 });
+        user.name = data.name || user.name;
+        user.lastName = data.lastName || user.lastName;
+        user.email = data.email || user.email;
+        user.profilePicture = data.profilePicture || user.profilePicture;
+        user.idNum = data.idNum || user.idNum;
+        user.age = data.age || user.age;
+        user.phone = data.phone || user.phone;
+        user.city = data.city || user.city;
+        user.street = data.street || user.street;
+        user.streetNumber = data.streetNumber || user.streetNumber;
+        user.postalCode = data.postalCode || user.postalCode;
+        await user.save();
+        return NextResponse.json({ message: "Usuario actualizado con exito", user }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
