@@ -17,12 +17,13 @@ import PropertySection from "@/app/components/room-details/PropertySection";
 import { Context } from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function RoomDetails({ params }) {
   const { state } = useContext(Context);
   const { propertyId, roomId } = params;
-  console.log(propertyId, roomId);
+  const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState(
@@ -74,11 +75,11 @@ export default function RoomDetails({ params }) {
             </SliderDetails>
           </div>
           <div className="px-3">
-            <NavBarDetails />
+            <NavBarDetails link={`/pages/property-details/${propertyId}`} />
           </div>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C] w-screen px-3`}
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-screen px-3`}
         >
           <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
           <h4 className="text-[#000000B2] text-base">

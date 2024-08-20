@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import ModalRomInfo from "./ModalRomInfo";
 
-export default function RoomInfo({ data }) {
+export default function RoomInfo({ data, action }) {
   const router = useRouter();
   const handleRedirect = () => {
     router.push(
@@ -10,10 +11,8 @@ export default function RoomInfo({ data }) {
   };
   return (
     <article
-      onClick={data.price ? handleRedirect : null}
-      className={`${
-        data.price ? "cursor-pointer" : ""
-      } flex flex-col gap-2 min-w-[8.7rem] max-w-[10rem] items-center justify-between relative`}
+      onClick={data.price ? handleRedirect : () => action(data)}
+      className={`cursor-pointer flex flex-col gap-2 min-w-[8.7rem] max-w-[10rem] items-center justify-between relative`}
     >
       <div className="relative h-24 rounded-xl w-full">
         <Image

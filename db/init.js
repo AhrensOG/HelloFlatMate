@@ -78,15 +78,15 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
-        // // // DATA DE PRUEBA
-        // // await Property.bulkCreate(propertyData)
-        // // await Client.bulkCreate(testClientData)
-        // // await Admin.bulkCreate(testAdminData)
-        // // await Owner.bulkCreate(testOwnerData)
-        // // await Room.bulkCreate(testRoom)
+        // DATA DE PRUEBA
+        // await Property.bulkCreate(propertyData)
+        // await Client.bulkCreate(testClientData)
+        // await Admin.bulkCreate(testAdminData)
+        // await Owner.bulkCreate(testOwnerData)
+        // await Room.bulkCreate(testRoom)
 
 
-        // // console.log("Data inserted");
+        // console.log("Data inserted");
     } catch (error) {
         console.log(error);
     }
