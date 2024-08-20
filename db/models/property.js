@@ -1,10 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const Owner = require("./owner.js");
-const LeaseOrder = require("./leaseOrderProperty.js");
-const Comment = require("./comment.js");
-const ToDo = require("./toDo.js");
 
 const propertyInit = (sequelize, DataTypes) => {
     class Property extends Model { }
@@ -57,6 +53,22 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            price: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            amountOwner: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            amountHelloflatmate: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            offer: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
             puntuation: {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),
                 allowNull: false,
@@ -71,7 +83,7 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: false
             },
             category: {
-                type: DataTypes.ENUM('HELLO_ROOM', 'HELLO_COLIVING',),
+                type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD', 'HELLO_ROOM', 'HELLO_COLIVING'),
                 allowNull: false,
             },
             images: {

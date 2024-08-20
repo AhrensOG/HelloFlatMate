@@ -21,14 +21,10 @@ export default function UpdatePropertyPage({ params }) {
     if (id && category) {
       const getData = async () => {
         try {
-          const response = await axios.get(
-            `/api/property?id=${id}&price=${
-              category === "HELLO_ROOM" || category === "HELLO_COLIVING"
-                ? false
-                : true
-            }`
-          );
-          setInitialData(response.data);
+          const response = await axios.get(`/api/property?id=${id}`);
+          console.log(response);
+
+          setInitialData(response.data.property);
           setCurrentCategory(category);
         } catch (error) {
           console.error("Error fetching property data:", error);
@@ -71,7 +67,11 @@ export default function UpdatePropertyPage({ params }) {
           />
         )}
         {currentStep === 2 && (
-          <UpdateProperty data={initialData} handleBack={handleBack} category={currentCategory} />
+          <UpdateProperty
+            data={initialData}
+            handleBack={handleBack}
+            category={currentCategory}
+          />
         )}
       </AnimatePresence>
     </Suspense>

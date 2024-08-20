@@ -13,6 +13,23 @@ const roomInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            price: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            amountOwner: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            amountHelloflatmate: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            isActive: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: true,
+                allowNull: false
+            },
             serial: {
                 type: DataTypes.STRING(100),
                 allowNull: false,

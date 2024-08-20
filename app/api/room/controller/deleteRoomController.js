@@ -6,13 +6,7 @@ export async function deleteRoom(data) {
         if (Array.isArray(data.rooms) && data.rooms.length > 0) {
             for (let i = 0; i < data.rooms.length; i++) {
                 try {
-                    let room
-                    if (!data.havePrice) {
-                        room = await Room.findByPk(data.rooms[i]);
-                    }
-                    if (data.havePrice) {
-                        room = await RoomWithPrice.findByPk(data.rooms[i]);
-                    }
+                    const room = await Room.findByPk(data.rooms[i])
                     if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
                     await room.destroy();
                 } catch (error) {

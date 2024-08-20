@@ -1,74 +1,50 @@
-import { Property, PropertyWithPrice, Room, RoomWithPrice } from "@/db/init";
+import { Property, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
 export async function getAllProperties() {
     try {
         const properties = await Property.findAll();
-        const propertiesWithPrice = await PropertyWithPrice.findAll();
-        return NextResponse.json([...properties, ...propertiesWithPrice], { status: 200 });
+        return NextResponse.json(properties, { status: 200 });
 
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
     }
 }
 
-export async function getPropertyById(data) {
-    console.log(data);
-
+export async function getPropertyById(id) {
     try {
-        let propertyWhitPrice;
-        let property;
-        if (data) {
-            if (data.price === "true") {
-                propertyWhitPrice = await PropertyWithPrice.findByPk(data.id, {
-                    include: {
-                        model: Room,
-                        as: 'rooms'
-                    }
-                });
-
-                if (propertyWhitPrice) {
-                    let plainPropertyWithPrice = propertyWhitPrice.get({ plain: true });
-                    delete plainPropertyWithPrice.someCircularProperty;  // Eliminar propiedad circular si es necesario
-                    return NextResponse.json(plainPropertyWithPrice, { status: 200 });
-                }
-            } else {
-                property = await Property.findByPk(data.id, {
-                    include: {
-                        model: RoomWithPrice,
-                        as: 'roomsWithPrice'
-                    }
-                });
-                if (property) {
-                    let plainProperty = property.get({ plain: true });
-                    delete plainProperty.someCircularProperty;  // Eliminar propiedad circular si es necesario
-                    return NextResponse.json(plainProperty, { status: 200 });
-                }
+        const property = await Property.findByPk(id, {
+            include: {
+                model: Room,
+                as: 'rooms'
             }
-        } else {
-            return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-        }
-        if (!property && !propertyWhitPrice) {
-            return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
-        }
+        });
+        if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
 
+        return NextResponse.json({ property }, { status: 200 });
     } catch (error) {
-        console.log(error);
         return NextResponse.json({ error: "Error al obtener la propiedad" }, { status: 500 });
     }
 }
-export async function getPropertiesByStatus(status) {
-    if (!status) { return NextResponse.json({ error: "Se requiere el estado" }, { status: 400 }); }
-    if (status !== "FREE" && status !== "RESERVED" && status !== "OCCUPIED") { return NextResponse.json({ error: "El estado no es valido" }, { status: 400 }); }
+
+export async function getPropertiesActive() {
     try {
-        const properties = await Property.findAll({ where: { status: status } });
+        const properties = await Property.findAll({ where: { isActive: true } });
         return NextResponse.json(properties, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
     }
 }
 
+export async function getPropertiesInactive() {
+    try {
+        const properties = await Property.findAll({ where: { isActive: false } });
+        return NextResponse.json(properties, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
+    }
+}
 
 export async function getPropertiesByCategory(category) {
     if (!category) return NextResponse.json({ error: "Se requiere la categoria" }, { status: 400 });

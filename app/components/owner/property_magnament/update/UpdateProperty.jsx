@@ -188,11 +188,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             await axios.delete(`/api/room`, {
               data: {
                 rooms: deleteRooms,
-                havePrice:
-                  catAndSize.category === "HELLO_ROOM" ||
-                  catAndSize.category === "HELLO_COLIVING"
-                    ? true
-                    : false,
               },
             });
             toast.success("Habitaciones eliminadas");
@@ -222,6 +217,28 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           throw err;
         }
 
+        //UpdateRooms
+        try {
+          if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
+            console.log(dataRooms);
+
+            const roomsUpdate = dataRooms.map((room) => {
+              return {
+                ...room,
+                price: 0,
+                amountOwner: 0,
+                amountHelloflatmate: 0,
+                propertyId: property?.id,
+              };
+            });
+            await axios.put("/api/room", roomsUpdate);
+            toast.success("Habitaciones actualizadas");
+          }
+        } catch (error) {
+          toast.error("Error en la actualización de habitaciones");
+          throw error;
+        }
+
         //DATOS DE LA PROPIEDAD
         let updateDataProperty = {
           name: name,
@@ -247,21 +264,17 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
           checkOut: moreInfo.checkOut,
+          price:
+            parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner) ||
+            0,
+          amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
+          amountOwner: parseInt(price.amountOwner) || 0,
         };
 
-        if (price.amountHelloflatmate > 0 && price.amountOwner > 0) {
-          updateDataProperty = {
-            ...updateDataProperty,
-            price:
-              parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner),
-            amountHelloflatmate: parseInt(price.amountHelloflatmate),
-            amountOwner: parseInt(price.amountOwner),
-          };
-        }
-        const response = await axios.put(`/api/property`, {
-          property: updateDataProperty,
-          id: property.id,
-        });
+        const response = await axios.put(
+          `/api/property?id=${data.id}`,
+          updateDataProperty
+        );
         toast.success("Propiedad actualizada correctamente");
       } catch (error) {
         console.error("Error updating property data:", error);
@@ -309,8 +322,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             setAddress={setAddress}
             action={handleShowAddressModal}
           />
-          {(property.category === "HELLO_STUDIO" ||
-            property.category === "HELLO_LANDLORD") && (
+          {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
             <PriceSection data={price || property.price} setData={setPrice} />
           )}
           <SizeAndCategorySection
@@ -342,6 +354,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             action={handleAddRoomModal}
             deleteRooms={deleteRooms}
             setDeleteRooms={setDeleteRooms}
+            category={category}
           />
           <AmenitiesSection
             data={amenities || property.amenities}
