@@ -1,5 +1,7 @@
 // validateData.js
 export default function validateData(data) {
+    console.log(data);
+
     // Verificar que las propiedades más importantes estén completas
     const requiredFields = ["name", "city", "street", "postalCode", "size", "roomsCount", "bathrooms", "bed", "maximunOccupants", "price", "category", "amenities", "description", "checkIn", "checkOut"];
 

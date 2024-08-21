@@ -161,23 +161,35 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
 
   // Validación
   const handleSubmit = () => {
-    // Combina todos los datos en un solo objeto
     const allData = {
-      ...address,
-      ...guestInfo,
-      ...description,
-      ...sliderImage,
-      ...amenities,
-      ...moreInfo,
+      name: name,
+      city: address.city,
+      street: address.street,
+      streetNumber: address.streetNumber,
+      postalCode: address.postalCode,
+      size: catAndSize.size,
+      roomsCount: dataRooms.length,
+      bathrooms: guestInfo.bathrooms,
+      bed: guestInfo.beds,
+      maximunOccupants: guestInfo.occupants,
+      price: price.price,
+      amountHelloflatmate: price.amountHelloflatmate,
+      amountOwner: price.amountOwner,
+      category: catAndSize.category,
+      amenities: amenities,
+      description: description,
+      checkIn: moreInfo.checkIn,
+      checkOut: moreInfo.checkOut,
+      images: sliderImage.map((image) => image.url), // Asegúrate de tener URLs aquí
     };
 
     const validationResult = validateData(allData);
 
     if (!validationResult.isValid) {
+      toast.error(validationResult.message);
       return false;
-    } else {
-      return true;
     }
+    return true;
   };
 
   const updateProperty = async () => {
