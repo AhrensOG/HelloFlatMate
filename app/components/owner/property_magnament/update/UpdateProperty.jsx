@@ -202,6 +202,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 rooms: deleteRooms,
               },
             });
+            setDeleteRooms([]);
             toast.success("Habitaciones eliminadas");
           }
         } catch (error) {
@@ -232,8 +233,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         //UpdateRooms
         try {
           if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
-            console.log(dataRooms);
-
             const roomsUpdate = dataRooms.map((room) => {
               return {
                 ...room,
