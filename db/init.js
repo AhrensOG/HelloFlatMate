@@ -1,9 +1,8 @@
 
 const connection = require(".");
 const Comment = require("./models/comment");
-const Contract = require("./models/contract");
+const Document = require("./models/document")
 const Owner = require("./models/owner");
-const Document = require("./models/userDocument");
 const Message = require("./models/message");
 const Property = require("./models/property");
 const LeaseOrderProperty = require("./models/leaseOrderProperty");
@@ -75,16 +74,53 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //ADMIN
         Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDoId" });
 
+        //Relaciones polimorficas
+        //Client
+        Client.hasMany(Document, {
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "CLIENT"
+            }
+        })
+        //Owner
+        Owner.hasMany(Document, {
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "OWNER"
+            }
+        })
+
+        //Documents
+        Document.belongsTo(Owner, {
+            as: "owner",
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "OWNER"
+            }
+        })
+
+        Document.belongsTo(Client, {
+            as: "client",
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "CLIENT"
+            }
+        })
+
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
         // DATA DE PRUEBA
+      
         // await Property.bulkCreate(propertyData)
         // await Client.bulkCreate(testClientData)
         // await Admin.bulkCreate(testAdminData)
         // await Owner.bulkCreate(testOwnerData)
         // await Room.bulkCreate(testRoom)
-
 
         // console.log("Data inserted");
     } catch (error) {
@@ -94,7 +130,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
 
 module.exports = {
     Comment,
-    Contract,
     Owner,
     Document,
     Message,
