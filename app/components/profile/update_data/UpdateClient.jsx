@@ -1,16 +1,15 @@
 import { useFormik } from "formik";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
-import TitleSection from "../TitleSection";
 import { Context } from "@/app/context/GlobalContext";
-import { saveUserContractInformation } from "@/app/context/actions";
-
-const ContractForm = ({ handleContinue, handleBack }) => {
+import TitleSection from "../../contract/TitleSection";
+import axios from "axios";
+export default function UpdateClient() {
   const { state, dispatch } = useContext(Context);
 
-  const initialValues = state.reservationInfo?.userContractInformation || {
+  const initialValues = {
     name: "",
     lastName: "",
     dni: "",
@@ -56,16 +55,11 @@ const ContractForm = ({ handleContinue, handleBack }) => {
       if (values.age !== calculateAge(values.birthDate)) {
         return toast.info("La fecha de nacimiento no coincide con la edad");
       }
-
-      try {
-        saveUserContractInformation(dispatch, values);
-        toast.success("Información almacenada");
-        console.log(values);
-
-        return handleContinue();
-      } catch (error) {
-        return toast.error("Error al guardar informacion");
-      }
+      toast.promise(updateUser(values), {
+        loading: "Actualizando información...",
+        success: "Información actualizada",
+        error: "Error al actualizar la información",
+      });
     },
   });
 
@@ -90,51 +84,49 @@ const ContractForm = ({ handleContinue, handleBack }) => {
 
   const updateUser = async (data) => {
     const userData = {
+      id: "23",
       name: data.name,
       lastName: data.lastName,
-      dni: data.dni,
-      phone: data.phone,
+      idNum: parseInt(data.dni),
+      phone: parseInt(data.phone),
       city: data.city,
       email: data.email,
       street: data.street,
-      streetNumber: data.streetNumber,
+      streetNumber: parseInt(data.streetNumber),
       postalCode: data.postalCode,
       age: data.age,
+      birthDate: data.birthDate,
     };
+    try {
+      const response = await axios.put("/api/user", userData);
+      if (response.status === 200) {
+        return toast.success("Información actualizada");
+      }
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
   };
 
   return (
-    <motion.section
+    <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4 inset-0`}
     >
-      <TitleSection
-        title={"Contrato de renta"}
-        action={() => {
-          handleBack();
-        }}
-      />
+      <h1 className="pl-4 font-bold text-xl mt-4">Actualizar Información</h1>
       <div className="w-full grid place-items-center">
         <div className="w-full p-2 space-y-8 max-w-screen-sm">
-          <section className="w-full">
-            <div className="w-full text-center">
-              <span className="text-xs font-medium">
-                Necesitaremos que complete el siguiente formulario
-              </span>
-            </div>
-          </section>
           <section className="w-full">
             <form
               onSubmit={formik.handleSubmit}
               className="w-full flex flex-col justify-center items-center gap-4"
               aria-labelledby="form-title"
             >
-              <h1 id="form-title" className="sr-only">
+              <h2 id="form-title" className="sr-only">
                 Formulario de Contrato
-              </h1>
+              </h2>
               <h2>Datos personales</h2>
               <div className="flex flex-row justify-center items-center gap-3 w-full">
                 <div className="w-full flex flex-col justify-center ">
@@ -206,7 +198,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                 </div>
               </div>
               <div className="flex flex-row items-center gap-3 w-full">
-                <div className="flex flex-col justify-center w-full">
+                <div className="flex flex-col justify-center self-start w-full">
                   <label
                     htmlFor="birthDate"
                     className="text-xs text-resolution-blue drop-shadow-sm"
@@ -223,7 +215,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
-                <div className="flex flex-col justify-center w-full">
+                <div className="flex flex-col justify-center self-start w-full">
                   <label
                     htmlFor="age"
                     className="text-xs text-resolution-blue drop-shadow-sm"
@@ -337,8 +329,6 @@ const ContractForm = ({ handleContinue, handleBack }) => {
           </section>
         </div>
       </div>
-    </motion.section>
+    </motion.main>
   );
-};
-
-export default ContractForm;
+}

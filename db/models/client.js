@@ -14,6 +14,10 @@ const clientInit = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },
+            birthDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
             age: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
