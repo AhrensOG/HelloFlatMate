@@ -68,7 +68,7 @@ export default function PropertyDetails({ params }) {
           </div>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C] w-screen px-3`}
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-screen px-3`}
         >
           <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
           <h4 className="text-[#000000B2] text-base">

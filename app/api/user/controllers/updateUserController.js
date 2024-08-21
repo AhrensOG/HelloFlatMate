@@ -6,8 +6,6 @@ export async function updateClient(data) {
     if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
     if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
     if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    if (!data.email || data.email.trim().length < 1) return NextResponse.json({ error: "Se requiere el email" }, { status: 400 });
-    if (!data.profilePicture || data.profilePicture.trim().length < 1) return NextResponse.json({ error: "Se requiere la imagen" }, { status: 400 });
     if (typeof data.idNum !== 'number' || data.idNum < 0) return NextResponse.json({ error: "Se requiere el DNI" }, { status: 400 });
     if (typeof data.age !== 'number' || data.age < 1 || data.age > 120 || data.age < 18) return NextResponse.json({ error: "Se requiere la edad o es incorrecta" }, { status: 400 });
     if (typeof data.phone !== 'number' || data.phone < 0) return NextResponse.json({ error: "Se requiere el teléfono" }, { status: 400 });
@@ -15,12 +13,23 @@ export async function updateClient(data) {
     if (!data.street || data.street.trim().length < 1) return NextResponse.json({ error: "Se requiere la calle" }, { status: 400 });
     if (typeof data.streetNumber !== 'number' || data.streetNumber < 0) return NextResponse.json({ error: "Se requiere el número" }, { status: 400 });
     if (!data.postalCode || data.postalCode.trim().length < 1) return NextResponse.json({ error: "Se requiere el Código Postal" }, { status: 400 });
+    if (!data.birthDate || data.birthDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de nacimiento" }, { status: 400 });
 
     try {
         const user = await Client.findByPk(data.id);
         if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        const updatedUser = await user.update(data);
-        return NextResponse.json("Usuario actualizado", { status: 200 });
+        user.name = data.name || user.name;
+        user.lastName = data.lastName || user.lastName;
+        user.idNum = data.idNum || user.idNum;
+        user.age = data.age || user.age;
+        user.phone = data.phone || user.phone;
+        user.city = data.city || user.city;
+        user.street = data.street || user.street;
+        user.streetNumber = data.streetNumber || user.streetNumber;
+        user.postalCode = data.postalCode || user.postalCode;
+        user.birthDate = formatedDate(data.birthDate) || user.birthDate;
+        await user.save();
+        return NextResponse.json({ message: "Usuario actualizado con exito", user }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
@@ -89,4 +98,11 @@ export async function deleteUser(id) {
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
+}
+
+const formatedDate = (date) => {
+    const [day, month, year] = date.split("/");
+
+    const newDate = `${year}-${month}-${day}`;
+    return newDate;
 }

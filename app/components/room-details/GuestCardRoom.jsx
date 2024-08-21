@@ -1,8 +1,12 @@
 import Image from "next/image";
 
 export default function GuestCardRoom({ type, boolean, number }) {
+  if (type === "bathroom" && !boolean) {
+    return null;
+  }
   return (
     <div>
+      {console.log(type, boolean, number)}
       {type === "bed" ? (
         <div>
           <div className="relative h-10 w-10">

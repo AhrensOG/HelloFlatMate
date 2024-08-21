@@ -260,7 +260,7 @@ export default function NewProperty({ category, handleBack }) {
           <NavBarDetails callBack={handleBack} />
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C]`}
         >
           <TitleSectionTemplate
             name={name}
