@@ -17,7 +17,7 @@ const documentInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             type: {
-                type: DataTypes.ENUM("CONTRACT", "SIGNATURE", "DNI", "ROSTER", "PASSPORT"),
+                type: DataTypes.ENUM("CONTRACT", "ROSTER", "IDENTIFICATION"),
                 allowNull: false,
             },
             url: {

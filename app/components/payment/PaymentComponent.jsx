@@ -42,18 +42,18 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
           state.reservationInfo?.userContractInformation.name +
             " " +
             state.reservationInfo?.userContractInformation.lastName +
-            " - DNI"
+            " - Identificacion"
         );
         if (dniUrl) {
           documents.push({
             name: dniUrl[0].name,
-            type: "DNI",
+            type: "IDENTIFICATION",
             url: dniUrl[0].url,
             userId: state.reservationInfo?.userContractInformation.id,
             typeUser: "CLIENT",
           });
         } else {
-          toast.error("Error al cargar el DNI");
+          toast.error("Error al cargar la identificacion");
         }
       }
       //Cargar Nomina en firebase

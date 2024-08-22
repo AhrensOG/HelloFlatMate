@@ -8,7 +8,7 @@ export async function createDocument(data) {
     if (!data.userId || data.userId.trim() === "") {
         return NextResponse.json({ message: "No user id provided" }, { status: 400 })
     }
-    if (!data.type || data.type.trim() === "" || (data.type !== "CONTRACT" && data.type !== "SIGNATURE" && data.type !== "DNI" && data.type !== "ROSTER" && data.type !== "PASSPORT")) {
+    if (!data.type || data.type.trim() === "" || (data.type !== "CONTRACT" && data.type !== "ROSTER" && data.type !== "IDENTIFICATION")) {
         return NextResponse.json({ message: "No document type provided or invalid" }, { status: 400 })
     }
     if (!data.url || data.url.trim() === "") {
