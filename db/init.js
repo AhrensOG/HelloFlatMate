@@ -29,6 +29,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Property.hasMany(Room, { as: "rooms", foreignKey: "propertyId" });
         Property.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "propertyId" });
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+        Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
 
         //Room
         Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });

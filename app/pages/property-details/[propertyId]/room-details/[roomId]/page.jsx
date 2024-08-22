@@ -94,7 +94,9 @@ export default function RoomDetails({ params }) {
                 { type: "couple", boolean: roomData.couple },
               ]}
             />
-            <ReservationButton callback={handleShowModal} />
+            {(!roomData.price || roomData.leaseOrdersRoom < 1) && (
+              <ReservationButton callback={handleShowModal} />
+            )}
           </div>
           <DescriptionSection data={data.description} />
           <PropertySection

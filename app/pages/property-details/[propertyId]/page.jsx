@@ -83,7 +83,9 @@ export default function PropertyDetails({ params }) {
                 { quantity: data.bed, type: "Camas" },
               ]}
             />
-            <ReservationButton callback={handleShowModal} />
+            {(!data.price || data.leaseOrdersProperty.length < 1) && (
+              <ReservationButton callback={handleShowModal} />
+            )}
           </div>
           <DescriptionSection data={data.description} />
           <RoomSection
