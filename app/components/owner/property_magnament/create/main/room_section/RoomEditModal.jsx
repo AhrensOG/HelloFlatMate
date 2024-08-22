@@ -36,16 +36,19 @@ export default function RoomEditModal({
     }
 
     // Subir nuevas imágenes si hay
-    console.log(files);
 
     const newImageUrls = await uploadNewImages();
-
-    console.log(newImageUrls);
 
     // Actualizar las URLs de las imágenes en dataRoom
     setDataRoom((prevDataRoom) => ({
       ...prevDataRoom,
       images: [...newImageUrls, ...prevDataRoom.images],
+    }));
+
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      amountOwner:
+        parseInt(dataRoom.price) - parseInt(dataRoom.amountHelloflatmate),
     }));
 
     // Guardar los cambios en el array data
@@ -54,8 +57,6 @@ export default function RoomEditModal({
     );
 
     try {
-      console.log(dataRoom);
-
       await axios.put(`/api/room?id=${dataRoom.id}`, dataRoom);
       toast.success("Habitación editada");
       setData(updatedRooms);
@@ -175,24 +176,30 @@ export default function RoomEditModal({
             onChange={(event) =>
               setDataRoom({ ...dataRoom, numberBeds: event.target.value })
             }
-            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+            className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>
             <div>
-              <label className="block text-sm mb-1" htmlFor="amountOwner">
-                Monto del dueño
+              <label
+                className="block text-sm mb-1"
+                htmlFor="amountHelloflatmate"
+              >
+                Precio Habitacion
               </label>
               <input
                 type="number"
-                id="amountOwner"
-                name="amountOwner"
-                value={dataRoom?.amountOwner || ""}
+                id="price"
+                name="price"
+                value={dataRoom?.price || ""}
                 onChange={(event) =>
-                  setDataRoom({ ...dataRoom, amountOwner: event.target.value })
+                  setDataRoom({
+                    ...dataRoom,
+                    price: event.target.value,
+                  })
                 }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
               />
             </div>
             <div>
@@ -213,13 +220,13 @@ export default function RoomEditModal({
                     amountHelloflatmate: event.target.value,
                   })
                 }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
               />
             </div>
             <div>
-              <h3 className="block text-sm mb-1">Total</h3>
+              <h3 className="block text-sm mb-1">Neto Propietario</h3>
               <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
-                {(parseInt(dataRoom?.amountOwner) || 0) +
+                {(parseInt(dataRoom?.price) || 0) -
                   (parseInt(dataRoom?.amountHelloflatmate) || 0)}
               </p>
             </div>

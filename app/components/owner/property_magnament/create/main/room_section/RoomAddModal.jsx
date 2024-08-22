@@ -50,11 +50,10 @@ export default function RoomAddModal({
         numberBeds: parseInt(dataRoom.numberBeds),
         couple: dataRoom.couple === "yes",
         bathroom: dataRoom.bathroom === "yes",
-        price:
-          parseInt(dataRoom.amountHelloflatmate) +
-          parseInt(dataRoom.amountOwner),
+        price: parseInt(dataRoom.price),
         amountHelloflatmate: parseInt(dataRoom.amountHelloflatmate),
-        amountOwner: parseInt(dataRoom.amountOwner),
+        amountOwner:
+          parseInt(dataRoom.price) - parseInt(dataRoom.amountHelloflatmate),
         propertyId,
       };
     }
@@ -120,24 +119,30 @@ export default function RoomAddModal({
             onChange={(event) =>
               setDataRoom({ ...dataRoom, numberBeds: event.target.value })
             }
-            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded number-input-no-appearance"
           />
         </div>
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>
             <div>
-              <label className="block text-sm mb-1" htmlFor="amountOwner">
-                Monto del dueño
+              <label
+                className="block text-sm mb-1"
+                htmlFor="price"
+              >
+                Precio Habitacion
               </label>
               <input
                 type="number"
-                id="amountOwner"
-                name="amountOwner"
-                value={dataRoom?.amountOwner || ""}
+                id="price"
+                name="price"
+                value={dataRoom?.price || ""}
                 onChange={(event) =>
-                  setDataRoom({ ...dataRoom, amountOwner: event.target.value })
+                  setDataRoom({
+                    ...dataRoom,
+                    price: event.target.value,
+                  })
                 }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded number-input-no-appearance"
               />
             </div>
             <div>
@@ -145,7 +150,7 @@ export default function RoomAddModal({
                 className="block text-sm mb-1"
                 htmlFor="amountHelloflatmate"
               >
-                Monto de Helloflatmate
+                Tarifa Helloflatmate
               </label>
               <input
                 type="number"
@@ -158,13 +163,13 @@ export default function RoomAddModal({
                     amountHelloflatmate: event.target.value,
                   })
                 }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded number-input-no-appearance"
               />
             </div>
             <div>
-              <h3 className="block text-sm mb-1">Total</h3>
+              <h3 className="block text-sm mb-1">Neto Propietario</h3>
               <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
-                {(parseInt(dataRoom?.amountOwner) || 0) +
+                {(parseInt(dataRoom?.price) || 0) -
                   (parseInt(dataRoom?.amountHelloflatmate) || 0)}
               </p>
             </div>
