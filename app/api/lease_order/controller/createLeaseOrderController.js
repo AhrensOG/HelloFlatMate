@@ -14,8 +14,14 @@ export async function createLeasePropertyOrder(data) {
 
     try {
         //Buscar y verificar que la propiedad exista
-        const property = await Property.findByPk(data.propertyId)
+        const property = await Property.findByPk(data.propertyId, {
+            include: {
+                model: LeaseOrderProperty,
+                as: "leaseOrdersProperty",
+            }
+        })
         if (!property) return NextResponse.json({ message: "Property not found" }, { status: 404 })
+        if (property.leaseOrdersProperty.length > 0) return NextResponse.json({ message: "Property already has a lease order" }, { status: 400 })
         //Buscar y verificar que el dueño exista    
         const owner = await Owner.findByPk(data.ownerId)
         if (!owner) return NextResponse.json({ message: "Owner not found" }, { status: 404 })
@@ -47,8 +53,14 @@ export async function createLeaseRoomOrder(data) {
         const property = await Property.findByPk(data.propertyId)
         if (!property) return NextResponse.json({ message: "Propiedad no encontrada" }, { status: 404 })
         //Buscar y verificar que la habitacion exista
-        const room = await Room.findByPk(data.roomId)
+        const room = await Room.findByPk(data.roomId, {
+            include: {
+                model: LeaseOrderRoom,
+                as: "leaseOrdersRoom"
+            }
+        })
         if (!room) return NextResponse.json({ message: "Habitacion no encontrada" }, { status: 404 })
+        if (room.leaseOrdersRoom.length > 0) return NextResponse.json({ message: "La habitacion ya tiene una orden de arriendo" }, { status: 400 })
         //Verificar que la habitacion corresponda al la propiedad
         if (property.id !== room.propertyId) return NextResponse.json({ message: "La habitacion no corresponde a la propiedad" }, { status: 404 })
         //Buscar y verificar que el dueño exista    
