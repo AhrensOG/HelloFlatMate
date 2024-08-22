@@ -60,6 +60,7 @@ const ContractDetail = ({ handleContinue, handleBack }) => {
         endDate,
         monthlyRent,
       };
+
       await createContractPDF(dispatch, values, clientSignature);
       return toast.success("¡Contrato bajo revision!");
     } catch (error) {

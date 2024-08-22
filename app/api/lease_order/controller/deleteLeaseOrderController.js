@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
-import { LeaseOrder } from "@/db/init";
+import { LeaseOrderProperty, LeaseOrderRoom } from "@/db/init";
 
-export async function deleteLeaseOrder(id) {
-    if (!id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 })
+export async function deleteLeaseOrder(data) {
+    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 })
+    if (!data.type || data.type.trim() === "") {
+        return NextResponse.json({ error: "Se requiere el tipo" }, { status: 400 })
+    }
     try {
         //Verificar que exista la orden
-        if (await LeaseOrder.count({ where: { id } }) === 0) return NextResponse.json({ message: "La orden no existe" }, { status: 404 })
+        if (data.type === "property") {
+            const leaseOrder = await LeaseOrderProperty.findByPk(data.id)
+            if (!leaseOrder) return NextResponse.json({ message: "La orden no existe" }, { status: 404 })
 
-        //Eliminar la orden
-        const leaseOrder = await LeaseOrder.destroy({ where: { id } })
+            await LeaseOrderProperty.destroy({ where: { id: data.id } })
+            return NextResponse.json({ message: "Orden eliminada con exito" }, { status: 200 })
+        }
+
+        await LeaseOrderRoom.destroy({ where: { id: data.id } })
         return NextResponse.json({ message: "Orden eliminada con exito" }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 })

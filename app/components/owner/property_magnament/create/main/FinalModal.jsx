@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
-export default function FinalModal({ data, setData, showModal, action }) {
+export default function FinalModal({ data, setData }) {
   // Estado inicial para formData
   const initialFormData = {
     price: null,
@@ -32,33 +32,8 @@ export default function FinalModal({ data, setData, showModal, action }) {
     });
   };
 
-  // Valida el formulario y maneja el guardado de datos
-  const handleSave = async () => {
-    const newErrors = {};
-
-    if (formData.price === null || formData.price === 0) {
-      newErrors.price = "Por favor, ingresa un precio válido.";
-    }
-    if (formData.size === null || formData.size === 0) {
-      newErrors.size = "Por favor, ingresa un tamaño válido.";
-    }
-    if (!formData.category) {
-      newErrors.category = "Por favor, selecciona una categoría.";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return toast.info("Por favor, completa todos los campos correctamente.");
-    }
-
-    setData({ ...formData });
-    console.log(formData);
-    await action();
-    showModal(false);
-  };
-
   return (
-    <motion.aside
+    <section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -120,21 +95,7 @@ export default function FinalModal({ data, setData, showModal, action }) {
             )}
           </div>
         </div>
-        <div className="flex justify-between w-full mt-4">
-          <button
-            onClick={() => showModal(false)}
-            className="text-black px-4 py-2 border border-[#0C1660] rounded-lg"
-          >
-            Cerrar
-          </button>
-          <button
-            onClick={handleSave}
-            className="bg-[#0C1660] text-white px-4 py-2 rounded-lg ml-2"
-          >
-            Guardar
-          </button>
-        </div>
       </div>
-    </motion.aside>
+    </section>
   );
 }

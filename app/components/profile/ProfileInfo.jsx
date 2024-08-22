@@ -1,8 +1,11 @@
+import { useRouter } from "next/navigation";
+import EditButton from "../owner/property_magnament/shared/EditButton";
 import ItemInfo from "./profile_info/ItemInfo";
 import ProfilePicture from "./ProfilePicture";
 import { motion } from "framer-motion";
 
 export default function ProfileInfo({ action }) {
+  const router = useRouter();
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -11,9 +14,16 @@ export default function ProfileInfo({ action }) {
       transition={{ duration: 0.8 }}
       className="flex flex-col gap-4 justify-center items-center "
     >
-      <h4 className="text-[#000000CC] font-medium text-base self-start pl-3">
-        Tu informacion de perfil
-      </h4>
+      <div className="flex justify-between w-full">
+        <h4 className="text-[#000000CC] font-medium text-base self-start pl-3">
+          Tu informacion de perfil
+        </h4>
+        <EditButton
+          action={() => {
+            router.push("/pages/profile/update_client");
+          }}
+        />
+      </div>
       <ProfilePicture />
       <div className="flex flex-col gap-2 w-full px-3 mt-4">
         <h2 className="text-[#000000CC] font-bold text-lg">Nombre completo</h2>

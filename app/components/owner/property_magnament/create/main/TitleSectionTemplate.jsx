@@ -16,12 +16,12 @@ export default function TitleSectionTemplate({
   };
 
   const formatAddress = (address) => {
-    if (address.street.length === 0) {
+    if (address?.street.length === 0) {
       return "Direccion";
     }
     return `${
-      address.street.charAt(0).toUpperCase() + address.street.slice(1)
-    }${" "}${address.streetNumber}`;
+      address?.street.charAt(0).toUpperCase() + address?.street.slice(1)
+    }${" "}${address?.streetNumber}`;
   };
 
   return (
@@ -43,7 +43,7 @@ export default function TitleSectionTemplate({
         <button
           onClick={action}
           className={`${
-            address.street.length === 0 ? "text-[#9da4b0ff]" : "text-[#0D171C]"
+            address?.street.length === 0 ? "text-[#9da4b0ff]" : "text-[#0D171C]"
           }  font-normal text-base w-full text-start `}
           type="button"
         >

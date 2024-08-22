@@ -2,63 +2,79 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
-import Image from "next/image";
-import { XMarkIcon } from "@heroicons/react/20/solid";
+import ImageUploader from "@/app/components/drag-and-drop/ImageUploader";
+import { deleteFilesFromURL } from "@/app/firebase/deleteFiles";
 
-export default function SliderModal({ data, setData, showModal }) {
+export default function SliderModal({
+  initialImages = false,
+  setNewImages,
+  showModal,
+}) {
   const [files, setFiles] = useState([]);
-  const [existingImages, setExistingImages] = useState(data);
 
-  useEffect(() => {
-    setExistingImages(data);
-  }, [data]);
+  const uploadNewImages = async () => {
+    try {
+      const filesToUpload = files
+        .filter((file) => file.fileData)
+        .map((file) => file.fileData);
 
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setFiles([...files, ...selectedFiles]);
-  };
+      // Crear un set con las URLs actuales para comparación
+      const fileUrls = new Set(files.map((file) => file.url));
 
-  const saveData = async () => {
-    const validFiles = files.filter((file) => file.size > 0);
+      // Imágenes eliminadas (están en initialImages pero no en files)
+      const deletedImages = initialImages.filter((url) => !fileUrls.has(url));
 
-    if (validFiles.length > 0) {
-      try {
-        const response = await uploadFiles(validFiles);
-        if (response instanceof Error) {
-          toast.error("Error al cargar archivos");
-          return;
-        }
+      // Imágenes restantes (siguen presentes en files)
+      const remainingImages = initialImages.filter((url) => fileUrls.has(url));
 
-        const newImages = response.map((file) => file.url);
-        setExistingImages((prevImages) => {
-          const updatedImages = [...prevImages, ...newImages];
-          // Actualiza el estado con las imágenes nuevas
-          setData(updatedImages);
-          return updatedImages;
-        });
-
-        toast.success("Archivos cargados");
-      } catch (error) {
-        console.error("Error al cargar archivos:", error);
-        toast.error("Error al cargar archivos");
-        return; // Detén la ejecución si hay un error
+      // Si hay imágenes eliminadas, eliminarlas de Firebase Storage
+      if (deletedImages.length > 0) {
+        await handleDeletedImages(deletedImages, remainingImages);
       }
-    } else {
-      // Si no hay archivos válidos, actualiza directamente el estado
-      setData(existingImages);
-    }
 
-    showModal(false);
+      // Si hay nuevas imágenes, subirlas
+      if (filesToUpload.length > 0) {
+        const uploadedImages = await handleFileUpload(filesToUpload);
+        setNewImages([...remainingImages, ...uploadedImages]);
+      } else {
+        // Si no hay nuevas imágenes, actualizar solo con las imágenes restantes
+        setNewImages([...remainingImages]);
+      }
+
+      toast.success("Datos actualizados");
+      return showModal(false);
+    } catch (error) {
+      console.error(
+        "Error durante el proceso de carga/eliminación de imágenes:",
+        error
+      );
+      toast.error("Error durante el proceso de carga/eliminación de imágenes");
+    }
   };
 
-  const deleteImage = (index) => {
-    const newFiles = files.filter((_, i) => i !== index);
-    setFiles(newFiles);
+  const handleDeletedImages = async (deletedImages, remainingImages) => {
+    try {
+      await deleteFilesFromURL(deletedImages);
+      setNewImages([...remainingImages]);
+    } catch (error) {
+      console.error("Error al borrar archivos:", error);
+      toast.error("Error al borrar archivos");
+      throw error;
+    }
+  };
 
-    setExistingImages((prevImages) => {
-      const newExistingImages = prevImages.filter((_, i) => i !== index);
-      return newExistingImages;
-    });
+  const handleFileUpload = async (filesToUpload) => {
+    try {
+      const response = await uploadFiles(filesToUpload);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response.map((file) => file.url);
+    } catch (error) {
+      console.error("Error al cargar archivos:", error);
+      toast.error("Error al cargar archivos");
+      throw error;
+    }
   };
 
   return (
@@ -69,59 +85,13 @@ export default function SliderModal({ data, setData, showModal }) {
       transition={{ duration: 0.8 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
-      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 overflow-auto h-auto">
         <h2 className="text-2xl mb-4">Archivos de Imágenes</h2>
-        <div className="flex flex-col w-full">
-          <input
-            type="file"
-            multiple
-            onChange={handleFileChange}
-            className="mb-4 appearance-none outline-none border border-[#0C1660] rounded-lg p-2"
-          />
-        </div>
-        <div className="w-full flex gap-1 flex-wrap justify-center items-center">
-          {existingImages.length > 0 &&
-            existingImages.map((file, index) => (
-              <div key={index} className="w-20 h-20 p-2 relative rounded-md">
-                <Image
-                  src={
-                    typeof file === "string" ? file : URL.createObjectURL(file)
-                  }
-                  alt="file"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="rounded-md"
-                />
-                <button
-                  onClick={() => deleteImage(index)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                >
-                  <XMarkIcon className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-          {files.length > 0 &&
-            files.map((file, index) => (
-              <div
-                key={`new-${index}`}
-                className="w-20 h-20 p-2 relative rounded-md"
-              >
-                <Image
-                  src={URL.createObjectURL(file)}
-                  alt="file"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="rounded-md"
-                />
-                <button
-                  onClick={() => deleteImage(index + existingImages.length)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                >
-                  <XMarkIcon className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-        </div>
+        <ImageUploader
+          initialImages={initialImages}
+          setImages={setFiles}
+          images={files}
+        />
         <div className="flex justify-between w-full">
           <button
             onClick={() => showModal(false)}
@@ -130,7 +100,7 @@ export default function SliderModal({ data, setData, showModal }) {
             Cerrar
           </button>
           <button
-            onClick={saveData}
+            onClick={uploadNewImages}
             className="bg-[#0C1660] text-white px-4 py-2 rounded-lg mt-4 ml-2"
           >
             Guardar

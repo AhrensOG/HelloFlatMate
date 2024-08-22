@@ -7,6 +7,7 @@ import DescriptionSection from "@/app/components/property-details/main/Descripti
 import GuestInfo from "@/app/components/property-details/main/GuestInfo";
 import LocationSection from "@/app/components/property-details/main/LocationSection";
 import MoreInfoSection from "@/app/components/property-details/main/MoreInfoSection";
+import PriceSection from "@/app/components/property-details/main/PriceSection";
 import ReservationModal from "@/app/components/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/property-details/main/ReservationButton";
 import RoomSection from "@/app/components/property-details/main/RoomSection";
@@ -17,8 +18,7 @@ import { useContext, useEffect, useState } from "react";
 
 export default function PropertyDetails({ params }) {
   const { state } = useContext(Context);
-  const id = params.id;
-  console.log(id, state.properties);
+  const id = params.propertyId;
 
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState(
@@ -33,7 +33,6 @@ export default function PropertyDetails({ params }) {
         try {
           const data = await axios.get(`/api/property?id=${id}`);
           setData(data.data.property);
-          console.log(data.data.property);
         } catch (error) {
           console.error("Error fetching property data:", error);
         }
@@ -64,15 +63,18 @@ export default function PropertyDetails({ params }) {
               })}
             </SliderDetails>
           </div>
-          <NavBarDetails />
+          <div className="px-3">
+            <NavBarDetails />
+          </div>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-screen px-3`}
         >
           <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street + " " + data.streetNumber}
           </h4>
+          {data.price && <PriceSection data={data.price} />}
           <div className="flex flex-col gap-6">
             <GuestInfo
               data={[
@@ -84,7 +86,11 @@ export default function PropertyDetails({ params }) {
             <ReservationButton callback={handleShowModal} />
           </div>
           <DescriptionSection data={data.description} />
-          <RoomSection data={data.rooms} />
+          <RoomSection
+            data={data.rooms.map((room) => {
+              return { ...room, propertyId: data.id };
+            })}
+          />
           <AmenitiesSection data={data.amenities} />
           <LocationSection />
           <MoreInfoSection
@@ -102,7 +108,20 @@ export default function PropertyDetails({ params }) {
               { title: "Check-Out", body: data.checkOut },
             ]}
           />
-          {showModal && <ReservationModal callback={handleShowModal} />}
+          {showModal && (
+            <ReservationModal
+              callback={handleShowModal}
+              data={{
+                date: null,
+                startDate: null,
+                endDate: null,
+                price: data.price,
+                propertyId: data.id,
+                clientId: "23",
+                ownerId: data.ownerId,
+              }}
+            />
+          )}
         </main>
       </div>
     </div>

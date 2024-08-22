@@ -1,37 +1,45 @@
 import { NextResponse } from "next/server";
 import { getAllRooms } from "./controller/getRoomController";
 import { createRoom } from "./controller/createRoomController";
-import { updateRoom } from "./controller/updateRoomController";
+import { setProperty, updateRoom } from "./controller/updateRoomController";
 import { deleteRoom } from "./controller/deleteRoomController";
 
 export async function GET() {
-    return getAllRooms();
+    const rooms = await getAllRooms();
+    return NextResponse.json(rooms);
 }
 
 export async function POST(req) {
     const data = await req.json();
-    console.log(data);
-
-    return createRoom(data);
+    const newRoom = await createRoom(data);
+    return newRoom;
 }
 
 export async function PUT(req) {
-    const data = await req.json();
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    return updateRoom(id, data)
+    try {
+        const data = await req.json();
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get('id');
+        const updatedRoom = await updateRoom(id, data);
+        return NextResponse.json(updatedRoom);
+    } catch (error) {
+        return NextResponse.json({ error: 'Error updating room', details: error.message }, { status: 500 });
+    }
 }
 
 export async function DELETE(req) {
     const data = await req.json();
-    console.log(data.deleteRooms);
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    if (id) {
-        return deleteRoom(id)
-    } else if (data.deleteRooms.length > 0) {
-        console.log("estoy aca");
+    console.log(data);
 
-        return deleteRoom(data.deleteRooms)
+    const result = await deleteRoom(data);
+    return result
+}
+
+export async function PATCH(req) {
+    const data = await req.json();
+    let result;
+    if (data) {
+        result = await setProperty(data);
     }
+    return result
 }

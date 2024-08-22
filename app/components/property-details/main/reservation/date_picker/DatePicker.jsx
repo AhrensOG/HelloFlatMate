@@ -5,7 +5,7 @@ import { FooterDatePicker } from "./FooterDatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
-export default function DatePicker() {
+export default function DatePicker({ data, setData }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [date, setDate] = useState(new Date());
@@ -27,6 +27,8 @@ export default function DatePicker() {
       year: "numeric",
     });
     setSelectedDate(formattedDate);
+    setData({ ...data, fecha: date.toISOString() });
+    console.log(data);
   };
 
   const handleCancel = (isCancel) => {

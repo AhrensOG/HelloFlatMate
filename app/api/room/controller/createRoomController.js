@@ -1,13 +1,22 @@
-import { Room } from "@/db/init";
+import { Room, RoomWithPrice } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createRoom(data) {
-    if (!data) return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
+    console.log(data);
 
-    const errors = data.map((room, index) => {
+    if (!data) {
+        return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
+    }
+
+    const isArray = Array.isArray(data);
+    const dataArray = isArray ? data : [data];
+
+    const errors = dataArray.map((room, index) => {
         if (!room.name || room.name.trim() === '') return `Error en habitación ${index + 1}: Se requiere el nombre.`;
         if (room.numberBeds <= 0 || room.numberBeds === '') return `Error en habitación ${index + 1}: Se requiere un número válido de camas.`;
-        if (!room.image || room.image.trim() === '') return `Error en habitación ${index + 1}: Se requiere una imagen.`;
+        if (!room.images || !Array.isArray(room.images) || room.images.length === 0) return `Error en habitación ${index + 1}: Se requiere una imagen.`;
+        if (room.couple !== true && room.couple !== false) return `Error en habitación ${index + 1}: Se requiere saber si admite parejas.`;
+        if (room.bathroom !== true && room.bathroom !== false) return `Error en habitación ${index + 1}: Se requiere saber si tiene baño privado.`;
         return null;
     }).filter(error => error);
 
@@ -16,12 +25,16 @@ export async function createRoom(data) {
     }
 
     try {
-        console.log("Datos recibidos:", data);  // Imprimir datos para verificación
+        const addStatus = dataArray.map((room) => ({ ...room, status: "FREE", price: (room.amountOwner + room.amountHelloflatmate || 0) }));
 
-        const rooms = await Room.bulkCreate(data);
-        return NextResponse.json({ rooms }, { status: 201 });
+        if (isArray) {
+            const rooms = await Room.bulkCreate(addStatus);
+            return NextResponse.json(rooms, { status: 200 });
+        } else {
+            return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
+        }
+
     } catch (error) {
-        console.error("Error al crear habitaciones:", error);  // Registrar el error
         return NextResponse.json({ error: "Error al crear las habitaciones", details: error.message }, { status: 500 });
     }
 }

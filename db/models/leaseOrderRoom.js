@@ -2,10 +2,10 @@
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
-const leaserOrderInit = (sequelize, DataTypes) => {
-    class LeaseOrder extends Model { }
+const leaserOrderRoomInit = (sequelize, DataTypes) => {
+    class LeaseOrderRoom extends Model { }
 
-    LeaseOrder.init({
+    LeaseOrderRoom.init({
         // CUSTOMIZED ID
         id: {
             type: DataTypes.INTEGER,
@@ -29,17 +29,16 @@ const leaserOrderInit = (sequelize, DataTypes) => {
             allowNull: false,
         },
         status: {
-            type: DataTypes.ENUM("PENDING", "APPROVED", "REJECTED"),
+            type: DataTypes.ENUM("PENDING", "APPROVED", "REJECTED", "IN_PROGRESS"),
             allowNull: false,
         }
     }, {
         sequelize,
-        modelName: "LeaseOrder",
+        modelName: "LeaseOrderRoom",
         freezeTableName: true,
         timestamps: false,
     });
-
-    return LeaseOrder;
+    return LeaseOrderRoom;
 }
 
-module.exports = leaserOrderInit(connection, DataTypes)
+module.exports = leaserOrderRoomInit(connection, DataTypes)

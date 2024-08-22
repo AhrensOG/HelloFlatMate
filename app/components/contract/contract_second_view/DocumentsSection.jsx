@@ -2,9 +2,7 @@ import Image from "next/image";
 import UploadFileButton from "./UploadFileButton";
 import { Context } from "@/app/context/GlobalContext";
 import { useContext, useEffect } from "react";
-import {
-  CloudArrowUpIcon,
-} from "@heroicons/react/24/outline";
+import { CloudArrowUpIcon } from "@heroicons/react/24/outline";
 
 export default function DocumentsSection({
   id,
@@ -37,7 +35,10 @@ export default function DocumentsSection({
         </div>
         <h3 className="text-sm font-normal text-center">{description}</h3>
       </div>
-      <UploadFileButton description={ check ? check.length : "Seleccionar archivo"} id={id} />
+      <UploadFileButton
+        description={check ? check.length : "Seleccionar archivo"}
+        id={id}
+      />
     </div>
   );
 }

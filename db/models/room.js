@@ -13,6 +13,27 @@ const roomInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            price: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            amountOwner: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            amountHelloflatmate: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            isActive: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: true,
+                allowNull: false
+            },
+            serial: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+            },
             name: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
@@ -21,10 +42,23 @@ const roomInit = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            image: {
-                type: DataTypes.STRING(10000),
+            images: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
                 allowNull: false,
-            }
+            },
+            status: {
+                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
+                defaultValue: "FREE",
+                allowNull: false
+            },
+            bathroom: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
+            couple: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
         },
         {
             sequelize,

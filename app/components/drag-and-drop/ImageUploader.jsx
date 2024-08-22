@@ -8,12 +8,13 @@ import {
 import { v4 as uuidv4 } from "uuid"; // Para generar IDs únicos
 import DraggableImage from "./DraggableImage";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 
 function ImageUploader({ initialImages = false, setImages, images }) {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (initialImages && initialImages.length > 0) {
+    if (initialImages && initialImages.length > 0 && images.length === 0) {
       const mappedImages = initialImages.map((url) => ({
         id: uuidv4(),
         url,
@@ -71,7 +72,11 @@ function ImageUploader({ initialImages = false, setImages, images }) {
   };
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      modifiers={[restrictToParentElement]}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       <SortableContext
         items={images.map((image) => image.id)}
         strategy={rectSortingStrategy}
