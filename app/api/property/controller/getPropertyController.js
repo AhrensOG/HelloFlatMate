@@ -1,4 +1,4 @@
-import { Property, Room } from "@/db/init";
+import { LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
@@ -15,10 +15,18 @@ export async function getAllProperties() {
 export async function getPropertyById(id) {
     try {
         const property = await Property.findByPk(id, {
-            include: {
+            include: [{
                 model: Room,
-                as: 'rooms'
-            }
+                as: 'rooms',
+                include: {
+                    model: LeaseOrderRoom,
+                    as: 'leaseOrdersRoom'
+                }
+            },
+            {
+                model: LeaseOrderProperty,
+                as: 'leaseOrdersProperty'
+            }]
         });
         if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
 

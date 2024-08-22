@@ -9,6 +9,7 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 import DatePicker from "./date_picker/DatePicker";
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 export default function ReservationModal({ callback, data }) {
   const router = useRouter();
@@ -58,12 +59,19 @@ export default function ReservationModal({ callback, data }) {
     };
     setDataReservation(reservation);
     try {
+      let sucess = false;
+      if (!sucess) {
+        toast.loading("Reservando...");
+      }
       const response = await axios.post("/api/lease_order", reservation);
       if (response.status === 200) {
-        router.push("/pages/contract");
+        sucess = true;
+        toast.success("Reserva exitosa");
+        return response.data;
       }
+      toast.error("Error al realizar la reserva");
     } catch (error) {
-      console.log(error);
+      toast.error("Error al realizar la reserva");
     }
   };
 

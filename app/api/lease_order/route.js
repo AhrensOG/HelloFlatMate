@@ -5,7 +5,6 @@ import { deleteLeaseOrder } from "./controller/deleteLeaseOrderController";
 
 export async function POST(req) {
     const data = await req.json();
-    console.log(data);
 
     if (data.roomId) {
         const result = await createLeaseRoomOrder(data);
