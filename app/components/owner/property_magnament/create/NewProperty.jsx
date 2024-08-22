@@ -40,7 +40,7 @@ export default function NewProperty({ category, handleBack }) {
   });
   const [description, setDescription] = useState([]);
   const [sliderImage, setSliderImage] = useState([]);
-  const [amenities, setAmenities] = useState(["wifi", "otros"]);
+  const [amenities, setAmenities] = useState([]);
   const [moreInfo, setMoreInfo] = useState({
     condicionDeRenta: "",
     habitacion: "",
@@ -240,11 +240,11 @@ export default function NewProperty({ category, handleBack }) {
         const roomsResponse = await setProperty(rooms.data, propertyId);
 
         // Redirigir después de un retraso
-        // setTimeout(() => {
-        //   router.push(
-        //     `/pages/owner/update/${propertyId}/${catAndSize.category}`
-        //   );
-        // }, 1000);
+        setTimeout(() => {
+          router.push(
+            `/pages/owner/update/${propertyId}/${catAndSize.category}`
+          );
+        }, 1000);
       } catch (error) {
         toast.error("Ocurrió un error");
         console.error(error);

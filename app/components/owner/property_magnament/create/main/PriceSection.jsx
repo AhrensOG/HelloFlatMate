@@ -18,56 +18,56 @@ export default function PriceSection({ data, setData }) {
   // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
+
+    const updatedFormData = {
       ...formData,
       [name]: value,
-      price:
-        parseInt(formData.amountOwner) + parseInt(formData.amountHelloflatmate),
-    });
+    };
 
+    // Calcula el amountOwner en base a los valores actualizados
+    updatedFormData.amountOwner =
+      parseInt(updatedFormData.price) -
+      parseInt(updatedFormData.amountHelloflatmate);
+
+    // Actualiza formData y setData con los valores calculados
+    setFormData(updatedFormData);
     setData((prevData) => ({
       ...prevData,
-      [name]: value,
-      price:
-        parseInt(formData.amountOwner) + parseInt(formData.amountHelloflatmate),
+      ...updatedFormData,
     }));
   };
 
   return (
     <section className="w-full flex justify-between items-center flex-wrap gap-3">
-      <h2 className="font-bold text-[1.37rem] w-full">Precio</h2>
-      <div className="w-5/12">
-        <label htmlFor="price" className="block text-sm mb-1">
-          Dueño:
+      <div className="w-full flex gap-1 items-center">
+        <label className="font-semibold text-xl" htmlFor="price">
+          Precio:{" "}
         </label>
         <input
-          type="number"
-          name="amountOwner"
-          value={formData.amountOwner || ""} // Asegúrate de que el valor no sea undefined
+          className="w-full appearance-none outline-none h-full text-xl font-bold"
+          id="price"
+          name="price"
+          value={formData.price || ""}
           onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded"
+          type="number"
         />
       </div>
-      <div className="w-5/12">
-        <label htmlFor="price" className="block text-sm mb-1">
-          Helloflatmate:
+      <div className="w-full flex gap-1 items-center">
+        <label className="font-semibold text-xl" htmlFor="amountHelloflatmate">
+          Helloflatmate:{" "}
         </label>
         <input
-          type="number"
+          className="w-full appearance-none outline-none h-full text-xl font-bold"
+          id="amountHelloflatmate"
           name="amountHelloflatmate"
-          value={formData.amountHelloflatmate || ""} // Asegúrate de que el valor no sea undefined
+          value={formData.amountHelloflatmate || ""}
           onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded"
+          type="number"
         />
       </div>
-      <div className="w-full flex items-end py-2 gap-3">
-        <h2 className="text-lg font-medium flex items-end h-full">
-          Precio total:
-        </h2>
-        <p className="text-2xl border border-[#D1DEE5] p-2 rounded-lg px-3">
-          {(parseInt(formData.amountOwner) || 0) +
-            (parseInt(formData.amountHelloflatmate) || 0) || 0}
-        </p>
+      <div className="w-full flex gap-1 items-center">
+        <h2 className="font-semibold text-xl">Dueño: </h2>
+        <h2 className="font-semibold text-xl">{formData.amountOwner || 0}</h2>
       </div>
     </section>
   );
