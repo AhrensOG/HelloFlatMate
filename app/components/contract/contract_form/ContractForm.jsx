@@ -6,6 +6,7 @@ import { plus_jakarta } from "@/font";
 import TitleSection from "../TitleSection";
 import { Context } from "@/app/context/GlobalContext";
 import { saveUserContractInformation } from "@/app/context/actions";
+import axios from "axios";
 
 const ContractForm = ({ handleContinue, handleBack }) => {
   const { state, dispatch } = useContext(Context);
@@ -27,7 +28,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (
         values.name === "" ||
         values.name.trim() === "" ||
@@ -58,13 +59,9 @@ const ContractForm = ({ handleContinue, handleBack }) => {
       }
 
       try {
-        saveUserContractInformation(dispatch, values);
-        toast.success("Información almacenada");
-        console.log(values);
-
-        return handleContinue();
+        await updateUser(values);
       } catch (error) {
-        return toast.error("Error al guardar informacion");
+        toast.error("Error al guardar información");
       }
     },
   });
@@ -90,9 +87,10 @@ const ContractForm = ({ handleContinue, handleBack }) => {
 
   const updateUser = async (data) => {
     const userData = {
+      id: "23",
       name: data.name,
       lastName: data.lastName,
-      dni: data.dni,
+      idNum: data.dni,
       phone: data.phone,
       city: data.city,
       email: data.email,
@@ -100,7 +98,21 @@ const ContractForm = ({ handleContinue, handleBack }) => {
       streetNumber: data.streetNumber,
       postalCode: data.postalCode,
       age: data.age,
+      birthDate: data.birthDate,
     };
+    try {
+      toast.promise(axios.put("/api/user", userData), {
+        loading: "Guardando información...",
+        success: () => {
+          saveUserContractInformation(dispatch, userData);
+          toast.success("Información guardada");
+          handleContinue();
+        },
+        error: "Error al guardar la información",
+      });
+    } catch (error) {
+      toast.error("Error al guardar la información");
+    }
   };
 
   return (
@@ -122,6 +134,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
           <section className="w-full">
             <div className="w-full text-center">
               <span className="text-xs font-medium">
+                {console.log(state)}
                 Necesitaremos que complete el siguiente formulario
               </span>
             </div>
