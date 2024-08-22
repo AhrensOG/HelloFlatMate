@@ -5,7 +5,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
   try {
-    const { roomId, userEmail, price } = await req.json();
+    const { propertyId, userEmail, price, propertyName, leaseOrderId, roomId } =
+      await req.json();
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -14,7 +15,7 @@ export async function POST(req) {
           price_data: {
             currency: "eur",
             product_data: {
-              name: `Reserva de Habitación ${roomId}`,
+              name: `Reserva de Habitación ${propertyName}`,
             },
             unit_amount: price, // El precio debe ser en centavos (5000 = $50.00)
           },
@@ -26,8 +27,12 @@ export async function POST(req) {
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/cancel`,
       customer_email: userEmail,
       metadata: {
-        hola: 12
-      }
+        propertyId,
+        userEmail,
+        price,
+        leaseOrderId,
+        roomId,
+      },
     });
     return NextResponse.json({ id: session.id });
   } catch (error) {

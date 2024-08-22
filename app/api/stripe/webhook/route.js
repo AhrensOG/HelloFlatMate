@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
+import { LeaseOrderProperty, LeaseOrderRoom } from "@/db/init";
 
 // Inicializa Stripe con tu clave secreta
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -35,6 +36,18 @@ export async function POST(req) {
   switch (event.type) {
     case "checkout.session.completed":
       const checkoutSessionCompleted = event.data.object;
+      console.log(checkoutSessionCompleted)
+      if (checkoutSessionCompleted.metadata.roomId) {
+        const successLeaseOrderRoom = await LeaseOrderRoom.findByPk(
+          checkoutSessionCompleted.metadata.roomId
+        );
+        await successLeaseOrderRoom.update({ status: "APPROVED" });
+        return;
+      }
+      const successLeaseOrder = await LeaseOrderProperty.findByPk(
+        checkoutSessionCompleted.metadata.leaseOrderId
+      );
+      await successLeaseOrder.update({ status: "APPROVED" });
       console.log(
         `✅ Payment for session completed:`,
         checkoutSessionCompleted
@@ -42,6 +55,17 @@ export async function POST(req) {
       break;
     case "checkout.session.expired":
       const checkoutSessionExpired = event.data.object;
+      if (checkoutSessionExpired.metadata.roomId) {
+        const failedLeaseOrderRoom = await LeaseOrderRoom.findByPk(
+          checkoutSessionExpired.metadata.roomId
+        );
+        await failedLeaseOrderRoom.update({ status: "REJECTED" });
+        return;
+      }
+      const failedLeaseOrder = await LeaseOrderProperty.findByPk(
+        checkoutSessionExpired.metadata.leaseOrderId
+      );
+      await failedLeaseOrder.update({ status: "REJECTED" });
       console.log(`❌ Payment session expired:`, checkoutSessionExpired);
       break;
     default:

@@ -19,6 +19,7 @@ import { plus_jakarta } from "@/font";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function RoomDetails({ params }) {
   const { state } = useContext(Context);
@@ -58,6 +59,10 @@ export default function RoomDetails({ params }) {
     );
   }
   const handleShowModal = () => {
+    if (!state?.user?.id) {
+      toast.info("Inicia sesión antes de continuar");
+      return router.push("/pages/auth");
+    }
     setShowModal(!showModal);
   };
 
@@ -94,7 +99,7 @@ export default function RoomDetails({ params }) {
                 { type: "couple", boolean: roomData.couple },
               ]}
             />
-            {(!roomData.price || roomData.leaseOrdersRoom < 1) && (
+            {(roomData.price && roomData.leaseOrdersRoom < 1) && (
               <ReservationButton callback={handleShowModal} />
             )}
           </div>
@@ -128,9 +133,11 @@ export default function RoomDetails({ params }) {
                 endDate: null,
                 price: roomData.price,
                 propertyId: data.id,
-                clientId: "23",
+                clientId: state?.user?.id,
                 ownerId: data.ownerId,
                 roomId: roomData.id,
+                propertyName: data?.name,
+                user: state?.user,
               }}
             />
           )}

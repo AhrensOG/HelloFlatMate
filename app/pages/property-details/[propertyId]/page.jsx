@@ -14,11 +14,14 @@ import RoomSection from "@/app/components/property-details/main/RoomSection";
 import { Context } from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function PropertyDetails({ params }) {
   const { state } = useContext(Context);
   const id = params.propertyId;
+  const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState(
@@ -49,6 +52,10 @@ export default function PropertyDetails({ params }) {
     );
   }
   const handleShowModal = () => {
+    if (!state?.user?.id) {
+      toast.info("Inicia sesión antes de continuar");
+      return router.push("/pages/auth");
+    }
     setShowModal(!showModal);
   };
 
@@ -83,9 +90,11 @@ export default function PropertyDetails({ params }) {
                 { quantity: data.bed, type: "Camas" },
               ]}
             />
-            {(!data.price || data.leaseOrdersProperty.length < 1) && (
-              <ReservationButton callback={handleShowModal} />
-            )}
+            {(data.category === "HELLO_STUDIO" ||
+              data.category === "HELLO_LANDLORD") &&
+              data.leaseOrdersProperty.length < 1 && (
+                <ReservationButton callback={handleShowModal} />
+              )}
           </div>
           <DescriptionSection data={data.description} />
           <RoomSection
@@ -119,8 +128,10 @@ export default function PropertyDetails({ params }) {
                 endDate: null,
                 price: data.price,
                 propertyId: data.id,
-                clientId: "23",
+                clientId: state?.user?.id,
                 ownerId: data.ownerId,
+                propertyName: data?.name,
+                user: state?.user,
               }}
             />
           )}
