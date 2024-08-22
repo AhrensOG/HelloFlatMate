@@ -275,11 +275,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
           checkOut: moreInfo.checkOut,
-          price:
-            parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner) ||
-            0,
+          price: parseInt(price.price),
           amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
-          amountOwner: parseInt(price.amountOwner) || 0,
+          amountOwner:
+            parseInt(price.price) - parseInt(price.amountHelloflatmate) || 0,
         };
 
         const response = await axios.put(

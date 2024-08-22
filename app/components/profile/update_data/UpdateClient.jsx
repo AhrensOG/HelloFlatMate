@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
@@ -8,8 +8,28 @@ import TitleSection from "../../contract/TitleSection";
 import axios from "axios";
 export default function UpdateClient() {
   const { state, dispatch } = useContext(Context);
+  const [prevData, setPrevData] = useState();
 
-  const initialValues = {
+  useEffect(() => {
+    if (state?.user?.id) {
+      const user = state?.user;
+      setPrevData({
+        name: user.name,
+        lastName: user.lastName,
+        dni: user.idNum,
+        phone: user.phone,
+        city: user.city,
+        email: user.email,
+        street: user.street,
+        streetNumber: user.streetNumber,
+        postalCode: user.postalCode,
+        age: user.age,
+        birthDate: user.birthDate,
+      });
+    }
+  }, [state]);
+
+  const initialValues = prevData || {
     name: "",
     lastName: "",
     dni: "",
@@ -84,7 +104,7 @@ export default function UpdateClient() {
 
   const updateUser = async (data) => {
     const userData = {
-      id: "23",
+      id: state?.user?.id,
       name: data.name,
       lastName: data.lastName,
       idNum: parseInt(data.dni),

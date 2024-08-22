@@ -57,9 +57,9 @@ export default function NewProperty({ category, handleBack }) {
   });
   const [dataRoom, setDataRoom] = useState([]);
   const [price, setPrice] = useState({
-    price: null,
-    amountOwner: null,
-    amountHelloflatmate: null,
+    price: 0,
+    amountOwner: 0,
+    amountHelloflatmate: 0,
   });
 
   const setRoomData = (data) => {
@@ -147,8 +147,8 @@ export default function NewProperty({ category, handleBack }) {
         couple: room.couple,
         bathroom: room.bathroom,
         serial: room.serial,
-        price: parseInt(room.amountOwner) + parseInt(room.amountHelloflatmate),
-        amountOwner: parseInt(room.amountOwner),
+        price: parseInt(room.price),
+        amountOwner: parseInt(room.price) - parseInt(room.amountHelloflatmate),
         amountHelloflatmate: parseInt(room.amountHelloflatmate),
       }));
     } else {
@@ -214,10 +214,10 @@ export default function NewProperty({ category, handleBack }) {
     houseRules: moreInfo.normasDeConvivencia,
     checkIn: moreInfo.checkIn,
     checkOut: moreInfo.checkOut,
-    price:
-      parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner) || 0,
+    price: parseInt(price.price) || 0,
     amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
-    amountOwner: parseInt(price.amountOwner) || 0,
+    amountOwner:
+      parseInt(price.price) - parseInt(price.amountHelloflatmate) || 0,
   };
 
   const createProperty = async () => {

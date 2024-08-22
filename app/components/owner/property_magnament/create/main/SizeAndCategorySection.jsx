@@ -52,8 +52,8 @@ export default function SizeAndCategorySection({ data, setData }) {
               name="size"
               value={formData.size || ""} // Asegúrate de que el valor no sea undefined
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Solo números, la unidad de medida es el mt2"
+              className="number-input-no-appearance w-full p-2 border border-gray-300 rounded outline-none"
+              placeholder="Solo números (m²)"
             />
             {errors.size && (
               <p className="text-red-500 text-xs mt-1">{errors.size}</p>

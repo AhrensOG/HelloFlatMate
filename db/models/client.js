@@ -11,7 +11,7 @@ const clientInit = (sequelize, DataTypes) => {
         {
             ...userAttributes,
             idNum: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING(100),
                 allowNull: true,
             },
             birthDate: {
@@ -23,7 +23,7 @@ const clientInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             phone: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING(100),
                 allowNull: true,
             },
             city: {
