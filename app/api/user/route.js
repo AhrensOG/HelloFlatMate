@@ -1,5 +1,5 @@
 import { getAllUsers, getUserById, getUsersByRole } from "./controllers/getUsersController"
-import { deleteUser, updateClient, updateRoleUser } from "./controllers/updateUserController"
+import { deleteUser, updateClient, updateRoleUser, updateSignarute } from "./controllers/updateUserController"
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url)
@@ -22,6 +22,7 @@ export async function GET(req) {
 
 export async function PUT(req) {
     const data = await req.json()
+    console.log(data);
 
     const result = await updateClient(data)
 
@@ -30,7 +31,10 @@ export async function PUT(req) {
 
 export async function PATCH(req) {
     const data = await req.json()
-
+    if (data.signature) {
+        const result = await updateSignarute(data)
+        return result
+    }
     const result = await updateRoleUser(data)
 
     return result

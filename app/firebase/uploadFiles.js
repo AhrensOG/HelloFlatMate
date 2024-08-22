@@ -11,7 +11,7 @@ const uploadFiles = async (files, folder = "Documentos", name = false) => {
       const url = await getDownloadURL(storageRef);
 
       uploadedFiles.push({
-        name: file.name,
+        name: name || file.name,
         url,
       });
     }

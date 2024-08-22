@@ -17,13 +17,17 @@ export async function createDocument(data) {
     if (!data.typeUser || data.typeUser.trim() === "" || (data.typeUser !== "CLIENT" && data.tipeUser !== "ADMIN")) {
         return NextResponse.json({ message: "No user type provided or invalid" }, { status: 400 })
     }
+    if (!data.name || data.name.trim() === "") {
+        return NextResponse.json({ message: "No document name provided" }, { status: 400 })
+    }
 
     try {
         const document = Document.create({
+            name: data.name,
             type: data.type,
             url: data.url,
             documentableId: data.userId,
-            documentableType: data.typeUser
+            documentableType: data.typeUser,
         })
         if (document) {
             return NextResponse.json({ message: "Document created successfully" }, { status: 200 })

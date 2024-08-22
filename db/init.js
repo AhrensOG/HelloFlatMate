@@ -115,7 +115,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         console.log("Initializing DB");
 
         // DATA DE PRUEBA
-      
+
         // await Property.bulkCreate(propertyData)
         // await Client.bulkCreate(testClientData)
         // await Admin.bulkCreate(testAdminData)

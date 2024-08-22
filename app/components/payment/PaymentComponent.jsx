@@ -5,11 +5,110 @@ import { motion } from "framer-motion";
 import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import TitleSection from "../contract/TitleSection";
+import { uploadFiles } from "@/app/firebase/uploadFiles";
+import { toast } from "sonner";
+import axios from "axios";
 
 export default function PaymentComponent({ handleContinue, handleBack }) {
   const { state } = useContext(Context);
   const pdfUrl = state.contractPdfData?.url;
+  const userDocuments = {
+    dni: state.reservationInfo?.dni,
+    nomina: state.reservationInfo?.nomina,
+    contract: state.contractPdfData,
+    signature: state.reservationInfo?.signature,
+  };
 
+  const uploadDocuments = async () => {
+    const documents = [
+      {
+        name:
+          "Contrato " +
+          state.reservationInfo?.userContractInformation.name +
+          " " +
+          state.reservationInfo?.userContractInformation.lastName,
+        type: "CONTRACT",
+        url: pdfUrl,
+        userId: state.reservationInfo?.userContractInformation.id,
+        typeUser: "CLIENT",
+      },
+    ];
+    try {
+      //Cargar DNI en firebase
+      if (userDocuments.dni) {
+        const dniUrl = await uploadFiles(
+          userDocuments.dni,
+          "Documentos",
+          state.reservationInfo?.userContractInformation.name +
+            " " +
+            state.reservationInfo?.userContractInformation.lastName +
+            " - DNI"
+        );
+        if (dniUrl) {
+          documents.push({
+            name: dniUrl[0].name,
+            type: "DNI",
+            url: dniUrl[0].url,
+            userId: state.reservationInfo?.userContractInformation.id,
+            typeUser: "CLIENT",
+          });
+        } else {
+          toast.error("Error al cargar el DNI");
+        }
+      }
+      //Cargar Nomina en firebase
+      if (userDocuments.nomina) {
+        const nominaUrl = await uploadFiles(
+          userDocuments.nomina,
+          "Documentos",
+          state.reservationInfo?.userContractInformation.name +
+            " " +
+            state.reservationInfo?.userContractInformation.lastName +
+            " - Nomina"
+        );
+        if (nominaUrl) {
+          documents.push({
+            name: nominaUrl[0].name,
+            type: "ROSTER",
+            url: nominaUrl[0].url,
+            userId: state.reservationInfo?.userContractInformation.id,
+            typeUser: "CLIENT",
+          });
+        } else {
+          toast.error("Error al cargar la Nomina");
+        }
+      }
+      await createDocuments(documents);
+      await updateUserSignature(state.reservationInfo?.signature[0]);
+    } catch (error) {
+      toast.error("Error al crear los documentos");
+    }
+  };
+
+  const createDocuments = async (array) => {
+    if (array) {
+      try {
+        array.forEach(async (document) => {
+          await axios.post("/api/document", document);
+        });
+      } catch (error) {
+        toast.error("Error al crear los documentos");
+      }
+    }
+  };
+
+  const updateUserSignature = async (url) => {
+    try {
+      await axios.patch("/api/user", {
+        id: state.reservationInfo?.userContractInformation.id,
+        signature: url,
+      });
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Error al actualizar la firma");
+    }
+  };
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -27,6 +126,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
         />
       </div>
       <div className="flex justify-between font-semibold text-[#222222] text-[1.37rem]">
+        {console.log(userDocuments)}
         <h2>Total (USD)</h2>
         <p>$440</p>
       </div>
@@ -67,7 +167,16 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
       </Link>
 
       <button
-        onClick={handleContinue}
+        onClick={() => {
+          toast.promise(uploadDocuments(), {
+            loading: "Cargando...",
+            success: () => {
+              toast.success("Información guardada");
+              handleContinue();
+            },
+            error: "Error al cargar los documentos",
+          });
+        }}
         alt="Confirmar y pagar"
         type="button"
         className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient border border-resolution-blue hover:bg-payment-button-gradient-hover transition-all duration-300"
