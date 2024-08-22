@@ -1,9 +1,14 @@
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import { ArrowPathIcon, CloudArrowUpIcon } from "@heroicons/react/20/solid";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
+import {
+  saveUserContractDocuments,
+  saveUserContractInformation,
+} from "@/app/context/actions";
+import { Context } from "@/app/context/GlobalContext";
 
 const SignaturePad = ({
   setModal,
@@ -12,7 +17,7 @@ const SignaturePad = ({
 }) => {
   const sigCanvas = useRef(null);
   const [loader, setLoader] = useState(false);
-
+  const { state, dispatch } = useContext(Context);
   const clearSignature = () => {
     sigCanvas.current.clear();
   };
@@ -24,6 +29,10 @@ const SignaturePad = ({
     const blob = await response.blob();
     const res = await uploadFiles([blob], "Firmas", "ClientSignature");
     const clientSignature = res[0].url;
+    saveUserContractDocuments(dispatch, {
+      id: "signature",
+      files: [clientSignature],
+    });
     await createContractPDFAndContinue(clientSignature);
     setModal(false);
     setLoader(false);

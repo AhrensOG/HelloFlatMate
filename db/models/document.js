@@ -12,8 +12,12 @@ const documentInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             type: {
-                type: DataTypes.ENUM("CONTRACT", "SIGNATURE", "DNI", "ROSTER", "PASSPORT"),
+                type: DataTypes.ENUM("CONTRACT", "ROSTER", "IDENTIFICATION"),
                 allowNull: false,
             },
             url: {
@@ -27,6 +31,11 @@ const documentInit = (sequelize, DataTypes) => {
             documentableType: {
                 type: DataTypes.STRING,
                 allowNull: false,
+            },
+            status: {
+                type: DataTypes.ENUM("PENDING", "APPROVED", "REJECTED"),
+                allowNull: false,
+                defaultValue: "PENDING"
             }
         },
         {
