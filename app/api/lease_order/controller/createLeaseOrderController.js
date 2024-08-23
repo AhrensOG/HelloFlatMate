@@ -80,8 +80,10 @@ export async function createLeaseRoomOrder(data) {
         if (!client) return NextResponse.json({ message: "Cliente no encontrado" }, { status: 404 })
 
         const leaseOrder = await LeaseOrderRoom.create({ ...data, status: "IN_PROGRESS" })
+        room.status = "RESERVED"
+        await room.save()
         const roomsAvaibles = property.rooms.filter(room => room.status === "FREE")
-        if (roomsAvaibles.length === 0) {
+        if (roomsAvaibles.length <= 0) {
             property.status = "RESERVED"
             await property.save()
         }
