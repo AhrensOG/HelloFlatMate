@@ -1,4 +1,4 @@
-import { Room, RoomWithPrice } from "@/db/init";
+import { Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function deleteRoom(data) {

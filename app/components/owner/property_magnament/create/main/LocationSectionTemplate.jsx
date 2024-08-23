@@ -20,7 +20,7 @@ export default function LocationSectionTemplate({ data = null }) {
           onMouseLeave={() => setShowPencil(false)}
           className="w-full rounded-lg h-[20vh] relative bg-[#d6d6d6ff]"
         >
-          <div className="absolute inset-0 w-full h-full flex justify-center items-center z-50">
+          <div className="absolute inset-0 w-full h-full flex justify-center items-center z-40">
             <div
               className={`${
                 showPencil ? "" : "hidden"

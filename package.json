@@ -16,6 +16,8 @@
     "@egjs/react-flicking": "^4.11.3",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.4",
+    "@stripe/react-stripe-js": "^2.8.0",
+    "@stripe/stripe-js": "^4.3.0",
     "axios": "^1.7.3",
     "chart.js": "^4.4.3",
     "dotenv": "^16.4.5",
@@ -26,12 +28,14 @@
     "pdf-lib": "^1.17.1",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
+    "raw-body": "^3.0.0",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-signature-canvas": "^1.0.6",
     "sequelize": "^6.37.3",
-    "sonner": "^1.5.0"
+    "sonner": "^1.5.0",
+    "stripe": "^16.7.0"
   },
   "devDependencies": {
     "postcss": "^8",

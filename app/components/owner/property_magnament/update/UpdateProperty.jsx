@@ -161,23 +161,35 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
 
   // Validación
   const handleSubmit = () => {
-    // Combina todos los datos en un solo objeto
     const allData = {
-      ...address,
-      ...guestInfo,
-      ...description,
-      ...sliderImage,
-      ...amenities,
-      ...moreInfo,
+      name: name,
+      city: address.city,
+      street: address.street,
+      streetNumber: address.streetNumber,
+      postalCode: address.postalCode,
+      size: catAndSize.size,
+      roomsCount: dataRooms.length,
+      bathrooms: guestInfo.bathrooms,
+      bed: guestInfo.beds,
+      maximunOccupants: guestInfo.occupants,
+      price: price.price,
+      amountHelloflatmate: price.amountHelloflatmate,
+      amountOwner: price.amountOwner,
+      category: catAndSize.category,
+      amenities: amenities,
+      description: description,
+      checkIn: moreInfo.checkIn,
+      checkOut: moreInfo.checkOut,
+      images: sliderImage.map((image) => image.url), // Asegúrate de tener URLs aquí
     };
 
     const validationResult = validateData(allData);
 
     if (!validationResult.isValid) {
+      toast.error(validationResult.message);
       return false;
-    } else {
-      return true;
     }
+    return true;
   };
 
   const updateProperty = async () => {
@@ -190,6 +202,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 rooms: deleteRooms,
               },
             });
+            setDeleteRooms([]);
             toast.success("Habitaciones eliminadas");
           }
         } catch (error) {
@@ -220,8 +233,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         //UpdateRooms
         try {
           if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
-            console.log(dataRooms);
-
             const roomsUpdate = dataRooms.map((room) => {
               return {
                 ...room,
@@ -264,11 +275,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
           checkOut: moreInfo.checkOut,
-          price:
-            parseInt(price.amountHelloflatmate) + parseInt(price.amountOwner) ||
-            0,
+          price: parseInt(price.price),
           amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
-          amountOwner: parseInt(price.amountOwner) || 0,
+          amountOwner:
+            parseInt(price.price) - parseInt(price.amountHelloflatmate) || 0,
         };
 
         const response = await axios.put(

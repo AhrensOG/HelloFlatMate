@@ -18,56 +18,62 @@ export default function PriceSection({ data, setData }) {
   // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
+
+    const updatedFormData = {
       ...formData,
       [name]: value,
-      price:
-        parseInt(formData.amountOwner) + parseInt(formData.amountHelloflatmate),
-    });
+    };
 
+    // Calcula el amountOwner en base a los valores actualizados
+    updatedFormData.amountOwner =
+      parseInt(updatedFormData.price) -
+      parseInt(updatedFormData.amountHelloflatmate);
+
+    // Actualiza formData y setData con los valores calculados
+    setFormData(updatedFormData);
     setData((prevData) => ({
       ...prevData,
-      [name]: value,
-      price:
-        parseInt(formData.amountOwner) + parseInt(formData.amountHelloflatmate),
+      ...updatedFormData,
     }));
   };
 
   return (
-    <section className="w-full flex justify-between items-center flex-wrap gap-3">
-      <h2 className="font-bold text-[1.37rem] w-full">Precio</h2>
-      <div className="w-5/12">
-        <label htmlFor="price" className="block text-sm mb-1">
-          Dueño:
+    <section className="w-full flex flex-wrap justify-between items-center gap-5">
+      <div className="w-full flex flex-col justify-center gap-1 items-start max-w-52">
+        <label className="font-semibold text-xl" htmlFor="price">
+          Precio Propiedad:{" "}
         </label>
-        <input
-          type="number"
-          name="amountOwner"
-          value={formData.amountOwner || ""} // Asegúrate de que el valor no sea undefined
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
+        <div className="flex flex-row w-full justify-between items-center border rounded-md p-2 gap-2">
+          <span className="text-xl">€</span>
+          <input
+            className="w-full appearance-none outline-none h-full text-xl number-input-no-appearance"
+            id="price"
+            name="price"
+            value={formData.price || ""}
+            onChange={handleChange}
+            type="number"
+          />
+        </div>
       </div>
-      <div className="w-5/12">
-        <label htmlFor="price" className="block text-sm mb-1">
-          Helloflatmate:
+      <div className="w-full flex flex-col justify-center gap-1 items-start max-w-52">
+        <label className="font-semibold text-xl" htmlFor="amountHelloflatmate">
+          Tarifa Helloflatmate:{" "}
         </label>
-        <input
-          type="number"
-          name="amountHelloflatmate"
-          value={formData.amountHelloflatmate || ""} // Asegúrate de que el valor no sea undefined
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
+        <div className="flex flex-row w-full justify-between items-center border rounded-md p-2 gap-2">
+          <span className="text-xl">€</span>
+          <input
+            className="w-full appearance-none outline-none h-full text-xl number-input-no-appearance"
+            id="amountHelloflatmate"
+            name="amountHelloflatmate"
+            value={formData.amountHelloflatmate || ""}
+            onChange={handleChange}
+            type="number"
+          />
+        </div>
       </div>
-      <div className="w-full flex items-end py-2 gap-3">
-        <h2 className="text-lg font-medium flex items-end h-full">
-          Precio total:
-        </h2>
-        <p className="text-2xl border border-[#D1DEE5] p-2 rounded-lg px-3">
-          {(parseInt(formData.amountOwner) || 0) +
-            (parseInt(formData.amountHelloflatmate) || 0) || 0}
-        </p>
+      <div className="w-full flex flex-col justify-center gap-1 items-start max-w-52">
+        <h2 className="font-semibold text-xl">Neto Propietario: </h2>
+        <h2 className="text-xl">€ {formData.amountOwner || 0}</h2>
       </div>
     </section>
   );
