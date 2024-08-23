@@ -59,19 +59,10 @@ export default function ReservationModal({ callback, data }) {
     };
     setDataReservation(reservation);
     try {
-      let sucess = false;
-      if (!sucess) {
-        toast.loading("Reservando...");
-      }
       const response = await axios.post("/api/lease_order", reservation);
-      if (response.status === 200) {
-        sucess = true;
-        toast.success("Reserva exitosa");
-        return response.data;
-      }
-      toast.error("Error al realizar la reserva");
+      console.log(response);
     } catch (error) {
-      toast.error("Error al realizar la reserva");
+      console.log(error);
     }
   };
 
@@ -107,7 +98,18 @@ export default function ReservationModal({ callback, data }) {
           <SelectContract data={info} setData={setInfo} />
           <DatePicker data={info} setData={setInfo} />
           <div className=" self-center w-[90%]">
-            <ReservationButton callback={handleReservationSubmit} />
+            <ReservationButton
+              callback={() => {
+                toast.promise(handleReservationSubmit(), {
+                  loading: "Reservando...",
+                  success: () => {
+                    toast.success("Reservado con exito");
+                    // handleRedirect();
+                  },
+                  error: "Error al reservar",
+                });
+              }}
+            />
           </div>
         </div>
       </motion.aside>

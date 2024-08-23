@@ -71,6 +71,7 @@ export default function PropertyDetails({ params }) {
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-screen px-3`}
         >
           <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
+          {console.log(data)}
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street + " " + data.streetNumber}
           </h4>
@@ -83,15 +84,13 @@ export default function PropertyDetails({ params }) {
                 { quantity: data.bed, type: "Camas" },
               ]}
             />
-            {(!data.price || data.leaseOrdersProperty.length < 1) && (
+            {data.price && data.leaseOrdersProperty.length < 1 && (
               <ReservationButton callback={handleShowModal} />
             )}
           </div>
           <DescriptionSection data={data.description} />
           <RoomSection
-            data={data.rooms.map((room) => {
-              return { ...room, propertyId: data.id };
-            })}
+            data={data.rooms.filter((room) => room.status === "FREE")}
           />
           <AmenitiesSection data={data.amenities} />
           <LocationSection />

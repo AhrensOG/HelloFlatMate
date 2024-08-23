@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Admin, Client, LeaseOrder, Owner, Property } from "@/db/init";
+import { Admin, Client, LeaseOrder, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room } from "@/db/init";
 
 export async function updateLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
@@ -41,21 +41,69 @@ export async function updateLeaseOrder(data) {
 
 export async function updateStatusLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
-    if (!data.action || data.status !== "REJECTED" && data.status !== "APPROVED") return NextResponse.json({ message: "No status provided" }, { status: 400 })
+    if (!data.action || data.action !== "REJECTED" && data.action !== "APPROVED") return NextResponse.json({ message: "No status provided" }, { status: 400 })
     if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 })
     if (!data.adminId || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 })
+    if (!data.propertyId && !data.roomId) return NextResponse.json({ message: "No property id or room id provided" }, { status: 400 })
+    if (!data.type || (data.type !== "PROPERTY" && data.type !== "ROOM")) return NextResponse.json({ message: "No type provided" }, { status: 400 })
 
     try {
-        //Buscar y verificar que la orden exista
-        const leaseOrder = await LeaseOrder.findByPk(data.leaseOrderId)
-        if (!leaseOrder) return NextResponse.json({ message: "Lease order not found" }, { status: 404 })
-        //Buscar y verificar que el admin exista
         const admin = await Admin.findByPk(data.adminId)
         if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 })
 
-        //Cambiar el estado de la orden
-        const approvedLeaseOrder = await leaseOrder.update({ status: data.status })
-        return NextResponse.json(approvedLeaseOrder, { message: "Orden rechazada con exito" }, { status: 200 })
+        if (data.type === "PROPERTY") {
+            //Buscar y verificar que la orden exista
+            const leaseOrderProperty = await LeaseOrderProperty.findByPk(data.leaseOrderId)
+            if (!leaseOrderProperty) { return NextResponse.json({ message: "Lease order property not found" }, { status: 404 }) }
+            const property = await Property.findByPk(data.propertyId)
+            if (!property) { return NextResponse.json({ message: "Property not found" }, { status: 404 }) }
+
+            if (data.action === "APPROVED") {
+                leaseOrderProperty.status = "APPROVED"
+                property.status = "OCCUPIED"
+                await leaseOrderProperty.save()
+                await property.save()
+                return NextResponse.json({ message: "Lease order property approved" }, { status: 200 })
+            } else if (data.action === "REJECTED") {
+                leaseOrderProperty.status = "REJECTED"
+                property.status = "FREE"
+                await leaseOrderProperty.save()
+                await property.save()
+                return NextResponse.json({ message: "Lease order property rejected" }, { status: 200 })
+            }
+        }
+
+        //EN CASO QUE SEA DE UNA HABITACIÓN
+        const leaseOrderRoom = await LeaseOrderRoom.findByPk(data.leaseOrderId)
+        if (!leaseOrderRoom) { return NextResponse.json({ message: "Lease order room not found" }, { status: 404 }) }
+        const room = await Room.findByPk(data.roomId)
+        if (!room) { return NextResponse.json({ message: "Room not found" }, { status: 404 }) }
+        const property = await Property.findByPk(room.propertyId, {
+            include: {
+                model: Room,
+                as: "rooms",
+            }
+        })
+        const roomsAvaible = property.rooms.filter(room => room.status === "FREE")
+
+        if (data.action === "APPROVED") {
+            leaseOrderRoom.status = "APPROVED"
+            room.status = "OCCUPIED"
+            property.status = roomsAvaible.length > 0 ? "OCCUPIED" : "FREE"
+
+            await leaseOrderRoom.save()
+            await room.save()
+            await property.save()
+            return NextResponse.json({ message: "Lease order room approved" }, { status: 200 })
+        } else if (data.action === "REJECTED") {
+            leaseOrderRoom.status = "REJECTED"
+            room.status = "FREE"
+            property.status = roomsAvaible.length > 0 ? "OCCUPIED" : "FREE"
+            await leaseOrderRoom.save()
+            await room.save()
+            await property.save()
+            return NextResponse.json({ message: "Lease order room rejected" }, { status: 200 })
+        }
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 })
     }

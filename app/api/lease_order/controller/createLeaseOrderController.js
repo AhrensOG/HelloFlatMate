@@ -31,6 +31,8 @@ export async function createLeasePropertyOrder(data) {
         const client = await Client.findByPk(data.clientId)
         if (!client) return NextResponse.json({ message: "Client not found" }, { status: 404 })
         const leaseOrder = await LeaseOrderProperty.create({ ...data, status: "IN_PROGRESS" })
+        property.status = "RESERVED"
+        await property.save()
         return NextResponse.json(leaseOrder, { message: "Orden creada con exito" }, { status: 201 })
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 })
@@ -50,7 +52,12 @@ export async function createLeaseRoomOrder(data) {
 
     try {
         //Buscar y verificar que la propiedad exista
-        const property = await Property.findByPk(data.propertyId)
+        const property = await Property.findByPk(data.propertyId, {
+            include: {
+                model: Room,
+                as: "rooms"
+            }
+        })
         if (!property) return NextResponse.json({ message: "Propiedad no encontrada" }, { status: 404 })
         //Buscar y verificar que la habitacion exista
         const room = await Room.findByPk(data.roomId, {
@@ -73,6 +80,11 @@ export async function createLeaseRoomOrder(data) {
         if (!client) return NextResponse.json({ message: "Cliente no encontrado" }, { status: 404 })
 
         const leaseOrder = await LeaseOrderRoom.create({ ...data, status: "IN_PROGRESS" })
+        const roomsAvaibles = property.rooms.filter(room => room.status === "FREE")
+        if (roomsAvaibles.length === 0) {
+            property.status = "RESERVED"
+            await property.save()
+        }
         return NextResponse.json(leaseOrder, { message: "Orden creada con exito" }, { status: 201 })
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 })
