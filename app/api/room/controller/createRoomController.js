@@ -25,7 +25,7 @@ export async function createRoom(data) {
     }
 
     try {
-        const addStatus = dataArray.map((room) => ({ ...room, status: "FREE", price: (room.amountOwner + room.amountHelloflatmate || 0) }));
+        const addStatus = dataArray.map((room) => ({ ...room, status: "FREE", amountOwner: (room.price - room.amountHelloflatmate || 0) }));
 
         if (isArray) {
             const rooms = await Room.bulkCreate(addStatus);
@@ -35,6 +35,7 @@ export async function createRoom(data) {
         }
 
     } catch (error) {
+        console.log(error)
         return NextResponse.json({ error: "Error al crear las habitaciones", details: error.message }, { status: 500 });
     }
 }
