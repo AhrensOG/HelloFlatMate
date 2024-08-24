@@ -9,12 +9,14 @@ import SearchBar from "./components/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
 import { getAllProperties } from "./context/actions";
+import Filter from "./components/filter/Filter";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const [home, setHome] = useState(false);
   const [properties, setProperties] = useState([]);
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const filterOffer = (properties) => {
     return properties.filter((property) => property.offer !== null);
@@ -47,7 +49,7 @@ export default function Home() {
       setPropertiesInOffer(filterOffer(state.properties));
       toast.success("Propiedades actualizadas");
     }
-  }, [state.properties]);
+  }, [state.properties, dispatch]);
 
   if (!home) {
     return <GuestHome />;
@@ -61,7 +63,7 @@ export default function Home() {
       <main>
         <Hero />
         <div className="w-full pt-4">
-          <SearchBar />
+          <SearchBar showFilters={showFilters} setShowFilters={setShowFilters} />
         </div>
         <FeaturedSection data={properties} />
         <PromotionSection data={propertiesInOffer} />
