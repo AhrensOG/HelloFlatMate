@@ -11,7 +11,7 @@ import { toast } from "sonner";
 export default function Filtered(params) {
   const { state, dispatch } = useContext(Context);
   const { word } = params.params;
-  const [properties, setProperties] = useState(state?.properties || false);
+  const [properties, setProperties] = useState(state?.properties || []);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ word: word });
   const [filteredProperties, setFilteredProperties] = useState([]);
@@ -20,19 +20,25 @@ export default function Filtered(params) {
     const fetchProperties = async () => {
       try {
         await getAllProperties(dispatch);
-        setProperties(state.properties);
-        setFilteredProperties(filterBySearch(properties));
+        setProperties(state.properties || []);
+        setFilteredProperties(filterBySearch(state.properties || []));
       } catch (error) {
         toast.error("Error al obtener propiedades");
       }
     };
-    if (!properties) {
+    if (state.properties === undefined) {
+      // Verifica si state.properties está disponible
       fetchProperties();
+    } else {
+      setProperties(state.properties);
+      setFilteredProperties(filterBySearch(state.properties || []));
     }
-  }, [properties, state.properties, dispatch]);
+  }, [state.properties, dispatch]);
 
   useEffect(() => {
-    applyFilters();
+    if (properties.length > 0) {
+      applyFilters();
+    }
   }, [filters, properties]);
   const handleFilterChange = (filterName, selectedValues) => {
     if (filterName === "search") {
@@ -136,7 +142,7 @@ export default function Filtered(params) {
     setFilteredProperties(result);
   };
 
-  if (!properties) {
+  if (properties.length === 0) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
