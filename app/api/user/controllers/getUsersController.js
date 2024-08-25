@@ -18,7 +18,11 @@ export async function getUserById(id) {
         const user = await Owner.findByPk(id, {
             include: [{
                 model: LeaseOrderProperty,
-                as: "leaseOrdersProperty"
+                as: "leaseOrdersProperty",
+                include: [{
+                    model: Property,
+                    as: "property"
+                }]
             }, {
                 model: LeaseOrderRoom,
                 as: "leaseOrdersRoom"

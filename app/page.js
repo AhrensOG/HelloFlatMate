@@ -12,7 +12,7 @@ import { getAllProperties } from "./context/actions";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
-  const [home, setHome] = useState(true);
+  const [home, setHome] = useState(false);
   const [properties, setProperties] = useState([]);
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
 
@@ -22,6 +22,8 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
+
+      console.log(state.user);
       if (state.user) {
         try {
           // Actualiza el estado del usuario
