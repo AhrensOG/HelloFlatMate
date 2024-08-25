@@ -27,13 +27,13 @@ export default function PropertyCard({ property }) {
       className={`${plus_jakarta.className} flex gap-3 w-full h-[15vh] cursor-pointer`}
     >
       <div className="h-full rounded-xl">
-        <Image
+        {/* <Image
           className="h-full rounded-xl"
           src={property.images[0]}
           width={117}
           height={117}
           alt="Imagen de propiedad"
-        />
+        /> */}
       </div>
       <div className="flex flex-col justify-between h-full grow">
         <div className="flex flex-col grow gap-2">
