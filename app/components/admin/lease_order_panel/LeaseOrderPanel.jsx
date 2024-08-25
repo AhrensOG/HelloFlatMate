@@ -87,11 +87,9 @@ export default function LeaseOrderPanel(data) {
         <article>
           <div>
             <p>Identificacion</p>
-            <Image />
           </div>
           <div>
             <p>Nomina</p>
-            <Image />
           </div>
           <div>
             <p>Firma</p>
