@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
@@ -10,8 +10,35 @@ import axios from "axios";
 
 const ContractForm = ({ handleContinue, handleBack }) => {
   const { state, dispatch } = useContext(Context);
+  const [prevData, setPrevData] = useState(false);
 
-  const initialValues = state.reservationInfo?.userContractInformation || {
+  useEffect(() => {
+    if (state?.user?.id) {
+      const user = state?.user;
+      const date = new Date(user?.birthDate);
+      const readableDate = date.toLocaleString("es-ES", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      });
+      setPrevData({
+        name: user.name,
+        lastName: user.lastName,
+        dni: user.idNum,
+        phone: user.phone,
+        city: user.city,
+        email: user.email,
+        street: user.street,
+        streetNumber: user.streetNumber,
+        postalCode: user.postalCode,
+        age: user.age,
+        birthDate: readableDate,
+        id: user.id,
+      });
+    }
+  }, [state]);
+
+  const initialValues = prevData || {
     name: "",
     lastName: "",
     dni: "",
@@ -87,7 +114,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
 
   const updateUser = async (data) => {
     const userData = {
-      id: "23",
+      id: prevData.id,
       name: data.name,
       lastName: data.lastName,
       idNum: data.dni,

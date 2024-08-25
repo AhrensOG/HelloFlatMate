@@ -13,7 +13,7 @@ const SuccessPage = () => {
         "Completa tus datos y sube la documentación necesaria para que podamos confirmar tu reserva."
       }
       action={"Completar Información"}
-      callback={() => router.push("/pages/profile")}
+      callback={() => router.push("/pages/contract")}
     />
   );
 };

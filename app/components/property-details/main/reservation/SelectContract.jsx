@@ -23,13 +23,13 @@ export default function SelectContract({ data, setData }) {
   return (
     <section className="w-[19.4rem]">
       <div
-        className="rounded-lg flex justify-between p-2 items-center shadow-reservation-drop my-2 cursor-pointer"
+        className="rounded-lg flex justify-between p-2 items-center shadow-reservation-drop my-2 cursor-pointer bg-white"
         onClick={handleClick}
       >
         {selectedValue}{" "}
         <span
-          className={`flex justify-center items-center h-[24px] w-[24px] rounded-full ${
-            showUl ? "bg-[#1C8CD65E]" : ""
+          className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
+            showUl ? "bg-[#1C8CD65E] rotate-180" : ""
           }`}
         >
           <ChevronUpIcon />

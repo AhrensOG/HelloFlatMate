@@ -119,16 +119,15 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
     >
       <div className="flex items-center gap-5">
         <TitleSection
-          title={"Resumen y Pago"}
+          title={"Resumen"}
           action={() => {
             handleBack();
           }}
         />
       </div>
       <div className="flex justify-between font-semibold text-[#222222] text-[1.37rem]">
-        {console.log(userDocuments)}
-        <h2>Total (USD)</h2>
-        <p>$440</p>
+        <h2>Información Adicional</h2>
+        {/* <p>$440</p> */}
       </div>
       <div className="h-[1px] bg-[#DDDDDD]"></div>
       <div className="flex flex-col gap-3 text-[#222222]">
@@ -181,7 +180,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
         type="button"
         className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient border border-resolution-blue hover:bg-payment-button-gradient-hover transition-all duration-300"
       >
-        Confirmar y pagar
+        Finalizar
       </button>
     </motion.section>
   );

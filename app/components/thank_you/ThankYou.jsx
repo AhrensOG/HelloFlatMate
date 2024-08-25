@@ -10,7 +10,7 @@ export default function ThankYou({ title, subTitle, body, action, callback }) {
           </div>
           <div>
             <h1 className="text-2xl font-semibold text-center">{title}</h1>
-            <h2 className="font-semibold text-base">{subTitle}</h2>
+            <h2 className="font-semibold text-base text-center">{subTitle}</h2>
           </div>
 
           <div>
