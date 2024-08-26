@@ -67,8 +67,9 @@ export default function Contract() {
             )}
             {currentStep === 5 && (
               <ThankYou
-                title={"Firma y Pago Exitoso"}
-                body={"Serás redirigido a la pagina principal."}
+                title={"Firma y Reserva Exitosa"}
+                subTitle={"Tu firma digital y el contrato fueron registrados."}
+                body={"Te notificaremos cuando validemos la informacion enviada."}
                 action={"Regresar "}
                 callback={handleRedirect}
               />

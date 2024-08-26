@@ -41,7 +41,7 @@ export default function LeaseOrderPanel(data) {
 
   return (
     <main>
-      {console.log(client, owner)}
+      {console.log(client, owner, leaserOrders[0])}
       <section>
         <h2>Numero de Orden : {leaserOrders[0].id}</h2>
         <p>fecha de creacion: {leaserOrders[0].date}</p>

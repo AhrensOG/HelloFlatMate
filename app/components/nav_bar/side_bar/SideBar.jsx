@@ -89,7 +89,7 @@ const clientOptions = [
   {
     title: "Mis Reservas",
     icon: "/nav_bar/side_bar/client/payments.svg",
-    link: "#",
+    link: "/pages/my-reservations",
   },
   {
     title: "Chats",
