@@ -164,7 +164,7 @@ export default function Filtered(params) {
           onApplyFilters={applyFilters}
         />
         <div className="flex flex-col m-3 mt-7 gap-7">
-          {filteredProperties.length === 0 ? (
+          {filteredProperties?.length === 0 ? (
             <div className="flex items-center justify-center h-screen">
               <p>No se encontraron propiedades</p>
             </div>
