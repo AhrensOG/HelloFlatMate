@@ -157,7 +157,7 @@ export default function Filtered(params) {
       </header>
       <main className="mt-3">
         <SearchBarFiltered
-          initialValue={filters.word || ""}
+          initialValue={filters?.word || ""}
           showFilters={showFilters}
           setShowFilters={setShowFilters}
           onChange={handleFilterChange} // Ajusta si es necesario
@@ -170,7 +170,7 @@ export default function Filtered(params) {
             </div>
           ) : (
             filteredProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
+              <PropertyCard key={property?.id} property={property} />
             ))
           )}
         </div>
