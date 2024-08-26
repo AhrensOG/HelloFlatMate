@@ -37,7 +37,7 @@ export async function POST(req) {
   // Maneja el evento específico
   try {
     if (type === "checkout.session.completed") {
-      if (roomId) {
+      if (roomId !== "false") {
         // Actualiza el estado de LeaseOrderRoom
         const successLeaseOrderRoom = await LeaseOrderRoom.findByPk(leaseOrderId);
         if (!successLeaseOrderRoom) {
@@ -57,7 +57,7 @@ export async function POST(req) {
         console.log(`✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`);
       }
     } else if (type === "checkout.session.expired") {
-      if (roomId) {
+      if (roomId !== "false") {
         // Actualiza el estado de LeaseOrderRoom a REJECTED
         const failedLeaseOrderRoom = await LeaseOrderRoom.findByPk(leaseOrderId);
         if (!failedLeaseOrderRoom) {

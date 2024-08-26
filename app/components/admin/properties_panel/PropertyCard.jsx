@@ -1,7 +1,15 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-export default function PropertyCard({ image, name, date, body, status }) {
+export default function PropertyCard({
+  image,
+  name,
+  date,
+  body,
+  status,
+  link = "#",
+}) {
   const verifiyStatus = (status) => {
     switch (status) {
       case "avaible":
@@ -36,6 +44,8 @@ export default function PropertyCard({ image, name, date, body, status }) {
     }
   };
 
+  const router = useRouter();
+
   return (
     <article className="w-[19rem] flex flex-col gap-3 shadow-supplie-card rounded-lg p-4">
       <div className="flex gap-2 items-center">
@@ -55,7 +65,7 @@ export default function PropertyCard({ image, name, date, body, status }) {
           {verifiyStatus(status)}
         </div>
         <div className="flex gap-3">
-          <button className="h-9 w-9 border border-[#DDDFE1] text-[#0E155F] flex justify-center items-center">
+          <button onClick={() => router.push(link)} className="h-9 w-9 border border-[#DDDFE1] text-[#0E155F] flex justify-center items-center">
             <PencilIcon className="h-6 w-6" />
           </button>
           <button className="h-9 w-9 border border-[#DDDFE1] text-[#0E155F] flex justify-center items-center">
