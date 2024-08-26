@@ -57,7 +57,6 @@ export default function ReservationModal({ callback, data }) {
     const userEmail = user?.email;
     const price = parseInt(reservation?.price * 100); // Precio en centavos ($50.00)
     const propertyName = reservation?.propertyName; // Precio en centavos ($50.00)
-    const roomId = reservation?.roomId || false;
 
     try {
       const response = await fetch("/api/stripe/create-checkout-session", {
@@ -71,7 +70,7 @@ export default function ReservationModal({ callback, data }) {
           price,
           propertyName,
           leaseOrderId,
-          roomId,
+          roomId: reservation?.roomId || false,
         }),
       });
       const session = await response.json();
