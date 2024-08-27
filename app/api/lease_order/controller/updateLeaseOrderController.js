@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Admin, Client, LeaseOrder, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room } from "@/db/init";
+import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room } from "@/db/init";
 
 export async function updateLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
