@@ -32,7 +32,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
         Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
-        Property.hasMany(ToDo, { as: "toDos", foreignKey: "propertyId" });
+
 
         //Room
         Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
@@ -41,6 +41,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //ToDo
         ToDo.belongsTo(Admin, { as: "admin", foreignKey: "adminId" });
         ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+
 
         //MESSAGE
         Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
@@ -75,7 +76,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Chat.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
 
         //ADMIN
-        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDoId" });
+        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "adminId" });
 
         //SUPPlY
         Supply.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
@@ -127,7 +128,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             scope: {
                 typeUser: "OWNER"
             }
-        })
+        });
 
         ToDo.belongsTo(Client, {
             as: "client",
@@ -136,7 +137,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             scope: {
                 typeUser: "CLIENT"
             }
-        })
+        });
 
         Client.hasMany(ToDo, {
             as: "toDos",
@@ -145,7 +146,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             scope: {
                 typeUser: "CLIENT"
             }
-        })
+        });
 
         Owner.hasMany(ToDo, {
             as: "toDos",
@@ -154,9 +155,10 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             scope: {
                 typeUser: "OWNER"
             }
-        })
+        });
 
 
+        // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
@@ -168,7 +170,17 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         // await Owner.bulkCreate(testOwnerData)
         // await Room.bulkCreate(testRoom)
 
-        // console.log("Data inserted");
+        // console.log("Data inserted")
+        // const result = await Client.findByPk("4ImLe5vacWah6ddc9D4djcY1UZA2", {
+        //     include: [
+        //         {
+        //             model: ToDo,
+        //             as: "toDos"
+        //         }
+        //     ]
+        // })
+        // console.log(result.toJSON());
+
     } catch (error) {
         console.log(error);
     }
