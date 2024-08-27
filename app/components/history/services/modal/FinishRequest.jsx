@@ -1,5 +1,41 @@
+import axios from "axios";
 import { motion } from "framer-motion";
 export default function FinishRequest({ next, prev, data }) {
+  const parseDate = (date, time) => {
+    const timeDate = time.split(":");
+    const originalDate = new Date(date);
+    originalDate.setUTCHours(timeDate[0], timeDate[1], 0, 0);
+    return originalDate;
+  };
+
+  const dataToDo = {
+    type: data.type,
+    date: parseDate(data.day.date, data.time),
+    title:
+      data.type === "CLEAN" ? "Servicio de limpieza" : "Servicio de reparacion",
+    body:
+      data.type === "CLEAN"
+        ? `Servicio de limpieza solicitado para ${parseDate(
+            data.day.date,
+            data.time
+          ).toLocaleDateString("es-ES")}`
+        : `Servicio de reparacion solicitado para ${parseDate(
+            data.day.date,
+            data.time
+          ).toLocaleDateString("es-ES")}`,
+    userId: "23",
+    propertyId: 1,
+  };
+
+  const submitRequest = async () => {
+    try {
+      const response = await axios.post("/api/to_do", dataToDo);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <motion.div
       className="h-full py-6 flex flex-col justify-center items-center gap-2 mx-6 w-full"
@@ -23,7 +59,7 @@ export default function FinishRequest({ next, prev, data }) {
       </ul>
       <div className="flex justify-between items-center gap-3 w-full mt-auto">
         <button
-          onClick={next}
+          onClick={submitRequest}
           type="button"
           className="text-sm font-normal bg-[#0C1660] w-[9.75rem] h-12 text-white flex justify-center items-center rounded-xl"
         >

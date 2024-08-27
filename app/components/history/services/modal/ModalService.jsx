@@ -13,20 +13,53 @@ export default function ModalService({ action, type }) {
     time: null,
   });
   const [nextModal, setNextModal] = useState(0);
-  const [selectedDay, setSelectedDay] = useState(null); // Estado para el día seleccionado
-  const [selectedTime, setSelectedTime] = useState(null); // Estado para el tiempo seleccionado
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
 
-  const days = [
-    { dayName: "Sabado", dayNumber: 6 },
-    { dayName: "Jueves", dayNumber: 11 },
-    { dayName: "Viernes", dayNumber: 12 },
+  const generate7DaysNext = () => {
+    const today = new Date();
+    const days = [];
+
+    for (let i = 1; i <= 7; i++) {
+      const nextDay = new Date(today);
+      nextDay.setDate(today.getDate() + i);
+      const dayNumber = nextDay.getDay();
+
+      if (dayNumber !== 0) {
+        // Excluir domingos
+        days.push({
+          dayName: nextDay.toLocaleDateString("es-ES", { weekday: "long" }),
+          dayNumber: nextDay.getDate(),
+          date: nextDay,
+        });
+      }
+    }
+    return days;
+  };
+
+  const days = generate7DaysNext();
+
+  const times = [
+    { time: "06:30" },
+    { time: "07:30" },
+    { time: "08:30" },
+    { time: "09:30" },
+    { time: "10:30" },
+    { time: "11:30" },
+    { time: "12:30" },
+    { time: "13:30" },
+    { time: "14:30" },
+    { time: "15:30" },
+    { time: "16:30" },
+    { time: "17:30" },
+    { time: "18:30" },
+    { time: "19:30" },
+    { time: "20:30" },
   ];
-  const times = [{ time: "06:30" }, { time: "07:30" }, { time: "08:30" }];
 
   const handleDaySelection = (day) => {
     setSelectedDay(day);
     setInfoService((prev) => ({ ...prev, day: day }));
-    console.log(infoService);
   };
 
   const handleTimeSelection = (time) => {
@@ -35,6 +68,8 @@ export default function ModalService({ action, type }) {
   };
 
   const handleNextModal = () => {
+    console.log(infoService);
+
     setNextModal(nextModal + 1);
   };
 
@@ -44,7 +79,7 @@ export default function ModalService({ action, type }) {
 
   return (
     <motion.aside
-      className="flex flex-col justify-between fixed bottom-0 inset-x-0 items-center rounded-t-xl gap-3 p-3 text-[#161616] bg-[#E0EEF1] h-[20rem]"
+      className="flex flex-col justify-between w-full fixed bottom-0 inset-x-0 items-center z-50 rounded-t-xl gap-3 p-3 text-[#161616] bg-[#E0EEF1] h-[20rem]"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -100 }}
@@ -62,30 +97,32 @@ export default function ModalService({ action, type }) {
           <h2 className="font-semibold text-2xl">
             Selecciona un día y horario
           </h2>
-          <div className="flex gap-3 flex-wrap items-center justify-center">
-            {days.map((day, index) => (
-              <DayCard
-                key={index}
-                dayName={day.dayName}
-                dayNumber={day.dayNumber}
-                isSelected={
-                  selectedDay &&
-                  selectedDay.dayName === day.dayName &&
-                  selectedDay.dayNumber === day.dayNumber
-                }
-                action={() => handleDaySelection(day)}
-              />
-            ))}
-          </div>
-          <div className="flex gap-3 flex-wrap items-center justify-center">
-            {times.map((time, index) => (
-              <TimeCard
-                key={index}
-                time={time.time}
-                isSelected={selectedTime === time.time}
-                action={() => handleTimeSelection(time.time)}
-              />
-            ))}
+          <div className="flex flex-col gap-3 items-center justify-center h-full w-full">
+            <div className="flex gap-2 items-center justify-center overflow-x-auto">
+              {days.map((day, index) => (
+                <DayCard
+                  key={index}
+                  dayName={day.dayName}
+                  dayNumber={day.dayNumber}
+                  isSelected={
+                    selectedDay &&
+                    selectedDay.dayName === day.dayName &&
+                    selectedDay.dayNumber === day.dayNumber
+                  }
+                  action={() => handleDaySelection(day)}
+                />
+              ))}
+            </div>
+            <div className="flex gap-3 items-center justify-center overflow-x-auto w-full">
+              {times.map((time, index) => (
+                <TimeCard
+                  key={index}
+                  time={time.time}
+                  isSelected={selectedTime === time.time}
+                  action={() => handleTimeSelection(time.time)}
+                />
+              ))}
+            </div>
           </div>
           <ButtonServices
             title={"Solicitar Servicio"}
@@ -106,8 +143,8 @@ export default function ModalService({ action, type }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          Su solicitud sera analizada por el personal de Helloflatmate y luego
-          será notificado del estado del mismo
+          Su solicitud será analizada por el personal de Helloflatmate y luego
+          será notificado del estado del mismo.
         </motion.h2>
       ) : (
         <div>hola</div>

@@ -51,7 +51,7 @@ export default function RequestService({ title }) {
         />
         <ButtonServices title={"Solicitar Servicio"} action={handleShowModal} />
       </main>
-      {showModal && <ModalService type={"cleaning"} action={handleShowModal} />}
+      {showModal && <ModalService type={"CLEAN"} action={handleShowModal} />}
     </AnimatePresence>
   );
 }
