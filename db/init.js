@@ -12,6 +12,7 @@ const ToDo = require("./models/toDo");
 const Client = require("./models/client");
 const Admin = require("./models/admin");
 const Room = require("./models/room");
+const Supply = require("./models/supply");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
@@ -30,29 +31,30 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Property.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "propertyId" });
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
+        Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
+        Property.hasMany(ToDo, { as: "toDos", foreignKey: "propertyId" });
 
         //Room
         Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Room.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "roomId" });
 
         //ToDo
-        ToDo.belongsTo(Client, { as: "client", foreignKey: "clientId" });
-        ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         ToDo.belongsTo(Admin, { as: "admin", foreignKey: "adminId" });
+        ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
 
         //MESSAGE
         Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
 
         // LeaseOrderProperty
-        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderPropertyOwner" });
+        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
         LeaseOrderProperty.belongsTo(Property, { foreignKey: "propertyId", as: "property" }); // Usar el correcto foreignKey
-        LeaseOrderProperty.belongsTo(Client, { foreignKey: "clientId", as: "leaseOrderPropertyClient" });
+        LeaseOrderProperty.belongsTo(Client, { foreignKey: "clientId", as: "client" });
 
         // LeaseOrderRoom
-        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "leaseOrderRoomRoom" });
-        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderRoomOwner" });
-        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "leaseOrderRoomProperty" });
-        LeaseOrderRoom.belongsTo(Client, { foreignKey: "clientId", as: "leaseOrderRoomClient" });
+        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "room" });
+        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
+        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "property" });
+        LeaseOrderRoom.belongsTo(Client, { foreignKey: "clientId", as: "client" });
 
         //COMMENT
         Comment.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
@@ -61,8 +63,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //CLIENT
         Client.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "clientId" });
         Client.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "clientId" });
-        Client.hasMany(ToDo, { as: "toDos", foreignKey: "clientId" });
         Client.hasMany(Chat, { as: "chats", foreignKey: "chatParticipant" });
+        Client.hasMany(Supply, { as: "supplies", foreignKey: "clientId" });
 
         //CHAT
         // Uno a Muchos
@@ -74,6 +76,10 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
 
         //ADMIN
         Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDoId" });
+
+        //SUPPlY
+        Supply.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        Supply.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
         //Relaciones polimorficas
         //Client
@@ -112,6 +118,45 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             }
         })
 
+        //ToDo
+
+        ToDo.belongsTo(Owner, {
+            as: "owner",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "OWNER"
+            }
+        })
+
+        ToDo.belongsTo(Client, {
+            as: "client",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "CLIENT"
+            }
+        })
+
+        Client.hasMany(ToDo, {
+            as: "toDos",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "CLIENT"
+            }
+        })
+
+        Owner.hasMany(ToDo, {
+            as: "toDos",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "OWNER"
+            }
+        })
+
+
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
@@ -141,5 +186,6 @@ module.exports = {
     Client,
     Admin,
     ToDo,
-    Room
+    Room,
+    Supply
 };
