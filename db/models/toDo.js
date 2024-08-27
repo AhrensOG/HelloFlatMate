@@ -24,6 +24,26 @@ const toDoInit = (sequelize, DataTypes) => {
             date: {
                 type: DataTypes.DATE,
                 allowNull: false,
+            },
+            type: {
+                type: DataTypes.ENUM("CLEAN", "REPAIR"),
+                allowNull: false,
+            },
+            status: {
+                type: DataTypes.ENUM("PENDING", "COMPLETED"),
+                allowNull: false,
+            },
+            comment: {
+                type: DataTypes.STRING(1000),
+                allowNull: true,
+            },
+            userId: {
+                type: DataTypes.STRING(300),
+                allowNull: false,
+            },
+            typeUser: {
+                type: DataTypes.ENUM("CLIENT", "OWNER"),
+                allowNull: false,
             }
         },
         {

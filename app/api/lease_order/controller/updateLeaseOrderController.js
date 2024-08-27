@@ -60,12 +60,14 @@ export async function updateStatusLeaseOrder(data) {
 
             if (data.action === "APPROVED") {
                 leaseOrderProperty.status = "APPROVED"
+                leaseOrderProperty.isActive = true
                 property.status = "OCCUPIED"
                 await leaseOrderProperty.save()
                 await property.save()
                 return NextResponse.json({ message: "Lease order property approved" }, { status: 200 })
             } else if (data.action === "REJECTED") {
                 leaseOrderProperty.status = "REJECTED"
+                leaseOrderProperty.isActive = false
                 property.status = "FREE"
                 await leaseOrderProperty.save()
                 await property.save()
@@ -88,6 +90,7 @@ export async function updateStatusLeaseOrder(data) {
 
         if (data.action === "APPROVED") {
             leaseOrderRoom.status = "APPROVED"
+            leaseOrderRoom.isActive = true
             room.status = "OCCUPIED"
             property.status = roomsAvaible.length > 0 ? "OCCUPIED" : "FREE"
 
@@ -97,6 +100,7 @@ export async function updateStatusLeaseOrder(data) {
             return NextResponse.json({ message: "Lease order room approved" }, { status: 200 })
         } else if (data.action === "REJECTED") {
             leaseOrderRoom.status = "REJECTED"
+            leaseOrderRoom.isActive = false
             room.status = "FREE"
             property.status = roomsAvaible.length > 0 ? "OCCUPIED" : "FREE"
             await leaseOrderRoom.save()

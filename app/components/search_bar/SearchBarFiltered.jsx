@@ -1,18 +1,26 @@
-"use client";
 import { plus_jakarta } from "@/font";
 import Image from "next/image";
-import Filter from "../filter/Filter";
-import { useState } from "react";
-import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
+import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 
-export default function SearchBarFiltered({ value }) {
-  const [openFilters, setOpenFilters] = useState(false);
+export default function SearchBarFiltered({
+  initialValue,
+  showFilters,
+  setShowFilters,
+  onChange,
+  onApplyFilters,
+}) {
   const route = useRouter();
+
+  const handleInput = (e) => {
+    onChange("search", e.target.value); // Llama a onChange para actualizar el estado del filtro
+    onApplyFilters();
+  };
 
   const handleBack = () => {
     route.push(`/`);
   };
+
   return (
     <div className="w-full">
       <div
@@ -20,7 +28,10 @@ export default function SearchBarFiltered({ value }) {
         role="search"
       >
         <div className="px-2 flex gap-2 items-center justify-center max-w-screen-sm w-full">
-          <form className="flex align-center w-full h-[2.2rem] rounded-[0.6rem] border-[1px] border-[#00000033] gap-2">
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className="flex align-center w-full h-[2.2rem] rounded-[0.6rem] border-[1px] border-[#00000033] gap-2"
+          >
             <button
               onClick={handleBack}
               type="button"
@@ -32,18 +43,19 @@ export default function SearchBarFiltered({ value }) {
               Buscar
             </label>
             <input
+              id="search-input"
+              onChange={handleInput}
               className="rounded-[0.6rem] grow text-[0.93rem] font-medium outline-none text-left text-[#1C1C21] pl-3"
               type="text"
               placeholder="Buscar..."
-              aria-label="Buscar"
-              value={value}
-            ></input>
+              value={initialValue || ""} // Asegúrate de que `initialValue` esté correcto
+            />
           </form>
 
           <button
             className="flex font-medium text-base items-center gap-1 min-w-[59px]"
             aria-label="Abrir filtros"
-            onClick={() => setOpenFilters(true)}
+            onClick={() => setShowFilters(!showFilters)}
           >
             Filter
             <Image
@@ -56,7 +68,6 @@ export default function SearchBarFiltered({ value }) {
           </button>
         </div>
       </div>
-      <Filter isOpen={openFilters} setOpen={setOpenFilters} />
     </div>
   );
 }
