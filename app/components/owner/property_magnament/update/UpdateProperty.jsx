@@ -90,6 +90,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         price: property?.price || 0,
         amountOwner: property?.amountOwner || 0,
         amountHelloflatmate: property?.amountHelloflatmate || 0,
+        offer: property?.offer || 0,
+        IVA: property?.IVA || 0,
       });
     }
   }, [property]);
@@ -173,6 +175,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       bed: guestInfo.beds,
       maximunOccupants: guestInfo.occupants,
       price: price.price,
+      offer: price.offer,
+      IVA: price.IVA,
       amountHelloflatmate: price.amountHelloflatmate,
       amountOwner: price.amountOwner,
       category: catAndSize.category,
@@ -275,10 +279,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           houseRules: moreInfo.normasDeConvivencia,
           checkIn: moreInfo.checkIn,
           checkOut: moreInfo.checkOut,
-          price: parseInt(price.price),
-          amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
+          price: parseFloat(price.price),
+          amountHelloflatmate: parseFloat(price.amountHelloflatmate) || 0,
           amountOwner:
-            parseInt(price.price) - parseInt(price.amountHelloflatmate) || 0,
+            parseFloat(price.price) - parseFloat(price.amountHelloflatmate) ||
+            0,
+          offer: parseFloat(price.offer) || 0,
+          IVA: parseFloat(price.IVA) || 0,
         };
 
         const response = await axios.put(
