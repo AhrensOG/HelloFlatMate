@@ -13,7 +13,9 @@ export const isUserLogged = async (dispatch) => {
           name: user.displayName,
           email: user.email,
           profile_picture: user.photoURL,
+          accessToken: user.accessToken,
         });
+
         await dispatch({ type: "IS_USER_LOGGED", payload: data.data });
         return true;
       } else {

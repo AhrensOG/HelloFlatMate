@@ -1,51 +1,60 @@
-import { plus_jakarta } from "@/font";
+import { bebas_neue, plus_jakarta } from "@/font";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Offers() {
   return (
-    <section
-      className={`${plus_jakarta.className} w-full bg-offers flex flex-col gap-3 pt-3`}
-    >
-      <h2 className="font-bold text-[22px] m-3 text-center">
-        Oferta/Promoción
-      </h2>
-      <div className="flex flex-col py-3">
-        <article className="flex relative bg-transparent items-start text-[#171412] justify-between">
-          <div className="w-[14rem] h-[12rem] z-50 mt-5 object-fill drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)] -mr-6 relative">
+    <section className={`${plus_jakarta.className} w-full`}>
+      <div className="grid grid-cols-2 grid-rows-2 place-items-center">
+        <div className="h-48 w-full relative ">
+          <Image
+            priority={true}
+            src={"/guest_home/offerts/oferta-1.svg"}
+            fill
+            alt="First Offer"
+            className="object-cover object-center"
+          />
+        </div>
+        <div className="flex flex-col justify-center items-center max-h-48 h-full w-full">
+          <div className="bg-[#E09122] p-2 w-full min-h-16">
+            <h2 className="text-xs font-bold text-end">
+              Descubre nuestros alojamientos disponibles
+            </h2>
+          </div>
+          <Link
+            href={"/pages/auth"}
+            className={`bg-black flex justify-center items-center text-white w-full p-2 gap-2 ${bebas_neue.className}`}
+          >
+            Ver Ofertas
+            <ArrowRightIcon className="size-4" />
+          </Link>
+          <div className="relative w-full h-[87px]">
             <Image
-              src="/guest_home/offerts/oferta-1.png"
-              alt="Oferta 1"
-              layout="fill"
-              objectFit="cover"
+              priority={true}
+              src={"/guest_home/offerts/oferta-2.svg"}
+              fill
+              alt="First Offer"
+              className="object-cover"
             />
           </div>
-
-          <p className="text-base font-medium text-start bg-[#D9D9D9] py-4 pl-10 text-[#171412] w-[60%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-            10% de <br />
-            descuento <br />
-            en tu <br />
-            primera <br />
-            reserva
-          </p>
-        </article>
-        <article className="flex justify-between items-start bg-transparent relative">
-          <p className="text-base text-[#000000] font-medium text-start pt-6 pb-3 pl-6 pr-3 bg-transparent w-[50%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)] -mr-[6rem]">
-            Promoción de <br />
-            verano,
-            <br />
-            habitaciones <br />
-            desde €500
-          </p>
-
-          <div className="w-[11.7rem] h-[10.25rem] object-cover drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-            <Image
-              src="/guest_home/offerts/oferta-2.png"
-              alt=""
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-        </article>
+        </div>
+        <div className="max-h-48 h-full bg-[#0273EB] grid place-items-center">
+          <h2
+            className={`${bebas_neue.className} text-4xl text-center text-white`}
+          >
+            Mucho mas que una habitacion
+          </h2>
+        </div>
+        <div className="h-48 w-full relative ">
+          <Image
+            priority={true}
+            src={"/guest_home/offerts/oferta-3.svg"}
+            fill
+            alt="First Offer"
+            className="object-cover object-center"
+          />
+        </div>
       </div>
     </section>
   );

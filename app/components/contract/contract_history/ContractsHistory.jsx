@@ -1,5 +1,4 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
-import NavBar from "../../nav_bar/NavBar";
 import ActionCard from "./action_card/ActionCard";
 import { plus_jakarta } from "@/font";
 import { AnimatePresence, motion } from "framer-motion";

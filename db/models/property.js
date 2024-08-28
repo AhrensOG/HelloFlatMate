@@ -1,10 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const Owner = require("./owner.js");
-const LeaseOrder = require("./leaserOrder.js");
-const Comment = require("./comment.js");
-const ToDo = require("./toDo.js");
 
 const propertyInit = (sequelize, DataTypes) => {
     class Property extends Model { }
@@ -23,11 +19,11 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             city: {
                 type: DataTypes.STRING(100),
-                allowNull: true,
+                allowNull: false,
             },
             street: {
                 type: DataTypes.STRING(700),
-                allowNull: true,
+                allowNull: false,
             },
             streetNumber: {
                 type: DataTypes.INTEGER,
@@ -35,13 +31,13 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             postalCode: {
                 type: DataTypes.STRING(10),
-                allowNull: true,
-            },
-            size: {
-                type: DataTypes.STRING(10),
                 allowNull: false,
             },
-            bedrooms: {
+            size: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            roomsCount: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
@@ -59,31 +55,85 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             price: {
                 type: DataTypes.FLOAT,
-                allowNull: false,
+                allowNull: true,
+            },
+            amountOwner: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            amountHelloflatmate: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            offer: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
             },
             puntuation: {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),
+                allowNull: false,
+            },
+            IVA: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
             },
             isActive: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
-            isBussy: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
+            status: {
+                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
+                defaultValue: "FREE",
+                allowNull: false
             },
             category: {
-                type: DataTypes.ENUM('HELLOROOM', 'HELLOSTUDIO', 'HELLOCOLIVING', 'HELLOLANDLORD'),
+                type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD', 'HELLO_ROOM', 'HELLO_COLIVING'),
                 allowNull: false,
             },
             images: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,
             },
-            facilities: {
+            amenities: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,
             },
+            description: {
+                type: DataTypes.ARRAY(DataTypes.TEXT),
+                allowNull: false,
+            },
+            incomeConditionDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            roomDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            feeDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            maintenanceDescription: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            aboutUs: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            houseRules: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            checkIn: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            checkOut: {
+                type: DataTypes.STRING(5500),
+                allowNull: true
+            }
 
         },
         {

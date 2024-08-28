@@ -21,25 +21,28 @@ export default function ApplicationCardHistory({
           body: body || null,
         });
       }}
-      className="flex items-center justify-between gap-1 m-2"
+      className="flex items-center justify-between gap-1"
     >
-      <div className="rounded-full h-14 w-14 flex justify-center items-center bg-[#0E165C]">
-        {type === "clean" ? (
-          <Image
-            src={"/history/application/clean-icon.svg"}
-            width={40}
-            height={40}
-            alt="Icono de limpieza"
-          />
-        ) : (
-          <Image
-            src={"/history/application/repair-icon.svg"}
-            width={40}
-            height={40}
-            alt="Icono de limpieza"
-          />
-        )}
+      <div className=" w-14">
+        <div className="rounded-full h-14 w-14 flex justify-center items-center bg-[#0E165C]">
+          {type === "CLEAN" ? (
+            <Image
+              src={"/history/application/clean-icon.svg"}
+              width={38}
+              height={38}
+              alt="Icono de limpieza"
+            />
+          ) : (
+            <Image
+              src={"/history/application/repair-icon.svg"}
+              width={38}
+              height={38}
+              alt="Icono de reparacion"
+            />
+          )}
+        </div>
       </div>
+
       <div className="flex flex-col grow p-2">
         <h2 className="font-semibold text-lg">{title}</h2>
         <div className="flex justify-between">
@@ -50,11 +53,11 @@ export default function ApplicationCardHistory({
             <p className="font-normal text-[0.67rem] text-[#919191]">{date}</p>
           </div>
           <div className="flex items-end">
-            {status === "in_process" ? (
+            {status === "IN_PROGRESS" ? (
               <h3 className="font-bold text-sm text-[#0E165C] align-text-bottom">
                 En Proceso
               </h3>
-            ) : status === "completed" ? (
+            ) : status === "COMPLETED" ? (
               <h3 className="font-bold text-sm text-[#214802] align-text-bottom">
                 Completado
               </h3>

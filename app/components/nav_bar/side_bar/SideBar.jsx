@@ -6,7 +6,125 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import SideBarButton from "./SideBarButton";
 
-export default function SideBar({ handleClose, isOpen }) {
+const adminOptions = [
+  {
+    title: "Dashboard",
+    icon: "/nav_bar/side_bar/admin/configuration.svg",
+    link: "/pages/admin",
+  },
+  {
+    title: "Usuarios",
+    icon: "/nav_bar/side_bar/admin/users.svg",
+    link: "/pages/admin/users",
+  },
+  {
+    title: "Propiedades",
+    icon: "/nav_bar/side_bar/admin/properties.svg",
+    link: "/pages/admin/properties",
+  },
+  {
+    title: "Documentos",
+    icon: "/nav_bar/side_bar/admin/documents.svg",
+    link: "/pages/admin/properties",
+  },
+  {
+    title: "Pagos",
+    icon: "/nav_bar/side_bar/admin/payments.svg",
+    link: "/pages/admin/payments",
+  },
+  {
+    title: "Pago de suministros",
+    icon: "/nav_bar/side_bar/admin/supplies-payment.svg",
+    link: "/pages/admin/supplies",
+  },
+  {
+    title: "Mensajes",
+    icon: "/nav_bar/side_bar/admin/chats.svg",
+    link: "/pages/chats",
+  },
+  // {
+  //   title: "Ayuda",
+  //   icon: "/nav_bar/side_bar/admin/help.svg",
+  //   link: "#",
+  // },
+];
+const ownerOptions = [
+  {
+    title: "Dashboard",
+    icon: "/nav_bar/side_bar/owner/configuration.svg",
+    link: "/pages/owner",
+  },
+  {
+    title: "Propiedades",
+    icon: "/nav_bar/side_bar/owner/properties.svg",
+    link: "/pages/admin/properties",
+  },
+  {
+    title: "Mis Inquilinos",
+    icon: "/nav_bar/side_bar/owner/tenants.svg",
+    link: "/pages/owner/my-tenants",
+  },
+  {
+    title: "Chats",
+    icon: "/nav_bar/side_bar/owner/chats.svg",
+    link: "/pages/chats",
+  },
+  {
+    title: "Servicios",
+    icon: "/nav_bar/side_bar/owner/services.svg",
+    link: "/pages/admin/supplies",
+  },
+  {
+    title: "Soporte",
+    icon: "/nav_bar/side_bar/owner/support.svg",
+    link: "#",
+  },
+];
+const clientOptions = [
+  {
+    title: "Mi Dormitorio",
+    icon: "/nav_bar/side_bar/client/properties.svg",
+    link: "/pages/my-bedrooms",
+  },
+  {
+    title: "Mis Reservas",
+    icon: "/nav_bar/side_bar/client/payments.svg",
+    link: "/pages/my-reservations",
+  },
+  {
+    title: "Chats",
+    icon: "/nav_bar/side_bar/client/chats.svg",
+    link: "/pages/chats",
+  },
+  {
+    title: "Mis Contratos",
+    icon: "/nav_bar/side_bar/client/documents.svg",
+    link: "/pages/contract/history",
+  },
+  {
+    title: "Servicios",
+    icon: "/nav_bar/side_bar/client/services.svg",
+    link: "/pages/services",
+  },
+  // {
+  //   title: "Configuración",
+  //   icon: "/nav_bar/side_bar/client/configuration.svg",
+  //   link: "#",
+  // },
+  {
+    title: "Soporte",
+    icon: "/nav_bar/side_bar/client/support.svg",
+    link: "#",
+  },
+];
+
+export default function SideBar({
+  handleClose,
+  isOpen,
+  client = true,
+  owner = false,
+  admin = false,
+}) {
   const route = useRouter();
 
   const handleRedirect = (url) => {
@@ -42,66 +160,99 @@ export default function SideBar({ handleClose, isOpen }) {
               />
             </div>
           </div>
-          <nav className="flex flex-col w-full gap-4">
-            <button
-              onClick={() => handleRedirect("/")}
-              type="button"
-              className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
-            >
-              <div>
-                <Image
-                  src={"/nav_bar/side_bar/black-house.svg"}
-                  layout="responsive"
-                  width={20}
-                  height={20}
-                  alt="Botón para ir al inicio"
-                />
-              </div>
-              <h2 className="text-xl font-medium text-licorice-black">
-                <Link href="#">Inicio</Link>
-              </h2>
-            </button>
-            <SideBarButton
-              title={"Mi perfil"}
-              icon={""}
-              redirect={() => handleRedirect("/pages/profile")}
-            />
-            <SideBarButton
-              title="Mi dormitorio"
-              icon="/nav_bar/side_bar/ligth-house.svg"
-              // redirect={() => handleRedirect("/pages/my-bedrooms")}
-            />
-            <SideBarButton
-              title="Mis contratos"
-              icon="/nav_bar/side_bar/contract-icon.svg"
-              redirect={() => handleRedirect("/pages/contract/history")}
-            />
-            <SideBarButton
-              title="Mis viajes"
-              icon="/nav_bar/side_bar/paper.svg"
-              // redirect={handleRedirect("/pages/my-travels")}
-            />
-            <SideBarButton
-              title="Chats"
-              icon="/nav_bar/side_bar/chat-icon.svg"
-              // redirect={handleRedirect("/pages/chats")}
-            />
-            <SideBarButton
-              title="Servicios"
-              icon="/nav_bar/side_bar/question.svg"
-              // redirect={handleRedirect("/pages/services")}
-            />
-            <SideBarButton
-              title="Configuración"
-              icon="/nav_bar/side_bar/config-icon.svg"
-              // redirect={handleRedirect("/pages/settings")}
-            />
-            <SideBarButton
-              title="Soporte"
-              icon="/nav_bar/side_bar/headphone-icon.svg"
-              // redirect={handleRedirect("/pages/support")}
-            />
-          </nav>
+          {client && (
+            <nav className="flex flex-col w-full gap-4">
+              <button
+                onClick={() => handleRedirect("/")}
+                type="button"
+                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+              >
+                <div>
+                  <Image
+                    src={"/nav_bar/side_bar/black-house.svg"}
+                    layout="responsive"
+                    width={20}
+                    height={20}
+                    alt="Botón para ir al inicio"
+                  />
+                </div>
+                <h2 className="text-xl font-medium text-licorice-black">
+                  <Link href="#">Inicio</Link>
+                </h2>
+              </button>
+              {clientOptions.map((e) => {
+                return (
+                  <SideBarButton
+                    title={e.title}
+                    icon={e.icon}
+                    redirect={() => handleRedirect(e.link)}
+                  />
+                );
+              })}
+            </nav>
+          )}
+          {owner && (
+            <nav className="flex flex-col w-full gap-4">
+              <button
+                onClick={() => handleRedirect("/")}
+                type="button"
+                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+              >
+                <div>
+                  <Image
+                    src={"/nav_bar/side_bar/black-house.svg"}
+                    layout="responsive"
+                    width={20}
+                    height={20}
+                    alt="Botón para ir al inicio"
+                  />
+                </div>
+                <h2 className="text-xl font-medium text-licorice-black">
+                  <Link href="#">Inicio</Link>
+                </h2>
+              </button>
+              {ownerOptions.map((e) => {
+                return (
+                  <SideBarButton
+                    title={e.title}
+                    icon={e.icon}
+                    redirect={() => handleRedirect(e.link)}
+                  />
+                );
+              })}
+            </nav>
+          )}
+          {admin && (
+            <nav className="flex flex-col w-full gap-4">
+              <button
+                onClick={() => handleRedirect("/")}
+                type="button"
+                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+              >
+                <div>
+                  <Image
+                    src={"/nav_bar/side_bar/black-house.svg"}
+                    layout="responsive"
+                    width={20}
+                    height={20}
+                    alt="Botón para ir al inicio"
+                  />
+                </div>
+                <h2 className="text-xl font-medium text-licorice-black">
+                  <Link href="#">Inicio</Link>
+                </h2>
+              </button>
+              {adminOptions.map((e) => {
+                return (
+                  <SideBarButton
+                    title={e.title}
+                    icon={e.icon}
+                    redirect={() => handleRedirect(e.link)}
+                  />
+                );
+              })}
+            </nav>
+          )}
         </motion.aside>
       )}
     </AnimatePresence>

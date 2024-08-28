@@ -1,12 +1,34 @@
-"use client";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { plus_jakarta } from "@/font";
+import { useState } from "react";
+import Image from "next/image";
 import FilterSection from "./filter_section/FilterSection";
 import RoomCounter from "./filter_section/RoomCounter";
 import PriceRange from "./filter_section/PriceRange";
-import { plus_jakarta } from "@/font";
+import { MapPinIcon } from "@heroicons/react/24/outline";
 
-export default function Filter({ isOpen, setOpen }) {
+export default function Filter({
+  isOpen,
+  setOpen,
+  filters,
+  setFilters,
+  onApplyFilters,
+  onFilterChange, // Recibe la función onFilterChange
+}) {
+  const handleFilterChange = (filterName, selectedValues) => {
+    onFilterChange(filterName, selectedValues); // Usa la función pasada como prop
+  };
+
+  const handleSeeResults = () => {
+    console.log(filters);
+    onApplyFilters();
+    setOpen(false); // Cierra el modal de filtros
+  };
+
+  const handleClearFilters = () => {
+    setFilters({});
+  };
+
   const typeProperty = [
     "HelloRoom",
     "HelloColiving",
@@ -46,34 +68,65 @@ export default function Filter({ isOpen, setOpen }) {
             </span>
             <h2 className="text-center grow text-lg font-bold">Filter</h2>
           </div>
-          <div className="overflow-auto space-y-10">
-            <section className="flex flex-col gap-3 px-4">
-              <h3 className="text-[1.37rem] font-bold text-[#1C1C21]">
+          <div className="overflow-auto space-y-4">
+            <section className="flex flex-col gap-3 px-4 justify-between">
+              <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
                 Ubicacion
-              </h3>
-              <div className="flex justify-between items-center h-[5vh]">
-                <p className="text-end font-normal">Direccion 1, avenida</p>
-                <span className="h-full">
-                  <Image
-                    src={"/filter/location-icon.svg"}
-                    alt="Location icon"
-                    width={28}
-                    height={28}
-                  />
+              </h2>
+              <div className="flex justify-between items-center h-[5vh]  bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
+                <label hidden htmlFor="location">
+                  location
+                </label>
+                <input
+                  onChange={(e) =>
+                    handleFilterChange("location", e.target.value)
+                  }
+                  className="w-full h-full px-2 appearance-none outline-none rounded-[0.6rem] text-[0.93rem] font-medium"
+                  placeholder="Ubicacion"
+                  type="text"
+                  name="location"
+                  id="location"
+                  value={filters.location || ""}
+                />
+                <span className="h-8 w-8">
+                  <MapPinIcon />
                 </span>
               </div>
             </section>
-            <FilterSection title={"Comodidades"} entries={comoditis} />
-            <RoomCounter />
-            <FilterSection title={"Tipo de Propiedad"} entries={typeProperty} />
-            <PriceRange />
+            <FilterSection
+              onChange={handleFilterChange}
+              title={"Comodidades"}
+              entries={comoditis}
+              initialValues={filters.comodities || []}
+            />
+            <RoomCounter
+              onChange={handleFilterChange}
+              initialValue={filters.rooms || 1}
+            />
+            <FilterSection
+              onChange={handleFilterChange}
+              title={"Tipo de Propiedad"}
+              entries={typeProperty}
+              initialValues={filters.categorys || []}
+            />
+            <PriceRange
+              onChange={handleFilterChange}
+              minValue={filters.minPrice || 0}
+              maxValue={filters.maxPrice || 1000000}
+            />
           </div>
-          <div className="sticky bg-white shadow-md py-2 px-4 flex justify-between">
-            <button className="w-[8.12rem] h-[2.5rem] bg-[#0C1660] text-[#FAFAFA] rounded-lg text-sm font-bold">
-              Ver Resultados
+          <div className="flex items-center justify-between px-4">
+            <button
+              onClick={handleClearFilters}
+              className="w-[45%] py-2 bg-[#CFD5E0] text-[0.9rem] font-bold text-[#1C1C21] rounded-md"
+            >
+              Borrar Filtros
             </button>
-            <button className="w-[8.12rem] h-[2.5rem] bg-[#DCD8D8] text-black rounded-lg text-sm font-bold">
-              Limpiar Filtros
+            <button
+              onClick={handleSeeResults}
+              className="w-[45%] py-2 bg-[#4C8BF5] text-white text-[0.9rem] font-bold rounded-md"
+            >
+              Aplicar
             </button>
           </div>
         </motion.aside>

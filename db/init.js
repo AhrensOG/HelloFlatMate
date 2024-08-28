@@ -1,53 +1,71 @@
+
 const connection = require(".");
 const Comment = require("./models/comment");
-const Contract = require("./models/contract");
+const Document = require("./models/document")
 const Owner = require("./models/owner");
-const Document = require("./models/userDocument");
 const Message = require("./models/message");
 const Property = require("./models/property");
-const LeaseOrder = require("./models/leaserOrder");
+const LeaseOrderProperty = require("./models/leaseOrderProperty");
+const LeaseOrderRoom = require("./models/leaseOrderRoom");
 const Chat = require("./models/chat");
 const ToDo = require("./models/toDo");
 const Client = require("./models/client");
 const Admin = require("./models/admin");
-const { propertyData, testAdminData, testClientData, testOwnerData } = require("./textData");
+const Room = require("./models/room");
+const Supply = require("./models/supply");
+const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
     try {
         // RELATIONSHIPS
 
         //OWNER
-        Owner.hasMany(LeaseOrder, { as: "leaseOrders", foreignKey: "ownerId" });
+        Owner.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "ownerId" });
+        Owner.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "ownerId" });
         Owner.hasMany(Chat, { as: "chats", foreignKey: "ownerId" });
         Owner.hasMany(Property, { as: "properties", foreignKey: "ownerId" });
 
         //PROPERTY
-        Property.hasMany(LeaseOrder, { as: "leaseOrders", foreignKey: "propertyId" });
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
-
+        Property.hasMany(Room, { as: "rooms", foreignKey: "propertyId" });
+        Property.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "propertyId" });
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+        Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
+        Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
+
+
+        //Room
+        Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        Room.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "roomId" });
 
         //ToDo
-        ToDo.belongsTo(Client, { as: "client", foreignKey: "clientId" });
-        ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         ToDo.belongsTo(Admin, { as: "admin", foreignKey: "adminId" });
+        ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+
 
         //MESSAGE
         Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
 
-        //leaseOrder
-        LeaseOrder.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
-        LeaseOrder.belongsTo(Property, { foreignKey: "propertId", as: "property" });
-        LeaseOrder.belongsTo(Client, { foreignKey: "clientId", as: "client" });
+        // LeaseOrderProperty
+        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
+        LeaseOrderProperty.belongsTo(Property, { foreignKey: "propertyId", as: "property" }); // Usar el correcto foreignKey
+        LeaseOrderProperty.belongsTo(Client, { foreignKey: "clientId", as: "client" });
+
+        // LeaseOrderRoom
+        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "room" });
+        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
+        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "property" });
+        LeaseOrderRoom.belongsTo(Client, { foreignKey: "clientId", as: "client" });
 
         //COMMENT
         Comment.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Comment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
         //CLIENT
-        Client.hasMany(LeaseOrder, { as: "leaseOrders", foreignKey: "clientId" });
-        Client.hasMany(ToDo, { as: "toDos", foreignKey: "clientId" });
+        Client.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "clientId" });
+        Client.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "clientId" });
         Client.hasMany(Chat, { as: "chats", foreignKey: "chatParticipant" });
+        Client.hasMany(Supply, { as: "supplies", foreignKey: "clientId" });
 
         //CHAT
         // Uno a Muchos
@@ -58,22 +76,111 @@ const { propertyData, testAdminData, testClientData, testOwnerData } = require("
         Chat.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
 
         //ADMIN
-        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "toDoId" });
+        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "adminId" });
 
+        //SUPPlY
+        Supply.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        Supply.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //Relaciones polimorficas
+        //Client
+        Client.hasMany(Document, {
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "CLIENT"
+            }
+        })
+        //Owner
+        Owner.hasMany(Document, {
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "OWNER"
+            }
+        })
+
+        //Documents
+        Document.belongsTo(Owner, {
+            as: "owner",
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "OWNER"
+            }
+        })
+
+        Document.belongsTo(Client, {
+            as: "client",
+            foreignKey: "documentableId",
+            constraints: false,
+            scope: {
+                documentableType: "CLIENT"
+            }
+        })
+
+        //ToDo
+
+        ToDo.belongsTo(Owner, {
+            as: "owner",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "OWNER"
+            }
+        });
+
+        ToDo.belongsTo(Client, {
+            as: "client",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "CLIENT"
+            }
+        });
+
+        Client.hasMany(ToDo, {
+            as: "toDos",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "CLIENT"
+            }
+        });
+
+        Owner.hasMany(ToDo, {
+            as: "toDos",
+            foreignKey: "userId",
+            constraints: false,
+            scope: {
+                typeUser: "OWNER"
+            }
+        });
+
+
+        // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
+        // DATA DE PRUEBA
 
+        // await Property.bulkCreate(propertyData)
+        // await Client.bulkCreate(testClientData)
+        // await Admin.bulkCreate(testAdminData)
+        // await Owner.bulkCreate(testOwnerData)
+        // await Room.bulkCreate(testRoom)
 
+        // console.log("Data inserted")
+        // const result = await Client.findByPk("4ImLe5vacWah6ddc9D4djcY1UZA2", {
+        //     include: [
+        //         {
+        //             model: ToDo,
+        //             as: "toDos"
+        //         }
+        //     ]
+        // })
+        // console.log(result.toJSON());
 
-        //DATA DE PRUEBA
-        await Property.bulkCreate(propertyData)
-        await Client.bulkCreate(testClientData)
-        await Admin.bulkCreate(testAdminData)
-        await Owner.bulkCreate(testOwnerData)
-
-
-        console.log("Data inserted");
     } catch (error) {
         console.log(error);
     }
@@ -81,14 +188,16 @@ const { propertyData, testAdminData, testClientData, testOwnerData } = require("
 
 module.exports = {
     Comment,
-    Contract,
     Owner,
     Document,
     Message,
     Property,
-    LeaseOrder,
+    LeaseOrderProperty,
+    LeaseOrderRoom,
     Chat,
     Client,
     Admin,
-    ToDo
+    ToDo,
+    Room,
+    Supply
 };
