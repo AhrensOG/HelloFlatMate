@@ -60,6 +60,8 @@ export default function NewProperty({ category, handleBack }) {
     price: 0,
     amountOwner: 0,
     amountHelloflatmate: 0,
+    offer: 0,
+    IVA: 0,
   });
 
   const setRoomData = (data) => {
@@ -107,6 +109,8 @@ export default function NewProperty({ category, handleBack }) {
       checkIn: moreInfo.checkIn,
       checkOut: moreInfo.checkOut,
       images: sliderImage.map((image) => image.url), // Asegúrate de tener URLs aquí
+      offer: price.offer,
+      IVA: price.IVA,
     };
 
     const validationResult = validateData(allData);
@@ -214,10 +218,12 @@ export default function NewProperty({ category, handleBack }) {
     houseRules: moreInfo.normasDeConvivencia,
     checkIn: moreInfo.checkIn,
     checkOut: moreInfo.checkOut,
-    price: parseInt(price.price) || 0,
-    amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
+    price: parseFloat(price.price) || 0,
+    amountHelloflatmate: parseFloat(price.amountHelloflatmate) || 0,
     amountOwner:
-      parseInt(price.price) - parseInt(price.amountHelloflatmate) || 0,
+      parseFloat(price.price) - parseFloat(price.amountHelloflatmate) || 0,
+    offer: parseFloat(price.offer) || 0,
+    IVA: parseFloat(price.IVA) || 0,
   };
 
   const createProperty = async () => {
