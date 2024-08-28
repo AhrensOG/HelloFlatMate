@@ -14,7 +14,7 @@ const PromotionSection = ({ data }) => {
               <div className="mr-4">
                 <PromotionRoomCard
                   key={index}
-                  img={item.images[0]}
+                  img={item?.images[0]}
                   id={item.id}
                   offer={item.offer}
                 />
