@@ -12,23 +12,25 @@ export default function FinishRequest({ next, prev, data }) {
   };
 
   const dataToDo = {
-    type: data.type,
-    startDate: parseDate(data.day.date, data.time),
+    type: data?.type || "",
+    startDate: parseDate(data?.day.date, data?.time) || "",
     title:
-      data.type === "CLEAN" ? "Servicio de limpieza" : "Servicio de reparacion",
+      data?.type === "CLEAN"
+        ? "Servicio de limpieza"
+        : "Servicio de reparacion" || "",
     body:
-      data.type === "CLEAN"
+      data?.type === "CLEAN"
         ? `Servicio de limpieza solicitado para ${parseDate(
-            data.day.date,
-            data.time
+            data?.day.date,
+            data?.time
           ).toLocaleDateString("es-ES")}`
         : `Servicio de reparacion solicitado para ${parseDate(
-            data.day.date,
-            data.time
-          ).toLocaleDateString("es-ES")}`,
-    userId: "4ImLe5vacWah6ddc9D4djcY1UZA2",
-    propertyId: 1,
-    typeUser: "CLIENT",
+            data?.day.date,
+            data?.time
+          ).toLocaleDateString("es-ES")}` || "",
+    userId: "4ImLe5vacWah6ddc9D4djcY1UZA2" || "",
+    propertyId: 1 || "",
+    typeUser: "CLIENT" || "",
   };
 
   const submitRequest = async () => {
@@ -50,15 +52,17 @@ export default function FinishRequest({ next, prev, data }) {
     >
       <div className="flex justify-between items-center w-full">
         <h2 className="font-medium text-[#161616] text-lg ">
-          {data.day.dayNumber} Jul, {data.day.dayName}
+          {data?.day.dayNumber || ""}, {data?.day.dayName || ""}
         </h2>
-        <p className="font-medium text-[#161616] text-sm">{data.time} PM</p>
+        <p className="font-medium text-[#161616] text-sm">
+          {data?.time || ""} PM
+        </p>
       </div>
       <ul className="list-disc text-[#757575] text-sm font-normal self-start pl-5">
         <li>
-          {data.type === "cleaning"
+          {data?.type === "cleaning"
             ? "Servicio de limpieza"
-            : "Servicio de reparacion"}
+            : "Servicio de reparacion" || ""}
         </li>
       </ul>
       <div className="flex justify-between items-center gap-3 w-full mt-auto">

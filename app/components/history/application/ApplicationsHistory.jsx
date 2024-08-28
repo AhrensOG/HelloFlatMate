@@ -63,17 +63,21 @@ export default function ApplicationsHistory({ redirect }) {
               <>
                 <ApplicationCardHistory
                   action={handleShowdetails}
-                  type={toDo.type}
-                  status={toDo.status}
-                  title={toDo.title}
-                  resumen={toDo.type !== "CLEAN" ? "Reparacion" : "Limpieza"}
-                  date={new Date(toDo.creationDate).toLocaleDateString("es-ES")}
+                  type={toDo?.type || ""}
+                  status={toDo?.status || ""}
+                  title={toDo?.title || ""}
+                  resumen={
+                    toDo?.type !== "CLEAN" ? "Reparacion" : "Limpieza" || ""
+                  }
+                  date={
+                    new Date(toDo?.creationDate).toLocaleDateString("es-ES") ||
+                    ""
+                  }
                 />
-
                 <div className="border bg-gris-español "></div>
               </>
             );
-          })}
+          }) || <div>No hay solicitudes</div>}
         </motion.main>
       ) : (
         <ApplicationDetails
