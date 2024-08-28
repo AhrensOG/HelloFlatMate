@@ -8,8 +8,7 @@ export async function getAllProperties() {
             include: {
                 model: Room,
                 as: 'rooms',
-            },
-            where: { isActive: true, status: "FREE" }
+            }
         });
         return NextResponse.json(properties, { status: 200 });
 
