@@ -21,7 +21,7 @@ export async function middleware(request) {
   // console.log("Token:", token);
 
   // Define rutas permitidas sin autenticación
-  const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth"]; // Asegúrate de que las rutas estén correctas
+  const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth", "/api/stripe/webhook" ]; // Asegúrate de que las rutas estén correctas
   const pathName = new URL(request.url).pathname;
 
   // Permitir acceso a rutas permitidas
