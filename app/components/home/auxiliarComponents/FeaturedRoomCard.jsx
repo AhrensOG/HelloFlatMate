@@ -14,18 +14,16 @@ const FeaturedRoomCard = React.forwardRef(
     return (
       <div
         ref={ref}
-        className="cursor-pointer w-full min-w-56 max-w-56 flex flex-col justify-center items-start gap-2"
+        className="cursor-pointer w-full flex flex-col justify-center items-start gap-2"
       >
         <Link href={`/pages/property-details/${id}`} className="w-full">
           <div className="relative w-full">
-            <div className="absolute w-56 h-56" />
+            <div className="relative w-56 h-48" />
             <Image
               src={img}
-              layout="responsive"
-              width={240}
-              height={240}
+              fill
               alt="Habitacion"
-              className="object-cover object-center"
+              className="object-cover object-center rounded-md"
             />
           </div>
           <span className="text-sm font-medium pl-1">{title}</span>
