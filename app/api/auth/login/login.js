@@ -1,20 +1,25 @@
 import { Client } from "@/db/init";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers"; // Importa cookies si estás usando Next.js 13+
+import { cookies } from "next/headers";
+
+// Función para codificar role y accessToken en un solo token
+function encodeToken(role, accessToken) {
+  const tokenPayload = JSON.stringify({ role, accessToken });
+  return Buffer.from(tokenPayload).toString('base64');
+}
 
 const login = async (req) => {
   try {
     const body = await req.json();
     const user = await Client.findOne({ where: { email: body.email } });
 
-    console.log(accesToken);
     if (user) {
-      // Aquí se podría establecer una cookie si el usuario existe
-      const accesToken = body.accessToken
-      console.log(accesToken);
+      // Codificar el role y accessToken en un solo token
+      const authToken = encodeToken(user.role, body.accessToken);
 
+      // Establecer la cookie con el token codificado
       const cookieStore = cookies();
-      cookieStore.set('auth_token', accesToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie
+      cookieStore.set('auth_token', authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
 
       return NextResponse.json(user, { status: 200 });
     } else {
@@ -27,10 +32,12 @@ const login = async (req) => {
         role: "CLIENT",
       });
 
-      // Después de crear el usuario, también se puede establecer la cookie
-      const authToken = body.accessToken; // Genera o usa un token real
+      // Codificar el role y accessToken en un solo token
+      const authToken = encodeToken(newUser.role, body.accessToken);
+
+      // Establecer la cookie con el token codificado
       const cookieStore = cookies();
-      cookieStore.set('auth_token', authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie
+      cookieStore.set('auth_token', authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
 
       return NextResponse.json(newUser, { status: 200 });
     }

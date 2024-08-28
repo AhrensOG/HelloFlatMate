@@ -12,7 +12,6 @@ import { getAllProperties } from "./context/actions";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
-  const [home, setHome] = useState(false);
   const [properties, setProperties] = useState([]);
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
 
@@ -22,23 +21,15 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-
-      console.log(state.user);
-      if (state.user) {
-        try {
-          // Actualiza el estado del usuario
-          setHome(true);
-
-          // Obtén las propiedades y actualiza el estado global
-          await getAllProperties(dispatch);
-        } catch (error) {
-          toast.error("Error al obtener propiedades");
-        }
+      try {
+        await getAllProperties(dispatch);
+      } catch (error) {
+        toast.error("Error al obtener propiedades");
       }
     };
 
     fetchProperties();
-  }, [state.user, dispatch]);
+  }, []);
 
   useEffect(() => {
     // Solo actualiza si hay un cambio en state.properties
@@ -48,10 +39,6 @@ export default function Home() {
       toast.success("Propiedades actualizadas");
     }
   }, [state.properties]);
-
-  if (!home) {
-    return <GuestHome />;
-  }
 
   return (
     <div>

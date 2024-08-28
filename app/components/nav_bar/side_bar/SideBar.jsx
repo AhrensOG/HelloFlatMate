@@ -8,6 +8,11 @@ import SideBarButton from "./SideBarButton";
 
 const adminOptions = [
   {
+    title: "Dashboard",
+    icon: "/nav_bar/side_bar/admin/configuration.svg",
+    link: "/pages/admin",
+  },
+  {
     title: "Usuarios",
     icon: "/nav_bar/side_bar/admin/users.svg",
     link: "/pages/admin/users",
@@ -37,18 +42,18 @@ const adminOptions = [
     icon: "/nav_bar/side_bar/admin/chats.svg",
     link: "/pages/chats",
   },
-  {
-    title: "Ayuda",
-    icon: "/nav_bar/side_bar/admin/help.svg",
-    link: "#",
-  },
-  {
-    title: "Configuración",
-    icon: "/nav_bar/side_bar/admin/configuration.svg",
-    link: "#",
-  },
+  // {
+  //   title: "Ayuda",
+  //   icon: "/nav_bar/side_bar/admin/help.svg",
+  //   link: "#",
+  // },
 ];
 const ownerOptions = [
+  {
+    title: "Dashboard",
+    icon: "/nav_bar/side_bar/owner/configuration.svg",
+    link: "/pages/owner",
+  },
   {
     title: "Propiedades",
     icon: "/nav_bar/side_bar/owner/properties.svg",
@@ -68,11 +73,6 @@ const ownerOptions = [
     title: "Servicios",
     icon: "/nav_bar/side_bar/owner/services.svg",
     link: "/pages/admin/supplies",
-  },
-  {
-    title: "Configuración",
-    icon: "/nav_bar/side_bar/owner/configuration.svg",
-    link: "#",
   },
   {
     title: "Soporte",
@@ -106,11 +106,11 @@ const clientOptions = [
     icon: "/nav_bar/side_bar/client/services.svg",
     link: "/pages/services",
   },
-  {
-    title: "Configuración",
-    icon: "/nav_bar/side_bar/client/configuration.svg",
-    link: "#",
-  },
+  // {
+  //   title: "Configuración",
+  //   icon: "/nav_bar/side_bar/client/configuration.svg",
+  //   link: "#",
+  // },
   {
     title: "Soporte",
     icon: "/nav_bar/side_bar/client/support.svg",

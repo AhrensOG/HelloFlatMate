@@ -13,7 +13,7 @@ const PromotionSection = ({ data }) => {
             return (
               <div className="mr-4">
                 <PromotionRoomCard
-                  key={index}
+                  key={item.id}
                   img={item.img}
                   id={item.id}
                   offer={item.offer}

@@ -20,9 +20,9 @@ const FeaturedSection = ({ data }) => {
               return (
                 <div className="mr-4">
                   <FeaturedRoomCard
-                    key={item.id}
+                    key={item.name}
                     id={item.id}
-                    img={item.images[0]}
+                    img={item?.images[0]}
                     title={item.name}
                   />
                 </div>
