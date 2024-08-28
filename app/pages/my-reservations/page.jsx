@@ -23,8 +23,8 @@ export default function MyBedrooms() {
       const getData = async () => {
         const res = await axios.get(`/api/user?id=${state?.user?.id}`);
         setUser(res.data);
-        const leaseRooms = res.data.leaseOrdersRoom
-        const leaseProperties = res.data.leaseOrdersProperty
+        const leaseRooms = res.data?.leaseOrdersRoom
+        const leaseProperties = res.data?.leaseOrdersProperty
 
         setLeaseOrdersList([...leaseRooms, ...leaseProperties])
       };
