@@ -10,7 +10,9 @@ export default function ActionServiceCard({
   return (
     <section
       onClick={action}
-      className="flex items-center shadow-card-action rounded-lg h-[7rem] w-[90vw] text-[#010F07]"
+      className={`flex items-center shadow-card-action rounded-lg h-[7rem] w-[90vw] text-[#010F07] ${
+        action ? "cursor-pointer" : ""
+      }`}
     >
       <div className="rounded-xl relative h-full w-[6rem]">
         <Image

@@ -1,6 +1,7 @@
 import { Client } from "@/db/init";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { getUserById } from "../../user/controllers/getUsersController";
 
 // Función para codificar role y accessToken en un solo token
 function encodeToken(role, accessToken) {
@@ -11,7 +12,8 @@ function encodeToken(role, accessToken) {
 const login = async (req) => {
   try {
     const body = await req.json();
-    const user = await Client.findOne({ where: { email: body.email } });
+
+    const user = await (await getUserById(body.id)).json();
 
     if (user) {
       // Codificar el role y accessToken en un solo token
