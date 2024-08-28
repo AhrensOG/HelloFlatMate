@@ -22,8 +22,6 @@ export async function GET(req) {
 
 export async function PUT(req) {
     const data = await req.json()
-    console.log(data);
-
     const result = await updateClient(data)
 
     return result

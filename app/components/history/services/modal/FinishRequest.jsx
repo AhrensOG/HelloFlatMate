@@ -1,6 +1,9 @@
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 export default function FinishRequest({ next, prev, data }) {
+  const router = useRouter();
   const parseDate = (date, time) => {
     const timeDate = time.split(":");
     const originalDate = new Date(date);
@@ -10,7 +13,7 @@ export default function FinishRequest({ next, prev, data }) {
 
   const dataToDo = {
     type: data.type,
-    date: parseDate(data.day.date, data.time),
+    startDate: parseDate(data.day.date, data.time),
     title:
       data.type === "CLEAN" ? "Servicio de limpieza" : "Servicio de reparacion",
     body:
@@ -23,16 +26,17 @@ export default function FinishRequest({ next, prev, data }) {
             data.day.date,
             data.time
           ).toLocaleDateString("es-ES")}`,
-    userId: "23",
+    userId: "4ImLe5vacWah6ddc9D4djcY1UZA2",
     propertyId: 1,
+    typeUser: "CLIENT",
   };
 
   const submitRequest = async () => {
     try {
       const response = await axios.post("/api/to_do", dataToDo);
-      console.log(response);
+      return "Solicitud enviada";
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
 
@@ -59,7 +63,16 @@ export default function FinishRequest({ next, prev, data }) {
       </ul>
       <div className="flex justify-between items-center gap-3 w-full mt-auto">
         <button
-          onClick={submitRequest}
+          onClick={() => {
+            toast.promise(submitRequest(), {
+              loading: "Cargando...",
+              success: () => {
+                router.push("/pages/services");
+                return "Solicitud enviada";
+              },
+              error: "Error al enviar la solicitud",
+            });
+          }}
           type="button"
           className="text-sm font-normal bg-[#0C1660] w-[9.75rem] h-12 text-white flex justify-center items-center rounded-xl"
         >

@@ -8,7 +8,7 @@ import ModalService from "./modal/ModalService";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function RequestService({ title }) {
+export default function RequestService({ title, type }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -51,7 +51,7 @@ export default function RequestService({ title }) {
         />
         <ButtonServices title={"Solicitar Servicio"} action={handleShowModal} />
       </main>
-      {showModal && <ModalService type={"CLEAN"} action={handleShowModal} />}
+      {showModal && <ModalService type={type} action={handleShowModal} />}
     </AnimatePresence>
   );
 }

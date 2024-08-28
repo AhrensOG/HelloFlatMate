@@ -1,10 +1,13 @@
 import { Client } from "@/db/init";
 import { NextResponse } from "next/server";
+import { getUserById } from "../../user/controllers/getUsersController";
 
 const login = async (req) => {
   try {
     const body = await req.json();
-    const user = await Client.findOne({ where: { email: body.email } });
+    console.log(body);
+
+    const user = await (await getUserById(body.id)).json();
 
     if (user) {
       return NextResponse.json(user, { status: 200 });
@@ -17,7 +20,7 @@ const login = async (req) => {
         profilePicture: body.profile_picture,
         role: "CLIENT",
       });
-      const exist = await Client.findOne({ where: { email: body.email } });
+      const exist = await (await getUserById(body.id)).json();
 
       return NextResponse.json(exist, { status: 200 });
     }

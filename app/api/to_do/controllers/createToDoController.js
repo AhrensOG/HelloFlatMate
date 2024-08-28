@@ -8,7 +8,7 @@ export async function createToDo(data) {
     if (!data.type || (data.type !== "CLEAN" && data.type !== "REPAIR")) return NextResponse.json({ error: "No type provided" }, { status: 400 })
     if (!data.userId || data.userId.trim() === "") return NextResponse.json({ error: "No user id provided" }, { status: 400 })
     if (!data.propertyId || data.propertyId <= 0) return NextResponse.json({ error: "No property id provided" }, { status: 400 })
-
+    if (!data.startDate || data.startDate.trim() === "") return NextResponse.json({ error: "No start date provided" }, { status: 400 })
     try {
         const property = await Property.findByPk(data.propertyId)
         if (!property) {
@@ -26,8 +26,9 @@ export async function createToDo(data) {
             userId: client ? client.id : owner.id,
             propertyId: property.id,
             status: "PENDING",
-            date: new Date(),
-            typeUser: client ? "CLIENT" : "OWNER"
+            creationDate: new Date(),
+            typeUser: client ? "CLIENT" : "OWNER",
+            startDate: new Date(data.startDate),
         })
 
         return NextResponse.json(toDo, { status: 200 })

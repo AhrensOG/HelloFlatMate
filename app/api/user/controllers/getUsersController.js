@@ -1,4 +1,4 @@
-import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property } from "@/db/init";
+import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllUsers() {
@@ -29,6 +29,10 @@ export async function getUserById(id) {
             }, {
                 model: Property,
                 as: "properties"
+            },
+            {
+                model: ToDo,
+                as: "toDos"
             }
             ]
         }) || await Client.findByPk(id, {
@@ -40,10 +44,21 @@ export async function getUserById(id) {
                     model: LeaseOrderRoom,
                     as: "leaseOrdersRoom"
                 },
+                {
+                    model: ToDo,
+                    as: "toDos"
+                }
             ]
-        }) || await Admin.findByPk(id);
+        }) || await Admin.findByPk(id, {
+            include: {
+                model: ToDo,
+                as: "toDos"
+            }
+        });
+
         return NextResponse.json(user);
     } catch (error) {
+
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

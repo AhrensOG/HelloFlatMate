@@ -21,16 +21,24 @@ const toDoInit = (sequelize, DataTypes) => {
                 type: DataTypes.TEXT,
                 allowNull: false,
             },
-            date: {
+            creationDate: {
                 type: DataTypes.DATE,
                 allowNull: false,
+            },
+            startDate: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
+            endDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
             },
             type: {
                 type: DataTypes.ENUM("CLEAN", "REPAIR"),
                 allowNull: false,
             },
             status: {
-                type: DataTypes.ENUM("PENDING", "COMPLETED"),
+                type: DataTypes.ENUM("PENDING", "IN_PROGRESS", "COMPLETED"),
                 allowNull: false,
             },
             comment: {
@@ -48,7 +56,7 @@ const toDoInit = (sequelize, DataTypes) => {
         },
         {
             sequelize,
-            modelName: "ToDo",
+            modelName: "ToDos",
             freezeTableName: true,
             timestamps: false,
         }

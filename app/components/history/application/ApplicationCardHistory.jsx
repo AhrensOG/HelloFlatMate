@@ -25,7 +25,7 @@ export default function ApplicationCardHistory({
     >
       <div className=" w-14">
         <div className="rounded-full h-14 w-14 flex justify-center items-center bg-[#0E165C]">
-          {type === "clean" ? (
+          {type === "CLEAN" ? (
             <Image
               src={"/history/application/clean-icon.svg"}
               width={38}
@@ -37,7 +37,7 @@ export default function ApplicationCardHistory({
               src={"/history/application/repair-icon.svg"}
               width={38}
               height={38}
-              alt="Icono de limpieza"
+              alt="Icono de reparacion"
             />
           )}
         </div>
@@ -53,11 +53,11 @@ export default function ApplicationCardHistory({
             <p className="font-normal text-[0.67rem] text-[#919191]">{date}</p>
           </div>
           <div className="flex items-end">
-            {status === "in_process" ? (
+            {status === "IN_PROGRESS" ? (
               <h3 className="font-bold text-sm text-[#0E165C] align-text-bottom">
                 En Proceso
               </h3>
-            ) : status === "completed" ? (
+            ) : status === "COMPLETED" ? (
               <h3 className="font-bold text-sm text-[#214802] align-text-bottom">
                 Completado
               </h3>
