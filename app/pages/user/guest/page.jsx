@@ -1,4 +1,4 @@
-import GuestHome from "@/app/components/user/guest-home/GuestHome";
+import GuestHome from "@/app/components/public/guest-home/GuestHome";
 import React from "react";
 
 const GuestPage = () => {
