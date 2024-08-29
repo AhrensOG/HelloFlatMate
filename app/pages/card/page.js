@@ -1,4 +1,4 @@
-import PropertyCard from "@/app/components/property/PropertyCard";
+import PropertyCard from "@/app/components/user/property/PropertyCard";
 
 export default function Card() {
     return (

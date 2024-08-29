@@ -3,7 +3,6 @@ import { CalendarDaysIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import PreviewPayment from "./PreviewPayment";
 
 export default function RequestPayment({ next, back }) {
   const [date, setDate] = useState("");

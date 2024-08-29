@@ -40,7 +40,7 @@ const adminOptions = [
   {
     title: "Mensajes",
     icon: "/nav_bar/side_bar/admin/chats.svg",
-    link: "/pages/chats",
+    link: "/pages/user/chats",
   },
   // {
   //   title: "Ayuda",
@@ -52,7 +52,7 @@ const ownerOptions = [
   {
     title: "Dashboard",
     icon: "/nav_bar/side_bar/owner/configuration.svg",
-    link: "/pages/owner",
+    link: "/pages/admin/dashboard",
   },
   {
     title: "Propiedades",
@@ -67,7 +67,7 @@ const ownerOptions = [
   {
     title: "Chats",
     icon: "/nav_bar/side_bar/owner/chats.svg",
-    link: "/pages/chats",
+    link: "/pages/user/chats",
   },
   {
     title: "Servicios",
@@ -84,27 +84,32 @@ const clientOptions = [
   {
     title: "Mi Dormitorio",
     icon: "/nav_bar/side_bar/client/properties.svg",
-    link: "/pages/my-bedrooms",
+    link: "/pages/user/my-bedrooms",
+  },
+  {
+    title: "Perfil",
+    icon: "/nav_bar/side_bar/client/properties.svg",
+    link: "/pages/user/profile",
   },
   {
     title: "Mis Reservas",
     icon: "/nav_bar/side_bar/client/payments.svg",
-    link: "/pages/my-reservations",
+    link: "/pages/user/my-reservations",
   },
   {
     title: "Chats",
     icon: "/nav_bar/side_bar/client/chats.svg",
-    link: "/pages/chats",
+    link: "/pages/user/chats",
   },
   {
     title: "Mis Contratos",
     icon: "/nav_bar/side_bar/client/documents.svg",
-    link: "/pages/contract/history",
+    link: "/pages/user/contract/history",
   },
   {
     title: "Servicios",
     icon: "/nav_bar/side_bar/client/services.svg",
-    link: "/pages/services",
+    link: "/pages/user/services",
   },
   // {
   //   title: "Configuración",

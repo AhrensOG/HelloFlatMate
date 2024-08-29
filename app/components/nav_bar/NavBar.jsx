@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Dropdown from "../auth/Dropdown";
+import Dropdown from "../public/auth/Dropdown";
 import { useState } from "react";
 import SideBar from "./side_bar/SideBar";
 import { useRouter } from "next/navigation";

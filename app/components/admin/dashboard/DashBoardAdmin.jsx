@@ -1,8 +1,6 @@
 import { plus_jakarta } from "@/font";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import ButtonsDashBoardAdmin from "./ButtonsDashBoardAdmin";
-import BarGraphic from "../graphics/BarGraphic";
-import PieGraphic from "../graphics/PieGraphic";
 import BarArticle from "./BarArticle";
 import PieArticle from "./PieArticle";
 import LineGraphic from "../graphics/LineGraphic";

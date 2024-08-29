@@ -1,5 +1,5 @@
 import { plus_jakarta } from "@/font";
-import DocumentListItem from "../../documents/DocumentListItem";
+import DocumentListItem from "../../client/documents/DocumentListItem";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import EyeButton from "./EyeButton";
 import PreviewModal from "./PreviewModal";

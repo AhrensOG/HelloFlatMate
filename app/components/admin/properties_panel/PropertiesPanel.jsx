@@ -1,6 +1,4 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
-import Image from "next/image";
 import { plus_jakarta } from "@/font";
 import PropertyCard from "./PropertyCard";
 

@@ -1,5 +1,5 @@
-import MessageContainer from "../../chats/chat/MessageContainer";
-import MessageInput from "../../chats/chat/MessageInput";
+import MessageContainer from "../../user/chats/chat/MessageContainer";
+import MessageInput from "../../user/chats/chat/MessageInput";
 
 export default function WorkerChat() {
   return (

@@ -1,5 +1,5 @@
-import Auth from "@/app/components/auth/Auth";
-import Dropdown from "@/app/components/auth/Dropdown";
+import Auth from "@/app/components/public/auth/Auth";
+import Dropdown from "@/app/components/public/auth/Dropdown";
 import Image from "next/image";
 
 export default function authPage() {

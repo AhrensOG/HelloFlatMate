@@ -1,5 +1,5 @@
 "use client";
-import ThankYou from "@/app/components/thank_you/ThankYou";
+import ThankYou from "@/app/components/user/thank_you/ThankYou";
 import { useRouter } from "next/navigation";
 import React from "react";
 
