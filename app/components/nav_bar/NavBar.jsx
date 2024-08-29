@@ -38,6 +38,7 @@ export default function NavBar({
       <div className="h-full flex">
         {" "}
         <Image
+        onClick={() => handleRedirect("/")}
           className="ml-[4%] self-center"
           src="/nav_bar/nav-bar-logo.svg"
           layout="responsive"

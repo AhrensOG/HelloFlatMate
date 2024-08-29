@@ -15,7 +15,7 @@ export default function Chat({ action }) {
       />
       <ChatsCard
         name={"Habitacion"}
-        image={"/chat/chat-2.jfif"}
+        image={"/chat/chat-2.jpg"}
         action={action}
       />
       <ChatsCard name={"Soporte"} image={"/chat/soporte.svg"} action={action} />

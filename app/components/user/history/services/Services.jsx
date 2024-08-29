@@ -65,7 +65,7 @@ export default function Services() {
           body={
             "Mantén tu espacio impecable con nuestro servicio de limpieza profesional, diseñado para adaptarse a todas tus necesidades"
           }
-          img={"/services/clean-stock-1.jfif"}
+          img={"/services/clean-stock-1.jpg"}
           position={"rigth"}
           action={() => {
             route.push("/pages/user/services/request/" + "CLEAN");
@@ -76,7 +76,7 @@ export default function Services() {
           body={
             "Asegura el óptimo funcionamiento y la longevidad de tus instalaciones con nuestro servicio de mantenimiento integral"
           }
-          img={"/services/repair-stock.jfif"}
+          img={"/services/repair-stock.jpg"}
           action={() => {
             route.push("/pages/user/services/request/" + "REPAIR");
           }}
@@ -94,7 +94,7 @@ export default function Services() {
               body={`El personal de limpieza irá a tu apartamento el día ${
                 formatedDateAndHour(toDo.startDate).day
               }, a las ${formatedDateAndHour(toDo.startDate).time} hs.`}
-              img={"/services/clean-stock-1.jfif"}
+              img={"/services/clean-stock-1.jpg"}
               position="rigth"
             />
           ))

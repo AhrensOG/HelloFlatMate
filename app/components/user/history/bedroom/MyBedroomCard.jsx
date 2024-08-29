@@ -15,7 +15,7 @@ export default function MyBedroomCard({
         <Image
           className="rounded-2xl"
           alt="Ilustracion de un cuarto"
-          src={"/my_bedrooms/my-bedroom-stock.jfif"}
+          src={"/my_bedrooms/my-bedroom-stock.jpg"}
           fill
           style={{ objectFit: "cover", objectPosition: "center" }}
         />
