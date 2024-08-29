@@ -132,15 +132,12 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
       <div className="h-[1px] bg-[#DDDDDD]"></div>
       <div className="flex flex-col gap-3 text-[#222222]">
         <h2 className="text-[1.37rem] text-semibold">
-          Política de cancelación
+          Políticas, términos y condiciones
         </h2>
-        <p className="text-base font-normal">
-          Esta reserva no es reembolsable.
-        </p>
         <Link
           href="#"
           className="underline text-base font-normal"
-          alt="Política de cancelación"
+          alt="Política y Condiciones"
         >
           Más información
         </Link>
@@ -148,9 +145,9 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
       <div className="h-[1px] bg-[#DDDDDD]"></div>
       <div className="text-base font-normal text-[#222222]">
         <h4>
-          Al seleccionar el botón,{" "}
+          Al seleccionar el 'Finalizar',{" "}
           <span className="font-semibold">
-            acepto los términos y condiciones de la reserva.
+            acepta los términos y condiciones de la reserva.
           </span>
         </h4>
       </div>
