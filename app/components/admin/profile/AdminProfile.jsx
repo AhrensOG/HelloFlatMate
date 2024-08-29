@@ -1,13 +1,10 @@
 import Image from "next/image";
-import NavBar from "../../nav_bar/NavBar";
-import TitleSection from "../../workerPanel/TitleSection";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
-import ItemInfo from "../../profile/profile_info/ItemInfo";
+import ItemInfoAdmin from "./ItemInfoAdmin";
 import { plus_jakarta } from "@/font";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
-export default function AdminProfile() {
+export default function AdminProfile({ image, name, lastName, email }) {
   const [showPencil, setShowPencil] = useState(false);
 
   const handleShowPencil = () => {
@@ -33,7 +30,7 @@ export default function AdminProfile() {
               <div>
                 <Image
                   className="rounded-full"
-                  src={"/profile/profile.jfif"}
+                  src={image}
                   fill
                   alt="Ilustracion de perfil"
                   objectPosition="top"
@@ -53,12 +50,12 @@ export default function AdminProfile() {
         </section>
         <section className="flex flex-col gap-5 p-2 w-full">
           <h2 className="text-bold text-lg">Nombre completo</h2>
-          <ItemInfo title={"Nombre"} body={"Usuario"} />
-          <ItemInfo title={"Apellido"} body={"helloflatmate"} />
+          <ItemInfoAdmin title={"Nombre"} body={name} />
+          <ItemInfoAdmin title={"Apellido"} body={lastName} />
         </section>
         <section className="flex flex-col gap-5 p-2 w-full">
           <h2 className="text-bold text-lg">Correo de contacto</h2>
-          <ItemInfo title={"Email"} body={"usuario@gmail.com"} />
+          <ItemInfoAdmin title={"Email"} body={email} />
         </section>
       </main>
     </>

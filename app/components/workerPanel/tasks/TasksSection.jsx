@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { plus_jakarta } from "@/font";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
-import ApplicationCardHistory from "../../history/application/ApplicationCardHistory";
+import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
 
 export default function TasksSection() {
   const [detailsInfo, setDetailsInfo] = useState({});

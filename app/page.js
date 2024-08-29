@@ -1,15 +1,15 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
-import GuestHome from "./components/guest-home/GuestHome";
-import FeaturedSection from "./components/home/FeaturedSection";
-import Hero from "./components/home/Hero";
-import PromotionSection from "./components/home/PromotionSection";
+import GuestHome from "./components/public/guest-home/GuestHome";
+import FeaturedSection from "./components/user/home/FeaturedSection";
+import Hero from "./components/user/home/Hero";
+import PromotionSection from "./components/user/home/PromotionSection";
 import NavBar from "./components/nav_bar/NavBar";
-import SearchBar from "./components/search_bar/SearchBar";
+import SearchBar from "./components/user/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
 import { getAllProperties } from "./context/actions";
-import Filter from "./components/filter/Filter";
+import Filter from "./components/user/filter/Filter";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);

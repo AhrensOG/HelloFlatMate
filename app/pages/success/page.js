@@ -1,5 +1,5 @@
 "use client";
-import ThankYou from "@/app/components/thank_you/ThankYou";
+import ThankYou from "@/app/components/user/thank_you/ThankYou";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -13,7 +13,7 @@ const SuccessPage = () => {
         "Completa tus datos y sube la documentación necesaria para que podamos confirmar tu reserva."
       }
       action={"Completar Información"}
-      callback={() => router.push("/pages/contract")}
+      callback={() => router.push("/pages/user/contract")}
     />
   );
 };
