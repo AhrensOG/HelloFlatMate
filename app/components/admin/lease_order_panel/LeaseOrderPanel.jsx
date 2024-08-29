@@ -1,6 +1,10 @@
 import axios from "axios";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import LeaseOrderSection from "./LeaseOrderSection";
+import LeaseOrderClientSection from "./LeaseOrderClientSection";
+import LeaseOrderPropertySection from "./LeaseOrderPropertySection";
+import LeaseOrderOwnerSection from "./LeaseOrderOwnerSection";
 
 export default function LeaseOrderPanel(data) {
   const [leaserOrders, setLeaserOrders] = useState(
@@ -9,18 +13,12 @@ export default function LeaseOrderPanel(data) {
       ? data.data?.leaseOrdersProperty.filter(
           (leaseOrder) => leaseOrder?.status === "IN_PROGRESS"
         )
-      : data.data?.rooms
-          .filter((room) =>
-            room.leaseOrdersRoom.filter(
-              (leaseOrder) => leaseOrder?.status === "IN_PROGRESS"
-            )
-          )
-          .map((room) => room.leaseOrdersRoom[0])
+      : null
   );
   const [property, setProperty] = useState(data.data);
   const [client, setClient] = useState(null);
   const [owner, setOwner] = useState(null);
-  const [room, setRoom] = useState(null);
+  const [rooms, setRooms] = useState(null);
 
   useEffect(() => {
     if (!client) {
@@ -42,13 +40,16 @@ export default function LeaseOrderPanel(data) {
           console.log(error);
         }
       };
-      // const fetchRooms = () => {
-      //   const rooms = property.rooms.filter(
-      //     (room) => room.leaseOrdersRoom.length > 0
-      //   );
-      //   setRoom(rooms[0] || null);
-      // };
-      // fetchRooms();
+      const fetchRooms = () => {
+        const rooms = property.rooms.filter(
+          (room) => room.leaseOrdersRoom.length > 0
+        );
+        setRooms(rooms);
+        setLeaserOrders(property.rooms.leaseOrdersRoom);
+      };
+      if (property.rooms.length > 0) {
+        fetchRooms();
+      }
       fetchClient();
       fetchOwner();
     }
@@ -112,87 +113,88 @@ export default function LeaseOrderPanel(data) {
     }
   };
 
+  const formatDate = (date) => {
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString();
+  };
+
   if (!client && !owner) return <div>Cargando...</div>;
 
   return (
-    <main>
-      {console.log(leaserOrders[0])}
-      <section>
-        <h2>Numero de Orden : {leaserOrders[0]?.id || 0}</h2>
-        <p>fecha de creacion: {leaserOrders[0]?.date || 0}</p>
-        <p>
-          Fecha de inicio de la ocupación : {leaserOrders[0]?.startDate || 0}
-        </p>
-        <p>Fecha de fin de la ocupación: {leaserOrders[0]?.endDate || 0}</p>
-        <p>Precio : {leaserOrders[0]?.price || 0}</p>
-      </section>
-      <section>
-        <h2>Datos de la propiedad</h2>
-        <p>Tipo de propiedad: {property?.category || "No definido"}</p>
-        <p>
-          Ubicacion:{" "}
-          {property?.city +
-            ", " +
-            property?.street +
-            " " +
-            property?.streetNumber || ""}
-        </p>
-        <p>Superficie: {property?.size || "No definido"}</p>
-        <p>Precio por mes : {property?.price || "No definido"}</p>
-        <p>
-          Numero de habitaciones: {property?.rooms?.length || "No definido"}
-        </p>
-        <p>Numero de banos: {property?.bathrooms || "No definido"}</p>
-        <p>Numero de camas: {property?.bed || "No definido"}</p>
-      </section>
-      <section>
-        <h2>Datos del dueño</h2>
-        <p>
-          Nombre y apellido: {owner?.name + owner?.lastName || "No definido"}
-        </p>
-        <p>Correo electronico: {owner?.email || "No definido"}</p>
-        <p>Telefono: 0000000</p>
-        //En caso que no sea helloflatmate
-        <p>Fecha de nacimiento</p>
-        <p>Domicilio</p>
-        <p>Identificacion</p>
-      </section>
-      <section>
-        <h2>Datos del Cliente</h2>
-        <article>
-          <p>
-            Nombre y apellido:{" "}
-            {client?.name + " " + client?.lastName || "No definido"}
-          </p>
-          <p>Correo electronico: {client?.email || "No definido"}</p>
-          <p>Telefono: {client?.phone}</p>
-          <p>Fecha de nacimiento: {client?.birthDate || "No definido"}</p>
-          <p>
-            Domicilio:{" "}
-            {client?.city + " " + client?.street + " " + client?.streetNumber ||
-              "No definido"}
-          </p>
-        </article>
-        <article>
-          <div>
-            <p>Identificacion</p>
+    <main class="max-w-4xl mx-auto my-8 p-4">
+      {console.log(rooms)}
+      {property?.category === "HELLO_STUDIO" ||
+      property?.category === "HELLO_LANDLORD" ? (
+        leaserOrders?.length > 0 ? (
+          leaserOrders.map((leaserOrder) => {
+            return (
+              <LeaseOrderSection data={leaserOrder} formatDate={formatDate} />
+            );
+          })
+        ) : (
+          <div class="flex justify-center items-center h-64 bg-gray-100 rounded-lg shadow-md my-4">
+            <p class="text-gray-600 text-lg font-semibold">
+              No hay órdenes pendientes
+            </p>
           </div>
-          <div>
-            <p>Nomina</p>
-          </div>
-          <div>
-            <p>Firma</p>
-            <Image src={client?.signature || ""} height={200} width={200} />
-          </div>
-        </article>
-      </section>
-      <section>
-        <h2>Contrato</h2>
-        <p>contrato</p>
+        )
+      ) : (
+        rooms.map((room, index) => {
+          return (
+            <div className="p-4 bg-white rounded-lg shadow-md border border-gray-200 space-y-4 my-4">
+              <LeaseOrderSection
+                key={room.leaseOrdersRoom[index]?.id}
+                data={room.leaseOrdersRoom[index]}
+                formatDate={formatDate}
+              />
+              <LeaseOrderClientSection
+                data={room.leaseOrdersRoom[index]?.client}
+                formatDate={formatDate}
+              />
+            </div>
+          );
+        })
+      )}
+
+      {property?.category === "HELLO_STUDIO" || "HELLO_LANDLORD" ? (
+        client ? (
+          <LeaseOrderClientSection data={client} formatDate={formatDate} />
+        ) : (
+          <div></div>
+        )
+      ) : (
+        <div></div>
+      )}
+
+      <LeaseOrderPropertySection data={property} formatDate={formatDate} />
+
+      <LeaseOrderOwnerSection data={owner} formatDate={formatDate} />
+
+      <section class="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
+        <h2 class="text-xl font-bold text-gray-800">Contrato</h2>
+        <p class="text-gray-600">Contrato</p>
       </section>
 
-      <button onClick={aproveLeaseOrder}>Aprobar</button>
-      <button onClick={rejectLeaseOrder}>Rechazar</button>
+      <div class="flex justify-between gap-4 ">
+        <button
+          onClick={() => {
+            return toast.promise(aproveLeaseOrder(), {
+              loading: "Cargando...",
+              success: "Orden de arrendamiento aceptada",
+              error: "Error al aceptar la orden de arrendamiento",
+            });
+          }}
+          class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+        >
+          Aprobar
+        </button>
+        <button
+          onClick={rejectLeaseOrder}
+          class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          Rechazar
+        </button>
+      </div>
     </main>
   );
 }

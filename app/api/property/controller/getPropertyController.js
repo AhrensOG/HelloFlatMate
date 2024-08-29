@@ -1,4 +1,4 @@
-import { LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
+import { Client, LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
@@ -20,18 +20,28 @@ export async function getPropertyById(id) {
                 as: 'rooms',
                 include: {
                     model: LeaseOrderRoom,
-                    as: 'leaseOrdersRoom'
+                    as: 'leaseOrdersRoom',
+                    include: {
+                        model: Client,
+                        as: 'client'
+                    }
                 }
             },
             {
                 model: LeaseOrderProperty,
-                as: 'leaseOrdersProperty'
+                as: 'leaseOrdersProperty',
+                include: {
+                    model: Client,
+                    as: 'client'
+                }
             }]
         });
         if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
 
         return NextResponse.json({ property }, { status: 200 });
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ error: "Error al obtener la propiedad" }, { status: 500 });
     }
 }
