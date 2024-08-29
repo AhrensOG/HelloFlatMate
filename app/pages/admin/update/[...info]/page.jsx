@@ -41,7 +41,7 @@ export default function UpdatePropertyPage({ params }) {
 
   const handleBack = () => {
     if (currentStep - 1 === 0) {
-      return router.push("/pages/owner");
+      return router.push("/pages/admin/properties");
     }
     setCurrentStep(currentStep - 1);
   };
