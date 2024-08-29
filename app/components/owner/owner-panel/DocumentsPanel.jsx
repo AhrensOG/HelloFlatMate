@@ -1,8 +1,4 @@
-import { useState } from "react";
-import TitleAdminPanel from "../../admin/shared/TitleAdminPanel";
-import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
-import DocumentItem from "./documents_panel/DocumentItem";
 import ImportantDocumentsSection from "./documents_panel/ImportantDocumentsSection";
 import ExpiredContractsSection from "./documents_panel/ExpiredContractsSection";
 

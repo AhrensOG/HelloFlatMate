@@ -1,4 +1,4 @@
-import TitleAdminPanel from "@/app/components/admin/shared/TitleAdminPanel";
+import TitleOwnerPanel from "../TitleOwnerPanel";
 import DocumentItem from "./DocumentItem";
 import { motion } from "framer-motion";
 export default function ImportantDocumentsSection() {
@@ -10,7 +10,7 @@ export default function ImportantDocumentsSection() {
       transition={{ duration: 0.8 }}
       className="w-full"
     >
-      <TitleAdminPanel title={"Historial de pagos"} />
+      <TitleOwnerPanel title={"Historial de pagos"} />
       <section className="flex flex-col py-6 gap-3 w-full">
         <DocumentItem
           title={"Contrato activo"}

@@ -1,17 +1,17 @@
 import { plus_jakarta } from "@/font";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import ButtonsDashBoardAdmin from "./ButtonsDashBoardAdmin";
-import BarGraphic from "../graphics/BarGraphic";
-import PieGraphic from "../graphics/PieGraphic";
 import BarArticle from "./BarArticle";
 import PieArticle from "./PieArticle";
 import LineGraphic from "../graphics/LineGraphic";
+import { useRouter } from "next/navigation";
 export default function DashBoardAdmin() {
+  const router = useRouter();
   return (
     <main
       className={`${plus_jakarta.className} flex flex-col gap-5 p-2 items-center`}
     >
-      <TitleAdminPanel title={"Tus propiedades"} />
+      <TitleAdminPanel title={"Rendimientos"} action={() => router.push('/pages/admin')} />
       <section className="w-full flex items-center justify-center">
         <ButtonsDashBoardAdmin />
       </section>

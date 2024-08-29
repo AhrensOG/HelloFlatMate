@@ -1,5 +1,5 @@
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import ApplicationCardHistory from "../../history/application/ApplicationCardHistory";
+import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
 import { plus_jakarta } from "@/font";
 import { motion } from "framer-motion";
 import TitleSection from "../TitleSection";
