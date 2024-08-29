@@ -4,39 +4,17 @@ import Image from "next/image";
 import { plus_jakarta } from "@/font";
 import PropertyCard from "./PropertyCard";
 
-export default function PropertiesPanel() {
+export default function PropertiesPanel({ data }) {
+  console.log(data);
   return (
     <main
-      className={`${plus_jakarta.className} flex flex-col justify-center items-center p-2`}
+      className={`${plus_jakarta.className} flex flex-col justify-center items-center p-2 gap-6`}
     >
       <TitleAdminPanel title={"Propiedades"} />
-      <PropertyCard
-        name={"Villa eden"}
-        image={"/admin/document-text.svg"}
-        date={"Abril 9, 2024"}
-        body={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
-        }
-        status={"avaible"}
-      />
-      <PropertyCard
-        name={"Villa eden"}
-        image={"/admin/document-text.svg"}
-        date={"Abril 9, 2024"}
-        body={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
-        }
-        status={"reserved"}
-      />
-      <PropertyCard
-        name={"Villa eden"}
-        image={"/admin/document-text.svg"}
-        date={"Abril 9, 2024"}
-        body={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
-        }
-        status={"rented"}
-      />
+
+      {data?.map((item, index) => {
+        return <PropertyCard key={item?.id} data={item} />;
+      })}
     </main>
   );
 }

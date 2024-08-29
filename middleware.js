@@ -18,7 +18,7 @@ export async function middleware(request) {
   const cookieStore = cookies(); // Usa cookies() para acceder a las cookies
   const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
-  console.log("Token:", token);
+  // console.log("Token:", token);
 
   // Define rutas permitidas sin autenticación
   const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth"]; // Asegúrate de que las rutas estén correctas
@@ -54,8 +54,8 @@ export async function middleware(request) {
 
   const { role, accessToken } = decodedToken;
 
-  console.log("Role:", role);
-  console.log("Access Token:", accessToken);
+  // console.log("Role:", role);
+  // console.log("Access Token:", accessToken);
 
   // Aquí puedes agregar más lógica según el role o el accessToken si es necesario
 
