@@ -67,7 +67,7 @@ export default function Contract() {
             )}
             {currentStep === 5 && (
               <ThankYou
-                title={"Firma y Reserva Exitosa"}
+                title={"¡Felicidades!"}
                 subTitle={"Tu firma digital y el contrato fueron registrados."}
                 body={"Te notificaremos cuando validemos la informacion enviada."}
                 action={"Regresar "}
