@@ -17,26 +17,30 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
             month: "long",
             day: "numeric",
           });
+          const body =
+            l.status === "PENDING"
+              ? "Sube la informacion y documentación necesaria para que podamos aprobar tu solicitud de renta."
+              : l.status === "APPROVED"
+              ? "¡Tu solicitud fue aprovada!"
+              : "";
+          const status =
+            l.status === "PENDING"
+              ? "RESERVED"
+              : l.status === "APPROVED"
+              ? "OCCUPIED"
+              : null;
+          const id = l.id;
           return (
             <PropertyCard
-              name={"Villa eden"}
-              image={"/admin/document-text.svg"}
-              date={readableDate}
-              body={
-                l.status === "PENDING"
-                  ? "Sube la informacion y documentación necesaria para que podamos aprobar tu solicitud de renta."
-                  : l.status === "APPROVED"
-                  ? "¡Tu solicitud fue aprovada!"
-                  : ""
-              }
-              status={
-                l.status === "PENDING"
-                  ? "reserved"
-                  : l.status === "APPROVED"
-                  ? "rented"
-                  : null
-              }
-              link="/pages/contract"
+              data={{
+                name: "Villa eden",
+                image: "/admin/document-text.svg",
+                date: readableDate,
+                body: body,
+                status: status,
+                id: id,
+                link: `/pages/contract`,
+              }}
             />
           );
         })

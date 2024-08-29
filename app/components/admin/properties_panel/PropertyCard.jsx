@@ -54,8 +54,14 @@ export default function PropertyCard({ data }) {
           <h3 className="text-[#222B45] text-base font-medium ">
             {data?.name || ""}
           </h3>
-          {/* <p className="text-sm text-[#464E5F66] font-normal">{data.}</p> */}
         </div>
+      </div>
+      <div>
+        {data.body ? (
+          <p className="text-sm text-[#464E5F66] font-normal">{data.body}</p>
+        ) : (
+          ""
+        )}
       </div>
       <div className="flex justify-between items-center w-full">
         <div className="flex justify-center items-center">
@@ -63,7 +69,7 @@ export default function PropertyCard({ data }) {
         </div>
         <div className="flex gap-3">
           <button
-            onClick={() => router.push("/pages/lease_order/" + data?.id)}
+            onClick={() => router.push(data.link)}
             className="h-9 w-9 border border-[#DDDFE1] text-[#0E155F] flex justify-center items-center"
           >
             <PencilIcon className="h-6 w-6" />
