@@ -7,23 +7,23 @@ const ChatSection = () => {
       <h2 className="font-medium">Chats</h2>
       <div className="flex flex-row w-full overflow-x-scroll gap-2 shadow-profile">
         <ChatCard
-          link="/pages/chats"
+          link="/pages/user/chats"
           image="/profile/owner_profile/new_chat.svg"
           title="New Chat"
         />
         <ChatCard
-          link="/pages/chats/chat"
-          image="/profile/profile.jfif"
+          link="/pages/user/chats/chat"
+          image="/profile/profile.jpg"
           title="Tobi Lateef"
         />
         <ChatCard
-          link="/pages/chats/chat"
-          image="/profile/profile.jfif"
+          link="/pages/user/chats/chat"
+          image="/profile/profile.jpg"
           title="Queen Needle"
         />
         <ChatCard
-          link="/pages/chats/chat"
-          image="/profile/profile.jfif"
+          link="/pages/user/chats/chat"
+          image="/profile/profile.jpg"
           title="Joan Blessing"
         />
       </div>
