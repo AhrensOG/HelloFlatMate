@@ -9,12 +9,13 @@ import SearchBar from "./components/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
 import { getAllProperties } from "./context/actions";
+import Filter from "./components/filter/Filter";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
-  const [home, setHome] = useState(true);
   const [properties, setProperties] = useState([]);
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const filterOffer = (properties) => {
     return properties.filter((property) => property.offer !== null);
@@ -22,21 +23,15 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      if (state.user) {
-        try {
-          // Actualiza el estado del usuario
-          setHome(true);
-
-          // Obtén las propiedades y actualiza el estado global
-          await getAllProperties(dispatch);
-        } catch (error) {
-          toast.error("Error al obtener propiedades");
-        }
+      try {
+        await getAllProperties(dispatch);
+      } catch (error) {
+        toast.error("Error al obtener propiedades");
       }
     };
 
     fetchProperties();
-  }, [state.user, dispatch]);
+  }, []);
 
   useEffect(() => {
     // Solo actualiza si hay un cambio en state.properties
@@ -45,11 +40,7 @@ export default function Home() {
       setPropertiesInOffer(filterOffer(state.properties));
       toast.success("Propiedades actualizadas");
     }
-  }, [state.properties]);
-
-  if (!home) {
-    return <GuestHome />;
-  }
+  }, [state.properties, dispatch]);
 
   return (
     <div>
@@ -59,7 +50,7 @@ export default function Home() {
       <main>
         <Hero />
         <div className="w-full pt-4">
-          <SearchBar />
+          <SearchBar showFilters={showFilters} setShowFilters={setShowFilters} />
         </div>
         <FeaturedSection data={properties} />
         <PromotionSection data={propertiesInOffer} />

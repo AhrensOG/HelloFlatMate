@@ -11,6 +11,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
+import ShowClauses from "./ShowClauses";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -56,7 +57,6 @@ export default function ReservationModal({ callback, data }) {
     const userEmail = user?.email;
     const price = parseInt(reservation?.price * 100); // Precio en centavos ($50.00)
     const propertyName = reservation?.propertyName; // Precio en centavos ($50.00)
-    const roomId = reservation?.roomId || false;
 
     try {
       const response = await fetch("/api/stripe/create-checkout-session", {
@@ -70,7 +70,7 @@ export default function ReservationModal({ callback, data }) {
           price,
           propertyName,
           leaseOrderId,
-          roomId,
+          roomId: reservation?.roomId || false,
         }),
       });
       const session = await response.json();
@@ -111,14 +111,14 @@ export default function ReservationModal({ callback, data }) {
       }
       toast.error("Error al realizar la reserva");
     } catch (error) {
-      toast.error("Error al realizar la reserva");
+      console.log(error);
     }
   };
 
   return (
     <AnimatePresence>
       <motion.aside
-        className={`${plus_jakarta.className} flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem] `}
+        className={`${plus_jakarta.className} flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem]`}
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
@@ -146,8 +146,20 @@ export default function ReservationModal({ callback, data }) {
           {/* Contenido del modal */}
           <SelectContract data={info} setData={setInfo} />
           <DatePicker data={info} setData={setInfo} />
+          <ShowClauses />
           <div className=" self-center w-[90%]">
-            <ReservationButton callback={handleReservationSubmit} />
+            <ReservationButton
+              callback={() => { 
+                toast.promise(handleReservationSubmit(), {
+                  loading: "Reservando...",
+                  success: () => {
+                    toast.success("Reservado con exito");
+                    // handleRedirect();
+                  },
+                  error: "Error al reservar",
+                });
+              }}
+            />
           </div>
         </div>
       </motion.aside>

@@ -1,4 +1,4 @@
-const login = require("./login/login.js");
+import login from "./login/login";
 
 
 export async function POST(req) {

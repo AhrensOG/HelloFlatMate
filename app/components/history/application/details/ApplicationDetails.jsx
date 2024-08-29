@@ -19,7 +19,7 @@ export default function ApplicationDetails({
       className={`${plus_jakarta.className} flex flex-col gap-4 items-center justify-center px-6 my-5`}
     >
       <div className="flex justify-center items-center h-[6.63rem] w-[6.63rem] bg-[#0E165C] rounded-full">
-        {type == "repair" ? (
+        {type == "REPAIR" ? (
           <Image
             src={"/history/application/repair-icon.svg"}
             alt={`Icono de limpieza`}
@@ -44,9 +44,9 @@ export default function ApplicationDetails({
       </div>
       <h3 className="font-bold text-sm text-black">
         Estado:{" "}
-        {status == "completed" ? (
+        {status == "COMPLETED" ? (
           <span className="text-[#214802]">Completado</span>
-        ) : status == "in_process" ? (
+        ) : status == "IN_PROGRESS" ? (
           <span className="text-[#0E165C]">En proceso</span>
         ) : (
           <span className="text-[#FF0000]">Pendiente</span>

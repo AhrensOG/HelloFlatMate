@@ -5,11 +5,16 @@ import Filter from "../filter/Filter";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SearchBar() {
-  const [openFilters, setOpenFilters] = useState(false);
+export default function SearchBar({ showFilters, setShowFilters }) {
+  const [word, setWord] = useState("");
   const route = useRouter();
+
+  const handleInput = (e) => {
+    setWord(e.target.value);
+  };
+
   const handleRedirect = () => {
-    route.push("/pages/filtered");
+    route.push(`/pages/filtered/${word}`);
   };
   return (
     <div className="w-full">
@@ -39,15 +44,16 @@ export default function SearchBar() {
             <input
               className="text-center rounded-[0.6rem] grow text-[0.93rem] font-medium outline-none focus:text-left focus:text-[#1C1C21] focus:pl-3"
               type="text"
+              onChange={handleInput}
               placeholder="Buscar..."
               aria-label="Buscar"
             ></input>
           </form>
 
-          <button
+          {/* <button
             className="flex font-medium text-base items-center gap-1 min-w-[59px]"
             aria-label="Abrir filtros"
-            onClick={() => setOpenFilters(true)}
+            onClick={() => setShowFilters(!showFilters)}
           >
             Filter
             <Image
@@ -57,10 +63,9 @@ export default function SearchBar() {
               width={16}
               height={16}
             />
-          </button>
+          </button> */}
         </div>
       </div>
-      <Filter isOpen={openFilters} setOpen={setOpenFilters} />
     </div>
   );
 }

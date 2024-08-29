@@ -69,9 +69,17 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: true,
             },
+            IVA: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
             puntuation: {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),
                 allowNull: false,
+            },
+            IVA: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
             },
             isActive: {
                 type: DataTypes.BOOLEAN,

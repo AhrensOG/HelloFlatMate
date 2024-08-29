@@ -3,14 +3,36 @@ import { AnimatePresence, motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
 import ActionServiceCard from "./ActionServiceCard";
 import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { Context } from "@/app/context/GlobalContext";
 
 export default function Services() {
   const route = useRouter();
+  const { state, dispatch } = useContext(Context);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser(state.user);
+  }, [state, dispatch]);
+
+  const formatedDateAndHour = (date) => {
+    const dateFormated = new Date(date);
+    const day = dateFormated.toLocaleDateString("es-ES", {
+      weekday: "long",
+      day: "numeric",
+    });
+    const time = dateFormated.toLocaleTimeString("es-ES", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+    return { day: day.charAt(0).toUpperCase() + day.slice(1), time: time };
+  };
 
   const handleBack = () => {
     route.back();
   };
 
+  if (!user) return <div>Loading...</div>;
   return (
     <AnimatePresence>
       <motion.main
@@ -40,7 +62,7 @@ export default function Services() {
           img={"/services/clean-stock-1.jfif"}
           position={"rigth"}
           action={() => {
-            route.push("/pages/services/request");
+            route.push("/pages/services/request/" + "CLEAN");
           }}
         />
         <ActionServiceCard
@@ -50,21 +72,27 @@ export default function Services() {
           }
           img={"/services/repair-stock.jfif"}
           action={() => {
-            route.push("/pages/services/request");
+            route.push("/pages/services/request/" + "REPAIR");
           }}
         />
 
         <h2 className="text-[#222222] font-semibold text-xl mt-6">
           Mis Servicios
         </h2>
-        <ActionServiceCard
-          title={"Servicio de limpieza"}
-          body={
-            "El personal de limpieza irá a tu apartamento el día sábado 6, a las 7:30 pm"
-          }
-          img={"/services/clean-stock-1.jfif"}
-          position="rigth"
-        />
+        {!user ? (
+          <div>cargando...</div>
+        ) : (
+          user.toDos.map((toDo) => (
+            <ActionServiceCard
+              title={toDo.title}
+              body={`El personal de limpieza irá a tu apartamento el día ${
+                formatedDateAndHour(toDo.startDate).day
+              }, a las ${formatedDateAndHour(toDo.startDate).time} hs.`}
+              img={"/services/clean-stock-1.jfif"}
+              position="rigth"
+            />
+          ))
+        )}
       </motion.main>
     </AnimatePresence>
   );

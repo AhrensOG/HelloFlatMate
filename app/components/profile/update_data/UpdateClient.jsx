@@ -13,6 +13,12 @@ export default function UpdateClient() {
   useEffect(() => {
     if (state?.user?.id) {
       const user = state?.user;
+      const date = new Date(user?.birthDate);
+      const readableDate = date.toLocaleString("es-ES", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      });
       setPrevData({
         name: user.name,
         lastName: user.lastName,
@@ -24,7 +30,7 @@ export default function UpdateClient() {
         streetNumber: user.streetNumber,
         postalCode: user.postalCode,
         age: user.age,
-        birthDate: user.birthDate,
+        birthDate: readableDate,
       });
     }
   }, [state]);

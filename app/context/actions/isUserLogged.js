@@ -6,7 +6,6 @@ const SERVER_URL_AUTH_ENDPOINT = "/api/auth";
 
 export const isUserLogged = async (dispatch) => {
   onAuthStateChanged(auth, async (user) => {
-
     try {
       if (user) {
         const data = await axios.post(`${SERVER_URL_AUTH_ENDPOINT}`, {
@@ -14,7 +13,9 @@ export const isUserLogged = async (dispatch) => {
           name: user.displayName,
           email: user.email,
           profile_picture: user.photoURL,
+          accessToken: user.accessToken,
         });
+
         await dispatch({ type: "IS_USER_LOGGED", payload: data.data });
         return true;
       } else {

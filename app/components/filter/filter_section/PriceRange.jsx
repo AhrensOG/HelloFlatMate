@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./range-price.css";
 import { plus_jakarta } from "@/font";
+import { Context } from "@/app/context/GlobalContext";
 
-export default function PriceRange() {
-  const [minValue, setMinValue] = useState(4000);
-  const [maxValue, setMaxValue] = useState(8000);
+export default function PriceRange({ onChange, initialValue }) {
+  const { state, dispatch } = useContext(Context);
+
+  const [minValue, setMinValue] = useState(initialValue?.minPrice || 0);
+  const [maxValue, setMaxValue] = useState(initialValue?.maxPrice || 0);
   const priceGap = 1000;
 
   const handleMinChange = (e) => {
@@ -13,6 +16,7 @@ export default function PriceRange() {
       value = maxValue - priceGap;
     }
     setMinValue(value);
+    onChange("minPrice", value);
   };
 
   const handleMaxChange = (e) => {
@@ -21,6 +25,7 @@ export default function PriceRange() {
       value = minValue + priceGap;
     }
     setMaxValue(value);
+    onChange("maxPrice", value);
   };
 
   return (

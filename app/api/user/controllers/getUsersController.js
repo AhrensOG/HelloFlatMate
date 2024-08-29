@@ -1,4 +1,4 @@
-import { Owner, Client, Admin } from "@/db/init";
+import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllUsers() {
@@ -15,9 +15,50 @@ export async function getAllUsers() {
 export async function getUserById(id) {
     if (!id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
     try {
-        const user = await Owner.findByPk(id) || await Client.findByPk(id) || await Admin.findByPk(id);
+        const user = await Owner.findByPk(id, {
+            include: [{
+                model: LeaseOrderProperty,
+                as: "leaseOrdersProperty",
+                include: [{
+                    model: Property,
+                    as: "property"
+                }]
+            }, {
+                model: LeaseOrderRoom,
+                as: "leaseOrdersRoom"
+            }, {
+                model: Property,
+                as: "properties"
+            },
+            {
+                model: ToDo,
+                as: "toDos"
+            }
+            ]
+        }) || await Client.findByPk(id, {
+            include: [
+                {
+                    model: LeaseOrderProperty,
+                    as: "leaseOrdersProperty"
+                }, {
+                    model: LeaseOrderRoom,
+                    as: "leaseOrdersRoom"
+                },
+                {
+                    model: ToDo,
+                    as: "toDos"
+                }
+            ]
+        }) || await Admin.findByPk(id, {
+            include: {
+                model: ToDo,
+                as: "toDos"
+            }
+        });
+
         return NextResponse.json(user);
     } catch (error) {
+
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

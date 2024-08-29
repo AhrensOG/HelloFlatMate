@@ -45,7 +45,6 @@ export default function DatePicker({ data, setData }) {
       <div className="relative rounded-lg shadow-reservation-drop my-2 cursor-pointer">
         <div className="p-3 rounded-lg  text-base border bg-white border-white w-[19.4rem] flex justify-between items-center">
           <input
-            defaultValue={selectedDate}
             onClick={handleShowDatePicker}
             value={selectedDate}
             className="aparence-none outline-none w-full"
@@ -54,9 +53,9 @@ export default function DatePicker({ data, setData }) {
           />
           <span
             onClick={handleShowDatePicker}
-            className={`${
-              showDatePicker ? "bg-[#1C8CD65E]" : ""
-            } h-5 w-5 rounded-full`}
+            className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
+              showDatePicker ? "bg-[#1C8CD65E] rotate-180" : ""
+            }`}
           >
             <ChevronUpIcon />
           </span>
