@@ -7,7 +7,7 @@ export default function MyBedroomDetails() {
       <div className="relative rounded-2xl h-[10.75rem] w-full">
         <Image
           className="rounded-2xl"
-          src={"/my_bedrooms/my-bedroom-stock.jfif"}
+          src={"/my_bedrooms/my-bedroom-stock.jpg"}
           fill
           alt="Ilustracion de un cuarto"
           style={{ objectFit: "cover", objectPosition: "center" }}
