@@ -32,7 +32,13 @@ export default function Services() {
     route.back();
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <AnimatePresence>
       <motion.main
@@ -80,7 +86,9 @@ export default function Services() {
           Mis Servicios
         </h2>
         {!user ? (
-          <div>cargando...</div>
+          <div className="flex items-center justify-center h-screen">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+          </div>
         ) : (
           user.toDos.map((toDo) => (
             <ActionServiceCard

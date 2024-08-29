@@ -1,15 +1,11 @@
 "use client";
-import MessageContainer from "@/app/components/chats/chat/MessageContainer";
-import MessageInput from "@/app/components/chats/chat/MessageInput";
-import NavBar from "@/app/components/nav_bar/NavBar";
+import { useEffect, useState } from "react";
 import { socket } from "@/app/socket";
-import { useState, useEffect } from "react";
 
-export default function ChatPage() {
+export default function PruebaPage() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTrasnport] = useState("N/A");
   const [receivedMessage, setReceivedMessage] = useState(""); // Estado para almacenar el mensaje recibido
-  const [message, setMessage] = useState(""); // Estado para almacenar el mensaje enviado
 
   useEffect(() => {
     const onMessage = (message) => {
@@ -54,24 +50,20 @@ export default function ChatPage() {
     };
   }, []);
 
-  const sendMessage = (message) => {
-    socket.emit("message", message);
-    setMessage(message);
-    console.log("Enviado:", message);
-  };
-
-  const receiveMessage = (message) => {
-    setReceivedMessage(message);
-  };
   return (
     <div>
-      <header className="px-2">
-        <NavBar />
-      </header>
-      <main className="flex flex-col justify-center items-center m-2">
-        <MessageContainer />
-        <MessageInput action={sendMessage} />
-      </main>
+      <p>Status: {isConnected ? "connected" : "disconnected"}</p>
+      <p>Transport: {transport}</p>
+      <p>Received Message: {receivedMessage}</p>{" "}
+      {/* Mostrar el mensaje recibido */}
+      <button
+        onClick={() => {
+          console.log("Emitiendo mensaje: hola");
+          socket.emit("message", "probando");
+        }}
+      >
+        Enviar
+      </button>
     </div>
   );
 }

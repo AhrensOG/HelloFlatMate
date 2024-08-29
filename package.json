@@ -2,10 +2,11 @@
   "name": "helloflatmate",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -34,6 +35,8 @@
     "react-dom": "^18",
     "react-signature-canvas": "^1.0.6",
     "sequelize": "^6.37.3",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "sonner": "^1.5.0",
     "stripe": "^16.7.0"
   },
