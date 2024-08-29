@@ -13,6 +13,7 @@ export default function PropertiesPanel({ data }) {
       <TitleAdminPanel title={"Propiedades"} />
 
       {data?.map((item, index) => {
+        item.link = `/pages/lease_order/${item.id}`;
         return <PropertyCard key={item?.id} data={item} />;
       })}
     </main>
