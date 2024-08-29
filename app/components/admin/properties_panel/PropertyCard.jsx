@@ -1,4 +1,4 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { DocumentIcon, PencilIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -72,10 +72,13 @@ export default function PropertyCard({ data }) {
             onClick={() => router.push(data.link)}
             className="h-9 w-9 border border-[#DDDFE1] text-[#0E155F] flex justify-center items-center"
           >
-            <PencilIcon className="h-6 w-6" />
+            <DocumentIcon className="h-6 w-6" />
           </button>
-          <button className="h-9 w-9 border border-[#DDDFE1] text-[#0E155F] flex justify-center items-center">
-            <TrashIcon className="h-6 w-6" />
+          <button
+            onClick={() => router.push(data.update || "#")}
+            className="h-9 w-9 border border-[#DDDFE1] text-[#0E155F] flex justify-center items-center"
+          >
+            <PencilIcon className="h-6 w-6" />
           </button>
         </div>
       </div>

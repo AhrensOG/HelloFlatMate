@@ -1,9 +1,9 @@
 import { plus_jakarta } from "@/font";
-import DocumentListItem from "../../documents/DocumentListItem";
+import { useState } from "react";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
+import DocumentListItem from "../../user/documents/DocumentListItem";
 import EyeButton from "./EyeButton";
 import PreviewModal from "./PreviewModal";
-import { useState } from "react";
 
 export default function DocumentsPanel() {
   const [showModal, setShowModal] = useState();

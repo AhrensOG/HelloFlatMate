@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Dropdown from "../auth/Dropdown";
+import Dropdown from "../public/auth/Dropdown";
 import { useState } from "react";
 import SideBar from "./side_bar/SideBar";
 import { useRouter } from "next/navigation";
@@ -48,7 +48,7 @@ export default function NavBar({
       </div>
       <div className="flex items-center gap-2 w-[87px] h-[34px]">
         <button
-          onClick={() => handleRedirect("/pages/notification")}
+          onClick={() => handleRedirect("/pages/user/notification")}
           type="button"
         >
           <Image

@@ -1,8 +1,7 @@
 import { useState } from "react";
-import TitleAdminPanel from "../../admin/shared/TitleAdminPanel";
-import PaymentCard from "../../admin/payments_history/PaymentCard";
-import EyeButton from "../../admin/documents_panel/EyeButton";
-import PaymentDetails from "../../admin/payments_history/PaymentDetails";
+import TitleOwnerPanel from "./TitleOwnerPanel";
+import PaymentCard from "./payment/PaymentCard";
+import PaymentDetails from "./payment/PaymentDetails";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
 
@@ -26,7 +25,7 @@ export default function PaymentHistory() {
           transition={{ duration: 0.8 }}
           className="w-full"
         >
-          <TitleAdminPanel title={"Historial de pagos"} />
+          <TitleOwnerPanel title={"Historial de pagos"} />
           <section className="flex flex-col py-6 gap-3 w-full">
             <PaymentCard
               name={"Villa eden"}
