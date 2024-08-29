@@ -14,7 +14,7 @@ export default function SearchBar({ showFilters, setShowFilters }) {
   };
 
   const handleRedirect = () => {
-    route.push(`/pages/filtered/${word}`);
+    route.push(`/pages/user/filtered/${word}`);
   };
   return (
     <div className="w-full">
