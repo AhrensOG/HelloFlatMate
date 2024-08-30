@@ -1,6 +1,6 @@
-import { createServer } from "node:http"
-import next from "next"
-import { Server } from "socket.io"
+const { createServer } = require("node:http");
+const next = require("next");
+const { Server } = require("socket.io");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -13,27 +13,39 @@ app.prepare().then(() => {
     const httpServer = createServer(handler);
 
     const io = new Server(httpServer, {
-        transports: ["polling", "websocket"]
+        transports: ["websocket", "polling"], // Incluye ambos transportes
     });
 
     io.on("connection", (socket) => {
         console.log("a user connected");
 
+        socket.on("joinChat", (roomId, callback) => {
+            socket.join(roomId);
+            console.log("User joined room: " + roomId);
+
+            // Emitir una confirmación
+            socket.emit("joinedRoom", "Te has unido a la sala " + roomId);
+            //callback
+            if (callback) {
+                callback();
+            }
+        });
+
+        socket.on("sendMessage", (message) => {
+            const roomId = message.roomId;
+            console.log("Message received: " + message.text);
+            io.to(roomId).emit("newMessage", message);
+        })
+
         socket.on("disconnect", () => {
             console.log("user disconnected");
-        })
-
-        socket.on("message", (message) => {
-            console.log("message: " + message);
-            socket.emit("message", message);
-        })
+        });
     });
 
-
-    httpServer.once("error", err => {
+    httpServer.once("error", (err) => {
         console.log(err);
         process.exit(1);
     }).listen(port, () => {
         console.log(`> Ready on http://localhost:${port}`);
     });
-})
+});

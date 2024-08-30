@@ -7,70 +7,58 @@ import { useState, useEffect } from "react";
 
 export default function ChatPage() {
   const [isConnected, setIsConnected] = useState(false);
-  const [transport, setTrasnport] = useState("N/A");
-  const [receivedMessage, setReceivedMessage] = useState(""); // Estado para almacenar el mensaje recibido
-  const [message, setMessage] = useState(""); // Estado para almacenar el mensaje enviado
+  const [transport, setTransport] = useState("N/A");
+  const [messages, setMessages] = useState([]); // Estado para almacenar los mensajes recibidos
 
   useEffect(() => {
     const onMessage = (message) => {
       console.log("Mensaje recibido en el cliente:", message);
-      setReceivedMessage(message); // Actualiza el estado con el mensaje recibido
+      setMessages((prevMessages) => [...prevMessages, message]); // Actualiza el estado con el mensaje recibido
     };
 
     const onConnect = () => {
       console.log("Conectado al servidor");
       setIsConnected(true);
-      setTrasnport(socket.io.engine.transport.name);
+      setTransport(socket.io.engine.transport.name);
 
-      // Mueve la configuración del evento `message` aquí para asegurarte de que se registra después de la conexión
-      socket.on("message", onMessage);
+      socket.on("newMessage", onMessage); // Cambié 'message' a 'newMessage' para que coincida con el evento del servidor
 
       socket.io.engine.on("upgrade", (transport) => {
         console.log("Transport upgraded to:", transport.name);
-        setTrasnport(transport.name);
+        setTransport(transport.name);
       });
     };
 
     const onDisconnect = () => {
       console.log("Desconectado del servidor");
       setIsConnected(false);
-      setTrasnport("N/A");
+      setTransport("N/A");
     };
-
-    // Maneja la situación donde el socket ya está conectado
-    if (socket.connected) {
-      console.log("Socket ya está conectado");
-      onConnect();
-    }
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
 
+    // Limpiar eventos
     return () => {
-      // Limpieza de eventos
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off("message", onMessage);
+      socket.off("newMessage", onMessage); // Cambié 'message' a 'newMessage'
     };
   }, []);
 
   const sendMessage = (message) => {
-    socket.emit("message", message);
-    setMessage(message);
+    socket.emit("sendMessage", { roomId: 1, text: message });
     console.log("Enviado:", message);
   };
 
-  const receiveMessage = (message) => {
-    setReceivedMessage(message);
-  };
   return (
     <div>
       <header className="px-2">
         <NavBar />
       </header>
       <main className="flex flex-col justify-center items-center m-2">
-        <MessageContainer />
-        <MessageInput action={sendMessage} />
+        <MessageContainer /> {/* Pasar mensajes al MessageContainer */}
+        <MessageInput onSendMessage={sendMessage} />
       </main>
     </div>
   );

@@ -5,7 +5,6 @@ import { getUserById } from "../../user/controllers/getUsersController";
 const login = async (req) => {
   try {
     const body = await req.json();
-    console.log(body);
 
     const user = await (await getUserById(body.id)).json();
 

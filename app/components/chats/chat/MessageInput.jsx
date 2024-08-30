@@ -1,19 +1,22 @@
 import { PaperAirplaneIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 
-export default function MessageInput({ action }) {
+export default function MessageInput({ onSendMessage }) {
   const [message, setMessage] = useState("");
   const onChangeInput = (e) => {
-    e.preventDefault();
-    setMessage("");
+    setMessage(e.target.value);
   };
 
-  const onSubmitMessage = (message) => {
-    action(message);
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (message) {
+      onSendMessage(message);
+      setMessage("");
+    }
   };
 
   return (
-    <form onSubmit={(e) => preventDefault(e)} action="" className="w-full">
+    <form onSubmit={sendMessage} action="" className="w-full">
       <section
         className="flex items-center justify-between gap-2 p-2 h-[5.5rem] w-full border border-[#D6D6DE] rounded-xl "
         style={{
@@ -32,6 +35,7 @@ export default function MessageInput({ action }) {
               type="text"
               name="message"
               id="message"
+              value={message || ""}
             />
           </div>
           <div className="flex justify-center items-center gap-2">
@@ -42,9 +46,8 @@ export default function MessageInput({ action }) {
               <PlusIcon />
             </button>
             <button
-              onClick={() => onSubmitMessage(message)}
               className="h-11 w-11 rounded-full bg-[#0E155F] p-[10px] text-white flex justify-center items-center"
-              type="button"
+              type="submit"
             >
               <PaperAirplaneIcon />
             </button>
