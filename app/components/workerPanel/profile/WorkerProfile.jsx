@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import ProfileCard from "../../profile/ProfileCard";
-import Logout from "../../profile/Logout";
+import ProfileCard from "../../user/profile/ProfileCard";
+import Logout from "../../user/profile/Logout";
 import ProfileWorkerOptions from "./ProfileWorkerOptions";
 
 export default function WorkerProfile() {

@@ -26,7 +26,7 @@ export default function SideBarButton({ title, icon, redirect }) {
         )}
         <h5 className="text-gris-español font-medium text-xl">{title}</h5>
       </div>
-      <div>
+      {/* <div>
         <Image
           className="self-end pb-[5px]"
           src={"/nav_bar/side_bar/item-side-bar-arrow.svg"}
@@ -35,7 +35,7 @@ export default function SideBarButton({ title, icon, redirect }) {
           height={8.03}
           alt={""}
         />
-      </div>
+      </div> */}
     </button>
   );
 }

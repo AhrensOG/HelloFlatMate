@@ -44,14 +44,14 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
 
 
         // LeaseOrderProperty
-        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
+        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderPropertyOwner" });
         LeaseOrderProperty.belongsTo(Property, { foreignKey: "propertyId", as: "property" }); // Usar el correcto foreignKey
         LeaseOrderProperty.belongsTo(Client, { foreignKey: "clientId", as: "client" });
 
         // LeaseOrderRoom
-        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "room" });
-        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
-        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "property" });
+        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "leaseOrderRoomRoom" });
+        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderRoomOwner" });
+        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "leaseOrderRoomProperty" });
         LeaseOrderRoom.belongsTo(Client, { foreignKey: "clientId", as: "client" });
 
         //COMMENT

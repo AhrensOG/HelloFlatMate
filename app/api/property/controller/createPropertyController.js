@@ -71,6 +71,8 @@ const createProperty = async (data) => {
             bed: data.bed,
             maximunOccupants: data.maximunOccupants,
             price: data.amountOwner + data.amountHelloflatmate || 0,
+            offer: data.offer || 0,
+            IVA: data.IVA || 0,
             amountOwner: data.amountOwner || 0,
             amountHelloflatmate: data.amountHelloflatmate || 0,
             puntuation: [],
@@ -93,6 +95,8 @@ const createProperty = async (data) => {
 
         return NextResponse.json({ message: "Propiedad cargada con éxito", property });
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
