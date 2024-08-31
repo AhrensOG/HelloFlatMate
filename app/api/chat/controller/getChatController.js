@@ -2,6 +2,8 @@ import { Chat, ChatParticipant, Message } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getChats() {
+    console.log("getChats");
+
     const chats = await Chat.findAll({
         include: [
             { model: Message, as: "messages" },

@@ -178,22 +178,22 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
 
         //Client and Owner
         Client.hasMany(ChatParticipant, {
-            as: "chatParticipants",
+            as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'Client' }
+            scope: { participantType: 'CLIENT' }
         });
         Owner.hasMany(ChatParticipant, {
-            as: "chatParticipants",
+            as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'Owner' }
+            scope: { participantType: 'OWNER' }
         })
         Admin.hasMany(ChatParticipant, {
-            as: "chatParticipants",
+            as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'Admin' }
+            scope: { participantType: 'ADMIN' }
         })
 
         //Message Users

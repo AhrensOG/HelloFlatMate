@@ -1,6 +1,7 @@
 export default function Message({ type, body, time }) {
   const sender = "border border-[#D6D6DE] rounded-sender self-end";
   const receiver = "bg-[#1C8CD6] rounded-receiver text-white self-start";
+
   return (
     <article
       className={`${

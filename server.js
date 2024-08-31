@@ -1,6 +1,7 @@
 const { createServer } = require("node:http");
 const next = require("next");
 const { Server } = require("socket.io");
+const { log } = require("node:console");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -19,12 +20,12 @@ app.prepare().then(() => {
     io.on("connection", (socket) => {
         console.log("a user connected");
 
-        socket.on("joinChat", (roomId, callback) => {
-            socket.join(roomId);
-            console.log("User joined room: " + roomId);
+        socket.on("joinChat", (chatId, callback) => {
+            socket.join(chatId);
+            console.log("User joined room: " + chatId);
 
             // Emitir una confirmación
-            socket.emit("joinedRoom", "Te has unido a la sala " + roomId);
+            socket.emit("joinedRoom", "Te has unido a la sala " + chatId);
             //callback
             if (callback) {
                 callback();
@@ -32,10 +33,12 @@ app.prepare().then(() => {
         });
 
         socket.on("sendMessage", (message) => {
-            const roomId = message.roomId;
-            console.log("Message received: " + message.text);
-            io.to(roomId).emit("newMessage", message);
-        })
+            const chatId = message.chatId;
+            console.log("Message received in room " + chatId + ": " + message.body);
+
+            // Emitir el mensaje a la sala especificada
+            io.to(chatId).emit("prueba", "hola")
+        });
 
         socket.on("disconnect", () => {
             console.log("user disconnected");
