@@ -1,13 +1,32 @@
 import { plus_jakarta } from "@/font";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import DocumentListItem from "../../user/documents/DocumentListItem";
 import EyeButton from "./EyeButton";
 import PreviewModal from "./PreviewModal";
+import { Context } from "@/app/context/GlobalContext";
+import { toast } from "sonner";
+import axios from "axios";
 
 export default function DocumentsPanel() {
   const [showModal, setShowModal] = useState();
   const [previewDocument, setPreviewDocument] = useState("");
+  const [documents, setDocuments] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await axios.get("/api/document");
+        setDocuments(data.data);
+      } catch (error) {
+        console.log(error);
+        toast.error("Error al cargar los documentos");
+      }
+    };
+    if (!documents) {
+      fetchData();
+    }
+  }, [documents]);
 
   const handleOpenModal = (img) => {
     setPreviewDocument(img);
@@ -18,6 +37,19 @@ export default function DocumentsPanel() {
     setPreviewDocument("");
     setShowModal(false);
   };
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+  };
+
+  if (!documents) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <>
       <main
@@ -25,86 +57,22 @@ export default function DocumentsPanel() {
       >
         <TitleAdminPanel title={"Documentos"} />
         <section className="w-full flex flex-col gap-4">
-          <DocumentListItem
-            type={"pdf"}
-            title={"Contrato activo"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
-          <DocumentListItem
-            type={"dni"}
-            title={"DNI"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
-          <DocumentListItem
-            type={"pdf"}
-            title={"Contrato activo"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
-          <DocumentListItem
-            type={"dni"}
-            title={"DNI"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
-          <DocumentListItem
-            type={"pdf"}
-            title={"Contrato activo"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
-          <DocumentListItem
-            type={"dni"}
-            title={"DNI"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
-          <DocumentListItem
-            type={"pdf"}
-            title={"Contrato activo"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
-          <DocumentListItem
-            type={"dni"}
-            title={"DNI"}
-            date={"28 Oct 2023"}
-            button={
-              <EyeButton
-                action={() => handleOpenModal("/admin/dni-example.png")}
-              />
-            }
-          />
+          {documents ? (
+            documents?.map((doc) => {
+              return (
+                <DocumentListItem
+                  type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
+                  title={doc.name}
+                  date={formatDate(doc.updatedAt)}
+                  button={<EyeButton action={() => handleOpenModal(doc.url)} />}
+                />
+              );
+            })
+          ) : (
+            <h3 className="text-lg font-semibold text-gray-500 text-center mt-4">
+              No hay documentos
+            </h3>
+          )}
         </section>
         {showModal && (
           <PreviewModal
