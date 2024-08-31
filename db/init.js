@@ -86,6 +86,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Client.hasMany(Document, {
             foreignKey: "documentableId",
             constraints: false,
+            as: "documents",
             scope: {
                 documentableType: "CLIENT"
             }
@@ -94,6 +95,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Owner.hasMany(Document, {
             foreignKey: "documentableId",
             constraints: false,
+            as: "documents",
             scope: {
                 documentableType: "OWNER"
             }
