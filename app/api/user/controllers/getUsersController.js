@@ -43,10 +43,18 @@ export async function getUserById(id) {
             include: [
                 {
                     model: LeaseOrderProperty,
-                    as: "leaseOrdersProperty"
+                    as: "leaseOrdersProperty",
+                    include: [{
+                        model: Property,
+                        as: "property"
+                    }]
                 }, {
                     model: LeaseOrderRoom,
-                    as: "leaseOrdersRoom"
+                    as: "leaseOrdersRoom",
+                    include: [{
+                        model: Property,
+                        as: "leaseOrderRoomProperty"
+                    }]
                 },
                 {
                     model: ToDo,
