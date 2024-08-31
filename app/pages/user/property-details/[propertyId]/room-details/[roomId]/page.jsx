@@ -70,7 +70,7 @@ export default function RoomDetails({ params }) {
     <div className="flex flex-col justify-center items-center relative">
       {console.log(roomData)}
 
-      <div className="flex flex-col max-w-screen-sm gap-2 ">
+      <div className="flex flex-col max-w-screen-sm w-full gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderDetails>
@@ -85,7 +85,7 @@ export default function RoomDetails({ params }) {
           <span className="px-3 text-lg font-medium text-slate-500" >{roomData.status === "RESERVED" || roomData.status === "OCCUPIED" ? "Reservada" : ""}</span>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-screen px-3`}
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
           <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
           <h4 className="text-[#000000B2] text-base">
