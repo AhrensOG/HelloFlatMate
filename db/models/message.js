@@ -1,8 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
-const User = require("./user");
-const Chat = require("./chat");
 
 const messageInit = (sequelize, DataTypes) => {
     class Message extends Model { }
@@ -22,14 +20,17 @@ const messageInit = (sequelize, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: false,
             },
-            nameUser: {
+            userName: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
-            }
-            ,
+            },
             userId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING(700),
                 allowNull: false,
+            },
+            userType: {
+                type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT"),
+                allowNull: false
             }
         },
         {

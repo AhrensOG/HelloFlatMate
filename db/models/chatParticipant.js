@@ -2,10 +2,10 @@
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
-const chatInit = (sequelize, DataTypes) => {
-    class Chat extends Model { }
+const chatParticipantInit = (sequelize, DataTypes) => {
+    class ChatParticipant extends Model { }
 
-    Chat.init(
+    ChatParticipant.init(
         {
             // CUSTOMIZED ID
             id: {
@@ -13,24 +13,24 @@ const chatInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            type: {
-                type: DataTypes.ENUM("PRIVATE", "GROUP"),
+            participantId: {
+                type: DataTypes.STRING(700),
                 allowNull: false,
             },
-            ownerId: {
-                type: DataTypes.STRING(300),
-                allowNull: true, // en caso que sea grupal
+            participantType: {
+                type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT"),
+                allowNull: false
             }
         },
         {
             sequelize,
-            modelName: "Chat",
+            modelName: "ChatParticipant",
             freezeTableName: true,
             timestamps: false,
         }
     );
 
-    return Chat;
+    return ChatParticipant;
 }
 
-module.exports = chatInit(connection, DataTypes)
+module.exports = chatParticipantInit(connection, DataTypes)

@@ -13,6 +13,7 @@ const Client = require("./models/client");
 const Admin = require("./models/admin");
 const Room = require("./models/room");
 const Supply = require("./models/supply");
+const ChatParticipant = require("./models/chatParticipant");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
@@ -22,7 +23,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //OWNER
         Owner.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "ownerId" });
         Owner.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "ownerId" });
-        Owner.hasMany(Chat, { as: "chats", foreignKey: "ownerId" });
         Owner.hasMany(Property, { as: "properties", foreignKey: "ownerId" });
 
         //PROPERTY
@@ -43,9 +43,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
 
 
-        //MESSAGE
-        Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
-
         // LeaseOrderProperty
         LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderPropertyOwner" });
         LeaseOrderProperty.belongsTo(Property, { foreignKey: "propertyId", as: "property" }); // Usar el correcto foreignKey
@@ -64,16 +61,18 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //CLIENT
         Client.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "clientId" });
         Client.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "clientId" });
-        Client.hasMany(Chat, { as: "chats", foreignKey: "chatParticipant" });
         Client.hasMany(Supply, { as: "supplies", foreignKey: "clientId" });
 
         //CHAT
         // Uno a Muchos
         Chat.hasMany(Message, { as: "messages", foreignKey: "chatId" });
-        Chat.hasMany(Client, { as: "participants", foreignKey: "chatId" });
+        Chat.hasMany(ChatParticipant, { as: "participants", foreignKey: "chatId" });
 
-        // Muchos a Uno
-        Chat.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+        //CHATPARTICIPANT
+        ChatParticipant.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
+
+        //MESSAGE
+        Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
 
         //ADMIN
         Admin.hasMany(ToDo, { as: "toDos", foreignKey: "adminId" });
@@ -157,6 +156,85 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             }
         });
 
+        //Chat
+        //ChatParticipant
+        ChatParticipant.belongsTo(Client,
+            {
+                as: "client",
+                foreignKey: "participantId",
+                constraints: false,
+            });
+        ChatParticipant.belongsTo(Owner,
+            {
+                as: "owner",
+                foreignKey: "participantId",
+                constraints: false,
+            });
+        ChatParticipant.belongsTo(Admin, {
+            as: "admin",
+            foreignKey: "participantId",
+            constraints: false,
+        })
+
+        //Client and Owner
+        Client.hasMany(ChatParticipant, {
+            as: "chatParticipants",
+            foreignKey: "participantId",
+            constraints: false,
+            scope: { participantType: 'Client' }
+        });
+        Owner.hasMany(ChatParticipant, {
+            as: "chatParticipants",
+            foreignKey: "participantId",
+            constraints: false,
+            scope: { participantType: 'Owner' }
+        })
+        Admin.hasMany(ChatParticipant, {
+            as: "chatParticipants",
+            foreignKey: "participantId",
+            constraints: false,
+            scope: { participantType: 'Admin' }
+        })
+
+        //Message Users
+        Client.hasMany(Message, {
+            as: "messages",
+            foreignKey: "userId",
+            constraints: false,
+            scope: { userType: 'CLIENT' }
+        })
+        Owner.hasMany(Message, {
+            as: "messages",
+            foreignKey: "userId",
+            constraints: false,
+            scope: { userType: 'OWNER' }
+        })
+        Admin.hasMany(Message, {
+            as: "messages",
+            foreignKey: "userId",
+            constraints: false,
+            scope: { userType: 'ADMIN' }
+        })
+
+        //Message
+        Message.belongsTo(Client, {
+            as: "client",
+            foreignKey: "userId",
+            constraints: false,
+            scope: { userType: 'CLIENT' }
+        })
+        Message.belongsTo(Owner, {
+            as: "owner",
+            foreignKey: "userId",
+            constraints: false,
+            scope: { userType: 'OWNER' }
+        })
+        Message.belongsTo(Admin, {
+            as: "admin",
+            foreignKey: "userId",
+            constraints: false,
+            scope: { userType: 'ADMIN' }
+        })
 
         // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
@@ -199,5 +277,6 @@ module.exports = {
     Admin,
     ToDo,
     Room,
-    Supply
+    Supply,
+    ChatParticipant
 };
