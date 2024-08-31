@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
-const SliderItem = ({ img, rounded = "" }) => {
+const SliderItem = ({ img, rounded = "", height = "h-[12.5rem]" }) => {
   return (
-    <div className="w-full relative h-[12.5rem]">
+    <div className={`w-full relative ${height}`}>
       <div className="absolute w-full h-full z-10" />
       <Image
         className={`object-cover object-center ${rounded}`}
