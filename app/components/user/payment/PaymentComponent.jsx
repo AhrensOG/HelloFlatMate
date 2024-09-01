@@ -2,7 +2,7 @@
 import { plus_jakarta } from "@/font";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import TitleSection from "../contract/TitleSection";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
@@ -18,24 +18,23 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
     contract: state.contractPdfData,
     signature: state.reservationInfo?.signature,
   };
+  const [existingDocuments, setExistingDocuments] = useState(
+    state.user?.documents || []
+  );
+
+  const findExistingDocument = (type) => {
+    return existingDocuments.find(
+      (doc) =>
+        doc.type === type &&
+        doc.documentableId === state.reservationInfo?.userContractInformation.id
+    );
+  };
 
   const uploadDocuments = async () => {
-    const documents = [
-      {
-        name:
-          "Contrato " +
-          state.reservationInfo?.userContractInformation.name +
-          " " +
-          state.reservationInfo?.userContractInformation.lastName,
-        type: "CONTRACT",
-        url: pdfUrl,
-        userId: state.reservationInfo?.userContractInformation.id,
-        typeUser: "CLIENT",
-      },
-    ];
     try {
-      //Cargar DNI en firebase
+      // Cargar o actualizar DNI en Firebase
       if (userDocuments.dni) {
+        const existingDni = findExistingDocument("IDENTIFICATION");
         const dniUrl = await uploadFiles(
           userDocuments.dni,
           "Documentos",
@@ -44,8 +43,13 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
             state.reservationInfo?.userContractInformation.lastName +
             " - Identificacion"
         );
-        if (dniUrl) {
-          documents.push({
+        if (existingDni && dniUrl.length > 0) {
+          await updateDocument({
+            ...existingDni,
+            url: dniUrl[0].url,
+          });
+        } else if (dniUrl) {
+          createDocument({
             name: dniUrl[0].name,
             type: "IDENTIFICATION",
             url: dniUrl[0].url,
@@ -53,11 +57,15 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
             typeUser: "CLIENT",
           });
         } else {
-          toast.error("Error al cargar la identificacion");
+          toast.error("Error al cargar la identificación");
         }
       }
-      //Cargar Nomina en firebase
+
+      // Cargar o actualizar Nómina en Firebase
       if (userDocuments.nomina) {
+        //Verifiar si tiene ya el documento
+        const existingNomina = findExistingDocument("ROSTER");
+        // Primero, sube el archivo a Firebase Storage
         const nominaUrl = await uploadFiles(
           userDocuments.nomina,
           "Documentos",
@@ -66,49 +74,72 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
             state.reservationInfo?.userContractInformation.lastName +
             " - Nomina"
         );
-        if (nominaUrl) {
-          documents.push({
-            name: nominaUrl[0].name,
-            type: "ROSTER",
-            url: nominaUrl[0].url,
+        if (nominaUrl && nominaUrl.length > 0) {
+          // Si ya existe un documento, lo actualizas
+          if (existingNomina) {
+            await updateDocument({
+              ...existingNomina,
+              url: nominaUrl[0].url,
+            });
+          } else {
+            // Si no existe, creas un nuevo documento
+            await createDocument({
+              name: nominaUrl[0].name,
+              type: "ROSTER",
+              url: nominaUrl[0].url,
+              userId: state.reservationInfo?.userContractInformation.id,
+              typeUser: "CLIENT",
+            });
+          }
+        } else {
+          toast.error("Error al cargar la nómina");
+        }
+      }
+
+      // Cargar o actualizar Contrato en Firebase
+      if (pdfUrl) {
+        const existingContract = findExistingDocument("CONTRACT");
+        if (existingContract) {
+          await updateDocument({ ...existingContract, url: pdfUrl });
+        } else {
+          createDocument({
+            name: userDocuments.contract.name,
+            type: "CONTRACT",
+            url: pdfUrl,
             userId: state.reservationInfo?.userContractInformation.id,
             typeUser: "CLIENT",
           });
-        } else {
-          toast.error("Error al cargar la Nomina");
         }
       }
-      await createDocuments(documents);
-      await updateUserSignature(state.reservationInfo?.signature[0]);
     } catch (error) {
       toast.error("Error al crear los documentos");
     }
   };
 
-  const createDocuments = async (array) => {
-    if (array) {
+  const createDocument = async (document) => {
+    if (document) {
       try {
-        array.forEach(async (document) => {
-          await axios.post("/api/document", document);
-        });
+        await axios.post("/api/document", document);
       } catch (error) {
         toast.error("Error al crear los documentos");
       }
     }
   };
 
-  const updateUserSignature = async (url) => {
+  const updateDocument = async (document) => {
     try {
-      await axios.patch("/api/user", {
-        id: state.reservationInfo?.userContractInformation.id,
-        signature: url,
-      });
+      await axios.put("/api/document", document);
     } catch (error) {
       console.log(error);
-
-      toast.error("Error al actualizar la firma");
+      toast.error("Error al actualizar el documento");
     }
   };
+
+  const finish = async () => {
+    await uploadDocuments();
+    handleContinue();
+  };
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -117,6 +148,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
       transition={{ duration: 0.5 }}
       className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
     >
+      {console.log(userDocuments)}
       <div className="flex items-center gap-5">
         <TitleSection
           title={"Resumen"}
@@ -168,7 +200,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
             loading: "Cargando...",
             success: () => {
               toast.success("Información guardada");
-              handleContinue();
+              finish();
             },
             error: "Error al cargar los documentos",
           });

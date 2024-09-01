@@ -1,4 +1,4 @@
-import { Document } from "@/db/init";
+import { Admin, Client, Document, Owner } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createDocument(data) {
