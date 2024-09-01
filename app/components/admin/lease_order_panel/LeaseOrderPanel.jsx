@@ -27,7 +27,9 @@ export default function LeaseOrderPanel(data) {
           const client = await axios.get(
             `/api/user?id=${leaserOrders[0].clientId}`
           );
-          setClient(client?.data || null);
+          if (client) {
+            setClient(client?.data || null);
+          }
         } catch (error) {
           console.log(error);
         }
@@ -130,7 +132,7 @@ export default function LeaseOrderPanel(data) {
       {/* Propiedades con room con precio */}
       {(property?.category === "HELLO_ROOM" ||
         property?.category === "HELLO_COLIVING") &&
-        (rooms.length > 0 ? (
+        (rooms ? (
           rooms.map((room) => {
             const hasInProgressOrders = room.leaseOrdersRoom.some(
               (leaseOrder) => leaseOrder.status === "PENDING"
@@ -214,7 +216,7 @@ export default function LeaseOrderPanel(data) {
       {/* Propiedades sin room con precio  */}
       {(property?.category === "HELLO_STUDIO" ||
         property?.category === "HELLO_LANDLORD") &&
-        (leaserOrders?.length > 0 ? (
+        (leaserOrders ? (
           leaserOrders.map((leaserOrder) => (
             <LeaseOrderSection data={leaserOrder} formatDate={formatDate} />
           ))
