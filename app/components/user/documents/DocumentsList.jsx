@@ -39,16 +39,21 @@ export default function DocumentsList({ action }) {
         </h1>
       </div>
       <div className="flex flex-col gap-3 py-4 px-4 w-full">
-        {console.log(user)}
-        {user?.documents.map((doc) => {
-          return (
-            <DocumentListItem
-              type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
-              title={doc.name}
-              date={formatDate(doc.updatedAt)}
-            />
-          );
-        })}
+        {user?.documents.length === 0 ? (
+          user?.documents.map((doc) => {
+            return (
+              <DocumentListItem
+                type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
+                title={doc.name}
+                date={formatDate(doc.updatedAt)}
+              />
+            );
+          })
+        ) : (
+          <h3 className="text-lg font-semibold text-gray-500 text-center mt-4">
+            No hay documentos
+          </h3>
+        )}
       </div>
       <button
         className="w-[20.31rem] h-[3.25rem] bg-payment-button-gradient hover:bg-payment-button-gradient-hover text-white font-normal text-base rounded-xl"

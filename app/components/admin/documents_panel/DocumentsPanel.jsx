@@ -57,16 +57,22 @@ export default function DocumentsPanel() {
       >
         <TitleAdminPanel title={"Documentos"} />
         <section className="w-full flex flex-col gap-4">
-          {documents?.map((doc) => {
-            return (
-              <DocumentListItem
-                type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
-                title={doc.name}
-                date={formatDate(doc.updatedAt)}
-                button={<EyeButton action={() => handleOpenModal(doc.url)} />}
-              />
-            );
-          })}
+          {documents ? (
+            documents?.map((doc) => {
+              return (
+                <DocumentListItem
+                  type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
+                  title={doc.name}
+                  date={formatDate(doc.updatedAt)}
+                  button={<EyeButton action={() => handleOpenModal(doc.url)} />}
+                />
+              );
+            })
+          ) : (
+            <h3 className="text-lg font-semibold text-gray-500 text-center mt-4">
+              No hay documentos
+            </h3>
+          )}
         </section>
         {showModal && (
           <PreviewModal
