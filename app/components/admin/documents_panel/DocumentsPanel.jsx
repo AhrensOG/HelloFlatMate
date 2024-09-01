@@ -28,8 +28,8 @@ export default function DocumentsPanel() {
     }
   }, [documents]);
 
-  const handleOpenModal = (img) => {
-    setPreviewDocument(img);
+  const handleOpenModal = (data) => {
+    setPreviewDocument(data);
     setShowModal(true);
   };
 
@@ -58,13 +58,13 @@ export default function DocumentsPanel() {
         <TitleAdminPanel title={"Documentos"} />
         <section className="w-full flex flex-col gap-4">
           {documents ? (
-            documents?.map((doc) => {
+            documents?.map((doc, index) => {
               return (
                 <DocumentListItem
                   type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
                   title={doc.name}
                   date={formatDate(doc.updatedAt)}
-                  button={<EyeButton action={() => handleOpenModal(doc.url)} />}
+                  button={<EyeButton action={() => handleOpenModal(doc)} />}
                 />
               );
             })
@@ -77,7 +77,7 @@ export default function DocumentsPanel() {
         {showModal && (
           <PreviewModal
             action={() => handleCloseModal()}
-            img={previewDocument}
+            data={previewDocument}
           />
         )}
       </main>

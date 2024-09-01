@@ -29,6 +29,7 @@ export async function PUT(req) {
 
 export async function PATCH(req) {
     const data = await req.json()
+
     if (data.signature) {
         const result = await updateSignarute(data)
         return result
