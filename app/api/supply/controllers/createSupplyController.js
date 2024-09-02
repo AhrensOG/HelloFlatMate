@@ -2,10 +2,14 @@ import { Client, LeaseOrderProperty, LeaseOrderRoom, Property, Room, Supply } fr
 import { NextResponse } from "next/server";
 
 export async function createSupply(data) {
+    console.log(data);
+
     if (!data) return NextResponse.json({ error: "No data provided" }, { status: 400 });
     if (!data.title || data.title.trim() === "") return NextResponse.json({ error: "No title provided" }, { status: 400 });
     if (!data.amount || data.amount <= 0) return NextResponse.json({ error: "Invalid amount provided" }, { status: 400 });
     if (!data.propertyId || data.propertyId <= 0) return NextResponse.json({ error: "No property id provided" }, { status: 400 });
+    if (!data.typeSupply || data.typeSupply !== "EXPENSES" && data.typeSupply !== "WATER" && data.typeSupply !== "GAS" && data.typeSupply !== "ELECTRICITY" && data.typeSupply !== "INTERNET") return NextResponse.json({ error: "Invalid type provided" }, { status: 400 });
+    if (!data.expirationDate) return NextResponse.json({ error: "No expiration date provided" }, { status: 400 });
 
     try {
         const property = await Property.findByPk(data.propertyId, {
@@ -49,7 +53,10 @@ export async function createSupply(data) {
                     date: new Date(),
                     status: "PENDING",
                     propertyId: data.propertyId,
-                    clientId: client.id
+                    clientId: client.id,
+                    reference: data.reference || "",
+                    type: data.typeSupply,
+                    expirationDate: new Date(data.expirationDate)
                 });
             }
             return NextResponse.json({ message: "Supply created successfully" }, { status: 200 });
@@ -66,7 +73,10 @@ export async function createSupply(data) {
                 date: new Date(),
                 status: "PENDING",
                 propertyId: data.propertyId,
-                clientId: client.id
+                clientId: client.id,
+                reference: data.reference || "",
+                type: data.typeSupply,
+                expirationDate: new Date(data.expirationDate)
             });
         }
         return NextResponse.json({ message: "Supply created successfully" }, { status: 200 });

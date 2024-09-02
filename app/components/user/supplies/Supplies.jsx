@@ -2,12 +2,23 @@ import { ArrowLeftIcon, ChevronLeftIcon } from "@heroicons/react/20/solid";
 import SupplieCard from "./SupplieCard";
 import { useRouter } from "next/navigation";
 import { plus_jakarta } from "@/font";
+import { useContext } from "react";
+import { Context } from "@/app/context/GlobalContext";
 
 export default function Supplies() {
   const route = useRouter();
-
+  const { state, dispatch } = useContext(Context);
+  const { user } = state;
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <main className={`${plus_jakarta.className} w-full m-auto`}>
+      {console.log(state)}
       <section className="flex items-center justify-between w-full  my-7">
         <button
           onClick={() => route.back()}
@@ -21,38 +32,19 @@ export default function Supplies() {
         </h1>
       </section>
       <section className="flex flex-col p-2 gap-4 w-full items-center">
-        <SupplieCard
-          status={"pending"}
-          name={"Agua"}
-          image={"/supplies/whater.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
-        <SupplieCard
-          status={"completed"}
-          name={"Gas"}
-          image={"/supplies/gas.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
-        <SupplieCard
-          status={"in_process"}
-          name={"Internet"}
-          image={"/supplies/wifi.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
-        <SupplieCard
-          status={"pending"}
-          name={"Tasas"}
-          image={"/supplies/tax.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
+        {user.supplies && user.supplies.length > 0 ? (
+          user.supplies.map((supplie) => (
+            <SupplieCard
+              key={supplie.id}
+              data={supplie}
+              userName={user.name + " " + user.lastName}
+            />
+          ))
+        ) : (
+          <p className="text-sm text-[#464E5F] font-normal">
+            No tienes suministros
+          </p>
+        )}
       </section>
     </main>
   );
