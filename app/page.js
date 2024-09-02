@@ -39,6 +39,8 @@ export default function Home() {
       setProperties(state.properties);
       setPropertiesInOffer(filterOffer(state.properties));
       toast.success("Propiedades actualizadas");
+      console.log(state.properties);
+
     }
   }, [state.properties, dispatch]);
 

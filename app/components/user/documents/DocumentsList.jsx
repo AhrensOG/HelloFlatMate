@@ -39,7 +39,7 @@ export default function DocumentsList({ action }) {
         </h1>
       </div>
       <div className="flex flex-col gap-3 py-4 px-4 w-full">
-        {user?.documents.length === 0 ? (
+        {user?.documents.length > 0 ? (
           user?.documents.map((doc) => {
             return (
               <DocumentListItem

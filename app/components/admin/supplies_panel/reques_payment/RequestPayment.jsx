@@ -8,9 +8,11 @@ export default function RequestPayment({ next, back }) {
   const [date, setDate] = useState("");
   const [reference, setReference] = useState("");
   const [amount, setAmount] = useState("");
-  const [discount, setDiscount] = useState();
+  const [discount, setDiscount] = useState("");
+  const [title, setTitle] = useState("");
+  const [typeSupply, setTypeSupply] = useState("");
 
-  const formatData = (event) => {
+  const formatDate = (event) => {
     let input = event.target.value.replace(/\D/g, "");
     if (input.length > 2 && input.length < 5) {
       input = input.slice(0, 2) + "/" + input.slice(2);
@@ -21,6 +23,7 @@ export default function RequestPayment({ next, back }) {
     event.target.value = input;
     setDate(input);
   };
+
   const cleanDate = () => {
     return setDate("");
   };
@@ -44,22 +47,56 @@ export default function RequestPayment({ next, back }) {
             />
           </button>
         </div>
+        <div className="flex flex-col gap-2 w-full">
+          <label className="font-medium text-base pl-3" htmlFor="title">
+            Título de la Factura
+          </label>
+          <input
+            onChange={(e) => setTitle(e.target.value)}
+            className="appearance-none outline-none border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Ej. Factura de Agua"
+            value={title}
+          />
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <label className="font-medium text-base pl-3" htmlFor="typeSupply">
+            Tipo de Suministro
+          </label>
+          <select
+            onChange={(e) => setTypeSupply(e.target.value)}
+            className="appearance-none outline-none border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
+            name="typeSupply"
+            id="typeSupply"
+            value={typeSupply}
+          >
+            <option value="" disabled>
+              Selecciona un tipo de suministro
+            </option>
+            <option value="WATER">Agua</option>
+            <option value="GAS">Gas</option>
+            <option value="ELECTRICITY">Electricidad</option>
+            <option value="EXPENSES">Gastos</option>
+            <option value="INTERNET">Internet</option>
+            <option value="OTHERS">Otros</option>
+          </select>
+        </div>
         <form
-          className=" w-full justify-center items-center gap-6 flex flex-col"
+          className="w-full justify-center items-center gap-6 flex flex-col"
           action=""
         >
           <div className="flex flex-col gap-2 w-full">
             <label className="font-medium text-base pl-3" htmlFor="date">
               Fecha
             </label>
-            <div className="flex gap-2  border border-[#DDDDDD] bg-white rounded-xl p-2">
+            <div className="flex gap-2 border border-[#DDDDDD] bg-white rounded-xl p-2">
               <span>
                 <CalendarDaysIcon className="flex justify-center items-center h-5 w-5 text-[#AAAAAA]" />
               </span>
               <input
-                onChange={(e) => {
-                  formatData(e);
-                }}
+                onChange={formatDate}
                 className="appearance-none outline-none w-full"
                 type="text"
                 name="date"
@@ -84,13 +121,11 @@ export default function RequestPayment({ next, back }) {
               Referencia (Opcional)
             </label>
             <input
-              onChange={(e) => {
-                setReference(e.target.value);
-              }}
-              className="appearance-none outline-none  border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
+              onChange={(e) => setReference(e.target.value)}
+              className="appearance-none outline-none border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
               type="text"
               name="reference"
-              id="text"
+              id="reference"
             />
           </div>
           <div className="flex gap-2 flex-col items-center w-full text-start">
@@ -101,10 +136,8 @@ export default function RequestPayment({ next, back }) {
               Descuentos
             </label>
             <textarea
-              onChange={(e) => {
-                setDiscount(e.target.value);
-              }}
-              className="appearance-none outline-none  border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
+              onChange={(e) => setDiscount(e.target.value)}
+              className="appearance-none outline-none border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
               name="discount"
               id="discount"
             ></textarea>
@@ -117,10 +150,8 @@ export default function RequestPayment({ next, back }) {
               Total
             </label>
             <input
-              onChange={(e) => {
-                setAmount(e.target.value);
-              }}
-              className="appearance-none outline-none  border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
+              onChange={(e) => setAmount(e.target.value)}
+              className="appearance-none outline-none border border-[#DDDDDD] bg-white rounded-xl p-2 w-full"
               type="text"
               name="total"
               id="total"
@@ -128,7 +159,16 @@ export default function RequestPayment({ next, back }) {
           </div>
           <div className="flex justify-center items-center">
             <button
-              onClick={next}
+              onClick={() => {
+                next({
+                  title,
+                  typeSupply,
+                  date,
+                  reference,
+                  discount,
+                  amount,
+                });
+              }}
               className="p-2 px-12 rounded-2xl text-white bg-[#0E155F]"
               type="button"
             >

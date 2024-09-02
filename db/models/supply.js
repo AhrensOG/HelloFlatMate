@@ -16,11 +16,19 @@ const supplyInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: false
             },
+            type: {
+                type: DataTypes.ENUM("WATER", "GAS", "ELECTRICITY", "EXPENSES", "INTERNET", "OTHERS"),
+                allowNull: false
+            },
             amount: {
                 type: DataTypes.FLOAT,
                 allowNull: false
             },
             date: {
+                type: DataTypes.DATE,
+                allowNull: false
+            },
+            expirationDate: {
                 type: DataTypes.DATE,
                 allowNull: false
             },
@@ -30,6 +38,18 @@ const supplyInit = (sequelize, DataTypes) => {
             },
             paymentDate: {
                 type: DataTypes.DATE,
+                allowNull: true
+            },
+            reference: {
+                type: DataTypes.STRING(100),
+                allowNull: true
+            },
+            discount: {
+                type: DataTypes.FLOAT,
+                allowNull: true
+            },
+            ulrPaid: {
+                type: DataTypes.STRING(500),
                 allowNull: true
             }
         },

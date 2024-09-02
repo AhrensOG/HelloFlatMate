@@ -18,13 +18,11 @@ export async function middleware(request) {
   const cookieStore = cookies(); // Usa cookies() para acceder a las cookies
   const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
-  // console.log("Token:", token);
-
   // Define rutas permitidas sin autenticación
-  const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth", "/api/stripe/webhook", "/api/user"]; // Asegúrate de que las rutas estén correctas
+  const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth", "/api/stripe/webhook", "/api/user", "/"]; // Incluye la ruta raíz (home) para usuarios no autenticados
   const pathName = new URL(request.url).pathname;
 
-  // Permitir acceso a rutas permitidas
+  // Permitir acceso a rutas permitidas sin autenticación
   if (allowedPaths.includes(pathName)) {
     return NextResponse.next();
   }
@@ -52,12 +50,32 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL("/pages/auth", request.url));
   }
 
-  const { role, accessToken } = decodedToken;
+  const { role } = decodedToken;
 
-  // console.log("Role:", role);
+  console.log("Role:", role);
   // console.log("Access Token:", accessToken);
 
-  // Aquí puedes agregar más lógica según el role o el accessToken si es necesario
+  const rolesPaths = {
+    ADMIN: ["/pages/admin", "/pages/user", "/api/property"],
+    OWNER: ["/pages/owner", "/pages/user", "/api/property"],
+    CLIENT: ["/pages/user", "/api/property"],
+  }
+
+  // Verificar si el rol tiene acceso a la ruta solicitada
+  const allowedRolesPaths = rolesPaths[role] || [];
+
+  const hasAccess = allowedRolesPaths.some(allowedPath => pathName.startsWith(allowedPath));
+
+  // Si el rol no tiene acceso a la ruta solicitada y no es la página de inicio
+  if (!hasAccess && pathName !== "/") {
+    // Redirige al usuario a la página de autenticación
+    return NextResponse.redirect(new URL("/pages/auth", request.url));
+  }
+
+  // Si no hay rol y el usuario intenta acceder a la página de inicio, redirige a /pages/guest
+  if (!role && pathName === "/") {
+    return NextResponse.redirect(new URL("/pages/guest", request.url));
+  }
 
   // Continuar si el token está presente y es válido
   return NextResponse.next();
