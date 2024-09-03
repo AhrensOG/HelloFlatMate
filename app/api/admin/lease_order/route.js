@@ -1,6 +1,5 @@
-import { createLeasePropertyOrder, createLeaseRoomOrder } from "./controller/createLeaseOrderController";
 import { getAllLeaseOrders, getLeaserOrderById } from "./controller/getLeaseOrderController";
-import { updateLeaseOrder, updateStatusLeaseOrder } from "./controller/updateLeaseOrderController";
+import { updateStatusLeaseOrder } from "./controller/updateLeaseOrderController";
 import { deleteLeaseOrder } from "./controller/deleteLeaseOrderController";
 
 

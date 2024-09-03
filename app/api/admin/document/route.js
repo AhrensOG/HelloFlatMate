@@ -1,6 +1,4 @@
-import { createDocument } from "./controller/createDocumentController";
-import { getAllDocuments, getDocumentById, getDocumentsByType, getDocumentsByUser } from "./controller/getDocumentController";
-import { updateDocument, updateStateDocument } from "./controller/updateDocumentController";
+import { getAllDocuments, getDocumentById } from "./controller/getDocumentController";
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url)
