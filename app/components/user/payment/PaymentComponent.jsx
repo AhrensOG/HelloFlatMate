@@ -46,13 +46,13 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
         if (existingDni && dniUrl.length > 0) {
           await updateDocument({
             ...existingDni,
-            url: dniUrl[0].url,
+            urls: dniUrl.map((doc) => doc.url),
           });
         } else if (dniUrl) {
           createDocument({
             name: dniUrl[0].name,
             type: "IDENTIFICATION",
-            url: dniUrl[0].url,
+            urls: dniUrl.map((doc) => doc.url),
             userId: state.reservationInfo?.userContractInformation.id,
             typeUser: "CLIENT",
           });
@@ -79,14 +79,14 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
           if (existingNomina) {
             await updateDocument({
               ...existingNomina,
-              url: nominaUrl[0].url,
+              urls: nominaUrl.map((doc) => doc.url),
             });
           } else {
             // Si no existe, creas un nuevo documento
             await createDocument({
               name: nominaUrl[0].name,
               type: "ROSTER",
-              url: nominaUrl[0].url,
+              urls: nominaUrl.map((doc) => doc.url),
               userId: state.reservationInfo?.userContractInformation.id,
               typeUser: "CLIENT",
             });
@@ -100,12 +100,12 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
       if (pdfUrl) {
         const existingContract = findExistingDocument("CONTRACT");
         if (existingContract) {
-          await updateDocument({ ...existingContract, url: pdfUrl });
+          await updateDocument({ ...existingContract, urls: [pdfUrl] });
         } else {
           createDocument({
             name: userDocuments.contract.name,
             type: "CONTRACT",
-            url: pdfUrl,
+            urls: [pdfUrl],
             userId: state.reservationInfo?.userContractInformation.id,
             typeUser: "CLIENT",
           });
@@ -136,7 +136,6 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
   };
 
   const finish = async () => {
-    await uploadDocuments();
     handleContinue();
   };
 

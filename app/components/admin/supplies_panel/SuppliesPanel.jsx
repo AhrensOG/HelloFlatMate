@@ -37,7 +37,7 @@ export default function SuppliesPanel() {
       propertyId: 24,
     };
     try {
-      const response = await axios.post("/api/supply", supply);
+      const response = await axios.post("/api/admin/supply", supply);
       return response.data;
     } catch (error) {
       throw error;
@@ -47,7 +47,7 @@ export default function SuppliesPanel() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/supply");
+        const response = await axios.get("/api/admin/supply");
         console.log(response.data);
 
         setSuppliesList(response.data);

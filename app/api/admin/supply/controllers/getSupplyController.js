@@ -1,7 +1,16 @@
 import { Client, Property, Supply } from "@/db/init";
 import { NextResponse } from "next/server";
 
-
+export async function getAllSupplies() {
+    const supplies = await Supply.findAll({
+        include: {
+            model: Client,
+            as: "client"
+        }
+    })
+    if (!supplies) return NextResponse.json({ error: "Supplies not found" }, { status: 404 })
+    return NextResponse.json(supplies)
+}
 
 export async function getSupply(id) {
     const supply = await Supply.findByPk(id, {

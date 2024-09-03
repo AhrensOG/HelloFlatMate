@@ -16,7 +16,7 @@ export default function DocumentsPanel() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get("/api/document");
+        const data = await axios.get("/api/user/document");
         setDocuments(data.data);
       } catch (error) {
         console.log(error);

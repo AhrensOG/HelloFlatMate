@@ -13,7 +13,7 @@ export default function PreviewModal({ action, data }) {
         adminId: "89",
         state: action,
       };
-      const response = await axios.patch("/api/document", dataRequest);
+      const response = await axios.patch("/api/admin/document", dataRequest);
       console.log(response);
     } catch (error) {
       console.log(error);
