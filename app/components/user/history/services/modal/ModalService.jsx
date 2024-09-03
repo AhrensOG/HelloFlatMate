@@ -6,7 +6,7 @@ import { useState } from "react";
 import FinishRequest from "./FinishRequest";
 import { motion } from "framer-motion";
 
-export default function ModalService({ action, type }) {
+export default function ModalService({ action, type, propertyId, user }) {
   const [infoService, setInfoService] = useState({
     type: type,
     day: null,
@@ -68,8 +68,6 @@ export default function ModalService({ action, type }) {
   };
 
   const handleNextModal = () => {
-    console.log(infoService);
-
     setNextModal(nextModal + 1);
   };
 
@@ -133,7 +131,7 @@ export default function ModalService({ action, type }) {
         <FinishRequest
           next={handleNextModal}
           prev={handlePreviousModal}
-          data={infoService}
+          data={{ ...infoService, propertyId: propertyId, user }}
         />
       ) : nextModal === 2 ? (
         <motion.h2

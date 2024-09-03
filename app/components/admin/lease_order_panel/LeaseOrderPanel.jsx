@@ -5,8 +5,12 @@ import LeaseOrderSection from "./LeaseOrderSection";
 import LeaseOrderClientSection from "./LeaseOrderClientSection";
 import LeaseOrderPropertySection from "./LeaseOrderPropertySection";
 import LeaseOrderOwnerSection from "./LeaseOrderOwnerSection";
+import TitleSectionTemplate from "../property_magnament/create/main/TitleSectionTemplate";
+import TitleAdminPanel from "../shared/TitleAdminPanel";
+import { useRouter } from "next/navigation";
 
 export default function LeaseOrderPanel(data) {
+  const router = useRouter();
   const [leaserOrders, setLeaserOrders] = useState(
     data.data?.category === "HELLO_STUDIO" ||
       data.data?.category === "HELLO_LANDLORD"
@@ -25,7 +29,7 @@ export default function LeaseOrderPanel(data) {
       const fetchClient = async () => {
         try {
           const client = await axios.get(
-            `/api/user?id=${leaserOrders[0].clientId}`
+            `/api/user?id=${leaserOrders[0]?.clientId}`
           );
           if (client) {
             setClient(client?.data || null);
@@ -36,7 +40,7 @@ export default function LeaseOrderPanel(data) {
       };
       const fetchOwner = async () => {
         try {
-          const owner = await axios.get(`/api/user?id=${property.ownerId}`);
+          const owner = await axios.get(`/api/user?id=${property?.ownerId}`);
           setOwner(owner?.data || null);
         } catch (error) {
           console.log(error);
@@ -128,7 +132,8 @@ export default function LeaseOrderPanel(data) {
   }
 
   return (
-    <main className="max-w-4xl mx-auto my-8 p-4">
+    <main className="max-w-4xl mx-auto my-8 p-4 flex flex-col gap-2">
+      <TitleAdminPanel title="Lease Orders" />
       {/* Propiedades con room con precio */}
       {(property?.category === "HELLO_ROOM" ||
         property?.category === "HELLO_COLIVING") &&
@@ -277,6 +282,21 @@ export default function LeaseOrderPanel(data) {
             </button>
           </div>
         )}
+      <div className="flex justify-between gap-2">
+        <button
+          onClick={() => router.push(`/pages/admin/supplies/${property.id}`)}
+          type="button"
+          className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Ir a suministros
+        </button>
+        <button
+          type="button"
+          className="px-6 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition"
+        >
+          Ir a documentos
+        </button>
+      </div>
     </main>
   );
 }

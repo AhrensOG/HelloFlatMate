@@ -92,7 +92,7 @@ export async function updateStatusLeaseOrder(data) {
             leaseOrderRoom.status = "APPROVED"
             leaseOrderRoom.isActive = true
             room.status = "OCCUPIED"
-            property.status = roomsAvaible.length > 0 ? "OCCUPIED" : "FREE"
+            property.status = roomsAvaible.length < 1 ? "OCCUPIED" : "FREE"
 
             await leaseOrderRoom.save()
             await room.save()

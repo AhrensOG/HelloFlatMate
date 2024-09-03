@@ -1,15 +1,6 @@
-import { Client, LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
+import { Property, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
-export async function getPropertyByUserId(userId) {
-    if (!userId) {
-        const property = await Property.findAll({
-            where: {
-
-            }
-        })
-    }
-}
 
 export async function getAllProperties() {
     try {

@@ -1,7 +1,7 @@
 import { MinusIcon, XCircleIcon } from "@heroicons/react/20/solid";
 import { CalendarDaysIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function RequestPayment({ next, back }) {
@@ -27,6 +27,14 @@ export default function RequestPayment({ next, back }) {
   const cleanDate = () => {
     return setDate("");
   };
+
+  useEffect(() => {
+    setAmount(amount);
+    setDiscount(discount);
+    setReference(reference);
+    setTitle(title);
+    setTypeSupply(typeSupply);
+  }, [amount, discount, reference, title, typeSupply]);
 
   return (
     <motion.aside

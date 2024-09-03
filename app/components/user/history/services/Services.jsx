@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
 
-export default function Services() {
+export default function Services({ id }) {
   const route = useRouter();
   const { state, dispatch } = useContext(Context);
   const [user, setUser] = useState(null);
@@ -68,7 +68,7 @@ export default function Services() {
           img={"/services/clean-stock-1.jpg"}
           position={"rigth"}
           action={() => {
-            route.push("/pages/user/services/request/" + "CLEAN");
+            route.push("/pages/user/services/" + id + "/request/" + "CLEAN");
           }}
         />
         <ActionServiceCard
@@ -78,7 +78,7 @@ export default function Services() {
           }
           img={"/services/repair-stock.jpg"}
           action={() => {
-            route.push("/pages/user/services/request/" + "REPAIR");
+            route.push("/pages/user/services/" + id + "/request/" + "REPAIR");
           }}
         />
 
