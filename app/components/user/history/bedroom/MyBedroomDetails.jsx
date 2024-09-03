@@ -6,6 +6,7 @@ import SliderItem from "../../property-details/header/slider/SliderItem";
 
 export default function MyBedroomDetails({ room }) {
   const { type, location, dueDate, price, amenities, images } = room;
+  console.log(room);
 
   const [nextDueDate, setNextDueDate] = useState(null);
 
@@ -53,7 +54,14 @@ export default function MyBedroomDetails({ room }) {
       <div className="relative rounded-2xl h-[250px] w-full">
         <SliderDetails rounded="rounded-2xl">
           {images.map((image, index) => {
-            return <SliderItem rounded="rounded-2xl" height="h-[250px]" key={index} img={image} />;
+            return (
+              <SliderItem
+                rounded="rounded-2xl"
+                height="h-[250px]"
+                key={index}
+                img={image}
+              />
+            );
           })}
         </SliderDetails>
         <p className="absolute top-0 right-0 z-50 flex items-center justify-center w-[6.7rem] h-[1.88rem] rounded-bl-3xl rounded-tr-2xl bg-[#0C1660] text-white text-xs text-center">

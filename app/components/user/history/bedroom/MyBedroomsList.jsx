@@ -36,6 +36,7 @@ export default function MyBedroomsList({ action, user, properties }) {
               dueDate: date, // Puedes formatear la fecha según sea necesario
               price: prop.price,
               amenities: prop.amenities,
+              id: prop.propertyId || prop.id,
             });
           };
 

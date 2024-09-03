@@ -1,7 +1,9 @@
 import { useRouter } from "next/navigation";
 import ActivityItem from "./my_bedrooms_activity/ActivityItem";
 
-export default function MyBedroomActivitys() {
+export default function MyBedroomActivitys({ data }) {
+  console.log(data);
+
   const route = useRouter();
   return (
     <section className="flex flex-col gap-4">
@@ -41,7 +43,7 @@ export default function MyBedroomActivitys() {
           title={"Suministros"}
           img={"/my_bedrooms/activitys/flash.svg"}
           action={() => {
-            route.push("/pages/user/supplies");
+            route.push("/pages/user/supplies/" + data.id);
           }}
         />
         <ActivityItem

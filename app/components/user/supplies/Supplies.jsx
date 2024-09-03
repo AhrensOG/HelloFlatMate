@@ -5,20 +5,10 @@ import { plus_jakarta } from "@/font";
 import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 
-export default function Supplies() {
+export default function Supplies({ data, user }) {
   const route = useRouter();
-  const { state, dispatch } = useContext(Context);
-  const { user } = state;
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-      </div>
-    );
-  }
   return (
     <main className={`${plus_jakarta.className} w-full m-auto`}>
-      {console.log(state)}
       <section className="flex items-center justify-between w-full  my-7">
         <button
           onClick={() => route.back()}
@@ -32,13 +22,9 @@ export default function Supplies() {
         </h1>
       </section>
       <section className="flex flex-col p-2 gap-4 w-full items-center">
-        {user.supplies && user.supplies.length > 0 ? (
-          user.supplies.map((supplie) => (
-            <SupplieCard
-              key={supplie.id}
-              data={supplie}
-              userName={user.name + " " + user.lastName}
-            />
+        {data && data.length > 0 ? (
+          data.map((supplie) => (
+            <SupplieCard key={supplie.id} data={supplie} userName={user} />
           ))
         ) : (
           <p className="text-sm text-[#464E5F] font-normal">

@@ -1,0 +1,12 @@
+
+import { getAllProperties, getPropertyByUserId } from './controller/getPropertyController';
+export async function GET(req) {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    if (id) {
+        const result = await getPropertyByUserId(id);
+        return result
+    }
+    const result = await getAllProperties();
+    return result
+}

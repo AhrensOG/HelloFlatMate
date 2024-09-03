@@ -33,6 +33,7 @@ export default function MyBedrooms() {
       const user = state?.user;
       const rooms = user?.leaseOrdersRoom || [];
       const properties = user?.leaseOrdersProperty || [];
+
       setPropertiesList([...rooms, ...properties]);
     }
   }, [state?.user]);
@@ -85,7 +86,7 @@ export default function MyBedrooms() {
               {selectedRoom && (
                 <div className="flex flex-col justify-center items-center gap-6 w-full">
                   <MyBedroomDetails room={selectedRoom} />
-                  <MyBedroomActivitys />
+                  <MyBedroomActivitys data={selectedRoom} />
                 </div>
               )}
             </motion.div>

@@ -169,7 +169,7 @@ export default function SideBar({
               />
             </div>
           </div>
-          {(user.role === "CLIENT" || !user) && (
+          {(user?.role === "CLIENT" || !user) && (
             <nav className="flex flex-col w-full gap-4">
               <button
                 onClick={() => handleRedirect("/")}
@@ -200,7 +200,7 @@ export default function SideBar({
               })}
             </nav>
           )}
-          {user.role === "OWNER" && (
+          {user?.role === "OWNER" && (
             <nav className="flex flex-col w-full gap-4">
               <button
                 onClick={() => handleRedirect("/")}
@@ -231,7 +231,7 @@ export default function SideBar({
               })}
             </nav>
           )}
-          {user.role === "ADMIN" && (
+          {user?.role === "ADMIN" && (
             <nav className="flex flex-col w-full gap-4">
               <button
                 onClick={() => handleRedirect("/")}
@@ -251,7 +251,7 @@ export default function SideBar({
                   <Link href="#">Inicio</Link>
                 </h2>
               </button>
-              {adminOptions.map((e) => {
+              {adminOptions?.map((e) => {
                 return (
                   <SideBarButton
                     title={e.title}
