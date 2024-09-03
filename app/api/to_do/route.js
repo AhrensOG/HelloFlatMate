@@ -1,6 +1,5 @@
 import { createToDo } from "./controllers/createToDoController"
 import { getAllToDos, getToDoById, getToDosByPropertyId, getToDosByUserId } from "./controllers/getToDoController"
-import { updateToDo } from "./controllers/updateToDoController"
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url)
