@@ -140,6 +140,9 @@ export default function SideBar({
     route.push(url);
   };
 
+  useEffect(() => {
+    setUser(state?.user);
+  }, [state.user]);
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
@@ -168,6 +171,7 @@ export default function SideBar({
                 alt="Logo de FlatMate"
               />
             </div>
+            {console.log(user)}
           </div>
           {(user?.role === "CLIENT" || !user) && (
             <nav className="flex flex-col w-full gap-4">

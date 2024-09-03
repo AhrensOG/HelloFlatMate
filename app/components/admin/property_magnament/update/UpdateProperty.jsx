@@ -22,7 +22,6 @@ import { useRouter } from "next/navigation";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
-import ImageUploader from "@/app/components/admin/drag-and-drop/ImageUploader";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -236,7 +235,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           toast.error("Error en la creación de habitaciones");
           throw err;
         }
-
+        {
+          console.log(dataRooms);
+        }
         //UpdateRooms
         try {
           if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {

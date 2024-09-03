@@ -18,7 +18,7 @@ export default function Home() {
   const [showFilters, setShowFilters] = useState(false);
 
   const filterOffer = (properties) => {
-    return properties.filter((property) => property.offer !== null);
+    return properties.filter((property) => property.offer !== null && property.status === "FREE");
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Home() {
   useEffect(() => {
     // Solo actualiza si hay un cambio en state.properties
     if (state.properties && state.properties !== properties) {
-      setProperties(state.properties);
+      setProperties(state.properties.filter((prop) => prop.status === "FREE"));
       setPropertiesInOffer(filterOffer(state.properties));
       toast.success("Propiedades actualizadas");
       console.log(state.properties);
