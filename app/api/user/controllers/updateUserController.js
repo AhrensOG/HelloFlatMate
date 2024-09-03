@@ -1,5 +1,4 @@
 import { Client, Owner, Admin } from "@/db/init";
-import { sequelize } from "@/db/models/comment";
 import { NextResponse } from "next/server";
 
 export async function updateClient(data) {
@@ -31,97 +30,6 @@ export async function updateClient(data) {
         user.birthDate = formatedDate(data.birthDate) || user.birthDate;
         await user.save();
         return NextResponse.json({ message: "Usuario actualizado con exito", user }, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-export async function updateOwner(data) {
-    if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
-    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
-    if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    if (!data.email || data.email.trim().length < 1) return NextResponse.json({ error: "Se requiere el email" }, { status: 400 });
-    if (!data.profilePicture || data.profilePicture.trim().length < 1) return NextResponse.json({ error: "Se requiere la imagen" }, { status: 400 });
-
-    try {
-        const user = await Owner.findByPk(data.id);
-        if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        const updatedUser = await user.update(data);
-        return NextResponse.json("Usuario actualizado", { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-export async function updateAdmin(data) {
-    if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
-    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
-    if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    if (!data.email || data.email.trim().length < 1) return NextResponse.json({ error: "Se requiere el email" }, { status: 400 });
-    if (!data.profilePicture || data.profilePicture.trim().length < 1) return NextResponse.json({ error: "Se requiere la imagen" }, { status: 400 });
-
-    try {
-        const user = await Admin.findByPk(data.id);
-        if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        const updatedUser = await user.update(data);
-        return NextResponse.json("Usuario actualizado", { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-export async function updateRoleUser(data) {
-    if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
-    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.role) return NextResponse.json({ error: "Se requiere el rol" }, { status: 400 });
-
-    const transaction = await sequelize.transaction();
-
-    try {
-        let user = await Client.findByPk(data.id) || await Owner.findByPk(data.id) || await Admin.findByPk(data.id, { transaction });
-        if (!user) {
-            await transaction.rollback();
-            return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        }
-
-        const userData = user.toJSON(); // Copia de los datos del usuario para crear uno nuevo más tarde
-
-        let newUser;
-        if (data.role === "ADMIN") {
-            newUser = await Admin.create({ ...userData, role: "ADMIN" }, { transaction });
-        } else if (data.role === "OWNER") {
-            newUser = await Owner.create({ ...userData, role: "OWNER" }, { transaction });
-        } else if (data.role === "CLIENT") {
-            newUser = await Client.create({ ...userData, role: "CLIENT" }, { transaction });
-        } else {
-            await transaction.rollback();
-            return NextResponse.json({ error: "Rol no válido" }, { status: 400 });
-        }
-
-        await user.destroy({ transaction }); // Destruir el usuario original solo si la creación del nuevo fue exitosa
-
-        await transaction.commit();
-
-        return NextResponse.json({ message: "Rol actualizado", user: newUser }, { status: 200 });
-    } catch (error) {
-        await transaction.rollback();
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-
-
-export async function deleteUser(id) {
-    if (!id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-
-    try {
-        const user = await Client.findByPk(id) || await Owner.findByPk(id) || await Admin.findByPk(id);
-        if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        user.isActive = false;
-        await user.save();
-        return NextResponse.json("Usuario eliminado", { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

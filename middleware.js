@@ -19,7 +19,7 @@ export async function middleware(request) {
   const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
   // Define rutas permitidas sin autenticación
-  const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth", "/api/stripe/webhook", "/api/user", "/"]; // Incluye la ruta raíz (home) para usuarios no autenticados
+  const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth", "/api/stripe/webhook"];
   const pathName = new URL(request.url).pathname;
 
   // Permitir acceso a rutas permitidas sin autenticación
@@ -56,9 +56,9 @@ export async function middleware(request) {
   // console.log("Access Token:", accessToken);
 
   const rolesPaths = {
-    ADMIN: ["/pages/admin", "/pages/user", "/api/property"],
-    OWNER: ["/pages/owner", "/pages/user", "/api/property"],
-    CLIENT: ["/pages/user", "/api/property"],
+    ADMIN: ["/pages/admin", "/pages/user", "/pages/owner", "/api/admin", "/api"],
+    OWNER: ["/pages/owner", "/pages/user", "/api"],
+    CLIENT: ["/pages/user", "/api"],
   }
 
   // Verificar si el rol tiene acceso a la ruta solicitada

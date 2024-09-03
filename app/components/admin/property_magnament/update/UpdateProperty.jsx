@@ -201,7 +201,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       try {
         try {
           if (deleteRooms.length > 0) {
-            await axios.delete(`/api/room`, {
+            await axios.delete(`/api/admin/room`, {
               data: {
                 rooms: deleteRooms,
               },
@@ -226,7 +226,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             };
           });
           if (newRooms.length > 0) {
-            const createdRooms = await axios.post("/api/room", roomsFormated);
+            const createdRooms = await axios.post(
+              "/api/admin/room",
+              roomsFormated
+            );
             toast.success("Habitaciones creadas");
           }
         } catch (err) {
@@ -246,7 +249,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 propertyId: property?.id,
               };
             });
-            await axios.put("/api/room", roomsUpdate);
+            await axios.put("/api/admin/room", roomsUpdate);
             toast.success("Habitaciones actualizadas");
           }
         } catch (error) {
@@ -289,7 +292,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         };
 
         const response = await axios.put(
-          `/api/property?id=${data.id}`,
+          `/api/admin/property?id=${data.id}`,
           updateDataProperty
         );
         toast.success("Propiedad actualizada correctamente");

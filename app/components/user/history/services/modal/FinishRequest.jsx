@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 export default function FinishRequest({ next, prev, data }) {
+  console.log(data);
+
   const router = useRouter();
   const parseDate = (date, time) => {
     const timeDate = time.split(":");
@@ -28,9 +30,9 @@ export default function FinishRequest({ next, prev, data }) {
             data?.day.date,
             data?.time
           ).toLocaleDateString("es-ES")}` || "",
-    userId: "4ImLe5vacWah6ddc9D4djcY1UZA2" || "",
-    propertyId: 1 || "",
-    typeUser: "CLIENT" || "",
+    userId: data.user.id || "",
+    propertyId: data.propertyId || "",
+    typeUser: data.user.role || "",
   };
 
   const submitRequest = async () => {
@@ -71,7 +73,7 @@ export default function FinishRequest({ next, prev, data }) {
             toast.promise(submitRequest(), {
               loading: "Cargando...",
               success: () => {
-                router.push("/pages/user/services");
+                router.back();
                 return "Solicitud enviada";
               },
               error: "Error al enviar la solicitud",

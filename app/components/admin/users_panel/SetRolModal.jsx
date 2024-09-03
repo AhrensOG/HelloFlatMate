@@ -13,7 +13,7 @@ export default function SetRolModal({ action, data }) {
 
   const handleRoleUpdate = async () => {
     try {
-      const response = await axios.patch("/api/user", {
+      const response = await axios.patch("/api/admin/user", {
         id: data.id,
         role: selectedRole,
       });

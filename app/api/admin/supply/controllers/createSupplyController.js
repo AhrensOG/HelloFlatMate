@@ -2,8 +2,6 @@ import { Client, LeaseOrderProperty, LeaseOrderRoom, Property, Room, Supply } fr
 import { NextResponse } from "next/server";
 
 export async function createSupply(data) {
-    console.log(data);
-
     if (!data) return NextResponse.json({ error: "No data provided" }, { status: 400 });
     if (!data.title || data.title.trim() === "") return NextResponse.json({ error: "No title provided" }, { status: 400 });
     if (!data.amount || data.amount <= 0) return NextResponse.json({ error: "Invalid amount provided" }, { status: 400 });

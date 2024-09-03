@@ -1,6 +1,5 @@
 import { createToDo } from "./controllers/createToDoController"
 import { getAllToDos, getToDoById, getToDosByPropertyId, getToDosByUserId } from "./controllers/getToDoController"
-import { updateToDo } from "./controllers/updateToDoController"
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url)
@@ -30,11 +29,5 @@ export async function GET(req) {
 export async function POST(req) {
     const data = await req.json()
     const result = await createToDo(data)
-    return result
-}
-
-export async function PATCH(req) {
-    const data = await req.json()
-    const result = await updateToDo(data)
     return result
 }

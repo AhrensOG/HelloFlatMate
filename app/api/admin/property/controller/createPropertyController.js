@@ -2,10 +2,6 @@ import { Owner, Property } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
-
-    console.log(data);
-
-
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }

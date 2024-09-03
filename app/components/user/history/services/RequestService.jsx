@@ -5,19 +5,35 @@ import WhatIncludes from "./WhatIncludes";
 import ButtonServices from "./ButtonServices";
 import { plus_jakarta } from "@/font";
 import ModalService from "./modal/ModalService";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Context } from "@/app/context/GlobalContext";
 
-export default function RequestService({ title, type }) {
+export default function RequestService({ type, id }) {
   const [showModal, setShowModal] = useState(false);
+  const { state } = useContext(Context);
+  const [user, setUser] = useState(state?.user);
+
+  useEffect(() => {
+    setUser(state?.user);
+  }, [state?.user]);
 
   const handleShowModal = () => {
     setShowModal(!showModal);
   };
 
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <AnimatePresence>
       <header>
+        {console.log(state.user)}
         <div className="relative h-[13.7rem] w-full">
           <Image
             src={"/services/clean-stock-1.jfif"}
@@ -51,7 +67,14 @@ export default function RequestService({ title, type }) {
         />
         <ButtonServices title={"Solicitar Servicio"} action={handleShowModal} />
       </main>
-      {showModal && <ModalService type={type} action={handleShowModal} />}
+      {showModal && (
+        <ModalService
+          type={type}
+          action={handleShowModal}
+          propertyId={id}
+          user={user}
+        />
+      )}
     </AnimatePresence>
   );
 }
