@@ -57,7 +57,7 @@ export default function RoomEditModal({
     );
 
     try {
-      await axios.put(`/api/room?id=${dataRoom.id}`, dataRoom);
+      await axios.put(`/api/admin/room?id=${dataRoom.id}`, dataRoom);
       toast.success("Habitación editada");
       setData(updatedRooms);
       showModal(); // Cerrar el modal después de guardar

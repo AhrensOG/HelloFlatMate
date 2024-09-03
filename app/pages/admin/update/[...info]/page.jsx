@@ -21,7 +21,7 @@ export default function UpdatePropertyPage({ params }) {
     if (id && category) {
       const getData = async () => {
         try {
-          const response = await axios.get(`/api/property?id=${id}`);
+          const response = await axios.get(`/api/admin/property?id=${id}`);
           console.log(response);
 
           setInitialData(response.data.property);

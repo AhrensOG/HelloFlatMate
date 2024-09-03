@@ -323,13 +323,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               action={handleShowSliderModal}
             />
           </div>
-          <NavBarDetails link="/pages/owner" callBack={handleBack} />
+          <NavBarDetails link="/pages/admin/properties" callBack={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
         >
           <TitleSectionTemplate
-            name={name || property.name}
+            name={name || ""}
             setName={setName}
             address={
               address || {
