@@ -7,9 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { logInWithGoogle } from "@/app/firebase/logInWithGoogle";
 import { logInWithFacebook } from "@/app/firebase/logInWithFacebook";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function Auth({ redirect }) {
+export default function Auth() {
+  const searchParams = useSearchParams(); // Captura los parámetros de la URL
+  const redirect = searchParams.get("redirect"); // Obtén el valor del parámetro `redirect`
   const [register, setRegister] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [registerProvider, setRegisterProvider] = useState(null);

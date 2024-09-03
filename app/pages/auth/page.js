@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import Auth from "@/app/components/public/auth/Auth";
 import Dropdown from "@/app/components/public/auth/Dropdown";
 import Image from "next/image";
@@ -11,8 +10,6 @@ function AuthFallback() {
 }
 
 export default function AuthPage() {
-  const searchParams = useSearchParams(); // Captura los parámetros de la URL
-  const redirect = searchParams.get("redirect"); // Obtén el valor del parámetro `redirect`
 
   return (
     <div className="flex flex-col h-screen">
@@ -31,7 +28,7 @@ export default function AuthPage() {
       </header>
       <main className="flex justify-center items-center grow">
         <Suspense fallback={<AuthFallback />}>
-          <Auth redirect={redirect} /> {/* Pasa `redirect` como prop */}
+          <Auth />
         </Suspense>
       </main>
     </div>
