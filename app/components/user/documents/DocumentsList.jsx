@@ -55,12 +55,12 @@ export default function DocumentsList({ action }) {
           </h3>
         )}
       </div>
-      <button
+      {/* <button
         className="w-[20.31rem] h-[3.25rem] bg-payment-button-gradient hover:bg-payment-button-gradient-hover text-white font-normal text-base rounded-xl"
         type="button"
       >
         Subir documentacion
-      </button>
+      </button> */}
     </motion.main>
   );
 }

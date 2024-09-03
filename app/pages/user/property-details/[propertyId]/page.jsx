@@ -81,7 +81,11 @@ export default function PropertyDetails({ params }) {
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street + " " + data.streetNumber}
           </h4>
-          {data.price ? <PriceSection data={data.price} /> : null}
+          {data.price &&
+          (data.category === "HELLO_STUDIO" ||
+            data.category === "HELLO_LANDLORD") ? (
+            <PriceSection data={data.price} />
+          ) : null}
           <div className="flex flex-col gap-6">
             <GuestInfo
               data={[
@@ -97,9 +101,7 @@ export default function PropertyDetails({ params }) {
               )}
           </div>
           <DescriptionSection data={data.description} />
-          <RoomSection
-            data={data.rooms}
-          />
+          <RoomSection data={data.rooms} />
           <AmenitiesSection data={data.amenities} />
           <LocationSection />
           <MoreInfoSection
