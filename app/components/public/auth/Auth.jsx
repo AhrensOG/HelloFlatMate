@@ -9,7 +9,7 @@ import { logInWithGoogle } from "@/app/firebase/logInWithGoogle";
 import { logInWithFacebook } from "@/app/firebase/logInWithFacebook";
 import { useRouter } from "next/navigation";
 
-export default function Auth() {
+export default function Auth({ redirect }) {
   const [register, setRegister] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [registerProvider, setRegisterProvider] = useState(null);
@@ -25,16 +25,19 @@ export default function Auth() {
   };
 
   const handleAccept = async () => {
-    if (registerProvider === "google") {
-      await logInWithGoogle();
-      return router.push("/");
-    } else if (registerProvider === "facebook") {
-      await logInWithFacebook();
-      return router.push("/");
-    } else {
-      toast.error("No se reconoce el proveedor de registro");
+    try {
+      if (registerProvider === "google") {
+        await logInWithGoogle();
+      } else if (registerProvider === "facebook") {
+        await logInWithFacebook();
+      } else {
+        toast.error("No se reconoce el proveedor de registro");
+      }
+      setIsOpen(false);
+      router.push(redirect || "/"); // Redirige a la URL de redirect o al home
+    } catch (error) {
+      toast.error("Fallo la autenticación. Intente nuevamente.");
     }
-    setIsOpen(false); // Cerrar el modal después de aceptar
   };
 
   const handleReject = () => {
@@ -44,7 +47,7 @@ export default function Auth() {
   const handleLoginFacebook = async () => {
     try {
       await logInWithFacebook();
-      return router.push("/");
+      router.push(redirect || "/"); // Redirige a la URL de redirect o al home
     } catch (error) {
       toast.error("Fallo la autenticación. Intente nuevamente.");
     }
@@ -53,7 +56,7 @@ export default function Auth() {
   const handleLoginGoogle = async () => {
     try {
       await logInWithGoogle();
-      return router.push("/");
+      router.push(redirect || "/"); // Redirige a la URL de redirect o al home
     } catch (error) {
       toast.error("Fallo la autenticación. Intente nuevamente.");
     }
