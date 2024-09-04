@@ -43,6 +43,8 @@ const formatedDate = (date) => {
 }
 
 export async function updateSignarute(data) {
+    console.log(data);
+
     if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
     if (!data.id || data.id.trim().length < 1) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
     if (!data.signature || data.signature.trim().length < 1) return NextResponse.json({ error: "Se requiere la firma" }, { status: 400 });

@@ -1,4 +1,4 @@
-import { Client, LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
+import { Client, Document, LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
@@ -28,7 +28,11 @@ export async function getPropertyById(id) {
                     as: 'leaseOrdersRoom',
                     include: {
                         model: Client,
-                        as: 'client'
+                        as: 'client',
+                        include: {
+                            model: Document,
+                            as: 'documents'
+                        }
                     }
                 }
             },
@@ -37,7 +41,11 @@ export async function getPropertyById(id) {
                 as: 'leaseOrdersProperty',
                 include: {
                     model: Client,
-                    as: 'client'
+                    as: 'client',
+                    include: {
+                        model: Document,
+                        as: 'documents'
+                    }
                 }
             }]
         });

@@ -111,6 +111,16 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
           });
         }
       }
+      if (userDocuments.signature) {
+        try {
+          const response = axios.patch("/api/user", {
+            signature: userDocuments.signature[0],
+            id: state.reservationInfo?.userContractInformation.id,
+          });
+        } catch (err) {
+          throw err;
+        }
+      }
     } catch (error) {
       toast.error("Error al crear los documentos");
     }
@@ -147,7 +157,6 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
       transition={{ duration: 0.5 }}
       className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
     >
-      {console.log(userDocuments)}
       <div className="flex items-center gap-5">
         <TitleSection
           title={"Resumen"}
