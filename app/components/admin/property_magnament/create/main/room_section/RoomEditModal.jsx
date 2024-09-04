@@ -22,60 +22,10 @@ export default function RoomEditModal({
     }
   }, [selectedRoom]);
 
-  const handleSubmit = async () => {
-    if (!isModified(dataRoom, selectedRoom) && files.length === 0) {
-      showModal();
-      return;
-    }
-
-    if (!dataRoom?.name) {
-      return toast.error("Por favor, especifique un nombre");
-    }
-    if (!dataRoom?.numberBeds) {
-      return toast.error("Por favor, especifique una cantidad de camas");
-    }
-
-    // Subir nuevas imágenes si hay
-
-    const newImageUrls = await uploadNewImages();
-
-    // Actualizar las URLs de las imágenes en dataRoom
-    setDataRoom((prevDataRoom) => ({
-      ...prevDataRoom,
-      images: [...newImageUrls, ...prevDataRoom.images],
-    }));
-
-    setDataRoom((prevDataRoom) => ({
-      ...prevDataRoom,
-      amountOwner:
-        parseInt(dataRoom.price) - parseInt(dataRoom.amountHelloflatmate),
-    }));
-
-    // Guardar los cambios en el array data
-    const updatedRooms = data.map((room) =>
-      room.id === dataRoom.id ? dataRoom : room
-    );
-
-    try {
-      await axios.put(`/api/admin/room?id=${dataRoom.id}`, dataRoom);
-      toast.success("Habitación editada");
-      setData(updatedRooms);
-      showModal(); // Cerrar el modal después de guardar
-    } catch (err) {
-      console.error(err);
-      toast.error("Error al editar la habitación");
-    }
-  };
-
   const uploadNewImages = async () => {
     const filesToUpload = files.filter((file) => file.fileData);
     const fileUrls = new Set(files.map((file) => file.url));
-    const deletedImages = initialImages.filter((url) => !fileUrls.has(url));
     const remainingImages = initialImages.filter((url) => fileUrls.has(url));
-
-    if (deletedImages.length > 0) {
-      await handleDeletedImages(deletedImages, remainingImages);
-    }
 
     if (filesToUpload.length > 0) {
       const uploadedImages = await handleFileUpload(filesToUpload);
@@ -85,19 +35,11 @@ export default function RoomEditModal({
     }
   };
 
-  const handleDeletedImages = async (deletedImages, remainingImages) => {
-    try {
-      await deleteFilesFromURL(deletedImages);
-    } catch (error) {
-      console.error("Error al borrar archivos:", error);
-      toast.error("Error al borrar archivos");
-      throw error;
-    }
-  };
-
   const handleFileUpload = async (filesToUpload) => {
     try {
-      const response = await uploadFiles(filesToUpload);
+      const response = await uploadFiles(
+        filesToUpload.map((file) => file.fileData)
+      );
       if (response instanceof Error) {
         throw response;
       }
@@ -129,9 +71,55 @@ export default function RoomEditModal({
     const { name, value } = event.target;
     setDataRoom({ ...dataRoom, [name]: value });
   };
+
+  const handleSubmit = async () => {
+    if (!isModified(dataRoom, selectedRoom) && files.length === 0) {
+      showModal();
+      return;
+    }
+    let newData = { ...dataRoom };
+
+    if (!dataRoom?.name) {
+      return toast.error("Por favor, especifique un nombre");
+    }
+    if (!dataRoom?.numberBeds) {
+      return toast.error("Por favor, especifique una cantidad de camas");
+    }
+
+    // Subir nuevas imágenes si hay
+    const newImageUrls = await uploadNewImages();
+    newData.images = newImageUrls;
+
+    // Actualizar las URLs de las imágenes en dataRoom
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      images: newImageUrls,
+    }));
+
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      amountOwner:
+        parseInt(dataRoom.price) - parseInt(dataRoom.amountHelloflatmate),
+    }));
+    // Guardar los cambios en el array data
+    const updatedRooms = data.map((room) =>
+      room.id === dataRoom.id ? dataRoom : room
+    );
+
+    try {
+      console.log(newData);
+      await axios.put(`/api/admin/room?id=${dataRoom.id}`, newData);
+      toast.success("Habitación editada");
+      console.log(updatedRooms);
+      setData(updatedRooms);
+      showModal(); // Cerrar el modal después de guardar
+    } catch (err) {
+      console.error(err);
+      toast.error("Error al editar la habitación");
+    }
+  };
   return (
     <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      {console.log(dataRoom)}
       <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col h-[95%] overflow-auto">
         <h2 className="text-2xl mb-4">Editar habitación</h2>
         <div>
