@@ -21,7 +21,9 @@ export default function ChatPage() {
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
 
-      socket.on("newMessage", onMessage); // Cambié 'message' a 'newMessage' para que coincida con el evento del servidor
+      socket.on("newMessage", (mess) => {
+        onMessage(mess);
+      }); // Cambié 'message' a 'newMessage' para que coincida con el evento del servidor
 
       socket.io.engine.on("upgrade", (transport) => {
         console.log("Transport upgraded to:", transport.name);

@@ -22,7 +22,6 @@ import { useRouter } from "next/navigation";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
-import ImageUploader from "@/app/components/admin/drag-and-drop/ImageUploader";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -201,7 +200,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       try {
         try {
           if (deleteRooms.length > 0) {
-            await axios.delete(`/api/room`, {
+            await axios.delete(`/api/admin/room`, {
               data: {
                 rooms: deleteRooms,
               },
@@ -226,14 +225,19 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             };
           });
           if (newRooms.length > 0) {
-            const createdRooms = await axios.post("/api/room", roomsFormated);
+            const createdRooms = await axios.post(
+              "/api/admin/room",
+              roomsFormated
+            );
             toast.success("Habitaciones creadas");
           }
         } catch (err) {
           toast.error("Error en la creación de habitaciones");
           throw err;
         }
-
+        {
+          console.log(dataRooms);
+        }
         //UpdateRooms
         try {
           if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
@@ -246,7 +250,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 propertyId: property?.id,
               };
             });
-            await axios.put("/api/room", roomsUpdate);
+            await axios.put("/api/admin/room", roomsUpdate);
             toast.success("Habitaciones actualizadas");
           }
         } catch (error) {
@@ -289,7 +293,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         };
 
         const response = await axios.put(
-          `/api/property?id=${data.id}`,
+          `/api/admin/property?id=${data.id}`,
           updateDataProperty
         );
         toast.success("Propiedad actualizada correctamente");
@@ -320,13 +324,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               action={handleShowSliderModal}
             />
           </div>
-          <NavBarDetails link="/pages/owner" callBack={handleBack} />
+          <NavBarDetails link="/pages/admin/properties" callBack={handleBack} />
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
         >
           <TitleSectionTemplate
-            name={name || property.name}
+            name={name || ""}
             setName={setName}
             address={
               address || {

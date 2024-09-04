@@ -35,71 +35,6 @@ export async function updateClient(data) {
     }
 }
 
-export async function updateOwner(data) {
-    if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
-    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
-    if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    if (!data.email || data.email.trim().length < 1) return NextResponse.json({ error: "Se requiere el email" }, { status: 400 });
-    if (!data.profilePicture || data.profilePicture.trim().length < 1) return NextResponse.json({ error: "Se requiere la imagen" }, { status: 400 });
-
-    try {
-        const user = await Owner.findByPk(data.id);
-        if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        const updatedUser = await user.update(data);
-        return NextResponse.json("Usuario actualizado", { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-export async function updateAdmin(data) {
-    if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
-    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
-    if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    if (!data.email || data.email.trim().length < 1) return NextResponse.json({ error: "Se requiere el email" }, { status: 400 });
-    if (!data.profilePicture || data.profilePicture.trim().length < 1) return NextResponse.json({ error: "Se requiere la imagen" }, { status: 400 });
-
-    try {
-        const user = await Admin.findByPk(data.id);
-        if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        const updatedUser = await user.update(data);
-        return NextResponse.json("Usuario actualizado", { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-export async function updateRoleUser(data) {
-    if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
-    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.role) return NextResponse.json({ error: "Se requiere el rol" }, { status: 400 });
-
-    try {
-        const user = await Client.findByPk(data.id) || await Owner.findByPk(data.id) || await Admin.findByPk(data.id);
-        if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        const updatedUser = await user.update({ role: data.role });
-        return NextResponse.json("Rol actualizado", { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-export async function deleteUser(id) {
-    if (!id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-
-    try {
-        const user = await Client.findByPk(id) || await Owner.findByPk(id) || await Admin.findByPk(id);
-        if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        user.isActive = false;
-        await user.save();
-        return NextResponse.json("Usuario eliminado", { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
 const formatedDate = (date) => {
     const [day, month, year] = date.split("/");
 
@@ -108,6 +43,8 @@ const formatedDate = (date) => {
 }
 
 export async function updateSignarute(data) {
+    console.log(data);
+
     if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
     if (!data.id || data.id.trim().length < 1) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
     if (!data.signature || data.signature.trim().length < 1) return NextResponse.json({ error: "Se requiere la firma" }, { status: 400 });

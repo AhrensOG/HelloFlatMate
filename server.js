@@ -34,7 +34,7 @@ app.prepare().then(() => {
         socket.on("sendMessage", (message) => {
             const roomId = message.roomId;
             console.log("Message received: " + message.text);
-            io.to(roomId).emit("newMessage", message);
+            io.to(roomId).emit("newMessage", message.text);
         })
 
         socket.on("disconnect", () => {

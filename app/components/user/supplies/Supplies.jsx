@@ -2,10 +2,11 @@ import { ArrowLeftIcon, ChevronLeftIcon } from "@heroicons/react/20/solid";
 import SupplieCard from "./SupplieCard";
 import { useRouter } from "next/navigation";
 import { plus_jakarta } from "@/font";
+import { useContext } from "react";
+import { Context } from "@/app/context/GlobalContext";
 
-export default function Supplies() {
+export default function Supplies({ data, user }) {
   const route = useRouter();
-
   return (
     <main className={`${plus_jakarta.className} w-full m-auto`}>
       <section className="flex items-center justify-between w-full  my-7">
@@ -21,38 +22,15 @@ export default function Supplies() {
         </h1>
       </section>
       <section className="flex flex-col p-2 gap-4 w-full items-center">
-        <SupplieCard
-          status={"pending"}
-          name={"Agua"}
-          image={"/supplies/whater.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
-        <SupplieCard
-          status={"completed"}
-          name={"Gas"}
-          image={"/supplies/gas.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
-        <SupplieCard
-          status={"in_process"}
-          name={"Internet"}
-          image={"/supplies/wifi.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
-        <SupplieCard
-          status={"pending"}
-          name={"Tasas"}
-          image={"/supplies/tax.svg"}
-          date={"Abril 9, 2024"}
-          users={"Tamara Garcia / Astur Ramos"}
-          price={"7,9"}
-        />
+        {data && data.length > 0 ? (
+          data.map((supplie) => (
+            <SupplieCard key={supplie.id} data={supplie} userName={user} />
+          ))
+        ) : (
+          <p className="text-sm text-[#464E5F] font-normal">
+            No tienes suministros
+          </p>
+        )}
       </section>
     </main>
   );

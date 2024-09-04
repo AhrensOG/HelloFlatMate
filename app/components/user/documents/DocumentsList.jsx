@@ -2,8 +2,22 @@ import { plus_jakarta } from "@/font";
 import DocumentListItem from "./DocumentListItem";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { motion } from "framer-motion";
+import { useContext, useEffect, useState } from "react";
+import { Context } from "@/app/context/GlobalContext";
 
 export default function DocumentsList({ action }) {
+  const { state, dispatch } = useContext(Context);
+  const [user, setUser] = useState(state.user || null);
+
+  useEffect(() => {
+    setUser(state.user);
+  }, [state.user]);
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+  };
+
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -25,24 +39,28 @@ export default function DocumentsList({ action }) {
         </h1>
       </div>
       <div className="flex flex-col gap-3 py-4 px-4 w-full">
-        <DocumentListItem
-          type="pdf"
-          title="Contrato activo"
-          date="28 Oct 2023 | 122 MB"
-        />
-        <DocumentListItem type="raw" title="DNI" date="28 Oct 2023 | 122 MB" />
-        <DocumentListItem
-          type="raw"
-          title="Pasaporte"
-          date="28 Oct 2023 | 122 MB"
-        />
+        {user?.documents.length > 0 ? (
+          user?.documents.map((doc) => {
+            return (
+              <DocumentListItem
+                type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
+                title={doc.name}
+                date={formatDate(doc.updatedAt)}
+              />
+            );
+          })
+        ) : (
+          <h3 className="text-lg font-semibold text-gray-500 text-center mt-4">
+            No hay documentos
+          </h3>
+        )}
       </div>
-      <button
+      {/* <button
         className="w-[20.31rem] h-[3.25rem] bg-payment-button-gradient hover:bg-payment-button-gradient-hover text-white font-normal text-base rounded-xl"
         type="button"
       >
         Subir documentacion
-      </button>
+      </button> */}
     </motion.main>
   );
 }

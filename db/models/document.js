@@ -20,8 +20,8 @@ const documentInit = (sequelize, DataTypes) => {
                 type: DataTypes.ENUM("CONTRACT", "ROSTER", "IDENTIFICATION"),
                 allowNull: false,
             },
-            url: {
-                type: DataTypes.STRING,
+            urls: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
                 allowNull: false,
             },
             documentableId: {

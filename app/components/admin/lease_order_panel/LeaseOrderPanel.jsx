@@ -5,13 +5,19 @@ import LeaseOrderSection from "./LeaseOrderSection";
 import LeaseOrderClientSection from "./LeaseOrderClientSection";
 import LeaseOrderPropertySection from "./LeaseOrderPropertySection";
 import LeaseOrderOwnerSection from "./LeaseOrderOwnerSection";
+import TitleSectionTemplate from "../property_magnament/create/main/TitleSectionTemplate";
+import TitleAdminPanel from "../shared/TitleAdminPanel";
+import { useRouter } from "next/navigation";
 
 export default function LeaseOrderPanel(data) {
+  const router = useRouter();
   const [leaserOrders, setLeaserOrders] = useState(
     data.data?.category === "HELLO_STUDIO" ||
       data.data?.category === "HELLO_LANDLORD"
       ? data.data?.leaseOrdersProperty.filter(
-          (leaseOrder) => leaseOrder?.status === "PENDING"
+          (leaseOrder) =>
+            leaseOrder?.status === "PENDING" ||
+            leaseOrder?.status === "IN_PROGRESS"
         )
       : null
   );
@@ -24,17 +30,21 @@ export default function LeaseOrderPanel(data) {
     if (!client) {
       const fetchClient = async () => {
         try {
+          console.log(property);
+
           const client = await axios.get(
-            `/api/user?id=${leaserOrders[0].clientId}`
+            `/api/user?id=${leaserOrders[0]?.clientId}`
           );
-          setClient(client?.data || null);
+          if (client) {
+            setClient(client?.data || null);
+          }
         } catch (error) {
           console.log(error);
         }
       };
       const fetchOwner = async () => {
         try {
-          const owner = await axios.get(`/api/user?id=${property.ownerId}`);
+          const owner = await axios.get(`/api/user?id=${property?.ownerId}`);
           setOwner(owner?.data || null);
         } catch (error) {
           console.log(error);
@@ -76,7 +86,7 @@ export default function LeaseOrderPanel(data) {
             ? null
             : leaseOrder.roomId,
       };
-      await axios.patch(`/api/lease_order`, dataRequest);
+      await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
       console.log(error);
       return error;
@@ -105,7 +115,7 @@ export default function LeaseOrderPanel(data) {
             ? null
             : leaseOrder.roomId,
       };
-      await axios.patch(`/api/lease_order`, dataRequest);
+      await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
       console.log(error);
       return error;
@@ -126,20 +136,24 @@ export default function LeaseOrderPanel(data) {
   }
 
   return (
-    <main className="max-w-4xl mx-auto my-8 p-4">
+    <main className="max-w-4xl mx-auto my-8 p-4 flex flex-col gap-2">
+      <TitleAdminPanel title="Lease Orders" />
       {/* Propiedades con room con precio */}
       {(property?.category === "HELLO_ROOM" ||
         property?.category === "HELLO_COLIVING") &&
-        (rooms.length > 0 ? (
+        (rooms ? (
           rooms.map((room) => {
             const hasInProgressOrders = room.leaseOrdersRoom.some(
-              (leaseOrder) => leaseOrder.status === "PENDING"
+              (leaseOrder) =>
+                leaseOrder.status === "PENDING" ||
+                leaseOrder.status === "IN_PROGRESS"
             );
             return (
               <div
                 key={room.id}
                 className="p-4 bg-white rounded-lg shadow-md border border-gray-200 space-y-4 my-4"
               >
+                {console.log(hasInProgressOrders)}
                 {hasInProgressOrders ? (
                   room.leaseOrdersRoom.map((leaseOrder) => (
                     <div key={leaseOrder.id}>
@@ -214,7 +228,7 @@ export default function LeaseOrderPanel(data) {
       {/* Propiedades sin room con precio  */}
       {(property?.category === "HELLO_STUDIO" ||
         property?.category === "HELLO_LANDLORD") &&
-        (leaserOrders?.length > 0 ? (
+        (leaserOrders ? (
           leaserOrders.map((leaserOrder) => (
             <LeaseOrderSection data={leaserOrder} formatDate={formatDate} />
           ))
@@ -275,6 +289,21 @@ export default function LeaseOrderPanel(data) {
             </button>
           </div>
         )}
+      <div className="flex justify-between gap-2">
+        <button
+          onClick={() => router.push(`/pages/admin/supplies/${property.id}`)}
+          type="button"
+          className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Ir a suministros
+        </button>
+        <button
+          type="button"
+          className="px-6 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition"
+        >
+          Ir a documentos
+        </button>
+      </div>
     </main>
   );
 }

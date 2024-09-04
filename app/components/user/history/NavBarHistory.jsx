@@ -1,14 +1,21 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function NavBarHistory({ title, redirect }) {
+  const [displayedTitle, setDisplayedTitle] = useState(title);
+
+  useEffect(() => {
+    setDisplayedTitle(title);
+  }, [title]);
+
   return (
     <motion.nav
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.25 }}
       className="flex flex-col items-center gap-6"
     >
       <div className="flex items-center relative w-[7.51rem] h-[2.56rem]">
@@ -27,9 +34,18 @@ export default function NavBarHistory({ title, redirect }) {
         >
           <ArrowLeftIcon />
         </button>
-        <h2 className=" text-[#000000CC] font-bold text-xl grow text-center">
-          {title}
-        </h2>
+        <AnimatePresence mode="wait">
+          <motion.h2
+            key={displayedTitle}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="text-[#000000CC] font-bold text-xl grow text-center"
+          >
+            {displayedTitle}
+          </motion.h2>
+        </AnimatePresence>
       </div>
     </motion.nav>
   );

@@ -17,9 +17,11 @@ export default function RoomSection({ data }) {
           Habitaciones
         </h2>
         <div className="flex justify-evenly gap-1 w-full overflow-x-auto">
-          {data.map((item, index) => (
-            <RoomInfo key={item.id} data={item} action={handleModal} />
-          ))}
+          {data
+            .filter((item) => item.status === "FREE")
+            .map((item, index) => (
+              <RoomInfo key={item.id} data={item} action={handleModal} />
+            ))}
         </div>
       </section>
 

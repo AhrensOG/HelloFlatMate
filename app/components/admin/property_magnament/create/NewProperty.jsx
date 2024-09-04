@@ -164,7 +164,7 @@ export default function NewProperty({ category, handleBack }) {
     }
 
     try {
-      const response = await axios.post("/api/room", rooms); // Cambia rooms por response para evitar la redeclaración
+      const response = await axios.post("/api/admin/room", rooms); // Cambia rooms por response para evitar la redeclaración
       toast.success("Habitación/es creada/s con éxito");
       return response; // Devuelve el response si todo va bien
     } catch (error) {
@@ -175,7 +175,7 @@ export default function NewProperty({ category, handleBack }) {
   const setProperty = (data, id) => {
     const ids = data.map((room) => room.id);
     try {
-      const response = axios.patch(`/api/room`, {
+      const response = axios.patch(`/api/admin/room`, {
         ids: ids,
         propertyId: id,
       });
@@ -234,7 +234,10 @@ export default function NewProperty({ category, handleBack }) {
         const rooms = await submitRoom(dataRoom);
 
         // Crear propiedad
-        const propertyResponse = await axios.post("/api/property", property);
+        const propertyResponse = await axios.post(
+          "/api/admin/property",
+          property
+        );
         console.log(propertyResponse);
 
         const propertyId = propertyResponse.data.property.id;

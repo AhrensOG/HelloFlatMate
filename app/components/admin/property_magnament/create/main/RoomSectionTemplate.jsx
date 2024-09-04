@@ -50,7 +50,7 @@ export default function RoomSectionTemplate({
               info={item}
               key={index}
               img={item?.images[0] || "/property-details/stock-1.svg"}
-              name={item.name}
+              name={item?.name}
               bedNumber={item.numberBeds}
               showModal={() => handleEditRoom(item)} // Pasa la habitación a editar al modal
               onDelete={() => handleDeletRoom(item)}

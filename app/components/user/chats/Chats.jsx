@@ -42,7 +42,7 @@ export default function Chat() {
       />
       <ChatsCard
         name={"Habitacion"}
-        image={"/chat/chat-2.jfif"}
+        image={"/chat/chat-2.jpg"}
         action={() => handleJoinChat(3)}
       />
       <ChatsCard

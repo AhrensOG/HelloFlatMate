@@ -5,6 +5,8 @@ import { plus_jakarta } from "@/font";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import SideBarButton from "./SideBarButton";
+import { useContext, useEffect, useState } from "react";
+import { Context } from "@/app/context/GlobalContext";
 
 const adminOptions = [
   {
@@ -131,11 +133,16 @@ export default function SideBar({
   admin = false,
 }) {
   const route = useRouter();
+  const { state } = useContext(Context);
+  const [user, setUser] = useState(state?.user || null);
 
   const handleRedirect = (url) => {
     route.push(url);
   };
 
+  useEffect(() => {
+    setUser(state?.user);
+  }, [state.user]);
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
@@ -164,8 +171,9 @@ export default function SideBar({
                 alt="Logo de FlatMate"
               />
             </div>
+            {console.log(user)}
           </div>
-          {client && (
+          {(user?.role === "CLIENT" || !user) && (
             <nav className="flex flex-col w-full gap-4">
               <button
                 onClick={() => handleRedirect("/")}
@@ -196,7 +204,7 @@ export default function SideBar({
               })}
             </nav>
           )}
-          {owner && (
+          {user?.role === "OWNER" && (
             <nav className="flex flex-col w-full gap-4">
               <button
                 onClick={() => handleRedirect("/")}
@@ -227,7 +235,7 @@ export default function SideBar({
               })}
             </nav>
           )}
-          {admin && (
+          {user?.role === "ADMIN" && (
             <nav className="flex flex-col w-full gap-4">
               <button
                 onClick={() => handleRedirect("/")}
@@ -247,7 +255,7 @@ export default function SideBar({
                   <Link href="#">Inicio</Link>
                 </h2>
               </button>
-              {adminOptions.map((e) => {
+              {adminOptions?.map((e) => {
                 return (
                   <SideBarButton
                     title={e.title}

@@ -4,15 +4,12 @@ import NavBarDetails from "@/app/components/user/property-details/header/NavBarD
 import SliderItem from "@/app/components/user/property-details/header/slider/SliderItem";
 import SliderDetails from "@/app/components/user/property-details/header/SliderDetails";
 import AmenitiesSection from "@/app/components/user/property-details/main/AmenitiesSection";
-import GuestInfo from "@/app/components/user/property-details/main/GuestInfo";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
 import MoreInfoSection from "@/app/components/user/property-details/main/MoreInfoSection";
 import PriceSection from "@/app/components/user/property-details/main/PriceSection";
 import ReservationModal from "@/app/components/user/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/user/property-details/main/ReservationButton";
-import RoomSection from "@/app/components/user/property-details/main/RoomSection";
 import GuestInfoRoom from "@/app/components/user/room-details/GuestInfoRoom";
-import PropertyInfo from "@/app/components/user/room-details/PropertyInfo";
 import PropertySection from "@/app/components/user/room-details/PropertySection";
 import { Context } from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
@@ -70,7 +67,7 @@ export default function RoomDetails({ params }) {
     <div className="flex flex-col justify-center items-center relative">
       {console.log(roomData)}
 
-      <div className="flex flex-col max-w-screen-sm gap-2 ">
+      <div className="flex flex-col max-w-screen-sm w-full gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderDetails>
@@ -80,12 +77,18 @@ export default function RoomDetails({ params }) {
             </SliderDetails>
           </div>
           <div className="px-3">
-            <NavBarDetails link={`/pages/user/property-details/${propertyId}`} />
+            <NavBarDetails
+              link={`/pages/user/property-details/${propertyId}`}
+            />
           </div>
-          <span className="px-3 text-lg font-medium text-slate-500" >{roomData.status === "RESERVED" || roomData.status === "OCCUPIED" ? "Reservada" : ""}</span>
+          <span className="px-3 text-lg font-medium text-slate-500">
+            {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
+              ? "Reservada"
+              : ""}
+          </span>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-screen px-3`}
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
           <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
           <h4 className="text-[#000000B2] text-base">

@@ -61,7 +61,7 @@ export default function PropertyDetails({ params }) {
 
   return (
     <div className="flex flex-col justify-center items-center relative">
-      <div className="flex flex-col max-w-screen-sm gap-2 ">
+      <div className="flex flex-col max-w-screen-sm w-full gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderDetails>
@@ -75,13 +75,17 @@ export default function PropertyDetails({ params }) {
           </div>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-screen px-3`}
+          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
           <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street + " " + data.streetNumber}
           </h4>
-          {data.price ? <PriceSection data={data.price} /> : null}
+          {data.price &&
+          (data.category === "HELLO_STUDIO" ||
+            data.category === "HELLO_LANDLORD") ? (
+            <PriceSection data={data.price} />
+          ) : null}
           <div className="flex flex-col gap-6">
             <GuestInfo
               data={[
@@ -97,9 +101,7 @@ export default function PropertyDetails({ params }) {
               )}
           </div>
           <DescriptionSection data={data.description} />
-          <RoomSection
-            data={data.rooms}
-          />
+          <RoomSection data={data.rooms} />
           <AmenitiesSection data={data.amenities} />
           <LocationSection />
           <MoreInfoSection

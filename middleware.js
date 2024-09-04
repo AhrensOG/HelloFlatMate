@@ -18,13 +18,15 @@ export async function middleware(request) {
   const cookieStore = cookies(); // Usa cookies() para acceder a las cookies
   const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
-  // console.log("Token:", token);
-
-  // Define rutas permitidas sin autenticación
-  const allowedPaths = ["/pages/auth", "/pages/guest", "/api/auth", "/api/stripe/webhook" ]; // Asegúrate de que las rutas estén correctas
+  const allowedPaths = [
+    "/pages/auth",
+    "/pages/guest",
+    "/api/auth",
+    "/api/stripe/webhook",
+  ];
   const pathName = new URL(request.url).pathname;
 
-  // Permitir acceso a rutas permitidas
+  // Permitir acceso a rutas permitidas sin autenticación
   if (allowedPaths.includes(pathName)) {
     return NextResponse.next();
   }
@@ -34,31 +36,61 @@ export async function middleware(request) {
     pathName.startsWith("/_next/") ||
     pathName.startsWith("/static/") ||
     pathName.startsWith("/public/") ||
-    pathName.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map)$/) // Permite acceso a archivos estáticos comunes
+    pathName.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map)$/)
   ) {
     return NextResponse.next();
   }
 
   // Redirigir si el token no está presente o no es válido
   if (!token) {
-    return NextResponse.redirect(new URL("/pages/auth", request.url));
+    const redirectUrl = new URL(
+      `/pages/auth?redirect=${encodeURIComponent(request.url)}`,
+      request.url
+    );
+    return NextResponse.redirect(redirectUrl);
   }
 
   // Decodificar el token para obtener el role y el accessToken
   const decodedToken = decodeToken(token);
 
   if (!decodedToken) {
-    // Si el token no se puede decodificar, redirige al usuario a la página de autenticación
-    return NextResponse.redirect(new URL("/pages/auth", request.url));
+    const redirectUrl = new URL(
+      `/pages/auth?redirect=${encodeURIComponent(request.url)}`,
+      request.url
+    );
+    return NextResponse.redirect(redirectUrl);
   }
 
-  const { role, accessToken } = decodedToken;
+  const { role } = decodedToken;
 
-  // console.log("Role:", role);
-  // console.log("Access Token:", accessToken);
+  const rolesPaths = {
+    ADMIN: [
+      "/pages/admin",
+      "/pages/user",
+      "/pages/owner",
+      "/api/admin",
+      "/api",
+    ],
+    OWNER: ["/pages/owner", "/pages/user", "/api"],
+    CLIENT: ["/pages/user", "/api"],
+  };
 
-  // Aquí puedes agregar más lógica según el role o el accessToken si es necesario
+  const allowedRolesPaths = rolesPaths[role] || [];
+  const hasAccess = allowedRolesPaths.some((allowedPath) =>
+    pathName.startsWith(allowedPath)
+  );
 
-  // Continuar si el token está presente y es válido
+  if (!hasAccess && pathName !== "/") {
+    const redirectUrl = new URL(
+      `/pages/auth?redirect=${encodeURIComponent(request.url)}`,
+      request.url
+    );
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (!role && pathName === "/") {
+    return NextResponse.redirect(new URL("/pages/guest", request.url));
+  }
+
   return NextResponse.next();
 }

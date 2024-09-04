@@ -4,6 +4,13 @@ import PromotionRoomCard from "./auxiliarComponents/PromotionRoomCard";
 import Slider from "./auxiliarComponents/Slider";
 
 const PromotionSection = ({ data }) => {
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <section className="p-4 flex justify-center items-center">
       <div className="space-y-2 flex flex-col justify-center items-start max-w-screen-sm w-full">

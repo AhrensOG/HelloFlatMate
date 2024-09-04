@@ -5,7 +5,7 @@ import "@egjs/react-flicking/dist/flicking.css";
 import "@egjs/react-flicking/dist/flicking-inline.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
 
-export default function SliderDetails({ children }) {
+export default function SliderDetails({ children, rounded = "" }) {
   const plugins = [
     new Pagination({ type: "bullet" }),
     new AutoPlay({
@@ -17,9 +17,9 @@ export default function SliderDetails({ children }) {
   ];
 
   return (
-    <Flicking plugins={plugins} circular={true}>
+    <Flicking plugins={plugins} circular={true} className={`${rounded}`}>
       {React.Children.map(children, (child) => (
-        <div className="w-full">
+        <div className="w-full rounded-2xl">
           {React.cloneElement(child, { className: "w-full" })}
         </div>
       ))}
