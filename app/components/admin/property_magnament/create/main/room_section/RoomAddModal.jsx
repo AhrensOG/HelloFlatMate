@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import ImageUploader from "@/app/components/admin/drag-and-drop/ImageUploader";
+import { v4 as uuidv4 } from "uuid";
 
 export default function RoomAddModal({
   data,
@@ -10,30 +11,37 @@ export default function RoomAddModal({
   propertyId,
   category,
 }) {
-  const [dataRoom, setDataRoom] = useState({});
+  const [dataRoom, setDataRoom] = useState({
+    name: "",
+    serial: "",
+    numberBeds: "",
+    bathroom: "no",
+    couple: "no",
+    price: "",
+    amountHelloflatmate: "",
+  });
   const [images, setImages] = useState([]);
 
   const handleSubmit = async () => {
-    if (!dataRoom?.name) {
-      return toast.error("Por favor, especifique un nombre");
-    }
-    if (!dataRoom?.numberBeds) {
+    // Validaciones previas
+    if (!dataRoom?.name) return toast.error("Por favor, especifique un nombre");
+    if (!dataRoom?.numberBeds)
       return toast.error("Por favor, especifique una cantidad de camas");
-    }
-    if (images.length === 0) {
+    if (images.length === 0)
       return toast.error("Por favor, agrega al menos una imagen.");
-    }
 
+    // Sube las imágenes y obtén las URLs
     const uploadedImages = await submitImage(images);
-    const upLoadedUrls = uploadedImages.map((file) => file.url);
+    const uploadedUrls = uploadedImages.map((file) => file.url);
 
     let roomData;
 
+    // Construir el objeto roomData dependiendo de la categoría
     if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
       roomData = {
         ...dataRoom,
-        images: upLoadedUrls,
-        serial: dataRoom.serial,
+        temporaryId: uuidv4(),
+        images: uploadedUrls,
         numberBeds: parseInt(dataRoom.numberBeds),
         couple: dataRoom.couple === "yes",
         bathroom: dataRoom.bathroom === "yes",
@@ -44,8 +52,8 @@ export default function RoomAddModal({
     if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
       roomData = {
         ...dataRoom,
-        images: upLoadedUrls,
-        serial: dataRoom.serial,
+        temporaryId: uuidv4(),
+        images: uploadedUrls,
         numberBeds: parseInt(dataRoom.numberBeds),
         couple: dataRoom.couple === "yes",
         bathroom: dataRoom.bathroom === "yes",
@@ -57,13 +65,13 @@ export default function RoomAddModal({
       };
     }
 
-    setData([...data, roomData]);
+    setData([...data, roomData]); // Actualiza los datos globales
     showModal(); // Cierra el modal después de guardar
   };
 
   const submitImage = async (files) => {
-    const filesFormated = files.map((file) => file.fileData);
-    const response = await uploadFiles(filesFormated);
+    const filesFormatted = files.map((file) => file.fileData);
+    const response = await uploadFiles(filesFormatted);
     return response;
   };
 
@@ -118,9 +126,11 @@ export default function RoomAddModal({
             onChange={(event) =>
               setDataRoom({ ...dataRoom, numberBeds: event.target.value })
             }
-            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded number-input-no-appearance"
+            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
+
+        {/* Solo muestra precio y tarifa si es la categoría correcta */}
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>
             <div>
@@ -133,12 +143,9 @@ export default function RoomAddModal({
                 name="price"
                 value={dataRoom?.price || ""}
                 onChange={(event) =>
-                  setDataRoom({
-                    ...dataRoom,
-                    price: event.target.value,
-                  })
+                  setDataRoom({ ...dataRoom, price: event.target.value })
                 }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded number-input-no-appearance"
+                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
               />
             </div>
             <div>
@@ -159,7 +166,7 @@ export default function RoomAddModal({
                     amountHelloflatmate: event.target.value,
                   })
                 }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded number-input-no-appearance"
+                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
               />
             </div>
             <div>
@@ -171,6 +178,8 @@ export default function RoomAddModal({
             </div>
           </>
         )}
+
+        {/* Radio buttons para seleccionar si tiene baños */}
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
           <h3 className="w-full">¿Tiene baños?</h3>
           <div className="flex gap-2 px-3">
@@ -183,7 +192,7 @@ export default function RoomAddModal({
             />
             <label htmlFor="bathroom">Si</label>
           </div>
-          <div className="flex  gap-2 px-3">
+          <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="bathroom"
@@ -194,6 +203,8 @@ export default function RoomAddModal({
             <label htmlFor="bathroom">No</label>
           </div>
         </div>
+
+        {/* Radio buttons para seleccionar si es para pareja */}
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
           <h3 className="w-full">¿Es para pareja?</h3>
           <div className="flex gap-2 px-3">
@@ -206,7 +217,7 @@ export default function RoomAddModal({
             />
             <label htmlFor="couple">Si</label>
           </div>
-          <div className="flex  gap-2 px-3">
+          <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="couple"
@@ -217,9 +228,13 @@ export default function RoomAddModal({
             <label htmlFor="couple">No</label>
           </div>
         </div>
+
+        {/* Uploader de imágenes */}
         <div className="w-full">
           <ImageUploader setImages={setImages} images={images} />
         </div>
+
+        {/* Botones para guardar o cancelar */}
         <div className="flex justify-between w-full mt-4">
           <button
             className="text-black px-4 py-2 border border-[#0C1660] rounded-lg"

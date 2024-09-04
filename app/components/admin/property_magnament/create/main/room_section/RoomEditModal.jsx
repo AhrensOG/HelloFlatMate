@@ -69,7 +69,7 @@ export default function RoomEditModal({
 
   const handleRadioChange = (event) => {
     const { name, value } = event.target;
-    setDataRoom({ ...dataRoom, [name]: value });
+    setDataRoom({ ...dataRoom, [name]: value === "yes" });
   };
 
   const handleSubmit = async () => {
@@ -102,15 +102,25 @@ export default function RoomEditModal({
         parseInt(dataRoom.price) - parseInt(dataRoom.amountHelloflatmate),
     }));
     // Guardar los cambios en el array data
-    const updatedRooms = data.map((room) =>
-      room.id === dataRoom.id ? dataRoom : room
-    );
+    const updatedRooms = data.map((room) => {
+      if (room.temporaryId) {
+        if (room.temporaryId === dataRoom.temporaryId) {
+          return dataRoom;
+        } else {
+          return room;
+        }
+      } else {
+        if (room.id === dataRoom.id) {
+          return dataRoom;
+        } else {
+          return room;
+        }
+      }
+    });
 
     try {
-      console.log(newData);
       await axios.put(`/api/admin/room?id=${dataRoom.id}`, newData);
       toast.success("Habitación editada");
-      console.log(updatedRooms);
       setData(updatedRooms);
       showModal(); // Cerrar el modal después de guardar
     } catch (err) {
@@ -118,6 +128,7 @@ export default function RoomEditModal({
       toast.error("Error al editar la habitación");
     }
   };
+
   return (
     <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col h-[95%] overflow-auto">
@@ -232,7 +243,7 @@ export default function RoomEditModal({
             />
             <label htmlFor="bathroom">Si</label>
           </div>
-          <div className="flex  gap-2 px-3">
+          <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="bathroom"
@@ -255,7 +266,7 @@ export default function RoomEditModal({
             />
             <label htmlFor="couple">Si</label>
           </div>
-          <div className="flex  gap-2 px-3">
+          <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="couple"

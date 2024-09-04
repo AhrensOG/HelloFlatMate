@@ -31,7 +31,6 @@ export default function UpdatePropertyPage({ params }) {
         }
       };
       getData();
-      console.log(initialData);
     }
   }, [id]);
 
