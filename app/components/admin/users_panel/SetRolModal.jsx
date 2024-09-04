@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function SetRolModal({ action, data }) {
+export default function SetRolModal({ action, data, reload }) {
   const [selectedRole, setSelectedRole] = useState(data.role || "");
 
   const handleRoleChange = (e) => {
@@ -19,6 +19,7 @@ export default function SetRolModal({ action, data }) {
       });
       if (response.status) {
         setSelectedRole(response.data.role);
+        await reload();
       }
     } catch (error) {
       console.error(error);

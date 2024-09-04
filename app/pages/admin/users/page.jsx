@@ -8,21 +8,22 @@ import { useEffect, useState } from "react";
 export default function UsersPanelPage() {
   const [users, setUsers] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await axios.get("/api/user");
-        if (data) {
-          setUsers([
-            ...data.data.owners,
-            ...data.data.clients,
-            ...data.data.admins,
-          ]);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+  const fetchData = async () => {
+    try {
+      const data = await axios.get("/api/admin/user");
+      if (data) {
+        setUsers([
+          ...data.data.owners,
+          ...data.data.clients,
+          ...data.data.admins,
+        ]);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -36,10 +37,9 @@ export default function UsersPanelPage() {
   return (
     <>
       <headear>
-        {console.log(users)}
         <NavBar client={false} admin={true} owner={false} />
       </headear>
-      <UsersPanel data={users} />
+      <UsersPanel data={users} reload={fetchData} />
     </>
   );
 }
