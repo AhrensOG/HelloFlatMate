@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export default function UsersPanelPage() {
   const [users, setUsers] = useState(null);
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,7 +23,12 @@ export default function UsersPanelPage() {
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -38,7 +44,7 @@ export default function UsersPanelPage() {
       <headear>
         <NavBar client={false} admin={true} owner={false} />
       </headear>
-      <UsersPanel data={users} />
+      <UsersPanel data={users} reload={fetchData} />
     </>
   );
 }

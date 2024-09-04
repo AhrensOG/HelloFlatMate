@@ -4,7 +4,7 @@ import UserCard from "./UserCard";
 import SetRolModal from "./SetRolModal";
 import { useState } from "react";
 
-export default function UsersPanel({ data }) {
+export default function UsersPanel({ data, reload }) {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState(null);
   const handleShowModal = (data) => {
@@ -23,11 +23,11 @@ export default function UsersPanel({ data }) {
           ))
         ) : (
           <h3 className="text-lg font-semibold text-gray-500 text-center mt-4">
-            No hay documentos
+            No hay usuarios
           </h3>
         )}
       </section>
-      {showModal && <SetRolModal action={setShowModal} data={user} />}
+      {showModal && <SetRolModal action={setShowModal} data={user} reload={reload} />}
     </main>
   );
 }
