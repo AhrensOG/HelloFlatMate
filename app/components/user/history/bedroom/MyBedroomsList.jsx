@@ -28,13 +28,15 @@ export default function MyBedroomsList({ action, user, properties }) {
             startDate: p.startDate,
             endDate: p.endDate,
           };
+          console.log(p);
+
           const handleAction = () => {
             action({
               images: prop.images,
               type: prop.category || "HelloRoom",
               location: location,
               dueDate: date, // Puedes formatear la fecha según sea necesario
-              price: prop.price,
+              price: p.price,
               amenities: prop.amenities,
               id: prop.propertyId || prop.id,
             });
