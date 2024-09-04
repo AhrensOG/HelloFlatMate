@@ -9,14 +9,51 @@ import { Context } from "@/app/context/GlobalContext";
 import { toast } from "sonner";
 import { createContractPDF } from "@/app/context/actions";
 
-const ContractDetail = ({ handleContinue, handleBack }) => {
+const ContractDetail = ({ handleContinue, handleBack, owner }) => {
   const { state, dispatch } = useContext(Context);
   const [signatureModal, setSignatureModal] = useState(false);
 
+  const setMonth = (month) => {
+    switch (month) {
+      case 1:
+        return "Enero";
+      case 2:
+        return "Febrero";
+      case 3:
+        return "Marzo";
+      case 4:
+        return "Abril";
+      case 5:
+        return "Mayo";
+      case 6:
+        return "Junio";
+      case 7:
+        return "Julio";
+      case 8:
+        return "Agosto";
+      case 9:
+        return "Septiembre";
+      case 10:
+        return "Octubre";
+      case 11:
+        return "Noviembre";
+      case 12:
+        return "Diciembre";
+    }
+  };
+
+  const setDate = () => {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day} de ${setMonth(month)} del ${year}`;
+  };
+
   // Property DATA
-  const contractDate = "23 de julio de 2024";
-  const landlordName = "Juan Pérez";
-  const landlordNIF = "12345678A";
+  const contractDate = setDate();
+  const landlordName = owner?.name + " " + owner?.lastName || "Javier García";
+  const landlordNIF = "12345678Z";
   const landlordStreet = "Gran Vía";
   const landlordStreetNumber = "45";
   const landlordDoorNumber = "3B";

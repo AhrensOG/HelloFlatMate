@@ -23,8 +23,8 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/success/${propertyId}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/cancel`,
       customer_email: userEmail,
       metadata: {
         propertyId,
