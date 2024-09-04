@@ -15,7 +15,9 @@ export default function LeaseOrderPanel(data) {
     data.data?.category === "HELLO_STUDIO" ||
       data.data?.category === "HELLO_LANDLORD"
       ? data.data?.leaseOrdersProperty.filter(
-          (leaseOrder) => leaseOrder?.status === "PENDING"
+          (leaseOrder) =>
+            leaseOrder?.status === "PENDING" ||
+            leaseOrder?.status === "IN_PROGRESS"
         )
       : null
   );
@@ -28,6 +30,8 @@ export default function LeaseOrderPanel(data) {
     if (!client) {
       const fetchClient = async () => {
         try {
+          console.log(property);
+
           const client = await axios.get(
             `/api/user?id=${leaserOrders[0]?.clientId}`
           );
@@ -140,13 +144,16 @@ export default function LeaseOrderPanel(data) {
         (rooms ? (
           rooms.map((room) => {
             const hasInProgressOrders = room.leaseOrdersRoom.some(
-              (leaseOrder) => leaseOrder.status === "PENDING"
+              (leaseOrder) =>
+                leaseOrder.status === "PENDING" ||
+                leaseOrder.status === "IN_PROGRESS"
             );
             return (
               <div
                 key={room.id}
                 className="p-4 bg-white rounded-lg shadow-md border border-gray-200 space-y-4 my-4"
               >
+                {console.log(hasInProgressOrders)}
                 {hasInProgressOrders ? (
                   room.leaseOrdersRoom.map((leaseOrder) => (
                     <div key={leaseOrder.id}>

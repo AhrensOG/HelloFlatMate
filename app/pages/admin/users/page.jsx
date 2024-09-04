@@ -11,7 +11,7 @@ export default function UsersPanelPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get("/api/user");
+        const data = await axios.get("/api/admin/user");
         if (data) {
           setUsers([
             ...data.data.owners,
@@ -36,7 +36,6 @@ export default function UsersPanelPage() {
   return (
     <>
       <headear>
-        {console.log(users)}
         <NavBar client={false} admin={true} owner={false} />
       </headear>
       <UsersPanel data={users} />

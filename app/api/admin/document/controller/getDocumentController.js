@@ -67,3 +67,14 @@ export async function getDocumentsByUser(data) {
         return NextResponse.json({ message: "Documents not found", error: error }, { status: 400 })
     }
 }
+export async function getAllDocuments() {
+    try {
+        const documents = await Document.findAll()
+        if (!documents) {
+            return NextResponse.json({ message: "No documents found" }, { status: 404 })
+        }
+        return NextResponse.json(documents, { status: 200 })
+    } catch (error) {
+        return NextResponse.json({ message: "Documents not found", error: error }, { status: 404 })
+    }
+}
