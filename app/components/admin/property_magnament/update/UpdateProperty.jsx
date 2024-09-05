@@ -224,6 +224,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               propertyId: property?.id,
             };
           });
+          console.log(roomsFormated);
+
           if (newRooms.length > 0) {
             const createdRooms = await axios.post(
               "/api/admin/room",
@@ -247,6 +249,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 price: 0,
                 amountOwner: 0,
                 amountHelloflatmate: 0,
+                IVA: 0,
                 propertyId: property?.id,
               };
             });
