@@ -36,13 +36,15 @@ export default function LeaseOrderPanel(data) {
     if (!client) {
       const fetchClient = async () => {
         try {
-          console.log(property);
-
-          const client = await axios.get(
-            `/api/user?id=${leaserOrders[0]?.clientId}`
-          );
-          if (client) {
-            setClient(client?.data || null);
+          if (leaserOrders && leaserOrders.length > 0) {
+            const client = await axios.get(
+              `/api/user?id=${leaserOrders[0]?.clientId}`
+            );
+            if (client) {
+              setClient(client?.data || null);
+            }
+          } else {
+            console.log("No hay ordenes (leaseOrders)");
           }
         } catch (error) {
           console.log(error);

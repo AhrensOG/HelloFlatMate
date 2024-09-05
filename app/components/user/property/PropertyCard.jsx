@@ -10,7 +10,11 @@ export default function PropertyCard({ property }) {
   const route = useRouter();
 
   const handleRedirect = () => {
-    route.push("/pages/user/property-details/" + property?.id);
+    if (property.category) {
+      route.push("/pages/user/property-details/" + property?.id);
+    } else {
+      route.push("/pages/user/property-details/" + property?.propertyId);
+    }
   };
 
   const handleOpen = () => {
