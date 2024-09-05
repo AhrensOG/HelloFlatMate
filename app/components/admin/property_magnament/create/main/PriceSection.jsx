@@ -106,7 +106,7 @@ export default function PriceSection({ data, setData }) {
             Offer:{" "}
           </label>
           <div className="flex flex-row w-full justify-between items-center border rounded-md p-2 gap-2">
-            <span className="text-xl">$</span>
+            <span className="text-xl">%</span>
             <input
               className="w-full appearance-none outline-none h-full text-xl number-input-no-appearance"
               id="offer"

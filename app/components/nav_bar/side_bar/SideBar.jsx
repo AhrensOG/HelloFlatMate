@@ -108,11 +108,11 @@ const clientOptions = [
     icon: "/nav_bar/side_bar/client/documents.svg",
     link: "/pages/user/contract/history",
   },
-  {
-    title: "Servicios",
-    icon: "/nav_bar/side_bar/client/services.svg",
-    link: "/pages/user/services",
-  },
+  // {
+  //   title: "Servicios",
+  //   icon: "/nav_bar/side_bar/client/services.svg",
+  //   link: "/pages/user/services",
+  // },
   // {
   //   title: "Configuración",
   //   icon: "/nav_bar/side_bar/client/configuration.svg",
@@ -252,7 +252,7 @@ export default function SideBar({
                   />
                 </div>
                 <h2 className="text-xl font-medium text-licorice-black">
-                  <Link href="#">Inicio</Link>
+                  <Link href="/pages/auth">Login</Link>
                 </h2>
               </button>
               {adminOptions?.map((e) => {
