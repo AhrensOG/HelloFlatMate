@@ -3,6 +3,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function PropertyCard({ data }) {
+  const isReserverd = () => {
+    let aux;
+    if (
+      data.category === "HELLO_STUDIO" ||
+      data.category === "HELLO_LANDLORD"
+    ) {
+      aux = data?.status === "RESERVED";
+      return aux;
+    }
+    return data.rooms.filter((item) => item.status === "RESERVED").length > 0;
+  };
+
   const verifiyStatus = (status) => {
     switch (status) {
       case "FREE":
@@ -40,7 +52,11 @@ export default function PropertyCard({ data }) {
   const router = useRouter();
 
   return (
-    <article className="w-[19rem] flex flex-col gap-6 shadow-supplie-card rounded-lg p-4">
+    <article
+      className={`w-[19rem] flex flex-col gap-6 shadow-supplie-card rounded-lg p-4 ${
+        isReserverd() ? "border border-yellow-500" : ""
+      }`}
+    >
       <div className="flex gap-2 items-center">
         <div className=" flex justify-center items-center w-11 h-11 rounded-lg shadow-supplie-card bg-[#ECF0F3]">
           <Image

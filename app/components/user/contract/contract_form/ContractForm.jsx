@@ -161,7 +161,6 @@ const ContractForm = ({ handleContinue, handleBack }) => {
           <section className="w-full">
             <div className="w-full text-center">
               <span className="text-xs font-medium">
-                {console.log(state)}
                 Necesitaremos que complete el siguiente formulario
               </span>
             </div>

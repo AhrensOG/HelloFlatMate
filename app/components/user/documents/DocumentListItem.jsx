@@ -2,10 +2,24 @@ import { plus_jakarta } from "@/font";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 
-export default function DocumentListItem({ type, title, date, button }) {
+export default function DocumentListItem({
+  type,
+  title,
+  date,
+  button,
+  status,
+}) {
   return (
     <article
-      className={`${plus_jakarta.className} flex flex-col w-full gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
+      className={`${
+        plus_jakarta.className
+      } flex flex-col w-full gap-3 border border-[#ECECEC] p-3 rounded-2xl ${
+        status === "APPROVED"
+          ? "border-green-500"
+          : status === "REJECTED"
+          ? "border-red-500"
+          : "border-yellow-300"
+      }`}
     >
       <div className="flex items-center justify-between">
         {type === "pdf" ? (

@@ -48,7 +48,7 @@ export async function updateStatusLeaseOrder(data) {
     if (!data.type || (data.type !== "PROPERTY" && data.type !== "ROOM")) return NextResponse.json({ message: "No type provided" }, { status: 400 })
 
     try {
-        const admin = await Admin.findByPk(data.adminId)
+        const admin = await Admin.findByPk(data.adminId) || await Client.findByPk(data.adminId)
         if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 })
 
         if (data.type === "PROPERTY") {

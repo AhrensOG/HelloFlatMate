@@ -140,7 +140,6 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
     try {
       await axios.put("/api/document", document);
     } catch (error) {
-      console.log(error);
       toast.error("Error al actualizar el documento");
     }
   };
