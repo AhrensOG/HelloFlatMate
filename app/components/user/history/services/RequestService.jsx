@@ -36,7 +36,7 @@ export default function RequestService({ type, id }) {
         {console.log(state.user)}
         <div className="relative h-[13.7rem] w-full">
           <Image
-            src={"/services/clean-stock-1.jfif"}
+            src={"/services/clean-stock-1.jpg"}
             fill
             style={{ objectFit: "cover", objectPosition: "center" }}
             alt="Imagen-stock"
