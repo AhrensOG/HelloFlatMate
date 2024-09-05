@@ -18,27 +18,28 @@ export default function MyBedroomsList({ action, user, properties }) {
       </p>
       <div className="flex flex-col gap-5 pt-5">
         {properties.map((p) => {
-          const prop = p.leaseOrderRoomProperty || p.property;
+          const prop = p.leaseOrderRoomRoom || p.property;
+          console.log(prop);
+
           const location = {
-            street: prop.street,
-            postalCode: prop.postalCode,
-            city: prop.city,
+            street: prop.street || prop.property.street,
+            postalCode: prop.postalCode || prop.property.postalCode,
+            city: prop.city || prop.property.city,
           };
           const date = {
-            startDate: p.startDate,
-            endDate: p.endDate,
+            startDate: p.startDate || p.leaseOrderRoomRoom.startDate,
+            endDate: p.endDate || p.leaseOrderRoomRoom.endDate,
           };
-          console.log(p);
 
           const handleAction = () => {
             action({
-              images: prop.images,
+              images: prop.images || prop.property.images,
               type: prop.category || "HelloRoom",
               location: location,
               dueDate: date, // Puedes formatear la fecha según sea necesario
-              price: p.price,
-              amenities: prop.amenities,
-              id: prop.propertyId || prop.id,
+              price: prop.price || p.leaseOrderRoomRoom.price,
+              amenities: prop.amenities || prop.property.amenities,
+              id: prop.propertyId || prop.id || prop.property?.id,
             });
           };
 
@@ -48,9 +49,9 @@ export default function MyBedroomsList({ action, user, properties }) {
               type={prop.category || "HelloRoom"}
               location={location}
               dueDate={date}
-              price={prop.price}
-              amenities={prop.amenities}
-              images={prop.images?.[0]}
+              price={prop.price || prop.leaseOrderRoomRoom.price}
+              amenities={prop.amenities || prop.property.amenities}
+              images={prop.images?.[0] || prop.property?.images?.[0]}
               action={handleAction}
             />
           );

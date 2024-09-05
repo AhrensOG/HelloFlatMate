@@ -33,6 +33,10 @@ export async function getSupplyByPropertyId(id) {
     const supply = await Supply.findAll({
         where: {
             propertyId: id
+        },
+        include: {
+            model: Client,
+            as: "client"
         }
     })
     if (!supply) return NextResponse.json({ error: "Supply not found" }, { status: 404 })

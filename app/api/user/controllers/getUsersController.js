@@ -1,4 +1,4 @@
-import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply } from "@/db/init";
+import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getUserById(id) {
@@ -41,8 +41,12 @@ export async function getUserById(id) {
                     model: LeaseOrderRoom,
                     as: "leaseOrdersRoom",
                     include: [{
-                        model: Property,
-                        as: "leaseOrderRoomProperty"
+                        model: Room,
+                        as: "leaseOrderRoomRoom",
+                        include: [{
+                            model: Property,
+                            as: "property"
+                        }]
                     }]
                 },
                 {

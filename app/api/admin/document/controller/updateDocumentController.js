@@ -1,4 +1,4 @@
-import { Admin, Document } from "@/db/init"
+import { Admin, Client, Document } from "@/db/init"
 import { NextResponse } from "next/server"
 
 export async function updateStateDocument(data) {
@@ -18,7 +18,7 @@ export async function updateStateDocument(data) {
 
     const transaction = await Document.sequelize.transaction()
     try {
-        const admin = await Admin.findByPk(data.adminId)
+        const admin = await Admin.findByPk(data.adminId) || await Client.findByPk(data.adminId)
         if (!admin) {
             transaction.rollback();
             return NextResponse.json({ message: "Admin not found" }, { status: 404 })

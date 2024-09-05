@@ -65,6 +65,7 @@ export default function DocumentsPanel() {
                   title={doc.name}
                   date={formatDate(doc.updatedAt)}
                   button={<EyeButton action={() => handleOpenModal(doc)} />}
+                  status={doc.status}
                 />
               );
             })

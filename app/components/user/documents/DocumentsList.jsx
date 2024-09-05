@@ -46,6 +46,7 @@ export default function DocumentsList({ action }) {
                 type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
                 title={doc.name}
                 date={formatDate(doc.updatedAt)}
+                status={doc.status}
               />
             );
           })

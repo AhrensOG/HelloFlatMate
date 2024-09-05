@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { toast } from "sonner";
 
-export default function SupplieAdminCard({ data, action }) {
+export default function SupplieAdminCard({ data, action, user }) {
   const formatedDate = (date) => {
     const newDate = new Date(date);
     return newDate.toLocaleDateString();

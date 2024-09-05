@@ -83,7 +83,7 @@ export async function createLeaseRoomOrder(data) {
         room.status = "RESERVED"
         await room.save()
         const roomsAvaibles = property.rooms.filter(room => room.status === "FREE")
-        if (roomsAvaibles.length <= 0) {
+        if (roomsAvaibles.length === 1) {
             property.status = "RESERVED"
             await property.save()
         }

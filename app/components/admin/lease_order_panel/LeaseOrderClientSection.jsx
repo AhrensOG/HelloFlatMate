@@ -1,8 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LeaseOrderClientSection({ data, formatDate }) {
-  console.log(data);
-
   return (
     <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
       <h2 className="text-xl font-bold text-gray-800">Datos del Cliente</h2>
@@ -28,31 +27,39 @@ export default function LeaseOrderClientSection({ data, formatDate }) {
         </p>
       </article>
       <article className="flex flex-wrap gap-4">
-        <div className="bg-white p-4 rounded shadow w-full md:w-1/3">
+        <div className="bg-white p-4 rounded shadow w-full md:w-1/3 flex flex-col justify-center items-center">
           <p className="text-gray-600">Identificación</p>
           {data?.documents
             .filter((doc) => doc.type === "IDENTIFICATION")
-            .map((doc) => (
-              <Image
-                src={doc?.urls[0] || ""}
-                height={200}
-                width={200}
-                className="mt-2"
-              />
-            ))}
+            .map((doc) =>
+              doc.urls.map((dc) => {
+                return (
+                  <Image
+                    src={dc || ""}
+                    height={200}
+                    width={200}
+                    className="mt-2"
+                  />
+                );
+              })
+            )}
         </div>
-        <div className="bg-white p-4 rounded shadow w-full md:w-1/3">
+        <div className="bg-white p-4 rounded shadow w-full md:w-1/3 flex flex-col justify-center items-center">
           <p className="text-gray-600">Nómina</p>
           {data?.documents
             .filter((doc) => doc.type === "ROSTER")
-            .map((doc) => (
-              <Image
-                src={doc?.urls[0] || ""}
-                height={200}
-                width={200}
-                className="mt-2"
-              />
-            ))}
+            .map((doc) =>
+              doc.urls.map((dc) => {
+                return (
+                  <Image
+                    src={dc || ""}
+                    height={200}
+                    width={200}
+                    className="mt-2"
+                  />
+                );
+              })
+            )}
         </div>
         <div className="bg-white p-4 rounded shadow w-full md:w-1/3">
           <p className="text-gray-600">Firma</p>
@@ -63,6 +70,19 @@ export default function LeaseOrderClientSection({ data, formatDate }) {
             className="mt-2"
           />
         </div>
+
+        <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md ">
+          <h2 className="text-xl font-bold text-gray-800 py-3">Contrato</h2>
+          <Link
+            target="_blank"
+            href={
+              data?.documents.find((doc) => doc.type === "CONTRACT").urls[0]
+            }
+            className="inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+          >
+            Ver Contrato
+          </Link>
+        </section>
       </article>
     </section>
   );
