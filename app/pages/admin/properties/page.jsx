@@ -26,6 +26,8 @@ export default function PropertiesPanelPage() {
   }, [state.user]);
 
   useEffect(() => {
+    console.log(state);
+
     if (state.properties) {
       setProperties(state.properties);
     }

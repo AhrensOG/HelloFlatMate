@@ -1,7 +1,7 @@
 import { plus_jakarta } from "@/font";
 import React from "react";
 import TitleAdminPanel from "../../../admin/shared/TitleAdminPanel";
-import PropertyCard from "../../../admin/properties_panel/PropertyCard";
+import PropertyCard from "../../property/PropertyCard";
 
 const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
   return (
@@ -30,19 +30,7 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
               ? "OCCUPIED"
               : null;
           const id = l.id;
-          return (
-            <PropertyCard
-              data={{
-                name: "Villa eden",
-                image: "/admin/document-text.svg",
-                date: readableDate,
-                body: body,
-                status: status,
-                id: id,
-                link: `/pages/user/contract`,
-              }}
-            />
-          );
+          return <PropertyCard property={l.property || l.leaseOrderRoomRoom} />;
         })
       ) : (
         <span className="text-lg font-bold text-slate-300 py-10">

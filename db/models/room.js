@@ -14,15 +14,19 @@ const roomInit = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             price: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
                 allowNull: true,
             },
             amountOwner: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
                 allowNull: true,
             },
             amountHelloflatmate: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            IVA: {
+                type: DataTypes.FLOAT,
                 allowNull: true,
             },
             isActive: {

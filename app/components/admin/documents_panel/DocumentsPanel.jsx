@@ -7,6 +7,8 @@ import PreviewModal from "./PreviewModal";
 import { Context } from "@/app/context/GlobalContext";
 import { toast } from "sonner";
 import axios from "axios";
+import { CloudArrowDownIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function DocumentsPanel() {
   const [showModal, setShowModal] = useState();
@@ -64,7 +66,15 @@ export default function DocumentsPanel() {
                   type={doc.type === "IDENTIFICATION" ? "raw" : "pdf"}
                   title={doc.name}
                   date={formatDate(doc.updatedAt)}
-                  button={<EyeButton action={() => handleOpenModal(doc)} />}
+                  button={
+                    doc.type === "CONTRACT" ? (
+                      <Link target="_blank" href={doc.urls[0]}>
+                        <CloudArrowDownIcon className="w-6 h-6" />
+                      </Link>
+                    ) : (
+                      <EyeButton action={() => handleOpenModal(doc)} />
+                    )
+                  }
                   status={doc.status}
                 />
               );

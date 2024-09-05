@@ -29,16 +29,16 @@ const adminOptions = [
     icon: "/nav_bar/side_bar/admin/documents.svg",
     link: "/pages/admin/documents",
   },
-  {
-    title: "Pagos",
-    icon: "/nav_bar/side_bar/admin/payments.svg",
-    link: "/pages/admin/payments",
-  },
-  {
-    title: "Pago de suministros",
-    icon: "/nav_bar/side_bar/admin/supplies-payment.svg",
-    link: "/pages/admin/supplies",
-  },
+  // {
+  //   title: "Pagos",
+  //   icon: "/nav_bar/side_bar/admin/payments.svg",
+  //   link: "/pages/admin/payments",
+  // },
+  // {
+  //   title: "Pago de suministros",
+  //   icon: "/nav_bar/side_bar/admin/supplies-payment.svg",
+  //   link: "/pages/admin/supplies",
+  // },
   {
     title: "Mensajes",
     icon: "/nav_bar/side_bar/admin/chats.svg",

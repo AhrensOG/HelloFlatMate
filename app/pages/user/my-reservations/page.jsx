@@ -1,12 +1,6 @@
 "use client";
-import MyBedroomDetails from "@/app/components/user/history/bedroom/MyBedroomDetails";
-import MyBedroomActivitys from "@/app/components/user/history/bedroom/MyBedroomActivitys";
-import NavBarHistory from "@/app/components/user/history/NavBarHistory";
-import { plus_jakarta } from "@/font";
 import { AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
-import MyBedroomsList from "@/app/components/user/history/bedroom/MyBedroomsList";
 import NavBar from "@/app/components/nav_bar/NavBar";
 import ReservationSection from "@/app/components/user/profile/reservations/ReservationSection";
 import { useEffect } from "react";
@@ -32,6 +26,13 @@ export default function MyBedrooms() {
     }
   }, [state.user]);
 
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <AnimatePresence>
       <>

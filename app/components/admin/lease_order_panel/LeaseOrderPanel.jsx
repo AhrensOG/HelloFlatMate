@@ -152,16 +152,13 @@ export default function LeaseOrderPanel(data) {
         (rooms ? (
           rooms.map((room) => {
             const hasInProgressOrders = room.leaseOrdersRoom.some(
-              (leaseOrder) =>
-                leaseOrder.status === "PENDING" ||
-                leaseOrder.status === "IN_PROGRESS"
+              (leaseOrder) => leaseOrder.status === "PENDING"
             );
             return (
               <div
                 key={room.id}
                 className="p-4 bg-white rounded-lg shadow-md border border-gray-200 space-y-4 my-4"
               >
-                {console.log(hasInProgressOrders)}
                 {hasInProgressOrders ? (
                   room.leaseOrdersRoom.map((leaseOrder) => (
                     <div key={leaseOrder.id}>
