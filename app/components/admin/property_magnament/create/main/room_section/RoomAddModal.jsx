@@ -173,6 +173,16 @@ export default function RoomAddModal({
               />
             </div>
             <div>
+              <h3 className="block text-sm mb-1">
+                Tarifa Helloflatmate con IVA
+              </h3>
+              <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                {(parseInt(dataRoom?.amountHelloflatmate) || 0) -
+                  (parseInt(dataRoom?.amountHelloflatmate) *
+                    (dataRoom.IVA / 100) || 0)}
+              </p>
+            </div>
+            <div>
               <label className="block text-sm mb-1" htmlFor="IVA">
                 IVA (%)
               </label>

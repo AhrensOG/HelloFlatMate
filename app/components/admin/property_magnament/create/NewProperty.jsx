@@ -296,6 +296,7 @@ export default function NewProperty({ category, handleBack }) {
             setData={setRoomData}
             showModal={handleShowRoomEditModal}
             action={handleShowRoomEditModal}
+            category={category}
           />
           <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
           <LocationSectionTemplate />
