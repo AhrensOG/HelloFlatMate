@@ -41,7 +41,7 @@ export default function PriceSection({ data, setData }) {
 
   return (
     <section className="w-full flex flex-wrap justify-between items-center gap-5">
-      <div className="w-full flex flex-wrap justify-between items-end m-3">
+      <div className="w-full flex flex-wrap justify-between items-start m-3">
         <div className="w-[45%] flex flex-col justify-center gap-1 items-start max-w-52">
           <label className="font-semibold text-base" htmlFor="price">
             Precio Propiedad:{" "}
@@ -76,6 +76,12 @@ export default function PriceSection({ data, setData }) {
               type="number"
             />
           </div>
+          <span>
+            Tarifa con IVA : €
+            {(parseInt(formData?.amountHelloflatmate) || 0) -
+              (parseInt(formData?.amountHelloflatmate) * (formData.IVA / 100) ||
+                0)}
+          </span>
         </div>
       </div>
       <div className="w-full flex flex-wrap justify-between items-center m-3">
