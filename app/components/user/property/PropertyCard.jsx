@@ -26,11 +26,10 @@ export default function PropertyCard({ property }) {
       onClick={handleRedirect}
       className={`${plus_jakarta.className} flex gap-3 w-full h-[15vh] cursor-pointer`}
     >
-      {console.log(property)}
       <div className="h-full rounded-xl">
         <Image
           className="h-full rounded-xl"
-          src={property?.images[0] || ""}
+          src={property?.property?.images[0] || property?.images[0] || ""}
           width={117}
           height={117}
           alt="Imagen de propiedad"
@@ -39,13 +38,15 @@ export default function PropertyCard({ property }) {
       <div className="flex flex-col justify-between h-full grow">
         <div className="flex flex-col grow gap-2">
           <h4 className="flex w-full gap-2 items-center text-[0.81rem] text-[#000000B2] font-normal">
-            {property?.category
-              .split("_")
-              .map(
-                (word) =>
-                  word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-              )
-              .join(" ") || ""}{" "}
+            {property?.property?.category ||
+              property?.category
+                .split("_")
+                .map(
+                  (word) =>
+                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                )
+                .join(" ") ||
+              ""}{" "}
             <button
               type="button"
               className="relative"
@@ -70,18 +71,27 @@ export default function PropertyCard({ property }) {
                 alt="Icono de Ubicación"
               />
             </span>{" "}
-            {property?.city +
-              ", " +
-              property?.street +
-              " " +
-              property?.streetNumber || ""}
+            {property?.property
+              ? property?.property?.city +
+                ", " +
+                property?.property?.street +
+                " " +
+                property?.property?.streetNumber
+              : property?.city +
+                  ", " +
+                  property?.street +
+                  " " +
+                  property?.streetNumber || ""}
           </h2>
           <p className="text-[0.68rem] text-[#828282] font-normal">
-            {property?.amenities
-              .map(
-                (amenity) => amenity.charAt(0).toUpperCase() + amenity.slice(1)
-              )
-              .join(", ") || ""}
+            {property?.property?.amenities ||
+              property?.amenities
+                .map(
+                  (amenity) =>
+                    amenity.charAt(0).toUpperCase() + amenity.slice(1)
+                )
+                .join(", ") ||
+              ""}
           </p>
         </div>
         <div className="flex justify-between gap-2 h-[3.75rem] pb-2">
@@ -96,14 +106,15 @@ export default function PropertyCard({ property }) {
             4.9
           </span>
           <div className="flex flex-col justify-end items-end font-medium">
-            {property?.offer > 0 ? (
+            {property?.property?.offer > 0 || property?.offer > 0 ? (
               <span className="text-xs text-[#171412] h-[1.06rem] bg-[#FFF06D] px-1">
-                {property?.offer || ""} OFF
+                {property?.property?.offer || property?.offer} OFF
               </span>
             ) : null}
-            {property?.price && (
+
+            {property?.price > 0 && (
               <h3 className="text-base text-[#000000B2]">
-                {property?.price || ""}{" "}
+                {property?.price}{" "}
                 <span className="text-xs text-[#B2B2B2]">/mes</span>
               </h3>
             )}

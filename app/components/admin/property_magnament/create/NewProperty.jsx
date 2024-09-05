@@ -151,6 +151,7 @@ export default function NewProperty({ category, handleBack }) {
         price: parseInt(room.price),
         amountOwner: parseInt(room.price) - parseInt(room.amountHelloflatmate),
         amountHelloflatmate: parseInt(room.amountHelloflatmate),
+        IVA: parseInt(room.IVA),
       }));
     } else {
       rooms = data.map((room) => ({
@@ -164,6 +165,8 @@ export default function NewProperty({ category, handleBack }) {
     }
 
     try {
+      console.log(rooms);
+
       const response = await axios.post("/api/admin/room", rooms); // Cambia rooms por response para evitar la redeclaración
       toast.success("Habitación/es creada/s con éxito");
       return response; // Devuelve el response si todo va bien

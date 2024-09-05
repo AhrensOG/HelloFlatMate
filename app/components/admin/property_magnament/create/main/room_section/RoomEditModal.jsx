@@ -223,6 +223,21 @@ export default function RoomEditModal({
               />
             </div>
             <div>
+              <label className="block text-sm mb-1" htmlFor="IVA">
+                IVA (%)
+              </label>
+              <input
+                type="number"
+                id="IVA"
+                name="IVA"
+                value={dataRoom?.IVA || ""}
+                onChange={(event) =>
+                  setDataRoom({ ...dataRoom, IVA: event.target.value })
+                }
+                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div>
               <h3 className="block text-sm mb-1">Neto Propietario</h3>
               <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
                 {(parseInt(dataRoom?.price) || 0) -

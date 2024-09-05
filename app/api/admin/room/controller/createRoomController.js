@@ -2,6 +2,8 @@ import { Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createRoom(data) {
+    console.log(data);
+
     if (!data) {
         return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
     }
