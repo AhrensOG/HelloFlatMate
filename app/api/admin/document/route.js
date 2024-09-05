@@ -1,4 +1,5 @@
 import { getAllDocuments, getDocumentById } from "./controller/getDocumentController";
+import { updateStateDocument } from "./controller/updateDocumentController";
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url)

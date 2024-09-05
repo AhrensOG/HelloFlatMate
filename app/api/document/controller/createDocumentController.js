@@ -11,7 +11,7 @@ export async function createDocument(data) {
     if (!data.type || data.type.trim() === "" || (data.type !== "CONTRACT" && data.type !== "ROSTER" && data.type !== "IDENTIFICATION")) {
         return NextResponse.json({ message: "No document type provided or invalid" }, { status: 400 })
     }
-    if (!data.url || data.url.trim() === "") {
+    if (!data.urls || data.urls.length === 0) {
         return NextResponse.json({ message: "No document url provided" }, { status: 400 })
     }
     if (!data.typeUser || data.typeUser.trim() === "" || (data.typeUser !== "CLIENT" && data.tipeUser !== "ADMIN")) {
@@ -25,7 +25,7 @@ export async function createDocument(data) {
         const document = Document.create({
             name: data.name,
             type: data.type,
-            url: data.url,
+            urls: data.urls,
             documentableId: data.userId,
             documentableType: data.typeUser,
         })
@@ -34,7 +34,6 @@ export async function createDocument(data) {
         }
         return NextResponse.json({ message: "Document not created" }, { status: 400 })
     } catch (error) {
-        console.log(error)
         return NextResponse.json({ message: "Document not created" }, { status: 400 })
     }
 }

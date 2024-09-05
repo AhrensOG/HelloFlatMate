@@ -1,20 +1,26 @@
+import { Context } from "@/app/context/GlobalContext";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function PreviewModal({ action, data }) {
-  console.log(data);
+  const { state } = useContext(Context);
+  const [user, setUser] = useState(state?.user);
+
+  useEffect(() => {
+    setUser(state?.user);
+  }, []);
 
   const handleUpdate = async (action) => {
     try {
       const dataRequest = {
         id: data.id,
-        adminId: "89",
+        adminId: user.id,
         state: action,
       };
       const response = await axios.patch("/api/admin/document", dataRequest);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -31,15 +37,21 @@ export default function PreviewModal({ action, data }) {
             </button>
           </div>
         </div>
-        <div className="relative m-2 rounded-xl w-full min-h-[10rem]">
-          <Image
-            className="rounded-xl"
-            src={data.url}
-            fill
-            alt="dni"
-            style={{ objectFit: "contain", objectPosition: "center" }}
-          />
-        </div>
+        {data &&
+          data.urls.length > 0 &&
+          data.urls.map((item) => {
+            return (
+              <div className="relative m-2 rounded-xl w-full min-h-[10rem]">
+                <Image
+                  className="rounded-xl"
+                  src={item}
+                  fill
+                  alt="dni"
+                  style={{ objectFit: "contain", objectPosition: "center" }}
+                />
+              </div>
+            );
+          })}
         <div className="flex justify-between gap-4 w-full mt-4">
           <button
             onClick={() => {

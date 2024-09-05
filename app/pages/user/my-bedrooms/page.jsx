@@ -56,6 +56,7 @@ export default function MyBedrooms() {
         className={`${plus_jakarta.className} flex flex-col justify-center items-center w-full px-5 my-8 gap-10`}
       >
         <AnimatePresence mode="wait">
+          {console.log(propertiesList)}
           {!showDetails ? (
             propertiesList.length > 0 ? (
               <MyBedroomsList

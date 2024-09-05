@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import LeaseOrderSection from "./LeaseOrderSection";
 import LeaseOrderClientSection from "./LeaseOrderClientSection";
 import LeaseOrderPropertySection from "./LeaseOrderPropertySection";
 import LeaseOrderOwnerSection from "./LeaseOrderOwnerSection";
-import TitleSectionTemplate from "../property_magnament/create/main/TitleSectionTemplate";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import { useRouter } from "next/navigation";
+import { Context } from "@/app/context/GlobalContext";
 
 export default function LeaseOrderPanel(data) {
   const router = useRouter();
@@ -25,6 +25,12 @@ export default function LeaseOrderPanel(data) {
   const [client, setClient] = useState(null);
   const [owner, setOwner] = useState(null);
   const [rooms, setRooms] = useState(null);
+  const { state } = useContext(Context);
+  const [currentUser, setCurrentUser] = useState(state?.user);
+
+  useEffect(() => {
+    setCurrentUser(state?.user);
+  }, []);
 
   useEffect(() => {
     if (!client) {
@@ -68,7 +74,7 @@ export default function LeaseOrderPanel(data) {
     try {
       const dataRequest = {
         leaseOrderId: leaseOrder.id,
-        adminId: "89",
+        adminId: state.user.id,
         action: "APPROVED",
         propertyId:
           property.category === "HELLO_STUDIO" ||
@@ -86,6 +92,8 @@ export default function LeaseOrderPanel(data) {
             ? null
             : leaseOrder.roomId,
       };
+      console.log(dataRequest);
+
       await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
       console.log(error);
@@ -97,7 +105,7 @@ export default function LeaseOrderPanel(data) {
     try {
       const dataRequest = {
         leaseOrderId: leaseOrder.id,
-        adminId: "89",
+        adminId: currentUser.id,
         action: "REJECTED",
         propertyId:
           property.category === "HELLO_STUDIO" ||
@@ -127,7 +135,7 @@ export default function LeaseOrderPanel(data) {
     return newDate.toLocaleDateString();
   };
 
-  if (!client && !owner) {
+  if (!client && !owner && !currentUser) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -168,12 +176,6 @@ export default function LeaseOrderPanel(data) {
                         data={leaseOrder.client}
                         formatDate={formatDate}
                       />
-                      <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
-                        <h2 className="text-xl font-bold text-gray-800">
-                          Contrato
-                        </h2>
-                        <p className="text-gray-600">Contrato</p>
-                      </section>
                       <div className="flex justify-between gap-4 ">
                         <button
                           onClick={() => {
