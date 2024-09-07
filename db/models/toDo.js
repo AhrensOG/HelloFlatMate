@@ -45,6 +45,15 @@ const toDoInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(1000),
                 allowNull: true,
             },
+            clientMessage: {
+                type: DataTypes.STRING(1000),
+                allowNull: true,
+            },
+            isPresent: {
+                type: DataTypes.BOOLEAN,
+                allowNull: true,
+                defaultValue: false
+            },
             userId: {
                 type: DataTypes.STRING(300),
                 allowNull: false,

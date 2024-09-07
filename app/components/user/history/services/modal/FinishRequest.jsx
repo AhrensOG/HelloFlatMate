@@ -1,11 +1,20 @@
+import { saveToDos } from "@/app/context/actions";
+import { Context } from "@/app/context/GlobalContext";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
 import { toast } from "sonner";
-export default function FinishRequest({ next, prev, data }) {
-  console.log(data);
 
+export default function FinishRequest({ next, prev, data }) {
   const router = useRouter();
+
+  const { state, dispatch } = useContext(Context);
+
+  // Estado para el mensaje y si estará presente
+  const [message, setMessage] = useState("");
+  const [isPresent, setIsPresent] = useState(false);
+
   const parseDate = (date, time) => {
     const timeDate = time.split(":");
     const originalDate = new Date(date);
@@ -33,20 +42,23 @@ export default function FinishRequest({ next, prev, data }) {
     userId: data.user.id || "",
     propertyId: data.propertyId || "",
     typeUser: data.user.role || "",
+    clientMessage: message || "", // El mensaje que deja el cliente
+    isPresent: isPresent || "", // Si el cliente estará presente
   };
 
   const submitRequest = async () => {
     try {
       const response = await axios.post("/api/to_do", dataToDo);
-      return "Solicitud enviada";
+      saveToDos(dispatch, response.data);
+      next();
     } catch (err) {
-      return;
+      throw err;
     }
   };
 
   return (
     <motion.div
-      className="h-full py-6 flex flex-col justify-center items-center gap-2 mx-6 w-full"
+      className="h-full py-6 flex flex-col justify-center items-center gap-4 mx-6 w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -60,6 +72,7 @@ export default function FinishRequest({ next, prev, data }) {
           {data?.time || ""} PM
         </p>
       </div>
+
       <ul className="list-disc text-[#757575] text-sm font-normal self-start pl-5">
         <li>
           {data?.type === "cleaning"
@@ -67,6 +80,29 @@ export default function FinishRequest({ next, prev, data }) {
             : "Servicio de reparacion" || ""}
         </li>
       </ul>
+
+      {/* Textarea para el mensaje */}
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Deja un mensaje sobre los detalles del servicio"
+        className="w-full p-2 border border-gray-300 rounded-md"
+        rows="4"
+      ></textarea>
+
+      {/* Checkbox para saber si estará presente */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={isPresent}
+          onChange={(e) => setIsPresent(e.target.checked)}
+          id="presentCheckbox"
+        />
+        <label htmlFor="presentCheckbox" className="text-sm text-[#757575]">
+          ¿Estará presente en el domicilio durante el servicio?
+        </label>
+      </div>
+
       <div className="flex justify-between items-center gap-3 w-full mt-auto">
         <button
           onClick={() => {

@@ -23,22 +23,24 @@ export default function SuppliesPanel({ propertyId }) {
     setContinueModal(0);
   };
 
-  const formatedDae = (date) => {
+  const formatedDate = (date) => {
     return date.split("/").reverse().join("-");
   };
+
   const createSupply = async (data) => {
     const supply = {
       title: data.title,
       amount: data.amount,
-      expirationDate: formatedDae(data.date),
+      expirationDate: formatedDate(data.date),
       reference: data.reference || " - ",
       discount: data.discount,
       typeSupply: data.typeSupply,
       propertyId: propertyId,
     };
+
     try {
       const response = await axios.post("/api/admin/supply", supply);
-      return response.data;
+      return response.data; // La respuesta será la nueva supply creada
     } catch (error) {
       throw error;
     }
@@ -50,37 +52,22 @@ export default function SuppliesPanel({ propertyId }) {
         const response = await axios.get(
           "/api/admin/supply?propertyId=" + propertyId
         );
-        console.log(response.data);
-
-        setSuppliesList(response.data);
+        setSuppliesList(response.data); // Cargar supplies existentes
       } catch (error) {
-        console.log(error);
+        throw error;
       }
     };
     fetchData();
-  }, []);
+  }, [propertyId]);
 
   const handleSubmit = async (data) => {
     try {
-      const response = await createSupply(data);
-      if (response instanceof Error) {
-        throw response;
-      } else {
-        toast.success("Factura generada correctamente");
-        setContinueModal(continueModal + 1);
-      }
+      const newSupply = await createSupply(data);
+      setSuppliesList((prevSupplies) => [...prevSupplies, ...newSupply]); // Agregar la nueva supply
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
-
-  if (!suppliesList) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-      </div>
-    );
-  }
 
   return (
     <AnimatePresence mode="wait">
@@ -93,7 +80,7 @@ export default function SuppliesPanel({ propertyId }) {
           </button>
         </div>
         <section className="flex flex-col p-2 gap-3">
-          {suppliesList.length > 0 ? (
+          {suppliesList?.length > 0 ? (
             suppliesList.map((supply) => {
               return (
                 <SupplieAdminCard

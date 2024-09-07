@@ -60,6 +60,14 @@ export const getAllProperties = async (dispatch) => {
     throw new Error({ message: "Internal Server Error: GET_ALL_PROPERTIES", error: error })
   }
 }
+
+export const saveToDos = (dispatch, toDos) => {
+  return dispatch({
+    type: "SAVE_TO_DOS",
+    payload: toDos
+  })
+}
+
 export const initialImageState = {
   imageUrl: {}
 }
