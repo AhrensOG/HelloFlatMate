@@ -33,6 +33,11 @@ export const reducer = (state, action) => {
         ...state,
         user: action.payload,
       };
+    case "SAVE_TO_DOS":
+      return {
+        ...state,
+        toDos: action.payload
+      }
 
     default:
       return { ...state };

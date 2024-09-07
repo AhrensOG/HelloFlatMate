@@ -36,16 +36,22 @@ export async function createSupply(data) {
         });
 
         if (!property) return NextResponse.json({ error: "Property not found" }, { status: 404 });
-        console.log(property.toJSON());
+
+        let supplies = [];
 
         if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING") {
-            const clients = property.rooms.flatMap(room => room.leaseOrdersRoom.filter(leaseOrder => leaseOrder.isActive).map(leaseOrder => leaseOrder.client));
+            const clients = property.rooms.flatMap(room =>
+                room.leaseOrdersRoom
+                    .filter(leaseOrder => leaseOrder.isActive)
+                    .map(leaseOrder => leaseOrder.client)
+            );
 
             if (!clients || clients.length === 0) return NextResponse.json({ error: "No active clients found" }, { status: 404 });
 
             const price = data.amount / clients.length;
+
             for (let client of clients) {
-                await Supply.create({
+                const supply = await Supply.create({
                     name: data.title,
                     amount: price,
                     date: new Date(),
@@ -56,16 +62,19 @@ export async function createSupply(data) {
                     type: data.typeSupply,
                     expirationDate: new Date(data.expirationDate)
                 });
+                supplies.push(supply.toJSON());
             }
-            return NextResponse.json({ message: "Supply created successfully" }, { status: 200 });
+
+            return NextResponse.json(supplies, { status: 200 });
         }
 
         const activeClients = property.leaseOrdersProperty.filter(leaseOrder => leaseOrder.isActive).map(leaseOrder => leaseOrder.client);
         if (!activeClients || activeClients.length === 0) return NextResponse.json({ error: "No active clients found" }, { status: 404 });
 
         const price = data.amount / activeClients.length;
+
         for (let client of activeClients) {
-            await Supply.create({
+            const supply = await Supply.create({
                 name: data.title,
                 amount: price,
                 date: new Date(),
@@ -76,8 +85,10 @@ export async function createSupply(data) {
                 type: data.typeSupply,
                 expirationDate: new Date(data.expirationDate)
             });
+            supplies.push(supply.toJSON());
         }
-        return NextResponse.json({ message: "Supply created successfully" }, { status: 200 });
+
+        return NextResponse.json(supplies, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
