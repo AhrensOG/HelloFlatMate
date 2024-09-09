@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 
 export default function SuppliesPage({ params }) {
   const { id } = params;
-  console.log(id);
   const { state } = useContext(Context);
   const [supplies, setSupplies] = useState(state?.user?.supplies || null);
 
@@ -18,6 +17,7 @@ export default function SuppliesPage({ params }) {
       const result = supplies.filter((supply) => supply.propertyId == id);
       setSupplies(result);
     }
+    console.log(supplies)
   }, [state?.user]);
 
   if (!supplies) {
@@ -34,7 +34,7 @@ export default function SuppliesPage({ params }) {
       </header>
       <Supplies
         data={supplies}
-        user={state?.user.name + " " + state?.user.lastName}
+        user={state?.user}
       />
     </>
   );

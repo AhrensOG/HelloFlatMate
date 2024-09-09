@@ -24,7 +24,7 @@ export default function Supplies({ data, user }) {
       <section className="flex flex-col p-2 gap-4 w-full items-center">
         {data && data.length > 0 ? (
           data.map((supplie) => (
-            <SupplieCard key={supplie.id} data={supplie} userName={user} />
+            <SupplieCard key={supplie.id} data={supplie} user={user} />
           ))
         ) : (
           <p className="text-sm text-[#464E5F] font-normal">
