@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import { LeaseOrderProperty, LeaseOrderRoom } from "@/db/init";
+import { LeaseOrderProperty, LeaseOrderRoom, Supply } from "@/db/init"; // Importa el modelo Supply
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -30,60 +30,124 @@ export async function POST(req) {
     );
   }
 
-  // Destructura la metadata
-  const { type, data: { object: session } } = event;
-  const { roomId, leaseOrderId } = session.metadata;
+  const {
+    type,
+    data: { object: session },
+  } = event;
+  const { paymentType, roomId, leaseOrderId, supplyId } = session.metadata;
 
-  // Maneja el evento específico
   try {
     if (type === "checkout.session.completed") {
-      if (roomId !== "false") {
-        // Actualiza el estado de LeaseOrderRoom
-        const successLeaseOrderRoom = await LeaseOrderRoom.findByPk(leaseOrderId);
-        if (!successLeaseOrderRoom) {
-          console.error(`LeaseOrderRoom with ID ${leaseOrderId} not found.`);
-          return NextResponse.json({ error: "LeaseOrderRoom not found" }, { status: 404 });
+      if (paymentType === "reservation") {
+        if (roomId !== "false") {
+          const successLeaseOrderRoom = await LeaseOrderRoom.findByPk(
+            leaseOrderId
+          );
+          if (!successLeaseOrderRoom) {
+            console.error(`LeaseOrderRoom with ID ${leaseOrderId} not found.`);
+            return NextResponse.json(
+              { error: "LeaseOrderRoom not found" },
+              { status: 404 }
+            );
+          }
+          await successLeaseOrderRoom.update({ status: "PENDING" });
+          console.log(
+            `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
+          );
+        } else {
+          const successLeaseOrder = await LeaseOrderProperty.findByPk(
+            leaseOrderId
+          );
+          if (!successLeaseOrder) {
+            console.error(
+              `LeaseOrderProperty with ID ${leaseOrderId} not found.`
+            );
+            return NextResponse.json(
+              { error: "LeaseOrderProperty not found" },
+              { status: 404 }
+            );
+          }
+          await successLeaseOrder.update({ status: "PENDING" });
+          console.log(
+            `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`
+          );
         }
-        await successLeaseOrderRoom.update({ status: "PENDING" });
-        console.log(`✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`);
-      } else {
-        // Actualiza el estado de LeaseOrderProperty
-        const successLeaseOrder = await LeaseOrderProperty.findByPk(leaseOrderId);
-        if (!successLeaseOrder) {
-          console.error(`LeaseOrderProperty with ID ${leaseOrderId} not found.`);
-          return NextResponse.json({ error: "LeaseOrderProperty not found" }, { status: 404 });
+      } else if (paymentType === "supply") {
+        // Actualiza el estado del pago del suministro
+        const successSupply = await Supply.findByPk(supplyId);
+        if (!successSupply) {
+          console.error(`Supply with ID ${supplyId} not found.`);
+          return NextResponse.json(
+            { error: "Supply not found" },
+            { status: 404 }
+          );
         }
-        await successLeaseOrder.update({ status: "PENDING" });
-        console.log(`✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`);
+        await successSupply.update({
+          paymentId: session.id, // Asigna el ID del pago de Stripe
+          paymentDate: new Date(), // Establece la fecha de pago actual
+          status: "PAID", // Cambia el estado a 'PAID'
+        });
+        console.log(`✅ Supply with ID ${supplyId} updated to PAID`);
       }
     } else if (type === "checkout.session.expired") {
-      if (roomId !== "false") {
-        // Actualiza el estado de LeaseOrderRoom a REJECTED
-        const failedLeaseOrderRoom = await LeaseOrderRoom.findByPk(leaseOrderId);
-        if (!failedLeaseOrderRoom) {
-          console.error(`LeaseOrderRoom with ID ${leaseOrderId} not found.`);
-          return NextResponse.json({ error: "LeaseOrderRoom not found" }, { status: 404 });
+      if (paymentType === "reservation") {
+        if (roomId !== "false") {
+          const failedLeaseOrderRoom = await LeaseOrderRoom.findByPk(
+            leaseOrderId
+          );
+          if (!failedLeaseOrderRoom) {
+            console.error(`LeaseOrderRoom with ID ${leaseOrderId} not found.`);
+            return NextResponse.json(
+              { error: "LeaseOrderRoom not found" },
+              { status: 404 }
+            );
+          }
+          await failedLeaseOrderRoom.update({ status: "REJECTED" });
+          console.log(
+            `❌ LeaseOrderRoom with ID ${leaseOrderId} updated to REJECTED`
+          );
+        } else {
+          const failedLeaseOrder = await LeaseOrderProperty.findByPk(
+            leaseOrderId
+          );
+          if (!failedLeaseOrder) {
+            console.error(
+              `LeaseOrderProperty with ID ${leaseOrderId} not found.`
+            );
+            return NextResponse.json(
+              { error: "LeaseOrderProperty not found" },
+              { status: 404 }
+            );
+          }
+          await failedLeaseOrder.update({ status: "REJECTED" });
+          console.log(
+            `❌ LeaseOrderProperty with ID ${leaseOrderId} updated to REJECTED`
+          );
         }
-        await failedLeaseOrderRoom.update({ status: "REJECTED" });
-        console.log(`❌ LeaseOrderRoom with ID ${leaseOrderId} updated to REJECTED`);
-      } else {
-        // Actualiza el estado de LeaseOrderProperty a REJECTED
-        const failedLeaseOrder = await LeaseOrderProperty.findByPk(leaseOrderId);
-        if (!failedLeaseOrder) {
-          console.error(`LeaseOrderProperty with ID ${leaseOrderId} not found.`);
-          return NextResponse.json({ error: "LeaseOrderProperty not found" }, { status: 404 });
+      } else if (paymentType === "supply") {
+        const failedSupply = await Supply.findByPk(supplyId);
+        if (!failedSupply) {
+          console.error(`Supply with ID ${supplyId} not found.`);
+          return NextResponse.json(
+            { error: "Supply not found" },
+            { status: 404 }
+          );
         }
-        await failedLeaseOrder.update({ status: "REJECTED" });
-        console.log(`❌ LeaseOrderProperty with ID ${leaseOrderId} updated to REJECTED`);
+        await failedSupply.update({
+          status: "NOT_PAID",
+        });
+        console.log(`❌ Supply with ID ${supplyId} updated to NOT_PAID`);
       }
     } else {
       console.log(`Unhandled event type ${type}`);
     }
   } catch (err) {
     console.error(`❌ Error processing event ${type}: ${err.message}`);
-    return NextResponse.json({ error: `Error processing event: ${err.message}` }, { status: 500 });
+    return NextResponse.json(
+      { error: `Error processing event: ${err.message}` },
+      { status: 500 }
+    );
   }
 
-  // Responde con un 200 para confirmar que el webhook fue recibido correctamente
   return NextResponse.json({ received: true }, { status: 200 });
 }

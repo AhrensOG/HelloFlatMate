@@ -23,7 +23,7 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/success/${propertyId}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/success/${propertyId}?type=reserve`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/cancel`,
       customer_email: userEmail,
       metadata: {
@@ -32,6 +32,7 @@ export async function POST(req) {
         price,
         leaseOrderId,
         roomId,
+        paymentType: "reservation"
       },
     });
     return NextResponse.json({ id: session.id });

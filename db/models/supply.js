@@ -12,6 +12,10 @@ const supplyInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true
             },
+            paymentId: {
+                type: DataTypes.STRING(200),
+                allowNull: true
+            },
             name: {
                 type: DataTypes.STRING(100),
                 allowNull: false
@@ -48,10 +52,6 @@ const supplyInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: true
             },
-            ulrPaid: {
-                type: DataTypes.STRING(500),
-                allowNull: true
-            }
         },
         {
             sequelize,
