@@ -10,10 +10,16 @@ export default function Services({ id }) {
   const route = useRouter();
   const { state, dispatch } = useContext(Context);
   const [user, setUser] = useState(null);
+  const [toDos, setToDos] = useState(null);
 
   useEffect(() => {
     setUser(state.user);
+    setToDos(state?.user?.toDos);
   }, [state, dispatch]);
+
+  useEffect(() => {
+    setToDos(state?.toDos);
+  }, []);
 
   const formatedDateAndHour = (date) => {
     const dateFormated = new Date(date);

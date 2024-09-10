@@ -62,13 +62,13 @@ export default function SupplieAdminCard({ data, action, user }) {
           >
             Solicitar pago
           </button>
-        ) : data?.status === "APROBED" ? (
+        ) : data?.status === "PAID" ? (
           <span className="bg-[#52B46B] text-white py-1 px-3 rounded-2xl font-medium text-base flex items-center justify-center">
-            Aprobado
+            Pago realizado
           </span>
-        ) : data?.status === "IN_PROGRESS" ? (
+        ) : data?.status === "NOT_PAID" ? (
           <span className="bg-[#21ABCC] text-white py-1 px-3 rounded-2xl font-medium text-base flex items-center justify-center">
-            En proceso
+            Pago no realizado
           </span>
         ) : null}
       </div>

@@ -2,6 +2,8 @@ import { Client, Owner, Property, ToDo } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createToDo(data) {
+    console.log(data);
+
     if (!data) return NextResponse.json({ error: "No data provided" }, { status: 400 });
     if (!data.title || data.title.trim() === "") return NextResponse.json({ error: "No title provided" }, { status: 400 })
     if (!data.body || data.body.trim() === "") return NextResponse.json({ error: "No body provided" }, { status: 400 })
@@ -29,6 +31,8 @@ export async function createToDo(data) {
             creationDate: new Date(),
             typeUser: client ? "CLIENT" : "OWNER",
             startDate: new Date(data.startDate),
+            clientMessage: data.clientMessage,
+            isPresent: data.isPresent
         })
 
         return NextResponse.json(toDo, { status: 200 })
