@@ -11,13 +11,13 @@ import axios from "axios";
 
 export default function PaymentComponent({ handleContinue, handleBack }) {
   const { state } = useContext(Context);
-  const pdfUrl = state.contractPdfData?.url;
   const userDocuments = {
     dni: state.reservationInfo?.dni,
     nomina: state.reservationInfo?.nomina,
     contract: state.contractPdfData,
-    signature: state.reservationInfo?.signature,
   };
+  console.log(userDocuments);
+  console.log(state);
   const [existingDocuments, setExistingDocuments] = useState(
     state.user?.documents || []
   );
@@ -95,32 +95,6 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
           toast.error("Error al cargar la nómina");
         }
       }
-
-      // Cargar o actualizar Contrato en Firebase
-      if (pdfUrl) {
-        const existingContract = findExistingDocument("CONTRACT");
-        if (existingContract) {
-          await updateDocument({ ...existingContract, urls: [pdfUrl] });
-        } else {
-          createDocument({
-            name: userDocuments.contract.name,
-            type: "CONTRACT",
-            urls: [pdfUrl],
-            userId: state.reservationInfo?.userContractInformation.id,
-            typeUser: "CLIENT",
-          });
-        }
-      }
-      if (userDocuments.signature) {
-        try {
-          const response = axios.patch("/api/user", {
-            signature: userDocuments.signature[0],
-            id: state.reservationInfo?.userContractInformation.id,
-          });
-        } catch (err) {
-          throw err;
-        }
-      }
     } catch (error) {
       toast.error("Error al crear los documentos");
     }
@@ -184,14 +158,14 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
       <div className="h-[1px] bg-[#DDDDDD]"></div>
       <div className="text-base font-normal text-[#222222]">
         <h4>
-          Al seleccionar el 'Finalizar',{" "}
+          Al seleccionar 'Finalizar',{" "}
           <span className="font-semibold">
-            acepta los términos y condiciones de la reserva.
+            acepta los términos y condiciones de la solicitud de reserva.
           </span>
         </h4>
       </div>
       <div className="h-[1px] bg-[#DDDDDD]"></div>
-      <Link
+      {/* <Link
         href={pdfUrl}
         target="_blank"
         alt="Descargar Contrato (PDF)"
@@ -199,7 +173,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
         className="self-center text-base font-normal text-resolution-blue h-[3.25rem] rounded-lg w-[90%] bg-white border border-resolution-blue transition-all duration-300 grid place-items-center"
       >
         Descargar Contrato (PDF)
-      </Link>
+      </Link> */}
 
       <button
         onClick={() => {
@@ -212,7 +186,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
             error: "Error al cargar los documentos",
           });
         }}
-        alt="Confirmar y pagar"
+        alt="Confirmar y guardar datos"
         type="button"
         className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient border border-resolution-blue hover:bg-payment-button-gradient-hover transition-all duration-300"
       >
