@@ -11,7 +11,6 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
       <TitleAdminPanel title={"Mis Reservas"} />
       {leaseOrdersList !== false && leaseOrdersList.length > 0 ? (
         leaseOrdersList.map((l) => {
-          console.log(l)
           const date = new Date(l.date);
           const readableDate = date.toLocaleString("es-ES", {
             year: "numeric",
@@ -19,15 +18,15 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
             day: "numeric",
           });
           const body =
-            l.status === "PENDING"
+            l?.status === "PENDING"
               ? "Sube la informacion y documentación necesaria para que podamos aprobar tu solicitud de renta."
-              : l.status === "APPROVED"
+              : l?.status === "APPROVED"
               ? "¡Tu solicitud fue aprovada!"
               : "";
           const status =
-            l.status === "PENDING"
+            l?.status === "PENDING"
               ? "RESERVED"
-              : l.status === "APPROVED"
+              : l?.status === "APPROVED"
               ? "OCCUPIED"
               : null;
           const id = l.id;
