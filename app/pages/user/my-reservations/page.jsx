@@ -36,9 +36,9 @@ export default function MyBedrooms() {
   return (
     <AnimatePresence>
       <>
-        <headear>
+        <header>
           <NavBar client={true} admin={false} owner={false} />
-        </headear>
+        </header>
         <ReservationSection data={user} leaseOrdersList={leaseOrdersList} />
       </>
     </AnimatePresence>

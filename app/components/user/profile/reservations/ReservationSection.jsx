@@ -11,6 +11,7 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
       <TitleAdminPanel title={"Mis Reservas"} />
       {leaseOrdersList !== false && leaseOrdersList.length > 0 ? (
         leaseOrdersList.map((l) => {
+          console.log(l)
           const date = new Date(l.date);
           const readableDate = date.toLocaleString("es-ES", {
             year: "numeric",
@@ -30,7 +31,7 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
               ? "OCCUPIED"
               : null;
           const id = l.id;
-          return <PropertyCard property={l.property || l.leaseOrderRoomRoom} />;
+          return <PropertyCard key={l.id} property={l.property || l.leaseOrderRoomRoom} leaseOrder={l} />;
         })
       ) : (
         <span className="text-lg font-bold text-slate-300 py-10">

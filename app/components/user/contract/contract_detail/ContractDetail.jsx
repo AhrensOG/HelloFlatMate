@@ -9,7 +9,13 @@ import { Context } from "@/app/context/GlobalContext";
 import { toast } from "sonner";
 import { createContractPDF } from "@/app/context/actions";
 
-const ContractDetail = ({ handleContinue, handleBack, owner }) => {
+const ContractDetail = ({
+  handleContinue,
+  handleBack,
+  owner,
+  property,
+  room = false,
+}) => {
   const { state, dispatch } = useContext(Context);
   const [signatureModal, setSignatureModal] = useState(false);
 
@@ -54,23 +60,23 @@ const ContractDetail = ({ handleContinue, handleBack, owner }) => {
   const contractDate = setDate();
   const landlordName = owner?.name + " " + owner?.lastName || "Javier García";
   const landlordNIF = "12345678Z";
-  const landlordStreet = "Gran Vía";
-  const landlordStreetNumber = "45";
-  const landlordDoorNumber = "3B";
-  const landlordPostalCode = "46021";
-  const numberOfRooms = 3;
-  const numberOfBathrooms = 2;
-  const monthlyRent = 450;
-  const roomNumber = "2";
+  const landlordStreet = property.street || "Gran Vía";
+  const landlordStreetNumber = property.streetNumber || "45";
+  const landlordDoorNumber = room ? room.serial : "-";
+  const landlordPostalCode = property.postalCode || "46021";
+  const numberOfRooms = property.roomsCount || 1;
+  const numberOfBathrooms = property.bathrooms || 1;
+  const monthlyRent = room ? room.price : property.price;
+  const roomNumber = room ? room.serial : "-";
 
   // Client DATA
-  const info = state.reservationInfo?.userContractInformation;
+  const info = state?.user;
   const tenantName = info?.name + " " + info?.lastName || "María López";
-  const tenantID = info?.dni || "87654321B";
+  const tenantID = info?.idNum || "87654321B";
   const tenantPhone = info?.phone || "600123456";
   const tenantEmail = info?.email || "maria.lopez@example.com";
-  const tenantAddress = info?.address || "Av. del Cid, 10";
-  const tenantStreet = info?.address || "Av. del Cid";
+  const tenantAddress = info?.street + " " + info?.streetNumber || "Av. del Cid, 10";
+  const tenantStreet = info?.street || "Av. del Cid";
   const startDate = info?.startDate || "1 de septiembre de 2024";
   const endDate = info?.endDate || "31 de agosto de 2025";
 
@@ -159,7 +165,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner }) => {
             <span className="font-medium">{tenantEmail}</span>, y con domicilio
             en <span className="font-medium">{tenantAddress}</span>, C/{" "}
             <span className="font-medium">{tenantStreet}</span>, actuando como
-            parte ARRENDATARIA, está interesado en arrendar la habitación n.º R
+            parte ARRENDATARIA, está interesado en arrendar la habitación n.º 
             <span className="font-medium">{roomNumber}</span> del mencionado
             inmueble.
           </p>
