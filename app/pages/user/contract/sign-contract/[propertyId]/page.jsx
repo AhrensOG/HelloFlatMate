@@ -95,9 +95,9 @@ export default function Contract({ params }) {
               {currentStep === 2 && (
                 <ThankYou
                   title={"¡Felicidades!"}
-                  subTitle={"Hemos recibido la información de manera exitosa."}
+                  subTitle={"Tu firma digital y contrato fueron generados con éxito."}
                   body={
-                    "Te notificaremos cuando validemos la información enviada."
+                    "Recuerda abonar los suministros antes de la fecha de ingreso a la propiedad."
                   }
                   action={"Regresar "}
                   callback={handleRedirect}
