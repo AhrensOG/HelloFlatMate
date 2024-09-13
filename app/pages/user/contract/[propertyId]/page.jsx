@@ -75,22 +75,22 @@ export default function Contract({ params }) {
               />
             )}
             {currentStep === 3 && (
-              <ContractDetail
-                owner={owner}
-                handleContinue={handleContinue}
-                handleBack={handleBack}
-              />
-            )}
-            {currentStep === 4 && (
               <PaymentComponent
                 handleContinue={handleContinue}
                 handleBack={handleBack}
               />
             )}
-            {currentStep === 5 && (
+            {/* {currentStep === 3 && (
+              <ContractDetail
+                owner={owner}
+                handleContinue={handleContinue}
+                handleBack={handleBack}
+              />
+            )} */}
+            {currentStep === 4 && (
               <ThankYou
                 title={"¡Felicidades!"}
-                subTitle={"Tu firma digital y el contrato fueron registrados."}
+                subTitle={"Hemos recibido la información de manera exitosa."}
                 body={
                   "Te notificaremos cuando validemos la informacion enviada."
                 }

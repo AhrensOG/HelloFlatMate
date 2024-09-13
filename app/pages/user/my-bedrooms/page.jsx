@@ -34,7 +34,11 @@ export default function MyBedrooms() {
       const rooms = user?.leaseOrdersRoom || [];
       const properties = user?.leaseOrdersProperty || [];
 
-      setPropertiesList([...rooms, ...properties]);
+      const allProperties = [...rooms, ...properties];
+      const filtered = allProperties.filter(
+        (property) => property.status === "APPROVED"
+      );
+      setPropertiesList(filtered);
     }
   }, [state?.user]);
 

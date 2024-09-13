@@ -41,7 +41,7 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
             width={135}
             height={135}
           />
-          <ButtonReadAndSingContract action={() => handleContinue()} title={"Leer y firmar contrato"} />
+          <ButtonReadAndSingContract action={() => handleContinue()} title={"Continuar"} />
         </div>
       </div>
     </motion.section>
