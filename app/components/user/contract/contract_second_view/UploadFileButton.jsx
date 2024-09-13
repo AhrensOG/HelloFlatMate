@@ -14,15 +14,6 @@ export default function UploadFileButton({ description, id }) {
     fileInputRef.current.click();
   };
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     setFileName(file.name);
-  //     const fileUrl = URL.createObjectURL(file);
-  //     dispatch({ type: "SET_IMAGE_URL", payload: { id, url: fileUrl } });
-  //   }
-  // };
-
   const handleFileChange = (event) => {
     const files = event.target.files;
     if (files.length > 2) {

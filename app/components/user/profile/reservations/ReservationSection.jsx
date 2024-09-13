@@ -18,19 +18,19 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
             day: "numeric",
           });
           const body =
-            l.status === "PENDING"
+            l?.status === "PENDING"
               ? "Sube la informacion y documentación necesaria para que podamos aprobar tu solicitud de renta."
-              : l.status === "APPROVED"
+              : l?.status === "APPROVED"
               ? "¡Tu solicitud fue aprovada!"
               : "";
           const status =
-            l.status === "PENDING"
+            l?.status === "PENDING"
               ? "RESERVED"
-              : l.status === "APPROVED"
+              : l?.status === "APPROVED"
               ? "OCCUPIED"
               : null;
           const id = l.id;
-          return <PropertyCard property={l.property || l.leaseOrderRoomRoom} />;
+          return <PropertyCard key={l.id} property={l.property || l.leaseOrderRoomRoom} leaseOrder={l} />;
         })
       ) : (
         <span className="text-lg font-bold text-slate-300 py-10">

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import SideBarButton from "./SideBarButton";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
+import { logOut } from "@/app/firebase/logOut";
 
 const adminOptions = [
   {
@@ -140,6 +141,11 @@ export default function SideBar({
     route.push(url);
   };
 
+  const handleLogOut = async () => {
+    await logOut();
+    handleRedirect("/pages/auth");
+  };
+
   useEffect(() => {
     setUser(state?.user);
   }, [state.user]);
@@ -171,7 +177,6 @@ export default function SideBar({
                 alt="Logo de FlatMate"
               />
             </div>
-            {console.log(user)}
           </div>
           {(user?.role === "CLIENT" || !user) && (
             <nav className="flex flex-col w-full gap-4">
@@ -202,6 +207,22 @@ export default function SideBar({
                   />
                 );
               })}
+              <button
+                onClick={() => handleLogOut()}
+                type="button"
+                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+              >
+                <div className="relative w-6 h-6">
+                  <Image
+                    src={"/nav_bar/side_bar/client/configuration.svg"}
+                    fill
+                    alt="Botón para ir al inicio"
+                  />
+                </div>
+                <h2 className="text-gris-español font-medium text-xl">
+                  Cerrar Sesión
+                </h2>
+              </button>
             </nav>
           )}
           {user?.role === "OWNER" && (
@@ -233,6 +254,22 @@ export default function SideBar({
                   />
                 );
               })}
+              <button
+                onClick={() => handleLogOut()}
+                type="button"
+                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+              >
+                <div className="relative w-6 h-6">
+                  <Image
+                    src={"/nav_bar/side_bar/client/configuration.svg"}
+                    fill
+                    alt="Botón para ir al inicio"
+                  />
+                </div>
+                <h2 className="text-gris-español font-medium text-xl">
+                  Cerrar Sesión
+                </h2>
+              </button>
             </nav>
           )}
           {user?.role === "ADMIN" && (
@@ -264,6 +301,22 @@ export default function SideBar({
                   />
                 );
               })}
+              <button
+                onClick={() => handleLogOut()}
+                type="button"
+                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+              >
+                <div className="relative w-6 h-6">
+                  <Image
+                    src={"/nav_bar/side_bar/client/configuration.svg"}
+                    fill
+                    alt="Botón para ir al inicio"
+                  />
+                </div>
+                <h2 className="text-gris-español font-medium text-xl">
+                  Cerrar Sesión
+                </h2>
+              </button>
             </nav>
           )}
         </motion.aside>

@@ -16,11 +16,28 @@ const FeaturedSection = ({ data }) => {
         {properties ? (
           <Slider>
             {properties.map((item) => {
+              // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
+              if (
+                item.category === "HELLO_ROOM" ||
+                item.category === "HELLO_COLIVING"
+              ) {
+                return item.rooms
+                  .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
+                  .map((room) => (
+                    <div className="mr-4" key={room.id}>
+                      <FeaturedRoomCard
+                        roomId={room.id}
+                        propertyId={item.id}
+                        img={room?.images[0]}
+                        title={room.name}
+                      />
+                    </div>
+                  ));
+              }
               return (
-                <div className="mr-4">
+                <div className="mr-4" key={item.id}>
                   <FeaturedRoomCard
-                    key={item.name}
-                    id={item.id}
+                    propertyId={item.id}
                     img={item?.images[0]}
                     title={item.name}
                     type={item.type || "property"}

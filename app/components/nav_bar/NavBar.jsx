@@ -35,16 +35,14 @@ export default function NavBar({
           alt="Boton para abrir menu"
         />
       </button>
-      <div className="h-full flex">
-        {" "}
+      <div className="relative w-36 h-12">
         <Image
-        onClick={() => handleRedirect("/")}
+          onClick={() => handleRedirect("/")}
           className="ml-[4%] self-center"
           src="/nav_bar/nav-bar-logo.svg"
-          layout="responsive"
-          width={125}
-          height={41}
+          fill
           alt="Logo de FlatMate"
+          priority
         />
       </div>
       <div className="flex items-center gap-2 w-[87px] h-[34px]">

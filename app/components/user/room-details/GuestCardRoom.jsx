@@ -6,7 +6,6 @@ export default function GuestCardRoom({ type, boolean, number }) {
   }
   return (
     <div>
-      {console.log(type, boolean, number)}
       {type === "bed" ? (
         <div>
           <div className="relative h-10 w-10">

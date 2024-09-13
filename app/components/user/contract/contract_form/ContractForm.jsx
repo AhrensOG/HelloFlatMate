@@ -82,6 +82,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         return toast.info("Debe ser mayor de 18 años");
       }
       if (values.age !== calculateAge(values.birthDate)) {
+        console.log(values);
         return toast.info("La fecha de nacimiento no coincide con la edad");
       }
 
@@ -94,7 +95,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
   });
 
   const calculateAge = (birthDate) => {
-    const [day, month, year] = birthDate.split("/").map(Number);
+    const [year, month, day] = birthDate.split("-").map(Number);
 
     const today = new Date();
     const currentYear = today.getFullYear();
@@ -104,7 +105,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     //calculamos edad
     let calculatedAge = currentYear - year;
 
-    //ajustamos la edad si aun no cumple años
+    // Ajustamos la edad si aún no ha cumplido años este año
     if (currentMonth < month || (currentMonth === month && currentDay < day)) {
       calculatedAge--;
     }
@@ -255,7 +256,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                   <input
                     id="birthDate"
                     name="birthDate"
-                    type="text"
+                    type="date"
                     placeholder="DD/MM/AAAA"
                     onChange={formik.handleChange}
                     value={formik.values.birthDate}
@@ -275,7 +276,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     type="number"
                     onChange={formik.handleChange}
                     value={formik.values.age}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue number-input-no-appearance"
                   />
                 </div>
               </div>
