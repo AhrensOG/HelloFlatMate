@@ -21,7 +21,7 @@ const FeaturedRoomCard = React.forwardRef(
         <Link
           href={
             type === "room"
-              ? `/pages/user/property-details/${item.propertyId}//room-details/${item.id}`
+              ? `/pages/user/property-details/${item.propertyId}/room-details/${item.id}`
               : `/pages/user/property-details/${id}`
           }
           className="w-full"
