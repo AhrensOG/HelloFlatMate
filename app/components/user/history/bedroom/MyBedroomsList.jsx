@@ -19,7 +19,6 @@ export default function MyBedroomsList({ action, user, properties }) {
       <div className="flex flex-col gap-5 pt-5">
         {properties.map((p) => {
           const prop = p.leaseOrderRoomRoom || p.property;
-          console.log(prop);
 
           const location = {
             street: prop.street || prop.property.street,

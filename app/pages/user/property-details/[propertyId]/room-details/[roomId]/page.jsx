@@ -1,9 +1,9 @@
 "use client";
-import DescriptionSection from "@/app/components/user/history/services/DescriptionSection";
 import NavBarDetails from "@/app/components/user/property-details/header/NavBarDetails";
 import SliderItem from "@/app/components/user/property-details/header/slider/SliderItem";
 import SliderDetails from "@/app/components/user/property-details/header/SliderDetails";
 import AmenitiesSection from "@/app/components/user/property-details/main/AmenitiesSection";
+import DescriptionSection from "@/app/components/user/property-details/main/DescriptionSection";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
 import MoreInfoSection from "@/app/components/user/property-details/main/MoreInfoSection";
 import PriceSection from "@/app/components/user/property-details/main/PriceSection";
@@ -65,7 +65,7 @@ export default function RoomDetails({ params }) {
 
   return (
     <div className="flex flex-col justify-center items-center relative">
-      {console.log(roomData)}
+      {console.log(data.description)}
 
       <div className="flex flex-col max-w-screen-sm w-full gap-2 ">
         <header className="w-full space-y-4">
@@ -107,7 +107,7 @@ export default function RoomDetails({ params }) {
               <ReservationButton callback={handleShowModal} />
             )}
           </div>
-          <DescriptionSection data={data.description} />
+          <DescriptionSection title="Descripción de la propiedad y areas comunes" data={data.description} />
           <PropertySection
             data={{ id: data.id, name: data.name, image: data.images[0] }}
           />
