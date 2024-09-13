@@ -2,10 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const PromotionRoomCard = ({ img = "/home/featuredRoom.svg", offer, id }) => {
+const PromotionRoomCard = ({
+  img = "/home/featuredRoom.svg",
+  offer,
+  roomId,
+  propertyId,
+}) => {
+  // Condicional para definir la ruta de redirección
+  const href = roomId
+    ? `/pages/user/property-details/${propertyId}/room-details/${roomId}`
+    : `/pages/user/property-details/${propertyId}`;
+
   return (
     <div className="w-full min-w-28 max-w-28 flex flex-col justify-center items-start gap-2">
-      <Link href={`/pages/user/property-details/${id}`} className="w-full">
+      <Link href={href} className="w-full">
         <div className="relative w-full">
           <div className="relative w-28 h-28" />
           <Image
