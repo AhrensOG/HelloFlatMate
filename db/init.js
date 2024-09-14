@@ -14,6 +14,8 @@ const Admin = require("./models/admin");
 const Room = require("./models/room");
 const Supply = require("./models/supply");
 const ChatParticipant = require("./models/chatParticipant");
+const Contract = require("./models/contract");
+const Payment = require("./models/payment");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
@@ -24,6 +26,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Owner.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "ownerId" });
         Owner.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "ownerId" });
         Owner.hasMany(Property, { as: "properties", foreignKey: "ownerId" });
+        Owner.hasMany(Contract, { as: "contracts", foreignKey: "ownerId" });
 
         //PROPERTY
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
@@ -32,6 +35,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
         Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
+        Property.hasMany(Contract, { as: "contracts", foreignKey: "propertyId" });
 
 
         //Room
@@ -62,6 +66,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Client.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "clientId" });
         Client.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "clientId" });
         Client.hasMany(Supply, { as: "supplies", foreignKey: "clientId" });
+        Client.hasMany(Contract, { as: "contracts", foreignKey: "clientId" });
+        Client.hasMany(Payment, { as: "payments", foreignKey: "clientId" });
 
         //CHAT
         // Uno a Muchos
@@ -80,6 +86,15 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //SUPPlY
         Supply.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Supply.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //CONTRACT
+        Contract.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        Contract.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+        Contract.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //PAYMENT
+        Payment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+        Payment.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
 
         //Relaciones polimorficas
         //Client
@@ -238,6 +253,41 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             scope: { userType: 'ADMIN' }
         })
 
+        //PAYMENT
+        Payment.belongsTo(Property, {
+            as: "property",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "PROPERTY"
+            }
+        })
+        Payment.belongsTo(Room, {
+            as: "room",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "ROOM"
+            }
+        })
+
+        Property.hasMany(Payment, {
+            as: "payments",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "PROPERTY"
+            }
+        })
+        Room.hasMany(Payment, {
+            as: "payments",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "ROOM"
+            }
+        })
+
         // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
@@ -280,5 +330,7 @@ module.exports = {
     ToDo,
     Room,
     Supply,
-    ChatParticipant
+    ChatParticipant,
+    Contract,
+    Payment
 };

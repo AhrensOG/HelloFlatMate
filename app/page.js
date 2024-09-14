@@ -1,6 +1,5 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
-import GuestHome from "./components/public/guest-home/GuestHome";
 import FeaturedSection from "./components/user/home/FeaturedSection";
 import Hero from "./components/user/home/Hero";
 import PromotionSection from "./components/user/home/PromotionSection";

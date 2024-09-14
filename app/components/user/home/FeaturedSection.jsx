@@ -5,7 +5,7 @@ import Slider from "./auxiliarComponents/Slider";
 
 const FeaturedSection = ({ data }) => {
   const [properties, setProperties] = useState(null);
-  
+
   useEffect(() => {
     setProperties([...data]);
   }, [data]);
