@@ -37,7 +37,6 @@ export default function Home() {
       setProperties(state.properties.filter((prop) => prop.status === "FREE"));
       setPropertiesInOffer(filterOffer(state.properties));
       toast.success("Propiedades actualizadas");
-      console.log(state.properties);
 
     }
   }, [state.properties, dispatch]);

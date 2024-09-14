@@ -5,6 +5,7 @@ import Slider from "./auxiliarComponents/Slider";
 
 const FeaturedSection = ({ data }) => {
   const [properties, setProperties] = useState(null);
+
   useEffect(() => {
     setProperties([...data]);
   }, [data]);
@@ -40,8 +41,6 @@ const FeaturedSection = ({ data }) => {
                     propertyId={item.id}
                     img={item?.images[0]}
                     title={item.name}
-                    type={item.type || "property"}
-                    item={item}
                   />
                 </div>
               );
