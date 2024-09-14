@@ -9,7 +9,6 @@ import SearchBar from "./components/user/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
 import { getAllProperties } from "./context/actions";
-import Filter from "./components/user/filter/Filter";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
@@ -39,7 +38,6 @@ export default function Home() {
       setProperties(state.properties.filter((prop) => prop.status === "FREE"));
       setPropertiesInOffer(filterOffer(state.properties));
       toast.success("Propiedades actualizadas");
-      console.log(state.properties);
 
     }
   }, [state.properties, dispatch]);
