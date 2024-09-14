@@ -35,7 +35,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
         Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
-        Property.hasMany(Contract, { as: "contracts", foreignKey: "propertyId" });
 
 
         //Room
@@ -88,7 +87,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Supply.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
         //CONTRACT
-        Contract.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Contract.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Contract.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
@@ -285,6 +283,41 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             constraints: false,
             scope: {
                 paymentableType: "ROOM"
+            }
+        })
+
+        //CONTRACT
+        Contract.belongsTo(Property, {
+            as: "property",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "PROPERTY"
+            }
+        })
+        Contract.belongsTo(Room, {
+            as: "room",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "ROOM"
+            }
+        })
+
+        Property.hasMany(Contract, {
+            as: "contracts",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "PROPERTY"
+            }
+        })
+        Room.hasMany(Contract, {
+            as: "contracts",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "ROOM"
             }
         })
 
