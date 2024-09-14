@@ -2,10 +2,10 @@
 import { plus_jakarta } from "@/font";
 import Image from "next/image";
 import { useState } from "react";
-import Tooltip from "./tooltip/Tooltip";
+import Tooltip from "../../property/tooltip/Tooltip";
 const { useRouter } = require("next/navigation");
 
-export default function PropertyCard({ property }) {
+export default function ReservationPropertyCard({ property, leaseOrder }) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
 
@@ -14,6 +14,26 @@ export default function PropertyCard({ property }) {
       route.push("/pages/user/property-details/" + property?.id);
     } else {
       route.push("/pages/user/property-details/" + property?.propertyId);
+    }
+  };
+
+  const handleRedirectToContract = () => {
+    if (property.category) {
+      route.push(
+        "/pages/user/contract/sign-contract/" +
+          property?.id +
+          "?lo=" +
+          leaseOrder.id
+      );
+    } else {
+      route.push(
+        "/pages/user/contract/sign-contract/" +
+          property?.propertyId +
+          "?r=" +
+          property.id +
+          "&lo=" +
+          leaseOrder.id
+      );
     }
   };
 
@@ -125,6 +145,26 @@ export default function PropertyCard({ property }) {
           </div>
         </div>
       </div>
+      {property?.status === "OCCUPIED" ? (
+        <div className="w-full">
+          <button
+            onClick={handleRedirectToContract}
+            title={
+              property?.status === "OCCUPIED"
+                ? "Firma tu contrato"
+                : "Podras firmar tu contrato en cuanto aprueben la reserva."
+            }
+            disabled={property?.status === "OCCUPIED" ? false : true}
+            className={`px-4 py-1 rounded-xl ${
+              property?.status === "OCCUPIED"
+                ? "bg-resolution-blue"
+                : "bg-gray-300"
+            } text-white`}
+          >
+            Firmar Contrato
+          </button>
+        </div>
+      ) : null}
     </article>
   );
 }

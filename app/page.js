@@ -1,6 +1,5 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
-import GuestHome from "./components/public/guest-home/GuestHome";
 import FeaturedSection from "./components/user/home/FeaturedSection";
 import Hero from "./components/user/home/Hero";
 import PromotionSection from "./components/user/home/PromotionSection";
@@ -9,7 +8,6 @@ import SearchBar from "./components/user/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
 import { getAllProperties } from "./context/actions";
-import Filter from "./components/user/filter/Filter";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
@@ -39,7 +37,6 @@ export default function Home() {
       setProperties(state.properties.filter((prop) => prop.status === "FREE"));
       setPropertiesInOffer(filterOffer(state.properties));
       toast.success("Propiedades actualizadas");
-      console.log(state.properties);
 
     }
   }, [state.properties, dispatch]);

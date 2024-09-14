@@ -75,7 +75,8 @@ const ContractDetail = ({
   const tenantID = info?.idNum || "87654321B";
   const tenantPhone = info?.phone || "600123456";
   const tenantEmail = info?.email || "maria.lopez@example.com";
-  const tenantAddress = info?.street + " " + info?.streetNumber || "Av. del Cid, 10";
+  const tenantAddress =
+    info?.street + " " + info?.streetNumber || "Av. del Cid, 10";
   const tenantStreet = info?.street || "Av. del Cid";
   const startDate = info?.startDate || "1 de septiembre de 2024";
   const endDate = info?.endDate || "31 de agosto de 2025";
@@ -103,8 +104,13 @@ const ContractDetail = ({
         endDate,
         monthlyRent,
       };
+      const dataContract = {
+        ownerId: property?.ownerId,
+        propertyId: property?.id,
+        clientId: state?.user?.id,
+      };
 
-      await createContractPDF(dispatch, values, clientSignature);
+      await createContractPDF(dispatch, values, dataContract, clientSignature);
       return toast.success("¡Contrato bajo revision!");
     } catch (error) {
       return toast.error("Ocurrió un error al crear el contrato.");
@@ -165,7 +171,7 @@ const ContractDetail = ({
             <span className="font-medium">{tenantEmail}</span>, y con domicilio
             en <span className="font-medium">{tenantAddress}</span>, C/{" "}
             <span className="font-medium">{tenantStreet}</span>, actuando como
-            parte ARRENDATARIA, está interesado en arrendar la habitación n.º 
+            parte ARRENDATARIA, está interesado en arrendar la habitación n.º
             <span className="font-medium">{roomNumber}</span> del mencionado
             inmueble.
           </p>

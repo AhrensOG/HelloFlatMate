@@ -1,7 +1,8 @@
 import { plus_jakarta } from "@/font";
 import React from "react";
 import TitleAdminPanel from "../../../admin/shared/TitleAdminPanel";
-import PropertyCard from "../../property/PropertyCard";
+import ReservationPropertyCard from "./ReservationPropertyCard";
+
 
 const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
   return (
@@ -30,7 +31,7 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
               ? "OCCUPIED"
               : null;
           const id = l.id;
-          return <PropertyCard key={l.id} property={l.property || l.leaseOrderRoomRoom} leaseOrder={l} />;
+          return <ReservationPropertyCard key={l.id} property={l.property || l.leaseOrderRoomRoom} leaseOrder={l} />;
         })
       ) : (
         <span className="text-lg font-bold text-slate-300 py-10">
