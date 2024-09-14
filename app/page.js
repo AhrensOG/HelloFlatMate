@@ -8,16 +8,15 @@ import SearchBar from "./components/user/search_bar/SearchBar";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
 import { getAllProperties } from "./context/actions";
+
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
-  const [rooms, setRooms] = useState([]);
-  const [roomsInOffer, setRoomsInOffer] = useState([]);
 
   const filterOffer = (properties) => {
-    return properties.filter((property) => property.offer !== null && property.offer < 0 && property.status === "FREE");
+    return properties.filter((property) => property.offer !== null && property.status === "FREE");
   };
 
   useEffect(() => {
@@ -37,23 +36,9 @@ export default function Home() {
     if (state.properties && state.properties !== properties) {
       setProperties(state.properties.filter((prop) => prop.status === "FREE"));
       setPropertiesInOffer(filterOffer(state.properties));
-    }
-    if (properties.length > 0) {
-      let aux = properties
-        .filter((prop) => prop.category === "HELLO_ROOM" || prop.category === "HELLO_COLIVING")
-        .flatMap((prop) => prop.rooms.filter((room) => room.status === "FREE").map((item) => ({
-          ...item,
-          type: "room",
-        })));
-      setRooms(aux);
-    }
-    if (propertiesInOffer.length > 0) {
-      let aux = propertiesInOffer
-        .filter((prop) => prop.category === "HELLO_ROOM" || prop.category === "HELLO_COLIVING")
-        .flatMap((prop) => prop.rooms.filter((room) => room.status === "FREE").map((item) => ({
-          ...item,
-          type: "room",
-        })))
+      toast.success("Propiedades actualizadas");
+      console.log(state.properties);
+
     }
   }, [state.properties, dispatch]);
 
@@ -67,8 +52,8 @@ export default function Home() {
         <div className="w-full pt-4">
           <SearchBar showFilters={showFilters} setShowFilters={setShowFilters} />
         </div>
-        <FeaturedSection data={[...properties, ...rooms]} />
-        <PromotionSection data={[...propertiesInOffer, ...roomsInOffer]} />
+        <FeaturedSection data={properties} />
+        <PromotionSection data={propertiesInOffer} />
       </main>
     </div>
   );
