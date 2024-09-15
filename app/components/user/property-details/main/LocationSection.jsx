@@ -1,19 +1,17 @@
 "use client";
-import React, { useCallback, useState, useEffect } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import React, { useCallback, useState, useEffect, useRef } from "react";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
+
+// Definir las librerías que se van a cargar (incluye la nueva para el marcador avanzado)
+const libraries = ["marker"];
 
 // Función para obtener la latitud y longitud a partir de la dirección
 const getCoordinates = async (address) => {
   try {
-    // Realizamos la solicitud a nuestro propio endpoint en lugar de Google directamente
     const response = await axios.get(`/api/maps/geocoding`, {
-      params: {
-        address, // Pasamos la dirección como parámetro
-      },
+      params: { address },
     });
-
-    // Si recibimos datos válidos, devolvemos las coordenadas
     if (response.data && response.data.lat && response.data.lng) {
       const { lat, lng } = response.data;
       return { lat, lng };
@@ -41,30 +39,50 @@ export default function LocationSection({
   country,
 }) {
   const address = `${street} ${streetNumber}, ${postalCode} ${city}, ${country}`;
-  const [location, setLocation] = useState({ lat: 39.4698, lng: -0.3774 }); // Valores por defecto (Madrid)
-  const [loadingLocation, setLoadingLocation] = useState(true); // Estado para manejar el loading de la ubicación
+  const [location, setLocation] = useState({ lat: 39.4698, lng: -0.3774 });
+  const [loadingLocation, setLoadingLocation] = useState(true);
+  const mapRef = useRef(null);
+  const markerRef = useRef(null);
 
-  // Cargar el script de Google Maps con tu API Key
+  // Cargar el script de Google Maps con tu API Key y Map ID
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY, // Asegúrate de almacenar la API Key en las variables de entorno
+    googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY,
+    libraries,
+    mapIds: [process.env.NEXT_PUBLIC_MAP_ID], // Aquí añades tu Map ID
   });
 
-  // Al cargar el componente, obtener las coordenadas basadas en la dirección
   useEffect(() => {
     const fetchCoordinates = async () => {
       const coords = await getCoordinates(address);
       if (coords) {
-        setLocation(coords); // Actualizar la ubicación con las coordenadas obtenidas
+        setLocation(coords);
       }
-      setLoadingLocation(false); // Ya no está cargando la ubicación
+      setLoadingLocation(false);
     };
 
     fetchCoordinates();
-  }, [address]); // Solo se ejecuta cuando la dirección cambia
+  }, [address]);
 
-  const onLoad = useCallback(function callback(map) {
-    map.setZoom(16);
-  }, []);
+  const onLoad = useCallback(
+    (map) => {
+      mapRef.current = map;
+      map.setZoom(16);
+
+      if (window.google && window.google.maps && window.google.maps.marker) {
+        // Crear el AdvancedMarkerElement solo después de que el mapa se cargue
+        markerRef.current = new window.google.maps.marker.AdvancedMarkerElement(
+          {
+            map: mapRef.current,
+            position: location,
+            title: "Ubicación",
+          }
+        );
+      } else {
+        console.error("AdvancedMarkerElement no está disponible.");
+      }
+    },
+    [location]
+  );
 
   if (!isLoaded || loadingLocation) {
     return (
@@ -85,9 +103,9 @@ export default function LocationSection({
         center={location}
         zoom={14}
         onLoad={onLoad}
+        options={{ mapId: process.env.NEXT_PUBLIC_MAP_ID }} // Se asigna el Map ID aquí
       >
-        {/* Marcador en la ubicación */}
-        <Marker position={location} />
+        {/* AdvancedMarkerElement ya se agrega manualmente en onLoad */}
       </GoogleMap>
     </section>
   );
