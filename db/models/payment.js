@@ -21,6 +21,7 @@ const paymentInit = (sequelize, DataTypes) => {
         },
         status: {
             type: DataTypes.ENUM("PENDING", "APPROVED", "REJECTED", "IN_PROGRESS"),
+            defaultValue: "PENDING",
             allowNull: false
         },
         type: {

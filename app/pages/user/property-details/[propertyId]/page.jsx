@@ -103,7 +103,7 @@ export default function PropertyDetails({ params }) {
           <DescriptionSection data={data.description} />
           <RoomSection data={data.rooms} />
           <AmenitiesSection data={data.amenities} />
-          <LocationSection />
+          <LocationSection street={data?.street} streetNumber={data?.streetNumber} postalCode={data?.postalCode} city={data?.city} country={"Argentina"} />
           <MoreInfoSection
             data={[
               {

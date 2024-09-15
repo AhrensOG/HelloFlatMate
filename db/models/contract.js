@@ -24,6 +24,14 @@ const contractInit = (sequelize, DataTypes) => {
             defaultValue: 'PENDING',
             allowNull: false
         },
+        contractableId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        contractableType: {
+            type: DataTypes.ENUM('PROPERTY', 'ROOM'),
+            allowNull: false
+        }
     },
         {
             sequelize,

@@ -8,10 +8,12 @@ import { Context } from "@/app/context/GlobalContext";
 export default function ContractList({ action }) {
   const { state, dispatch } = useContext(Context);
   const [user, setUser] = useState(state.user || null);
-  const [pendingContracts, setPendingContracts] = useState();
-  const [historyContracts, setHistoryContracts] = useState();
+  const [pendingContracts, setPendingContracts] = useState([]);
+  const [historyContracts, setHistoryContracts] = useState([]);
 
   useEffect(() => {
+    console.log(state.user);
+
     setUser(state.user);
     setPendingContracts(
       state?.user?.contracts.filter((cont) => cont.status === "PENDING")
@@ -19,7 +21,7 @@ export default function ContractList({ action }) {
     setHistoryContracts(
       state?.user?.contracts.filter((cont) => cont.status !== "PENDING")
     );
-  }, []);
+  }, [state.user]);
 
   if (!pendingContracts || !historyContracts) {
     return (
