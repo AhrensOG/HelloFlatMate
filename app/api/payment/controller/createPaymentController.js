@@ -14,8 +14,11 @@ export async function createPayment(data) {
     if (!data.ownerId || data.ownerId.trim() === "") {
         return NextResponse.json({ message: "No owner id provided" }, { status: 400 })
     }
-    if (!data.propertyId || data.propertyId <= 0) {
-        return NextResponse.json({ message: "No property id provided" }, { status: 400 })
+    if (!data.propertyId || data.propertyId <= 0 && !data.roomId || data.roomId <= 0) {
+        return NextResponse.json({ message: "No property or room id provided" }, { status: 400 })
+    }
+    if (!data.type || data.type !== "RESERVATION" && data.type !== "MONTHLY") {
+        return NextResponse.json({ message: "No type provided" }, { status: 400 })
     }
 
     try {
@@ -36,11 +39,34 @@ export async function createPayment(data) {
                 return NextResponse.json({ message: "Property not found" }, { status: 404 })
             }
 
-            const payment = await Payment.create({ amount: data.amount, clientId: data.clientId, ownerId: data.ownerId, propertyId: data.propertyId, date: new Date() }, { transaction });
+            let dataPayment;
+            if (data.roomId) {
+                dataPayment = {
+                    amount: data.amount,
+                    clientId: data.clientId,
+                    ownerId: data.ownerId,
+                    paymentableId: data.roomId,
+                    paymentableType: "ROOM",
+                    type: data.type,
+                    date: new Date()
+                }
+            } else {
+                dataPayment = {
+                    amount: data.amount,
+                    clientId: data.clientId,
+                    ownerId: data.ownerId,
+                    paymentableId: data.propertyId,
+                    paymentableType: "PROPERTY",
+                    type: data.type,
+                    date: new Date()
+                }
+            }
+
+            const payment = await Payment.create(dataPayment, { transaction });
             await transaction.commit();
             return NextResponse.json({ message: "Payment created", data: payment }, { status: 200 })
         } catch (error) {
-            transaction.rollback();
+            await transaction.rollback();
             return NextResponse.json({ message: "Payment not created", error: error }, { status: 400 })
         }
     } catch (error) {

@@ -106,8 +106,9 @@ const ContractDetail = ({
       };
       const dataContract = {
         ownerId: property?.ownerId,
-        propertyId: property?.id,
+        propertyId: property?.id || false,
         clientId: state?.user?.id,
+        roomId: room?.id || false,
       };
 
       await createContractPDF(dispatch, values, dataContract, clientSignature);
