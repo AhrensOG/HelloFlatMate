@@ -1,7 +1,6 @@
 import GuestCardRoom from "./GuestCardRoom";
 
 export default function GuestInfoRoom({ data }) {
-  console.log(data);
 
   return (
     <section className="flex gap-3 justify-evenly w-full">
