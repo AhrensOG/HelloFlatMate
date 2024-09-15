@@ -61,7 +61,7 @@ export async function POST(req) {
             paymentableType: "ROOM",
             type: "RESERVATION"
           })
-          await successLeaseOrderRoom.update({ status: "PENDING" });
+          await successLeaseOrderRoom.update({ status: "PENDING", inReview: true });
           console.log(
             `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
           );
@@ -86,7 +86,7 @@ export async function POST(req) {
             paymentableType: "PROPERTY",
             type: "RESERVATION"
           })
-          await successLeaseOrder.update({ status: "PENDING" });
+          await successLeaseOrder.update({ status: "PENDING", inReview: true });
           console.log(
             `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`
           );

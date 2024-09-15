@@ -1,4 +1,4 @@
-import { Contract } from "@/db/init";
+import { Contract, LeaseOrderProperty, LeaseOrderRoom } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function updateStatusContract(data) {
@@ -11,6 +11,32 @@ export async function updateStatusContract(data) {
         const transaction = await Contract.sequelize.transaction();
         try {
             const contract = await Contract.findByPk(data.contractId)
+
+            if (contract.contractableType === "ROOM") {
+                const leaseOrderRoom = await LeaseOrderRoom.findOne({ where: { roomId: contract.contractableId } })
+                console.log(leaseOrderRoom);
+
+                if (leaseOrderRoom) {
+                    leaseOrderRoom.isSigned = data.status === "APPROVED"
+                    await leaseOrderRoom.save()
+                    await transaction.commit();
+                } else {
+                    await transaction.rollback();
+                    return NextResponse.json({ message: "Room not found" }, { status: 400 })
+                }
+            } else {
+                const LeaseOrderProperty = await LeaseOrderProperty.findOne({ where: { propertyId: contract.contractableId } })
+                console.log(LeaseOrderProperty);
+
+                if (LeaseOrderProperty) {
+                    LeaseOrderProperty.isSigned = data.status === "APPROVED"
+                    await LeaseOrderProperty.save()
+                    await transaction.commit();
+                } else {
+                    await transaction.rollback();
+                    return NextResponse.json({ message: "Property not found" }, { status: 400 })
+                }
+            }
             contract.status = data.status
             await contract.save()
             await transaction.commit();

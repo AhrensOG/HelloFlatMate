@@ -4,8 +4,6 @@ import PropertyCard from "./PropertyCard";
 import { useRouter } from "next/navigation";
 
 export default function PropertiesPanel({ data }) {
-  console.log(data);
-
   const router = useRouter();
   return (
     <main

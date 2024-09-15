@@ -15,9 +15,7 @@ export default function LeaseOrderPanel(data) {
     data.data?.category === "HELLO_STUDIO" ||
       data.data?.category === "HELLO_LANDLORD"
       ? data.data?.leaseOrdersProperty.filter(
-          (leaseOrder) =>
-            leaseOrder?.status === "PENDING" ||
-            leaseOrder?.status === "IN_PROGRESS"
+          (leaseOrder) => leaseOrder?.status === "PENDING"
         )
       : null
   );
@@ -72,7 +70,7 @@ export default function LeaseOrderPanel(data) {
     }
   }, [data, client, leaserOrders, property.ownerId, property.rooms]);
 
-  const aproveLeaseOrder = async (leaseOrder) => {
+  const aproveLeaseOrder = async (leaseOrder, contract) => {
     try {
       const dataRequest = {
         leaseOrderId: leaseOrder.id,
@@ -94,16 +92,18 @@ export default function LeaseOrderPanel(data) {
             ? null
             : leaseOrder.roomId,
       };
-      console.log(dataRequest);
 
+      await axios.patch("/api/admin/contract", {
+        contractId: contract.id,
+        status: "APPROVED",
+      });
       await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
-      console.log(error);
-      return error;
+      throw error;
     }
   };
 
-  const rejectLeaseOrder = async (leaseOrder) => {
+  const rejectLeaseOrder = async (leaseOrder, contract) => {
     try {
       const dataRequest = {
         leaseOrderId: leaseOrder.id,
@@ -125,10 +125,14 @@ export default function LeaseOrderPanel(data) {
             ? null
             : leaseOrder.roomId,
       };
+
+      await axios.patch("/api/admin/contract", {
+        contractId: contract.id,
+        status: "REJECTED",
+      });
       await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
-      console.log(error);
-      return error;
+      throw error;
     }
   };
 
@@ -173,17 +177,38 @@ export default function LeaseOrderPanel(data) {
                       />
                       <LeaseOrderClientSection
                         data={leaseOrder.client}
+                        contract={room.contracts.find(
+                          (contract) =>
+                            contract.status === "PENDING" &&
+                            contract.clientId === leaseOrder.client.id &&
+                            contract.contractableId === leaseOrder.roomId &&
+                            contract.contractableType === "ROOM"
+                        )}
                         formatDate={formatDate}
                       />
                       <div className="flex justify-between gap-4 ">
                         <button
                           onClick={() => {
-                            return toast.promise(aproveLeaseOrder(leaseOrder), {
-                              loading: "Cargando...",
-                              success: "Orden de arrendamiento aceptada",
-                              error:
-                                "Error al aceptar la orden de arrendamiento",
-                            });
+                            return toast.promise(
+                              aproveLeaseOrder(
+                                leaseOrder,
+                                room.contracts.find(
+                                  (contract) =>
+                                    contract.status === "PENDING" &&
+                                    contract.clientId ===
+                                      leaseOrder.client.id &&
+                                    contract.contractableId ===
+                                      leaseOrder.roomId &&
+                                    contract.contractableType === "ROOM"
+                                )
+                              ),
+                              {
+                                loading: "Cargando...",
+                                success: "Orden de arrendamiento aceptada",
+                                error:
+                                  "Error al aceptar la orden de arrendamiento",
+                              }
+                            );
                           }}
                           className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
                         >
@@ -191,12 +216,26 @@ export default function LeaseOrderPanel(data) {
                         </button>
                         <button
                           onClick={() => {
-                            return toast.promise(rejectLeaseOrder(leaseOrder), {
-                              loading: "Cargando...",
-                              success: "Orden de arrendamiento rechazada",
-                              error:
-                                "Error al rechazar la orden de arrendamiento",
-                            });
+                            return toast.promise(
+                              rejectLeaseOrder(
+                                leaseOrder,
+                                room.contracts.find(
+                                  (contract) =>
+                                    contract.status === "PENDING" &&
+                                    contract.clientId ===
+                                      leaseOrder.client.id &&
+                                    contract.contractableId ===
+                                      leaseOrder.roomId &&
+                                    contract.contractableType === "ROOM"
+                                )
+                              ),
+                              {
+                                loading: "Cargando...",
+                                success: "Orden de arrendamiento rechazada",
+                                error:
+                                  "Error al rechazar la orden de arrendamiento",
+                              }
+                            );
                           }}
                           className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
                         >
@@ -244,7 +283,16 @@ export default function LeaseOrderPanel(data) {
       {(property?.category === "HELLO_STUDIO" ||
         property?.category === "HELLO_LANDLORD") &&
         client && (
-          <LeaseOrderClientSection data={client} formatDate={formatDate} />
+          <LeaseOrderClientSection
+            data={client}
+            formatDate={formatDate}
+            contract={client.contracts.find(
+              (contract) =>
+                contract.status === "PENDING" &&
+                contract.contractableId === property.id &&
+                contract.contractableType === "PROPERTY"
+            )}
+          />
         )}
 
       <LeaseOrderPropertySection data={property} formatDate={formatDate} />
@@ -266,11 +314,22 @@ export default function LeaseOrderPanel(data) {
           <div className="flex justify-between gap-4 ">
             <button
               onClick={() => {
-                return toast.promise(aproveLeaseOrder(leaserOrders[0]), {
-                  loading: "Cargando...",
-                  success: "Orden de arrendamiento aceptada",
-                  error: "Error al aceptar la orden de arrendamiento",
-                });
+                return toast.promise(
+                  aproveLeaseOrder(
+                    leaserOrders[0],
+                    client.contracts.find(
+                      (contract) =>
+                        contract.status === "PENDING" &&
+                        contract.contractableId === property.id &&
+                        contract.contractableType === "PROPERTY"
+                    )
+                  ),
+                  {
+                    loading: "Cargando...",
+                    success: "Orden de arrendamiento aceptada",
+                    error: "Error al aceptar la orden de arrendamiento",
+                  }
+                );
               }}
               className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
             >
@@ -278,11 +337,22 @@ export default function LeaseOrderPanel(data) {
             </button>
             <button
               onClick={() => {
-                return toast.promise(rejectLeaseOrder(leaserOrders[0]), {
-                  loading: "Cargando...",
-                  success: "Orden de arrendamiento rechazada",
-                  error: "Error al rechazar la orden de arrendamiento",
-                });
+                return toast.promise(
+                  rejectLeaseOrder(
+                    leaserOrders[0],
+                    client.contracts.find(
+                      (contract) =>
+                        contract.status === "PENDING" &&
+                        contract.contractableId === property.id &&
+                        contract.contractableType === "PROPERTY"
+                    )
+                  ),
+                  {
+                    loading: "Cargando...",
+                    success: "Orden de arrendamiento rechazada",
+                    error: "Error al rechazar la orden de arrendamiento",
+                  }
+                );
               }}
               className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
             >
