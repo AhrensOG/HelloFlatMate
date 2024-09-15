@@ -16,6 +16,7 @@
     "@egjs/react-flicking": "^4.11.3",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.4",
+    "@react-google-maps/api": "^2.19.3",
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.3.0",
     "axios": "^1.7.3",
