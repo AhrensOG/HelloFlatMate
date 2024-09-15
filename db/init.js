@@ -334,15 +334,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         // await Room.bulkCreate(testRoom)
 
         // console.log("Data inserted")
-        // const result = await Client.findByPk("4ImLe5vacWah6ddc9D4djcY1UZA2", {
-        //     include: [
-        //         {
-        //             model: ToDo,
-        //             as: "toDos"
-        //         }
-        //     ]
-        // })
-        // console.log(result.toJSON());
 
     } catch (error) {
         console.log(error);
