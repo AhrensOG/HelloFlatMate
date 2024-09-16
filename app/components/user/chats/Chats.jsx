@@ -1,11 +1,12 @@
 import ChatsCard from "./ChatsCard";
-import { socket } from "@/app/socket";
+import { getSocket } from "@/app/socket";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function Chat() {
   const [chats, setChats] = useState([]);
   const router = useRouter();
+  const socket = getSocket();
 
   const handleJoinChat = (id) => {
     socket.emit("joinChat", id, (response) => {
