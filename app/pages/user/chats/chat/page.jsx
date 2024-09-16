@@ -61,7 +61,6 @@ export default function ChatPage() {
   // Función para enviar mensaje
   const sendMessage = (message) => {
     if (socket) {
-      console.log("hola")
       const newMessage = {
         roomId: roomId.toString(),
         text: message,
@@ -69,10 +68,6 @@ export default function ChatPage() {
         time: new Date().toLocaleTimeString(),
       };
 
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { ...newMessage, type: "sender" },
-      ]); // Añadir el mensaje al estado local como remitente
       socket.emit("sendMessage", newMessage); // Emitir al servidor
       console.log("Mensaje enviado:", newMessage);
     }
