@@ -2,8 +2,9 @@
 import MessageContainer from "@/app/components/user/chats/chat/MessageContainer";
 import MessageInput from "@/app/components/user/chats/chat/MessageInput";
 import NavBar from "@/app/components/nav_bar/NavBar";
-import { getSocket } from "@/app/socket";
 import { useState, useEffect } from "react";
+import { getSocket } from "@/app/socket";
+
 
 export default function ChatPage() {
   const [isConnected, setIsConnected] = useState(false);
