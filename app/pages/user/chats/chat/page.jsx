@@ -5,81 +5,67 @@ import NavBar from "@/app/components/nav_bar/NavBar";
 import { useState, useEffect } from "react";
 import { getSocket } from "@/app/socket";
 
-
 export default function ChatPage() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
   const [messages, setMessages] = useState([]); // Almacena mensajes recibidos
-  const [socketId, setSocketId] = useState(null); // Guardar el ID del socket del usuario
   const roomId = 3;
   const socket = getSocket();
 
   useEffect(() => {
-    if (!socketId) {
-      setSocketId(socket.id); // Almacenar el ID del socket del usuario aquí, después de la conexión
-    }
-  }, [socket]);
-
-  useEffect(() => {
     if (socket) {
-      // Unir al usuario a la sala de chat cuando el socket esté listo
-      socket.emit("joinChat", roomId.toString(), () => {
-        console.log(`Joined room ${roomId}`);
-      });
-      
-      console.log("holaaaaaaaaaaaaaaaaaaa")
-      const onMessage = (message) => {
-      console.log("holaaaaaaaaaaaaaaaaaaa DESDE ONmESSAGE")
-        console.log("Mensaje recibido en el cliente:", message);
-
-        // Solo agregar mensajes si `senderId` y `socketId` son válidos
-        if (message && message.senderId && socketId) {
-          const isSender = message.senderId === socketId;
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { ...message, type: isSender ? "sender" : "receiver" },
-          ]);
-        }
-      };
-
-      const onConnect = () => {
-        console.log("Conectado al servidor");
+      // Asignar el socketId después de la conexión
+      const handleSocketConnect = () => {
         setIsConnected(true);
         setTransport(socket.io.engine.transport.name);
+        console.log(`Conectado al servidor con socketId: ${socket.id}`);
 
-        socket.on("newMessage", onMessage); // Escuchar el evento 'newMessage'
+        // Unir al usuario a la sala de chat
+        socket.emit("joinChat", roomId.toString(), () => {
+          console.log(`Unido a la sala ${roomId}`);
+        });
 
-        socket.io.engine.on("upgrade", (transport) => {
-          console.log("Transport upgraded to:", transport.name);
-          setTransport(transport.name);
+        // Escuchar el evento de mensajes entrantes
+        socket.on("newMessage", (message) => {
+          console.log("Mensaje recibido en el cliente:", message);
+
+          if (message && message.senderId) {
+            const isSender = message.senderId === socket.id;
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              { ...message, type: isSender ? "sender" : "receiver" },
+            ]);
+          }
         });
       };
 
-      const onDisconnect = () => {
+      const handleSocketDisconnect = () => {
         console.log("Desconectado del servidor");
         setIsConnected(false);
         setTransport("N/A");
-        setSocketId(null); // Reiniciar socketId cuando el socket se desconecte
       };
 
-      socket.on("connect", onConnect);
-      socket.on("disconnect", onDisconnect);
+      // Configurar eventos del socket
+      socket.on("connect", handleSocketConnect);
+      socket.on("disconnect", handleSocketDisconnect);
 
       return () => {
-        socket.off("connect", onConnect);
-        socket.off("disconnect", onDisconnect);
-        socket.off("newMessage", onMessage);
+        // Limpiar eventos al desmontar el componente
+        socket.off("connect", handleSocketConnect);
+        socket.off("disconnect", handleSocketDisconnect);
+        socket.off("newMessage");
       };
     }
-  }, [socket, socketId]); // Asegúrate de que socket y socketId estén definidos
+  }, [socket]);
 
   // Función para enviar mensaje
   const sendMessage = (message) => {
-    if (socketId) {
+    if (socket) {
+      console.log("hola")
       const newMessage = {
         roomId: roomId.toString(),
         text: message,
-        senderId: socketId, // Enviar el ID del socket como identificador del remitente
+        senderId: socket?.id, // Enviar el ID del socket como identificador del remitente
         time: new Date().toLocaleTimeString(),
       };
 
@@ -88,7 +74,7 @@ export default function ChatPage() {
         { ...newMessage, type: "sender" },
       ]); // Añadir el mensaje al estado local como remitente
       socket.emit("sendMessage", newMessage); // Emitir al servidor
-      console.log(messages)
+      console.log("Mensaje enviado:", newMessage);
     }
   };
 
@@ -99,8 +85,7 @@ export default function ChatPage() {
       </header>
 
       <main className="flex flex-col justify-between items-center flex-grow w-full">
-        <MessageContainer messages={messages} socketId={socketId} />
-
+        <MessageContainer messages={messages} socketId={socket?.id} />
         <MessageInput onSendMessage={sendMessage} />
       </main>
     </div>
