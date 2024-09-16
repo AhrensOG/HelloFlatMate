@@ -22,11 +22,20 @@ import { useRouter } from "next/navigation";
 import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
+import SearchEmail from "../create/main/SearchEmail";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
 
   const router = useRouter();
+
+  const [owners, setOwners] = useState();
+  //Email search
+  const [selectedEmail, setSelectedEmail] = useState("");
+
+  const handleEmailSelect = (email) => {
+    setSelectedEmail(email);
+  };
 
   // Estados para los diferentes datos de la propiedad
   const [name, setName] = useState();
@@ -54,6 +63,14 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
 
   //Asignacion de datos
   useEffect(() => {
+    const fetchOwners = async () => {
+      const res = await axios.get("/api/admin/user?role=OWNER");
+      const ownerEmail = res.data.find(
+        (owner) => (owner.id = property?.ownerId)
+      );
+      setSelectedEmail(ownerEmail?.email);
+      setOwners(res.data);
+    };
     if (property) {
       setName(property?.name || "");
       setDescription(property?.description || "");
@@ -93,6 +110,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         IVA: property?.IVA || 0,
       });
     }
+    fetchOwners();
   }, [property]);
 
   //funcion para manejar la edicion de habitaciones
@@ -293,6 +311,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             0,
           offer: parseFloat(price.offer) || 0,
           IVA: parseFloat(price.IVA) || 0,
+          ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
         };
 
         const response = await axios.put(
@@ -309,7 +328,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
     }
   };
 
-  if (!data) {
+  if (!data || !owners || !property || !selectedEmail) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -346,6 +365,14 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             setAddress={setAddress}
             action={handleShowAddressModal}
           />
+          <div className="flex flex-col gap-2">
+            <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+            <SearchEmail
+              owners={owners}
+              onSelect={handleEmailSelect}
+              email={selectedEmail}
+            />{" "}
+          </div>
           {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
             <PriceSection data={price || property.price} setData={setPrice} />
           )}

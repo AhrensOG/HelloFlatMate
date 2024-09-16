@@ -145,25 +145,28 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
           </div>
         </div>
       </div>
-      {property?.status === "OCCUPIED" ? (
-        <div className="w-full">
-          <button
-            onClick={handleRedirectToContract}
-            title={
-              property?.status === "OCCUPIED"
-                ? "Firma tu contrato"
-                : "Podras firmar tu contrato en cuanto aprueben la reserva."
-            }
-            disabled={property?.status === "OCCUPIED" ? false : true}
-            className={`px-4 py-1 rounded-xl ${
-              property?.status === "OCCUPIED"
-                ? "bg-resolution-blue"
-                : "bg-gray-300"
-            } text-white`}
-          >
-            Firmar Contrato
-          </button>
-        </div>
+      {leaseOrder.isSigned ? (
+        // Si está firmado, solo mostramos el span si está en revisión
+        leaseOrder.isReview ? (
+          <span className="text-red-500">En revisión</span>
+        ) : null
+      ) : // Si no está firmado
+      leaseOrder.status === "PENDING" ? (
+        leaseOrder.isReview ? (
+          // Si está en revisión y pendiente
+          <span className="text-red-500">En revisión</span>
+        ) : (
+          // Si no está en revisión y pendiente
+          <div className="w-full">
+            <button
+              onClick={handleRedirectToContract}
+              title="Firma tu contrato"
+              className="px-4 py-1 rounded-xl bg-resolution-blue text-white"
+            >
+              Firmar Contrato
+            </button>
+          </div>
+        )
       ) : null}
     </article>
   );

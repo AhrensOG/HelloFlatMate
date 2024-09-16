@@ -1,14 +1,49 @@
-import { Client, Document, LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
+import { Client, Contract, Document, LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
 export async function getAllProperties() {
     try {
         const properties = await Property.findAll({
-            include: {
+            include: [{
                 model: Room,
                 as: 'rooms',
+                include: [{
+                    model: LeaseOrderRoom,
+                    as: 'leaseOrdersRoom',
+                    include: {
+                        model: Client,
+                        as: 'client',
+                        include: {
+                            model: Document,
+                            as: 'documents'
+                        }
+                    }
+                },
+                {
+                    model: Contract,
+                    as: 'contracts'
+                }],
+
+            },
+            {
+                model:
+                    LeaseOrderProperty,
+                as: 'leaseOrdersProperty',
+                include: {
+                    model: Client,
+                    as: 'client',
+                    include: {
+                        model: Document,
+                        as: 'documents'
+                    }
+                }
+            },
+            {
+                model: Contract,
+                as: 'contracts'
             }
+            ]
         });
         return NextResponse.json(properties, { status: 200 });
 
@@ -23,7 +58,7 @@ export async function getPropertyById(id) {
             include: [{
                 model: Room,
                 as: 'rooms',
-                include: {
+                include: [{
                     model: LeaseOrderRoom,
                     as: 'leaseOrdersRoom',
                     include: {
@@ -34,7 +69,10 @@ export async function getPropertyById(id) {
                             as: 'documents'
                         }
                     }
-                }
+                }, {
+                    model: Contract,
+                    as: 'contracts'
+                }]
             },
             {
                 model: LeaseOrderProperty,
@@ -47,6 +85,10 @@ export async function getPropertyById(id) {
                         as: 'documents'
                     }
                 }
+            },
+            {
+                model: Contract,
+                as: 'contracts'
             }]
         });
         if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });

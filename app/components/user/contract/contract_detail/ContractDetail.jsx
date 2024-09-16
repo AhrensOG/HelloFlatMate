@@ -104,12 +104,20 @@ const ContractDetail = ({
         endDate,
         monthlyRent,
       };
-      const dataContract = {
-        ownerId: property?.ownerId,
-        propertyId: property?.id || false,
-        clientId: state?.user?.id,
-        roomId: room?.id || false,
-      };
+      let dataContract;
+      if (room) {
+        dataContract = {
+          ownerId: property?.ownerId,
+          clientId: state?.user?.id,
+          roomId: room?.id,
+        };
+      } else {
+        dataContract = {
+          ownerId: property?.ownerId,
+          clientId: state?.user?.id,
+          propertyId: property?.id,
+        };
+      }
 
       await createContractPDF(dispatch, values, dataContract, clientSignature);
       return toast.success("¡Contrato bajo revision!");

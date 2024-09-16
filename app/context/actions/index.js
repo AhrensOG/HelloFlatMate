@@ -46,7 +46,7 @@ export const createContractPDF = async (
 
     if (data) {
       const clientSignatureUpdate = await axios.patch('/api/user', { id: dataContract.clientId, signature: clientSignatureUrl })
-      const contract = await loadContract({ ownerId: dataContract.ownerId, clientId: dataContract.clientId, propertyId: dataContract.propertyId, name: data.name, url: data.url })
+      const contract = await loadContract({ ownerId: dataContract.ownerId, clientId: dataContract.clientId, name: data.name, url: data.url, ...dataContract })
     }
     return dispatch({
       type: "CONTRACT_PDF_DATA",
