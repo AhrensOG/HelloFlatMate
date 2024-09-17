@@ -1,6 +1,7 @@
 "use client";
 
 import CategorySelectSection from "@/app/components/admin/property_magnament/create/CategorySelectSection";
+import NewPropertyDesktop from "@/app/components/admin/property_magnament/create/desktop/NewPropertyDesktop";
 import NewProperty from "@/app/components/admin/property_magnament/create/NewProperty";
 import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -32,7 +33,17 @@ export default function AddProperty() {
         />
       )}
       {currentStep === 2 && (
-        <NewProperty category={currentCategory} handleBack={handleBack} />
+        <>
+          <div className="block md:hidden">
+            <NewProperty category={currentCategory} handleBack={handleBack} />
+          </div>
+          <div className="hidden md:block">
+            <NewPropertyDesktop
+              handleBack={handleBack}
+              category={currentCategory}
+            />
+          </div>
+        </>
       )}
     </AnimatePresence>
   );

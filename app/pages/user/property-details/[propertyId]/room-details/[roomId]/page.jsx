@@ -118,7 +118,7 @@ export default function RoomDetails({ params }) {
             streetNumber={data?.streetNumber}
             postalCode={data?.postalCode}
             city={data?.city}
-            country={"Argentina"}
+            country={"España"}
           />
           <MoreInfoSection
             data={[

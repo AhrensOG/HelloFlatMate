@@ -46,9 +46,9 @@ export default function DescriptionModal({ data, setData, showModal }) {
       transition={{ duration: 0.8 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
-      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem] lg:w-[25rem]">
         <h2 className="text-2xl mb-4">Descripción</h2>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full max-h-[25rem] overflow-x-auto">
           <ul>
             {items.length > 0
               ? items.map((item, index) => (
@@ -70,20 +70,20 @@ export default function DescriptionModal({ data, setData, showModal }) {
                   />
                 ))}
           </ul>
-          <div className="self-end flex gap-2">
-            <button
-              onClick={addItem}
-              className=" text-black px-2 py-2 border border-[#0C1660] rounded-lg mt-3 hover:bg-[#0C1660] hover:text-white"
-            >
-              <PlusIcon className="h-4 w-4" />
-            </button>
-            <button
-              onClick={deleteItem}
-              className=" text-black px-2 py-2 border border-[#0C1660] rounded-lg mt-3 hover:bg-[#0C1660] hover:text-white"
-            >
-              <MinusIcon className="h-4 w-4" />
-            </button>
-          </div>
+        </div>
+        <div className="flex gap-2 justify-end">
+          <button
+            onClick={addItem}
+            className=" text-black px-2 py-2 border border-[#0C1660] rounded-lg mt-3 hover:bg-[#0C1660] hover:text-white"
+          >
+            <PlusIcon className="h-4 w-4" />
+          </button>
+          <button
+            onClick={deleteItem}
+            className=" text-black px-2 py-2 border border-[#0C1660] rounded-lg mt-3 hover:bg-[#0C1660] hover:text-white"
+          >
+            <MinusIcon className="h-4 w-4" />
+          </button>
         </div>
         <div className="flex justify-between w-full">
           <button
