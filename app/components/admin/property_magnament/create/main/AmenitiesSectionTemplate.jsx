@@ -31,7 +31,7 @@ export default function AmenitiesSectionTemplate({ data, setData }) {
         </h2>
         <EditButton />
       </article>
-      <article className="h-[60vh] overflow-y-scroll scrollbar-thin flex flex-col gap-2 w-full">
+      <article className="h-[60vh] overflow-y-scroll scrollbar-thin flex flex-col gap-2 w-full lg:flex-wrap lg:flex-row lg:gap-3">
         {amenities.map((amenity) => (
           <AmenityTemplate
             key={amenity}

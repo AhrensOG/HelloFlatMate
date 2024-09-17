@@ -1,6 +1,7 @@
 "use client";
 
 import CategorySelectSection from "@/app/components/admin/property_magnament/create/CategorySelectSection";
+import UpdatePropertyDesktop from "@/app/components/admin/property_magnament/update/desktop/UpdatePropertyDesktop";
 import UpdateProperty from "@/app/components/admin/property_magnament/update/UpdateProperty";
 import axios from "axios";
 import { AnimatePresence } from "framer-motion";
@@ -66,11 +67,22 @@ export default function UpdatePropertyPage({ params }) {
           />
         )}
         {currentStep === 2 && (
-          <UpdateProperty
-            data={initialData}
-            handleBack={handleBack}
-            category={currentCategory}
-          />
+          <>
+            <div className="block lg:hidden">
+              <UpdateProperty
+                data={initialData}
+                handleBack={handleBack}
+                category={currentCategory}
+              />
+            </div>
+            <div className="hidden lg:block">
+              <UpdatePropertyDesktop
+                data={initialData}
+                category={currentCategory}
+                handleBack={handleBack}
+              />
+            </div>
+          </>
         )}
       </AnimatePresence>
     </Suspense>

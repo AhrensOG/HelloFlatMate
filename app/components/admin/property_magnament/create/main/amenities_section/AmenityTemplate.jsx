@@ -4,7 +4,7 @@ export default function AmenityTemplate({ name, onChange, checked }) {
   };
 
   return (
-    <div className="flex justify-between items-center p-2">
+    <div className="flex justify-between items-center p-2 lg:w-[13rem]">
       <label htmlFor={name}>
         {name.charAt(0).toUpperCase() + name.slice(1)}
       </label>

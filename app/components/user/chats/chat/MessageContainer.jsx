@@ -3,6 +3,7 @@ import Message from "./Message";
 
 export default function MessageContainer({ messages, socketId }) {
   const containerRef = useRef(null);
+  console.log(messages);
 
   // Efecto para desplazar el contenedor de mensajes hacia abajo cuando se añaden nuevos mensajes
   useEffect(() => {

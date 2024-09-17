@@ -2,6 +2,8 @@ import { Property } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function updateProperty(id, data) {
+    console.log(data);
+
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
