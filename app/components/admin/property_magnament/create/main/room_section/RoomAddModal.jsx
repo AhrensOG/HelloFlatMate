@@ -85,7 +85,7 @@ export default function RoomAddModal({
 
   return (
     <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 ">
-      <div className="bg-white p-4 rounded-lg shadow-lg w-full m-5 flex flex-col gap-3 overflow-auto h-[95%]">
+      <div className="bg-white p-4 rounded-lg shadow-lg w-full m-5 flex flex-col gap-3 overflow-auto h-[95%] lg:w-[30rem]">
         <h2 className="text-2xl mb-4">Nueva Habitacion</h2>
         <div>
           <label className="block text-sm mb-1" htmlFor="name">
@@ -102,103 +102,110 @@ export default function RoomAddModal({
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
-        <div>
-          <label className="block text-sm mb-1" htmlFor="serial">
-            Serial
-          </label>
-          <input
-            type="text"
-            id="serial"
-            name="serial"
-            value={dataRoom?.serial || ""}
-            onChange={(event) =>
-              setDataRoom({ ...dataRoom, serial: event.target.value })
-            }
-            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block text-sm mb-1" htmlFor="numberBeds">
-            Numero de camas
-          </label>
-          <input
-            type="number"
-            id="numberBeds"
-            name="numberBeds"
-            value={dataRoom?.numberBeds || ""}
-            onChange={(event) =>
-              setDataRoom({ ...dataRoom, numberBeds: event.target.value })
-            }
-            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-          />
+        <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
+          <div>
+            <label className="block text-sm mb-1" htmlFor="serial">
+              Serial
+            </label>
+            <input
+              type="text"
+              id="serial"
+              name="serial"
+              value={dataRoom?.serial || ""}
+              onChange={(event) =>
+                setDataRoom({ ...dataRoom, serial: event.target.value })
+              }
+              className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1" htmlFor="numberBeds">
+              Numero de camas
+            </label>
+            <input
+              type="number"
+              id="numberBeds"
+              name="numberBeds"
+              value={dataRoom?.numberBeds || ""}
+              onChange={(event) =>
+                setDataRoom({ ...dataRoom, numberBeds: event.target.value })
+              }
+              className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
         </div>
 
         {/* Solo muestra precio y tarifa si es la categoría correcta */}
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>
-            <div>
-              <label className="block text-sm mb-1" htmlFor="price">
-                Precio Habitacion
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={dataRoom?.price || ""}
-                onChange={(event) =>
-                  setDataRoom({ ...dataRoom, price: event.target.value })
-                }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label
-                className="block text-sm mb-1"
-                htmlFor="amountHelloflatmate"
-              >
-                Tarifa Helloflatmate
-              </label>
-              <input
-                type="number"
-                id="amountHelloflatmate"
-                name="amountHelloflatmate"
-                value={dataRoom?.amountHelloflatmate || ""}
-                onChange={(event) =>
-                  setDataRoom({
-                    ...dataRoom,
-                    amountHelloflatmate: event.target.value,
-                  })
-                }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <h3 className="block text-sm mb-1">
-                Tarifa Helloflatmate con IVA
-              </h3>
-              <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
-                {(parseInt(dataRoom?.amountHelloflatmate) || 0) -
-                  (parseInt(dataRoom?.amountHelloflatmate) *
-                    (dataRoom.IVA / 100) || 0)}
-              </p>
-            </div>
-            <div>
-              <label className="block text-sm mb-1" htmlFor="IVA">
-                IVA (%)
-              </label>
-              <input
-                type="number"
-                id="IVA"
-                name="IVA"
-                value={dataRoom?.IVA || ""}
-                onChange={(event) =>
-                  setDataRoom({ ...dataRoom, IVA: event.target.value })
-                }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-              />
+            <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
+              <div>
+                <label className="block text-sm mb-1" htmlFor="price">
+                  Precio Habitacion
+                </label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  value={dataRoom?.price || ""}
+                  onChange={(event) =>
+                    setDataRoom({ ...dataRoom, price: event.target.value })
+                  }
+                  className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div>
+                <label
+                  className="block text-sm mb-1"
+                  htmlFor="amountHelloflatmate"
+                >
+                  Tarifa Helloflatmate
+                </label>
+                <input
+                  type="number"
+                  id="amountHelloflatmate"
+                  name="amountHelloflatmate"
+                  value={dataRoom?.amountHelloflatmate || ""}
+                  onChange={(event) =>
+                    setDataRoom({
+                      ...dataRoom,
+                      amountHelloflatmate: event.target.value,
+                    })
+                  }
+                  className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
             </div>
 
-            <div>
+            <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
+              <div className="lg:w-[12.5rem]">
+                <h3 className="block text-sm mb-1">
+                  Tarifa Helloflatmate con IVA
+                </h3>
+                <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                  {(parseInt(dataRoom?.amountHelloflatmate) || 0) -
+                    (parseInt(dataRoom?.amountHelloflatmate) *
+                      (dataRoom.IVA / 100) || 0)}
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm mb-1" htmlFor="IVA">
+                  IVA (%)
+                </label>
+                <input
+                  type="number"
+                  id="IVA"
+                  name="IVA"
+                  value={dataRoom?.IVA || ""}
+                  onChange={(event) =>
+                    setDataRoom({ ...dataRoom, IVA: event.target.value })
+                  }
+                  className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+            </div>
+
+            <div className="lg:w-[12.5rem]">
               <h3 className="block text-sm mb-1">Neto Propietario</h3>
               <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
                 {(parseInt(dataRoom?.price) || 0) -

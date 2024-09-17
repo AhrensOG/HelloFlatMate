@@ -37,7 +37,7 @@ export default function AddressModal({ data, setData, showModal }) {
       transition={{ duration: 0.8 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
-      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem] lg:w-[25rem]">
         <h2 className="text-2xl mb-4">Dirección</h2>
         <div className="flex flex-col w-full space-y-4">
           <div>

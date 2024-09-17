@@ -54,7 +54,7 @@ const CategorySelectSection = ({
           Selecciona una categoria
         </h1>
       </div>
-      <div className="flex flex-col gap-5 items-center justify-center">
+      <div className="flex flex-col gap-5 items-center justify-center lg:flex-wrap lg:w-[45rem] lg:self-center">
         {list.map((e) => (
           <CategoryCard
             key={e.id}
@@ -70,7 +70,7 @@ const CategorySelectSection = ({
         onClick={handleContinue}
         alt="Reservar"
         type="button"
-        className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient hover:bg-payment-button-gradient-hover transition-all duration-300"
+        className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient hover:bg-payment-button-gradient-hover transition-all duration-300 lg:w-[21rem]"
       >
         Continuar
       </button>

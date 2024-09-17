@@ -1,32 +1,34 @@
-import NavBarDetails from "@/app/components/user/property-details/header/NavBarDetails";
-import DescriptionSectionTemplate from "../create/main/DescriptionSectionTemplate";
-import GuestInfoSectionTemplate from "../create/main/GuestInfoSectionTemplate";
-import LocationSectionTemplate from "../create/main/LocationSectionTemplate";
-import MoreInfoSectionTemplate from "../create/main/MoreInfoSectionTemplate";
-import RoomSectionTemplate from "../create/main/RoomSectionTemplate";
-import TitleSectionTemplate from "../create/main/TitleSectionTemplate";
-import SaveButton from "../shared/SaveButton";
-import { plus_jakarta } from "@/font";
-import { Suspense, useEffect, useState } from "react";
-import SliderUpdateTemplate from "./header/SliderUpdateTemplate";
-import DescriptionModal from "../create/main/description_section/DescriptionModal";
-import SliderModal from "../create/header/slider/SliderModal";
-import AddressModal from "../create/main/address_modal/AddressModal";
-import AmenitiesModalEdit from "../create/main/amenities_section/AmenitiesModalEdit";
-import AmenitiesSection from "@/app/components/user/property-details/main/AmenitiesSection";
-import EditButton from "../shared/EditButton";
-import axios from "axios";
-import { toast } from "sonner";
-import validateData from "../create/validateData";
 import { useRouter } from "next/navigation";
-import RoomAddModal from "../create/main/room_section/RoomAddModal";
-import PriceSection from "../create/main/PriceSection";
-import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
-import SearchEmail from "../create/main/SearchEmail";
+import { Suspense, useEffect, useState } from "react";
+import { toast } from "sonner";
+import validateData from "../../create/validateData";
+import axios from "axios";
+import SliderUpdateTemplate from "../header/SliderUpdateTemplate";
+import NavBarDetails from "@/app/components/user/property-details/header/NavBarDetails";
+import TitleSectionTemplate from "../../create/main/TitleSectionTemplate";
+import SearchEmail from "../../create/main/SearchEmail";
+import SizeAndCategorySection from "../../create/main/SizeAndCategorySection";
+import GuestInfoSectionTemplate from "../../create/main/GuestInfoSectionTemplate";
+import DescriptionSectionTemplate from "../../create/main/DescriptionSectionTemplate";
+import RoomSectionTemplate from "../../create/main/RoomSectionTemplate";
+import LocationSectionTemplate from "../../create/main/LocationSectionTemplate";
+import MoreInfoSectionTemplate from "../../create/main/MoreInfoSectionTemplate";
+import SaveButton from "../../shared/SaveButton";
+import DescriptionModal from "../../create/main/description_section/DescriptionModal";
+import SliderModal from "../../create/header/slider/SliderModal";
+import AddressModal from "../../create/main/address_modal/AddressModal";
+import AmenitiesSection from "@/app/components/user/property-details/main/AmenitiesSection";
+import AmenitiesModalEdit from "../../create/main/amenities_section/AmenitiesModalEdit";
+import RoomAddModal from "../../create/main/room_section/RoomAddModal";
+import PriceSection from "../../create/main/PriceSection";
+import { plus_jakarta } from "@/font";
+import EditButton from "../../shared/EditButton";
 
-export default function UpdateProperty({ data = false, category, handleBack }) {
-  console.log(data);
-
+export default function UpdatePropertyDesktop({
+  data = false,
+  category,
+  handleBack,
+}) {
   const [property, setProperty] = useState(data ? data : null);
 
   const router = useRouter();
@@ -72,7 +74,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       );
       setSelectedEmail(ownerEmail?.email);
       setOwners(res.data);
-      console.log(res.data);
     };
     if (property) {
       setName(property?.name || "");
@@ -317,8 +318,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
         };
 
-        console.log(owners, selectedEmail);
-
         const response = await axios.put(
           `/api/admin/property?id=${data.id}`,
           updateDataProperty
@@ -342,98 +341,122 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="flex flex-col max-w-screen-sm gap-2 ">
+    <div className="w-screen flex justify-center items-center">
+      <div className="flex flex-col w-full gap-2 p-1 mb-3 h-screen">
         <header className="w-full space-y-4">
-          <div className="w-full">
-            <SliderUpdateTemplate
-              data={sliderImage}
-              action={handleShowSliderModal}
-            />
-          </div>
           <NavBarDetails link="/pages/admin/properties" callBack={handleBack} />
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
+          className={`${plus_jakarta.className} flex flex-col justify-center m-3  w-full grow text-[#0D171C]`}
         >
-          <TitleSectionTemplate
-            name={name || ""}
-            setName={setName}
-            address={
-              address || {
-                street: property.street,
-                streetNumber: property.streetNumber,
-                postalCode: property.postalCode,
-                city: property.city,
-              }
-            }
-            setAddress={setAddress}
-            action={handleShowAddressModal}
-          />
-          <div className="flex flex-col gap-2">
-            <h2 className="font-bold text-[1.37rem]">Dueño</h2>
-            <SearchEmail
-              owners={owners}
-              onSelect={handleEmailSelect}
-              email={selectedEmail || property.owner?.email || ""}
-            />{" "}
-          </div>
-          {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
-            <PriceSection data={price || property.price} setData={setPrice} />
-          )}
-          <SizeAndCategorySection
-            data={
-              catAndSize || { size: property.size, category: property.category }
-            }
-            setData={setCatAndSize}
-          />
-          <div className="flex flex-col gap-6">
-            <GuestInfoSectionTemplate
-              data={
-                guestInfo || {
-                  occupants: property.maximunOccupants,
-                  beds: property.bed,
-                  bathrooms: property.bathrooms,
+          <div className="flex mb-5 gap-[2.5rem] justify-center">
+            {/* Izquierda */}
+            <div className="w-[28rem] flex flex-col justify-between gap-6">
+              <div className="w-full">
+                <SliderUpdateTemplate
+                  data={sliderImage}
+                  action={handleShowSliderModal}
+                />
+
+                <RoomSectionTemplate
+                  data={dataRooms || property.rooms}
+                  onEditRoom={handleRoomUpdate}
+                  setData={setDataRooms}
+                  action={handleAddRoomModal}
+                  deleteRooms={deleteRooms}
+                  setDeleteRooms={setDeleteRooms}
+                  category={category}
+                />
+
+                <LocationSectionTemplate data={"hola"} />
+
+                <DescriptionSectionTemplate
+                  data={description || property.description}
+                  action={handleShowDescriptionModal}
+                />
+
+                <AmenitiesSection
+                  data={amenities || property.amenities}
+                  edit={<EditButton action={handleShowAmenitiesModal} />}
+                />
+              </div>
+            </div>
+
+            {/* Divisor */}
+            <div className="h-full w-[1px] bg-[#B2B2B2]"></div>
+
+            {/* Derecha */}
+            <div className="w-[25rem] flex flex-col justify-between gap-6">
+              <TitleSectionTemplate
+                name={name || ""}
+                setName={setName}
+                address={
+                  address || {
+                    street: property.street,
+                    streetNumber: property.streetNumber,
+                    postalCode: property.postalCode,
+                    city: property.city,
+                  }
                 }
-              }
-              setData={setGuestInfo}
-            />
+                setAddress={setAddress}
+                action={handleShowAddressModal}
+              />
+              <div className="flex flex-col gap-2">
+                <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+                <SearchEmail
+                  owners={owners}
+                  onSelect={handleEmailSelect}
+                  email={selectedEmail}
+                />{" "}
+              </div>
+              {(category === "HELLO_STUDIO" ||
+                category === "HELLO_LANDLORD") && (
+                <PriceSection
+                  data={price || property.price}
+                  setData={setPrice}
+                />
+              )}
+              <SizeAndCategorySection
+                data={
+                  catAndSize || {
+                    size: property.size,
+                    category: property.category,
+                  }
+                }
+                setData={setCatAndSize}
+              />
+              <div className="flex flex-col gap-6">
+                <GuestInfoSectionTemplate
+                  data={
+                    guestInfo || {
+                      occupants: property.maximunOccupants,
+                      beds: property.bed,
+                      bathrooms: property.bathrooms,
+                    }
+                  }
+                  setData={setGuestInfo}
+                />
+              </div>
+              <MoreInfoSectionTemplate
+                data={
+                  moreInfo || {
+                    condicionDeRenta:
+                      property.incomeConditionDescription || "Informacion",
+                    habitacion: property.roomDescription || "Informacion",
+                    facturas: property.feeDescription || "Informacion",
+                    mantenimiento:
+                      property.maintenanceDescription || "Informacion",
+                    sobreNosotros: property.aboutUs || "Informacion",
+                    normasDeConvivencia: property.houseRules || "Informacion",
+                    checkIn: property.checkIn || "Informacion",
+                    checkOut: property.checkOut || "Informacion",
+                  }
+                }
+                setData={setMoreInfo}
+                action={handleShowMoreInfoModal}
+              />
+            </div>
           </div>
-          <DescriptionSectionTemplate
-            data={description || property.description}
-            action={handleShowDescriptionModal}
-          />
-          <RoomSectionTemplate
-            data={dataRooms || property.rooms}
-            onEditRoom={handleRoomUpdate}
-            setData={setDataRooms}
-            action={handleAddRoomModal}
-            deleteRooms={deleteRooms}
-            setDeleteRooms={setDeleteRooms}
-            category={category}
-          />
-          <AmenitiesSection
-            data={amenities || property.amenities}
-            edit={<EditButton action={handleShowAmenitiesModal} />}
-          />
-          <LocationSectionTemplate data={"hola"} />
-          <MoreInfoSectionTemplate
-            data={
-              moreInfo || {
-                condicionDeRenta:
-                  property.incomeConditionDescription || "Informacion",
-                habitacion: property.roomDescription || "Informacion",
-                facturas: property.feeDescription || "Informacion",
-                mantenimiento: property.maintenanceDescription || "Informacion",
-                sobreNosotros: property.aboutUs || "Informacion",
-                normasDeConvivencia: property.houseRules || "Informacion",
-                checkIn: property.checkIn || "Informacion",
-                checkOut: property.checkOut || "Informacion",
-              }
-            }
-            setData={setMoreInfo}
-            action={handleShowMoreInfoModal}
-          />
           <SaveButton action={updateProperty} />
         </main>
         {showDescriptionModal && (
@@ -474,6 +497,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           />
         )}
       </div>
-    </Suspense>
+    </div>
   );
 }
