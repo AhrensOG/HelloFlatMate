@@ -68,14 +68,14 @@ export default function UpdatePropertyPage({ params }) {
         )}
         {currentStep === 2 && (
           <>
-            <div className="block lg:hidden">
+            <div className="block md:hidden">
               <UpdateProperty
                 data={initialData}
                 handleBack={handleBack}
                 category={currentCategory}
               />
             </div>
-            <div className="hidden lg:block">
+            <div className="hidden md:block">
               <UpdatePropertyDesktop
                 data={initialData}
                 category={currentCategory}
