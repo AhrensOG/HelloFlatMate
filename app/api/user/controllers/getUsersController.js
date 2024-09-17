@@ -1,4 +1,4 @@
-import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Room } from "@/db/init";
+import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Room, Contract } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getUserById(id) {
@@ -60,6 +60,10 @@ export async function getUserById(id) {
                 {
                     model: Supply,
                     as: "supplies"
+                },
+                {
+                    model: Contract,
+                    as: "contracts"
                 }
             ]
         }) || await Admin.findByPk(id, {

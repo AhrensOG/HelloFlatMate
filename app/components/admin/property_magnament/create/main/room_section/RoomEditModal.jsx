@@ -131,7 +131,7 @@ export default function RoomEditModal({
 
   return (
     <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col h-[95%] overflow-auto">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col h-[95%] overflow-auto lg:w-[30rem] lg:h-[42rem] lg:max-h-[55rem]">
         <h2 className="text-2xl mb-4">Editar habitación</h2>
         <div>
           <label className="block text-sm mb-1" htmlFor="name">
@@ -148,35 +148,37 @@ export default function RoomEditModal({
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
-        <div>
-          <label className="block text-sm mb-1" htmlFor="serial">
-            Serial
-          </label>
-          <input
-            type="text"
-            id="serial"
-            name="serial"
-            value={dataRoom?.serial || ""}
-            onChange={(event) =>
-              setDataRoom({ ...dataRoom, serial: event.target.value })
-            }
-            className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block text-sm mb-1" htmlFor="numberBeds">
-            Numero de camas
-          </label>
-          <input
-            type="number"
-            id="numberBeds"
-            name="numberBeds"
-            value={dataRoom?.numberBeds || ""}
-            onChange={(event) =>
-              setDataRoom({ ...dataRoom, numberBeds: event.target.value })
-            }
-            className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-          />
+        <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
+          <div>
+            <label className="block text-sm mb-1" htmlFor="serial">
+              Serial
+            </label>
+            <input
+              type="text"
+              id="serial"
+              name="serial"
+              value={dataRoom?.serial || ""}
+              onChange={(event) =>
+                setDataRoom({ ...dataRoom, serial: event.target.value })
+              }
+              className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1" htmlFor="numberBeds">
+              Numero de camas
+            </label>
+            <input
+              type="number"
+              id="numberBeds"
+              name="numberBeds"
+              value={dataRoom?.numberBeds || ""}
+              onChange={(event) =>
+                setDataRoom({ ...dataRoom, numberBeds: event.target.value })
+              }
+              className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
         </div>
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>

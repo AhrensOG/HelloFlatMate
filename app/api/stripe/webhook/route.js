@@ -1,6 +1,8 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
 import { LeaseOrderProperty, LeaseOrderRoom, Supply } from "@/db/init"; // Importa el modelo Supply
+import { createPayment } from "../../payment/controller/createPaymentController";
+import axios from "axios";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -50,7 +52,16 @@ export async function POST(req) {
               { status: 404 }
             );
           }
-          await successLeaseOrderRoom.update({ status: "PENDING" });
+
+          await axios.post('/api/payment', {
+            amount: successLeaseOrderRoom.price,
+            clientId: successLeaseOrderRoom.clientId,
+            ownerId: successLeaseOrderRoom.ownerId,
+            paymentableId: successLeaseOrderRoom.roomId,
+            paymentableType: "ROOM",
+            type: "RESERVATION"
+          })
+          await successLeaseOrderRoom.update({ status: "PENDING", inReview: true });
           console.log(
             `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
           );
@@ -67,7 +78,15 @@ export async function POST(req) {
               { status: 404 }
             );
           }
-          await successLeaseOrder.update({ status: "PENDING" });
+          await axios.post('/api/payment', {
+            amount: successLeaseOrder.price,
+            clientId: successLeaseOrder.clientId,
+            ownerId: successLeaseOrder.ownerId,
+            paymentableId: successLeaseOrder.propertyId,
+            paymentableType: "PROPERTY",
+            type: "RESERVATION"
+          })
+          await successLeaseOrder.update({ status: "PENDING", inReview: true });
           console.log(
             `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`
           );

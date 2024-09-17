@@ -65,8 +65,6 @@ export default function RoomDetails({ params }) {
 
   return (
     <div className="flex flex-col justify-center items-center relative">
-      {console.log(data.description)}
-
       <div className="flex flex-col max-w-screen-sm w-full gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
@@ -107,12 +105,21 @@ export default function RoomDetails({ params }) {
               <ReservationButton callback={handleShowModal} />
             )}
           </div>
-          <DescriptionSection title="Descripción de la propiedad y areas comunes" data={data.description} />
+          <DescriptionSection
+            title="Descripción de la propiedad y areas comunes"
+            data={data.description}
+          />
           <PropertySection
             data={{ id: data.id, name: data.name, image: data.images[0] }}
           />
           <AmenitiesSection data={data.amenities} />
-          <LocationSection />
+          <LocationSection
+            street={data?.street}
+            streetNumber={data?.streetNumber}
+            postalCode={data?.postalCode}
+            city={data?.city}
+            country={"España"}
+          />
           <MoreInfoSection
             data={[
               {

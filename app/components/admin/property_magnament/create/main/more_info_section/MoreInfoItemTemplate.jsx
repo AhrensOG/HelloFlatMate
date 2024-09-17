@@ -35,7 +35,7 @@ export default function MoreInfoItemTemplate({
           <PlusIcon />
         </button>
       </div>
-      <p className="text-sm p-1">
+      <p className="text-sm p-1 break-words">
         {body.length === 0 ? "Aquí va la descripción" : body}
       </p>
       {showModal && (

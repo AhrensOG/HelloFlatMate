@@ -12,6 +12,7 @@ export default function GuestCardRoom({ type, boolean, number }) {
             <Image
               src={"/create-property/bed.png"}
               fill
+              alt="Cama"
               style={{ objectFit: "contain", objectPosition: "center" }}
             />
           </div>
@@ -21,6 +22,7 @@ export default function GuestCardRoom({ type, boolean, number }) {
           <Image
             src={"/create-property/toilet.png"}
             fill
+            alt="Baño"
             style={{ objectFit: "contain", objectPosition: "center" }}
           />
         </div>
@@ -29,6 +31,7 @@ export default function GuestCardRoom({ type, boolean, number }) {
           <Image
             src={"/create-property/couple.png"}
             fill
+            alt="Cama para pareja"
             style={{ objectFit: "contain", objectPosition: "center" }}
           />
         </div>
@@ -37,6 +40,7 @@ export default function GuestCardRoom({ type, boolean, number }) {
           <Image
             src={"/create-property/singleman.png"}
             fill
+            alt="Cama para una persona"
             style={{ objectFit: "contain", objectPosition: "center" }}
           />
         </div>

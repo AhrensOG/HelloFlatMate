@@ -7,7 +7,7 @@ import MoreInfoSectionTemplate from "./main/MoreInfoSectionTemplate";
 import RoomSectionTemplate from "./main/RoomSectionTemplate";
 import SaveButton from "../shared/SaveButton";
 import { plus_jakarta } from "@/font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleSectionTemplate from "./main/TitleSectionTemplate";
 import DescriptionModal from "./main/description_section/DescriptionModal";
 import AddressModal from "./main/address_modal/AddressModal";
@@ -20,9 +20,12 @@ import ImageUploader from "@/app/components/admin/drag-and-drop/ImageUploader";
 import SizeAndCategorySection from "./main/SizeAndCategorySection";
 import PriceSection from "./main/PriceSection";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
+import SearchEmail from "./main/SearchEmail";
 
 export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
+
+  const [owners, setOwners] = useState();
 
   const [name, setName] = useState("");
   const [address, setAddress] = useState({
@@ -64,6 +67,12 @@ export default function NewProperty({ category, handleBack }) {
 
   const setRoomData = (data) => {
     setDataRoom(data);
+  };
+  //Email search
+  const [selectedEmail, setSelectedEmail] = useState("");
+
+  const handleEmailSelect = (email) => {
+    setSelectedEmail(email);
   };
 
   // Modal states
@@ -165,8 +174,6 @@ export default function NewProperty({ category, handleBack }) {
     }
 
     try {
-      console.log(rooms);
-
       const response = await axios.post("/api/admin/room", rooms); // Cambia rooms por response para evitar la redeclaración
       toast.success("Habitación/es creada/s con éxito");
       return response; // Devuelve el response si todo va bien
@@ -224,6 +231,7 @@ export default function NewProperty({ category, handleBack }) {
       parseFloat(price.price) - parseFloat(price.amountHelloflatmate) || 0,
     offer: parseFloat(price.offer) || 0,
     IVA: parseFloat(price.IVA) || 0,
+    ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
   };
 
   const createProperty = async () => {
@@ -241,8 +249,6 @@ export default function NewProperty({ category, handleBack }) {
           "/api/admin/property",
           property
         );
-        console.log(propertyResponse);
-
         const propertyId = propertyResponse.data.property.id;
 
         // Asignar habitaciones
@@ -261,6 +267,21 @@ export default function NewProperty({ category, handleBack }) {
     }
   };
 
+  useEffect(() => {
+    const fetchOwners = async () => {
+      const res = await axios.get("/api/admin/user?role=OWNER");
+      setOwners(res.data);
+    };
+    fetchOwners();
+  }, []);
+
+  if (!owners) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <div className="w-full flex justify-center items-center">
       <div className="flex flex-col w-full max-w-screen-sm gap-2 p-1">
@@ -278,6 +299,10 @@ export default function NewProperty({ category, handleBack }) {
             setAdress={setAddress}
             action={handleShowAddressModal}
           />
+          <div className="flex flex-col gap-2">
+            <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+            <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
+          </div>
           {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
             ""
           ) : (

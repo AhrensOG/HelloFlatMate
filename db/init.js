@@ -14,6 +14,8 @@ const Admin = require("./models/admin");
 const Room = require("./models/room");
 const Supply = require("./models/supply");
 const ChatParticipant = require("./models/chatParticipant");
+const Contract = require("./models/contract");
+const Payment = require("./models/payment");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
@@ -24,6 +26,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Owner.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "ownerId" });
         Owner.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "ownerId" });
         Owner.hasMany(Property, { as: "properties", foreignKey: "ownerId" });
+        Owner.hasMany(Contract, { as: "contracts", foreignKey: "ownerId" });
 
         //PROPERTY
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
@@ -62,6 +65,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Client.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "clientId" });
         Client.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "clientId" });
         Client.hasMany(Supply, { as: "supplies", foreignKey: "clientId" });
+        Client.hasMany(Contract, { as: "contracts", foreignKey: "clientId" });
+        Client.hasMany(Payment, { as: "payments", foreignKey: "clientId" });
 
         //CHAT
         // Uno a Muchos
@@ -80,6 +85,14 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //SUPPlY
         Supply.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Supply.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //CONTRACT
+        Contract.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+        Contract.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //PAYMENT
+        Payment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+        Payment.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
 
         //Relaciones polimorficas
         //Client
@@ -238,6 +251,76 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             scope: { userType: 'ADMIN' }
         })
 
+        //PAYMENT
+        Payment.belongsTo(Property, {
+            as: "property",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "PROPERTY"
+            }
+        })
+        Payment.belongsTo(Room, {
+            as: "room",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "ROOM"
+            }
+        })
+
+        Property.hasMany(Payment, {
+            as: "payments",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "PROPERTY"
+            }
+        })
+        Room.hasMany(Payment, {
+            as: "payments",
+            foreignKey: "paymentableId",
+            constraints: false,
+            scope: {
+                paymentableType: "ROOM"
+            }
+        })
+
+        //CONTRACT
+        Contract.belongsTo(Property, {
+            as: "property",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "PROPERTY"
+            }
+        })
+        Contract.belongsTo(Room, {
+            as: "room",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "ROOM"
+            }
+        })
+
+        Property.hasMany(Contract, {
+            as: "contracts",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "PROPERTY"
+            }
+        })
+        Room.hasMany(Contract, {
+            as: "contracts",
+            foreignKey: "contractableId",
+            constraints: false,
+            scope: {
+                contractableType: "ROOM"
+            }
+        })
+
         // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
@@ -251,15 +334,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         // await Room.bulkCreate(testRoom)
 
         // console.log("Data inserted")
-        // const result = await Client.findByPk("4ImLe5vacWah6ddc9D4djcY1UZA2", {
-        //     include: [
-        //         {
-        //             model: ToDo,
-        //             as: "toDos"
-        //         }
-        //     ]
-        // })
-        // console.log(result.toJSON());
 
     } catch (error) {
         console.log(error);
@@ -280,5 +354,7 @@ module.exports = {
     ToDo,
     Room,
     Supply,
-    ChatParticipant
+    ChatParticipant,
+    Contract,
+    Payment
 };

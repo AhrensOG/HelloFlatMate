@@ -1,8 +1,10 @@
 import { plus_jakarta } from "@/font";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function ContractListItem({ status }) {
+export default function ContractListItem({ contract }) {
   return (
     <article
       className={`${plus_jakarta.className} flex flex-col gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
@@ -17,21 +19,24 @@ export default function ContractListItem({ status }) {
           />
         </div>
         <div className="flex flex-col gap-1 grow pl-2">
-          <p className="text-sm text-[#A6A6A6] font-normal">
-            28 Oct 2023 | 122 MB
-          </p>
-          <h3 className="font-semibold text-base">Contrato HelloRoom</h3>
+          <p className="text-sm text-[#A6A6A6] font-normal">{contract.date}</p>
+          <h3 className="font-semibold text-base">{contract.name}</h3>
         </div>
         <div className="h-6 w-6">
-          <EllipsisVerticalIcon />
+          <Link target="_blank" href={contract.url}>
+            <ArrowDownTrayIcon />
+          </Link>
         </div>
       </div>
-      {status == "completed" ? null : (
-        <div className="grow flex justify-end">
-          <button className="w-[7.94rem] h-[1.57rem] rounded-lg bg-[#0C1660] text-xs font-normal text-white">
-            Firmar contrato
-          </button>
-        </div>
+      {contract.status == "APPROVED" && (
+        <span className="bg-[#52B46B] text-white h-[2rem] px-4 w-[6.5rem] rounded-2xl font-medium text-base flex items-center justify-center">
+          Aprobado
+        </span>
+      )}
+      {contract.status == "REJECTED" && (
+        <span className="bg-[#F44336] text-white h-[2rem] px-4 w-[6.5rem] rounded-2xl font-medium text-base flex items-center justify-center">
+          Rechazado
+        </span>
       )}
     </article>
   );

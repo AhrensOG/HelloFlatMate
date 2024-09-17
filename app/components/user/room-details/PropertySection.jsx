@@ -1,7 +1,6 @@
 import PropertyInfo from "./PropertyInfo";
 
 export default function PropertySection({ data }) {
-  console.log(data);
 
   return (
     <section className="flex flex-col gap-3 items-center w-full">

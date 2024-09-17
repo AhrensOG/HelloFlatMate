@@ -3,6 +3,8 @@ import { deleteUser, updateClient, updateRoleUser } from "./controllers/updateUs
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url)
+    console.log(searchParams);
+
     const id = searchParams.get('id')
     const role = searchParams.get('role')
 

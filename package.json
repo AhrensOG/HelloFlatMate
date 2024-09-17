@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "nodemon server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
@@ -16,6 +16,7 @@
     "@egjs/react-flicking": "^4.11.3",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.4",
+    "@react-google-maps/api": "^2.19.3",
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.3.0",
     "axios": "^1.7.3",
@@ -40,6 +41,7 @@
     "stripe": "^16.7.0"
   },
   "devDependencies": {
+    "nodemon": "^3.1.4",
     "postcss": "^8",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1"

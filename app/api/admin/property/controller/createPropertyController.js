@@ -2,6 +2,8 @@ import { Owner, Property } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
+    console.log(data);
+
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -86,7 +88,7 @@ const createProperty = async (data) => {
             houseRules: data.houseRules || "",
             checkIn: data.checkIn || "",
             checkOut: data.checkOut || "",
-            ownerId: data.category !== "HELLO_LANDLORD" ? 1 : null
+            ownerId: data.ownerId || "1"
         });
 
         return NextResponse.json({ message: "Propiedad cargada con éxito", property });
