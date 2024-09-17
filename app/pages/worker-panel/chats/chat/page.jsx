@@ -12,7 +12,7 @@ export default function ChatPage() {
         <UserSerivceNavBar />
       </div>
       <TitleSection title={"Chat"} />
-      <WorkerChat />
+      {/* <WorkerChat /> */}
     </div>
   );
 }

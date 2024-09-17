@@ -2,64 +2,85 @@
 import MessageContainer from "@/app/components/user/chats/chat/MessageContainer";
 import MessageInput from "@/app/components/user/chats/chat/MessageInput";
 import NavBar from "@/app/components/nav_bar/NavBar";
-import { socket } from "@/app/socket";
 import { useState, useEffect } from "react";
+import { getSocket } from "@/app/socket";
 
 export default function ChatPage() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
-  const [messages, setMessages] = useState([]); // Estado para almacenar los mensajes recibidos
+  const [messages, setMessages] = useState([]); // Almacena mensajes recibidos
+  const roomId = 3;
+  const socket = getSocket();
 
   useEffect(() => {
-    const onMessage = (message) => {
-      console.log("Mensaje recibido en el cliente:", message);
-      setMessages((prevMessages) => [...prevMessages, message]); // Actualiza el estado con el mensaje recibido
-    };
+    if (socket) {
+      // Asignar el socketId después de la conexión
+      const handleSocketConnect = () => {
+        setIsConnected(true);
+        setTransport(socket.io.engine.transport.name);
+        console.log(`Conectado al servidor con socketId: ${socket.id}`);
 
-    const onConnect = () => {
-      console.log("Conectado al servidor");
-      setIsConnected(true);
-      setTransport(socket.io.engine.transport.name);
+        // Unir al usuario a la sala de chat
+        socket.emit("joinChat", roomId.toString(), () => {
+          console.log(`Unido a la sala ${roomId}`);
+        });
 
-      socket.on("newMessage", (mess) => {
-        onMessage(mess);
-      }); // Cambié 'message' a 'newMessage' para que coincida con el evento del servidor
+        // Escuchar el evento de mensajes entrantes
+        socket.on("newMessage", (message) => {
+          console.log("Mensaje recibido en el cliente:", message);
 
-      socket.io.engine.on("upgrade", (transport) => {
-        console.log("Transport upgraded to:", transport.name);
-        setTransport(transport.name);
-      });
-    };
+          if (message && message.senderId) {
+            const isSender = message.senderId === socket.id;
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              { ...message, type: isSender ? "sender" : "receiver" },
+            ]);
+          }
+        });
+      };
 
-    const onDisconnect = () => {
-      console.log("Desconectado del servidor");
-      setIsConnected(false);
-      setTransport("N/A");
-    };
+      const handleSocketDisconnect = () => {
+        console.log("Desconectado del servidor");
+        setIsConnected(false);
+        setTransport("N/A");
+      };
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
+      // Configurar eventos del socket
+      socket.on("connect", handleSocketConnect);
+      socket.on("disconnect", handleSocketDisconnect);
 
-    // Limpiar eventos
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("newMessage", onMessage); // Cambié 'message' a 'newMessage'
-    };
-  }, []);
+      return () => {
+        // Limpiar eventos al desmontar el componente
+        socket.off("connect", handleSocketConnect);
+        socket.off("disconnect", handleSocketDisconnect);
+        socket.off("newMessage");
+      };
+    }
+  }, [socket]);
 
+  // Función para enviar mensaje
   const sendMessage = (message) => {
-    socket.emit("sendMessage", { roomId: 1, text: message });
-    console.log("Enviado:", message);
+    if (socket) {
+      const newMessage = {
+        roomId: roomId.toString(),
+        text: message,
+        senderId: socket?.id, // Enviar el ID del socket como identificador del remitente
+        time: new Date().toLocaleTimeString(),
+      };
+
+      socket.emit("sendMessage", newMessage); // Emitir al servidor
+      console.log("Mensaje enviado:", newMessage);
+    }
   };
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <header className="px-2">
         <NavBar />
       </header>
-      <main className="flex flex-col justify-center items-center m-2">
-        <MessageContainer /> {/* Pasar mensajes al MessageContainer */}
+
+      <main className="flex flex-col justify-between items-center flex-grow w-full">
+        <MessageContainer messages={messages} socketId={socket?.id} />
         <MessageInput onSendMessage={sendMessage} />
       </main>
     </div>
