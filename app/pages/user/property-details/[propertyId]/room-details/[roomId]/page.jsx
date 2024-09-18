@@ -9,8 +9,8 @@ import MoreInfoSection from "@/app/components/user/property-details/main/MoreInf
 import PriceSection from "@/app/components/user/property-details/main/PriceSection";
 import ReservationModal from "@/app/components/user/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/user/property-details/main/ReservationButton";
+import RoomSection from "@/app/components/user/property-details/main/RoomSection";
 import GuestInfoRoom from "@/app/components/user/room-details/GuestInfoRoom";
-import PropertySection from "@/app/components/user/room-details/PropertySection";
 import { Context } from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
 import axios from "axios";
@@ -30,6 +30,7 @@ export default function RoomDetails({ params }) {
       : null
   );
   const [roomData, setRoomData] = useState();
+  const [filteredRooms, setFilteredRooms] = useState([]);
 
   useEffect(() => {
     if (!data) {
@@ -40,6 +41,10 @@ export default function RoomDetails({ params }) {
           setRoomData(
             data.data.property.rooms.find((room) => roomId == room.id)
           );
+          const filtered = data?.data?.property?.rooms?.filter(
+            (room) => room.id !== Number(roomId)
+          );
+          setFilteredRooms(filtered);
         } catch (error) {
           console.error("Error fetching property data:", error);
         }
@@ -75,9 +80,7 @@ export default function RoomDetails({ params }) {
             </SliderDetails>
           </div>
           <div className="px-3">
-            <NavBarDetails
-              link={`/pages/user/property-details/${propertyId}`}
-            />
+            <NavBarDetails callBack={() => router.back()} />
           </div>
           <span className="px-3 text-lg font-medium text-slate-500">
             {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
@@ -90,7 +93,7 @@ export default function RoomDetails({ params }) {
         >
           <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
           <h4 className="text-[#000000B2] text-base">
-            {data.city + ", " + data.street + " " + data.streetNumber}
+            {data.city + ", " + data.street}
           </h4>
           {roomData.price && <PriceSection data={roomData.price} />}
           <div className="flex flex-col gap-6">
@@ -109,9 +112,10 @@ export default function RoomDetails({ params }) {
             title="Descripción de la propiedad y areas comunes"
             data={data.description}
           />
-          <PropertySection
-            data={{ id: data.id, name: data.name, image: data.images[0] }}
-          />
+          {filteredRooms.length > 0 ? (
+            <RoomSection data={filteredRooms} title="Otras habitaciones" />
+          ) : null}
+
           <AmenitiesSection data={data.amenities} />
           <LocationSection
             street={data?.street}
