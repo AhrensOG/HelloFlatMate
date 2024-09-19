@@ -16,6 +16,7 @@ const Supply = require("./models/supply");
 const ChatParticipant = require("./models/chatParticipant");
 const Contract = require("./models/contract");
 const Payment = require("./models/payment");
+const RentalPeriod = require("./models/rentalPeriod");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
@@ -321,6 +322,42 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             }
         })
 
+        //RentalPeriod
+        RentalPeriod.belongsTo(Property, {
+            as: "property",
+            foreignKey: "rentalPeriodableId",
+            constraints: false,
+            scope: {
+                rentalPeriodableType: "PROPERTY"
+            }
+        })
+        RentalPeriod.belongsTo(Room, {
+            as: "room",
+            foreignKey: "rentalPeriodableId",
+            constraints: false,
+            scope: {
+                rentalPeriodableType: "ROOM"
+            }
+        })
+
+        Property.hasMany(RentalPeriod, {
+            as: "rentalPeriods",
+            foreignKey: "rentalPeriodableId",
+            constraints: false,
+            scope: {
+                rentalPeriodableType: "PROPERTY"
+            }
+        })
+        Room.hasMany(RentalPeriod, {
+            as: "rentalPeriods",
+            foreignKey: "rentalPeriodableId",
+            constraints: false,
+            scope: {
+                rentalPeriodableType: "ROOM"
+            }
+        })
+
+
         // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
@@ -356,5 +393,6 @@ module.exports = {
     Supply,
     ChatParticipant,
     Contract,
-    Payment
+    Payment,
+    RentalPeriod
 };

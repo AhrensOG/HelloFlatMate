@@ -15,6 +15,8 @@ export default function RoomEditModal({
   const [files, setFiles] = useState([]);
   const [initialImages, setInitialImages] = useState([]);
 
+  console.log(selectedRoom);
+
   useEffect(() => {
     if (selectedRoom) {
       setDataRoom(selectedRoom);
@@ -70,6 +72,52 @@ export default function RoomEditModal({
   const handleRadioChange = (event) => {
     const { name, value } = event.target;
     setDataRoom({ ...dataRoom, [name]: value === "yes" });
+  };
+  // Manejo de periodos de alquiler
+  const handleAddPeriod = () => {
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      rentalPeriods: [
+        ...(prevDataRoom.rentalPeriods || []),
+        { startDate: "", endDate: "" },
+      ],
+    }));
+  };
+
+  const handleRemovePeriod = (index) => {
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      rentalPeriods: prevDataRoom.rentalPeriods.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handlePeriodChange = (index, field, value) => {
+    const updatedPeriods = dataRoom.rentalPeriods.map((period, i) =>
+      i === index ? { ...period, [field]: value } : period
+    );
+    setDataRoom({ ...dataRoom, rentalPeriods: updatedPeriods });
+  };
+
+  // Manejo de descripciones
+  const handleAddDescription = () => {
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      description: [...(prevDataRoom.description || []), { text: "" }],
+    }));
+  };
+
+  const handleRemoveDescription = (index) => {
+    setDataRoom((prevDataRoom) => ({
+      ...prevDataRoom,
+      description: prevDataRoom.description.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleDescriptionChange = (index, value) => {
+    const updatedDescription = dataRoom.description.map((desc, i) =>
+      i === index ? { ...desc, text: value } : desc
+    );
+    setDataRoom({ ...dataRoom, description: updatedDescription });
   };
 
   const handleSubmit = async () => {
@@ -131,7 +179,7 @@ export default function RoomEditModal({
 
   return (
     <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col h-[95%] overflow-auto lg:w-[30rem] lg:h-[42rem] lg:max-h-[55rem]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col gap-3 h-[95%] overflow-auto lg:w-[30rem] lg:h-[42rem] lg:max-h-[55rem]">
         <h2 className="text-2xl mb-4">Editar habitación</h2>
         <div>
           <label className="block text-sm mb-1" htmlFor="name">
@@ -258,6 +306,91 @@ export default function RoomEditModal({
             </div>
           </>
         )}
+        <div className="flex flex-col gap-3">
+          {/* Periodos de alquiler */}
+          <div className="flex flex-col gap-3">
+            <h3 className="block text-sm mb-1">Periodos de alquiler</h3>
+            <ul className="list-none flex flex-col gap-3">
+              {dataRoom?.rentalPeriods?.length > 0 ? (
+                dataRoom.rentalPeriods.map((period, index) => (
+                  <li key={index} className="flex gap-3 items-center">
+                    <input
+                      type="date"
+                      value={period.startDate}
+                      onChange={(e) =>
+                        handlePeriodChange(index, "startDate", e.target.value)
+                      }
+                      className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                    />
+                    <input
+                      type="date"
+                      value={period.endDate}
+                      onChange={(e) =>
+                        handlePeriodChange(index, "endDate", e.target.value)
+                      }
+                      className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePeriod(index)}
+                      className="bg-red-500 text-white px-2 py-1 rounded"
+                    >
+                      Eliminar
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <h2 className="text-center">No hay periodos de alquiler</h2>
+              )}
+            </ul>
+            <button
+              type="button"
+              onClick={handleAddPeriod}
+              className="bg-blue-500 text-white px-2 py-1 rounded w-[10rem] self-start"
+            >
+              Añadir Periodo
+            </button>
+          </div>
+
+          {/* Descripciones */}
+          <div className="w-full flex flex-col gap-3">
+            <h3 className="block text-sm mb-1">Descripciones</h3>
+            <ul className="list-none flex flex-col gap-3">
+              {dataRoom?.description?.length > 0 ? (
+                dataRoom?.description.map((description, index) => (
+                  <li key={index} className="flex gap-3 items-center">
+                    <input
+                      type="text"
+                      placeholder="Descripción"
+                      value={description.text}
+                      onChange={(e) =>
+                        handleDescriptionChange(index, e.target.value)
+                      }
+                      className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveDescription(index)}
+                      className="bg-red-500 text-white px-2 py-1 rounded"
+                    >
+                      Eliminar
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <h2 className="text-center">No hay descripciones</h2>
+              )}
+            </ul>
+            <button
+              type="button"
+              onClick={handleAddDescription}
+              className="bg-blue-500 text-white px-2 py-1 rounded w-[10rem] self-start"
+            >
+              Añadir descripción
+            </button>
+          </div>
+        </div>
+
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
           <h3 className="w-full">¿Tiene baños?</h3>
           <div className="flex gap-2 px-3">

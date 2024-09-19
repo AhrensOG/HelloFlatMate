@@ -17,6 +17,11 @@ const roomInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: true,
             },
+            description: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                defaultValue: [],
+                allowNull: true
+            },
             amountOwner: {
                 type: DataTypes.FLOAT,
                 allowNull: true,

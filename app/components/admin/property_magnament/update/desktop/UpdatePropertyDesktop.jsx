@@ -247,7 +247,6 @@ export default function UpdatePropertyDesktop({
               propertyId: property?.id,
             };
           });
-          console.log(roomsFormated);
 
           if (newRooms.length > 0) {
             const createdRooms = await axios.post(
@@ -259,9 +258,6 @@ export default function UpdatePropertyDesktop({
         } catch (err) {
           toast.error("Error en la creación de habitaciones");
           throw err;
-        }
-        {
-          console.log(dataRooms);
         }
         //UpdateRooms
         try {
