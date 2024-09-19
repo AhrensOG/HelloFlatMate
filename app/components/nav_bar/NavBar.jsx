@@ -26,38 +26,42 @@ export default function NavBar({
   };
 
   return (
-    <div className="flex justify-between items-center w-full p-1.5">
-      <button onClick={handleOpen}>
-        <Image
-          src="/nav_bar/burger-btn-nav-bar.svg"
-          width={24}
-          height={24}
-          alt="Boton para abrir menu"
-        />
-      </button>
-      <div className="relative w-36 h-12">
-        <Image
-          onClick={() => handleRedirect("/")}
-          className="ml-[4%] self-center"
-          src="/nav_bar/nav-bar-logo.svg"
-          fill
-          alt="Logo de FlatMate"
-          priority
-        />
-      </div>
-      <div className="flex items-center gap-2 w-[87px] h-[34px]">
-        <button
-          onClick={() => handleRedirect("/pages/user/notification")}
-          type="button"
-        >
+    <nav className="w-full">
+      <div className="w-full flex justify-between items-center sm:hidden p-2">
+        <button onClick={handleOpen} aria-label="Abrir menú">
           <Image
-            src="/nav_bar/notification-logo.svg"
-            width={34}
-            height={34}
-            alt="Boton para notificaciones"
+            src="/nav_bar/burger-btn-nav-bar.svg"
+            width={24}
+            height={24}
+            alt="Botón para abrir menú de navegación"
+            priority
           />
         </button>
-        <Dropdown p-0 />
+        <div className="relative w-36 h-12">
+          <Image
+            onClick={() => handleRedirect("/")}
+            className="ml-[4%] self-center"
+            src="/nav_bar/nav-bar-logo.svg"
+            fill
+            alt="Logo de FlatMate"
+            priority
+          />
+        </div>
+        <div className="flex items-center gap-2 w-[87px] h-[34px]">
+          <button
+            onClick={() => handleRedirect("/pages/user/notification")}
+            type="button"
+            aria-label="Ir a notificaciones"
+          >
+            <Image
+              src="/nav_bar/notification-logo.svg"
+              width={34}
+              height={34}
+              alt="Botón para notificaciones"
+            />
+          </button>
+          <Dropdown p-0 />
+        </div>
       </div>
 
       <SideBar
@@ -67,6 +71,6 @@ export default function NavBar({
         admin={admin}
         owner={owner}
       />
-    </div>
+    </nav>
   );
 }

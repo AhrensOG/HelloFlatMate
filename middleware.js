@@ -68,11 +68,12 @@ export async function middleware(request) {
       "/pages/admin",
       "/pages/user",
       "/pages/owner",
+      "/pages/home",
       "/api/admin",
       "/api",
     ],
-    OWNER: ["/pages/owner", "/pages/user", "/api"],
-    CLIENT: ["/pages/user", "/api"],
+    OWNER: ["/pages/owner", "/pages/user", "/pages/home", "/api"],
+    CLIENT: ["/pages/user", "/pages/home", "/api"],
   };
 
   const allowedRolesPaths = rolesPaths[role] || [];
