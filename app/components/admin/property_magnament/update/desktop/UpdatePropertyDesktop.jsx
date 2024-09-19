@@ -23,6 +23,7 @@ import RoomAddModal from "../../create/main/room_section/RoomAddModal";
 import PriceSection from "../../create/main/PriceSection";
 import { plus_jakarta } from "@/font";
 import EditButton from "../../shared/EditButton";
+import LocationSection from "@/app/components/user/property-details/main/LocationSection";
 
 export default function UpdatePropertyDesktop({
   data = false,
@@ -337,123 +338,134 @@ export default function UpdatePropertyDesktop({
   }
 
   return (
-    <div className="w-screen flex justify-center items-center">
-      <div className="flex flex-col w-full gap-2 p-1 mb-3 h-screen">
-        <header className="w-full space-y-4">
+    <div className="w-full flex justify-center items-center">
+      <div className="flex flex-col w-full gap-6">
+        <header className="w-full space-y-4 p-1">
           <NavBarDetails link="/pages/admin/properties" callBack={handleBack} />
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col justify-center m-3  w-full grow text-[#0D171C]`}
+          className={`${plus_jakarta.className} px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
         >
-          <div className="flex mb-5 gap-[2.5rem] justify-center">
-            {/* Izquierda */}
-            <div className="w-[28rem] flex flex-col justify-between gap-6">
-              <div className="w-full">
-                <SliderUpdateTemplate
-                  data={sliderImage}
-                  action={handleShowSliderModal}
-                />
+          <div className="flex flex-col items-center gap-[2.5rem] justify-center">
+            <div className="w-full flex justify-center gap-4">
+              {/* Izquierda */}
+              <div className="w-full flex flex-col justify-between gap-6">
+                <div className="w-full">
+                  <SliderUpdateTemplate
+                    data={sliderImage}
+                    action={handleShowSliderModal}
+                  />
 
-                <RoomSectionTemplate
-                  data={dataRooms || property.rooms}
-                  onEditRoom={handleRoomUpdate}
-                  setData={setDataRooms}
-                  action={handleAddRoomModal}
-                  deleteRooms={deleteRooms}
-                  setDeleteRooms={setDeleteRooms}
-                  category={category}
-                />
+                  <RoomSectionTemplate
+                    data={dataRooms || property.rooms}
+                    onEditRoom={handleRoomUpdate}
+                    setData={setDataRooms}
+                    action={handleAddRoomModal}
+                    deleteRooms={deleteRooms}
+                    setDeleteRooms={setDeleteRooms}
+                    category={category}
+                  />
 
-                <LocationSectionTemplate data={"hola"} />
+                  {/* <LocationSectionTemplate data={"hola"} /> */}
+                  <LocationSection
+                    street={data?.street}
+                    streetNumber={data?.streetNumber}
+                    postalCode={data?.postalCode}
+                    city={data?.city}
+                    country={"España"}
+                  />
 
-                <DescriptionSectionTemplate
-                  data={description || property.description}
-                  action={handleShowDescriptionModal}
-                />
+                  <DescriptionSectionTemplate
+                    data={description || property.description}
+                    action={handleShowDescriptionModal}
+                  />
 
-                <AmenitiesSection
-                  data={amenities || property.amenities}
-                  edit={<EditButton action={handleShowAmenitiesModal} />}
-                />
+                  <AmenitiesSection
+                    data={amenities || property.amenities}
+                    edit={<EditButton action={handleShowAmenitiesModal} />}
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Divisor */}
-            <div className="h-full w-[1px] bg-[#B2B2B2]"></div>
+              {/* Divisor */}
+              <div className="h-full w-[1px] bg-[#B2B2B2]"></div>
 
-            {/* Derecha */}
-            <div className="w-[25rem] flex flex-col justify-between gap-6">
-              <TitleSectionTemplate
-                name={name || ""}
-                setName={setName}
-                address={
-                  address || {
-                    street: property.street,
-                    streetNumber: property.streetNumber,
-                    postalCode: property.postalCode,
-                    city: property.city,
-                  }
-                }
-                setAddress={setAddress}
-                action={handleShowAddressModal}
-              />
-              <div className="flex flex-col gap-2">
-                <h2 className="font-bold text-[1.37rem]">Dueño</h2>
-                <SearchEmail
-                  owners={owners}
-                  onSelect={handleEmailSelect}
-                  email={selectedEmail}
-                />{" "}
-              </div>
-              {(category === "HELLO_STUDIO" ||
-                category === "HELLO_LANDLORD") && (
-                <PriceSection
-                  data={price || property.price}
-                  setData={setPrice}
-                />
-              )}
-              <SizeAndCategorySection
-                data={
-                  catAndSize || {
-                    size: property.size,
-                    category: property.category,
-                  }
-                }
-                setData={setCatAndSize}
-              />
-              <div className="flex flex-col gap-6">
-                <GuestInfoSectionTemplate
-                  data={
-                    guestInfo || {
-                      occupants: property.maximunOccupants,
-                      beds: property.bed,
-                      bathrooms: property.bathrooms,
+              {/* Derecha */}
+              <div className="w-full flex flex-col justify-between gap-6">
+                <TitleSectionTemplate
+                  name={name || ""}
+                  setName={setName}
+                  address={
+                    address || {
+                      street: property.street,
+                      streetNumber: property.streetNumber,
+                      postalCode: property.postalCode,
+                      city: property.city,
                     }
                   }
-                  setData={setGuestInfo}
+                  setAddress={setAddress}
+                  action={handleShowAddressModal}
+                />
+                <div className="flex flex-col gap-2">
+                  <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+                  <SearchEmail
+                    owners={owners}
+                    onSelect={handleEmailSelect}
+                    email={selectedEmail}
+                  />{" "}
+                </div>
+                {(category === "HELLO_STUDIO" ||
+                  category === "HELLO_LANDLORD") && (
+                  <PriceSection
+                    data={price || property.price}
+                    setData={setPrice}
+                  />
+                )}
+                <SizeAndCategorySection
+                  data={
+                    catAndSize || {
+                      size: property.size,
+                      category: property.category,
+                    }
+                  }
+                  setData={setCatAndSize}
+                />
+                <div className="flex flex-col gap-6">
+                  <GuestInfoSectionTemplate
+                    data={
+                      guestInfo || {
+                        occupants: property.maximunOccupants,
+                        beds: property.bed,
+                        bathrooms: property.bathrooms,
+                      }
+                    }
+                    setData={setGuestInfo}
+                  />
+                </div>
+                <MoreInfoSectionTemplate
+                  data={
+                    moreInfo || {
+                      condicionDeRenta:
+                        property.incomeConditionDescription || "Informacion",
+                      habitacion: property.roomDescription || "Informacion",
+                      facturas: property.feeDescription || "Informacion",
+                      mantenimiento:
+                        property.maintenanceDescription || "Informacion",
+                      sobreNosotros: property.aboutUs || "Informacion",
+                      normasDeConvivencia: property.houseRules || "Informacion",
+                      checkIn: property.checkIn || "Informacion",
+                      checkOut: property.checkOut || "Informacion",
+                    }
+                  }
+                  setData={setMoreInfo}
+                  action={handleShowMoreInfoModal}
                 />
               </div>
-              <MoreInfoSectionTemplate
-                data={
-                  moreInfo || {
-                    condicionDeRenta:
-                      property.incomeConditionDescription || "Informacion",
-                    habitacion: property.roomDescription || "Informacion",
-                    facturas: property.feeDescription || "Informacion",
-                    mantenimiento:
-                      property.maintenanceDescription || "Informacion",
-                    sobreNosotros: property.aboutUs || "Informacion",
-                    normasDeConvivencia: property.houseRules || "Informacion",
-                    checkIn: property.checkIn || "Informacion",
-                    checkOut: property.checkOut || "Informacion",
-                  }
-                }
-                setData={setMoreInfo}
-                action={handleShowMoreInfoModal}
-              />
+            </div>
+            <div className="w-full flex justify-center items-center md:justify-end">
+              <SaveButton action={updateProperty} />
             </div>
           </div>
-          <SaveButton action={updateProperty} />
         </main>
         {showDescriptionModal && (
           <DescriptionModal

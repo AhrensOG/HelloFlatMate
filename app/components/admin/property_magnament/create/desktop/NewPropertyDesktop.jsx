@@ -20,6 +20,7 @@ import AddressModal from "../main/address_modal/AddressModal";
 import { plus_jakarta } from "@/font";
 import { toast } from "sonner";
 import validateData from "../validateData";
+import { uploadFiles } from "@/app/firebase/uploadFiles";
 
 export default function NewPropertyDesktop({ category, handleBack }) {
   const router = useRouter();
@@ -282,78 +283,85 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     );
   }
   return (
-    <div className="w-screen flex justify-center items-center">
-      <div className="flex flex-col w-full gap-2 p-1 mb-3 h-screen">
+    <div className="w-full flex justify-center items-center">
+      <div className="flex flex-col w-full gap-6 p-1">
         <header className="w-full space-y-4">
           <NavBarDetails callBack={handleBack} />
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col justify-center m-3  w-full grow text-[#0D171C]`}
+          className={`${plus_jakarta.className} px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
         >
-          <div className="flex mb-5 gap-[2.5rem] justify-center">
-            {/* Izquierda  */}
-            <div className="w-[28rem] flex flex-col justify-between gap-6">
-              <ImageUploader setImages={setSliderImage} images={sliderImage} />
-              <RoomSectionTemplate
-                data={dataRoom}
-                setData={setRoomData}
-                showModal={handleShowRoomEditModal}
-                action={handleShowRoomEditModal}
-                category={category}
-              />
-              <LocationSectionTemplate />
-              <DescriptionSectionTemplate
-                action={handleShowDescriptionModal}
-                data={description}
-              />
-              <AmenitiesSectionTemplate
-                data={amenities}
-                setData={setAmenities}
-              />
-            </div>
-
-            {/* Divisor */}
-            <div className="h-full w-[1px] bg-[#B2B2B2]"></div>
-
-            {/* Derecha */}
-            <div className="w-[25rem] flex flex-col justify-between gap-6">
-              <TitleSectionTemplate
-                name={name}
-                setName={setName}
-                address={address}
-                setAdress={setAddress}
-                action={handleShowAddressModal}
-              />
-              <div className="flex flex-col gap-2">
-                <h2 className="font-bold text-[1.37rem]">Dueño</h2>
-                <SearchEmail
-                  owners={owners}
-                  onSelect={handleEmailSelect}
-                />{" "}
-              </div>
-              {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
-                ""
-              ) : (
-                <PriceSection data={price} setData={setPrice} />
-              )}
-              <SizeAndCategorySection
-                data={catAndSize}
-                setData={setCatAndSize}
-              />
-              <div className="flex flex-col gap-6">
-                <GuestInfoSectionTemplate
-                  data={guestInfo}
-                  setData={setGuestInfo}
+          <div className="flex flex-col items-center justify-center gap-[2.5rem]">
+            <div className="w-full flex justify-center gap-4">
+              {/* Izquierda  */}
+              <div className="w-full flex flex-col justify-between gap-6">
+                <ImageUploader
+                  setImages={setSliderImage}
+                  images={sliderImage}
+                />
+                <RoomSectionTemplate
+                  data={dataRoom}
+                  setData={setRoomData}
+                  showModal={handleShowRoomEditModal}
+                  action={handleShowRoomEditModal}
+                  category={category}
+                />
+                <LocationSectionTemplate />
+                <DescriptionSectionTemplate
+                  action={handleShowDescriptionModal}
+                  data={description}
+                />
+                <AmenitiesSectionTemplate
+                  data={amenities}
+                  setData={setAmenities}
                 />
               </div>
-              <MoreInfoSectionTemplate
-                data={moreInfo}
-                setData={setMoreInfo}
-                action={handleShowMoreInfoModal}
-              />
+
+              {/* Divisor */}
+              <div className="h-full w-[1px] bg-[#B2B2B2]"></div>
+
+              {/* Derecha */}
+              <div className="w-full flex flex-col justify-between gap-6">
+                <TitleSectionTemplate
+                  name={name}
+                  setName={setName}
+                  address={address}
+                  setAdress={setAddress}
+                  action={handleShowAddressModal}
+                />
+                <div className="flex flex-col gap-2">
+                  <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+                  <SearchEmail
+                    owners={owners}
+                    onSelect={handleEmailSelect}
+                  />{" "}
+                </div>
+                {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
+                  ""
+                ) : (
+                  <PriceSection data={price} setData={setPrice} />
+                )}
+                <SizeAndCategorySection
+                  data={catAndSize}
+                  setData={setCatAndSize}
+                />
+                <div className="flex flex-col gap-6">
+                  <GuestInfoSectionTemplate
+                    data={guestInfo}
+                    setData={setGuestInfo}
+                  />
+                </div>
+                <MoreInfoSectionTemplate
+                  data={moreInfo}
+                  setData={setMoreInfo}
+                  action={handleShowMoreInfoModal}
+                />
+              </div>
+            </div>
+            <div className="w-full flex justify-center items-center md:justify-end">
+              <SaveButton action={createProperty} />
             </div>
           </div>
-          <SaveButton action={createProperty} />
         </main>
         {showDescriptionModal && (
           <DescriptionModal
