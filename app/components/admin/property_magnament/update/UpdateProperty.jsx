@@ -25,8 +25,6 @@ import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
 import SearchEmail from "../create/main/SearchEmail";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
-  console.log(data);
-
   const [property, setProperty] = useState(data ? data : null);
 
   const router = useRouter();

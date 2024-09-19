@@ -3,8 +3,6 @@ import message from "@/db/models/message";
 import { NextResponse } from "next/server";
 
 export async function updateRoom(id, data) {
-    console.log(data);
-
     if (!data) return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
     if (Array.isArray(data) && data.length > 0) {
         for (let i = 0; i < data.length; i++) {

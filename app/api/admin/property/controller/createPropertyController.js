@@ -1,4 +1,5 @@
-import { Owner, Property } from "@/db/init";
+import { Owner, Property, RentalPeriod } from "@/db/init";
+import rentalPeriod from "@/db/models/rentalPeriod";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
@@ -9,6 +10,9 @@ const createProperty = async (data) => {
     }
     if (data.name.trim() === "") {
         return NextResponse.json({ error: "El nombre no puede estar vacío" }, { status: 400 });
+    }
+    if (data.serial.trim() === "") {
+        return NextResponse.json({ error: "El serial no puede estar vacío" }, { status: 400 });
     }
     if (data.city.trim() === "") {
         return NextResponse.json({ error: "La ciudad no puede estar vacío" }, { status: 400 });
@@ -59,6 +63,7 @@ const createProperty = async (data) => {
     try {
         const property = await Property.create({
             name: data.name,
+            serial: data.serial,
             city: data.city,
             street: data.street,
             streetNumber: data.streetNumber,
@@ -88,8 +93,20 @@ const createProperty = async (data) => {
             houseRules: data.houseRules || "",
             checkIn: data.checkIn || "",
             checkOut: data.checkOut || "",
-            ownerId: data.ownerId || "1"
+            ownerId: data.ownerId || "1",
         });
+
+        if (data.rentalPeriod) {
+            await RentalPeriod.bulkCreate(data.rentalPeriod.map((rentalPeriod) => {
+                return {
+                    startDate: new Date(rentalPeriod.startDate),
+                    endDate: new Date(rentalPeriod.endDate),
+                    status: "FREE",
+                    rentalPeriodableId: property.id,
+                    rentalPeriodableType: "PROPERTY"
+                }
+            }))
+        }
 
         return NextResponse.json({ message: "Propiedad cargada con éxito", property });
     } catch (error) {

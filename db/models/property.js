@@ -13,6 +13,11 @@ const propertyInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            serial: {
+                type: DataTypes.STRING(100),
+                defaultValue: "PB-1",
+                allowNull: false,
+            },
             name: {
                 type: DataTypes.STRING(100),
                 allowNull: false,

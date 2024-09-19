@@ -1,4 +1,4 @@
-import { Room } from "@/db/init";
+import { RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createRoom(data) {
@@ -25,17 +25,53 @@ export async function createRoom(data) {
     }
 
     try {
-        const addStatus = dataArray.map((room) => ({ ...room, status: "FREE", amountOwner: (room.price - room.amountHelloflatmate || 0) }));
+        const addStatus = dataArray.map((room) => ({
+            ...room,
+            status: "FREE",
+            amountOwner: (room.price - room.amountHelloflatmate || 0)
+        }));
 
-        if (isArray) {
-            const rooms = await Room.bulkCreate(addStatus);
-            return NextResponse.json(rooms, { status: 200 });
+        const createdRooms = []; // Array para almacenar las habitaciones creadas
+
+        if (Array.isArray(addStatus)) {
+            for (const roomData of addStatus) {
+                try {
+                    // Crear la habitación
+                    const room = await Room.create(roomData);
+
+                    // Almacenar la habitación creada
+                    createdRooms.push(room);
+
+                    // Verificar si tiene períodos de alquiler asociados
+                    if (roomData.rentalPeriod) {
+                        // Crear los períodos de alquiler
+                        const rentalPeriods = roomData.rentalPeriod.map((rental) => ({
+                            startDate: new Date(rental.startDate),
+                            endDate: new Date(rental.endDate),
+                            status: "FREE",
+                            rentalPeriodableId: room.id, // Usar el ID de la habitación recién creada
+                            rentalPeriodableType: "ROOM",
+                        }));
+
+                        // Crear los períodos de alquiler en la base de datos
+                        await RentalPeriod.bulkCreate(rentalPeriods);
+                    }
+
+                    console.log(`Room ${room.id} and its rental periods created successfully.`);
+                } catch (error) {
+                    console.error(`Error creating room or rental periods: ${error.message}`);
+                    throw error; // Propaga el error para manejarlo en otro lugar si es necesario
+                }
+            }
         } else {
             return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
         }
 
+        // Retornar las habitaciones creadas en la respuesta
+        return NextResponse.json(createdRooms, { status: 201 });
+
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return NextResponse.json({ error: "Error al crear las habitaciones", details: error.message }, { status: 500 });
     }
 }
