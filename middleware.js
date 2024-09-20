@@ -68,11 +68,19 @@ export async function middleware(request) {
       "/pages/admin",
       "/pages/user",
       "/pages/owner",
+      "/pages/home",
+      "/pages/select-category",
       "/api/admin",
       "/api",
     ],
-    OWNER: ["/pages/owner", "/pages/user", "/api"],
-    CLIENT: ["/pages/user", "/api"],
+    OWNER: [
+      "/pages/owner",
+      "/pages/user",
+      "/pages/home",
+      "/pages/select-category",
+      "/api",
+    ],
+    CLIENT: ["/pages/user", "/pages/home", "/pages/select-category", "/api"],
   };
 
   const allowedRolesPaths = rolesPaths[role] || [];
@@ -88,8 +96,8 @@ export async function middleware(request) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (!role && pathName === "/") {
-    return NextResponse.redirect(new URL("/pages/guest", request.url));
+  if (!role) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();

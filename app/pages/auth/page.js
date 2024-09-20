@@ -3,6 +3,7 @@
 import Auth from "@/app/components/public/auth/Auth";
 import Dropdown from "@/app/components/public/auth/Dropdown";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 
 function AuthFallback() {
@@ -10,12 +11,13 @@ function AuthFallback() {
 }
 
 export default function AuthPage() {
+  const router = useRouter();
 
   return (
     <div className="flex flex-col h-screen">
       <header>
         <nav className="flex justify-between items-center px-5">
-          <button>
+          <button onClick={() => router.back()}>
             <Image
               src="/icon-left-arrow.svg"
               width={48}
