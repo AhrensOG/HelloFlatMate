@@ -24,6 +24,7 @@ import PriceSection from "../../create/main/PriceSection";
 import { plus_jakarta } from "@/font";
 import EditButton from "../../shared/EditButton";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
+import RentalPeriodTemplate from "../../create/main/RentalPeriodTemplate";
 
 export default function UpdatePropertyDesktop({
   data = false,
@@ -44,6 +45,7 @@ export default function UpdatePropertyDesktop({
 
   // Estados para los diferentes datos de la propiedad
   const [name, setName] = useState();
+  const [serial, setSerial] = useState();
   const [address, setAddress] = useState();
   const [guestInfo, setGuestInfo] = useState();
   const [sliderImage, setSliderImage] = useState([]);
@@ -55,6 +57,9 @@ export default function UpdatePropertyDesktop({
   const [deleteRooms, setDeleteRooms] = useState([]);
   const [catAndSize, setCatAndSize] = useState();
   const [price, setPrice] = useState();
+  const [floor, setFloor] = useState();
+  const [door, setDoor] = useState();
+  const [rentalPeriods, setRentalPeriods] = useState();
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -75,9 +80,11 @@ export default function UpdatePropertyDesktop({
       );
       setSelectedEmail(ownerEmail?.email);
       setOwners(res.data);
+      console.log(res.data);
     };
     if (property) {
       setName(property?.name || "");
+      setSerial(property?.serial || "");
       setDescription(property?.description || "");
       setSliderImage(property?.images || []);
       setGuestInfo({
@@ -90,6 +97,8 @@ export default function UpdatePropertyDesktop({
         street: property?.street,
         streetNumber: property?.streetNumber,
         postalCode: property?.postalCode,
+        floor: property?.floor,
+        door: property?.door,
       });
       setAmenities(property?.amenities || []);
       setMoreInfo({
@@ -114,6 +123,15 @@ export default function UpdatePropertyDesktop({
         offer: property?.offer || 0,
         IVA: property?.IVA || 0,
       });
+      setFloor(property?.floor || 0);
+      setDoor(property?.door || 0);
+      setRentalPeriods(
+        {
+          rentalPeriods: property?.rentalPeriods,
+          newRentalPeriods: [],
+          deleteRentalPeriods: [],
+        } || []
+      );
     }
     fetchOwners();
   }, [property]);
@@ -187,6 +205,7 @@ export default function UpdatePropertyDesktop({
   const handleSubmit = () => {
     const allData = {
       name: name,
+      serial: serial,
       city: address.city,
       street: address.street,
       streetNumber: address.streetNumber,
@@ -242,8 +261,12 @@ export default function UpdatePropertyDesktop({
           );
 
           const roomsFormated = newRooms.map((room) => {
+            console.log(room);
+
             return {
               ...room,
+              floor: room.floor !== "" ? parseInt(room.floor) : null,
+              door: room.door !== "" ? room.door : null,
               propertyId: property?.id,
             };
           });
@@ -283,10 +306,13 @@ export default function UpdatePropertyDesktop({
         //DATOS DE LA PROPIEDAD
         let updateDataProperty = {
           name: name,
+          serial: serial,
           city: address.city,
           street: address.street,
           streetNumber: parseInt(address.streetNumber),
           postalCode: address.postalCode,
+          floor: parseInt(floor),
+          door: door,
           size: parseInt(catAndSize.size),
           roomsCount: property.roomsCount,
           bathrooms: parseInt(guestInfo.bathrooms),
@@ -313,6 +339,9 @@ export default function UpdatePropertyDesktop({
           offer: parseFloat(price.offer) || 0,
           IVA: parseFloat(price.IVA) || 0,
           ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
+          rentalPeriods: rentalPeriods.rentalPeriods || [],
+          deleteRentalPeriods: rentalPeriods.deleteRentalPeriods || [],
+          newRentalPeriods: rentalPeriods.newRentalPeriods || [],
         };
 
         const response = await axios.put(
@@ -321,8 +350,8 @@ export default function UpdatePropertyDesktop({
         );
         toast.success("Propiedad actualizada correctamente");
       } catch (error) {
-        console.error("Error updating property data:", error);
         toast.error("Error al actualizar la propiedad");
+        throw error;
       }
     } else {
       toast.error("No dejes datos incompletos");
@@ -406,6 +435,21 @@ export default function UpdatePropertyDesktop({
                   setAddress={setAddress}
                   action={handleShowAddressModal}
                 />
+
+                <div>
+                  <label className="font-bold text-[1.37rem]" htmlFor="serial">
+                    Serial
+                  </label>
+                  <input
+                    type="text"
+                    id="serial"
+                    name="serial"
+                    value={serial || ""}
+                    placeholder="HH-1"
+                    onChange={(event) => setSerial(event.target.value)}
+                    className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
+                  />
+                </div>
                 <div className="flex flex-col gap-2">
                   <h2 className="font-bold text-[1.37rem]">Dueño</h2>
                   <SearchEmail
@@ -442,28 +486,46 @@ export default function UpdatePropertyDesktop({
                     setData={setGuestInfo}
                   />
                 </div>
-                <MoreInfoSectionTemplate
-                  data={
-                    moreInfo || {
-                      condicionDeRenta:
-                        property.incomeConditionDescription || "Informacion",
-                      habitacion: property.roomDescription || "Informacion",
-                      facturas: property.feeDescription || "Informacion",
-                      mantenimiento:
-                        property.maintenanceDescription || "Informacion",
-                      sobreNosotros: property.aboutUs || "Informacion",
-                      normasDeConvivencia: property.houseRules || "Informacion",
-                      checkIn: property.checkIn || "Informacion",
-                      checkOut: property.checkOut || "Informacion",
-                    }
-                  }
-                  setData={setMoreInfo}
-                  action={handleShowMoreInfoModal}
-                />
+                {category === "HELLO_STUDIO" ||
+                category === "HELLO_LANDLORD" ? (
+                  <RentalPeriodTemplate
+                    data={rentalPeriods}
+                    setData={setRentalPeriods}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
-            <div className="w-full flex justify-center items-center md:justify-end">
-              <SaveButton action={updateProperty} />
+
+            <MoreInfoSectionTemplate
+              data={
+                moreInfo || {
+                  condicionDeRenta:
+                    property.incomeConditionDescription || "Informacion",
+                  habitacion: property.roomDescription || "Informacion",
+                  facturas: property.feeDescription || "Informacion",
+                  mantenimiento:
+                    property.maintenanceDescription || "Informacion",
+                  sobreNosotros: property.aboutUs || "Informacion",
+                  normasDeConvivencia: property.houseRules || "Informacion",
+                  checkIn: property.checkIn || "Informacion",
+                  checkOut: property.checkOut || "Informacion",
+                }
+              }
+              setData={setMoreInfo}
+              action={handleShowMoreInfoModal}
+            />
+            <div className="w-full flex justify-center items-center lg:justify-center">
+              <SaveButton
+                action={() => {
+                  toast.promise(updateProperty(), {
+                    loading: "Actualizando propiedad",
+                    success: "Propiedad actualizada",
+                    error: "Error al actualizar propiedad",
+                  });
+                }}
+              />
             </div>
           </div>
         </main>
@@ -486,6 +548,7 @@ export default function UpdatePropertyDesktop({
             data={address}
             setData={handleAddressInfo}
             showModal={handleShowAddressModal}
+            category={category}
           />
         )}
         {showAmenitiesModal && (

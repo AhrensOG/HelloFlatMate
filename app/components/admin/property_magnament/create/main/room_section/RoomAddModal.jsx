@@ -13,6 +13,8 @@ export default function RoomAddModal({
 }) {
   const [dataRoom, setDataRoom] = useState({
     name: "",
+    floor: "",
+    door: "",
     serial: "",
     numberBeds: "",
     bathroom: "no",
@@ -52,7 +54,7 @@ export default function RoomAddModal({
         couple: dataRoom.couple === "yes",
         bathroom: dataRoom.bathroom === "yes",
         propertyId,
-        rentalPeriod: rentalPeriods, // Agregar los periodos de alquiler
+        rentalPeriods: rentalPeriods, // Agregar los periodos de alquiler
         description: description.map((desc) => desc.text), // Agregar las descripciones
       };
     }
@@ -86,7 +88,7 @@ export default function RoomAddModal({
 
   const handleRadioChange = (event) => {
     const { name, value } = event.target;
-    setDataRoom({ ...dataRoom, [name]: value });
+    setDataRoom({ ...dataRoom, [name]: value === "yes" });
   };
 
   // Manejo de fechas de inicio y fin
@@ -142,6 +144,34 @@ export default function RoomAddModal({
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
+        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+          <>
+            <div>
+              <label className="block text-sm mb-1">Piso (Opcional):</label>
+              <input
+                type="number"
+                name="floor"
+                value={dataRoom.floor || ""} // Asegúrate de que el valor no sea undefined
+                onChange={(event) =>
+                  setDataRoom({ ...dataRoom, floor: event.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Puerta (Opcional):</label>
+              <input
+                type="text"
+                name="door"
+                value={dataRoom.door || ""} // Asegúrate de que el valor no sea undefined
+                onChange={(event) =>
+                  setDataRoom({ ...dataRoom, door: event.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+          </>
+        )}
         <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
           <div>
             <label className="block text-sm mb-1" htmlFor="serial">

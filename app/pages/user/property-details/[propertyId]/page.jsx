@@ -103,7 +103,13 @@ export default function PropertyDetails({ params }) {
           <DescriptionSection data={data.description} />
           <RoomSection data={data.rooms} />
           <AmenitiesSection data={data.amenities} />
-          <LocationSection street={data?.street} streetNumber={data?.streetNumber} postalCode={data?.postalCode} city={data?.city} country={"España"} />
+          <LocationSection
+            street={data?.street}
+            streetNumber={data?.streetNumber}
+            postalCode={data?.postalCode}
+            city={data?.city}
+            country={"España"}
+          />
           <MoreInfoSection
             data={[
               {
@@ -132,6 +138,7 @@ export default function PropertyDetails({ params }) {
                 ownerId: data.ownerId,
                 propertyName: data?.name,
                 user: state?.user,
+                rentalPeriods: data.rentalPeriods,
               }}
             />
           )}

@@ -21,6 +21,7 @@ import { plus_jakarta } from "@/font";
 import { toast } from "sonner";
 import validateData from "../validateData";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
+import RentalPeriodTemplate from "../main/RentalPeriodTemplate";
 
 export default function NewPropertyDesktop({ category, handleBack }) {
   const router = useRouter();
@@ -33,6 +34,8 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     street: "",
     streetNumber: null,
     postalCode: "",
+    floor: null,
+    door: "",
   });
   const [guestInfo, setGuestInfo] = useState({
     occupants: null,
@@ -64,6 +67,8 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     offer: 0,
     IVA: 0,
   });
+  const [rentalPeriods, setRentalPeriods] = useState([]);
+  const [serial, setSerial] = useState("");
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -148,10 +153,14 @@ export default function NewPropertyDesktop({ category, handleBack }) {
   };
 
   const submitRoom = async (data) => {
+    console.log(data);
+
     let rooms;
     if (data[0].amountOwner || data[0].amountHelloflatmate) {
       rooms = data.map((room) => ({
         name: room.name,
+        floor: parseInt(room.floor),
+        door: room.door,
         images: room.images,
         numberBeds: parseInt(room.numberBeds),
         couple: room.couple,
@@ -161,6 +170,8 @@ export default function NewPropertyDesktop({ category, handleBack }) {
         amountOwner: parseInt(room.price) - parseInt(room.amountHelloflatmate),
         amountHelloflatmate: parseInt(room.amountHelloflatmate),
         IVA: parseInt(room.IVA),
+        rentalPeriods: room.rentalPeriods,
+        description: room.description,
       }));
     } else {
       rooms = data.map((room) => ({
@@ -183,6 +194,8 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     }
   };
   const setProperty = (data, id) => {
+    console.log(data, id);
+
     const ids = data.map((room) => room.id);
     try {
       const response = axios.patch(`/api/admin/room`, {
@@ -202,10 +215,13 @@ export default function NewPropertyDesktop({ category, handleBack }) {
 
   let property = {
     name: name,
+    serial: serial,
     city: address.city,
     street: address.street,
     streetNumber: address.streetNumber,
     postalCode: address.postalCode,
+    floor: address.floor,
+    door: address.door,
     size: parseInt(catAndSize.size),
     roomsCount: dataRoom.length,
     bathrooms: parseInt(guestInfo.bathrooms),
@@ -232,6 +248,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     offer: parseFloat(price.offer) || 0,
     IVA: parseFloat(price.IVA) || 0,
     ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
+    rentalPeriods: rentalPeriods.newRentalPeriods,
   };
 
   const createProperty = async () => {
@@ -262,7 +279,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
         }, 1000);
       } catch (error) {
         toast.error("Ocurrió un error");
-        console.error(error);
+        throw error;
       }
     }
   };
@@ -282,6 +299,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
       </div>
     );
   }
+
   return (
     <div className="w-full flex justify-center items-center">
       <div className="flex flex-col w-full gap-6 p-1">
@@ -329,6 +347,22 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   setAdress={setAddress}
                   action={handleShowAddressModal}
                 />
+
+                <div>
+                  <label className="font-bold text-[1.37rem]" htmlFor="serial">
+                    Serial
+                  </label>
+                  <input
+                    type="text"
+                    id="serial"
+                    name="serial"
+                    value={serial || ""}
+                    placeholder="HH-1"
+                    onChange={(event) => setSerial(event.target.value)}
+                    className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
+                  />
+                </div>
+
                 <div className="flex flex-col gap-2">
                   <h2 className="font-bold text-[1.37rem]">Dueño</h2>
                   <SearchEmail
@@ -351,15 +385,33 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                     setData={setGuestInfo}
                   />
                 </div>
-                <MoreInfoSectionTemplate
-                  data={moreInfo}
-                  setData={setMoreInfo}
-                  action={handleShowMoreInfoModal}
-                />
+                {category === "HELLO_STUDIO" ||
+                category === "HELLO_LANDLORD" ? (
+                  <RentalPeriodTemplate
+                    data={rentalPeriods}
+                    setData={setRentalPeriods}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
-            <div className="w-full flex justify-center items-center md:justify-end">
-              <SaveButton action={createProperty} />
+
+            <MoreInfoSectionTemplate
+              data={moreInfo}
+              setData={setMoreInfo}
+              action={handleShowMoreInfoModal}
+            />
+            <div className="w-full flex justify-center items-center lg:justify-center">
+              <SaveButton
+                action={() => {
+                  toast.promise(createProperty(), {
+                    loading: "Creando propiedad",
+                    success: "Propiedad creada",
+                    error: "Ocurrio un error",
+                  });
+                }}
+              />
             </div>
           </div>
         </main>
@@ -383,6 +435,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
             data={address}
             setData={setAddress}
             showModal={handleShowAddressModal}
+            category={category}
           />
         )}
       </div>

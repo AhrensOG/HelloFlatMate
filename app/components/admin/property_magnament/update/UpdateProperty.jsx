@@ -23,6 +23,7 @@ import RoomAddModal from "../create/main/room_section/RoomAddModal";
 import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
 import SearchEmail from "../create/main/SearchEmail";
+import RentalPeriodTemplate from "../create/main/RentalPeriodTemplate";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -39,6 +40,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
 
   // Estados para los diferentes datos de la propiedad
   const [name, setName] = useState();
+  const [serial, setSerial] = useState();
   const [address, setAddress] = useState();
   const [guestInfo, setGuestInfo] = useState();
   const [sliderImage, setSliderImage] = useState([]);
@@ -50,6 +52,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   const [deleteRooms, setDeleteRooms] = useState([]);
   const [catAndSize, setCatAndSize] = useState();
   const [price, setPrice] = useState();
+  const [floor, setFloor] = useState();
+  const [door, setDoor] = useState();
+  const [rentalPeriods, setRentalPeriods] = useState();
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -74,6 +79,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
     };
     if (property) {
       setName(property?.name || "");
+      setSerial(property?.serial || "");
       setDescription(property?.description || "");
       setSliderImage(property?.images || []);
       setGuestInfo({
@@ -86,6 +92,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         street: property?.street,
         streetNumber: property?.streetNumber,
         postalCode: property?.postalCode,
+        floor: property?.floor,
+        door: property?.door,
       });
       setAmenities(property?.amenities || []);
       setMoreInfo({
@@ -110,6 +118,15 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         offer: property?.offer || 0,
         IVA: property?.IVA || 0,
       });
+      setFloor(property?.floor || 0);
+      setDoor(property?.door || 0);
+      setRentalPeriods(
+        {
+          rentalPeriods: property?.rentalPeriods,
+          newRentalPeriods: [],
+          deleteRentalPeriods: [],
+        } || []
+      );
     }
     fetchOwners();
   }, [property]);
@@ -183,6 +200,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   const handleSubmit = () => {
     const allData = {
       name: name,
+      serial: serial,
       city: address.city,
       street: address.street,
       streetNumber: address.streetNumber,
@@ -240,10 +258,11 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           const roomsFormated = newRooms.map((room) => {
             return {
               ...room,
+              floor: room.floor !== "" ? parseInt(room.floor) : null,
+              door: room.door !== "" ? room.door : null,
               propertyId: property?.id,
             };
           });
-          console.log(roomsFormated);
 
           if (newRooms.length > 0) {
             const createdRooms = await axios.post(
@@ -255,9 +274,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         } catch (err) {
           toast.error("Error en la creación de habitaciones");
           throw err;
-        }
-        {
-          console.log(dataRooms);
         }
         //UpdateRooms
         try {
@@ -283,10 +299,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         //DATOS DE LA PROPIEDAD
         let updateDataProperty = {
           name: name,
+          serial: serial,
           city: address.city,
           street: address.street,
           streetNumber: parseInt(address.streetNumber),
           postalCode: address.postalCode,
+          floor: parseInt(floor),
+          door: door,
           size: parseInt(catAndSize.size),
           roomsCount: property.roomsCount,
           bathrooms: parseInt(guestInfo.bathrooms),
@@ -313,9 +332,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           offer: parseFloat(price.offer) || 0,
           IVA: parseFloat(price.IVA) || 0,
           ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
+          rentalPeriods: rentalPeriods.rentalPeriods || [],
+          deleteRentalPeriods: rentalPeriods.deleteRentalPeriods || [],
+          newRentalPeriods: rentalPeriods.newRentalPeriods || [],
         };
-
-        console.log(owners, selectedEmail);
 
         const response = await axios.put(
           `/api/admin/property?id=${data.id}`,
@@ -323,8 +343,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         );
         toast.success("Propiedad actualizada correctamente");
       } catch (error) {
-        console.error("Error updating property data:", error);
         toast.error("Error al actualizar la propiedad");
+        throw error;
       }
     } else {
       toast.error("No dejes datos incompletos");
@@ -368,6 +388,20 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             setAddress={setAddress}
             action={handleShowAddressModal}
           />
+          <div>
+            <label className="font-bold text-[1.37rem]" htmlFor="serial">
+              Serial
+            </label>
+            <input
+              type="text"
+              id="serial"
+              name="serial"
+              value={serial || ""}
+              placeholder="HH-1"
+              onChange={(event) => setSerial(event.target.value)}
+              className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
+            />
+          </div>
           <div className="flex flex-col gap-2">
             <h2 className="font-bold text-[1.37rem]">Dueño</h2>
             <SearchEmail
@@ -397,6 +431,14 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               setData={setGuestInfo}
             />
           </div>
+          {category === "HELLO_STUDIO" || category === "HELLO_LANDLORD" ? (
+            <RentalPeriodTemplate
+              data={rentalPeriods}
+              setData={setRentalPeriods}
+            />
+          ) : (
+            ""
+          )}
           <DescriptionSectionTemplate
             data={description || property.description}
             action={handleShowDescriptionModal}
@@ -432,7 +474,15 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             setData={setMoreInfo}
             action={handleShowMoreInfoModal}
           />
-          <SaveButton action={updateProperty} />
+          <SaveButton
+            action={() => {
+              toast.promise(updateProperty(), {
+                loading: "Actualizando propiedad",
+                success: "Propiedad actualizada",
+                error: "Error al actualizar propiedad",
+              });
+            }}
+          />
         </main>
         {showDescriptionModal && (
           <DescriptionModal
@@ -453,6 +503,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             data={address}
             setData={handleAddressInfo}
             showModal={handleShowAddressModal}
+            category={category}
           />
         )}
         {showAmenitiesModal && (

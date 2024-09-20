@@ -13,6 +13,14 @@ const roomInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            floor: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            door: {
+                type: DataTypes.STRING(10),
+                allowNull: true,
+            },
             price: {
                 type: DataTypes.FLOAT,
                 allowNull: true,

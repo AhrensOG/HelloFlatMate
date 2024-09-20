@@ -68,6 +68,8 @@ const createProperty = async (data) => {
             street: data.street,
             streetNumber: data.streetNumber,
             postalCode: data.postalCode,
+            floor: data.floor,
+            door: data.door,
             size: data.size,
             roomsCount: data.roomsCount,
             bathrooms: data.bathrooms,
@@ -96,8 +98,8 @@ const createProperty = async (data) => {
             ownerId: data.ownerId || "1",
         });
 
-        if (data.rentalPeriod) {
-            await RentalPeriod.bulkCreate(data.rentalPeriod.map((rentalPeriod) => {
+        if (data.rentalPeriods) {
+            await RentalPeriod.bulkCreate(data.rentalPeriods.map((rentalPeriod) => {
                 return {
                     startDate: new Date(rentalPeriod.startDate),
                     endDate: new Date(rentalPeriod.endDate),
