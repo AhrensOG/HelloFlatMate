@@ -6,7 +6,7 @@ export default function DesktopHero({
   img = "/home/DesktopHero.jpg",
   title = "helloflatmate",
   description = "Simplificamos la forma de compartir tu hogar",
-  link = "/pages/home",
+  link = "/pages/select-category",
 }) {
   return (
     <section className="w-full">
