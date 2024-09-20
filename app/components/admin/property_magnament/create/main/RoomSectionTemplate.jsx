@@ -43,7 +43,7 @@ export default function RoomSectionTemplate({
         </h2>
         <EditButton action={handleAddRoom} />{" "}
       </article>
-      <article className="flex justify-evenly gap-1 w-full overflow-x-auto">
+      <article className="flex justify-evenly gap-1 w-full overflow-x-scroll">
         {data && data.length > 0 ? (
           data.map((item, index) => (
             <RoomInfoTemplate

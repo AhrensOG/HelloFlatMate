@@ -1,10 +1,97 @@
 "use client";
 import Image from "next/image";
 import Dropdown from "../public/auth/Dropdown";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import SideBar from "./side_bar/SideBar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Context } from "@/app/context/GlobalContext";
+
+// Opciones para los diferentes roles
+const clientOptions = [
+  {
+    title: "Reservas",
+    icon: "/nav_bar/desktop-my-contracts.svg",
+    link: "/pages/user/my-reservations",
+  },
+  {
+    title: "Dormitorios",
+    icon: "/nav_bar/desktop-my-bedrooms.svg",
+    link: "/pages/user/my-bedrooms",
+  },
+  {
+    title: "Chats",
+    icon: "/nav_bar/desktop-chats.svg",
+    link: "/pages/user/chats",
+  },
+  {
+    title: "Perfil",
+    icon: "/nav_bar/desktop-profile.svg",
+    link: "/pages/user/profile",
+  },
+  { title: "Soporte", icon: "/nav_bar/desktop-support.svg", link: "#" },
+];
+
+const ownerOptions = [
+  {
+    title: "Dashboard",
+    icon: "/nav_bar/side_bar/owner/configuration.svg",
+    link: "/pages/admin/dashboard",
+  },
+  {
+    title: "Propiedades",
+    icon: "/nav_bar/side_bar/owner/properties.svg",
+    link: "/pages/admin/properties",
+  },
+  {
+    title: "Mis Inquilinos",
+    icon: "/nav_bar/side_bar/owner/tenants.svg",
+    link: "/pages/owner/my-tenants",
+  },
+  {
+    title: "Chats",
+    icon: "/nav_bar/side_bar/owner/chats.svg",
+    link: "/pages/user/chats",
+  },
+  {
+    title: "Servicios",
+    icon: "/nav_bar/side_bar/owner/services.svg",
+    link: "/pages/admin/supplies",
+  },
+  {
+    title: "Soporte",
+    icon: "/nav_bar/side_bar/owner/support.svg",
+    link: "#",
+  },
+];
+
+const adminOptions = [
+  {
+    title: "Dashboard",
+    icon: "/nav_bar/side_bar/admin/configuration.svg",
+    link: "/pages/admin",
+  },
+  {
+    title: "Usuarios",
+    icon: "/nav_bar/side_bar/admin/users.svg",
+    link: "/pages/admin/users",
+  },
+  {
+    title: "Propiedades",
+    icon: "/nav_bar/side_bar/admin/properties.svg",
+    link: "/pages/admin/properties",
+  },
+  {
+    title: "Documentos",
+    icon: "/nav_bar/side_bar/admin/documents.svg",
+    link: "/pages/admin/documents",
+  },
+  {
+    title: "Mensajes",
+    icon: "/nav_bar/side_bar/admin/chats.svg",
+    link: "/pages/user/chats",
+  },
+];
 
 export default function NavBar({
   client = true,
@@ -13,6 +100,8 @@ export default function NavBar({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
+  const { state } = useContext(Context); // Obtener el contexto global para conocer el rol
+  const [user, setUser] = useState(state?.user || null); // Estado para manejar el usuario
 
   const handleRedirect = (url) => {
     route.push(url);
@@ -24,6 +113,28 @@ export default function NavBar({
 
   const handleClose = () => {
     setIsOpen(false);
+  };
+
+  // Actualizar el estado del usuario cuando el contexto cambie
+  useEffect(() => {
+    setUser(state?.user);
+  }, [state.user]);
+
+  // Renderizar las opciones según el rol
+  const renderOptions = (options) => {
+    return options.map((option) => (
+      <div key={option.title} className="flex flex-col items-center">
+        <Link
+          href={option.link}
+          className="flex flex-col items-center justify-between gap-1"
+        >
+          <div className="relative w-[40px] h-[40px]">
+            <Image src={option.icon} fill alt={option.title} priority />
+          </div>
+          <p className="text-xs text-center text-[#636574]">{option.title}</p>
+        </Link>
+      </div>
+    ));
   };
 
   return (
@@ -80,86 +191,11 @@ export default function NavBar({
           </Link>
         </div>
 
-        {/* Opciones */}
+        {/* Opciones según el rol */}
         <div className="flex items-center gap-2 md:gap-6">
-          {/* Mis contratos */}
-          <div className="flex flex-col items-center">
-            <Link href="/contracts" className="flex flex-col items-center justify-between gap-1">
-              <div className="relative w-[40px] h-[40px]">
-                <Image
-                  src="/nav_bar/desktop-my-contracts.svg" // Cambiar al icono que desees
-                  fill
-                  alt="Mis contratos"
-                  priority
-                />
-              </div>
-              <p className="text-xs text-center text-[#636574]">
-                Contratos
-              </p>
-            </Link>
-          </div>
-
-          {/* Mis Dormitorios */}
-          <div className="flex flex-col items-center">
-            <Link href="/rooms" className="flex flex-col items-center justify-between gap-1">
-              <div className="relative w-[40px] h-[40px]">
-                <Image
-                  src="/nav_bar/desktop-my-bedrooms.svg" // Cambiar al icono que desees
-                  fill
-                  alt="Mis Dormitorios"
-                  priority
-                />
-              </div>
-              <p className="text-xs text-center text-[#636574]">
-                Dormitorios
-              </p>
-            </Link>
-          </div>
-
-          {/* Chats */}
-          <div className="flex flex-col items-center">
-            <Link href="/chats" className="flex flex-col items-center justify-between gap-1">
-              <div className="relative w-[40px] h-[40px]">
-                <Image
-                  src="/nav_bar/desktop-chats.svg" // Cambiar al icono que desees
-                  fill
-                  alt="Chats"
-                  priority
-                />
-              </div>
-              <p className="text-xs text-center text-[#636574]">Chats</p>
-            </Link>
-          </div>
-
-          {/* Mi Perfil */}
-          <div className="flex flex-col items-center">
-            <Link href="/profile" className="flex flex-col items-center justify-between gap-1">
-              <div className="relative w-[40px] h-[40px]">
-                <Image
-                  src="/nav_bar/desktop-profile.svg" // Cambiar al icono que desees
-                  fill
-                  alt="Mi Perfil"
-                  priority
-                />
-              </div>
-              <p className="text-xs text-center text-[#636574]">Mi Perfil</p>
-            </Link>
-          </div>
-
-          {/* Soporte */}
-          <div className="flex flex-col items-center">
-            <Link href="/support" className="flex flex-col items-center justify-between gap-1">
-              <div className="relative w-[40px] h-[40px]">
-                <Image
-                  src="/nav_bar/desktop-support.svg" // Cambiar al icono que desees
-                  fill
-                  alt="Soporte"
-                  priority
-                />
-              </div>
-              <p className="text-xs text-center text-[#636574]">Soporte</p>
-            </Link>
-          </div>
+          {user?.role === "CLIENT" && renderOptions(clientOptions)}
+          {user?.role === "OWNER" && renderOptions(ownerOptions)}
+          {user?.role === "ADMIN" && renderOptions(adminOptions)}
 
           {/* Notificaciones */}
           <Link

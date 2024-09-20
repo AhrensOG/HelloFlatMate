@@ -15,8 +15,8 @@ export default function RoomAddModal({
     name: "",
     serial: "",
     numberBeds: "",
-    bathroom: "no",
-    couple: "no",
+    bathroom: false,
+    couple: false,
     price: "",
     amountHelloflatmate: "",
     IVA: "", // Añadir este campo para el IVA
@@ -86,7 +86,7 @@ export default function RoomAddModal({
 
   const handleRadioChange = (event) => {
     const { name, value } = event.target;
-    setDataRoom({ ...dataRoom, [name]: value });
+    setDataRoom({ ...dataRoom, [name]: value === "yes" });
   };
 
   // Manejo de fechas de inicio y fin
@@ -145,7 +145,7 @@ export default function RoomAddModal({
         <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
           <div>
             <label className="block text-sm mb-1" htmlFor="serial">
-              Serial
+              Código
             </label>
             <input
               type="text"
@@ -160,7 +160,7 @@ export default function RoomAddModal({
           </div>
           <div>
             <label className="block text-sm mb-1" htmlFor="numberBeds">
-              Numero de camas
+              Cantidad de camas en la habitación
             </label>
             <input
               type="number"
@@ -322,7 +322,7 @@ export default function RoomAddModal({
         )}
 
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
-          <h3 className="w-full">¿Tiene baños?</h3>
+          <h3 className="w-full">¿Baño en Suite?</h3>
           <div className="flex gap-2 px-3">
             <input
               type="radio"
@@ -345,7 +345,7 @@ export default function RoomAddModal({
           </div>
         </div>
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
-          <h3 className="w-full">¿Es para pareja?</h3>
+          <h3 className="w-full">¿Se aceptan parejas?</h3>
           <div className="flex gap-2 px-3">
             <input
               type="radio"
