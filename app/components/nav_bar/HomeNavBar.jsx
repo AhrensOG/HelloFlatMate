@@ -9,12 +9,13 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
       {/* Mobile version */}
       <div className="sm:hidden flex-col w-full divide-y">
         <div className="flex h-20 justify-between items-center w-full gap-2">
-          <button
+          <Link
+            href={"/pages/select-category"}
             className="bg-[#0E175C] text-sm text-white px-3 py-2 rounded"
             aria-label="Buscar una habitación"
           >
             Buscar habitaciones
-          </button>
+          </Link>
 
           <Link
             href="/"
@@ -109,12 +110,13 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
               />
             </Link>
             <div className="h-[40px] md:h-[44px] border-l border-black"></div>
-            <button
+            <Link
+              href={"/pages/select-category"}
               className="bg-[#0E175C] text-white px-4 py-2 md:px-6 md:py-3 rounded"
               aria-label="Buscar una habitación"
             >
               Buscar una habitación
-            </button>
+            </Link>
           </div>
 
           <div className="flex items-center gap-4 md:gap-6">
