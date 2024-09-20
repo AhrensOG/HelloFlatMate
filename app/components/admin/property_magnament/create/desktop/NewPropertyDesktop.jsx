@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import validateData from "../validateData";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import RentalPeriodTemplate from "../main/RentalPeriodTemplate";
+import RentalPeriodTemplate from "../main/RentalPeriodTemplate";
 
 export default function NewPropertyDesktop({ category, handleBack }) {
   const router = useRouter();
@@ -216,6 +217,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
   let property = {
     name: name,
     serial: serial,
+    serial: serial,
     city: address.city,
     street: address.street,
     streetNumber: address.streetNumber,
@@ -324,7 +326,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   action={handleShowRoomEditModal}
                   category={category}
                 />
-                <LocationSectionTemplate />
+                {/* <LocationSectionTemplate /> */}
                 <DescriptionSectionTemplate
                   action={handleShowDescriptionModal}
                   data={description}
@@ -364,7 +366,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+                  <h2 className="font-bold text-[1.37rem]">Propietario</h2>
                   <SearchEmail
                     owners={owners}
                     onSelect={handleEmailSelect}
@@ -379,6 +381,15 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   data={catAndSize}
                   setData={setCatAndSize}
                 />
+                {category === "HELLO_STUDIO" ||
+                category === "HELLO_LANDLORD" ? (
+                  <RentalPeriodTemplate
+                    data={rentalPeriods}
+                    setData={setRentalPeriods}
+                  />
+                ) : (
+                  ""
+                )}
                 <div className="flex flex-col gap-6">
                   <GuestInfoSectionTemplate
                     data={guestInfo}

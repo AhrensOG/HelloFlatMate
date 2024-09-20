@@ -11,7 +11,7 @@ const Slider = ({ children }) => {
     new AutoPlay({
       duration: 2000,
       direction: "NEXT",
-      stopOnHover: false,
+      stopOnHover: true,
       animationDuration: 3500,
     }),
   ];

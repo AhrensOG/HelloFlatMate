@@ -79,7 +79,7 @@ export default function PropertyDetails({ params }) {
         >
           <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
           <h4 className="text-[#000000B2] text-base">
-            {data.city + ", " + data.street + " " + data.streetNumber}
+            {data.city + ", " + data.street}
           </h4>
           {data.price &&
           (data.category === "HELLO_STUDIO" ||
