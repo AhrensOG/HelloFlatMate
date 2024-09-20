@@ -124,11 +124,15 @@ export default function RoomDetails({ params }) {
               <ReservationButton callback={handleShowModal} />
             )}
           </div>
-          <DescriptionSection
-            title="Descripción"
-            data={roomData.description}
-            category="HELLO_ROOM"
-          />
+          {roomData?.description?.length > 0 ? (
+            <DescriptionSection
+              title="Descripción"
+              data={roomData.description}
+              category="HELLO_ROOM"
+            />
+          ) : (
+            <DescriptionSection title="Descripción" data={data.description} />
+          )}
           {filteredRooms.length > 0 ? (
             <RoomSection data={filteredRooms} title="Otras habitaciones" />
           ) : null}

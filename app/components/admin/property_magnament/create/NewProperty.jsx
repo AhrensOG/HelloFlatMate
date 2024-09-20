@@ -317,7 +317,7 @@ export default function NewProperty({ category, handleBack }) {
 
           <div>
             <label className="block text-sm mb-1" htmlFor="serial">
-              Serial
+              Código
             </label>
             <input
               type="text"

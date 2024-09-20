@@ -15,8 +15,8 @@ export default function RoomAddModal({
     name: "",
     serial: "",
     numberBeds: "",
-    bathroom: "no",
-    couple: "no",
+    bathroom: false,
+    couple: false,
     price: "",
     amountHelloflatmate: "",
     IVA: "", // Añadir este campo para el IVA
@@ -86,7 +86,7 @@ export default function RoomAddModal({
 
   const handleRadioChange = (event) => {
     const { name, value } = event.target;
-    setDataRoom({ ...dataRoom, [name]: value });
+    setDataRoom({ ...dataRoom, [name]: value === "yes" });
   };
 
   // Manejo de fechas de inicio y fin
