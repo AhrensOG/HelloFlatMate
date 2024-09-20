@@ -179,7 +179,7 @@ export default function RoomEditModal({
 
   return (
     <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col gap-3 h-[95%] overflow-auto lg:w-[30rem] lg:h-[42rem] lg:max-h-[55rem]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 flex flex-col gap-3 h-[95%] overflow-auto lg:w-[30rem]">
         <h2 className="text-2xl mb-4">Editar habitación</h2>
         <div>
           <label className="block text-sm mb-1" htmlFor="name">

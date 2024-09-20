@@ -33,7 +33,7 @@ export default function TitleSectionTemplate({
           className="font-bold text-[1.2rem] appearance-none outline-none w-full"
           type="text"
           value={name}
-          placeholder="Nombre de la habitacion"
+          placeholder="Nombre de la propiedad"
           name="name"
           id="name"
         />

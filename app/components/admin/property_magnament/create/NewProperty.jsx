@@ -329,7 +329,7 @@ export default function NewProperty({ category, handleBack }) {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+            <h2 className="font-bold text-[1.37rem]">Propietario</h2>
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
           </div>
           {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
@@ -361,7 +361,7 @@ export default function NewProperty({ category, handleBack }) {
             category={category}
           />
           <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
-          <LocationSectionTemplate />
+          {/* <LocationSectionTemplate /> */}
           <MoreInfoSectionTemplate
             data={moreInfo}
             setData={setMoreInfo}

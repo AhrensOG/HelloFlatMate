@@ -306,7 +306,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   action={handleShowRoomEditModal}
                   category={category}
                 />
-                <LocationSectionTemplate />
+                {/* <LocationSectionTemplate /> */}
                 <DescriptionSectionTemplate
                   action={handleShowDescriptionModal}
                   data={description}
@@ -330,7 +330,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   action={handleShowAddressModal}
                 />
                 <div className="flex flex-col gap-2">
-                  <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+                  <h2 className="font-bold text-[1.37rem]">Propietario</h2>
                   <SearchEmail
                     owners={owners}
                     onSelect={handleEmailSelect}

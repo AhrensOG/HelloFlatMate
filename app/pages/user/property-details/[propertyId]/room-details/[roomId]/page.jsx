@@ -31,24 +31,40 @@ export default function RoomDetails({ params }) {
   );
   const [roomData, setRoomData] = useState();
   const [filteredRooms, setFilteredRooms] = useState([]);
+  const [allImages, setAllImages] = useState([]);
 
   useEffect(() => {
     if (!data) {
       const fetchData = async () => {
         try {
-          const data = await axios.get(`/api/property?id=${propertyId}`);
-          setData(data.data.property);
-          setRoomData(
-            data.data.property.rooms.find((room) => roomId == room.id)
-          );
-          const filtered = data?.data?.property?.rooms?.filter(
+          const response = await axios.get(`/api/property?id=${propertyId}`);
+          const propertyData = response.data.property;
+
+          setData(propertyData);
+
+          const roomData = propertyData.rooms.find((room) => roomId == room.id);
+          setRoomData(roomData);
+
+          // Filtramos las habitaciones que no son la actual
+          const filtered = propertyData.rooms.filter(
             (room) => room.id !== Number(roomId)
           );
           setFilteredRooms(filtered);
+
+          // Obtenemos las imágenes de la propiedad y de la habitación actual
+          const propertyImages = propertyData?.images || [];
+          const roomImages = roomData?.images || [];
+
+          // Combinamos ambos arrays de imágenes en uno solo
+          const allImages = [...propertyImages, ...roomImages];
+
+          // Aquí puedes hacer lo que necesites con el array de imágenes combinado (e.g., guardarlo en un estado)
+          setAllImages(allImages);
         } catch (error) {
           console.error("Error fetching property data:", error);
         }
       };
+
       fetchData();
     }
   }, [data, propertyId]);
@@ -74,7 +90,7 @@ export default function RoomDetails({ params }) {
         <header className="w-full space-y-4">
           <div className="w-full">
             <SliderDetails>
-              {roomData.images.map((image, index) => {
+              {allImages.map((image, index) => {
                 return <SliderItem key={index} img={image} />;
               })}
             </SliderDetails>
@@ -109,8 +125,9 @@ export default function RoomDetails({ params }) {
             )}
           </div>
           <DescriptionSection
-            title="Descripción de la propiedad y areas comunes"
-            data={data.description}
+            title="Descripción"
+            data={roomData.description}
+            category="HELLO_ROOM"
           />
           {filteredRooms.length > 0 ? (
             <RoomSection data={filteredRooms} title="Otras habitaciones" />
