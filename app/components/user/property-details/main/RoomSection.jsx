@@ -2,7 +2,7 @@ import { useState } from "react";
 import RoomInfo from "./room_section/RoomInfo";
 import ModalRomInfo from "./room_section/ModalRomInfo";
 
-export default function RoomSection({ data }) {
+export default function RoomSection({ data, title = "Habitaciones" }) {
   const [showModal, setShowModal] = useState(false);
   const [roomInfo, setRoomInfo] = useState(null);
 
@@ -14,7 +14,7 @@ export default function RoomSection({ data }) {
     <>
       <section className="flex flex-col gap-3 items-center w-full">
         <h2 className="font-bold text-[1.37rem] w-full text-start">
-          Habitaciones
+          {title}
         </h2>
         <div className="flex justify-evenly gap-1 w-full overflow-x-auto">
           {data

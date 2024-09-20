@@ -21,6 +21,7 @@ import { plus_jakarta } from "@/font";
 import { toast } from "sonner";
 import validateData from "../validateData";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
+import RentalPeriodTemplate from "../main/RentalPeriodTemplate";
 
 export default function NewPropertyDesktop({ category, handleBack }) {
   const router = useRouter();
@@ -64,6 +65,9 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     offer: 0,
     IVA: 0,
   });
+
+  const [rentalPeriods, setRentalPeriods] = useState([]);
+  const [serial, setSerial] = useState("");
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -202,6 +206,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
 
   let property = {
     name: name,
+    serial: serial,
     city: address.city,
     street: address.street,
     streetNumber: address.streetNumber,
@@ -232,6 +237,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     offer: parseFloat(price.offer) || 0,
     IVA: parseFloat(price.IVA) || 0,
     ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
+    rentalPeriod: rentalPeriods,
   };
 
   const createProperty = async () => {
@@ -306,7 +312,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   action={handleShowRoomEditModal}
                   category={category}
                 />
-                <LocationSectionTemplate />
+                {/* <LocationSectionTemplate /> */}
                 <DescriptionSectionTemplate
                   action={handleShowDescriptionModal}
                   data={description}
@@ -329,8 +335,21 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   setAdress={setAddress}
                   action={handleShowAddressModal}
                 />
+                <div>
+                  <label className="block text-sm mb-1" htmlFor="serial">
+                    Código
+                  </label>
+                  <input
+                    type="text"
+                    id="serial"
+                    name="serial"
+                    value={serial || ""}
+                    onChange={(event) => setSerial(event.target.value)}
+                    className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
                 <div className="flex flex-col gap-2">
-                  <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+                  <h2 className="font-bold text-[1.37rem]">Propietario</h2>
                   <SearchEmail
                     owners={owners}
                     onSelect={handleEmailSelect}
@@ -345,6 +364,15 @@ export default function NewPropertyDesktop({ category, handleBack }) {
                   data={catAndSize}
                   setData={setCatAndSize}
                 />
+                {category === "HELLO_STUDIO" ||
+                category === "HELLO_LANDLORD" ? (
+                  <RentalPeriodTemplate
+                    data={rentalPeriods}
+                    setData={setRentalPeriods}
+                  />
+                ) : (
+                  ""
+                )}
                 <div className="flex flex-col gap-6">
                   <GuestInfoSectionTemplate
                     data={guestInfo}

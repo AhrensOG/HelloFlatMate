@@ -13,6 +13,9 @@ export async function updateProperty(id, data) {
     if (!data.name || data.name.trim() === "") {
         return NextResponse.json({ error: "El nombre no puede estar vacío" }, { status: 400 });
     }
+    // if (!data.serial || data.serial.trim() === "") {
+    //     return NextResponse.json({ error: "El serial no puede estar vacío" }, { status: 400 });
+    // }
     if (!data.city || data.city.trim() === "") {
         return NextResponse.json({ error: "La ciudad no puede estar vacío" }, { status: 400 });
     }

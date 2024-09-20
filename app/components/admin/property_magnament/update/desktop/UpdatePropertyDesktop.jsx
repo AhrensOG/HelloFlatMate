@@ -247,7 +247,6 @@ export default function UpdatePropertyDesktop({
               propertyId: property?.id,
             };
           });
-          console.log(roomsFormated);
 
           if (newRooms.length > 0) {
             const createdRooms = await axios.post(
@@ -259,9 +258,6 @@ export default function UpdatePropertyDesktop({
         } catch (err) {
           toast.error("Error en la creación de habitaciones");
           throw err;
-        }
-        {
-          console.log(dataRooms);
         }
         //UpdateRooms
         try {
@@ -411,7 +407,7 @@ export default function UpdatePropertyDesktop({
                   action={handleShowAddressModal}
                 />
                 <div className="flex flex-col gap-2">
-                  <h2 className="font-bold text-[1.37rem]">Dueño</h2>
+                  <h2 className="font-bold text-[1.37rem]">Propietario</h2>
                   <SearchEmail
                     owners={owners}
                     onSelect={handleEmailSelect}
