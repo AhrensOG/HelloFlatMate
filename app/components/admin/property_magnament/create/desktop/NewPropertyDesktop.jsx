@@ -22,7 +22,6 @@ import { toast } from "sonner";
 import validateData from "../validateData";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import RentalPeriodTemplate from "../main/RentalPeriodTemplate";
-import RentalPeriodTemplate from "../main/RentalPeriodTemplate";
 
 export default function NewPropertyDesktop({ category, handleBack }) {
   const router = useRouter();
