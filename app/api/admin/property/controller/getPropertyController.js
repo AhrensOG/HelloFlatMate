@@ -135,3 +135,12 @@ export async function getPropertiesByCategory(category) {
         return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
     }
 }
+
+export async function getAllPropertiesSimple() {
+    try {
+        const properties = await Property.findAll({ attributes: ["name", "serial", "id", "category", "status"], where: { isActive: true } });
+        return NextResponse.json(properties, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
+    }
+}

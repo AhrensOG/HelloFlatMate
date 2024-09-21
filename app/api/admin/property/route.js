@@ -1,6 +1,6 @@
 import createProperty from './controller/createPropertyController';
 import { deleteProperty } from './controller/deletePropertyController';
-import { getAllProperties, getPropertyById } from './controller/getPropertyController';
+import { getAllProperties, getAllPropertiesSimple, getPropertyById } from './controller/getPropertyController';
 import { updateProperty } from './controller/updateProperty';
 
 // Manejar solicitud POST
@@ -14,8 +14,13 @@ export async function POST(req) {
 export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
+    const simple = searchParams.get('simple');
     if (id) {
         const result = await getPropertyById(id);
+        return result
+    }
+    if (simple) {
+        const result = await getAllPropertiesSimple();
         return result
     }
     const result = await getAllProperties();
