@@ -2,7 +2,6 @@ import NavBarDetails from "@/app/components/user/property-details/header/NavBarD
 import AmenitiesSectionTemplate from "./main/AmenitiesSectionTemplate";
 import DescriptionSectionTemplate from "./main/DescriptionSectionTemplate";
 import GuestInfoSectionTemplate from "./main/GuestInfoSectionTemplate";
-import LocationSectionTemplate from "./main/LocationSectionTemplate";
 import MoreInfoSectionTemplate from "./main/MoreInfoSectionTemplate";
 import RoomSectionTemplate from "./main/RoomSectionTemplate";
 import SaveButton from "../shared/SaveButton";
@@ -22,10 +21,9 @@ import PriceSection from "./main/PriceSection";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import SearchEmail from "./main/SearchEmail";
 import RentalPeriodTemplate from "./main/RentalPeriodTemplate";
+import LocationSectionTemplate from "./main/LocationSectionTemplate";
 
 export default function NewProperty({ category, handleBack }) {
-  console.log(category);
-
   const router = useRouter();
 
   const [owners, setOwners] = useState();
@@ -36,6 +34,8 @@ export default function NewProperty({ category, handleBack }) {
     street: "",
     streetNumber: null,
     postalCode: "",
+    floor: null,
+    door: "",
   });
   const [guestInfo, setGuestInfo] = useState({
     occupants: null,
@@ -159,6 +159,8 @@ export default function NewProperty({ category, handleBack }) {
     if (data[0].amountOwner || data[0].amountHelloflatmate) {
       rooms = data.map((room) => ({
         name: room.name,
+        floor: parseInt(room.floor),
+        door: room.door,
         images: room.images,
         numberBeds: parseInt(room.numberBeds),
         couple: room.couple,
@@ -168,7 +170,7 @@ export default function NewProperty({ category, handleBack }) {
         amountOwner: parseInt(room.price) - parseInt(room.amountHelloflatmate),
         amountHelloflatmate: parseInt(room.amountHelloflatmate),
         IVA: parseInt(room.IVA),
-        rentalPeriod: room.rentalPeriod,
+        rentalPeriods: room.rentalPeriods,
         description: room.description,
       }));
     } else {
@@ -218,6 +220,8 @@ export default function NewProperty({ category, handleBack }) {
     street: address.street,
     streetNumber: address.streetNumber,
     postalCode: address.postalCode,
+    floor: address.floor,
+    door: address.door,
     size: parseInt(catAndSize.size),
     roomsCount: dataRoom.length,
     bathrooms: parseInt(guestInfo.bathrooms),
@@ -244,7 +248,7 @@ export default function NewProperty({ category, handleBack }) {
     offer: parseFloat(price.offer) || 0,
     IVA: parseFloat(price.IVA) || 0,
     ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
-    rentalPeriod: rentalPeriods,
+    rentalPeriods: rentalPeriods.newRentalPeriods,
   };
 
   const createProperty = async () => {
@@ -255,8 +259,6 @@ export default function NewProperty({ category, handleBack }) {
         property.images = imagesList;
 
         //Crear habitaciones
-        console.log(dataRoom);
-
         const rooms = await submitRoom(dataRoom);
 
         // Crear propiedad
@@ -277,7 +279,7 @@ export default function NewProperty({ category, handleBack }) {
         }, 1000);
       } catch (error) {
         toast.error("Ocurrió un error");
-        console.error(error);
+        throw error;
       }
     }
   };
@@ -316,18 +318,20 @@ export default function NewProperty({ category, handleBack }) {
           />
 
           <div>
-            <label className="block text-sm mb-1" htmlFor="serial">
-              Código
+            <label className="font-bold text-[1.37rem]" htmlFor="serial">
+              Serial
             </label>
             <input
               type="text"
               id="serial"
               name="serial"
               value={serial || ""}
+              placeholder="HH-1"
               onChange={(event) => setSerial(event.target.value)}
-              className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+              className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
             />
           </div>
+
           <div className="flex flex-col gap-2">
             <h2 className="font-bold text-[1.37rem]">Propietario</h2>
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
@@ -361,13 +365,21 @@ export default function NewProperty({ category, handleBack }) {
             category={category}
           />
           <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
-          {/* <LocationSectionTemplate /> */}
+          <LocationSectionTemplate />
           <MoreInfoSectionTemplate
             data={moreInfo}
             setData={setMoreInfo}
             action={handleShowMoreInfoModal}
           />
-          <SaveButton action={createProperty} />
+          <SaveButton
+            action={() => {
+              toast.promise(createProperty(), {
+                loading: "Creando propiedad",
+                success: "Propiedad creada",
+                error: "Ocurrio un error",
+              });
+            }}
+          />
         </main>
         {showDescriptionModal && (
           <DescriptionModal
@@ -389,6 +401,7 @@ export default function NewProperty({ category, handleBack }) {
             data={address}
             setData={setAddress}
             showModal={handleShowAddressModal}
+            category={category}
           />
         )}
       </div>

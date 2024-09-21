@@ -1,4 +1,4 @@
-import { Property } from "@/db/init";
+import { Property, RentalPeriod } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function updateProperty(id, data) {
@@ -60,9 +60,41 @@ export async function updateProperty(id, data) {
         if (!property) {
             return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
         }
+
+        //Actualizar las fechas
+        if (data.rentalPeriods.length > 0) {
+            data.rentalPeriods.forEach(async (rentalPeriod) => {
+                await RentalPeriod.update(rentalPeriod, {
+                    where: {
+                        id: rentalPeriod.id
+                    }
+                })
+            })
+        }
+
+        //Crear nuevas fechas
+        if (data.newRentalPeriods.length > 0) {
+            data.newRentalPeriods.forEach(async (rentalPeriod) => {
+                await RentalPeriod.create({ startDate: new Date(rentalPeriod.startDate), endDate: new Date(rentalPeriod.endDate), rentalPeriodableId: property.id, rentalPeriodableType: "PROPERTY" })
+            })
+        }
+
+        //Borrar fechas
+        if (data.deleteRentalPeriods.length > 0) {
+            data.deleteRentalPeriods.forEach(async (rentalPeriod) => {
+                await RentalPeriod.destroy({
+                    where: {
+                        id: rentalPeriod
+                    }
+                })
+            })
+        }
+
         await property.update(data);
         return NextResponse.json(property, { status: 200 });
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ error: "Error al actualizar la propiedad" }, { status: 500 });
     }
 }

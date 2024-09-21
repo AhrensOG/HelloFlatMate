@@ -38,6 +38,14 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(10),
                 allowNull: false,
             },
+            floor: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            door: {
+                type: DataTypes.STRING(10),
+                allowNull: true,
+            },
             size: {
                 type: DataTypes.INTEGER,
                 allowNull: false,

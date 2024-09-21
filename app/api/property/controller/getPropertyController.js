@@ -1,4 +1,4 @@
-import { Client, Document, LeaseOrderProperty, LeaseOrderRoom, Property, Room } from "@/db/init";
+import { Client, Document, LeaseOrderProperty, LeaseOrderRoom, Property, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
@@ -47,6 +47,10 @@ export async function getPropertyById(id) {
                         as: 'documents'
                     }
                 }
+            },
+            {
+                model: RentalPeriod,
+                as: 'rentalPeriods'
             }]
         });
         if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });

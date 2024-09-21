@@ -24,7 +24,7 @@ export default function MoreInfoItemTemplate({
   };
 
   return (
-    <article className="p-2 text-[#0D171C] bg-[#F7FAFA]">
+    <article className="p-2 text-[#0D171C] bg-[#F7FAFA] lg:w-[30rem]">
       <div className="flex justify-between items-center bg-[#E8EDF2] p-2">
         <h3 className="font-normal text-lg">{title}</h3>
         <button
