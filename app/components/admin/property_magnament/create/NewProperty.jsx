@@ -2,7 +2,6 @@ import NavBarDetails from "@/app/components/user/property-details/header/NavBarD
 import AmenitiesSectionTemplate from "./main/AmenitiesSectionTemplate";
 import DescriptionSectionTemplate from "./main/DescriptionSectionTemplate";
 import GuestInfoSectionTemplate from "./main/GuestInfoSectionTemplate";
-import LocationSectionTemplate from "./main/LocationSectionTemplate";
 import MoreInfoSectionTemplate from "./main/MoreInfoSectionTemplate";
 import RoomSectionTemplate from "./main/RoomSectionTemplate";
 import SaveButton from "../shared/SaveButton";
@@ -22,6 +21,7 @@ import PriceSection from "./main/PriceSection";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import SearchEmail from "./main/SearchEmail";
 import RentalPeriodTemplate from "./main/RentalPeriodTemplate";
+import LocationSectionTemplate from "./main/LocationSectionTemplate";
 
 export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
@@ -365,7 +365,7 @@ export default function NewProperty({ category, handleBack }) {
             category={category}
           />
           <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
-          {/* <LocationSectionTemplate /> */}
+          <LocationSectionTemplate />
           <MoreInfoSectionTemplate
             data={moreInfo}
             setData={setMoreInfo}
