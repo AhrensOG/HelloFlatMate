@@ -11,7 +11,7 @@ export default function TypolyAndZoneSection({ data, setData, category }) {
           id="zone"
           name="zone"
           value={data.zone || ""}
-          placeholder="Enter zone"
+          placeholder="Ingrese la zona"
           onChange={(event) => setData({ ...data, zone: event.target.value })}
           className="border rounded px-2 py-1 w-full appearance-none outline-none break-words"
         />

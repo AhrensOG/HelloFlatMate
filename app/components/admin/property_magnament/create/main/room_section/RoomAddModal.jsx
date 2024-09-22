@@ -23,6 +23,7 @@ export default function RoomAddModal({
     amountHelloflatmate: "",
     IVA: "", // Añadir este campo para el IVA
     typology: "MIXED",
+    tags: [],
   });
 
   const [images, setImages] = useState([]);
@@ -58,6 +59,7 @@ export default function RoomAddModal({
         rentalPeriods: rentalPeriods, // Agregar los periodos de alquiler
         description: description.map((desc) => desc.text), // Agregar las descripciones,
         typology: dataRoom.typology,
+        tags: [dataRoom.tags],
       };
     }
 
@@ -185,12 +187,25 @@ export default function RoomAddModal({
                 onChange={(event) =>
                   setDataRoom({ ...dataRoom, typology: event.target.value })
                 }
-                className="border rounded px-2 py-1 w-full appearance-none outline-none"
+                className="w-full p-2 border border-gray-300 rounded"
               >
                 <option value="MIXED">MIXED</option>
                 <option value="ONLY_WOMEN">ONLY WOMEN</option>
                 <option value="ONLY_MEN">ONLY MEN</option>
               </select>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm mb-1" htmlFor="tags">
+                Tags
+              </label>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                value={data || ""}
+                onChange={(event) => setDataRoom(event.target.value)}
+                className="w-full p-2 border border-gray-300 rounded break-words"
+              />
             </div>
           </>
         )}

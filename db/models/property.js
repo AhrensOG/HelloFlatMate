@@ -158,6 +158,10 @@ const propertyInit = (sequelize, DataTypes) => {
             checkOut: {
                 type: DataTypes.STRING(5500),
                 allowNull: true
+            },
+            tags: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                allowNull: true
             }
 
         },

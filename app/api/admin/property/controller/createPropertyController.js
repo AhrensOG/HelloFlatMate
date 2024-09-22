@@ -99,6 +99,7 @@ const createProperty = async (data) => {
             checkIn: data.checkIn || "",
             checkOut: data.checkOut || "",
             ownerId: data.ownerId || "1",
+            tags: data.tags || []
         });
 
         if (data.rentalPeriods) {

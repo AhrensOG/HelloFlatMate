@@ -88,6 +88,10 @@ const roomInit = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false
             },
+            tags: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                allowNull: true
+            }
         },
         {
             sequelize,

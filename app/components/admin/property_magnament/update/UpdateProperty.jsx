@@ -26,6 +26,7 @@ import SearchEmail from "../create/main/SearchEmail";
 import RentalPeriodTemplate from "../create/main/RentalPeriodTemplate";
 import TypolyAndZoneSection from "../create/main/TypolyAndZoneSection";
 import LinkVideoSection from "../create/main/LinkVideoSection";
+import TagsSection from "../create/main/TagsSection";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -59,6 +60,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   const [rentalPeriods, setRentalPeriods] = useState();
   const [typologyAndZone, setTypologyAndZone] = useState();
   const [linkVideo, setLinkVideo] = useState();
+  const [tags, setTags] = useState();
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -136,6 +138,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         zone: property?.zone || "",
       });
       setLinkVideo(property?.linkVideo || "");
+      setTags(property?.tags || []);
     }
     fetchOwners();
   }, [property]);
@@ -347,6 +350,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           typology: typologyAndZone.typology || "",
           zone: typologyAndZone.zone || "",
           linkVideo: linkVideo || "",
+          tags: tags,
         };
 
         const response = await axios.put(
@@ -427,6 +431,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             />{" "}
           </div>
           <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+          {(category !== "HELLO_ROOM" || category !== "HELLO_COLIVING") && (
+            <TagsSection data={tags} setData={setTags} />
+          )}
           {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
             <PriceSection data={price || property.price} setData={setPrice} />
           )}

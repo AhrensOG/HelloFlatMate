@@ -331,6 +331,20 @@ export default function RoomEditModal({
                   <option value="ONLY_MEN">ONLY MEN</option>
                 </select>
               </div>
+              <div className="mt-4">
+                <label className="block text-sm mb-1" htmlFor="tags">
+                  Tags
+                </label>
+                <input
+                  type="text"
+                  id="tags"
+                  name="tags"
+                  value={data || ""}
+                  placeholder="Enter tags"
+                  onChange={(event) => setDataRoom(event.target.value)}
+                  className="border rounded px-2 py-1 w-full appearance-none outline-none break-words"
+                />
+              </div>
             </>
           )}
           <div>

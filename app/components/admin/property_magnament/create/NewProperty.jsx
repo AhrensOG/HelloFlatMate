@@ -24,6 +24,7 @@ import RentalPeriodTemplate from "./main/RentalPeriodTemplate";
 import LocationSectionTemplate from "./main/LocationSectionTemplate";
 import TypolyAndZoneSection from "./main/TypolyAndZoneSection";
 import LinkVideoSection from "./main/LinkVideoSection";
+import TagsSection from "./main/TagsSection";
 
 export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
@@ -76,6 +77,7 @@ export default function NewProperty({ category, handleBack }) {
     zone: "",
   });
   const [linkVideo, setLinkVideo] = useState("");
+  const [tags, setTags] = useState([]);
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -180,6 +182,7 @@ export default function NewProperty({ category, handleBack }) {
         rentalPeriods: room.rentalPeriods,
         description: room.description,
         typology: room.typology || "MIXED",
+        tags: room.tags || [],
       }));
     } else {
       rooms = data.map((room) => ({
@@ -261,6 +264,7 @@ export default function NewProperty({ category, handleBack }) {
     typology: typologyAndZone.typology,
     zone: typologyAndZone.zone,
     linkVideo: linkVideo,
+    tags: [tags],
   };
 
   const createProperty = async () => {
@@ -355,6 +359,9 @@ export default function NewProperty({ category, handleBack }) {
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
           </div>
           <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+          {(category !== "HELLO_ROOM" || category !== "HELLO_COLIVING") && (
+            <TagsSection data={tags} setData={setTags} />
+          )}
           {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
             ""
           ) : (
