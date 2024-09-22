@@ -25,6 +25,14 @@ const roomInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: true,
             },
+            zone: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            typology: {
+                type: DataTypes.ENUM("MIXED", "ONLY_WOMEN", "ONLY_MEN"),
+                allowNull: true,
+            },
             description: {
                 type: DataTypes.ARRAY(DataTypes.STRING),
                 defaultValue: [],
@@ -62,6 +70,10 @@ const roomInit = (sequelize, DataTypes) => {
             images: {
                 type: DataTypes.ARRAY(DataTypes.STRING),
                 allowNull: false,
+            },
+            linkVideo: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
             },
             status: {
                 type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),

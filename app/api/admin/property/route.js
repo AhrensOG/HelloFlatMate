@@ -1,5 +1,5 @@
 import createProperty from './controller/createPropertyController';
-import { deleteProperty } from './controller/deletePropertyController';
+import { deleteProperty, desactivateProperty } from './controller/deletePropertyController';
 import { getAllProperties, getAllPropertiesSimple, getPropertyById } from './controller/getPropertyController';
 import { updateProperty } from './controller/updateProperty';
 
@@ -39,6 +39,12 @@ export async function PUT(req) {
 export async function DELETE(req) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
-    const result = await deleteProperty(id);
+    const type = searchParams.get('type');
+    if (type === "del") {
+        const result = await deleteProperty(id);
+        return result
+    }
+
+    const result = await desactivateProperty(id);
     return result
 }

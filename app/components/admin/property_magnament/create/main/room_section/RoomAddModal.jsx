@@ -17,11 +17,12 @@ export default function RoomAddModal({
     door: "",
     serial: "",
     numberBeds: "",
-    bathroom: false,
-    couple: false,
+    bathroom: "",
+    couple: "",
     price: "",
     amountHelloflatmate: "",
     IVA: "", // Añadir este campo para el IVA
+    typology: "MIXED",
   });
 
   const [images, setImages] = useState([]);
@@ -55,7 +56,8 @@ export default function RoomAddModal({
         bathroom: dataRoom.bathroom === "yes",
         propertyId,
         rentalPeriods: rentalPeriods, // Agregar los periodos de alquiler
-        description: description.map((desc) => desc.text), // Agregar las descripciones
+        description: description.map((desc) => desc.text), // Agregar las descripciones,
+        typology: dataRoom.typology,
       };
     }
 
@@ -75,6 +77,7 @@ export default function RoomAddModal({
         propertyId,
       };
     }
+    console.log(roomData);
 
     setData([...data, roomData]); // Actualiza los datos globales
     showModal(); // Cierra el modal después de guardar
@@ -88,7 +91,7 @@ export default function RoomAddModal({
 
   const handleRadioChange = (event) => {
     const { name, value } = event.target;
-    setDataRoom({ ...dataRoom, [name]: value === "yes" });
+    setDataRoom({ ...dataRoom, [name]: value }); // Almacenar directamente "yes" o "no"
   };
 
   // Manejo de fechas de inicio y fin
@@ -169,6 +172,25 @@ export default function RoomAddModal({
                 }
                 className="w-full p-2 border border-gray-300 rounded"
               />
+            </div>
+            <div className="mt-4">
+              {/* Select para la tipología */}
+              <label className="block text-sm mb-1" htmlFor="typology">
+                Typology
+              </label>
+              <select
+                id="typology"
+                name="typology"
+                value={dataRoom?.typology || ""}
+                onChange={(event) =>
+                  setDataRoom({ ...dataRoom, typology: event.target.value })
+                }
+                className="border rounded px-2 py-1 w-full appearance-none outline-none"
+              >
+                <option value="MIXED">MIXED</option>
+                <option value="ONLY_WOMEN">ONLY WOMEN</option>
+                <option value="ONLY_MEN">ONLY MEN</option>
+              </select>
             </div>
           </>
         )}
@@ -352,28 +374,29 @@ export default function RoomAddModal({
         )}
 
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
-          <h3 className="w-full">¿Baño en Suite?</h3>
+          <h3 className="w-full">¿Tiene baño privado?</h3>
           <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="bathroom"
               value="yes"
-              checked={dataRoom.bathroom === true}
+              checked={dataRoom.bathroom === "yes"}
               onChange={handleRadioChange}
             />
-            <label htmlFor="bathroom">Si</label>
+            <label htmlFor="bathroom">Sí</label>
           </div>
           <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="bathroom"
               value="no"
-              checked={dataRoom.bathroom === false}
+              checked={dataRoom.bathroom === "no"}
               onChange={handleRadioChange}
             />
             <label htmlFor="bathroom">No</label>
           </div>
         </div>
+
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
           <h3 className="w-full">¿Se aceptan parejas?</h3>
           <div className="flex gap-2 px-3">
@@ -381,17 +404,17 @@ export default function RoomAddModal({
               type="radio"
               name="couple"
               value="yes"
-              checked={dataRoom.couple === true}
+              checked={dataRoom.couple === "yes"}
               onChange={handleRadioChange}
             />
-            <label htmlFor="couple">Si</label>
+            <label htmlFor="couple">Sí</label>
           </div>
           <div className="flex gap-2 px-3">
             <input
               type="radio"
               name="couple"
               value="no"
-              checked={dataRoom.couple === false}
+              checked={dataRoom.couple === "no"}
               onChange={handleRadioChange}
             />
             <label htmlFor="couple">No</label>

@@ -311,6 +311,26 @@ export default function RoomEditModal({
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
+
+              <div className="mt-4">
+                {/* Select para la tipología */}
+                <label className="block text-sm mb-1" htmlFor="typology">
+                  Typology
+                </label>
+                <select
+                  id="typology"
+                  name="typology"
+                  value={dataRoom?.typology || ""}
+                  onChange={(event) =>
+                    setDataRoom({ ...dataRoom, typology: event.target.value })
+                  }
+                  className="border rounded px-2 py-1 w-full appearance-none outline-none"
+                >
+                  <option value="MIXED">MIXED</option>
+                  <option value="ONLY_WOMEN">ONLY WOMEN</option>
+                  <option value="ONLY_MEN">ONLY MEN</option>
+                </select>
+              </div>
             </>
           )}
           <div>
@@ -467,7 +487,6 @@ export default function RoomEditModal({
               <div className="w-full flex flex-col gap-3">
                 <h3 className="block text-sm mb-1">Descripciones</h3>
                 <ul className="list-none flex flex-col gap-3">
-                  {console.log(dataRoom)}
                   {dataRoom?.description?.length > 0 ? (
                     dataRoom?.description.map((description, index) => (
                       <li key={index} className="flex gap-3 items-center">
