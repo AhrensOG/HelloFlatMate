@@ -11,7 +11,7 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
 
   return (
     <section>
-      <h2 className="font-bold text-[1.37rem]">Mas sobre este lugar</h2>
+      <h2 className="font-bold text-[1.37rem]">Más sobre este lugar</h2>
       <div className="lg:flex lg:flex-wrap">
         <MoreInfoItemTemplate
           property="condicionDeRenta"

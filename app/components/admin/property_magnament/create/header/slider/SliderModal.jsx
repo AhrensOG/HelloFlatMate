@@ -82,7 +82,7 @@ export default function SliderModal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.5 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
       <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 overflow-auto h-auto">

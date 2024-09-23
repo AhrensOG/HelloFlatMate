@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import ImageUploader from "@/app/components/admin/drag-and-drop/ImageUploader";
 import { v4 as uuidv4 } from "uuid";
+import { motion } from "framer-motion";
 
 export default function RoomAddModal({
   data,
@@ -130,7 +131,13 @@ export default function RoomAddModal({
   };
 
   return (
-    <aside className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 ">
+    <motion.aside
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 "
+    >
       <div className="bg-white p-4 rounded-lg shadow-lg w-full m-5 flex flex-col gap-3 overflow-auto h-[95%] lg:w-[30rem]">
         <h2 className="text-2xl mb-4">Nueva Habitacion</h2>
 
@@ -318,7 +325,11 @@ export default function RoomAddModal({
               <h3 className="block text-sm mb-1">Periodos de alquiler</h3>
               {rentalPeriods.map((period, index) => (
                 <div key={index} className="flex gap-2 mb-2">
+                  <label className="block text-sm mb-1" htmlFor="startDate">
+                    Fecha de ingreso
+                  </label>
                   <input
+                    id="startDate"
                     type="date"
                     value={period.startDate}
                     onChange={(e) =>
@@ -326,7 +337,11 @@ export default function RoomAddModal({
                     }
                     className="w-1/2 p-2 border border-gray-300 rounded"
                   />
+                  <label className="block text-sm mb-1" htmlFor="endDate">
+                    Fecha de egreso
+                  </label>
                   <input
+                    id="endDate"
                     type="date"
                     value={period.endDate}
                     onChange={(e) =>
@@ -467,6 +482,6 @@ export default function RoomAddModal({
           </button>
         </div>
       </div>
-    </aside>
+    </motion.aside>
   );
 }
