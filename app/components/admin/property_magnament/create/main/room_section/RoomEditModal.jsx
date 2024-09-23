@@ -340,7 +340,6 @@ export default function RoomEditModal({
                   id="tags"
                   name="tags"
                   value={dataRoom.tags || ""}
-                  placeholder="Enter tags"
                   onChange={(event) =>
                     setDataRoom({ ...dataRoom, tags: [event.target.value] })
                   }

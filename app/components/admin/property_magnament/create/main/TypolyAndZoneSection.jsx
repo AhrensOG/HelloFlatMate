@@ -3,7 +3,7 @@ export default function TypolyAndZoneSection({ data, setData, category }) {
     <section>
       <div>
         {/* Input para la Zona */}
-        <label className="font-bold text-[1.37rem]" htmlFor="zone">
+        <label className="font-bold text-[1.2rem]" htmlFor="zone">
           Zona
         </label>
         <input
@@ -19,7 +19,7 @@ export default function TypolyAndZoneSection({ data, setData, category }) {
 
       <div className="mt-4">
         {/* Select para la tipología */}
-        <label className="font-bold text-[1.37rem]" htmlFor="typology">
+        <label className="font-bold text-[1.2rem]" htmlFor="typology">
           Tipología 
         </label>
         <select

@@ -38,7 +38,7 @@ export default function RoomSectionTemplate({
   return (
     <section className="flex flex-col gap-3 items-center w-full">
       <article className="w-full flex justify-between items-center">
-        <h2 className="font-bold text-[1.37rem] w-full text-start">
+        <h2 className="font-bold text-[1.2rem] w-full text-start">
           Habitaciones
         </h2>
         <EditButton action={handleAddRoom} />{" "}

@@ -264,7 +264,7 @@ export default function NewProperty({ category, handleBack }) {
     typology: typologyAndZone.typology,
     zone: typologyAndZone.zone,
     linkVideo: linkVideo,
-    tags: tags,
+    tags: [tags],
   };
 
   const createProperty = async () => {
@@ -336,7 +336,7 @@ export default function NewProperty({ category, handleBack }) {
           />
 
           <div>
-            <label className="font-bold text-[1.37rem]" htmlFor="serial">
+            <label className="font-bold text-[1.2rem]" htmlFor="serial">
               Código
             </label>
             <input
@@ -355,7 +355,7 @@ export default function NewProperty({ category, handleBack }) {
             category={category}
           />
           <div className="flex flex-col gap-2">
-            <h2 className="font-bold text-[1.37rem]">Propietario</h2>
+            <h2 className="font-bold text-[1.2rem]">Propietario</h2>
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
           </div>
           {/* <LinkVideoSection data={linkVideo} setData={setLinkVideo} /> */}
@@ -468,8 +468,8 @@ export default function NewProperty({ category, handleBack }) {
               <TagsSection data={tags} setData={setTags} />
             )}
             <div>
-              <label className="font-bold text-[1.37rem]" htmlFor="serial">
-                Serial
+              <label className="font-bold text-[1.2rem]" htmlFor="serial">
+                Código
               </label>
               <input
                 type="text"
@@ -482,7 +482,7 @@ export default function NewProperty({ category, handleBack }) {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <h2 className="font-bold text-[1.37rem]">Propietario</h2>
+              <h2 className="font-bold text-[1.2rem]">Propietario</h2>
               <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
             </div>
             {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (

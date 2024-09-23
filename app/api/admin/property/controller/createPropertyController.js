@@ -1,5 +1,4 @@
 import { Owner, Property, RentalPeriod } from "@/db/init";
-import rentalPeriod from "@/db/models/rentalPeriod";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
@@ -30,8 +29,6 @@ const createProperty = async (data) => {
         return NextResponse.json({ error: "El tamaño no puede estar vacío" }, { status: 400 });
     }
     if (data.roomsCount <= 0) {
-        console.log(typeof data.roomsCount);
-
         return NextResponse.json({ error: "El número de habitaciones no puede estar vacío o no es un número" }, { status: 400 });
     }
     if (data.bathrooms <= 0 || typeof data.bathrooms !== "number") {

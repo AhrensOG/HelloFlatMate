@@ -136,11 +136,11 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         } || []
       );
       setTypologyAndZone({
-        typology: property?.typology || "",
+        typology: property?.typology || "MIXED",
         zone: property?.zone || "",
       });
       setLinkVideo(property?.linkVideo || "");
-      setTags(property?.tags || []);
+      setTags(property?.tags[0] || "");
     }
     fetchOwners();
   }, [property]);
@@ -352,7 +352,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           typology: typologyAndZone.typology || "",
           zone: typologyAndZone.zone || "",
           linkVideo: linkVideo || "",
-          tags: tags,
+          tags: [tags],
         };
 
         const response = await axios.put(
@@ -389,8 +389,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               />
             </div>
             <NavBarDetails
-              link="/pages/admin/properties"
+              link={() => router.back()}
               callBack={handleBack}
+              detailLink={`/pages/user/property-details/${data?.id}`}
             />
           </header>
           <main
@@ -411,7 +412,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               action={handleShowAddressModal}
             />
             <div>
-              <label className="font-bold text-[1.37rem]" htmlFor="serial">
+              <label className="font-bold text-[1.2rem]" htmlFor="serial">
                 Código
               </label>
               <input
@@ -429,7 +430,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               setData={setTypologyAndZone}
             />
             <div className="flex flex-col gap-2">
-              <h2 className="font-bold text-[1.37rem]">Propietario</h2>
+              <h2 className="font-bold text-[1.2rem]">Propietario</h2>
               <SearchEmail
                 owners={owners}
                 onSelect={handleEmailSelect}
@@ -529,8 +530,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         <div className="hidden md:flex flex-col w-full gap-2 p-4">
           <header className="w-full space-y-4">
             <NavBarDetails
-              link="/pages/admin/properties"
+              link={() => router.back()}
               callBack={handleBack}
+              detailLink={`/pages/user/property-details/${data?.id}`}
             />
           </header>
           <main
@@ -608,7 +610,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 <TagsSection data={tags} setData={setTags} />
               )}
               <div>
-                <label className="font-bold text-[1.37rem]" htmlFor="serial">
+                <label className="font-bold text-[1.2rem]" htmlFor="serial">
                   Código
                 </label>
                 <input
@@ -622,7 +624,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <h2 className="font-bold text-[1.37rem]">Propietario</h2>
+                <h2 className="font-bold text-[1.2rem]">Propietario</h2>
                 <SearchEmail
                   owners={owners}
                   onSelect={handleEmailSelect}

@@ -142,7 +142,7 @@ export default function RoomAddModal({
         <h2 className="text-2xl mb-4">Nueva Habitacion</h2>
 
         <div>
-          <label className="block text-sm mb-1" htmlFor="name">
+          <label className="block mb-1" htmlFor="name">
             Nombre
           </label>
           <input
@@ -157,7 +157,7 @@ export default function RoomAddModal({
           />
         </div>
         <div>
-          <label className="block text-sm mb-1">Puerta (Opcional):</label>
+          <label className="block mb-1">Puerta (Opcional):</label>
           <input
             type="text"
             name="door"
@@ -171,7 +171,7 @@ export default function RoomAddModal({
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>
             {/* <div>
-              <label className="block text-sm mb-1">Piso (Opcional):</label>
+              <label className="block mb-1">Piso (Opcional):</label>
               <input
                 type="number"
                 name="floor"
@@ -184,7 +184,7 @@ export default function RoomAddModal({
             </div> */}
             {/* Select para la tipología */}
             {/* <div className="mt-4">
-              <label className="block text-sm mb-1" htmlFor="typology">
+              <label className="block mb-1" htmlFor="typology">
                 Typology
               </label>
               <select
@@ -202,7 +202,7 @@ export default function RoomAddModal({
               </select>
             </div> */}
             <div className="mt-4">
-              <label className="block text-sm mb-1" htmlFor="tags">
+              <label className="block mb-1" htmlFor="tags">
                 Etiquetas
               </label>
               <input
@@ -218,9 +218,9 @@ export default function RoomAddModal({
             </div>
           </>
         )}
-        <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
+        <div className="flex flex-col gap-3 w-full">
           <div>
-            <label className="block text-sm mb-1" htmlFor="serial">
+            <label className="block mb-1" htmlFor="serial">
               Código
             </label>
             <input
@@ -235,7 +235,7 @@ export default function RoomAddModal({
             />
           </div>
           <div>
-            <label className="block text-sm mb-1" htmlFor="numberBeds">
+            <label className="block mb-1" htmlFor="numberBeds">
               Cantidad de camas en la habitación
             </label>
             <input
@@ -246,16 +246,16 @@ export default function RoomAddModal({
               onChange={(event) =>
                 setDataRoom({ ...dataRoom, numberBeds: event.target.value })
               }
-              className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+              className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
             />
           </div>
         </div>
 
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>
-            <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
+            <div className="w-full flex flex-col gap-3">
               <div>
-                <label className="block text-sm mb-1" htmlFor="price">
+                <label className="block mb-1" htmlFor="price">
                   Precio Habitacion
                 </label>
                 <input
@@ -266,15 +266,15 @@ export default function RoomAddModal({
                   onChange={(event) =>
                     setDataRoom({ ...dataRoom, price: event.target.value })
                   }
-                  className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                  className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
                 />
               </div>
               <div>
                 <label
-                  className="block text-sm mb-1"
+                  className="block mb-1"
                   htmlFor="amountHelloflatmate"
                 >
-                  Tarifa Helloflatmate
+                  Neto de helloflatmate
                 </label>
                 <input
                   type="number"
@@ -287,15 +287,15 @@ export default function RoomAddModal({
                       amountHelloflatmate: event.target.value,
                     })
                   }
-                  className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                  className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
                 />
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
-              <div className="lg:w-[12.5rem]">
-                <h3 className="block text-sm mb-1">
-                  Tarifa Helloflatmate con IVA
+            <div className="w-full flex flex-col gap-3">
+              <div>
+                <h3 className="block mb-1">
+                  Factura de helloflatmate con iva
                 </h3>
                 <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
                   {(parseInt(dataRoom?.amountHelloflatmate) || 0) -
@@ -304,7 +304,7 @@ export default function RoomAddModal({
                 </p>
               </div>
               <div>
-                <label className="block text-sm mb-1" htmlFor="IVA">
+                <label className="block mb-1" htmlFor="IVA">
                   IVA (%)
                 </label>
                 <input
@@ -315,17 +315,17 @@ export default function RoomAddModal({
                   onChange={(event) =>
                     setDataRoom({ ...dataRoom, IVA: event.target.value })
                   }
-                  className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                  className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
                 />
               </div>
             </div>
 
             {/* Periodos de alquiler */}
             <div>
-              <h3 className="block text-sm mb-1">Periodos de alquiler</h3>
+              <h3 className="block mb-1">Periodos de alquiler</h3>
               {rentalPeriods.map((period, index) => (
-                <div key={index} className="flex gap-2 mb-2">
-                  <label className="block text-sm mb-1" htmlFor="startDate">
+                <div key={index} className="flex flex-col gap-2 mb-2">
+                  <label className="block text-xs mb-1" htmlFor="startDate">
                     Fecha de ingreso
                   </label>
                   <input
@@ -337,7 +337,7 @@ export default function RoomAddModal({
                     }
                     className="w-1/2 p-2 border border-gray-300 rounded"
                   />
-                  <label className="block text-sm mb-1" htmlFor="endDate">
+                  <label className="block text-xs mb-1" htmlFor="endDate">
                     Fecha de egreso
                   </label>
                   <input
@@ -371,7 +371,7 @@ export default function RoomAddModal({
 
             {/* Descripciones */}
             <div className="w-full">
-              <h3 className="text-lg font-bold mb-3">Descripciones</h3>
+              <h3 className="mb-3">Descripciones</h3>
               <ul className="list-none flex flex-col gap-3">
                 {description.map((description, index) => (
                   <li key={index} className="flex gap-3 items-center">
