@@ -99,7 +99,7 @@ export default function RentalPeriodTemplate({ data, setData }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="font-bold text-[1.37rem]">Periodos de alquiler</h3>
+      <h3 className="font-bold text-[1.2rem]">Periodos de alquiler</h3>
       <ul className="list-none flex flex-col gap-3">
         {combinedPeriods.length > 0 ? (
           combinedPeriods.map((period, index) => (

@@ -269,10 +269,10 @@ export default function RoomEditModal({
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
-        <div className="flex flex-col gap-3 lg:flex-row lg:justify-between">
+        <div className="flex flex-col gap-3">
           <div>
             <label className="block text-sm mb-1" htmlFor="serial">
-              Serial
+              Código
             </label>
             <input
               type="text"
@@ -285,9 +285,21 @@ export default function RoomEditModal({
               className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
             />
           </div>
+          <div>
+            <label className="block text-sm mb-1">Puerta (Opcional):</label>
+            <input
+              type="text"
+              name="door"
+              value={dataRoom.door || ""} // Asegúrate de que el valor no sea undefined
+              onChange={(event) =>
+                setDataRoom({ ...dataRoom, door: event.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
           {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
             <>
-              <div>
+              {/* <div>
                 <label className="block text-sm mb-1">Piso (Opcional):</label>
                 <input
                   type="number"
@@ -298,22 +310,9 @@ export default function RoomEditModal({
                   }
                   className="w-full p-2 border border-gray-300 rounded"
                 />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Puerta (Opcional):</label>
-                <input
-                  type="text"
-                  name="door"
-                  value={dataRoom.door || ""} // Asegúrate de que el valor no sea undefined
-                  onChange={(event) =>
-                    setDataRoom({ ...dataRoom, door: event.target.value })
-                  }
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-
-              <div className="mt-4">
-                {/* Select para la tipología */}
+              </div> */}
+              {/* Select para la tipología */}
+              {/* <div className="mt-4">
                 <label className="block text-sm mb-1" htmlFor="typology">
                   Typology
                 </label>
@@ -330,18 +329,20 @@ export default function RoomEditModal({
                   <option value="ONLY_WOMEN">ONLY WOMEN</option>
                   <option value="ONLY_MEN">ONLY MEN</option>
                 </select>
-              </div>
+              </div> */}
+
               <div className="mt-4">
                 <label className="block text-sm mb-1" htmlFor="tags">
-                  Tags
+                  Etiquetas
                 </label>
                 <input
                   type="text"
                   id="tags"
                   name="tags"
-                  value={data || ""}
-                  placeholder="Enter tags"
-                  onChange={(event) => setDataRoom(event.target.value)}
+                  value={dataRoom.tags || ""}
+                  onChange={(event) =>
+                    setDataRoom({ ...dataRoom, tags: [event.target.value] })
+                  }
                   className="border rounded px-2 py-1 w-full appearance-none outline-none break-words"
                 />
               </div>
@@ -455,7 +456,11 @@ export default function RoomEditModal({
                         key={index}
                         className="flex gap-3 items-center flex-wrap"
                       >
+                        <label className="block text-xs mb-1" htmlFor="start">
+                          Fecha de ingreso
+                        </label>
                         <input
+                          id="startDate"
                           type="date"
                           value={formatedDate(period.startDate) || ""}
                           onChange={(e) =>
@@ -467,7 +472,11 @@ export default function RoomEditModal({
                           }
                           className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
                         />
+                        <label className="block text-xs mb-1" htmlFor="endDate">
+                          Fecha de egreso
+                        </label>
                         <input
+                          id="endDate"
                           type="date"
                           value={formatedDate(period.endDate) || ""}
                           onChange={(e) =>

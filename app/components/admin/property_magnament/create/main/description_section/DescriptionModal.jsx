@@ -43,7 +43,7 @@ export default function DescriptionModal({ data, setData, showModal }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.5 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
       <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem] lg:w-[25rem]">
@@ -87,10 +87,7 @@ export default function DescriptionModal({ data, setData, showModal }) {
         </div>
         <div className="flex justify-between w-full">
           <button
-            onClick={() => {
-              setData([]);
-              showModal(false);
-            }}
+            onClick={() => showModal(false)}
             className=" text-black px-4 py-2 border border-[#0C1660] rounded-lg mt-4"
           >
             Cerrar

@@ -4,7 +4,7 @@ export default function DescriptionSectionTemplate({ data, action }) {
   return (
     <section>
       <div className="flex justify-between items-center gap-3">
-        <h2 className="font-bold text-[1.37rem]">Descripcion</h2>
+        <h2 className="font-bold text-[1.2rem]">Descripción</h2>
         <EditButton action={action} />
       </div>
       {data.length > 0 ? (

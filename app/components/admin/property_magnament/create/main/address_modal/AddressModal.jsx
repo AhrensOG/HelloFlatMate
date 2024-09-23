@@ -34,10 +34,10 @@ export default function AddressModal({ data, setData, showModal, category }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.5 }}
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
     >
-      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem] lg:w-[25rem]">
+      <div className="bg-white p-3 rounded-lg shadow-lg w-[17rem] h-[95%] lg:w-[25rem]">
         <h2 className="text-2xl mb-4">Dirección</h2>
         <div className="flex flex-col w-full space-y-4">
           <div>
@@ -70,30 +70,26 @@ export default function AddressModal({ data, setData, showModal, category }) {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
-            <>
-              <div>
-                <label className="block text-sm mb-1">Piso (Opcional):</label>
-                <input
-                  type="number"
-                  name="floor"
-                  value={formData.floor || ""} // Asegúrate de que el valor no sea undefined
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Puerta (Opcional):</label>
-                <input
-                  type="text"
-                  name="door"
-                  value={formData.door || ""} // Asegúrate de que el valor no sea undefined
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-            </>
-          )}
+          <div>
+            <label className="block text-sm mb-1">Piso (Opcional):</label>
+            <input
+              type="number"
+              name="floor"
+              value={formData.floor || ""} // Asegúrate de que el valor no sea undefined
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1">Puerta (Opcional):</label>
+            <input
+              type="text"
+              name="door"
+              value={formData.door || ""} // Asegúrate de que el valor no sea undefined
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
           <div>
             <label className="block text-sm mb-1">Código Postal:</label>
             <input
