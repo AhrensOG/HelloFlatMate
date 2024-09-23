@@ -3,8 +3,9 @@ import NavBar from "@/app/components/nav_bar/NavBar";
 import CategorySelector from "@/app/components/user/home/categorySelector/CategorySelector";
 import { getAllProperties } from "@/app/context/actions";
 import { Context } from "@/app/context/GlobalContext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, Suspense } from "react";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation"; // Para obtener los query params
 
 const SelectCategoryPage = () => {
   const { state, dispatch } = useContext(Context);
@@ -13,6 +14,10 @@ const SelectCategoryPage = () => {
   const [helloColivingProperties, setHelloColivingProperties] = useState([]);
   const [helloStudioProperties, setHelloStudioProperties] = useState([]);
   const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+
+  // Obtener el parámetro de la URL
+  const searchParams = useSearchParams();
+  const categoryQuery = searchParams.get("c");
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -55,13 +60,44 @@ const SelectCategoryPage = () => {
       <header>
         <NavBar client={true} admin={false} owner={false} />
       </header>
-      <CategorySelector
-        helloRoomProperties={helloRoomProperties}
-        helloColivingProperties={helloColivingProperties}
-        helloStudioProperties={helloStudioProperties}
-        helloLandlordProperties={helloLandlordProperties}
-      />
+      {/* Suspense para manejar el loader mientras se cargan las propiedades */}
+      <Suspense fallback={<Loader />}>
+        <CategorySelector
+          helloRoomProperties={helloRoomProperties}
+          helloColivingProperties={helloColivingProperties}
+          helloStudioProperties={helloStudioProperties}
+          helloLandlordProperties={helloLandlordProperties}
+          selectedCategory={categoryQuery} // Pasar la categoría seleccionada por query
+        />
+      </Suspense>
     </>
+  );
+};
+
+const Loader = () => {
+  return (
+    <div className="w-full h-screen flex justify-center items-center">
+      <div className="loader"></div>{" "}
+      {/* Puedes crear una animación CSS para el loader */}
+      <style jsx>{`
+        .loader {
+          border: 8px solid #f3f3f3;
+          border-top: 8px solid #3498db;
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 

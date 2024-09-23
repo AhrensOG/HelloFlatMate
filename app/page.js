@@ -19,13 +19,13 @@ const helloroom = {
     title: "Listo para vivir, listo para estudiar",
     description:
       "Ideales para nómadas digitales, incluyen servicios de atención, limpieza, suministros, Internet y convivencia con compañeros similares, fomentando colaboración y comunidad.",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_ROOM",
   },
   offer: {
     title: "Vive una Experiencia Lista para Habitar desde el Primer Momento",
     description:
       "Nuestras acogedoras Hello Rooms están diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento dado que vienen a Valencia por menos de un año y son gestionadas por los agentes de helloflatmate",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_ROOM",
   },
   family: {
     title: "Diseño Pensado en Estudiantes",
@@ -41,13 +41,13 @@ const hellocoliving = {
     title: "Listo para vivir, listo para estudiar",
     description:
       "Ideales para nómadas digitales, incluyen servicios de atención, limpieza, suministros, Internet y convivencia con compañeros similares, fomentando colaboración y comunidad.",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_COLIVING",
   },
   offer: {
     title: "Una Experiencia de Coliving Inigualable",
     description:
       "En el contexto del coliving, donde valoramos la colaboración y la comunidad, ofrecemos servicios adicionales para una experiencia más completa. Además de todos los servicios de atención a huéspedes de helloflatmate.",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_COLIVING",
   },
   family: {
     title: "Diseño Pensado en Estudiantes",
@@ -63,13 +63,13 @@ const hellostudio = {
     title: "Trabaja, conecta y crece en HelloStudio",
     description:
       "Espacios de coworking productivos y colaborativos con tecnología avanzada, internet rápido, salas de reuniones, áreas comunes, y eventos comunitarios, ideales para profesionales y emprendedores en crecimiento.",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_STUDIO",
   },
   offer: {
     title: "Flexibilidad y Comodidad",
     description:
       "Nuestros espacios están diseñados para adaptarse a tus horarios y necesidades. Ya sea que necesites trabajar temprano en la mañana o tarde en la noche, hellostudio está siempre disponible para ti.",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_STUDIO",
   },
   family: {
     title: "Perfecto para Estudiar Toda tu Carrera en Valencia",
@@ -85,13 +85,13 @@ const hellolandlord = {
     title: "Inquilinos ideales, gestión en tus manos.",
     description:
       "HelloLandlord conecta propietarios con inquilinos ideales. Nos encargamos del contrato y la publicidad, mientras tú gestionas la propiedad de forma sencilla y segura.",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_LANDLORD",
   },
   offer: {
     title: "Propiedades de Calidad",
     description:
       "Accede a una selección de departamentos bien mantenidos y equipados, listos para que te mudes de inmediato. Nos aseguramos de que cada propiedad cumpla con nuestros altos estándares de calidad.",
-    link: "/pages/select-category",
+    link: "/pages/select-category?c=HELLO_LANDLORD",
   },
   family: {
     title: "Habitaciones Gestionadas para tu Comodidad",

@@ -5,10 +5,17 @@ import { NextResponse } from 'next/server';
 export async function getAllProperties() {
     try {
         const properties = await Property.findAll({
-            include: {
+            include: [{
                 model: Room,
                 as: 'rooms',
-            }
+                include: [{ 
+                    model: RentalPeriod,
+                    as: 'rentalPeriods'
+                }]
+            }, { 
+                model: RentalPeriod,
+                as: 'rentalPeriods'
+            }]
         });
         return NextResponse.json(properties, { status: 200 });
 

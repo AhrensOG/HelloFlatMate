@@ -23,6 +23,9 @@ export async function getAllProperties() {
                 {
                     model: Contract,
                     as: 'contracts'
+                }, {
+                    model: RentalPeriod,
+                    as: 'rentalPeriods'
                 }],
 
             },
@@ -42,8 +45,11 @@ export async function getAllProperties() {
             {
                 model: Contract,
                 as: 'contracts'
-            }
-            ]
+            },
+            {
+                model: RentalPeriod,
+                as: 'rentalPeriods'
+            }]
         });
         return NextResponse.json(properties, { status: 200 });
 
