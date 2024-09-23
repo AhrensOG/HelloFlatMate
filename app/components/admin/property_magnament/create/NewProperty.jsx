@@ -73,7 +73,7 @@ export default function NewProperty({ category, handleBack }) {
   const [rentalPeriods, setRentalPeriods] = useState([]);
   const [serial, setSerial] = useState("");
   const [typologyAndZone, setTypologyAndZone] = useState({
-    typology: "",
+    typology: "MIXED",
     zone: "",
   });
   const [linkVideo, setLinkVideo] = useState("");
@@ -264,7 +264,7 @@ export default function NewProperty({ category, handleBack }) {
     typology: typologyAndZone.typology,
     zone: typologyAndZone.zone,
     linkVideo: linkVideo,
-    tags: [tags],
+    tags: tags,
   };
 
   const createProperty = async () => {
@@ -319,7 +319,7 @@ export default function NewProperty({ category, handleBack }) {
   }
   return (
     <div className="w-full flex justify-center items-center">
-      <div className="flex flex-col w-full max-w-screen-sm gap-2 p-1">
+      <div className="flex flex-col w-full md:hidden gap-2 p-2">
         <header className="w-full space-y-4">
           <ImageUploader setImages={setSliderImage} images={sliderImage} />
           <NavBarDetails callBack={handleBack} />
@@ -337,7 +337,7 @@ export default function NewProperty({ category, handleBack }) {
 
           <div>
             <label className="font-bold text-[1.37rem]" htmlFor="serial">
-              Serial
+              Código
             </label>
             <input
               type="text"
@@ -358,26 +358,22 @@ export default function NewProperty({ category, handleBack }) {
             <h2 className="font-bold text-[1.37rem]">Propietario</h2>
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
           </div>
-          <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
-          {(category !== "HELLO_ROOM" || category !== "HELLO_COLIVING") && (
+          {/* <LinkVideoSection data={linkVideo} setData={setLinkVideo} /> */}
+          {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
             <TagsSection data={tags} setData={setTags} />
           )}
-          {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
-            ""
-          ) : (
+          {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
             <PriceSection data={price} setData={setPrice} />
           )}
           <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
           <div className="flex flex-col gap-6">
             <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
           </div>
-          {category === "HELLO_STUDIO" || category === "HELLO_LANDLORD" ? (
+          {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
             <RentalPeriodTemplate
               data={rentalPeriods}
               setData={setRentalPeriods}
             />
-          ) : (
-            ""
           )}
           <DescriptionSectionTemplate
             action={handleShowDescriptionModal}
@@ -391,7 +387,7 @@ export default function NewProperty({ category, handleBack }) {
             category={category}
           />
           <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
-          <LocationSectionTemplate />
+          {/* <LocationSectionTemplate /> */}
           <MoreInfoSectionTemplate
             data={moreInfo}
             setData={setMoreInfo}
@@ -406,6 +402,125 @@ export default function NewProperty({ category, handleBack }) {
               });
             }}
           />
+        </main>
+        {showDescriptionModal && (
+          <DescriptionModal
+            data={description}
+            setData={setDescription}
+            showModal={handleShowDescriptionModal}
+          />
+        )}
+        {showRoomEditModal && (
+          <RoomAddModal
+            data={dataRoom}
+            setData={setRoomData}
+            showModal={handleShowRoomEditModal}
+            category={catAndSize.category}
+          />
+        )}
+        {showAddressModal && (
+          <AddressModal
+            data={address}
+            setData={setAddress}
+            showModal={handleShowAddressModal}
+            category={category}
+          />
+        )}
+      </div>
+
+      <div className="hidden md:flex flex-col w-full gap-2 p-4">
+        <header className="w-full space-y-4">
+          <NavBarDetails callBack={handleBack} />
+        </header>
+        <main
+          className={`${plus_jakarta.className} flex flex-row gap-10 grow text-[#0D171C]`}
+        >
+          {/* LEFT SIDE */}
+          <div className="space-y-10 flex-1">
+            <ImageUploader setImages={setSliderImage} images={sliderImage} />
+            <RoomSectionTemplate
+              data={dataRoom}
+              setData={setRoomData}
+              showModal={handleShowRoomEditModal}
+              action={handleShowRoomEditModal}
+              category={category}
+            />
+            {/* <LinkVideoSection data={linkVideo} setData={setLinkVideo} /> */}
+            {/* <LocationSectionTemplate /> */}
+            <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
+            <MoreInfoSectionTemplate
+              data={moreInfo}
+              setData={setMoreInfo}
+              action={handleShowMoreInfoModal}
+            />
+          </div>
+          <div className="border" />
+          {/* RIGHT SIDE */}
+          <div className="space-y-10 flex-1">
+            <TitleSectionTemplate
+              name={name}
+              setName={setName}
+              address={address}
+              setAdress={setAddress}
+              action={handleShowAddressModal}
+            />
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              <TagsSection data={tags} setData={setTags} />
+            )}
+            <div>
+              <label className="font-bold text-[1.37rem]" htmlFor="serial">
+                Serial
+              </label>
+              <input
+                type="text"
+                id="serial"
+                name="serial"
+                value={serial || ""}
+                placeholder="HH-1"
+                onChange={(event) => setSerial(event.target.value)}
+                className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <h2 className="font-bold text-[1.37rem]">Propietario</h2>
+              <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
+            </div>
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              <PriceSection data={price} setData={setPrice} />
+            )}
+            <div className="flex flex-col gap-6">
+              <GuestInfoSectionTemplate
+                data={guestInfo}
+                setData={setGuestInfo}
+              />
+            </div>
+            <DescriptionSectionTemplate
+              action={handleShowDescriptionModal}
+              data={description}
+            />
+
+            <TypolyAndZoneSection
+              data={typologyAndZone}
+              setData={setTypologyAndZone}
+              category={category}
+            />
+            <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              <RentalPeriodTemplate
+                data={rentalPeriods}
+                setData={setRentalPeriods}
+              />
+            )}
+            <SaveButton
+              action={() => {
+                toast.promise(createProperty(), {
+                  loading: "Creando propiedad",
+                  success: "Propiedad creada",
+                  error: "Ocurrio un error",
+                });
+              }}
+            />
+          </div>
         </main>
         {showDescriptionModal && (
           <DescriptionModal

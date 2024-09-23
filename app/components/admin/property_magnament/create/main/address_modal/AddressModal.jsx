@@ -70,30 +70,26 @@ export default function AddressModal({ data, setData, showModal, category }) {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
-            <>
-              <div>
-                <label className="block text-sm mb-1">Piso (Opcional):</label>
-                <input
-                  type="number"
-                  name="floor"
-                  value={formData.floor || ""} // Asegúrate de que el valor no sea undefined
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Puerta (Opcional):</label>
-                <input
-                  type="text"
-                  name="door"
-                  value={formData.door || ""} // Asegúrate de que el valor no sea undefined
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-            </>
-          )}
+          <div>
+            <label className="block text-sm mb-1">Piso (Opcional):</label>
+            <input
+              type="number"
+              name="floor"
+              value={formData.floor || ""} // Asegúrate de que el valor no sea undefined
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1">Puerta (Opcional):</label>
+            <input
+              type="text"
+              name="door"
+              value={formData.door || ""} // Asegúrate de que el valor no sea undefined
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
           <div>
             <label className="block text-sm mb-1">Código Postal:</label>
             <input

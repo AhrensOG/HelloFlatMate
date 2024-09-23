@@ -61,7 +61,7 @@ export default function SizeAndCategorySection({ data, setData }) {
           </div>
           <div className="w-full">
             <h3 className="text-[#000000CC] text-base  font-semibold">
-              Categoria
+              Categoría
             </h3>
             <p className="text-base border border-gray-300 p-2 font-medium">
               {data.category.toLowerCase().split("_").join("")}

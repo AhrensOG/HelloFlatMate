@@ -23,7 +23,7 @@ export default function RoomAddModal({
     amountHelloflatmate: "",
     IVA: "", // Añadir este campo para el IVA
     typology: "MIXED",
-    tags: [],
+    tags: "",
   });
 
   const [images, setImages] = useState([]);
@@ -58,7 +58,7 @@ export default function RoomAddModal({
         propertyId,
         rentalPeriods: rentalPeriods, // Agregar los periodos de alquiler
         description: description.map((desc) => desc.text), // Agregar las descripciones,
-        typology: dataRoom.typology,
+        typology: dataRoom.typology || "MIXED",
         tags: [dataRoom.tags],
       };
     }
@@ -149,9 +149,21 @@ export default function RoomAddModal({
             className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
           />
         </div>
+        <div>
+          <label className="block text-sm mb-1">Puerta (Opcional):</label>
+          <input
+            type="text"
+            name="door"
+            value={dataRoom.door || ""} // Asegúrate de que el valor no sea undefined
+            onChange={(event) =>
+              setDataRoom({ ...dataRoom, door: event.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
         {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
           <>
-            <div>
+            {/* <div>
               <label className="block text-sm mb-1">Piso (Opcional):</label>
               <input
                 type="number"
@@ -162,21 +174,9 @@ export default function RoomAddModal({
                 }
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Puerta (Opcional):</label>
-              <input
-                type="text"
-                name="door"
-                value={dataRoom.door || ""} // Asegúrate de que el valor no sea undefined
-                onChange={(event) =>
-                  setDataRoom({ ...dataRoom, door: event.target.value })
-                }
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div className="mt-4">
-              {/* Select para la tipología */}
+            </div> */}
+            {/* Select para la tipología */}
+            {/* <div className="mt-4">
               <label className="block text-sm mb-1" htmlFor="typology">
                 Typology
               </label>
@@ -193,17 +193,19 @@ export default function RoomAddModal({
                 <option value="ONLY_WOMEN">ONLY WOMEN</option>
                 <option value="ONLY_MEN">ONLY MEN</option>
               </select>
-            </div>
+            </div> */}
             <div className="mt-4">
               <label className="block text-sm mb-1" htmlFor="tags">
-                Tags
+                Etiquetas
               </label>
               <input
                 type="text"
                 id="tags"
                 name="tags"
-                value={data || ""}
-                onChange={(event) => setDataRoom(event.target.value)}
+                value={dataRoom.tags || ""}
+                onChange={(event) =>
+                  setDataRoom({ ...dataRoom, tags: event.target.value })
+                }
                 className="w-full p-2 border border-gray-300 rounded break-words"
               />
             </div>
