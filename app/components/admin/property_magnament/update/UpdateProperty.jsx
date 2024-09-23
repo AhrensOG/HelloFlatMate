@@ -367,6 +367,20 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
     }
   };
 
+  const cloneProperty = async () => {
+    try {
+      const response = await axios.post("/api/admin/property/clone", property);
+      const newId = response.data.property.id;
+      const newCategory = response.data.property.category;
+      // router.push(`/pages/admin/update/${newId}/${newCategory}`);
+      window.open(`/pages/admin/update/${newId}/${newCategory}`, "_blank");
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   if (!data || !owners || !property) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -508,6 +522,18 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               });
             }}
           />
+          <button
+            onClick={() => {
+              toast.promise(cloneProperty(), {
+                loading: "Clonando propiedad",
+                success: "Propiedad clonada",
+                error: "Error al clonar propiedad",
+              });
+            }}
+            className="bg-[#21aaccff] py-2 px-4 text-center rounded-2xl text-white text-sm font-medium cursor-pointer"
+          >
+            Clonar
+          </button>
         </main>
         {showDescriptionModal && (
           <DescriptionModal

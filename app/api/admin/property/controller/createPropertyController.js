@@ -1,5 +1,5 @@
-import { Owner, Property, RentalPeriod } from "@/db/init";
-import rentalPeriod from "@/db/models/rentalPeriod";
+import { Owner, Property, RentalPeriod, Room } from "@/db/init";
+import rentalPeriod, { sequelize } from "@/db/models/rentalPeriod";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
@@ -115,6 +115,96 @@ const createProperty = async (data) => {
         }
 
         return NextResponse.json({ message: "Propiedad cargada con éxito", property });
+    } catch (error) {
+        console.log(error);
+
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
+
+export async function cloneProperty(data) {
+    console.log(data);
+
+    if (!data) {
+        return NextResponse.json({ error: "No data provided" }, { status: 400 });
+    }
+
+    try {
+        const transaction = await sequelize.transaction();
+        try {
+            const property = await Property.create({
+                name: data.name,
+                serial: data.serial,
+                city: data.city,
+                street: data.street,
+                streetNumber: parseInt(data.streetNumber),
+                postalCode: data.postalCode,
+                floor: parseInt(data.floor) || null,
+                door: data.door,
+                size: parseInt(data.size),
+                roomsCount: parseInt(data.roomsCount),
+                bathrooms: parseInt(data.bathrooms),
+                bed: parseInt(data.bed),
+                maximunOccupants: parseInt(data.maximunOccupants),
+                typology: data?.typology || null,
+                zone: data.zone,
+                price: parseFloat(data.price) || 0,
+                offer: parseFloat(data.offer) || 0,
+                IVA: parseFloat(data.IVA) || 0,
+                amountOwner: parseFloat(data.amountOwner) || 0,
+                amountHelloflatmate: parseFloat(data.amountHelloflatmate) || 0,
+                puntuation: [],
+                isActive: true,
+                isBussy: false,
+                category: data.category,
+                images: data.images,
+                linkVideo: data.linkVideo || "",
+                amenities: data.amenities,
+                description: data.description,
+                incomeConditionDescription: data.incomeConditionDescription || "",
+                maintenanceDescription: data.maintenanceDescription || "",
+                roomDescription: data.roomDescription || "",
+                feeDescription: data.feeDescription || "",
+                aboutUs: data.aboutUs || "",
+                houseRules: data.houseRules || "",
+                checkIn: data.checkIn || "",
+                checkOut: data.checkOut || "",
+                ownerId: data.ownerId || "1",
+                tags: data.tags || [],
+                ownerId: data.ownerId
+            })
+
+            if (data.rooms.length > 0) {
+                await Room.bulkCreate(data.rooms.map((room) => {
+                    return {
+                        name: room.name,
+                        floor: parseInt(room.floor) || null,
+                        door: room.door || null,
+                        images: room.images || null,
+                        numberBeds: parseInt(room.numberBeds) || 0,
+                        couple: room.couple,
+                        bathroom: room.bathroom,
+                        serial: room.serial,
+                        price: parseFloat(room.price) || null,
+                        amountOwner: parseFloat(room.amountOwner) || null,
+                        amountHelloflatmate: parseFloat(room.amountHelloflatmate) || null,
+                        IVA: parseFloat(room.IVA) || null,
+                        description: room.description,
+                        typology: room.typology || "MIXED",
+                        tags: room.tags || [],
+                        propertyId: property.id
+                    }
+                }))
+            }
+
+            await transaction.commit();
+            return NextResponse.json({ message: "Propiedad clonada con exito", property, status: 200 });
+        } catch (error) {
+            console.log(error);
+
+            transaction.rollback();
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
     } catch (error) {
         console.log(error);
 
