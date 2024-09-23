@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function NavBarDetails({
   link = `/`,
   callBack = false,
+  detailLink = "/",
 }) {
   const route = useRouter();
   const handleBack = (link) => {
@@ -28,14 +30,14 @@ export default function NavBarDetails({
           alt="Logo de FlatMate"
         />
       </div>
-      <button>
+      <Link href={detailLink} target="_blank">
         <Image
           src={"/property_details/nav_bar_details/icon-share.svg"}
           width={24}
           height={24}
           alt="Boton para compartir"
         />
-      </button>
+      </Link>
     </nav>
   );
 }

@@ -26,7 +26,7 @@ export default function AmenitiesSectionTemplate({ data, setData }) {
   return (
     <section className="flex flex-col gap-3 w-full">
       <article className="w-full flex justify-between items-center">
-        <h2 className="font-bold text-[1.37rem] w-full text-start">
+        <h2 className="font-bold text-[1.2rem] w-full text-start">
           Que ofrece este lugar
         </h2>
         <EditButton />

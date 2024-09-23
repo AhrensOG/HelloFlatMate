@@ -11,8 +11,8 @@ export default function AmenitiesModalEdit({ data, setData, showModal }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
-      className="fixed w-full h-screen  bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
+      transition={{ duration: 0.5 }}
+      className="fixed w-full h-screen bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 inset-0"
     >
       <div className="w-full max-w-72 h-[90vh] bg-white p-4 rounded-lg shadow-lg flex flex-col justify-between">
         <h2 className="text-2xl mb-4 text-center">Editar Comodidades</h2>

@@ -3,8 +3,8 @@ export default function TypolyAndZoneSection({ data, setData, category }) {
     <section>
       <div>
         {/* Input para la Zona */}
-        <label className="font-bold text-[1.37rem]" htmlFor="zone">
-          Zone
+        <label className="font-bold text-[1.2rem]" htmlFor="zone">
+          Zona
         </label>
         <input
           type="text"
@@ -17,27 +17,25 @@ export default function TypolyAndZoneSection({ data, setData, category }) {
         />
       </div>
 
-      {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
-        <div className="mt-4">
-          {/* Select para la tipología */}
-          <label className="font-bold text-[1.37rem]" htmlFor="typology">
-            Typology
-          </label>
-          <select
-            id="typology"
-            name="typology"
-            value={data.typology || "MIXED"}
-            onChange={(event) =>
-              setData({ ...data, typology: event.target.value })
-            }
-            className="border rounded px-2 py-1 w-full appearance-none outline-none"
-          >
-            <option value="MIXED">MIXED</option>
-            <option value="ONLY_WOMEN">ONLY WOMEN</option>
-            <option value="ONLY_MEN">ONLY MEN</option>
-          </select>
-        </div>
-      )}
+      <div className="mt-4">
+        {/* Select para la tipología */}
+        <label className="font-bold text-[1.2rem]" htmlFor="typology">
+          Tipología 
+        </label>
+        <select
+          id="typology"
+          name="typology"
+          value={data.typology || "MIXED"}
+          onChange={(event) =>
+            setData({ ...data, typology: event.target.value })
+          }
+          className="border rounded px-2 py-1 w-full appearance-none outline-none"
+        >
+          <option value="MIXED">Mixto</option>
+          <option value="ONLY_WOMEN">Solo mujeres</option>
+          <option value="ONLY_MEN">Solo hombres</option>
+        </select>
+      </div>
     </section>
   );
 }

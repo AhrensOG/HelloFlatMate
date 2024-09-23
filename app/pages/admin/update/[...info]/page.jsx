@@ -67,22 +67,11 @@ export default function UpdatePropertyPage({ params }) {
           />
         )}
         {currentStep === 2 && (
-          <>
-            <div className="block md:hidden">
-              <UpdateProperty
-                data={initialData}
-                handleBack={handleBack}
-                category={currentCategory}
-              />
-            </div>
-            <div className="hidden md:block">
-              <UpdatePropertyDesktop
-                data={initialData}
-                category={currentCategory}
-                handleBack={handleBack}
-              />
-            </div>
-          </>
+          <UpdateProperty
+            data={initialData}
+            handleBack={handleBack}
+            category={currentCategory}
+          />
         )}
       </AnimatePresence>
     </Suspense>
