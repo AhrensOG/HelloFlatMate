@@ -22,6 +22,9 @@ import { uploadFiles } from "@/app/firebase/uploadFiles";
 import SearchEmail from "./main/SearchEmail";
 import RentalPeriodTemplate from "./main/RentalPeriodTemplate";
 import LocationSectionTemplate from "./main/LocationSectionTemplate";
+import TypolyAndZoneSection from "./main/TypolyAndZoneSection";
+import LinkVideoSection from "./main/LinkVideoSection";
+import TagsSection from "./main/TagsSection";
 
 export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
@@ -69,6 +72,12 @@ export default function NewProperty({ category, handleBack }) {
   });
   const [rentalPeriods, setRentalPeriods] = useState([]);
   const [serial, setSerial] = useState("");
+  const [typologyAndZone, setTypologyAndZone] = useState({
+    typology: "",
+    zone: "",
+  });
+  const [linkVideo, setLinkVideo] = useState("");
+  const [tags, setTags] = useState([]);
 
   const setRoomData = (data) => {
     setDataRoom(data);
@@ -172,6 +181,8 @@ export default function NewProperty({ category, handleBack }) {
         IVA: parseInt(room.IVA),
         rentalPeriods: room.rentalPeriods,
         description: room.description,
+        typology: room.typology || "MIXED",
+        tags: room.tags || [],
       }));
     } else {
       rooms = data.map((room) => ({
@@ -210,6 +221,7 @@ export default function NewProperty({ category, handleBack }) {
       toast.error("Error en la asignacion de la habitaciones");
     } catch (error) {
       toast.error("Error en la creación de habitaciones");
+      throw error;
     }
   };
 
@@ -249,6 +261,10 @@ export default function NewProperty({ category, handleBack }) {
     IVA: parseFloat(price.IVA) || 0,
     ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
     rentalPeriods: rentalPeriods.newRentalPeriods,
+    typology: typologyAndZone.typology,
+    zone: typologyAndZone.zone,
+    linkVideo: linkVideo,
+    tags: [tags],
   };
 
   const createProperty = async () => {
@@ -259,6 +275,8 @@ export default function NewProperty({ category, handleBack }) {
         property.images = imagesList;
 
         //Crear habitaciones
+        console.log(dataRoom);
+
         const rooms = await submitRoom(dataRoom);
 
         // Crear propiedad
@@ -331,11 +349,19 @@ export default function NewProperty({ category, handleBack }) {
               className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
             />
           </div>
-
+          <TypolyAndZoneSection
+            data={typologyAndZone}
+            setData={setTypologyAndZone}
+            category={category}
+          />
           <div className="flex flex-col gap-2">
             <h2 className="font-bold text-[1.37rem]">Propietario</h2>
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
           </div>
+          <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+          {(category !== "HELLO_ROOM" || category !== "HELLO_COLIVING") && (
+            <TagsSection data={tags} setData={setTags} />
+          )}
           {category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? (
             ""
           ) : (

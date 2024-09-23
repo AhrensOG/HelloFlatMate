@@ -70,6 +70,14 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: true,
             },
+            zone: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            typology: {
+                type: DataTypes.ENUM("MIXED", "ONLY_WOMEN", "ONLY_MEN"),
+                allowNull: true,
+            },
             amountOwner: {
                 type: DataTypes.FLOAT,
                 allowNull: true,
@@ -90,16 +98,12 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),
                 allowNull: false,
             },
-            IVA: {
-                type: DataTypes.FLOAT,
-                allowNull: true,
-            },
             isActive: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
             status: {
-                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
+                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED", "DELETED"),
                 defaultValue: "FREE",
                 allowNull: false
             },
@@ -110,6 +114,10 @@ const propertyInit = (sequelize, DataTypes) => {
             images: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,
+            },
+            linkVideo: {
+                type: DataTypes.TEXT,
+                allowNull: true
             },
             amenities: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
@@ -149,6 +157,10 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             checkOut: {
                 type: DataTypes.STRING(5500),
+                allowNull: true
+            },
+            tags: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
                 allowNull: true
             }
 

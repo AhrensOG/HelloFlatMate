@@ -24,6 +24,9 @@ import PriceSection from "../create/main/PriceSection";
 import SizeAndCategorySection from "../create/main/SizeAndCategorySection";
 import SearchEmail from "../create/main/SearchEmail";
 import RentalPeriodTemplate from "../create/main/RentalPeriodTemplate";
+import TypolyAndZoneSection from "../create/main/TypolyAndZoneSection";
+import LinkVideoSection from "../create/main/LinkVideoSection";
+import TagsSection from "../create/main/TagsSection";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -55,6 +58,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   const [floor, setFloor] = useState();
   const [door, setDoor] = useState();
   const [rentalPeriods, setRentalPeriods] = useState();
+  const [typologyAndZone, setTypologyAndZone] = useState();
+  const [linkVideo, setLinkVideo] = useState();
+  const [tags, setTags] = useState();
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -71,7 +77,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
     const fetchOwners = async () => {
       const res = await axios.get("/api/admin/user?role=OWNER");
       const ownerEmail = res.data.find(
-        (owner) => (owner.id = property?.ownerId)
+        (owner) => owner.id == property?.ownerId
       );
       setSelectedEmail(ownerEmail?.email);
       setOwners(res.data);
@@ -127,6 +133,12 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           deleteRentalPeriods: [],
         } || []
       );
+      setTypologyAndZone({
+        typology: property?.typology || "",
+        zone: property?.zone || "",
+      });
+      setLinkVideo(property?.linkVideo || "");
+      setTags(property?.tags || []);
     }
     fetchOwners();
   }, [property]);
@@ -335,6 +347,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           rentalPeriods: rentalPeriods.rentalPeriods || [],
           deleteRentalPeriods: rentalPeriods.deleteRentalPeriods || [],
           newRentalPeriods: rentalPeriods.newRentalPeriods || [],
+          typology: typologyAndZone.typology || "",
+          zone: typologyAndZone.zone || "",
+          linkVideo: linkVideo || "",
+          tags: tags,
         };
 
         const response = await axios.put(
@@ -402,6 +418,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
             />
           </div>
+          <TypolyAndZoneSection
+            data={typologyAndZone}
+            setData={setTypologyAndZone}
+          />
           <div className="flex flex-col gap-2">
             <h2 className="font-bold text-[1.37rem]">Dueño</h2>
             <SearchEmail
@@ -410,6 +430,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               email={selectedEmail || property.owner?.email || ""}
             />{" "}
           </div>
+          <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+          {(category !== "HELLO_ROOM" || category !== "HELLO_COLIVING") && (
+            <TagsSection data={tags} setData={setTags} />
+          )}
           {(category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") && (
             <PriceSection data={price || property.price} setData={setPrice} />
           )}
@@ -452,6 +476,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             setDeleteRooms={setDeleteRooms}
             category={category}
           />
+
           <AmenitiesSection
             data={amenities || property.amenities}
             edit={<EditButton action={handleShowAmenitiesModal} />}
