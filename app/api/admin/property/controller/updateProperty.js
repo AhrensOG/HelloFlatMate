@@ -98,9 +98,6 @@ export async function updateProperty(id, data) {
         return NextResponse.json({ error: "Error al actualizar la propiedad" }, { status: 500 });
     }
 }
-
-
-
 export async function updateStatusProperty(data) {
     if (!data) {
         return NextResponse.json({ error: "Need data" }, { status: 400 })
@@ -125,4 +122,50 @@ export async function updateStatusProperty(data) {
     property.status = data.status;
     await property.save();
     return NextResponse.json(property, { status: 200 })
+}
+
+export async function cascadeUpdateByCategory(data) {
+    if (!data) {
+        return NextResponse.json({ error: "Need data" }, { status: 400 });
+    }
+    if (!data.categories || data.categories.length === 0) {
+        return NextResponse.json({ error: "Need categories" }, { status: 400 });
+    }
+
+    const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
+
+    // Validar que las categorías sean válidas
+    if (data.categories.some(category => !validCategories.includes(category))) {
+        return NextResponse.json({ error: "Category not valid" }, { status: 400 });
+    }
+
+    try {
+        const transaction = await sequelize.transaction();
+        try {
+            // Iterar sobre las categorías y realizar las actualizaciones
+            for (const category of data.categories) {
+                const properties = await Property.findAll({ where: { category }, transaction });
+
+                const accData = data.map(({ category, ...rest }) => rest);
+                // Ejecutar las actualizaciones en paralelo usando Promise.all
+                await Promise.all(
+                    properties.map(property =>
+                        property.update({ ...accData }, { transaction })
+                    )
+                );
+            }
+
+            // Si todo va bien, confirmar la transacción
+            await transaction.commit();
+            return NextResponse.json({ message: "Update successful" }, { status: 200 });
+        } catch (error) {
+            // Si ocurre un error, deshacer la transacción
+            await transaction.rollback();
+            console.error(error);
+            return NextResponse.json({ error: "Error al actualizar la propiedad" }, { status: 500 });
+        }
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ error: "Error al iniciar la transacción" }, { status: 500 });
+    }
 }
