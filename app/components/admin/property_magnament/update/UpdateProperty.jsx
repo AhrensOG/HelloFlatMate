@@ -369,6 +369,20 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
     }
   };
 
+  const cloneProperty = async () => {
+    try {
+      const response = await axios.post("/api/admin/property/clone", property);
+      const newId = response.data.property.id;
+      const newCategory = response.data.property.category;
+      // router.push(`/pages/admin/update/${newId}/${newCategory}`);
+      window.open(`/pages/admin/update/${newId}/${newCategory}`, "_blank");
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   if (!data || !owners || !property) {
     return (
       <div className="flex items-center justify-center h-screen">
