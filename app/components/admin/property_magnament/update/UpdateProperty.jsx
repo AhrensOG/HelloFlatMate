@@ -708,18 +708,20 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                   });
                 }}
               />
-              <button
-                className="text-[#0D171C] font-bold text-[1.2rem] hover:underline"
-                onClick={() => {
-                  toast.promise(cloneProperty(), {
-                    loading: "Clonando propiedad",
-                    success: "Propiedad clonada",
-                    error: "Error al clonar propiedad",
-                  });
-                }}
-              >
-                Clonar
-              </button>
+              <div className="w-full flex justify-center items-center">
+                <button
+                  className="text-[#0D171C] font-bold text-[1.2rem] hover:underline"
+                  onClick={() => {
+                    toast.promise(cloneProperty(), {
+                      loading: "Clonando propiedad",
+                      success: "Propiedad clonada",
+                      error: "Error al clonar propiedad",
+                    });
+                  }}
+                >
+                  Clonar
+                </button>
+              </div>
             </div>
           </main>
         </div>
