@@ -167,7 +167,7 @@ export default function TableArticle({ data }) {
                     {item.serial}
                   </td>
                   <td className="px-6 py-4 text-center text-sm">{item.name}</td>
-                  <td className="px-6 py-4 text-center text-sm capitalize">
+                  <td className="px-6 py-4 text-center text-sm">
                     {item.category.replace(/_/g, "").toLowerCase()}
                   </td>
                   <td className="px-6 py-4 text-center text-sm">
