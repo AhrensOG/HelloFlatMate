@@ -15,7 +15,7 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
       <div className="lg:flex lg:flex-wrap">
         <MoreInfoItemTemplate
           property="condicionDeRenta"
-          title="Condicion de Renta"
+          title="Condición del alquiler"
           body={data.condicionDeRenta}
           onBodyChange={handleBodyChange}
         />
@@ -39,7 +39,7 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
         />
         <MoreInfoItemTemplate
           property="sobreNosotros"
-          title="Sobre Nosotros"
+          title="Sobre nosotros"
           body={data.sobreNosotros}
           onBodyChange={handleBodyChange}
         />

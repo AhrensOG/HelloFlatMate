@@ -47,7 +47,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                 id="modal-title"
                 className={`${poppins.className} pb-3 text-center text-xl font-semibold leading-6 text-gris-antracita`}
               >
-                Hello Flamate Términos de Uso
+                Términos de uso helloflamate
               </h1>
               <section
                 id="modal-description"
@@ -63,7 +63,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                     <h6>Registro Exclusivo por la Administración</h6>
                     <ul className="list-disc pl-3">
                       <li>
-                        Solo la administración de HelloFlatmate está autorizada
+                        Solo la administración de helloflamate está autorizada
                         para crear y activar perfiles de propietarios en la
                         plataforma. Ningún usuario puede auto-registrarse como
                         propietario sin la intervención y aprobación de la
@@ -77,7 +77,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                       <li>
                         Para solicitar la activación de un perfil de
                         propietario, los interesados deberán contactar
-                        directamente con HelloFlatmate a través de la sección
+                        directamente con helloflamate a través de la sección
                         dedicada en nuestra plataforma. Los propietarios
                         potenciales deberán proporcionar toda la documentación
                         requerida para verificar su identidad y la titularidad
@@ -90,7 +90,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                     <ul className="list-disc pl-3">
                       <li>
                         Una vez recibida y revisada la documentación, la
-                        administración de HelloFlatmate determinará si el perfil
+                        administración de helloflamate determinará si el perfil
                         cumple con los criterios necesarios para ser activado.
                         La decisión de aprobar o rechazar la creación de un
                         perfil será comunicada al solicitante por los medios
@@ -104,7 +104,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                       <li>
                         El perfil del propietario debe ser utilizado de acuerdo
                         con las políticas y términos establecidos por
-                        helloflatmate. Cualquier uso indebido del perfil o de la
+                        helloflamate. Cualquier uso indebido del perfil o de la
                         plataforma puede resultar en la desactivación del mismo.
                       </li>
                     </ul>

@@ -40,7 +40,7 @@ const SuccessPage = ({ params }) => {
     } else if (paymentType === "reserve") {
       // Mantén los textos predeterminados para las reservas
       setTitle("¡Felicitaciones!");
-      setSubTitle("Gracias por confiar en HelloFlatMate");
+      setSubTitle("Gracias por confiar en helloflamate");
       setBody(
         "Completa tus datos y sube la documentación necesaria para que podamos confirmar tu reserva."
       );
