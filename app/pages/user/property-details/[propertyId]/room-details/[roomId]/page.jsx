@@ -134,7 +134,7 @@ export default function RoomDetails({ params }) {
             <DescriptionSection title="Descripción" data={data.description} />
           )}
           {filteredRooms.length > 0 ? (
-            <RoomSection data={filteredRooms} title="Otras habitaciones" />
+            <RoomSection data={filteredRooms} title="Otras habitaciones en el piso" />
           ) : null}
 
           <AmenitiesSection data={data.amenities} />
