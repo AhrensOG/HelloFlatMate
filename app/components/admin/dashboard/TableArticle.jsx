@@ -72,7 +72,7 @@ export default function TableArticle({ data }) {
       {/* Search bar */}
       <input
         type="text"
-        placeholder="Buscar por nombre o serial..."
+        placeholder="Buscar por nombre o código..."
         className="p-2 border border-gray-300 rounded w-full max-w-lg mb-4"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -88,14 +88,16 @@ export default function TableArticle({ data }) {
               checked={selectedCategories.includes(category)}
               onChange={() => handleCategoryChange(category)}
             />
-            {category}
+            {category.replace(/_/g, "").toLowerCase()}
           </label>
         ))}
       </div>
 
       {/* Status filters */}
       <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
-        <h2 className="text-xl font-bold text-primary w-full">Status</h2>
+        <h2 className="text-xl font-bold text-primary w-full">
+          Estado de la propiedad
+        </h2>
         {statuses.map((status) => (
           <label key={status} className="flex items-center gap-2">
             <input
@@ -110,22 +112,48 @@ export default function TableArticle({ data }) {
 
       {/* Table */}
       <div className="w-full max-w-full border-2 border-primary rounded-lg overflow-x-auto overflow-y-auto max-h-96">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
           <thead className="bg-[#0e1863ff] text-white sticky top-0 z-10">
             <tr>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
-                Serial
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Código
               </th>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
                 Nombre
               </th>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
                 Categoría
               </th>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
-                Status
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Estado
               </th>
-              <th className="px-6 py-3"></th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Dirección
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Código Postal
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Zona
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Tipología
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Superficie M2
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Habitaciones
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Baños
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Propietario
+              </th>
+              <th className="text-sm text-center px-3 py-3 font-medium uppercase tracking-wider">
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -133,13 +161,37 @@ export default function TableArticle({ data }) {
               filteredData.map((item) => (
                 <tr
                   key={item.id}
-                  className="hover:bg-[#21aaccff] hover:text-white transition-all duration-200"
+                  className="hover:bg-blue-100 hover:text-black transition-colors duration-300 ease-in-out"
                 >
-                  <td className="px-6 py-4">{item.serial}</td>
-                  <td className="px-6 py-4">{item.name}</td>
-                  <td className="px-6 py-4">{item.category}</td>
-                  <td className="px-6 py-4">{item.status}</td>
-                  <td className="px-6 py-4 flex gap-2 justify-center">
+                  <td className="px-6 py-4 text-center text-sm">
+                    {item.serial}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm">{item.name}</td>
+                  <td className="px-6 py-4 text-center text-sm capitalize">
+                    {item.category.replace(/_/g, "").toLowerCase()}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm">
+                    {item.status}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm">{`${item.street} ${item.streetNumber}, ${item.city}`}</td>
+                  <td className="px-6 py-4 text-center text-sm">
+                    {item.postalCode}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm">{item.zone}</td>
+                  <td className="px-6 py-4 text-center text-sm capitalize">
+                    {item.typology?.toLowerCase()}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm">{item.size}</td>
+                  <td className="px-6 py-4 text-center text-sm">
+                    {item.roomsCount}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm">
+                    {item.bathrooms}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm">
+                    {item.owner?.email}
+                  </td>
+                  <td className="px-6 py-4 text-center space-x-4">
                     <button
                       onClick={() =>
                         toast.promise(handleDelete(item.id), {
@@ -151,7 +203,7 @@ export default function TableArticle({ data }) {
                       className="text-red-600 hover:text-red-800 transition-colors duration-200"
                       aria-label="Eliminar"
                     >
-                      <TrashIcon className="w-6 h-6" />
+                      <TrashIcon className="w-5 h-5" />
                     </button>
                     <button
                       onClick={() =>
@@ -162,14 +214,17 @@ export default function TableArticle({ data }) {
                       className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
                       aria-label="Editar"
                     >
-                      <PencilIcon className="w-6 h-6" />
+                      <PencilIcon className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-6 py-4 text-center" colSpan="5">
+                <td
+                  className="px-6 py-4 text-center text-gray-500"
+                  colSpan="13"
+                >
                   No hay resultados
                 </td>
               </tr>
