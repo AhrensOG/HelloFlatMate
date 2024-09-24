@@ -5,7 +5,6 @@ import { getAllProperties } from "@/app/context/actions";
 import { Context } from "@/app/context/GlobalContext";
 import React, { Suspense, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation"; // Para obtener los query params
 
 const SelectCategoryPage = () => {
   const { state, dispatch } = useContext(Context);
@@ -14,13 +13,6 @@ const SelectCategoryPage = () => {
   const [helloColivingProperties, setHelloColivingProperties] = useState([]);
   const [helloStudioProperties, setHelloStudioProperties] = useState([]);
   const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
-  const [categoryQuery, setCategoryQuery] = useState(null);
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const category = searchParams.get("c");
-    setCategoryQuery(category);
-  }, []); // Ejecuta esto solo en el cliente
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -70,7 +62,6 @@ const SelectCategoryPage = () => {
           helloColivingProperties={helloColivingProperties}
           helloStudioProperties={helloStudioProperties}
           helloLandlordProperties={helloLandlordProperties}
-          selectedCategory={categoryQuery} // Pasar la categoría seleccionada por query
         />
       </Suspense>
     </>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import CategoryCard from "./auxiliarComponents/CategoryCard";
 import Select from "./auxiliarComponents/Select";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const list = [
   {
@@ -35,19 +35,20 @@ const CategorySelector = ({
   helloColivingProperties,
   helloStudioProperties,
   helloLandlordProperties,
-  selectedCategory = null, // Prop "c" para la categoría seleccionada (si viene)
 }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const categoryQuery = searchParams.get("c"); // Obtiene el parámetro "c" de la URL
+
   const [currentCategory, setCurrentCategory] = useState(null); // Estado para la categoría seleccionada
   const [data, setData] = useState({}); // Estado para almacenar los datos seleccionados
 
   // Si recibimos selectedCategory (prop c), lo usamos como la categoría seleccionada
   useEffect(() => {
-    if (selectedCategory) {
-      setCurrentCategory(selectedCategory);
+    if (categoryQuery) {
+      setCurrentCategory(categoryQuery);
     }
-  }, [selectedCategory]);
-  console.log(data);
+  }, [categoryQuery]);
 
   // Función para extraer las ubicaciones de las propiedades
   const extractLocations = (properties) => {
