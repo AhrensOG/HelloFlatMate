@@ -87,7 +87,7 @@ export default function LocationSection({
   if (!isLoaded || loadingLocation) {
     return (
       <section className="flex flex-col gap-3">
-        <h2 className="font-bold text-[1.2rem]">¿Dónde Estarás?</h2>
+        <h2 className="font-bold text-[1.2rem]">Ubicación</h2>
         <div className="animate-pulse w-full h-[200px] bg-gray-200 rounded-lg">
           <div className="w-full h-full bg-gray-300"></div>
         </div>
@@ -97,7 +97,7 @@ export default function LocationSection({
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="font-bold text-[1.2rem]">¿Dónde Estarás?</h2>
+      <h2 className="font-bold text-[1.2rem]">Ubicación</h2>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={location}

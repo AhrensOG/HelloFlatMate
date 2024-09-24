@@ -77,7 +77,7 @@ export default function NewProperty({ category, handleBack }) {
     zone: "",
   });
   const [linkVideo, setLinkVideo] = useState("");
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState("");
 
   const setRoomData = (data) => {
     setDataRoom(data);
