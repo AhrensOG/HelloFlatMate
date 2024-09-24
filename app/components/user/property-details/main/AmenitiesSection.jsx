@@ -22,11 +22,11 @@ export default function AmenitiesSection({ edit = null, data = null }) {
     <section className="flex flex-col gap-3">
       {edit ? (
         <div className="w-full flex justify-between items-center">
-          <h2 className="font-bold text-[1.37rem]">Que ofrece este lugar</h2>
+          <h2 className="font-bold text-[1.2rem]">Que ofrece este lugar</h2>
           {edit}
         </div>
       ) : (
-        <h2 className="font-bold text-[1.37rem]">Que ofrece este lugar</h2>
+        <h2 className="font-bold text-[1.2rem]">Que ofrece este lugar</h2>
       )}
       {data ? (
         data.map((item) => (

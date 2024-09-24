@@ -1,6 +1,6 @@
 import { Client, Contract, Document, LeaseOrderProperty, LeaseOrderRoom, Property, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
-
+import { op } from "sequelize";
 
 export async function getAllProperties() {
     try {
@@ -23,6 +23,9 @@ export async function getAllProperties() {
                 {
                     model: Contract,
                     as: 'contracts'
+                }, {
+                    model: RentalPeriod,
+                    as: 'rentalPeriods'
                 }],
 
             },
@@ -42,8 +45,11 @@ export async function getAllProperties() {
             {
                 model: Contract,
                 as: 'contracts'
-            }
-            ]
+            },
+            {
+                model: RentalPeriod,
+                as: 'rentalPeriods'
+            }]
         });
         return NextResponse.json(properties, { status: 200 });
 
@@ -110,7 +116,7 @@ export async function getPropertyById(id) {
 
 export async function getPropertiesActive() {
     try {
-        const properties = await Property.findAll({ where: { isActive: true } });
+        const properties = await Property.findAll({ where: { isActive: true, status: { [op.ne]: "DELETED" } } });
         return NextResponse.json(properties, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
@@ -130,6 +136,15 @@ export async function getPropertiesByCategory(category) {
     if (!category) return NextResponse.json({ error: "Se requiere la categoria" }, { status: 400 });
     try {
         const properties = await Property.findAll({ where: { category } });
+        return NextResponse.json(properties, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
+    }
+}
+
+export async function getAllPropertiesSimple() {
+    try {
+        const properties = await Property.findAll({ attributes: ["name", "serial", "id", "category", "status"], where: { isActive: true } });
         return NextResponse.json(properties, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });

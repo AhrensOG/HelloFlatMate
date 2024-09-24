@@ -6,12 +6,12 @@ import { plus_jakarta } from "@/font";
 import SelectContract from "./SelectContract";
 import ReservationButton from "../ReservationButton";
 import { XMarkIcon } from "@heroicons/react/20/solid";
-import DatePicker from "./date_picker/DatePicker";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
 import ShowClauses from "./ShowClauses";
+import SelectRentalPeriod from "./SelectRentalPeriod";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -20,24 +20,16 @@ const stripePromise = loadStripe(
 export default function ReservationModal({ callback, data }) {
   const router = useRouter();
   const [info, setInfo] = useState({
-    duracion: null,
-    fecha: null,
+    startDate: "",
+    endDate: "",
+    duration: null,
   });
   const [dataReservation, setDataReservation] = useState(data);
+  const [rentalPeriods, setRentalPeriods] = useState(data.rentalPeriods);
+  const [clausesAccepted, setClausesAccepted] = useState(false); // Estado para el checkbox
 
   const handleRedirect = () => {
     router.push("/pages/contract");
-  };
-
-  const calculateDuration = () => {
-    const durationNumber = info.duracion.split(" ")[0];
-    return parseInt(durationNumber);
-  };
-  const formatDate = (date) => {
-    console.log(date);
-
-    const dateFormatted = date.toISOString();
-    return dateFormatted;
   };
 
   const calculatePrice = (price, duration) => {
@@ -45,18 +37,11 @@ export default function ReservationModal({ callback, data }) {
     return total;
   };
 
-  const calculateEndDate = (date, duration) => {
-    const endDate = new Date(date);
-    endDate.setMonth(endDate.getMonth() + duration);
-    return endDate.toISOString();
-  };
-
   const handleCheckout = async (reservation, user, leaseOrderId) => {
-    // Aquí puedes obtener roomId, userEmail y price desde tus datos
     const propertyId = reservation?.propertyId;
     const userEmail = user?.email;
-    const price = parseInt(reservation?.unitPrice * 100); // Precio en centavos ($50.00)
-    const propertyName = reservation?.propertyName; // Precio en centavos ($50.00)
+    const price = parseInt(reservation?.unitPrice * 100);
+    const propertyName = reservation?.propertyName;
 
     try {
       const response = await fetch("/api/stripe/create-checkout-session", {
@@ -74,7 +59,6 @@ export default function ReservationModal({ callback, data }) {
         }),
       });
       const session = await response.json();
-
       const stripe = await stripePromise;
 
       const result = await stripe.redirectToCheckout({
@@ -84,15 +68,31 @@ export default function ReservationModal({ callback, data }) {
       toast.info("Seras redirigido a la pagina de pago");
     } catch (error) {
       console.log(error);
-      console.error(error);
+      throw error;
     }
   };
 
+  const handleSetDuration = (startDate, endDate, duration, rentalPeriodId) => {
+    console.log(startDate, endDate, duration);
+    setInfo({
+      startDate: startDate,
+      endDate: endDate,
+      duration: duration,
+      rentalPeriodId: rentalPeriodId,
+    });
+  };
+
   const handleReservationSubmit = async () => {
-    const duration = calculateDuration();
-    const price = calculatePrice(data.price, duration);
-    const startDate = info.fecha;
-    const endDate = calculateEndDate(info.fecha, duration);
+    console.log("hola");
+
+    if (!clausesAccepted) {
+      throw new Error("Debes aceptar los términos y condiciones");
+    }
+
+    const price = calculatePrice(data.price, info.duration);
+    const startDate = info.startDate;
+    const endDate = info.endDate;
+    const rentalPeriodId = info.rentalPeriodId;
     const reservation = {
       ...dataReservation,
       date: new Date().toISOString(),
@@ -101,18 +101,18 @@ export default function ReservationModal({ callback, data }) {
       price: price,
     };
     setDataReservation(reservation);
+
     try {
-      toast.info("Reservando...");
       const response = await axios.post("/api/lease_order", reservation);
-      if (response.status === 200) {
-        toast.success("Reserva exitosa");
-        reservation.unitPrice = data.price
-        await handleCheckout(reservation, data?.user, response.data.id);
-        return response.data;
-      }
-      toast.error("Error al realizar la reserva");
+      await axios.patch("/api/rental_period", {
+        id: rentalPeriodId,
+        status: "RESERVED",
+      });
+      reservation.unitPrice = data.price;
+      await handleCheckout(reservation, data?.user, response.data.id);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
@@ -126,8 +126,10 @@ export default function ReservationModal({ callback, data }) {
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <div className="flex">
+          {console.log(info)}
+
           <div className="w-[44%]">
-            <button className=" w-8 h-8" onClick={callback}>
+            <button className="w-8 h-8" onClick={callback}>
               <XMarkIcon />
             </button>
           </div>
@@ -144,19 +146,30 @@ export default function ReservationModal({ callback, data }) {
         </div>
         <h2 className="font-medium text-[1.75rem]">Estadía</h2>
         <div className="flex flex-col justify-center items-center gap-5">
-          {/* Contenido del modal */}
-          <SelectContract data={info} setData={setInfo} />
-          <DatePicker data={info} setData={setInfo} />
+          {/* <SelectContract data={info} setData={setInfo} /> */}
+          <SelectRentalPeriod
+            data={rentalPeriods.filter((rental) => rental.status === "FREE")}
+            setData={handleSetDuration}
+            info={info}
+          />
           <ShowClauses />
-          <div className=" self-center w-[90%]">
+          <div className="self-center w-[90%]">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={clausesAccepted}
+                onChange={() => setClausesAccepted(!clausesAccepted)}
+                className="mr-2"
+              />
+              He leído y comprendo las cláusulas
+            </label>
+          </div>
+          <div className="self-center w-[90%]">
             <ReservationButton
-              callback={() => { 
+              callback={() => {
                 toast.promise(handleReservationSubmit(), {
                   loading: "Reservando...",
-                  success: () => {
-                    toast.success("Reservado con exito");
-                    // handleRedirect();
-                  },
+                  success: "Reservado!",
                   error: "Error al reservar",
                 });
               }}

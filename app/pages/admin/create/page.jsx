@@ -33,17 +33,7 @@ export default function AddProperty() {
         />
       )}
       {currentStep === 2 && (
-        <>
-          <div className="block md:hidden">
-            <NewProperty category={currentCategory} handleBack={handleBack} />
-          </div>
-          <div className="hidden md:block">
-            <NewPropertyDesktop
-              handleBack={handleBack}
-              category={currentCategory}
-            />
-          </div>
-        </>
+        <NewProperty category={currentCategory} handleBack={handleBack} />
       )}
     </AnimatePresence>
   );

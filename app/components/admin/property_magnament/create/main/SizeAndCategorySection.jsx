@@ -39,7 +39,7 @@ export default function SizeAndCategorySection({ data, setData }) {
     <section className="flex justify-center w-full">
       <div className="bg-white rounded-lg shadow-lg w-full">
         <div className="flex flex-col w-full space-y-4">
-          <h2 className="font-bold text-[1.37rem]">Tamaño y categoría</h2>
+          <h2 className="font-bold text-[1.2rem]">Tamaño y categoría</h2>
           <div className="w-full">
             <label
               htmlFor="size"
@@ -61,7 +61,7 @@ export default function SizeAndCategorySection({ data, setData }) {
           </div>
           <div className="w-full">
             <h3 className="text-[#000000CC] text-base  font-semibold">
-              Categoria
+              Categoría
             </h3>
             <p className="text-base border border-gray-300 p-2 font-medium">
               {data.category.toLowerCase().split("_").join("")}

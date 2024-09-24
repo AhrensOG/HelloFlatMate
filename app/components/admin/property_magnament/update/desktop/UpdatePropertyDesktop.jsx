@@ -24,6 +24,7 @@ import PriceSection from "../../create/main/PriceSection";
 import { plus_jakarta } from "@/font";
 import EditButton from "../../shared/EditButton";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
+import RentalPeriodTemplate from "../../create/main/RentalPeriodTemplate";
 
 export default function UpdatePropertyDesktop({
   data = false,
@@ -44,6 +45,7 @@ export default function UpdatePropertyDesktop({
 
   // Estados para los diferentes datos de la propiedad
   const [name, setName] = useState();
+  const [serial, setSerial] = useState();
   const [address, setAddress] = useState();
   const [guestInfo, setGuestInfo] = useState();
   const [sliderImage, setSliderImage] = useState([]);
@@ -55,6 +57,9 @@ export default function UpdatePropertyDesktop({
   const [deleteRooms, setDeleteRooms] = useState([]);
   const [catAndSize, setCatAndSize] = useState();
   const [price, setPrice] = useState();
+  const [floor, setFloor] = useState();
+  const [door, setDoor] = useState();
+  const [rentalPeriods, setRentalPeriods] = useState();
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -75,9 +80,11 @@ export default function UpdatePropertyDesktop({
       );
       setSelectedEmail(ownerEmail?.email);
       setOwners(res.data);
+      console.log(res.data);
     };
     if (property) {
       setName(property?.name || "");
+      setSerial(property?.serial || "");
       setDescription(property?.description || "");
       setSliderImage(property?.images || []);
       setGuestInfo({
@@ -90,6 +97,8 @@ export default function UpdatePropertyDesktop({
         street: property?.street,
         streetNumber: property?.streetNumber,
         postalCode: property?.postalCode,
+        floor: property?.floor,
+        door: property?.door,
       });
       setAmenities(property?.amenities || []);
       setMoreInfo({
@@ -114,6 +123,15 @@ export default function UpdatePropertyDesktop({
         offer: property?.offer || 0,
         IVA: property?.IVA || 0,
       });
+      setFloor(property?.floor || 0);
+      setDoor(property?.door || 0);
+      setRentalPeriods(
+        {
+          rentalPeriods: property?.rentalPeriods,
+          newRentalPeriods: [],
+          deleteRentalPeriods: [],
+        } || []
+      );
     }
     fetchOwners();
   }, [property]);
@@ -187,6 +205,7 @@ export default function UpdatePropertyDesktop({
   const handleSubmit = () => {
     const allData = {
       name: name,
+      serial: serial,
       city: address.city,
       street: address.street,
       streetNumber: address.streetNumber,
@@ -242,8 +261,12 @@ export default function UpdatePropertyDesktop({
           );
 
           const roomsFormated = newRooms.map((room) => {
+            console.log(room);
+
             return {
               ...room,
+              floor: room.floor !== "" ? parseInt(room.floor) : null,
+              door: room.door !== "" ? room.door : null,
               propertyId: property?.id,
             };
           });
@@ -283,10 +306,13 @@ export default function UpdatePropertyDesktop({
         //DATOS DE LA PROPIEDAD
         let updateDataProperty = {
           name: name,
+          serial: serial,
           city: address.city,
           street: address.street,
           streetNumber: parseInt(address.streetNumber),
           postalCode: address.postalCode,
+          floor: parseInt(floor),
+          door: door,
           size: parseInt(catAndSize.size),
           roomsCount: property.roomsCount,
           bathrooms: parseInt(guestInfo.bathrooms),
@@ -313,6 +339,9 @@ export default function UpdatePropertyDesktop({
           offer: parseFloat(price.offer) || 0,
           IVA: parseFloat(price.IVA) || 0,
           ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
+          rentalPeriods: rentalPeriods.rentalPeriods || [],
+          deleteRentalPeriods: rentalPeriods.deleteRentalPeriods || [],
+          newRentalPeriods: rentalPeriods.newRentalPeriods || [],
         };
 
         const response = await axios.put(
@@ -321,8 +350,8 @@ export default function UpdatePropertyDesktop({
         );
         toast.success("Propiedad actualizada correctamente");
       } catch (error) {
-        console.error("Error updating property data:", error);
         toast.error("Error al actualizar la propiedad");
+        throw error;
       }
     } else {
       toast.error("No dejes datos incompletos");
@@ -338,173 +367,215 @@ export default function UpdatePropertyDesktop({
   }
 
   return (
-    <div className="w-full flex justify-center items-center">
-      <div className="flex flex-col w-full gap-6">
-        <header className="w-full space-y-4 p-1">
-          <NavBarDetails link="/pages/admin/properties" callBack={handleBack} />
-        </header>
-        <main
-          className={`${plus_jakarta.className} px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
-        >
-          <div className="flex flex-col items-center gap-[2.5rem] justify-center">
-            <div className="w-full flex justify-center gap-4">
-              {/* Izquierda */}
-              <div className="w-full flex flex-col justify-between gap-6">
-                <div className="w-full">
-                  <SliderUpdateTemplate
-                    data={sliderImage}
-                    action={handleShowSliderModal}
-                  />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="w-full flex justify-center items-center">
+        <div className="flex flex-col w-full gap-6">
+          <header className="w-full space-y-4 p-1">
+            <NavBarDetails
+              link="/pages/admin/properties"
+              callBack={handleBack}
+            />
+          </header>
+          <main
+            className={`${plus_jakarta.className} px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
+          >
+            <div className="flex flex-col items-center gap-[2.5rem] justify-center">
+              <div className="w-full flex justify-center gap-4">
+                {/* Izquierda */}
+                <div className="w-full flex flex-col justify-between gap-6">
+                  <div className="w-full">
+                    <SliderUpdateTemplate
+                      data={sliderImage}
+                      action={handleShowSliderModal}
+                    />
 
-                  <RoomSectionTemplate
-                    data={dataRooms || property.rooms}
-                    onEditRoom={handleRoomUpdate}
-                    setData={setDataRooms}
-                    action={handleAddRoomModal}
-                    deleteRooms={deleteRooms}
-                    setDeleteRooms={setDeleteRooms}
-                    category={category}
-                  />
+                    <RoomSectionTemplate
+                      data={dataRooms || property.rooms}
+                      onEditRoom={handleRoomUpdate}
+                      setData={setDataRooms}
+                      action={handleAddRoomModal}
+                      deleteRooms={deleteRooms}
+                      setDeleteRooms={setDeleteRooms}
+                      category={category}
+                    />
 
-                  {/* <LocationSectionTemplate data={"hola"} /> */}
-                  <LocationSection
-                    street={data?.street}
-                    streetNumber={data?.streetNumber}
-                    postalCode={data?.postalCode}
-                    city={data?.city}
-                    country={"España"}
-                  />
+                    {/* <LocationSectionTemplate data={"hola"} /> */}
+                    <LocationSection
+                      street={data?.street}
+                      streetNumber={data?.streetNumber}
+                      postalCode={data?.postalCode}
+                      city={data?.city}
+                      country={"España"}
+                    />
 
-                  <DescriptionSectionTemplate
-                    data={description || property.description}
-                    action={handleShowDescriptionModal}
-                  />
+                    <DescriptionSectionTemplate
+                      data={description || property.description}
+                      action={handleShowDescriptionModal}
+                    />
 
-                  <AmenitiesSection
-                    data={amenities || property.amenities}
-                    edit={<EditButton action={handleShowAmenitiesModal} />}
-                  />
+                    <AmenitiesSection
+                      data={amenities || property.amenities}
+                      edit={<EditButton action={handleShowAmenitiesModal} />}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Divisor */}
-              <div className="h-full w-[1px] bg-[#B2B2B2]"></div>
+                {/* Divisor */}
+                <div className="h-full w-[1px] bg-[#B2B2B2]"></div>
 
-              {/* Derecha */}
-              <div className="w-full flex flex-col justify-between gap-6">
-                <TitleSectionTemplate
-                  name={name || ""}
-                  setName={setName}
-                  address={
-                    address || {
-                      street: property.street,
-                      streetNumber: property.streetNumber,
-                      postalCode: property.postalCode,
-                      city: property.city,
-                    }
-                  }
-                  setAddress={setAddress}
-                  action={handleShowAddressModal}
-                />
-                <div className="flex flex-col gap-2">
-                  <h2 className="font-bold text-[1.37rem]">Propietario</h2>
-                  <SearchEmail
-                    owners={owners}
-                    onSelect={handleEmailSelect}
-                    email={selectedEmail}
-                  />{" "}
-                </div>
-                {(category === "HELLO_STUDIO" ||
-                  category === "HELLO_LANDLORD") && (
-                  <PriceSection
-                    data={price || property.price}
-                    setData={setPrice}
-                  />
-                )}
-                <SizeAndCategorySection
-                  data={
-                    catAndSize || {
-                      size: property.size,
-                      category: property.category,
-                    }
-                  }
-                  setData={setCatAndSize}
-                />
-                <div className="flex flex-col gap-6">
-                  <GuestInfoSectionTemplate
-                    data={
-                      guestInfo || {
-                        occupants: property.maximunOccupants,
-                        beds: property.bed,
-                        bathrooms: property.bathrooms,
+                {/* Derecha */}
+                <div className="w-full flex flex-col justify-between gap-6">
+                  <TitleSectionTemplate
+                    name={name || ""}
+                    setName={setName}
+                    address={
+                      address || {
+                        street: property.street,
+                        streetNumber: property.streetNumber,
+                        postalCode: property.postalCode,
+                        city: property.city,
                       }
                     }
-                    setData={setGuestInfo}
+                    setAddress={setAddress}
+                    action={handleShowAddressModal}
                   />
-                </div>
-                <MoreInfoSectionTemplate
-                  data={
-                    moreInfo || {
-                      condicionDeRenta:
-                        property.incomeConditionDescription || "Informacion",
-                      habitacion: property.roomDescription || "Informacion",
-                      facturas: property.feeDescription || "Informacion",
-                      mantenimiento:
-                        property.maintenanceDescription || "Informacion",
-                      sobreNosotros: property.aboutUs || "Informacion",
-                      normasDeConvivencia: property.houseRules || "Informacion",
-                      checkIn: property.checkIn || "Informacion",
-                      checkOut: property.checkOut || "Informacion",
+
+                  <div>
+                    <label
+                      className="font-bold text-[1.37rem]"
+                      htmlFor="serial"
+                    >
+                      Serial
+                    </label>
+                    <input
+                      type="text"
+                      id="serial"
+                      name="serial"
+                      value={serial || ""}
+                      placeholder="HH-1"
+                      onChange={(event) => setSerial(event.target.value)}
+                      className="border rounded px-2 py-1 w-full appariance-none outline-none break-words"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h2 className="font-bold text-[1.37rem]">Propietario</h2>
+                    <SearchEmail
+                      owners={owners}
+                      onSelect={handleEmailSelect}
+                      email={selectedEmail}
+                    />{" "}
+                  </div>
+                  {(category === "HELLO_STUDIO" ||
+                    category === "HELLO_LANDLORD") && (
+                    <PriceSection
+                      data={price || property.price}
+                      setData={setPrice}
+                    />
+                  )}
+                  <SizeAndCategorySection
+                    data={
+                      catAndSize || {
+                        size: property.size,
+                        category: property.category,
+                      }
                     }
+                    setData={setCatAndSize}
+                  />
+                  <div className="flex flex-col gap-6">
+                    <GuestInfoSectionTemplate
+                      data={
+                        guestInfo || {
+                          occupants: property.maximunOccupants,
+                          beds: property.bed,
+                          bathrooms: property.bathrooms,
+                        }
+                      }
+                      setData={setGuestInfo}
+                    />
+                  </div>
+                  {category === "HELLO_STUDIO" ||
+                  category === "HELLO_LANDLORD" ? (
+                    <RentalPeriodTemplate
+                      data={rentalPeriods}
+                      setData={setRentalPeriods}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+
+              <MoreInfoSectionTemplate
+                data={
+                  moreInfo || {
+                    condicionDeRenta:
+                      property.incomeConditionDescription || "Informacion",
+                    habitacion: property.roomDescription || "Informacion",
+                    facturas: property.feeDescription || "Informacion",
+                    mantenimiento:
+                      property.maintenanceDescription || "Informacion",
+                    sobreNosotros: property.aboutUs || "Informacion",
+                    normasDeConvivencia: property.houseRules || "Informacion",
+                    checkIn: property.checkIn || "Informacion",
+                    checkOut: property.checkOut || "Informacion",
                   }
-                  setData={setMoreInfo}
-                  action={handleShowMoreInfoModal}
+                }
+                setData={setMoreInfo}
+                action={handleShowMoreInfoModal}
+              />
+              <div className="w-full flex justify-center items-center lg:justify-center">
+                <SaveButton
+                  action={() => {
+                    toast.promise(updateProperty(), {
+                      loading: "Actualizando propiedad",
+                      success: "Propiedad actualizada",
+                      error: "Error al actualizar propiedad",
+                    });
+                  }}
                 />
               </div>
             </div>
-            <div className="w-full flex justify-center items-center md:justify-end">
-              <SaveButton action={updateProperty} />
-            </div>
-          </div>
-        </main>
-        {showDescriptionModal && (
-          <DescriptionModal
-            data={description || property.description} // Pasa el estado description aquí
-            setData={handleDescriptionInfo}
-            showModal={handleShowDescriptionModal}
-          />
-        )}
-        {showSliderModal && (
-          <SliderModal
-            initialImages={sliderImage}
-            setNewImages={handleSliderImage}
-            showModal={handleShowSliderModal}
-          />
-        )}
-        {showAddressModal && (
-          <AddressModal
-            data={address}
-            setData={handleAddressInfo}
-            showModal={handleShowAddressModal}
-          />
-        )}
-        {showAmenitiesModal && (
-          <AmenitiesModalEdit
-            data={amenities}
-            setData={handleAmenitiesInfo}
-            showModal={handleShowAmenitiesModal}
-          />
-        )}
-        {showAddRoom && (
-          <RoomAddModal
-            data={dataRooms}
-            setData={setDataRooms}
-            showModal={handleAddRoomModal}
-            propertyId={property.id}
-            category={catAndSize.category || property.category}
-          />
-        )}
+          </main>
+          {showDescriptionModal && (
+            <DescriptionModal
+              data={description || property.description} // Pasa el estado description aquí
+              setData={handleDescriptionInfo}
+              showModal={handleShowDescriptionModal}
+            />
+          )}
+          {showSliderModal && (
+            <SliderModal
+              initialImages={sliderImage}
+              setNewImages={handleSliderImage}
+              showModal={handleShowSliderModal}
+            />
+          )}
+          {showAddressModal && (
+            <AddressModal
+              data={address}
+              setData={handleAddressInfo}
+              showModal={handleShowAddressModal}
+              category={category}
+            />
+          )}
+          {showAmenitiesModal && (
+            <AmenitiesModalEdit
+              data={amenities}
+              setData={handleAmenitiesInfo}
+              showModal={handleShowAmenitiesModal}
+            />
+          )}
+          {showAddRoom && (
+            <RoomAddModal
+              data={dataRooms}
+              setData={setDataRooms}
+              showModal={handleAddRoomModal}
+              propertyId={property.id}
+              category={catAndSize.category || property.category}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 }

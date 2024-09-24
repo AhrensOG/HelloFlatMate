@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 const Select = ({
+  name = false,
   options,
   data,
   setData,
@@ -17,7 +18,7 @@ const Select = ({
 
   const handleValueChange = (option) => {
     setSelectedValue(option);
-    setData({ ...data, seleccion: option });
+    setData({ ...data, [name]: option });
     setShowInput(false); // Cerrar el dropdown después de seleccionar una opción
   };
 

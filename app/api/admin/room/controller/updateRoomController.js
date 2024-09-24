@@ -1,8 +1,10 @@
-import { Room, RoomWithPrice } from "@/db/init";
+import { RentalPeriod, Room, RoomWithPrice } from "@/db/init";
 import message from "@/db/models/message";
 import { NextResponse } from "next/server";
 
 export async function updateRoom(id, data) {
+    console.log(data);
+
     if (!data) return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
     if (Array.isArray(data) && data.length > 0) {
         for (let i = 0; i < data.length; i++) {
@@ -13,6 +15,34 @@ export async function updateRoom(id, data) {
             try {
                 const room = await Room.findByPk(data[i].id);
                 if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
+                //Actualizar fechas
+                if (data[i].rentalPeriods.length > 0) {
+                    data[i].rentalPeriods.forEach(async (period) => {
+                        await RentalPeriod.update(period, {
+                            where: {
+                                id: period.id
+                            }
+                        })
+                    })
+                }
+
+                //Crear Fechas en caso que agregaran nuevas
+                if (data[i].newRentalPeriods.length > 0) {
+                    data[i].newRentalPeriods.forEach(async (period) => {
+                        await RentalPeriod.create({ startDate: new Date(period.startDate), endDate: new Date(period.endDate), rentalPeriodableId: data[i].id, rentalPeriodableType: "ROOM" })
+                    })
+                }
+
+                //Borrar fechas
+                if (data[i].deleteRentalPeriod.length > 0) {
+                    data[i].deleteRentalPeriod.forEach(async (period) => {
+                        await RentalPeriod.destroy({
+                            where: {
+                                id: period
+                            }
+                        })
+                    })
+                }
                 await room.update(data[i]);
             } catch (error) {
                 return NextResponse.json({ error: "Error al actualizar la habitacion" }, { status: 500 });
@@ -25,8 +55,39 @@ export async function updateRoom(id, data) {
     if (data.images.length === 0) return NextResponse.json({ error: "Se requieren imagen" }, { status: 400 });
 
     try {
+
         const room = await Room.findByPk(id);
+
         if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
+
+        //Actualizar fechas
+        if (data.rentalPeriods.length > 0) {
+            data.rentalPeriods.forEach(async (period) => {
+                await RentalPeriod.update(period, {
+                    where: {
+                        id: period.id
+                    }
+                })
+            })
+        }
+
+        //Crear Fechas en caso que agregaran nuevas
+        if (data.newRentalPeriods.length > 0) {
+            data.newRentalPeriods.forEach(async (period) => {
+                await RentalPeriod.create({ startDate: new Date(period.startDate), endDate: new Date(period.endDate), rentalPeriodableId: room.id, rentalPeriodableType: "ROOM" })
+            })
+        }
+
+        //Borrar fechas
+        if (data.deleteRentalPeriod.length > 0) {
+            data.deleteRentalPeriod.forEach(async (period) => {
+                await RentalPeriod.destroy({
+                    where: {
+                        id: period
+                    }
+                })
+            })
+        }
 
         await room.update(data);
         return NextResponse.json(room, { status: 200 });

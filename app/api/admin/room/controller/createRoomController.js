@@ -2,11 +2,10 @@ import { RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createRoom(data) {
-    console.log(data);
-
     if (!data) {
         return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
     }
+    console.log(data);
 
     const isArray = Array.isArray(data);
     const dataArray = isArray ? data : [data];
@@ -43,9 +42,9 @@ export async function createRoom(data) {
                     createdRooms.push(room);
 
                     // Verificar si tiene períodos de alquiler asociados
-                    if (roomData.rentalPeriod) {
+                    if (roomData.rentalPeriods && roomData.rentalPeriods && roomData.rentalPeriods.length > 0) {
                         // Crear los períodos de alquiler
-                        const rentalPeriods = roomData.rentalPeriod.map((rental) => ({
+                        const rentalPeriods = roomData.rentalPeriods.map((rental) => ({
                             startDate: new Date(rental.startDate),
                             endDate: new Date(rental.endDate),
                             status: "FREE",

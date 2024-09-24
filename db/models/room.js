@@ -13,8 +13,24 @@ const roomInit = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            floor: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            door: {
+                type: DataTypes.STRING(10),
+                allowNull: true,
+            },
             price: {
                 type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            zone: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            typology: {
+                type: DataTypes.ENUM("MIXED", "ONLY_WOMEN", "ONLY_MEN"),
                 allowNull: true,
             },
             description: {
@@ -55,6 +71,10 @@ const roomInit = (sequelize, DataTypes) => {
                 type: DataTypes.ARRAY(DataTypes.STRING),
                 allowNull: false,
             },
+            linkVideo: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
             status: {
                 type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
                 defaultValue: "FREE",
@@ -68,6 +88,10 @@ const roomInit = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false
             },
+            tags: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                allowNull: true
+            }
         },
         {
             sequelize,
