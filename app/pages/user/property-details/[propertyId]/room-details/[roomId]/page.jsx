@@ -120,9 +120,9 @@ export default function RoomDetails({ params }) {
                 { type: "couple", boolean: roomData.couple },
               ]}
             />
-            {roomData.price && roomData.leaseOrdersRoom < 1 && (
+            {/* {roomData.price && roomData.leaseOrdersRoom < 1 && (
               <ReservationButton callback={handleShowModal} />
-            )}
+            )} */}
           </div>
           {roomData?.description?.length > 0 ? (
             <DescriptionSection

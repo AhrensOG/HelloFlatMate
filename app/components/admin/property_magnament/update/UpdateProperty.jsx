@@ -140,7 +140,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         zone: property?.zone || "",
       });
       setLinkVideo(property?.linkVideo || "");
-      setTags(property?.tags[0] || "");
+      setTags(property?.tags || "");
     }
     fetchOwners();
   }, [property]);
@@ -352,7 +352,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           typology: typologyAndZone.typology || "",
           zone: typologyAndZone.zone || "",
           linkVideo: linkVideo || "",
-          tags: [tags],
+          tags: Array.isArray(tags) && tags.length > 0 ? tags : [tags],
         };
 
         const response = await axios.put(

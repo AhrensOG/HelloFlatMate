@@ -94,11 +94,11 @@ export default function PropertyDetails({ params }) {
                 { quantity: data.bed, type: "Camas" },
               ]}
             />
-            {(data.category === "HELLO_STUDIO" ||
+            {/* {(data.category === "HELLO_STUDIO" ||
               data.category === "HELLO_LANDLORD") &&
               data.leaseOrdersProperty.length < 1 && (
                 <ReservationButton callback={handleShowModal} />
-              )}
+              )} */}
           </div>
           <DescriptionSection data={data.description} />
           <RoomSection data={data.rooms} />
