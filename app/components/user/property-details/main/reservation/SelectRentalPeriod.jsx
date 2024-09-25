@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 
 export default function SelectRentalPeriod({ data, setData, info }) {
-  console.log(info);
-
   const [selectedValue, setSelectedValue] = useState(""); // Valor inicial vacío
 
   const calculateDurationInMonths = (startDate, endDate) => {

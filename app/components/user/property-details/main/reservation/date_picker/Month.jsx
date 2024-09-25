@@ -1,6 +1,15 @@
 import Day from "./Day";
 
-export default function Month({ year, month, date, callback, selectedDate }) {
+export default function Month({
+  year,
+  month,
+  date,
+  callback,
+  selectedDate,
+  isDateOccupied,
+  startDate,
+  endDate,
+}) {
   // Calcula el último día del mes anterior, el último día del mes actual y el primer día del mes siguiente
   const lastOfPrevMonth = new Date(year, month, 0);
   const lastOfCurrentMonth = new Date(year, month + 1, 0);
@@ -29,15 +38,19 @@ export default function Month({ year, month, date, callback, selectedDate }) {
 
     // Días del mes actual
     for (let i = 1; i <= lastOfCurrentMonth.getDate(); i++) {
+      const currentDate = new Date(year, month, i);
       const isDisabled =
         year === date.getFullYear() &&
         month === date.getMonth() &&
         i < date.getDate();
 
+      // Verificar si la fecha está ocupada
+      const isOccupied = isDateOccupied(currentDate);
+
       days.push({
         day: i,
-        isDisabled: isDisabled,
-        date: new Date(year, month, i),
+        isDisabled: isDisabled || isOccupied,
+        date: currentDate,
       });
     }
 
@@ -67,6 +80,13 @@ export default function Month({ year, month, date, callback, selectedDate }) {
         dayInfo.date.getMonth() === today.getMonth() &&
         dayInfo.date.getFullYear() === today.getFullYear();
 
+      // Verificar si el día es el startDate o el endDate
+      const isStartDate =
+        startDate && dayInfo.date.toDateString() === startDate.toDateString();
+
+      const isEndDate =
+        endDate && dayInfo.date.toDateString() === endDate.toDateString();
+
       return (
         <Day
           key={index}
@@ -81,6 +101,8 @@ export default function Month({ year, month, date, callback, selectedDate }) {
               year: "numeric",
             }) === selectedDate
           }
+          isStartDate={isStartDate}
+          isEndDate={isEndDate}
           callback={selectDate}
           isDisabled={dayInfo.isDisabled}
         />

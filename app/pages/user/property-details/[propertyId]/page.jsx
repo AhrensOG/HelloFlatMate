@@ -94,11 +94,13 @@ export default function PropertyDetails({ params }) {
                 { quantity: data.bed, type: "Camas" },
               ]}
             />
-            {(data.category === "HELLO_STUDIO" ||
-              data.category === "HELLO_LANDLORD") &&
+            {data.category === "HELLO_LANDLORD" &&
               data.leaseOrdersProperty.length < 1 && (
                 <ReservationButton callback={handleShowModal} />
               )}
+            {data.category === "HELLO_STUDIO" && (
+              <ReservationButton callback={handleShowModal} />
+            )}
           </div>
           <DescriptionSection data={data.description} />
           <RoomSection data={data.rooms} />
@@ -128,6 +130,7 @@ export default function PropertyDetails({ params }) {
           {showModal && (
             <ReservationModal
               callback={handleShowModal}
+              category={data.category}
               data={{
                 date: null,
                 startDate: null,
@@ -139,6 +142,7 @@ export default function PropertyDetails({ params }) {
                 propertyName: data?.name,
                 user: state?.user,
                 rentalPeriods: data.rentalPeriods,
+                leaseOrdersProperty: data?.leaseOrdersProperty || null,
               }}
             />
           )}

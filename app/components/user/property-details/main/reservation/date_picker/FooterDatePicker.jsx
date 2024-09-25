@@ -1,9 +1,9 @@
-export function FooterDatePicker({ callback }) {
+export function FooterDatePicker({ cancel, confirm }) {
   return (
     <footer className="flex justify-between gap-2 items-center ">
       <button
         onClick={() => {
-          callback(true);
+          cancel(true);
         }}
         className="text-[#B5BEC6] hover:text-[#0C1660] "
         type="button"
@@ -12,7 +12,7 @@ export function FooterDatePicker({ callback }) {
       </button>
       <button
         onClick={() => {
-          callback(false);
+          confirm();
         }}
         className="text-[#B5BEC6] hover:text-[#0C1660] "
         type="button"
