@@ -10,7 +10,7 @@ import {
   Room,
 } from "@/db/init";
 import { NextResponse } from "next/server";
-import { op } from "sequelize";
+import { Op } from "sequelize";
 
 export async function getAllProperties() {
   try {
@@ -145,7 +145,7 @@ export async function getPropertyById(id) {
 export async function getPropertiesActive() {
   try {
     const properties = await Property.findAll({
-      where: { isActive: true, status: { [op.ne]: "DELETED" } },
+      where: { isActive: true, status: { [Op.ne]: "DELETED" } },
     });
     return NextResponse.json(properties, { status: 200 });
   } catch (error) {
@@ -203,9 +203,13 @@ export async function getAllPropertiesSimple() {
         "size",
         "roomsCount",
         "bathrooms",
+        "isActive",
       ],
-      where: { isActive: true },
-      include: { model: Owner, as: "owner" },
+      where: { status: { [Op.ne]: "DELETED" } },
+      include: [
+        { model: Owner, as: "owner", attributes: ["email"] },
+        { model: Room, as: "rooms", attributes: ["id"] },
+      ],
     });
     return NextResponse.json(properties, { status: 200 });
   } catch (error) {
