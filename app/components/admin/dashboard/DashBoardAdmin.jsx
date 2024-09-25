@@ -6,8 +6,14 @@ import PieArticle from "./PieArticle";
 import LineGraphic from "../graphics/LineGraphic";
 import { useRouter } from "next/navigation";
 import TableArticle from "./TableArticle";
+import CascadeUpdate from "./CascadeUpdate";
+import { useState } from "react";
 export default function DashBoardAdmin({ data }) {
   const router = useRouter();
+  const [showCascadUpdateModal, setShowCascadUpdateModal] = useState(true);
+  const handleShowCascadUpdateModal = () => {
+    setShowCascadUpdateModal(!showCascadUpdateModal);
+  };
   return (
     <main
       className={`${plus_jakarta.className} flex flex-col gap-5 p-2 items-center`}
@@ -35,6 +41,9 @@ export default function DashBoardAdmin({ data }) {
         </article> */}
         <TableArticle data={data} />
       </section>
+      {showCascadUpdateModal && (
+        <CascadeUpdate showModal={handleShowCascadUpdateModal} />
+      )}
     </main>
   );
 }
