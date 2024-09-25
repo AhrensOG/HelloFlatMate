@@ -120,9 +120,9 @@ export default function RoomDetails({ params }) {
                 { type: "couple", boolean: roomData.couple },
               ]}
             />
-            {roomData.price && roomData.leaseOrdersRoom < 1 && (
+            {/* {roomData.price && roomData.leaseOrdersRoom < 1 && (
               <ReservationButton callback={handleShowModal} />
-            )}
+            )} */}
           </div>
           {roomData?.description?.length > 0 ? (
             <DescriptionSection
@@ -134,7 +134,7 @@ export default function RoomDetails({ params }) {
             <DescriptionSection title="Descripción" data={data.description} />
           )}
           {filteredRooms.length > 0 ? (
-            <RoomSection data={filteredRooms} title="Otras habitaciones" />
+            <RoomSection data={filteredRooms} title="Otras habitaciones en el piso" />
           ) : null}
 
           <AmenitiesSection data={data.amenities} />

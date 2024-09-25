@@ -295,7 +295,7 @@ export default function RoomAddModal({
             <div className="w-full flex flex-col gap-3">
               <div>
                 <h3 className="block mb-1">
-                  Factura de helloflatmate con iva
+                  Factura de helloflatmate con IVA
                 </h3>
                 <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
                   {(parseInt(dataRoom?.amountHelloflatmate) || 0) -
@@ -406,7 +406,7 @@ export default function RoomAddModal({
         )}
 
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
-          <h3 className="w-full">¿Tiene baño privado?</h3>
+          <h3 className="w-full">¿Baño en Suite?</h3>
           <div className="flex gap-2 px-3">
             <input
               type="radio"

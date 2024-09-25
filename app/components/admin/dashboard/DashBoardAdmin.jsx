@@ -23,10 +23,10 @@ export default function DashBoardAdmin({ data }) {
         action={() => router.push("/pages/admin")}
       />
       <section className="w-full flex items-center justify-center">
-        {/* <ButtonsDashBoardAdmin /> */}
+        <ButtonsDashBoardAdmin />
       </section>
       <section className="w-full flex flex-col justify-center items-center gap-5">
-        {/* <BarArticle />
+        <BarArticle />
         <PieArticle />
         <article className="flex w-full flex-col justify-center items-center gap-2">
           <div className="w-full">
@@ -38,8 +38,8 @@ export default function DashBoardAdmin({ data }) {
             </div>
           </div>
           <LineGraphic />
-        </article> */}
-        <TableArticle data={data} />
+        </article>
+        {/* <TableArticle data={data} /> */}
       </section>
       {showCascadUpdateModal && (
         <CascadeUpdate showModal={handleShowCascadUpdateModal} />

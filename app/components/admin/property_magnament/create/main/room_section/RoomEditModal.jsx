@@ -392,7 +392,7 @@ export default function RoomEditModal({
                 className="block text-sm mb-1"
                 htmlFor="amountHelloflatmate"
               >
-                Monto de Helloflatmate
+                Monto de helloflatmate
               </label>
               <input
                 type="number"
@@ -410,7 +410,7 @@ export default function RoomEditModal({
             </div>
             <div>
               <h3 className="block text-sm mb-1">
-                Tarifa Helloflatmate con IVA
+                Factura de helloflatmate con IVA
               </h3>
               <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
                 {(parseInt(dataRoom?.amountHelloflatmate) || 0) -
@@ -548,7 +548,7 @@ export default function RoomEditModal({
         )}
 
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
-          <h3 className="w-full">¿Tiene baños?</h3>
+          <h3 className="w-full">¿Baño en Suite?</h3>
           <div className="flex gap-2 px-3">
             <input
               type="radio"
@@ -571,7 +571,7 @@ export default function RoomEditModal({
           </div>
         </div>
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
-          <h3 className="w-full">¿Es para pareja?</h3>
+          <h3 className="w-full">¿Se aceptan parejas?</h3>
           <div className="flex gap-2 px-3">
             <input
               type="radio"

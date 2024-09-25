@@ -10,33 +10,25 @@ import { toast } from "sonner";
 
 export default function PropertiesPanelPage() {
   const { state, dispatch } = useContext(Context);
-  const [properties, setProperties] = useState();
+  const [propertiesSimple, setPropertiesSimple] = useState([]);
 
   useEffect(() => {
-    if (state.user) {
-      try {
-        const getData = async () => {
-          await getAllProperties(dispatch);
-        };
-        getData();
-      } catch (error) {
-        toast.error("Error al obtener propiedades");
-      }
-    }
-  }, [state.user]);
+    const fetchData = async () => {
+      const res = await axios.get("/api/admin/property?simple=true");
+      setPropertiesSimple(res.data);
+    };
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-    console.log(state);
-
-    if (state.properties) {
-      setProperties(state.properties);
-    }
-  }, [state.properties, dispatch]);
-
-  if (!properties) {
+  if (propertiesSimple.length <= 0) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="h-screen flex flex-col">
+        <headear>
+          <NavBar client={false} admin={true} owner={false} />
+        </headear>
+        <div className="flex items-center justify-center flex-1">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+        </div>
       </div>
     );
   }
@@ -45,7 +37,7 @@ export default function PropertiesPanelPage() {
       <headear>
         <NavBar client={false} admin={true} owner={false} />
       </headear>
-      <PropertiesPanel data={properties} />
+      <PropertiesPanel data={propertiesSimple} />
     </>
   );
 }
