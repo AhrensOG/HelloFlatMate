@@ -164,6 +164,7 @@ export default function ReservationModal({ callback, data, category }) {
               data={info}
               setData={setInfo}
               occupedDates={data?.leaseOrdersProperty}
+              rentalPeriods={rentalPeriods}
             />
           )}
           <ShowClauses />
@@ -184,7 +185,7 @@ export default function ReservationModal({ callback, data, category }) {
                 toast.promise(handleReservationSubmit(), {
                   loading: "Reservando...",
                   success: "Reservado!",
-                  error: "Error al reservar",
+                  error: (err) => `Error al reservar: ${ err.response?.data?.message || err.message || err}`,
                 });
               }}
             />

@@ -5,7 +5,12 @@ import { FooterDatePicker } from "./FooterDatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
-export default function DatePicker({ data, setData, occupedDates }) {
+export default function DatePicker({
+  data,
+  setData,
+  occupedDates,
+  rentalPeriods,
+}) {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Estados para la fecha de inicio y la fecha de finalización
@@ -26,19 +31,33 @@ export default function DatePicker({ data, setData, occupedDates }) {
       end: new Date(order.endDate),
     }));
 
-  // Función para verificar si una fecha está ocupada
+  // Obtener el rango de fechas válidas de rentalPeriods
+  const rentalDateRanges = rentalPeriods.map((period) => ({
+    start: new Date(period.startDate),
+    end: new Date(period.endDate),
+  }));
+
+  // Función para verificar si una fecha está ocupada o fuera del rango
   const isDateOccupied = (date) => {
-    return occupiedDateRanges.some((range) => {
+    // Verificar si la fecha está fuera del rango de rentalPeriods
+    const isOutsideRentalRange = !rentalDateRanges.some((range) => {
       return date >= range.start && date <= range.end;
     });
+
+    // Verificar si la fecha está ocupada
+    const isOccupied = occupiedDateRanges.some((range) => {
+      return date >= range.start && date <= range.end;
+    });
+
+    return isOccupied || isOutsideRentalRange;
   };
 
   // Muestra las fechas seleccionadas en el input
   const getSelectedDateText = () => {
     if (!startDate && !endDate) return "Seleccione las fechas";
-    if (startDate && !endDate) return `Inicio: ${formatDate(startDate)}`;
+    if (startDate && !endDate) return `Ingreso: ${formatDate(startDate)}`;
     if (startDate && endDate)
-      return `Inicio: ${formatDate(startDate)} - Fin: ${formatDate(endDate)}`;
+      return `Ingreso: ${formatDate(startDate)} - Salida: ${formatDate(endDate)}`;
   };
 
   // Formatear fecha en dd/mm
@@ -67,13 +86,26 @@ export default function DatePicker({ data, setData, occupedDates }) {
 
   // Seleccionar fecha
   const handleSelectDate = (date) => {
-    if (isDateOccupied(date)) return; // No permitir la selección de una fecha ocupada
+    if (isDateOccupied(date)) return; // No permitir la selección de una fecha ocupada o fuera de rango
 
     if (isSelectingStartDate) {
       setStartDate(date);
       setIsSelectingStartDate(false); // Cambiar a seleccionar fecha de finalización
     } else {
-      setEndDate(date);
+      if (date < startDate) {
+        // Si la fecha de fin es menor que la fecha de inicio, establecer esta fecha como la nueva fecha de inicio
+        setStartDate(date);
+        setEndDate(null); // Limpiar la fecha de fin
+        setIsSelectingStartDate(false); // Cambiar a seleccionar fecha de finalización
+      } else if (date.getTime() === startDate.getTime()) {
+        // Si la fecha de fin es igual a la fecha de inicio, reiniciar el proceso
+        setStartDate(null);
+        setEndDate(null);
+        setIsSelectingStartDate(true); // Volver a seleccionar fecha de inicio
+      } else {
+        // Si la fecha de fin es válida (mayor que la fecha de inicio), establecerla
+        setEndDate(date);
+      }
     }
   };
 
@@ -167,9 +199,10 @@ export default function DatePicker({ data, setData, occupedDates }) {
               callback={handleSelectDate}
               date={date}
               selectedDate={isSelectingStartDate ? startDate : endDate}
-              startDate={startDate} // Pasar el startDate
-              endDate={endDate} // Pasar el endDate
-              isDateOccupied={isDateOccupied} // Pasar la función para verificar si una fecha está ocupada
+              startDate={startDate}
+              endDate={endDate}
+              isDateOccupied={isDateOccupied}
+              rentalPeriods={rentalPeriods}
             />
 
             <FooterDatePicker
