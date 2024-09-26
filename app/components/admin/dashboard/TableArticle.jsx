@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  CheckIcon,
+  MagnifyingGlassIcon,
+  PencilIcon,
+  PowerIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function TableArticle({ data }) {
   const router = useRouter();
@@ -11,6 +18,7 @@ export default function TableArticle({ data }) {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [originalData, setOriginalData] = useState(data); // Estado para los datos originales
   const [filteredData, setFilteredData] = useState(data); // Estado para los datos filtrados
+  const [alphabeticalOrder, setAlphabeticalOrder] = useState(true); // Estado para el orden alfabético
 
   const categories = [
     "HELLO_ROOM",
@@ -22,20 +30,43 @@ export default function TableArticle({ data }) {
 
   useEffect(() => {
     // Filtra los datos cada vez que cambian los filtros o el término de búsqueda
-    const filtered = originalData.filter((item) => {
-      const matchesCategory =
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(item.category);
-      const matchesStatus =
-        selectedStatus.length === 0 || selectedStatus.includes(item.status);
-      const matchesSearch =
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.serial.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesCategory && matchesStatus && matchesSearch;
-    });
+    const filtered = originalData
+      .filter((item) => {
+        const matchesCategory =
+          selectedCategories.length === 0 ||
+          selectedCategories.includes(item.category);
+        const matchesStatus =
+          selectedStatus.length === 0 || selectedStatus.includes(item.status);
+        const matchesSearch =
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.serial.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          `${item.city} ${item.street} ${item.streetNumber}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+
+        return matchesCategory && matchesStatus && matchesSearch;
+      })
+      .sort((a, b) => {
+        // Si `isActive` es `true`, debe aparecer antes. Si `isActive` es `false`, debe aparecer después.
+        if (a.isActive === b.isActive) {
+          // Ordenar por nombre si tienen el mismo isActive
+          if (alphabeticalOrder) {
+            return a.name.localeCompare(b.name); // Ordenar A → Z
+          } else {
+            return b.name.localeCompare(a.name); // Ordenar Z → A
+          }
+        }
+        return a.isActive ? -1 : 1; // `true` primero, `false` después
+      });
 
     setFilteredData(filtered); // Actualiza los datos filtrados
-  }, [searchTerm, selectedCategories, selectedStatus, originalData]);
+  }, [
+    searchTerm,
+    selectedCategories,
+    selectedStatus,
+    originalData,
+    alphabeticalOrder,
+  ]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) =>
@@ -55,7 +86,7 @@ export default function TableArticle({ data }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/admin/property?id=${id}`);
+      await axios.delete(`/api/admin/property?id=${id}&type=del`);
       // Actualizar el estado con los datos originales eliminando el ítem
       const updatedData = originalData.filter((item) => item.id !== id);
       setOriginalData(updatedData); // Actualiza los datos originales
@@ -64,23 +95,78 @@ export default function TableArticle({ data }) {
     }
   };
 
+  const handleDesactivateProperty = async (id) => {
+    try {
+      await axios.delete(`/api/admin/property?id=${id}`);
+      // Actualizar el estado con los datos originales eliminando el ítem
+      const updatedData = originalData.map((item) => {
+        if (item.id === id) {
+          return { ...item, isActive: false };
+        }
+        return item;
+      });
+      setOriginalData(updatedData); // Actualiza los datos originales
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleActiveProperty = async (id) => {
+    try {
+      await axios.patch(`/api/admin/property?type=activate&id=${id}`);
+      // Actualizar el estado con los datos originales eliminando el ítem
+      const updatedData = originalData.map((item) => {
+        if (item.id === id) {
+          return { ...item, isActive: true };
+        }
+        return item;
+      });
+      setOriginalData(updatedData); // Actualiza los datos originales
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // Función para alternar el orden alfabético
+  const toggleAlphabeticalOrder = () => {
+    setAlphabeticalOrder((prev) => !prev);
+  };
+
   return (
     <article className="flex flex-col justify-center items-center gap-4 w-full p-4">
-      {/* Header with Add Property Button */}
-      <h2 className="text-xl font-bold text-primary">Propiedades</h2>
-
-      {/* Search bar */}
-      <input
-        type="text"
-        placeholder="Buscar por nombre o serial..."
-        className="p-2 border border-gray-300 rounded w-full max-w-lg mb-4"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-
-      {/* Category filters */}
+      {/* Contenedor de botón alfabético y barra de búsqueda */}
+      <div className="flex items-center gap-2 w-full max-w-screen-sm mb-4">
+        <Link
+          href={"/pages/admin/create"}
+          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+        >
+          Nueva Propiedad
+        </Link>
+        {/* Search bar con ícono de lupa */}
+        <div className="relative flex-grow">
+          <input
+            type="text"
+            placeholder="Buscar por nombre, código o ubicación..."
+            className="p-2 pl-10 border border-gray-300 rounded w-full"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {/* Ícono de lupa dentro del input */}
+          <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        </div>
+        {/* Botón de orden alfabético */}
+        <button
+          onClick={toggleAlphabeticalOrder}
+          className="p-2 bg-blue-500 text-white rounded"
+        >
+          {alphabeticalOrder ? "A → Z" : "Z → A"}
+        </button>
+      </div>
+      {/* Category filters */} {/* Status filters */}
       <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
-        <h2 className="text-xl font-bold text-primary w-full">Categorías</h2>
+        <h2 className="text-xl font-bold text-primary w-full">
+          Categorías y estados
+        </h2>
         {categories.map((category) => (
           <label key={category} className="flex items-center gap-2">
             <input
@@ -88,14 +174,10 @@ export default function TableArticle({ data }) {
               checked={selectedCategories.includes(category)}
               onChange={() => handleCategoryChange(category)}
             />
-            {category}
+            {category.replace(/_/g, "").toLowerCase()}
           </label>
         ))}
-      </div>
-
-      {/* Status filters */}
-      <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
-        <h2 className="text-xl font-bold text-primary w-full">Status</h2>
+        |
         {statuses.map((status) => (
           <label key={status} className="flex items-center gap-2">
             <input
@@ -103,73 +185,221 @@ export default function TableArticle({ data }) {
               checked={selectedStatus.includes(status)}
               onChange={() => handleStatusChange(status)}
             />
-            {status}
+            {status === "FREE" ? "Libres" : status === "RESERVED" ? "Reservados" : "Alquilados" }
           </label>
         ))}
       </div>
-
       {/* Table */}
       <div className="w-full max-w-full border-2 border-primary rounded-lg overflow-x-auto overflow-y-auto max-h-96">
-        <table className="min-w-full bg-white">
-          <thead className="bg-[#0e1863ff] text-white sticky top-0 z-10">
+        <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
+          <thead className="bg-[#0e1863ff] text-white sticky top-0 z-5">
             <tr>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
-                Serial
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Código
               </th>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
                 Nombre
               </th>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
                 Categoría
               </th>
-              <th className="text-left px-6 py-3 font-medium uppercase tracking-wider">
-                Status
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Estado
               </th>
-              <th className="px-6 py-3"></th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Dirección
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Código Postal
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Zona
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Tipología
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Superficie M2
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Habitaciones
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Baños
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Propietario
+              </th>
+              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredData.length > 0 ? (
-              filteredData.map((item) => (
+              filteredData.map((item, index) => (
                 <tr
                   key={item.id}
-                  className="hover:bg-[#21aaccff] hover:text-white transition-all duration-200"
+                  className={`${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  } hover:bg-blue-50 transition-colors duration-300 ease-in-out`}
                 >
-                  <td className="px-6 py-4">{item.serial}</td>
-                  <td className="px-6 py-4">{item.name}</td>
-                  <td className="px-6 py-4">{item.category}</td>
-                  <td className="px-6 py-4">{item.status}</td>
-                  <td className="px-6 py-4 flex gap-2 justify-center">
-                    <button
-                      onClick={() =>
-                        toast.promise(handleDelete(item.id), {
-                          loading: "Eliminando...",
-                          success: "Eliminado correctamente",
-                          error: "Error al eliminar",
-                        })
-                      }
-                      className="text-red-600 hover:text-red-800 transition-colors duration-200"
-                      aria-label="Eliminar"
-                    >
-                      <TrashIcon className="w-6 h-6" />
-                    </button>
-                    <button
-                      onClick={() =>
-                        router.push(
-                          `/pages/admin/update/${item.id}/${item.category}`
-                        )
-                      }
-                      className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                      aria-label="Editar"
-                    >
-                      <PencilIcon className="w-6 h-6" />
-                    </button>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.serial}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.name}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.category.replace(/_/g, "").toLowerCase()}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.status}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">{`${item.street} ${item.streetNumber}, ${item.city}`}</td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.postalCode}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.zone}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.typology
+                      ? item.typology === "ONLY_MEN"
+                        ? "Solo hombres"
+                        : item.typology === "ONLY_WOMEN"
+                        ? "Solo mujeres"
+                        : "Mixto"
+                      : ""}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.size}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.roomsCount}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.bathrooms}
+                  </td>
+                  <td className="px-4 py-4 text-center text-sm border-r">
+                    {item.owner?.email}
+                  </td>
+                  <td className="px-4 py-4 text-center">
+                    <div className="flex gap-6 items-center justify-center">
+                      {/* Botón de Activar/Desactivar */}
+                      <div className="relative group inline-block">
+                        <button
+                          onClick={() =>
+                            toast.promise(
+                              item.isActive
+                                ? handleDesactivateProperty(item.id)
+                                : handleActiveProperty(item.id),
+                              {
+                                loading: item.isActive
+                                  ? "Desactivando..."
+                                  : "Activando...",
+                                success: item.isActive
+                                  ? "Desactivado correctamente"
+                                  : "Activado correctamente",
+                                error: item.isActive
+                                  ? "Error al desactivar"
+                                  : "Error al activar",
+                              }
+                            )
+                          }
+                          className={`${
+                            item.isActive
+                              ? "text-green-600 hover:text-green-800"
+                              : "text-gray-600 hover:text-gray-800"
+                          } transition-colors duration-200`}
+                          aria-label={item.isActive ? "Desactivar" : "Activar"}
+                        >
+                          {item.isActive ? (
+                            <PowerIcon className="w-6 h-6 text-green-600" />
+                          ) : (
+                            <PowerIcon className="w-6 h-6 text-red-600" />
+                          )}
+                        </button>
+                        {/* Tooltip personalizado */}
+                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          {item.isActive ? "Desactivar" : "Activar"}
+                        </span>
+                      </div>
+
+                      {/* Botón Editar */}
+                      <div className="relative group inline-block">
+                        <button
+                          onClick={() =>
+                            router.push(
+                              `/pages/admin/update/${item.id}/${item.category}`
+                            )
+                          }
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                          aria-label="Editar"
+                        >
+                          <PencilIcon className="w-5 h-5" />
+                        </button>
+                        {/* Tooltip personalizado */}
+                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          Editar
+                        </span>
+                      </div>
+
+                      {/* Botón Eliminar */}
+                      <div className="relative group inline-block">
+                        <button
+                          onClick={() =>
+                            toast.custom((t) => (
+                              <div className="bg-white p-6 rounded-lg shadow-card-action border-2 max-w-md mx-auto text-center">
+                                <p className="text-gray-800 mb-4 font-medium">
+                                  ¿Estás seguro de que deseas eliminar esta
+                                  propiedad?
+                                </p>
+                                <div className="flex justify-center gap-4">
+                                  <button
+                                    onClick={() => {
+                                      toast.dismiss(t.id); // Cierra el toast actual
+                                      toast.promise(handleDelete(item.id), {
+                                        loading: "Eliminando...",
+                                        success: "Eliminado correctamente",
+                                        error: "Error al eliminar",
+                                      });
+                                    }}
+                                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-300"
+                                  >
+                                    Confirmar
+                                  </button>
+                                  <button
+                                    onClick={() => toast.dismiss(t.id)} // Cierra el toast sin hacer nada
+                                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors duration-300"
+                                  >
+                                    Cancelar
+                                  </button>
+                                </div>
+                              </div>
+                            ))
+                          }
+                          className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                          aria-label="Eliminar"
+                        >
+                          <TrashIcon className="w-5 h-5" />
+                        </button>
+
+                        {/* Tooltip personalizado */}
+                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          Eliminar
+                        </span>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-6 py-4 text-center" colSpan="5">
+                <td
+                  className="px-4 py-4 text-center text-gray-500"
+                  colSpan="13"
+                >
                   No hay resultados
                 </td>
               </tr>

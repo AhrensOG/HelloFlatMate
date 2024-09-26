@@ -2,7 +2,7 @@ import { useState } from "react";
 import RoomInfo from "./room_section/RoomInfo";
 import ModalRomInfo from "./room_section/ModalRomInfo";
 
-export default function RoomSection({ data, title = "Habitaciones" }) {
+export default function RoomSection({ data, title = "Habitaciones", category }) {
   const [showModal, setShowModal] = useState(false);
   const [roomInfo, setRoomInfo] = useState(null);
 
@@ -20,7 +20,7 @@ export default function RoomSection({ data, title = "Habitaciones" }) {
           {data
             .filter((item) => item.status === "FREE")
             .map((item, index) => (
-              <RoomInfo key={item.id} data={item} action={handleModal} />
+              <RoomInfo key={item.id} data={item} action={handleModal} category={category} />
             ))}
         </div>
       </section>

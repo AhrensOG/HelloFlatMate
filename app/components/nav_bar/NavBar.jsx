@@ -6,6 +6,8 @@ import SideBar from "./side_bar/SideBar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Context } from "@/app/context/GlobalContext";
+import { logOut } from "@/app/firebase/logOut";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 // Opciones para los diferentes roles
 const clientOptions = [
@@ -115,6 +117,11 @@ export default function NavBar({
     setIsOpen(false);
   };
 
+  const handleLogOut = async () => {
+    await logOut();
+    handleRedirect("/pages/auth");
+  };
+
   // Actualizar el estado del usuario cuando el contexto cambie
   useEffect(() => {
     setUser(state?.user);
@@ -194,8 +201,42 @@ export default function NavBar({
         {/* Opciones según el rol */}
         <div className="flex items-center gap-2 md:gap-6">
           {user?.role === "CLIENT" && renderOptions(clientOptions)}
-          {user?.role === "OWNER" && renderOptions(ownerOptions)}
-          {user?.role === "ADMIN" && renderOptions(adminOptions)}
+          {user?.role === "OWNER" && (
+            <>
+              {renderOptions(ownerOptions)}
+              {/* Logout visible solo para OWNER */}
+              <button
+                onClick={handleLogOut}
+                type="button"
+                className="flex flex-col items-center justify-between gap-1"
+              >
+                <div className="relative w-[40px] h-[40px]">
+                  <ArrowRightStartOnRectangleIcon className="size-10" />
+                </div>
+                <h2 className="text-xs text-center text-[#636574]">
+                  Salir
+                </h2>
+              </button>
+            </>
+          )}
+          {user?.role === "ADMIN" && (
+            <>
+              {renderOptions(adminOptions)}
+              {/* Logout visible solo para ADMIN */}
+              <button
+                onClick={handleLogOut}
+                type="button"
+                className="flex flex-col items-center justify-between gap-1"
+              >
+                <div className="relative w-[40px] h-[40px]">
+                  <ArrowRightStartOnRectangleIcon className="size-10" />
+                </div>
+                <h2 className="text-xs text-center text-[#636574]">
+                  Salir
+                </h2>
+              </button>
+            </>
+          )}
 
           {/* Notificaciones */}
           <Link

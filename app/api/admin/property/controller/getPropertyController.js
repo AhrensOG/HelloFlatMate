@@ -1,152 +1,221 @@
-import { Client, Contract, Document, LeaseOrderProperty, LeaseOrderRoom, Property, RentalPeriod, Room } from "@/db/init";
-import { NextResponse } from 'next/server';
-import { op } from "sequelize";
+import {
+  Client,
+  Contract,
+  Document,
+  LeaseOrderProperty,
+  LeaseOrderRoom,
+  Owner,
+  Property,
+  RentalPeriod,
+  Room,
+} from "@/db/init";
+import { NextResponse } from "next/server";
+import { Op } from "sequelize";
 
 export async function getAllProperties() {
-    try {
-        const properties = await Property.findAll({
-            include: [{
-                model: Room,
-                as: 'rooms',
-                include: [{
-                    model: LeaseOrderRoom,
-                    as: 'leaseOrdersRoom',
-                    include: {
-                        model: Client,
-                        as: 'client',
-                        include: {
-                            model: Document,
-                            as: 'documents'
-                        }
-                    }
-                },
-                {
-                    model: Contract,
-                    as: 'contracts'
-                }, {
-                    model: RentalPeriod,
-                    as: 'rentalPeriods'
-                }],
-
-            },
+  try {
+    const properties = await Property.findAll({
+      include: [
+        {
+          model: Room,
+          as: "rooms",
+          include: [
             {
-                model:
-                    LeaseOrderProperty,
-                as: 'leaseOrdersProperty',
+              model: LeaseOrderRoom,
+              as: "leaseOrdersRoom",
+              include: {
+                model: Client,
+                as: "client",
                 include: {
-                    model: Client,
-                    as: 'client',
-                    include: {
-                        model: Document,
-                        as: 'documents'
-                    }
-                }
+                  model: Document,
+                  as: "documents",
+                },
+              },
             },
             {
-                model: Contract,
-                as: 'contracts'
+              model: Contract,
+              as: "contracts",
             },
             {
-                model: RentalPeriod,
-                as: 'rentalPeriods'
-            }]
-        });
-        return NextResponse.json(properties, { status: 200 });
-
-    } catch (error) {
-        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
-    }
+              model: RentalPeriod,
+              as: "rentalPeriods",
+            },
+          ],
+        },
+        {
+          model: LeaseOrderProperty,
+          as: "leaseOrdersProperty",
+          include: {
+            model: Client,
+            as: "client",
+            include: {
+              model: Document,
+              as: "documents",
+            },
+          },
+        },
+        {
+          model: Contract,
+          as: "contracts",
+        },
+        {
+          model: RentalPeriod,
+          as: "rentalPeriods",
+        },
+      ],
+    });
+    return NextResponse.json(properties, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al obtener las propiedades" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function getPropertyById(id) {
-    try {
-        const property = await Property.findByPk(id, {
-            include: [{
-                model: Room,
-                as: 'rooms',
-                include: [{
-                    model: LeaseOrderRoom,
-                    as: 'leaseOrdersRoom',
-                    include: {
-                        model: Client,
-                        as: 'client',
-                        include: {
-                            model: Document,
-                            as: 'documents'
-                        }
-                    }
-                }, {
-                    model: Contract,
-                    as: 'contracts'
-                },
-                {
-                    model: RentalPeriod,
-                    as: 'rentalPeriods'
-                }]
-            },
+  try {
+    const property = await Property.findByPk(id, {
+      include: [
+        {
+          model: Room,
+          as: "rooms",
+          include: [
             {
-                model: LeaseOrderProperty,
-                as: 'leaseOrdersProperty',
+              model: LeaseOrderRoom,
+              as: "leaseOrdersRoom",
+              include: {
+                model: Client,
+                as: "client",
                 include: {
-                    model: Client,
-                    as: 'client',
-                    include: {
-                        model: Document,
-                        as: 'documents'
-                    }
-                }
+                  model: Document,
+                  as: "documents",
+                },
+              },
             },
             {
-                model: Contract,
-                as: 'contracts'
-            }, {
-                model: RentalPeriod,
-                as: 'rentalPeriods'
-            }]
-        });
-        if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
+              model: Contract,
+              as: "contracts",
+            },
+            {
+              model: RentalPeriod,
+              as: "rentalPeriods",
+            },
+          ],
+        },
+        {
+          model: LeaseOrderProperty,
+          as: "leaseOrdersProperty",
+          include: {
+            model: Client,
+            as: "client",
+            include: {
+              model: Document,
+              as: "documents",
+            },
+          },
+        },
+        {
+          model: Contract,
+          as: "contracts",
+        },
+        {
+          model: RentalPeriod,
+          as: "rentalPeriods",
+        },
+      ],
+    });
+    if (!property)
+      return NextResponse.json(
+        { error: "Propiedad no encontrada" },
+        { status: 404 }
+      );
 
-        return NextResponse.json({ property }, { status: 200 });
-    } catch (error) {
-        console.log(error);
+    return NextResponse.json({ property }, { status: 200 });
+  } catch (error) {
+    console.log(error);
 
-        return NextResponse.json({ error: "Error al obtener la propiedad" }, { status: 500 });
-    }
+    return NextResponse.json(
+      { error: "Error al obtener la propiedad" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function getPropertiesActive() {
-    try {
-        const properties = await Property.findAll({ where: { isActive: true, status: { [op.ne]: "DELETED" } } });
-        return NextResponse.json(properties, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
-    }
+  try {
+    const properties = await Property.findAll({
+      where: { isActive: true, status: { [Op.ne]: "DELETED" } },
+    });
+    return NextResponse.json(properties, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al obtener las propiedades" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function getPropertiesInactive() {
-    try {
-        const properties = await Property.findAll({ where: { isActive: false } });
-        return NextResponse.json(properties, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
-    }
+  try {
+    const properties = await Property.findAll({ where: { isActive: false } });
+    return NextResponse.json(properties, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al obtener las propiedades" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function getPropertiesByCategory(category) {
-    if (!category) return NextResponse.json({ error: "Se requiere la categoria" }, { status: 400 });
-    try {
-        const properties = await Property.findAll({ where: { category } });
-        return NextResponse.json(properties, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
-    }
+  if (!category)
+    return NextResponse.json(
+      { error: "Se requiere la categoria" },
+      { status: 400 }
+    );
+  try {
+    const properties = await Property.findAll({ where: { category } });
+    return NextResponse.json(properties, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al obtener las propiedades" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function getAllPropertiesSimple() {
-    try {
-        const properties = await Property.findAll({ attributes: ["name", "serial", "id", "category", "status"], where: { isActive: true } });
-        return NextResponse.json(properties, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
-    }
+  try {
+    const properties = await Property.findAll({
+      attributes: [
+        "name",
+        "serial",
+        "id",
+        "category",
+        "status",
+        "street",
+        "streetNumber",
+        "city",
+        "postalCode",
+        "zone",
+        "typology",
+        "size",
+        "roomsCount",
+        "bathrooms",
+        "isActive",
+      ],
+      where: { status: { [Op.ne]: "DELETED" } },
+      include: [
+        { model: Owner, as: "owner", attributes: ["email"] },
+        { model: Room, as: "rooms", attributes: ["id"] },
+      ],
+    });
+    return NextResponse.json(properties, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al obtener las propiedades" },
+      { status: 500 }
+    );
+  }
 }

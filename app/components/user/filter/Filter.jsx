@@ -5,6 +5,7 @@ import Image from "next/image";
 import FilterSection from "./filter_section/FilterSection";
 import RoomCounter from "./filter_section/RoomCounter";
 import PriceRange from "./filter_section/PriceRange";
+import DateRangeFilter from "./filter_section/DateRangeFilter"; // Importar el nuevo componente
 import { MapPinIcon } from "@heroicons/react/24/outline";
 
 export default function Filter({
@@ -13,16 +14,15 @@ export default function Filter({
   filters,
   setFilters,
   onApplyFilters,
-  onFilterChange, // Recibe la función onFilterChange
+  onFilterChange,
 }) {
   const handleFilterChange = (filterName, selectedValues) => {
-    onFilterChange(filterName, selectedValues); // Usa la función pasada como prop
+    onFilterChange(filterName, selectedValues);
   };
 
   const handleSeeResults = () => {
-    console.log(filters);
     onApplyFilters();
-    setOpen(false); // Cierra el modal de filtros
+    setOpen(false);
   };
 
   const handleClearFilters = () => {
@@ -30,10 +30,10 @@ export default function Filter({
   };
 
   const typeProperty = [
-    "HelloRoom",
-    "HelloColiving",
-    "HelloStudio",
-    "HelloLandlord",
+    "helloroom",
+    "hellocoliving",
+    "hellostudio",
+    "hellolandlord",
   ];
 
   const comoditis = [
@@ -68,12 +68,26 @@ export default function Filter({
             </span>
             <h2 className="text-center grow text-lg font-bold">Filter</h2>
           </div>
+          <div className="flex items-center justify-between px-4">
+            <button
+              onClick={handleClearFilters}
+              className="w-[45%] py-2 bg-[#CFD5E0] text-[0.9rem] font-bold text-[#1C1C21] rounded-md"
+            >
+              Borrar Filtros
+            </button>
+            <button
+              onClick={handleSeeResults}
+              className="w-[45%] py-2 bg-[#4C8BF5] text-white text-[0.9rem] font-bold rounded-md"
+            >
+              Aplicar
+            </button>
+          </div>
           <div className="overflow-auto space-y-4">
             <section className="flex flex-col gap-3 px-4 justify-between">
               <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
                 Ubicacion
               </h2>
-              <div className="flex justify-between items-center h-[5vh]  bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
+              <div className="flex justify-between items-center h-[5vh] bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
                 <label hidden htmlFor="location">
                   location
                 </label>
@@ -93,7 +107,21 @@ export default function Filter({
                 </span>
               </div>
             </section>
-            <FilterSection
+
+            <PriceRange
+              onChange={handleFilterChange}
+              minValue={filters.minPrice || 0}
+              maxValue={filters.maxPrice || 1000000}
+            />
+
+            {/* Nuevo componente de rango de fechas */}
+            <DateRangeFilter
+              onChange={handleFilterChange}
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+            />
+
+            {/* <FilterSection
               onChange={handleFilterChange}
               title={"Comodidades"}
               entries={comoditis}
@@ -102,32 +130,13 @@ export default function Filter({
             <RoomCounter
               onChange={handleFilterChange}
               initialValue={filters.rooms || 1}
-            />
+            /> */}
             <FilterSection
               onChange={handleFilterChange}
               title={"Tipo de Propiedad"}
               entries={typeProperty}
               initialValues={filters.categorys || []}
             />
-            <PriceRange
-              onChange={handleFilterChange}
-              minValue={filters.minPrice || 0}
-              maxValue={filters.maxPrice || 1000000}
-            />
-          </div>
-          <div className="flex items-center justify-between px-4">
-            <button
-              onClick={handleClearFilters}
-              className="w-[45%] py-2 bg-[#CFD5E0] text-[0.9rem] font-bold text-[#1C1C21] rounded-md"
-            >
-              Borrar Filtros
-            </button>
-            <button
-              onClick={handleSeeResults}
-              className="w-[45%] py-2 bg-[#4C8BF5] text-white text-[0.9rem] font-bold rounded-md"
-            >
-              Aplicar
-            </button>
           </div>
         </motion.aside>
       )}

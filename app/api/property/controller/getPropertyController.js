@@ -8,13 +8,16 @@ export async function getAllProperties() {
             include: [{
                 model: Room,
                 as: 'rooms',
-                include: [{ 
+                include: [{
                     model: RentalPeriod,
                     as: 'rentalPeriods'
                 }]
-            }, { 
+            }, {
                 model: RentalPeriod,
                 as: 'rentalPeriods'
+            }, {
+                model: LeaseOrderProperty,
+                as: 'leaseOrdersProperty'
             }]
         });
         return NextResponse.json(properties, { status: 200 });
@@ -30,18 +33,24 @@ export async function getPropertyById(id) {
             include: [{
                 model: Room,
                 as: 'rooms',
-                include: {
-                    model: LeaseOrderRoom,
-                    as: 'leaseOrdersRoom',
-                    include: {
-                        model: Client,
-                        as: 'client',
+                include: [
+                    {
+                        model: LeaseOrderRoom,
+                        as: 'leaseOrdersRoom',
                         include: {
-                            model: Document,
-                            as: 'documents'
+                            model: Client,
+                            as: 'client',
+                            include: {
+                                model: Document,
+                                as: 'documents'
+                            }
                         }
+                    },
+                    {
+                        model: RentalPeriod,
+                        as: "rentalPeriods"
                     }
-                }
+                ]
             },
             {
                 model: LeaseOrderProperty,
