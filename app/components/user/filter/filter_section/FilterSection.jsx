@@ -8,7 +8,9 @@ export default function FilterSection({
   onChange,
   initialValues,
 }) {
-  const [selected, setSelected] = useState(initialValues || []);
+  const [selected, setSelected] = useState(
+    initialValues.map((item) => item.toLowerCase().replace("_", "")) || []
+  );
 
   const handleCheckboxChange = (entry, isChecked) => {
     const updatedSelected = isChecked
@@ -32,7 +34,7 @@ export default function FilterSection({
           key={entry}
           name={entry}
           onChange={handleCheckboxChange}
-          isChecked={selected.includes(entry.toLowerCase())}
+          isChecked={selected.includes(entry.toLowerCase().replace("_", ""))}
         />
       ))}
     </section>
