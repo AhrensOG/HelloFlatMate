@@ -8,13 +8,16 @@ export async function getAllProperties() {
             include: [{
                 model: Room,
                 as: 'rooms',
-                include: [{ 
+                include: [{
                     model: RentalPeriod,
                     as: 'rentalPeriods'
                 }]
-            }, { 
+            }, {
                 model: RentalPeriod,
                 as: 'rentalPeriods'
+            }, {
+                model: LeaseOrderProperty,
+                as: 'leaseOrdersProperty'
             }]
         });
         return NextResponse.json(properties, { status: 200 });
