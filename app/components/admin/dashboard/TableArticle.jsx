@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function TableArticle({ data }) {
   const router = useRouter();
@@ -133,11 +134,14 @@ export default function TableArticle({ data }) {
 
   return (
     <article className="flex flex-col justify-center items-center gap-4 w-full p-4">
-      {/* Header with Add Property Button */}
-      <h2 className="text-xl font-bold text-primary">Propiedades</h2>
-
       {/* Contenedor de botón alfabético y barra de búsqueda */}
-      <div className="flex items-center gap-2 w-full max-w-lg mb-4">
+      <div className="flex items-center gap-2 w-full max-w-screen-sm mb-4">
+        <Link
+          href={"/pages/admin/create"}
+          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+        >
+          Nueva Propiedad
+        </Link>
         {/* Search bar con ícono de lupa */}
         <div className="relative flex-grow">
           <input
@@ -158,10 +162,11 @@ export default function TableArticle({ data }) {
           {alphabeticalOrder ? "A → Z" : "Z → A"}
         </button>
       </div>
-
-      {/* Category filters */}
+      {/* Category filters */} {/* Status filters */}
       <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
-        <h2 className="text-xl font-bold text-primary w-full">Categorías</h2>
+        <h2 className="text-xl font-bold text-primary w-full">
+          Categorías y estados
+        </h2>
         {categories.map((category) => (
           <label key={category} className="flex items-center gap-2">
             <input
@@ -172,13 +177,7 @@ export default function TableArticle({ data }) {
             {category.replace(/_/g, "").toLowerCase()}
           </label>
         ))}
-      </div>
-
-      {/* Status filters */}
-      <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
-        <h2 className="text-xl font-bold text-primary w-full">
-          Estado de la propiedad
-        </h2>
+        |
         {statuses.map((status) => (
           <label key={status} className="flex items-center gap-2">
             <input
@@ -186,11 +185,10 @@ export default function TableArticle({ data }) {
               checked={selectedStatus.includes(status)}
               onChange={() => handleStatusChange(status)}
             />
-            {status}
+            {status === "FREE" ? "Libres" : status === "RESERVED" ? "Reservados" : "Alquilados" }
           </label>
         ))}
       </div>
-
       {/* Table */}
       <div className="w-full max-w-full border-2 border-primary rounded-lg overflow-x-auto overflow-y-auto max-h-96">
         <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
@@ -291,10 +289,23 @@ export default function TableArticle({ data }) {
                       {/* Botón de Activar/Desactivar */}
                       <div className="relative group inline-block">
                         <button
-                          onClick={
-                            item.isActive
-                              ? () => handleDesactivateProperty(item.id)
-                              : () => handleActiveProperty(item.id)
+                          onClick={() =>
+                            toast.promise(
+                              item.isActive
+                                ? handleDesactivateProperty(item.id)
+                                : handleActiveProperty(item.id),
+                              {
+                                loading: item.isActive
+                                  ? "Desactivando..."
+                                  : "Activando...",
+                                success: item.isActive
+                                  ? "Desactivado correctamente"
+                                  : "Activado correctamente",
+                                error: item.isActive
+                                  ? "Error al desactivar"
+                                  : "Error al activar",
+                              }
+                            )
                           }
                           className={`${
                             item.isActive
@@ -303,11 +314,11 @@ export default function TableArticle({ data }) {
                           } transition-colors duration-200`}
                           aria-label={item.isActive ? "Desactivar" : "Activar"}
                         >
-                          <PowerIcon
-                            className={`w-6 h-6 ${
-                              item.isActive ? "text-green-600" : "text-red-600"
-                            }`}
-                          />
+                          {item.isActive ? (
+                            <PowerIcon className="w-6 h-6 text-green-600" />
+                          ) : (
+                            <PowerIcon className="w-6 h-6 text-red-600" />
+                          )}
                         </button>
                         {/* Tooltip personalizado */}
                         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
