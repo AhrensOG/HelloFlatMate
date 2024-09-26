@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import CategoryCard from "./auxiliarComponents/CategoryCard";
 import Select from "./auxiliarComponents/Select";
 import { useRouter, useSearchParams } from "next/navigation";
+import SelectDate from "./auxiliarComponents/SelectDate";
 
 const list = [
   {
@@ -38,117 +39,63 @@ const CategorySelector = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const categoryQuery = searchParams.get("c"); // Obtiene el parámetro "c" de la URL
+  const categoryQuery = searchParams.get("c");
 
-  const [currentCategory, setCurrentCategory] = useState(null); // Estado para la categoría seleccionada
-  const [data, setData] = useState({}); // Estado para almacenar los datos seleccionados
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [data, setData] = useState({});
+  const [date, setDate] = useState({ startDate: "", endDate: "" });
 
-  // Si recibimos selectedCategory (prop c), lo usamos como la categoría seleccionada
   useEffect(() => {
     if (categoryQuery) {
       setCurrentCategory(categoryQuery);
     }
   }, [categoryQuery]);
 
-  // Función para extraer las ubicaciones de las propiedades
   const extractLocations = (properties) => {
     if (properties.length === 0) {
       return ["Sin opciones disponibles"];
     }
-
-    // Extraemos las zonas y eliminamos las duplicadas usando un Set
     const uniqueZones = [
       ...new Set(properties.map((property) => property.zone)),
     ];
-
-    // Si no hay zonas válidas después de eliminar duplicados, mostramos un mensaje
     return uniqueZones.length > 0 ? uniqueZones : ["Sin opciones disponibles"];
   };
 
-  // Función para extraer las fechas disponibles de las propiedades
-  const extractDates = (properties, category) => {
-    let availableDates = new Set(); // Usamos un Set para evitar duplicados
+  // Construir la cadena de query string para los parámetros de búsqueda
+  const buildQueryString = () => {
+    const params = new URLSearchParams();
 
-    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
-      // Si la categoría es HELLO_ROOM o HELLO_COLIVING, acceder a los rooms de cada propiedad
-      properties.forEach((property) => {
-        property.rooms.forEach((room) => {
-          room.rentalPeriods
-            .filter((period) => period.status === "FREE") // Filtrar los periodos disponibles
-            .forEach((period) => {
-              const startDate = new Date(period.startDate);
-              const endDate = new Date(period.endDate);
-
-              // Formatear las fechas
-              const formattedStartDate = new Intl.DateTimeFormat("es-ES", {
-                day: "numeric",
-                month: "numeric",
-                year: "2-digit",
-              }).format(startDate);
-
-              const formattedEndDate = new Intl.DateTimeFormat("es-ES", {
-                day: "numeric",
-                month: "numeric",
-                year: "2-digit",
-              }).format(endDate);
-
-              // Añadir al Set para evitar duplicados
-              availableDates.add(
-                `Del ${formattedStartDate} al ${formattedEndDate}`
-              );
-            });
-        });
-      });
-    } else {
-      // Para las demás categorías, se accede directamente a los rentalPeriods de la propiedad
-      properties.forEach((property) => {
-        property.rentalPeriods
-          .filter((period) => period.status === "FREE") // Filtrar los periodos disponibles
-          .forEach((period) => {
-            const startDate = new Date(period.startDate);
-            const endDate = new Date(period.endDate);
-
-            // Formatear las fechas
-            const formattedStartDate = new Intl.DateTimeFormat("es-ES", {
-              day: "numeric",
-              month: "numeric",
-              year: "2-digit",
-            }).format(startDate);
-
-            const formattedEndDate = new Intl.DateTimeFormat("es-ES", {
-              day: "numeric",
-              month: "numeric",
-              year: "2-digit",
-            }).format(endDate);
-
-            // Añadir al Set para evitar duplicados
-            availableDates.add(
-              `Del ${formattedStartDate} al ${formattedEndDate}`
-            );
-          });
-      });
+    if (data.zone) {
+      params.append("zone", data.zone);
     }
 
-    // Convertimos el Set de fechas en un array
-    const uniqueDates = Array.from(availableDates);
-
-    // Si no hay fechas disponibles
-    if (uniqueDates.length === 0) {
-      return ["Sin opciones disponibles"];
+    if (date.startDate) {
+      params.append("startDate", date.startDate);
     }
 
-    return uniqueDates;
+    if (date.endDate) {
+      params.append("endDate", date.endDate);
+    }
+
+    if (currentCategory) {
+      params.append("category", currentCategory);
+    }
+
+    return params.toString();
   };
 
-  // Función que devuelve el contenido según la categoría seleccionada
+  // Función que se llama al hacer clic en el botón "Buscar"
+  const handleSearch = () => {
+    console.log(date);
+
+    const queryString = buildQueryString();
+    router.push(`/pages/user/filtered?${queryString}`);
+  };
+
   const renderSelectedCategoryContent = () => {
     switch (currentCategory) {
       case "HELLO_ROOM":
         const helloRoomLocations = extractLocations(helloRoomProperties);
-        const helloRoomDates = extractDates(
-          helloRoomProperties,
-          currentCategory
-        );
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-wrap justify-center items-start gap-4">
@@ -159,12 +106,10 @@ const CategorySelector = ({
                 title="¿En qué zona?"
                 name="zone"
               />
-              <Select
-                options={helloRoomDates}
-                data={data}
-                setData={setData}
-                title="Fechas disponibles"
-                name="date"
+              <SelectDate
+                title="Seleccione un rango de fechas"
+                data={date}
+                setData={setDate}
               />
             </div>
           </div>
@@ -172,10 +117,6 @@ const CategorySelector = ({
       case "HELLO_COLIVING":
         const helloColivingLocations = extractLocations(
           helloColivingProperties
-        );
-        const helloColivingDates = extractDates(
-          helloColivingProperties,
-          currentCategory
         );
         return (
           <div className="w-full flex justify-center items-center">
@@ -186,18 +127,16 @@ const CategorySelector = ({
                 setData={setData}
                 title="¿En qué zona?"
               />
-              <Select
-                options={helloColivingDates}
-                data={data}
-                setData={setData}
-                title="Fechas disponibles"
+              <SelectDate
+                title="Seleccione un rango de fechas"
+                data={date}
+                setData={setDate}
               />
             </div>
           </div>
         );
       case "HELLO_STUDIO":
         const helloStudioLocations = extractLocations(helloStudioProperties);
-        const helloStudioDates = extractDates(helloStudioProperties);
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-wrap justify-center items-start gap-4">
@@ -207,11 +146,10 @@ const CategorySelector = ({
                 setData={setData}
                 title="¿En qué zona?"
               />
-              <Select
-                options={helloStudioDates}
-                data={data}
-                setData={setData}
-                title="Fechas disponibles"
+              <SelectDate
+                title="Seleccione un rango de fechas"
+                data={date}
+                setData={setDate}
               />
             </div>
           </div>
@@ -220,7 +158,6 @@ const CategorySelector = ({
         const helloLandlordLocations = extractLocations(
           helloLandlordProperties
         );
-        const helloLandlordDates = extractDates(helloLandlordProperties);
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-wrap justify-center items-start gap-4">
@@ -230,11 +167,10 @@ const CategorySelector = ({
                 setData={setData}
                 title="¿En qué zona?"
               />
-              <Select
-                options={helloLandlordDates}
-                data={data}
-                setData={setData}
-                title="Fechas disponibles"
+              <SelectDate
+                title="Seleccione un rango de fechas"
+                data={date}
+                setData={setDate}
               />
             </div>
           </div>
@@ -254,7 +190,7 @@ const CategorySelector = ({
     >
       <div className="w-full flex flex-row justify-start items-center gap-2 p-5">
         <button
-          onClick={() => router.push("/")} // Restablecer la categoría seleccionada
+          onClick={() => router.push("/")}
           type="button"
           className="self-start flex justify-center items-center gap-2"
         >
@@ -281,7 +217,7 @@ const CategorySelector = ({
             currentCategory={currentCategory}
             setCurrentCategory={setCurrentCategory}
             categoryId={e.id}
-            onClick={() => setCurrentCategory(e.id)} // Actualizar categoría seleccionada
+            onClick={() => setCurrentCategory(e.id)}
           />
         ))}
       </div>
@@ -303,7 +239,7 @@ const CategorySelector = ({
       <div className="w-full flex justify-center items-center">
         <div className="w-full max-w-screen-lg flex justify-start items-center">
           <button
-            onClick={() => router.push("/pages/home")}
+            onClick={handleSearch}
             className="px-10 py-4 bg-[#1FAECC] rounded-md text-white font-bold"
           >
             Buscar

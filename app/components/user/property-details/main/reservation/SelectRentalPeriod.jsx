@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
-export default function SelectRentalPeriod({ data, setData, info }) {
-  console.log(info);
-
+export default function SelectRentalPeriod({ data, setData }) {
   const [selectedValue, setSelectedValue] = useState(""); // Valor inicial vacío
+  const [showOptions, setShowOptions] = useState(false); // Para mostrar u ocultar las opciones
 
   const calculateDurationInMonths = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -17,8 +18,8 @@ export default function SelectRentalPeriod({ data, setData, info }) {
     return yearsDiff * 12 + monthsDiff;
   };
 
-  const handleValueChange = (e) => {
-    const selectedId = e.target.value;
+  const handleValueChange = (id) => {
+    const selectedId = id;
     const selectedPeriod = data.find(
       (period) => period.id === parseInt(selectedId)
     );
@@ -36,33 +37,69 @@ export default function SelectRentalPeriod({ data, setData, info }) {
         ),
         selectedPeriod.id
       );
+      // Cierra el selector al seleccionar una opción
+      setShowOptions(false);
     }
   };
 
   const formatedDate = (date) => {
     if (date) {
       const newDate = new Date(date);
-      return newDate.toISOString().slice(0, 10);
+      return new Intl.DateTimeFormat("es-ES", {
+        day: "numeric",
+        month: "numeric",
+        year: "2-digit",
+      }).format(newDate);
     }
     return "";
   };
 
   return (
     <section className="w-[19.4rem]">
-      <select
-        value={selectedValue}
-        onChange={handleValueChange}
-        className="rounded-lg p-2 border shadow-reservation-drop my-2 w-full"
+      <div
+        className="rounded-lg flex justify-between p-2 items-center shadow-reservation-drop my-2 cursor-pointer bg-white"
+        onClick={() => setShowOptions(!showOptions)}
       >
-        <option value="" disabled>
-          Selecciona un contrato
-        </option>
-        {data.map((period) => (
-          <option key={period.id} value={period.id}>
-            {formatedDate(period.startDate)} / {formatedDate(period.endDate)}
-          </option>
-        ))}
-      </select>
+        {selectedValue
+          ? `Del ${formatedDate(
+              data.find((period) => period.id === parseInt(selectedValue))
+                .startDate
+            )} al ${formatedDate(
+              data.find((period) => period.id === parseInt(selectedValue))
+                .endDate
+            )}`
+          : "Selecciona un contrato"}
+        <span
+          className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
+            showOptions ? "bg-[#1C8CD65E] rotate-180" : ""
+          }`}
+        >
+          <ChevronUpIcon />
+        </span>
+      </div>
+      <AnimatePresence>
+        {showOptions && (
+          <motion.div
+            className="flex flex-col shadow-reservation-list mt-2 bg-white rounded-lg max-h-44 overflow-y-auto"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          >
+            {data.map((period) => (
+              <div
+                key={period.id}
+                onClick={() => handleValueChange(period.id)}
+                className="cursor-pointer p-2 hover:bg-gray-100"
+              >
+                {`Del ${formatedDate(period.startDate)} al ${formatedDate(
+                  period.endDate
+                )}`}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

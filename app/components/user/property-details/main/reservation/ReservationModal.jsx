@@ -12,12 +12,13 @@ import { toast } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
 import ShowClauses from "./ShowClauses";
 import SelectRentalPeriod from "./SelectRentalPeriod";
+import DatePicker from "./date_picker/DatePicker";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function ReservationModal({ callback, data }) {
+export default function ReservationModal({ callback, data, category }) {
   const router = useRouter();
   const [info, setInfo] = useState({
     startDate: "",
@@ -83,8 +84,6 @@ export default function ReservationModal({ callback, data }) {
   };
 
   const handleReservationSubmit = async () => {
-    console.log("hola");
-
     if (!clausesAccepted) {
       throw new Error("Debes aceptar los términos y condiciones");
     }
@@ -104,14 +103,21 @@ export default function ReservationModal({ callback, data }) {
 
     try {
       const response = await axios.post("/api/lease_order", reservation);
-      await axios.patch("/api/rental_period", {
-        id: rentalPeriodId,
-        status: "RESERVED",
-      });
+      if (
+        data.category === "HELLO_ROOM" ||
+        data.category === "HELLO_COLIVING" ||
+        data.category === "HELLO_LANDLORD"
+      ) {
+        await axios.patch("/api/rental_period", {
+          id: rentalPeriodId,
+          status: "RESERVED",
+        });
+      }
       reservation.unitPrice = data.price;
       await handleCheckout(reservation, data?.user, response.data.id);
       return response.data;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   };
@@ -126,8 +132,6 @@ export default function ReservationModal({ callback, data }) {
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <div className="flex">
-          {console.log(info)}
-
           <div className="w-[44%]">
             <button className="w-8 h-8" onClick={callback}>
               <XMarkIcon />
@@ -146,12 +150,23 @@ export default function ReservationModal({ callback, data }) {
         </div>
         <h2 className="font-medium text-[1.75rem]">Estadía</h2>
         <div className="flex flex-col justify-center items-center gap-5">
-          {/* <SelectContract data={info} setData={setInfo} /> */}
-          <SelectRentalPeriod
-            data={rentalPeriods.filter((rental) => rental.status === "FREE")}
-            setData={handleSetDuration}
-            info={info}
-          />
+          {(category === "HELLO_ROOM" ||
+            category === "HELLO_COLIVING" ||
+            category === "HELLO_LANDLORD") && (
+            <SelectRentalPeriod
+              data={rentalPeriods.filter((rental) => rental.status === "FREE")}
+              setData={handleSetDuration}
+              info={info}
+            />
+          )}
+          {category === "HELLO_STUDIO" && (
+            <DatePicker
+              data={info}
+              setData={setInfo}
+              occupedDates={data?.leaseOrdersProperty}
+              rentalPeriods={rentalPeriods}
+            />
+          )}
           <ShowClauses />
           <div className="self-center w-[90%]">
             <label className="flex items-center">
@@ -170,7 +185,7 @@ export default function ReservationModal({ callback, data }) {
                 toast.promise(handleReservationSubmit(), {
                   loading: "Reservando...",
                   success: "Reservado!",
-                  error: "Error al reservar",
+                  error: (err) => `Error al reservar: ${ err.response?.data?.message || err.message || err}`,
                 });
               }}
             />

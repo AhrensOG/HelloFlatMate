@@ -13,12 +13,12 @@ export default function SearchBarFiltered({
   const route = useRouter();
 
   const handleInput = (e) => {
-    onChange("search", e.target.value); // Llama a onChange para actualizar el estado del filtro
+    onChange("word", e.target.value); // Llama a onChange para actualizar el estado del filtro
     onApplyFilters();
   };
 
   const handleBack = () => {
-    route.push(`/`);
+    route.back();
   };
 
   return (

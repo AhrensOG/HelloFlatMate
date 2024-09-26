@@ -98,7 +98,7 @@ export default function RoomDetails({ params }) {
           <div className="px-3">
             <NavBarDetails callBack={() => router.back()} />
           </div>
-          <span className="px-3 text-lg font-medium text-slate-500">
+          <span className="px-3 text-lg font-light text-slate-400">
             {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
               ? "Reservada"
               : ""}
@@ -107,7 +107,10 @@ export default function RoomDetails({ params }) {
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
-          <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+          <h1 className="font-bold text-[1.37rem]">
+            {roomData.name}
+            <span className="pl-2 font-light text-slate-400">({roomData.serial})</span>
+          </h1>
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street}
           </h4>
@@ -120,9 +123,12 @@ export default function RoomDetails({ params }) {
                 { type: "couple", boolean: roomData.couple },
               ]}
             />
-            {/* {roomData.price && roomData.leaseOrdersRoom < 1 && (
-              <ReservationButton callback={handleShowModal} />
-            )} */}
+            {(data.category === "HELLO_ROOM" ||
+              data.category === "HELLO_COLIVING") &&
+              roomData.price &&
+              roomData.leaseOrdersRoom < 1 && (
+                <ReservationButton callback={handleShowModal} />
+              )}
           </div>
           {roomData?.description?.length > 0 ? (
             <DescriptionSection
@@ -134,7 +140,10 @@ export default function RoomDetails({ params }) {
             <DescriptionSection title="Descripción" data={data.description} />
           )}
           {filteredRooms.length > 0 ? (
-            <RoomSection data={filteredRooms} title="Otras habitaciones en el piso" />
+            <RoomSection
+              data={filteredRooms}
+              title="Otras habitaciones en el piso"
+            />
           ) : null}
 
           <AmenitiesSection data={data.amenities} />
@@ -163,6 +172,7 @@ export default function RoomDetails({ params }) {
           {showModal && (
             <ReservationModal
               callback={handleShowModal}
+              category={data.category}
               data={{
                 date: null,
                 startDate: null,
@@ -174,6 +184,7 @@ export default function RoomDetails({ params }) {
                 roomId: roomData.id,
                 propertyName: data?.name,
                 user: state?.user,
+                rentalPeriods: roomData.rentalPeriods,
               }}
             />
           )}

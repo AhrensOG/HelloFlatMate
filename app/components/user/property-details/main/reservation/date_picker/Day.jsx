@@ -6,6 +6,8 @@ export default function Day({
   isDisabled = false,
   callback,
   isSelected = false,
+  isStartDate = false,
+  isEndDate = false,
 }) {
   const currentDayStyle =
     "text-[#0C1660] bg-blue-200 aspect-square hover:bg-slate-200 cursor-pointer border-none rounded-full font-normal text-sm delay-300";
@@ -16,8 +18,22 @@ export default function Day({
   const disableDayStyle =
     "text-gray-600 aspect-square bg-transparent cursor-not-allowed border-none rounded-full font-normal text-sm delay-300 opacity-30";
 
-  // Determina si el día actual es el día seleccionado
-  const isCurrentAndSelected = isCurrentDay && isSelected;
+  // Ajustando a variaciones más suaves y fuertes de azul
+  const startDateStyle =
+    "text-white bg-[#66B2FF] aspect-square cursor-pointer border-none rounded-full font-normal text-sm delay-300"; // Azul más suave
+  const endDateStyle =
+    "text-white bg-[#004080] aspect-square cursor-pointer border-none rounded-full font-normal text-sm delay-300"; // Azul más fuerte
+
+  // Determina el estilo a aplicar
+  const getDayStyle = () => {
+    if (isDisabled) return disableDayStyle;
+    if (isStartDate) return startDateStyle;
+    if (isEndDate) return endDateStyle;
+    if (isCurrentDay && isSelected) return selectedDayStyle;
+    if (isCurrentDay) return currentDayStyle;
+    if (isSelected) return selectedDayStyle;
+    return normalDayStyle;
+  };
 
   return (
     <motion.button
@@ -26,17 +42,7 @@ export default function Day({
       exit={{ scale: 0 }}
       whileTap={{ scale: 0.9 }}
       onClick={() => !isDisabled && callback(day)}
-      className={
-        isDisabled
-          ? disableDayStyle
-          : isCurrentAndSelected
-          ? selectedDayStyle
-          : isCurrentDay
-          ? currentDayStyle
-          : isSelected
-          ? selectedDayStyle
-          : normalDayStyle
-      }
+      className={getDayStyle()}
       disabled={isDisabled}
     >
       {day}

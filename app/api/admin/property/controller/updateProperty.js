@@ -1,5 +1,6 @@
 import { Property, RentalPeriod } from "@/db/init";
 import { NextResponse } from "next/server";
+import { sequelize } from "@/db/models/comment";
 
 export async function updateProperty(id, data) {
     console.log("DATOS: ", data);
@@ -146,11 +147,13 @@ export async function cascadeUpdateByCategory(data) {
             for (const category of data.categories) {
                 const properties = await Property.findAll({ where: { category }, transaction });
 
-                const accData = data.map(({ category, ...rest }) => rest);
+                delete data.categories;
+                const accData = { ...data }
+
                 // Ejecutar las actualizaciones en paralelo usando Promise.all
                 await Promise.all(
                     properties.map(property =>
-                        property.update({ ...accData }, { transaction })
+                        property.update({ description: accData.descriptions, ...accData }, { transaction })
                     )
                 );
             }
@@ -167,5 +170,19 @@ export async function cascadeUpdateByCategory(data) {
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Error al iniciar la transacción" }, { status: 500 });
+    }
+}
+
+export async function activateProperty(id) {
+    try {
+        const property = await Property.findByPk(id);
+        if (!property) {
+            return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
+        }
+        property.isActive = true;
+        await property.save();
+        return NextResponse.json({ message: "Propiedad activada correctamente" }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: "Error al activar la propiedad" }, { status: 500 });
     }
 }

@@ -71,13 +71,18 @@ export default function PropertyDetails({ params }) {
             </SliderDetails>
           </div>
           <div className="px-3">
-            <NavBarDetails />
+            <NavBarDetails callBack={() => router.back()} />
           </div>
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
-          <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
+          <h1 className="font-bold text-[1.37rem]">
+            {data.name}
+            <span className="pl-2 font-light text-slate-400">
+              ({data.serial})
+            </span>
+          </h1>
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street}
           </h4>
@@ -94,14 +99,16 @@ export default function PropertyDetails({ params }) {
                 { quantity: data.bed, type: "Camas" },
               ]}
             />
-            {/* {(data.category === "HELLO_STUDIO" ||
-              data.category === "HELLO_LANDLORD") &&
+            {data.category === "HELLO_LANDLORD" &&
               data.leaseOrdersProperty.length < 1 && (
                 <ReservationButton callback={handleShowModal} />
-              )} */}
+              )}
+            {data.category === "HELLO_STUDIO" && (
+              <ReservationButton callback={handleShowModal} />
+            )}
           </div>
           <DescriptionSection data={data.description} />
-          <RoomSection data={data.rooms} />
+          <RoomSection data={data.rooms} category={data.category} />
           <AmenitiesSection data={data.amenities} />
           <LocationSection
             street={data?.street}
@@ -128,6 +135,7 @@ export default function PropertyDetails({ params }) {
           {showModal && (
             <ReservationModal
               callback={handleShowModal}
+              category={data.category}
               data={{
                 date: null,
                 startDate: null,
@@ -139,6 +147,7 @@ export default function PropertyDetails({ params }) {
                 propertyName: data?.name,
                 user: state?.user,
                 rentalPeriods: data.rentalPeriods,
+                leaseOrdersProperty: data?.leaseOrdersProperty || null,
               }}
             />
           )}
