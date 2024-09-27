@@ -45,7 +45,23 @@ const clientInit = (sequelize, DataTypes) => {
             signature: {
                 type: DataTypes.STRING(500),
                 allowNull: true,
-            }
+            },
+            destinationUniversity: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            homeUniversity: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            arrybalDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
+            arrybalTime: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
         },
         {
             sequelize,

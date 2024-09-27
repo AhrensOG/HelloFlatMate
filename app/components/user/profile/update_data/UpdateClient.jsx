@@ -6,8 +6,9 @@ import { plus_jakarta } from "@/font";
 import { Context } from "@/app/context/GlobalContext";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+
 export default function UpdateClient() {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const [prevData, setPrevData] = useState();
   const router = useRouter();
 
@@ -32,6 +33,14 @@ export default function UpdateClient() {
         postalCode: user.postalCode,
         age: user.age,
         birthDate: readableDate,
+        emergencyName: user.emergencyName || "",
+        emergencyPhone: user.emergencyPhone || "",
+        emergencyEmail: user.emergencyEmail || "",
+        howMetUs: user.howMetUs || "",
+        destinationUniversity: user.destinationUniversity || "",
+        homeUniversity: user.homeUniversity || "",
+        arrivalDate: user.arrivalDate || "",
+        arrivalTime: user.arrivalTime || "",
       });
     }
   }, [state]);
@@ -48,6 +57,14 @@ export default function UpdateClient() {
     postalCode: "",
     age: "",
     birthDate: "",
+    emergencyName: "",
+    emergencyPhone: "",
+    emergencyEmail: "",
+    howMetUs: "",
+    destinationUniversity: "",
+    homeUniversity: "",
+    arrivalDate: "",
+    arrivalTime: "",
   };
 
   const formik = useFormik({
@@ -85,7 +102,7 @@ export default function UpdateClient() {
       toast.promise(updateUser(values), {
         loading: "Actualizando información...",
         success: () => {
-          toast.success("Información actualizada con exito");
+          toast.success("Información actualizada con éxito");
           router.push("/pages/user/profile");
         },
         error: "Error al actualizar la información",
@@ -95,20 +112,14 @@ export default function UpdateClient() {
 
   const calculateAge = (birthDate) => {
     const [day, month, year] = birthDate.split("/").map(Number);
-
     const today = new Date();
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth() + 1;
     const currentDay = today.getDate();
-
-    //calculamos edad
     let calculatedAge = currentYear - year;
-
-    //ajustamos la edad si aun no cumple años
     if (currentMonth < month || (currentMonth === month && currentDay < day)) {
       calculatedAge--;
     }
-
     return calculatedAge;
   };
 
@@ -126,6 +137,14 @@ export default function UpdateClient() {
       postalCode: data.postalCode,
       age: data.age,
       birthDate: data.birthDate,
+      emergencyName: data.emergencyName,
+      emergencyPhone: data.emergencyPhone,
+      emergencyEmail: data.emergencyEmail,
+      howMetUs: data.howMetUs,
+      destinationUniversity: data.destinationUniversity,
+      homeUniversity: data.homeUniversity,
+      arrivalDate: data.arrivalDate,
+      arrivalTime: data.arrivalTime,
     };
     try {
       const response = await axios.put("/api/user", userData);
@@ -349,6 +368,163 @@ export default function UpdateClient() {
                   className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                 />
               </div>
+
+              {/* Sección de emergencia */}
+              <h2>En caso de emergencia</h2>
+              <div className="flex flex-row items-center gap-3 w-full">
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="emergencyName"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Nombre de emergencia
+                  </label>
+                  <input
+                    id="emergencyName"
+                    name="emergencyName"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.emergencyName}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="emergencyPhone"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Teléfono de emergencia
+                  </label>
+                  <input
+                    id="emergencyPhone"
+                    name="emergencyPhone"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.emergencyPhone}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
+              </div>
+              <div className="w-full flex flex-col">
+                <label
+                  htmlFor="emergencyEmail"
+                  className="text-xs text-resolution-blue drop-shadow-sm"
+                >
+                  Email de emergencia
+                </label>
+                <input
+                  id="emergencyEmail"
+                  name="emergencyEmail"
+                  type="email"
+                  onChange={formik.handleChange}
+                  value={formik.values.emergencyEmail}
+                  className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                />
+              </div>
+
+              {/* Otros datos */}
+              <h2>OTROS DATOS</h2>
+              <div className="w-full flex flex-col">
+                <label
+                  htmlFor="howMetUs"
+                  className="text-xs text-resolution-blue drop-shadow-sm"
+                >
+                  ¿Cómo nos conociste?
+                </label>
+                <select
+                  id="howMetUs"
+                  name="howMetUs"
+                  onChange={formik.handleChange}
+                  value={formik.values.howMetUs}
+                  className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                >
+                  <option value="">Seleccione una opción</option>
+                  <option value="Recommended by friends">
+                    Recomendado por amigos
+                  </option>
+                  <option value="Recommended by University">
+                    Recomendado por la Universidad
+                  </option>
+                  <option value="helloflatmate website">
+                    Página web helloflatmate
+                  </option>
+                  <option value="Idealista">Idealista</option>
+                  <option value="Other websites">Otros portales web</option>
+                  <option value="Other">Otros</option>
+                </select>
+              </div>
+
+              {/* Información de la universidad */}
+              <div className="w-full flex flex-col">
+                <label
+                  htmlFor="destinationUniversity"
+                  className="text-xs text-resolution-blue drop-shadow-sm"
+                >
+                  ¿En qué universidad/escuela vas a estudiar?
+                </label>
+                <input
+                  id="destinationUniversity"
+                  name="destinationUniversity"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.destinationUniversity}
+                  className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                />
+              </div>
+              <div className="w-full flex flex-col">
+                <label
+                  htmlFor="homeUniversity"
+                  className="text-xs text-resolution-blue drop-shadow-sm"
+                >
+                  ¿Cuál es tu universidad de origen?
+                </label>
+                <input
+                  id="homeUniversity"
+                  name="homeUniversity"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.homeUniversity}
+                  className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                />
+              </div>
+
+              {/* Datos de llegada */}
+              <h2>DATOS DE LLEGADA</h2>
+              <div className="flex flex-row items-center gap-3 w-full">
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="arrivalDate"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Día de tu llegada
+                  </label>
+                  <input
+                    id="arrivalDate"
+                    name="arrivalDate"
+                    type="date"
+                    onChange={formik.handleChange}
+                    value={formik.values.arrivalDate}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="arrivalTime"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Hora de llegada
+                  </label>
+                  <input
+                    id="arrivalTime"
+                    name="arrivalTime"
+                    type="time"
+                    onChange={formik.handleChange}
+                    value={formik.values.arrivalTime}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
+              </div>
+
               <button
                 type="submit"
                 className="w-full text-white bg-[#0C1660] rounded-lg px-4 py-2"

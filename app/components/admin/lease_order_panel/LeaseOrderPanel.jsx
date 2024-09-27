@@ -8,15 +8,15 @@ import LeaseOrderOwnerSection from "./LeaseOrderOwnerSection";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import { useRouter } from "next/navigation";
 import { Context } from "@/app/context/GlobalContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 export default function LeaseOrderPanel(data) {
   const router = useRouter();
   const [leaserOrders, setLeaserOrders] = useState(
     data.data?.category === "HELLO_STUDIO" ||
       data.data?.category === "HELLO_LANDLORD"
-      ? data.data?.leaseOrdersProperty.filter(
-          (leaseOrder) => leaseOrder?.status === "PENDING"
-        )
+      ? data.data?.leaseOrdersProperty
       : null
   );
   const [property, setProperty] = useState(data.data);
@@ -25,6 +25,11 @@ export default function LeaseOrderPanel(data) {
   const [rooms, setRooms] = useState(null);
   const { state } = useContext(Context);
   const [currentUser, setCurrentUser] = useState(state?.user);
+
+  const [showCurrentLeaseOrder, setShowCurrentLeaseOrder] = useState(
+    leaserOrders?.length > 0 ? true : false
+  );
+  const [showAllLeaseOrders, setShowAllLeaseOrders] = useState(false);
 
   useEffect(() => {
     setCurrentUser(state?.user);
@@ -41,8 +46,6 @@ export default function LeaseOrderPanel(data) {
             if (client) {
               setClient(client?.data || null);
             }
-          } else {
-            console.log("No hay ordenes (leaseOrders)");
           }
         } catch (error) {
           console.log(error);
@@ -99,15 +102,18 @@ export default function LeaseOrderPanel(data) {
       });
       await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   };
 
   const rejectLeaseOrder = async (leaseOrder, contract) => {
+    console.log(contract);
+
     try {
       const dataRequest = {
         leaseOrderId: leaseOrder.id,
-        adminId: currentUser.id,
+        adminId: state?.user.id,
         action: "REJECTED",
         propertyId:
           property.category === "HELLO_STUDIO" ||
@@ -132,6 +138,8 @@ export default function LeaseOrderPanel(data) {
       });
       await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
+      console.log(error);
+
       throw error;
     }
   };
@@ -150,227 +158,388 @@ export default function LeaseOrderPanel(data) {
   }
 
   return (
-    <main className="max-w-4xl mx-auto my-8 p-4 flex flex-col gap-2">
+    <main className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
       <TitleAdminPanel title="Lease Orders" />
-      {/* Propiedades con room con precio */}
-      {(property?.category === "HELLO_ROOM" ||
-        property?.category === "HELLO_COLIVING") &&
-        (rooms ? (
-          rooms.map((room) => {
-            const hasInProgressOrders = room.leaseOrdersRoom.some(
-              (leaseOrder) => leaseOrder.status === "PENDING"
-            );
-            return (
-              <div
-                key={room.id}
-                className="p-4 bg-white rounded-lg shadow-md border border-gray-200 space-y-4 my-4"
-              >
-                {hasInProgressOrders ? (
-                  room.leaseOrdersRoom.map((leaseOrder) => (
-                    <div key={leaseOrder.id}>
-                      <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                        {room.name}
-                      </h2>
+      <div className="flex flex-col gap-2">
+        <div
+          className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white"
+          onClick={() => setShowCurrentLeaseOrder(!showCurrentLeaseOrder)}
+        >
+          <h2 className="text-xl font-bold text-gray-800">Orden actual</h2>
+          <span
+            className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
+              showCurrentLeaseOrder ? "bg-[#1C8CD65E] rotate-180" : ""
+            }`}
+          >
+            <ChevronUpIcon />
+          </span>
+        </div>
+        <AnimatePresence>
+          {showCurrentLeaseOrder && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            >
+              {/* Propiedades con room con precio */}
+              {(property?.category === "HELLO_ROOM" ||
+                property?.category === "HELLO_COLIVING") &&
+                rooms?.length > 0 &&
+                rooms.map((room) => {
+                  // Filtra las órdenes que están en progreso (dentro del rango de fechas y con estado PENDING o APPROVED)
+                  const inProgressOrders = room.leaseOrdersRoom.filter(
+                    (leaseOrder) => {
+                      const now = new Date();
+                      const startDate = new Date(leaseOrder.startDate);
+                      const endDate = new Date(leaseOrder.endDate);
+                      return (
+                        (leaseOrder.status === "PENDING" ||
+                          leaseOrder.status === "APPROVED") &&
+                        now >= startDate &&
+                        now <= endDate
+                      );
+                    }
+                  );
+
+                  // Comprueba si hay órdenes en progreso
+                  const hasInProgressOrders = inProgressOrders.length > 0;
+
+                  return (
+                    <div
+                      key={room.id}
+                      className="p-6 bg-[#ECF0F3] rounded-lg shadow-md border border-gray-200 space-y-4 my-4"
+                    >
+                      {hasInProgressOrders ? (
+                        inProgressOrders.map((leaseOrder) => (
+                          <div key={leaseOrder.id}>
+                            {console.log(room, leaseOrder)}
+
+                            <h2 className="text-2xl font-bold text-[#222B45] mb-2">
+                              {room.name}
+                            </h2>
+                            <LeaseOrderSection
+                              data={leaseOrder}
+                              formatDate={formatDate}
+                            />
+                            <LeaseOrderClientSection
+                              data={leaseOrder.client}
+                              formatDate={formatDate}
+                              contract={leaseOrder.client.contracts.find(
+                                (contract) =>
+                                  contract.contractableId ==
+                                    leaseOrder.roomId &&
+                                  contract.contractableType == "ROOM" &&
+                                  contract.status == "PENDING"
+                              )}
+                            />
+                            {leaseOrder.status === "PENDING" && (
+                              <div className="flex justify-between gap-4">
+                                <button
+                                  onClick={() => {
+                                    return toast.promise(
+                                      aproveLeaseOrder(
+                                        leaseOrder,
+                                        room.contracts.find(
+                                          (contract) =>
+                                            contract.status === "PENDING" &&
+                                            contract.clientId ===
+                                              leaseOrder.client.id &&
+                                            contract.contractableId ===
+                                              leaseOrder.roomId &&
+                                            contract.contractableType === "ROOM"
+                                        )
+                                      ),
+                                      {
+                                        loading: "Cargando...",
+                                        success:
+                                          "Orden de arrendamiento aceptada",
+                                        error:
+                                          "Error al aceptar la orden de arrendamiento",
+                                      }
+                                    );
+                                  }}
+                                  className="px-6 py-2 bg-[#52B46B] text-white rounded-lg hover:bg-green-600 transition"
+                                >
+                                  Aprobar
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    return toast.promise(
+                                      rejectLeaseOrder(
+                                        leaseOrder,
+                                        room.contracts.find(
+                                          (contract) =>
+                                            contract.status === "PENDING" &&
+                                            contract.clientId ===
+                                              leaseOrder.client.id &&
+                                            contract.contractableId ===
+                                              leaseOrder.roomId &&
+                                            contract.contractableType === "ROOM"
+                                        )
+                                      ),
+                                      {
+                                        loading: "Cargando...",
+                                        success:
+                                          "Orden de arrendamiento rechazada",
+                                        error:
+                                          "Error al rechazar la orden de arrendamiento",
+                                      }
+                                    );
+                                  }}
+                                  className="px-6 py-2 bg-[#E74C3C] text-white rounded-lg hover:bg-red-600 transition"
+                                >
+                                  Rechazar
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="flex flex-col justify-center items-center h-64 bg-white rounded-lg shadow-md p-6">
+                          <h2 className="text-2xl font-bold text-[#222B45] mb-2">
+                            {room.name}
+                          </h2>
+                          <p className="text-[#464E5F] text-lg font-semibold">
+                            No hay órdenes pendientes
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              {console.log(leaserOrders)}
+
+              {/* Propiedades sin room con precio */}
+              {(property?.category === "HELLO_STUDIO" ||
+                property?.category === "HELLO_LANDLORD") &&
+              leaserOrders ? (
+                leaserOrders
+                  .filter((order) => {
+                    const now = new Date();
+                    const startDate = new Date(order.startDate);
+                    const endDate = new Date(order.endDate);
+                    return (
+                      (now >= startDate &&
+                        now <= endDate &&
+                        order.status === "PENDING") ||
+                      order.status === "APPROVED"
+                    );
+                  })
+                  .map((leaserOrder, index) => (
+                    <div key={leaserOrder.id} className="my-4">
                       <LeaseOrderSection
-                        data={leaseOrder}
+                        data={leaserOrder}
                         formatDate={formatDate}
                       />
-                      <LeaseOrderClientSection
-                        data={leaseOrder.client}
-                        contract={room.contracts.find(
-                          (contract) =>
-                            contract.status === "PENDING" &&
-                            contract.clientId === leaseOrder.client.id &&
-                            contract.contractableId === leaseOrder.roomId &&
-                            contract.contractableType === "ROOM"
-                        )}
-                        formatDate={formatDate}
-                      />
-                      <div className="flex justify-between gap-4 ">
-                        <button
-                          onClick={() => {
-                            return toast.promise(
-                              aproveLeaseOrder(
-                                leaseOrder,
-                                room.contracts.find(
-                                  (contract) =>
-                                    contract.status === "PENDING" &&
-                                    contract.clientId ===
-                                      leaseOrder.client.id &&
-                                    contract.contractableId ===
-                                      leaseOrder.roomId &&
-                                    contract.contractableType === "ROOM"
-                                )
-                              ),
-                              {
-                                loading: "Cargando...",
-                                success: "Orden de arrendamiento aceptada",
-                                error:
-                                  "Error al aceptar la orden de arrendamiento",
-                              }
-                            );
-                          }}
-                          className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-                        >
-                          Aprobar
-                        </button>
-                        <button
-                          onClick={() => {
-                            return toast.promise(
-                              rejectLeaseOrder(
-                                leaseOrder,
-                                room.contracts.find(
-                                  (contract) =>
-                                    contract.status === "PENDING" &&
-                                    contract.clientId ===
-                                      leaseOrder.client.id &&
-                                    contract.contractableId ===
-                                      leaseOrder.roomId &&
-                                    contract.contractableType === "ROOM"
-                                )
-                              ),
-                              {
-                                loading: "Cargando...",
-                                success: "Orden de arrendamiento rechazada",
-                                error:
-                                  "Error al rechazar la orden de arrendamiento",
-                              }
-                            );
-                          }}
-                          className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                        >
-                          Rechazar
-                        </button>
-                      </div>
+
+                      {client && (
+                        <LeaseOrderClientSection
+                          data={client}
+                          formatDate={formatDate}
+                          contract={client.contracts.find(
+                            (contract) =>
+                              contract.status === "PENDING" ||
+                              (contract.status === "APPROVED" &&
+                                contract.contractableId === property.id &&
+                                contract.contractableType === "PROPERTY")
+                          )}
+                        />
+                      )}
+
+                      {/* Mostrar los botones solo si la orden de arrendamiento actual está en estado "PENDING" */}
+                      {leaserOrder.status === "PENDING" && (
+                        <div className="flex justify-between gap-4 mb-4">
+                          {console.log(client)}
+
+                          <button
+                            onClick={() => {
+                              return toast.promise(
+                                aproveLeaseOrder(
+                                  leaserOrder,
+                                  client.contracts.find(
+                                    (contract) =>
+                                      contract.status === "PENDING" &&
+                                      contract.contractableId === property.id &&
+                                      contract.contractableType === "PROPERTY"
+                                  )
+                                ),
+                                {
+                                  loading: "Cargando...",
+                                  success: "Orden de arrendamiento aceptada",
+                                  error:
+                                    "Error al aceptar la orden de arrendamiento",
+                                }
+                              );
+                            }}
+                            className="px-6 py-2 bg-[#52B46B] text-white rounded-lg hover:bg-green-600 transition"
+                          >
+                            Aprobar
+                          </button>
+                          <button
+                            onClick={() => {
+                              return toast.promise(
+                                rejectLeaseOrder(
+                                  leaserOrder,
+                                  client.contracts.find(
+                                    (contract) =>
+                                      contract.status === "PENDING" &&
+                                      contract.contractableId === property.id &&
+                                      contract.contractableType === "PROPERTY"
+                                  )
+                                ),
+                                {
+                                  loading: "Cargando...",
+                                  success: "Orden de arrendamiento rechazada",
+                                  error:
+                                    "Error al rechazar la orden de arrendamiento",
+                                }
+                              );
+                            }}
+                            className="px-6 py-2 bg-[#E74C3C] text-white rounded-lg hover:bg-red-600 transition"
+                          >
+                            Rechazar
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))
+              ) : (
+                <div className="flex justify-center items-center h-64 bg-[#ECF0F3] rounded-lg shadow-md my-4">
+                  <p className="text-[#464E5F] text-lg font-semibold">
+                    No hay órdenes pendientes
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <div className="flex flex-col gap-2">
+        <div
+          className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white"
+          onClick={() => {
+            setShowCurrentLeaseOrder(false);
+            setShowAllLeaseOrders(!showAllLeaseOrders);
+          }}
+        >
+          <h2 className="text-xl font-bold text-gray-800">Todas las ordenes</h2>
+          <span
+            className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
+              showAllLeaseOrders ? "bg-[#1C8CD65E] rotate-180" : ""
+            }`}
+          >
+            <ChevronUpIcon />
+          </span>
+        </div>
+        <AnimatePresence>
+          {showAllLeaseOrders && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            >
+              {/* Propiedades con room con precio */}
+              {(property?.category === "HELLO_ROOM" ||
+                property?.category === "HELLO_COLIVING") &&
+                (rooms ? (
+                  rooms.map((room) => {
+                    // Filtra las órdenes que cumplen con los criterios especificados
+                    const filteredOrders = room.leaseOrdersRoom.filter(
+                      (leaseOrder) => {
+                        return (
+                          leaseOrder.isActive === false &&
+                          leaseOrder.status !== "PENDING"
+                        );
+                      }
+                    );
+
+                    const hasFilteredOrders = filteredOrders.length > 0;
+
+                    return (
+                      <div
+                        key={room.id}
+                        className="p-6 bg-[#ECF0F3] rounded-lg shadow-md border border-gray-200 space-y-4 my-4"
+                      >
+                        {hasFilteredOrders ? (
+                          filteredOrders.map((leaseOrder) => (
+                            <div key={leaseOrder.id}>
+                              <h2 className="text-2xl font-bold text-[#222B45] mb-2">
+                                {room.name}
+                              </h2>
+                              <LeaseOrderSection
+                                data={leaseOrder}
+                                formatDate={formatDate}
+                                isAll={true}
+                              />
+                            </div>
+                          ))
+                        ) : (
+                          <div className="flex flex-col justify-center items-center h-64 bg-white rounded-lg shadow-md p-6">
+                            <h2 className="text-2xl font-bold text-[#222B45] mb-2">
+                              {room.name}
+                            </h2>
+                            <p className="text-[#464E5F] text-lg font-semibold">
+                              No hay órdenes pendientes
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
                 ) : (
-                  <div className="flex flex-col justify-center items-center h-64 bg-gray-100 rounded-lg shadow-md my-4 p-6">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                      {room.name}
-                    </h2>
-                    <p className="text-gray-600 text-lg font-semibold">
+                  <div className="flex justify-center items-center h-64 bg-[#ECF0F3] rounded-lg shadow-md my-4">
+                    <p className="text-[#464E5F] text-lg font-semibold">
+                      No hay habitaciones con órdenes pendientes
+                    </p>
+                  </div>
+                ))}
+
+              {/* Propiedades sin room con precio */}
+              {(property?.category === "HELLO_STUDIO" ||
+                property?.category === "HELLO_LANDLORD") &&
+                (leaserOrders ? (
+                  leaserOrders
+                    .filter((leaserOrder) => {
+                      return (
+                        !leaserOrder.isActive &&
+                        leaserOrder.status !== "PENDING"
+                      );
+                    })
+                    .map((leaserOrder) => (
+                      <LeaseOrderSection
+                        data={leaserOrder}
+                        formatDate={formatDate}
+                        key={leaserOrder.id}
+                        isAll={true}
+                      />
+                    ))
+                ) : (
+                  <div className="flex justify-center items-center h-64 bg-[#ECF0F3] rounded-lg shadow-md my-4">
+                    <p className="text-[#464E5F] text-lg font-semibold">
                       No hay órdenes pendientes
                     </p>
                   </div>
-                )}
-              </div>
-            );
-          })
-        ) : (
-          <div className="flex justify-center items-center h-64 bg-gray-100 rounded-lg shadow-md my-4">
-            <p className="text-gray-600 text-lg font-semibold">
-              No hay habitaciones con órdenes pendientes
-            </p>
-          </div>
-        ))}
-
-      {/* Propiedades sin room con precio  */}
-      {(property?.category === "HELLO_STUDIO" ||
-        property?.category === "HELLO_LANDLORD") &&
-        (leaserOrders ? (
-          leaserOrders.map((leaserOrder) => (
-            <LeaseOrderSection data={leaserOrder} formatDate={formatDate} />
-          ))
-        ) : (
-          <div className="flex justify-center items-center h-64 bg-gray-100 rounded-lg shadow-md my-4">
-            <p className="text-gray-600 text-lg font-semibold">
-              No hay órdenes pendientes
-            </p>
-          </div>
-        ))}
-
-      {(property?.category === "HELLO_STUDIO" ||
-        property?.category === "HELLO_LANDLORD") &&
-        client && (
-          <LeaseOrderClientSection
-            data={client}
-            formatDate={formatDate}
-            contract={client.contracts.find(
-              (contract) =>
-                contract.status === "PENDING" &&
-                contract.contractableId === property.id &&
-                contract.contractableType === "PROPERTY"
-            )}
-          />
-        )}
-
+                ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
       <LeaseOrderPropertySection data={property} formatDate={formatDate} />
-
       <LeaseOrderOwnerSection data={owner} formatDate={formatDate} />
 
-      {(property.category === "HELLO_STUDIO" ||
-        property.category === "HELLO_LANDLORD") &&
-        client && (
-          <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
-            <h2 className="text-xl font-bold text-gray-800">Contrato</h2>
-            <p className="text-gray-600">Contrato</p>
-          </section>
-        )}
-
-      {(property.category === "HELLO_STUDIO" ||
-        property.category === "HELLO_LANDLORD") &&
-        leaserOrders.length > 0 && (
-          <div className="flex justify-between gap-4 ">
-            <button
-              onClick={() => {
-                return toast.promise(
-                  aproveLeaseOrder(
-                    leaserOrders[0],
-                    client.contracts.find(
-                      (contract) =>
-                        contract.status === "PENDING" &&
-                        contract.contractableId === property.id &&
-                        contract.contractableType === "PROPERTY"
-                    )
-                  ),
-                  {
-                    loading: "Cargando...",
-                    success: "Orden de arrendamiento aceptada",
-                    error: "Error al aceptar la orden de arrendamiento",
-                  }
-                );
-              }}
-              className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-            >
-              Aprobar
-            </button>
-            <button
-              onClick={() => {
-                return toast.promise(
-                  rejectLeaseOrder(
-                    leaserOrders[0],
-                    client.contracts.find(
-                      (contract) =>
-                        contract.status === "PENDING" &&
-                        contract.contractableId === property.id &&
-                        contract.contractableType === "PROPERTY"
-                    )
-                  ),
-                  {
-                    loading: "Cargando...",
-                    success: "Orden de arrendamiento rechazada",
-                    error: "Error al rechazar la orden de arrendamiento",
-                  }
-                );
-              }}
-              className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-            >
-              Rechazar
-            </button>
-          </div>
-        )}
-      <div className="flex justify-between gap-2">
+      <div className="flex justify-between gap-2 mt-6">
         <button
           onClick={() => router.push(`/pages/admin/supplies/${property.id}`)}
           type="button"
-          className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+          className="px-6 py-2 bg-resolution-blue text-white rounded-lg hover:bg-[#1A8CA8] transition"
         >
           Ir a suministros
         </button>
         <button
           type="button"
-          className="px-6 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition"
+          className="px-6 py-2 bg-[#21ABCC] text-white rounded-lg hover:bg-white hover:text-[#21ABCC] transition"
         >
           Ir a documentos
         </button>

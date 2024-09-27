@@ -37,6 +37,22 @@ const userAttributes = {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
+  },
+  emergencyName: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  emergencyPhone: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  emergencyEmail: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  howMetUs: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
   }
 }
 
