@@ -33,18 +33,24 @@ export async function getPropertyById(id) {
             include: [{
                 model: Room,
                 as: 'rooms',
-                include: {
-                    model: LeaseOrderRoom,
-                    as: 'leaseOrdersRoom',
-                    include: {
-                        model: Client,
-                        as: 'client',
+                include: [
+                    {
+                        model: LeaseOrderRoom,
+                        as: 'leaseOrdersRoom',
                         include: {
-                            model: Document,
-                            as: 'documents'
+                            model: Client,
+                            as: 'client',
+                            include: {
+                                model: Document,
+                                as: 'documents'
+                            }
                         }
+                    },
+                    {
+                        model: RentalPeriod,
+                        as: "rentalPeriods"
                     }
-                }
+                ]
             },
             {
                 model: LeaseOrderProperty,

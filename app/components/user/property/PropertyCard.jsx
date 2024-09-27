@@ -5,15 +5,19 @@ import { useState } from "react";
 import Tooltip from "./tooltip/Tooltip";
 const { useRouter } = require("next/navigation");
 
-export default function PropertyCard({ property }) {
+export default function PropertyCard({ property, price, roomId = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
 
   const handleRedirect = () => {
-    if (property.category) {
-      route.push("/pages/user/property-details/" + property?.id);
+    if (
+      (property.category === "HELLO_ROOM" ||
+        property.category === "HELLO_COLIVING") &&
+      roomId
+    ) {
+      route.push(`/pages/user/property-details/${property.id}/room-details/${roomId}`);
     } else {
-      route.push("/pages/user/property-details/" + property?.propertyId);
+      route.push("/pages/user/property-details/" + property?.id);
     }
   };
 
@@ -24,13 +28,12 @@ export default function PropertyCard({ property }) {
   const handleClose = () => {
     setIsOpen(!isOpen);
   };
-
   return (
     <article
-      className={`${plus_jakarta.className} flex flex-col gap-3 w-full cursor-pointer border p-2 rounded-xl shadow-reservation-drop`}
+      className={`${plus_jakarta.className} flex flex-col max-h-72 h-full gap-3 w-full sm:max-w-52 cursor-pointer border p-2 rounded-xl shadow-reservation-drop`}
     >
-      <div onClick={handleRedirect} className="flex gap-3 w-full">
-        <div className="relative h-28 w-28 rounded-xl">
+      <div onClick={handleRedirect} className="flex sm:flex-col gap-3 w-full">
+        <div className="relative h-28 w-28 sm:w-[190px] rounded-xl">
           <Image
             className="h-full rounded-xl"
             src={property?.property?.images[0] || property?.images[0] || ""}
@@ -42,14 +45,8 @@ export default function PropertyCard({ property }) {
           <div className="flex flex-col grow gap-2">
             <h4 className="flex w-full gap-2 items-center text-[0.81rem] text-[#000000B2] font-normal">
               {property?.property?.category ||
-                property?.category
-                  .split("_")
-                  .map(
-                    (word) =>
-                      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-                  )
-                  .join(" ") ||
-                ""}{" "}
+                property?.category.toLowerCase().split("_").join("") ||
+                ""}
               <button
                 type="button"
                 className="relative"
@@ -97,8 +94,8 @@ export default function PropertyCard({ property }) {
                 ""}
             </p>
           </div>
-          <div className="flex flex-1 justify-between gap-2">
-            <span className="flex items-center gap-2 self-end text-[#000000B2] font-medium">
+          <div className="flex flex-1 justify-end items-center gap-2">
+            {/* <span className="flex items-center gap-2 self-end text-[#000000B2] font-medium">
               <Image
                 className=""
                 src={"/property-card/star.svg"}
@@ -107,20 +104,20 @@ export default function PropertyCard({ property }) {
                 alt="Icono de Estrella"
               />{" "}
               4.9
-            </span>
-            <div className="flex flex-col justify-end items-end font-medium">
-              {property?.property?.offer > 0 || property?.offer > 0 ? (
+            </span> */}
+            <div className="flex justify-end items-end font-medium">
+              {/* {property?.property?.offer > 0 || property?.offer > 0 ? (
                 <span className="text-xs text-[#171412] h-[1.06rem] bg-[#FFF06D] px-1">
                   {property?.property?.offer || property?.offer} OFF
                 </span>
               ) : null}
 
               {property?.price > 0 && (
-                <h3 className="text-base text-[#000000B2]">
-                  {property?.price}{" "}
-                  <span className="text-xs text-[#B2B2B2]">/mes</span>
-                </h3>
-              )}
+                ""
+              )} */}
+              <h3 className="text-base text-[#000000B2]">
+                € {price} <span className="text-xs text-[#B2B2B2]">/mes</span>
+              </h3>
             </div>
           </div>
         </div>

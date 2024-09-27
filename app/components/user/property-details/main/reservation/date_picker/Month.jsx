@@ -7,9 +7,24 @@ export default function Month({
   callback,
   selectedDate,
   isDateOccupied,
+  rentalPeriods, // Pasamos rentalPeriods al componente
   startDate,
   endDate,
 }) {
+  // Obtener el rango de fechas válidas de rentalPeriods
+  const rentalDateRanges = rentalPeriods.map((period) => ({
+    start: new Date(period.startDate),
+    end: new Date(period.endDate),
+  }));
+
+  // Función para verificar si una fecha está dentro del rango de rentalPeriods
+  const isDateInRentalRange = (currentDate) => {
+    return rentalDateRanges.some((range) => {
+      // Cambiar el operador de comparación a <= para incluir el end date
+      return currentDate >= range.start && currentDate <= range.end;
+    });
+  };
+
   // Calcula el último día del mes anterior, el último día del mes actual y el primer día del mes siguiente
   const lastOfPrevMonth = new Date(year, month, 0);
   const lastOfCurrentMonth = new Date(year, month + 1, 0);
@@ -44,12 +59,13 @@ export default function Month({
         month === date.getMonth() &&
         i < date.getDate();
 
-      // Verificar si la fecha está ocupada
+      // Verificar si la fecha está ocupada o fuera del rango de rentalPeriods
       const isOccupied = isDateOccupied(currentDate);
+      const isOutsideRentalRange = !isDateInRentalRange(currentDate);
 
       days.push({
         day: i,
-        isDisabled: isDisabled || isOccupied,
+        isDisabled: isDisabled || isOccupied || isOutsideRentalRange,
         date: currentDate,
       });
     }

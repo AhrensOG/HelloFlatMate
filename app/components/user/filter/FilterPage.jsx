@@ -7,6 +7,7 @@ import { Context } from "@/app/context/GlobalContext";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
+import DesktopFilter from "./DesktopFilter";
 
 export default function FilterPage() {
   const searchParams = useSearchParams();
@@ -147,9 +148,11 @@ export default function FilterPage() {
     if (!filters.categorys || filters.categorys.length === 0) {
       return properties;
     }
-    return properties.filter((property) =>
-      filters.categorys.includes(property.category)
-    );
+    return properties.filter((property) => {
+      return filters.categorys.includes(
+        property.category.toLowerCase().replace("_", "")
+      );
+    });
   };
 
   const filterByLocation = (properties) => {
@@ -218,35 +221,179 @@ export default function FilterPage() {
 
   if (properties.length === 0) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="h-screen flex flex-col">
+        <header className="px-2">
+          <NavBar />
+        </header>
+        <main className="grow flex justify-center items-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="h-screen flex flex-col">
       <header className="px-2">
         <NavBar />
       </header>
-      <main className="mt-3">
-        <SearchBarFiltered
-          initialValue={filters?.word || ""}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
-          onChange={handleFilterChange}
-          onApplyFilters={applyFilters}
-        />
-        <div className="flex flex-col m-3 mt-7 gap-7">
-          {filteredProperties?.length === 0 ? (
-            <div className="flex items-center justify-center h-screen">
-              <p>No se encontraron propiedades</p>
-            </div>
-          ) : (
-            filteredProperties.map((property) => (
-              <PropertyCard key={property?.id} property={property} />
-            ))
-          )}
+      <main className="grow">
+        {/* MOBILE */}
+        <div className="sm:hidden">
+          <SearchBarFiltered
+            initialValue={filters?.word || ""}
+            showFilters={showFilters}
+            setShowFilters={setShowFilters}
+            onChange={handleFilterChange}
+            onApplyFilters={applyFilters}
+          />
+          <div className="flex flex-col m-3 mt-7 gap-7">
+            {filteredProperties?.length === 0 ? (
+              <div className="flex flex-col items-center w-full gap-6">
+                <p className="text-slate-400">
+                  No se encontraron propiedades segun tu búsqueda
+                </p>
+                <div className="w-full flex flex-col justify-center gap-2">
+                  <h2>Podrian interesarte</h2>
+                  <div className="flex flex-row flex-wrap justify-center gap-7 ">
+                    {console.log(properties)}
+                    {console.log(filteredProperties)}
+                    {properties.map((property) => {
+                      // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
+                      if (
+                        property.category === "HELLO_ROOM" ||
+                        property.category === "HELLO_COLIVING"
+                      ) {
+                        return property.rooms.map((room, index) => (
+                          <PropertyCard
+                            key={`${property?.id}-${index}`}
+                            property={property} // Pasar los datos de la propiedad
+                            price={room.price} // Pasar el precio específico de cada room
+                            roomId={room.id}
+                          />
+                        ));
+                      } else {
+                        // Para otras categorías, devolver una sola PropertyCard
+                        return (
+                          <PropertyCard
+                            key={property?.id}
+                            property={property}
+                            price={property.price} // Pasar el precio de la propiedad directamente
+                          />
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              filteredProperties.map((property) => {
+                // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
+                if (
+                  property.category === "HELLO_ROOM" ||
+                  property.category === "HELLO_COLIVING"
+                ) {
+                  return property.rooms.map((room, index) => (
+                    <PropertyCard
+                      key={`${property?.id}-${index}`}
+                      property={property} // Pasar los datos de la propiedad
+                      price={room.price} // Pasar el precio específico de cada room
+                    />
+                  ));
+                } else {
+                  // Para otras categorías, devolver una sola PropertyCard
+                  return (
+                    <PropertyCard
+                      key={property?.id}
+                      property={property}
+                      price={property.price} // Pasar el precio de la propiedad directamente
+                    />
+                  );
+                }
+              })
+            )}
+          </div>
+        </div>
+        {/* DESKTOP */}
+        <div className="hidden sm:flex">
+          {/* DesktopFilter ocupa el 25% del ancho */}
+          <DesktopFilter
+            isOpen={showFilters}
+            setOpen={setShowFilters}
+            filters={filters}
+            setFilters={setFilters}
+            onApplyFilters={applyFilters}
+            onFilterChange={handleFilterChange}
+          />
+
+          {/* Contenedor de PropertyCard que ocupa el 75% del ancho */}
+          <div className="w-[70%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-row flex-wrap justify-center">
+            {filteredProperties?.length === 0 ? (
+              <div className="flex flex-col items-center w-full gap-6">
+                <p className="text-slate-400">
+                  No se encontraron propiedades segun tu búsqueda
+                </p>
+                <div className="w-full flex flex-col justify-center gap-2">
+                  <h2>Podrian interesarte</h2>
+                  <div className="flex flex-row flex-wrap justify-center gap-7 ">
+                    {console.log(properties)}
+                    {console.log(filteredProperties)}
+                    {properties.map((property) => {
+                      // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
+                      if (
+                        property.category === "HELLO_ROOM" ||
+                        property.category === "HELLO_COLIVING"
+                      ) {
+                        return property.rooms.map((room, index) => (
+                          <PropertyCard
+                            key={`${property?.id}-${index}`}
+                            property={property} // Pasar los datos de la propiedad
+                            price={room.price} // Pasar el precio específico de cada room
+                            roomId={room.id}
+                          />
+                        ));
+                      } else {
+                        // Para otras categorías, devolver una sola PropertyCard
+                        return (
+                          <PropertyCard
+                            key={property?.id}
+                            property={property}
+                            price={property.price} // Pasar el precio de la propiedad directamente
+                          />
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              filteredProperties.map((property) => {
+                // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
+                if (
+                  property.category === "HELLO_ROOM" ||
+                  property.category === "HELLO_COLIVING"
+                ) {
+                  return property.rooms.map((room, index) => (
+                    <PropertyCard
+                      key={`${property?.id}-${index}`}
+                      property={property} // Pasar los datos de la propiedad
+                      price={room.price} // Pasar el precio específico de cada room
+                      roomId={room.id}
+                    />
+                  ));
+                } else {
+                  // Para otras categorías, devolver una sola PropertyCard
+                  return (
+                    <PropertyCard
+                      key={property?.id}
+                      property={property}
+                      price={property.price} // Pasar el precio de la propiedad directamente
+                    />
+                  );
+                }
+              })
+            )}
+          </div>
         </div>
       </main>
       <Filter

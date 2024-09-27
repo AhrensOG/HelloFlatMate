@@ -1,3 +1,4 @@
+import { createPayment } from "./controller/createPaymentController"
 import { getAllPayments, getPaymentByClient, getPaymentById, getPaymentByOwner, getPaymentByProperty, getPaymentByRoom } from "./controller/getPaymentController"
 
 export async function GET(req) {

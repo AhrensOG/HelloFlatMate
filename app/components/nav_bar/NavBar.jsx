@@ -214,7 +214,7 @@ export default function NavBar({
                   <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
                 <h2 className="text-xs text-center text-[#636574]">
-                  Cerrar Sesión
+                  Salir
                 </h2>
               </button>
             </>
@@ -232,7 +232,7 @@ export default function NavBar({
                   <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
                 <h2 className="text-xs text-center text-[#636574]">
-                  Cerrar Sesión
+                  Salir
                 </h2>
               </button>
             </>
