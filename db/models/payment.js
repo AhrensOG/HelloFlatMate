@@ -35,6 +35,10 @@ const paymentInit = (sequelize, DataTypes) => {
         paymentableType: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        paymentId: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
 
     }, {

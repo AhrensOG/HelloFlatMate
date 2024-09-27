@@ -249,8 +249,42 @@ export default function FilterPage() {
           />
           <div className="flex flex-col m-3 mt-7 gap-7">
             {filteredProperties?.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <p>No se encontraron propiedades</p>
+              <div className="flex flex-col items-center w-full gap-6">
+                <p className="text-slate-400">
+                  No se encontraron propiedades segun tu búsqueda
+                </p>
+                <div className="w-full flex flex-col justify-center gap-2">
+                  <h2>Podrian interesarte</h2>
+                  <div className="flex flex-row flex-wrap justify-center gap-7 ">
+                    {console.log(properties)}
+                    {console.log(filteredProperties)}
+                    {properties.map((property) => {
+                      // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
+                      if (
+                        property.category === "HELLO_ROOM" ||
+                        property.category === "HELLO_COLIVING"
+                      ) {
+                        return property.rooms.map((room, index) => (
+                          <PropertyCard
+                            key={`${property?.id}-${index}`}
+                            property={property} // Pasar los datos de la propiedad
+                            price={room.price} // Pasar el precio específico de cada room
+                            roomId={room.id}
+                          />
+                        ));
+                      } else {
+                        // Para otras categorías, devolver una sola PropertyCard
+                        return (
+                          <PropertyCard
+                            key={property?.id}
+                            property={property}
+                            price={property.price} // Pasar el precio de la propiedad directamente
+                          />
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
               </div>
             ) : (
               filteredProperties.map((property) => {
@@ -295,8 +329,42 @@ export default function FilterPage() {
           {/* Contenedor de PropertyCard que ocupa el 75% del ancho */}
           <div className="w-[70%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-row flex-wrap justify-center">
             {filteredProperties?.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <p>No se encontraron propiedades</p>
+              <div className="flex flex-col items-center w-full gap-6">
+                <p className="text-slate-400">
+                  No se encontraron propiedades segun tu búsqueda
+                </p>
+                <div className="w-full flex flex-col justify-center gap-2">
+                  <h2>Podrian interesarte</h2>
+                  <div className="flex flex-row flex-wrap justify-center gap-7 ">
+                    {console.log(properties)}
+                    {console.log(filteredProperties)}
+                    {properties.map((property) => {
+                      // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
+                      if (
+                        property.category === "HELLO_ROOM" ||
+                        property.category === "HELLO_COLIVING"
+                      ) {
+                        return property.rooms.map((room, index) => (
+                          <PropertyCard
+                            key={`${property?.id}-${index}`}
+                            property={property} // Pasar los datos de la propiedad
+                            price={room.price} // Pasar el precio específico de cada room
+                            roomId={room.id}
+                          />
+                        ));
+                      } else {
+                        // Para otras categorías, devolver una sola PropertyCard
+                        return (
+                          <PropertyCard
+                            key={property?.id}
+                            property={property}
+                            price={property.price} // Pasar el precio de la propiedad directamente
+                          />
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
               </div>
             ) : (
               filteredProperties.map((property) => {
@@ -310,6 +378,7 @@ export default function FilterPage() {
                       key={`${property?.id}-${index}`}
                       property={property} // Pasar los datos de la propiedad
                       price={room.price} // Pasar el precio específico de cada room
+                      roomId={room.id}
                     />
                   ));
                 } else {
