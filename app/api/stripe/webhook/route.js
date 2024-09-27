@@ -55,7 +55,7 @@ export async function POST(req) {
           await Payment.create({
             amount: successLeaseOrderRoom.price,
             date: new Date(), // La fecha actual
-            status: "PENDING", // Estado inicial
+            status: "APPROVED", // Estado inicial
             type: "RESERVATION",
             paymentableId: successLeaseOrderRoom.roomId,
             paymentableType: "ROOM",
@@ -89,7 +89,7 @@ export async function POST(req) {
           await Payment.create({
             amount: successLeaseOrder.price,
             date: new Date(), // La fecha actual
-            status: "PENDING", // Estado inicial
+            status: "APPROVED", // Estado inicial
             type: "RESERVATION",
             paymentableId: successLeaseOrder.propertyId,
             paymentableType: "PROPERTY",
