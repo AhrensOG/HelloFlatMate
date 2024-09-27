@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Dropdown from "../public/auth/Dropdown";
+import AccountDropdown from "./AccountDropdown";
 
 const HomeNavBar = ({ setActiveSection, activeSection }) => {
   return (
@@ -31,9 +32,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           </Link>
 
           <div className="flex items-center gap-2">
-            <Link href={"/pages/auth"} className="relative w-[24px] h-[24px]">
-              <Image src="/nav_bar/account.svg" fill alt="Cuenta del usuario" />
-            </Link>
+            <AccountDropdown />
             <Dropdown p-0 />
           </div>
         </div>
@@ -120,21 +119,15 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           </div>
 
           <div className="flex items-center gap-4 md:gap-6">
+            <Link
+              href={"/pages/user/filtered"}
+              className="bg-black text-white px-4 py-2 md:px-6 md:py-3 rounded"
+              aria-label="Reservar una habitación"
+            >
+              Reservar
+            </Link>
             <div className="flex items-center gap-2">
-              <div className="relative w-[20px] h-[20px] md:w-[24px] md:h-[24px]">
-                <Image
-                  src="/nav_bar/account.svg"
-                  fill
-                  alt="Cuenta del usuario"
-                />
-              </div>
-              <Link
-                href="/pages/auth"
-                title="Ir a iniciar sesión"
-                className="font-['Plus_Jakarta_Sans'] text-[16px] md:text-[18px]"
-              >
-                Cuenta
-              </Link>
+              <AccountDropdown />
             </div>
 
             <div className="h-[40px] md:h-[44px] border-l border-black"></div>

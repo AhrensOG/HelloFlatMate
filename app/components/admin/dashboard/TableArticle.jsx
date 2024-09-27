@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   CheckIcon,
+  DocumentMagnifyingGlassIcon,
   MagnifyingGlassIcon,
   PencilIcon,
   PowerIcon,
@@ -185,7 +186,11 @@ export default function TableArticle({ data }) {
               checked={selectedStatus.includes(status)}
               onChange={() => handleStatusChange(status)}
             />
-            {status === "FREE" ? "Libres" : status === "RESERVED" ? "Reservados" : "Alquilados" }
+            {status === "FREE"
+              ? "Libres"
+              : status === "RESERVED"
+              ? "Reservados"
+              : "Alquilados"}
           </label>
         ))}
       </div>
@@ -388,6 +393,23 @@ export default function TableArticle({ data }) {
                         {/* Tooltip personalizado */}
                         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
                           Eliminar
+                        </span>
+                      </div>
+
+                      {/* Botón de Ver Órdenes */}
+                      <div className="relative group inline-block">
+                        <button
+                          onClick={() =>
+                            router.push(`/pages/admin/lease_order/${item.id}`)
+                          }
+                          className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
+                          aria-label="Ver Órdenes"
+                        >
+                          <DocumentMagnifyingGlassIcon className="w-5 h-5" />
+                        </button>
+                        {/* Tooltip personalizado */}
+                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          Ver Órdenes
                         </span>
                       </div>
                     </div>

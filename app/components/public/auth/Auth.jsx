@@ -12,7 +12,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function Auth() {
   const searchParams = useSearchParams(); // Captura los parámetros de la URL
   const redirect = searchParams.get("redirect"); // Obtén el valor del parámetro `redirect`
-  const [register, setRegister] = useState(false);
+  const createAccount = searchParams.get("register");
+  const [register, setRegister] = useState( createAccount ? true : false);
   const [isOpen, setIsOpen] = useState(false);
   const [registerProvider, setRegisterProvider] = useState(null);
   const router = useRouter();
@@ -66,7 +67,7 @@ export default function Auth() {
 
   return (
     <section
-      className={`${plus_jakarta.className} auth-card flex flex-col m-3 gap-5 items-center font-normal text-base self-start pt-9`}
+      className={`${plus_jakarta.className} auth-card flex flex-col m-3 gap-10 items-center font-normal text-base self-start pt-9`}
     >
       <Image
         className="logo-auth"
@@ -76,9 +77,9 @@ export default function Auth() {
         width={100}
         height={100}
       />
-      <h1 className="title-auth pb-5">
+      {/* <h1 className="title-auth pb-5">
         {register ? "Crear una Cuenta" : "Iniciar Sesión"}
-      </h1>
+      </h1> */}
       <div className="buttons-auth flex flex-col gap-5 items-center w-full">
         <button
           type="button"

@@ -12,7 +12,7 @@ import axios from "axios";
 export default function PaymentComponent({ handleContinue, handleBack }) {
   const { state } = useContext(Context);
   const userDocuments = {
-    dni: state.reservationInfo?.dni,
+    // dni: state.reservationInfo?.dni,
     nomina: state.reservationInfo?.nomina,
     contract: state.contractPdfData,
   };
@@ -32,34 +32,34 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
 
   const uploadDocuments = async () => {
     try {
-      // Cargar o actualizar DNI en Firebase
-      if (userDocuments.dni) {
-        const existingDni = findExistingDocument("IDENTIFICATION");
-        const dniUrl = await uploadFiles(
-          userDocuments.dni,
-          "Documentos",
-          state.reservationInfo?.userContractInformation.name +
-            " " +
-            state.reservationInfo?.userContractInformation.lastName +
-            " - Identificacion"
-        );
-        if (existingDni && dniUrl.length > 0) {
-          await updateDocument({
-            ...existingDni,
-            urls: dniUrl.map((doc) => doc.url),
-          });
-        } else if (dniUrl) {
-          createDocument({
-            name: dniUrl[0].name,
-            type: "IDENTIFICATION",
-            urls: dniUrl.map((doc) => doc.url),
-            userId: state.reservationInfo?.userContractInformation.id,
-            typeUser: "CLIENT",
-          });
-        } else {
-          toast.error("Error al cargar la identificación");
-        }
-      }
+      // // Cargar o actualizar DNI en Firebase
+      // if (userDocuments.dni) {
+      //   const existingDni = findExistingDocument("IDENTIFICATION");
+      //   const dniUrl = await uploadFiles(
+      //     userDocuments.dni,
+      //     "Documentos",
+      //     state.reservationInfo?.userContractInformation.name +
+      //       " " +
+      //       state.reservationInfo?.userContractInformation.lastName +
+      //       " - Identificacion"
+      //   );
+      //   if (existingDni && dniUrl.length > 0) {
+      //     await updateDocument({
+      //       ...existingDni,
+      //       urls: dniUrl.map((doc) => doc.url),
+      //     });
+      //   } else if (dniUrl) {
+      //     createDocument({
+      //       name: dniUrl[0].name,
+      //       type: "IDENTIFICATION",
+      //       urls: dniUrl.map((doc) => doc.url),
+      //       userId: state.reservationInfo?.userContractInformation.id,
+      //       typeUser: "CLIENT",
+      //     });
+      //   } else {
+      //     toast.error("Error al cargar la identificación");
+      //   }
+      // }
 
       // Cargar o actualizar Nómina en Firebase
       if (userDocuments.nomina) {
@@ -138,34 +138,36 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
           }}
         />
       </div>
-      <div className="flex justify-between font-semibold text-[#222222] text-[1.37rem]">
-        <h2>Información Adicional</h2>
-        {/* <p>$440</p> */}
-      </div>
-      <div className="h-[1px] bg-[#DDDDDD]"></div>
-      <div className="flex flex-col gap-3 text-[#222222]">
-        <h2 className="text-[1.37rem] text-semibold">
-          Políticas, términos y condiciones
-        </h2>
-        <Link
-          href="#"
-          className="underline text-base font-normal"
-          alt="Política y Condiciones"
-        >
-          Más información
-        </Link>
-      </div>
-      <div className="h-[1px] bg-[#DDDDDD]"></div>
-      <div className="text-base font-normal text-[#222222]">
-        <h4>
-          Al seleccionar 'Finalizar',{" "}
-          <span className="font-semibold">
-            acepta los términos y condiciones de la solicitud de reserva.
-          </span>
-        </h4>
-      </div>
-      <div className="h-[1px] bg-[#DDDDDD]"></div>
-      {/* <Link
+      <div className="w-full flex justify-center">
+        <div className="w-full max-w-screen-sm flex flex-col gap-7">
+          <div className="flex justify-between font-semibold text-[#222222] text-[1.37rem]">
+            <h2>Información Adicional</h2>
+            {/* <p>$440</p> */}
+          </div>
+          <div className="h-[1px] bg-[#DDDDDD]"></div>
+          <div className="flex flex-col gap-3 text-[#222222]">
+            <h2 className="text-[1.37rem] text-semibold">
+              Políticas, términos y condiciones
+            </h2>
+            <Link
+              href="#"
+              className="underline text-base font-normal"
+              alt="Política y Condiciones"
+            >
+              Más información
+            </Link>
+          </div>
+          <div className="h-[1px] bg-[#DDDDDD]"></div>
+          <div className="text-base font-normal text-[#222222]">
+            <h4>
+              Al seleccionar 'Finalizar',{" "}
+              <span className="font-semibold">
+                acepta los términos y condiciones de la solicitud de reserva.
+              </span>
+            </h4>
+          </div>
+          <div className="h-[1px] bg-[#DDDDDD]"></div>
+          {/* <Link
         href={pdfUrl}
         target="_blank"
         alt="Descargar Contrato (PDF)"
@@ -175,23 +177,25 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
         Descargar Contrato (PDF)
       </Link> */}
 
-      <button
-        onClick={() => {
-          toast.promise(uploadDocuments(), {
-            loading: "Cargando...",
-            success: () => {
-              toast.success("Información guardada");
-              finish();
-            },
-            error: "Error al cargar los documentos",
-          });
-        }}
-        alt="Confirmar y guardar datos"
-        type="button"
-        className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient border border-resolution-blue hover:bg-payment-button-gradient-hover transition-all duration-300"
-      >
-        Finalizar
-      </button>
+          <button
+            onClick={() => {
+              toast.promise(uploadDocuments(), {
+                loading: "Cargando...",
+                success: () => {
+                  toast.success("Información guardada");
+                  finish();
+                },
+                error: "Error al cargar los documentos",
+              });
+            }}
+            alt="Confirmar y guardar datos"
+            type="button"
+            className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient border border-resolution-blue hover:bg-payment-button-gradient-hover transition-all duration-300"
+          >
+            Finalizar
+          </button>
+        </div>
+      </div>
     </motion.section>
   );
 }

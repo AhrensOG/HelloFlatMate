@@ -7,7 +7,6 @@ import GlobalContext from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import ContractDetail from "@/app/components/user/contract/contract_detail/ContractDetail";
 import { Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import ThankYou from "@/app/components/user/thank_you/ThankYou";
@@ -31,7 +30,7 @@ export default function Contract({ params }) {
   };
 
   const handleRedirect = () => {
-    router.push("/");
+    router.push("/pages/user/my-reservations");
   };
 
   useEffect(() => {
@@ -90,7 +89,7 @@ export default function Contract({ params }) {
             {currentStep === 4 && (
               <ThankYou
                 title={"¡Felicidades!"}
-                subTitle={"Hemos recibido la información de manera exitosa."}
+                subTitle={"Hemos recibido la información correctamente."}
                 body={
                   "Te notificaremos cuando validemos la informacion enviada."
                 }

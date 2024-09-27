@@ -15,12 +15,16 @@ export default function MyBedrooms() {
   useEffect(() => {
     if (state.user) {
       const getData = async () => {
-        const res = await axios.get(`/api/user?id=${state?.user?.id}`);
-        setUser(res.data);
-        const leaseRooms = res.data?.leaseOrdersRoom;
-        const leaseProperties = res.data?.leaseOrdersProperty;
-
-        setLeaseOrdersList([...leaseRooms, ...leaseProperties]);
+        try {
+          const res = await axios.get(`/api/user?id=${state?.user?.id}`);
+          setUser(res.data);
+          const leaseRooms = res.data?.leaseOrdersRoom;
+          const leaseProperties = res.data?.leaseOrdersProperty;
+  
+          setLeaseOrdersList([...leaseRooms, ...leaseProperties]);
+        } catch (error) {
+          console.log(error)
+        }
       };
       getData();
     }
@@ -28,9 +32,16 @@ export default function MyBedrooms() {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-      </div>
+      <AnimatePresence>
+        <div className="h-screen flex flex-col w-full">
+          <header>
+            <NavBar client={true} admin={false} owner={false} />
+          </header>
+          <div className="flex items-center justify-center grow">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+          </div>
+        </div>
+      </AnimatePresence>
     );
   }
   return (
