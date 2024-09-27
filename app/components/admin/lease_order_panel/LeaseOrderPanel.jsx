@@ -108,8 +108,6 @@ export default function LeaseOrderPanel(data) {
   };
 
   const rejectLeaseOrder = async (leaseOrder, contract) => {
-    console.log(contract);
-
     try {
       const dataRequest = {
         leaseOrderId: leaseOrder.id,
@@ -308,7 +306,6 @@ export default function LeaseOrderPanel(data) {
                     </div>
                   );
                 })}
-              {console.log(leaserOrders)}
 
               {/* Propiedades sin room con precio */}
               {(property?.category === "HELLO_STUDIO" ||
@@ -539,7 +536,7 @@ export default function LeaseOrderPanel(data) {
         </button>
         <button
           type="button"
-          className="px-6 py-2 bg-[#21ABCC] text-white rounded-lg hover:bg-white hover:text-[#21ABCC] transition"
+          className="px-6 py-2 bg-[#21ABCC] border border-[#21ABCC] text-white rounded-lg hover:bg-white hover:text-[#21ABCC] transition"
         >
           Ir a documentos
         </button>
