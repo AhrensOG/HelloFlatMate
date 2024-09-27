@@ -16,11 +16,9 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     if (state?.user?.id) {
       const user = state?.user;
       const date = new Date(user?.birthDate);
-      const readableDate = date.toLocaleString("es-ES", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-      });
+      // Formatear la fecha en "YYYY-MM-DD"
+      const readableDate = date.toISOString().split("T")[0];
+
       setPrevData({
         name: user.name,
         lastName: user.lastName,
@@ -32,8 +30,11 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         streetNumber: user.streetNumber,
         postalCode: user.postalCode,
         age: user.age,
-        birthDate: readableDate,
+        birthDate: readableDate, // Usar el formato "YYYY-MM-DD"
         id: user.id,
+        emergencyName: user.emergencyName || "",
+        emergencyPhone: user.emergencyPhone || "",
+        emergencyEmail: user.emergencyEmail || "",
       });
     }
   }, [state]);
@@ -50,12 +51,16 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     postalCode: "",
     age: "",
     birthDate: "",
+    emergencyName: "",
+    emergencyPhone: "",
+    emergencyEmail: "",
   };
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     onSubmit: async (values) => {
+      console.log("holaaaaaa");
       if (
         values.name === "" ||
         values.name.trim() === "" ||
@@ -64,7 +69,6 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         values.dni === "" ||
         values.dni.trim() === "" ||
         values.phone === "" ||
-        values.phone.trim() === "" ||
         values.city === "" ||
         values.city.trim() === "" ||
         values.street === "" ||
@@ -75,17 +79,23 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         values.postalCode.trim() === "" ||
         values.age === "" ||
         values.birthDate === "" ||
-        values.birthDate.trim() === ""
+        values.birthDate.trim() === "" ||
+        values.emergencyName === null ||
+        values.emergencyName === "" ||
+        values.emergencyName.trim() === "" ||
+        values.emergencyPhone === null ||
+        values.emergencyPhone === "" ||
+        values.emergencyEmail === null ||
+        values.emergencyEmail === "" ||
+        values.emergencyEmail.trim() === ""
       ) {
         return toast.info("¡Recuerda completar todos los campos!");
       } else if (values.age < 18) {
         return toast.info("Debe ser mayor de 18 años");
       }
       if (values.age !== calculateAge(values.birthDate)) {
-        console.log(values);
         return toast.info("La fecha de nacimiento no coincide con la edad");
       }
-
       try {
         await updateUser(values);
       } catch (error) {
@@ -127,7 +137,11 @@ const ContractForm = ({ handleContinue, handleBack }) => {
       postalCode: data.postalCode,
       age: data.age,
       birthDate: data.birthDate,
+      emergencyName: data.emergencyName,
+      emergencyPhone: data.emergencyPhone,
+      emergencyEmail: data.emergencyEmail,
     };
+    console.log(userData);
     try {
       toast.promise(axios.put("/api/user", userData), {
         loading: "Guardando información...",
@@ -161,7 +175,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         <div className="w-full p-2 space-y-8 max-w-screen-sm">
           <section className="w-full">
             <div className="w-full text-center">
-              <span className="text-xs font-medium">
+              <span className="font-medium">
                 Necesitaremos que complete el siguiente formulario
               </span>
             </div>
@@ -222,10 +236,10 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                   <input
                     id="phone"
                     name="phone"
-                    type="text"
+                    type="number"
                     onChange={formik.handleChange}
                     value={formik.values.phone}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                    className="w-full number-input-no-appearance drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
                 <div className="flex flex-col justify-center w-full">
@@ -366,6 +380,60 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                   value={formik.values.email}
                   className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                 />
+              </div>
+              <h2 className="form-title">Contacto de urgencia</h2>
+              <div className="flex flex-row justify-center items-center gap-3 w-full">
+                <div className="w-full flex flex-col justify-center ">
+                  <label
+                    htmlFor="emergencyName"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Nombre
+                  </label>
+                  <input
+                    id="emergencyName"
+                    name="emergencyName"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.emergencyName}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
+                <div className="w-full flex flex-col justify-center ">
+                  <label
+                    htmlFor="emergencyPhone"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Teléfono
+                  </label>
+                  <input
+                    id="emergencyPhone"
+                    name="emergencyPhone"
+                    type="number"
+                    onChange={formik.handleChange}
+                    value={formik.values.emergencyPhone}
+                    className="w-full drop-shadow-md border number-input-no-appearance border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-row justify-center items-center gap-3 w-full">
+                <div className="w-full flex flex-col justify-center ">
+                  <label
+                    htmlFor="emergencyEmail"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="emergencyEmail"
+                    name="emergencyEmail"
+                    type="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.emergencyEmail}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
               </div>
               <button
                 type="submit"

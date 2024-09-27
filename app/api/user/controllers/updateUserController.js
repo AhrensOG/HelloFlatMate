@@ -8,7 +8,7 @@ export async function updateClient(data) {
     if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
     if (!data.idNum || data.idNum.trim().length < 1) return NextResponse.json({ error: "Se requiere el DNI" }, { status: 400 });
     if (typeof data.age !== 'number' || data.age < 1 || data.age > 120 || data.age < 18) return NextResponse.json({ error: "Se requiere la edad o es incorrecta" }, { status: 400 });
-    if (!data.phone || data.phone.trim().length < 1) return NextResponse.json({ error: "Se requiere el teléfono" }, { status: 400 });
+    if (!data.phone) return NextResponse.json({ error: "Se requiere el teléfono" }, { status: 400 });
     if (!data.city || data.city.trim().length < 1) return NextResponse.json({ error: "Se requiere la ciudad" }, { status: 400 });
     if (!data.street || data.street.trim().length < 1) return NextResponse.json({ error: "Se requiere la calle" }, { status: 400 });
     if (!data.streetNumber || data.streetNumber.trim().length < 1) return NextResponse.json({ error: "Se requiere el número" }, { status: 400 });
@@ -16,9 +16,9 @@ export async function updateClient(data) {
     if (!data.birthDate || data.birthDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de nacimiento" }, { status: 400 });
 
     // Validar nuevos campos
-    if (data.emergencyName && data.emergencyName.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre de emergencia" }, { status: 400 });
-    if (data.emergencyPhone && data.emergencyPhone.trim().length < 1) return NextResponse.json({ error: "Se requiere el teléfono de emergencia" }, { status: 400 });
-    if (data.emergencyEmail && data.emergencyEmail.trim().length < 1) return NextResponse.json({ error: "Se requiere el email de emergencia" }, { status: 400 });
+    if (!data.emergencyName && data.emergencyName.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre de emergencia" }, { status: 400 });
+    if (!data.emergencyPhone) return NextResponse.json({ error: "Se requiere el teléfono de emergencia" }, { status: 400 });
+    if (!data.emergencyEmail && data.emergencyEmail.trim().length < 1) return NextResponse.json({ error: "Se requiere el email de emergencia" }, { status: 400 });
     if (data.howMetUs && data.howMetUs.trim().length < 1) return NextResponse.json({ error: "Se requiere la información de cómo nos conociste" }, { status: 400 });
     if (data.destinationUniversity && data.destinationUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de destino" }, { status: 400 });
     if (data.homeUniversity && data.homeUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de origen" }, { status: 400 });

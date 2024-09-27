@@ -185,7 +185,7 @@ export default function NavBar({
       </div>
 
       {/* DESKTOP */}
-      <div className="w-full px-6 py-4 sm:flex justify-between items-center hidden border-b">
+      <div className="w-full min-h-[93px] px-6 py-4 sm:flex justify-between items-center hidden border-b">
         {/* Logo */}
         <div className="relative w-[150px] h-[50px] cursor-pointer">
           <Link href="/">

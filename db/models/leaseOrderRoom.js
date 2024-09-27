@@ -29,7 +29,7 @@ const leaserOrderRoomInit = (sequelize, DataTypes) => {
             allowNull: false,
         },
         status: {
-            type: DataTypes.ENUM("PENDING", "APPROVED", "REJECTED", "IN_PROGRESS"),
+            type: DataTypes.ENUM("PENDING", "READY_TO_SIGN", "APPROVED", "REJECTED", "IN_PROGRESS"),
             allowNull: false,
         },
         isActive: {
