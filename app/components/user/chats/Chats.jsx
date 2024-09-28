@@ -1,56 +1,29 @@
+import { Context } from "@/app/context/GlobalContext";
 import ChatsCard from "./ChatsCard";
-import { getSocket } from "@/app/socket";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 export default function Chat() {
-  const [chats, setChats] = useState([]);
+  const { state, dispatch } = useContext(Context);
+  const [user, setUser] = useState(state?.user);
+  const [chats, setChats] = useState(state?.user?.chats || null);
   const router = useRouter();
-  const socket = getSocket();
-
-  const handleJoinChat = (id) => {
-    socket.emit("joinChat", id, (response) => {
-      router.push(`/pages/user/chats/chat`);
-    });
-  };
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Conectado al servidor Socket.IO");
-    });
-
-    socket.on("joinedRoom", (message) => {
-      console.log(message); // Confirmación del servidor
-    });
-
-    return () => {
-      socket.off("joinedRoom");
-      socket.off("connect");
-    };
+    if (!user) {
+      setUser(state?.user);
+    }
   }, []);
 
   return (
     <div>
-      <ChatsCard
-        name={"Propietario"}
-        image={"/chat/chat-1.png"}
-        action={() => handleJoinChat(1)}
-      />
-      <ChatsCard
-        name={"Mantenimiento"}
-        image={"/chat/chat-3.png"}
-        action={() => handleJoinChat(2)}
-      />
-      <ChatsCard
-        name={"Habitacion"}
-        image={"/chat/chat-2.jpg"}
-        action={() => handleJoinChat(3)}
-      />
-      <ChatsCard
-        name={"Soporte"}
-        image={"/chat/soporte.svg"}
-        action={() => handleJoinChat(4)}
-      />
+      {console.log(user)}
+
+      <ChatsCard name={"Propietario"} image={"/chat/chat-1.png"} />
+      <ChatsCard name={"Mantenimiento"} image={"/chat/chat-3.png"} />
+      <ChatsCard name={"Habitacion"} image={"/chat/chat-2.jpg"} />
+      <ChatsCard name={"Soporte"} image={"/chat/soporte.svg"} />
     </div>
   );
 }
