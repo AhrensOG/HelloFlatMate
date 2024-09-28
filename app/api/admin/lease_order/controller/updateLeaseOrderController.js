@@ -120,6 +120,7 @@ export async function updateStatusLeaseOrder(data) {
                 ownerId: property.ownerId,
                 receiverId: leaseOrderRoom.clientId,
             })
+
             return NextResponse.json({ message: "Lease order room approved" }, { status: 200 })
         } else if (data.action === "REJECTED") {
             leaseOrderRoom.status = "REJECTED"
