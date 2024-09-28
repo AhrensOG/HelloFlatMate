@@ -1,8 +1,6 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import { LeaseOrderProperty, LeaseOrderRoom, Supply } from "@/db/init"; // Importa el modelo Supply
-import { createPayment } from "../../payment/controller/createPaymentController";
-import axios from "axios";
+import { LeaseOrderProperty, LeaseOrderRoom, Payment, Supply } from "@/db/init"; // Importa el modelo Supply
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -53,15 +51,23 @@ export async function POST(req) {
             );
           }
 
-          await axios.post('/api/payment', {
+          // Crear el Payment
+          await Payment.create({
             amount: successLeaseOrderRoom.price,
-            clientId: successLeaseOrderRoom.clientId,
-            ownerId: successLeaseOrderRoom.ownerId,
+            date: new Date(), // La fecha actual
+            status: "APPROVED", // Estado inicial
+            type: "RESERVATION",
             paymentableId: successLeaseOrderRoom.roomId,
             paymentableType: "ROOM",
-            type: "RESERVATION"
-          })
-          await successLeaseOrderRoom.update({ status: "PENDING", inReview: true });
+            paymentId: session.id,
+            clientId: successLeaseOrderRoom.clientId,
+            ownerId: successLeaseOrderRoom.ownerId,
+          });
+
+          await successLeaseOrderRoom.update({
+            status: "PENDING",
+            inReview: true,
+          });
           console.log(
             `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
           );
@@ -78,14 +84,20 @@ export async function POST(req) {
               { status: 404 }
             );
           }
-          await axios.post('/api/payment', {
+
+          // Crear el Payment
+          await Payment.create({
             amount: successLeaseOrder.price,
-            clientId: successLeaseOrder.clientId,
-            ownerId: successLeaseOrder.ownerId,
+            date: new Date(), // La fecha actual
+            status: "APPROVED", // Estado inicial
+            type: "RESERVATION",
             paymentableId: successLeaseOrder.propertyId,
             paymentableType: "PROPERTY",
-            type: "RESERVATION"
-          })
+            paymentId: session.id,
+            clientId: successLeaseOrder.clientId,
+            ownerId: successLeaseOrder.ownerId,
+          });
+
           await successLeaseOrder.update({ status: "PENDING", inReview: true });
           console.log(
             `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`
@@ -121,6 +133,17 @@ export async function POST(req) {
               { status: 404 }
             );
           }
+          await Payment.create({
+            amount: failedLeaseOrderRoom.price,
+            date: new Date(), // La fecha actual
+            status: "REJECTED", // Estado inicial
+            type: "RESERVATION",
+            paymentableId: failedLeaseOrderRoom.roomId,
+            paymentableType: "ROOM",
+            paymentId: session.id,
+            clientId: failedLeaseOrderRoom.clientId,
+            ownerId: failedLeaseOrderRoom.ownerId,
+          });
           await failedLeaseOrderRoom.update({ status: "REJECTED" });
           console.log(
             `❌ LeaseOrderRoom with ID ${leaseOrderId} updated to REJECTED`
@@ -138,6 +161,17 @@ export async function POST(req) {
               { status: 404 }
             );
           }
+          await Payment.create({
+            amount: failedLeaseOrder.price,
+            date: new Date(), // La fecha actual
+            status: "REJECTED", // Estado inicial
+            type: "RESERVATION",
+            paymentableId: failedLeaseOrder.propertyId,
+            paymentableType: "PROPERTY",
+            paymentId: session.id,
+            clientId: failedLeaseOrder.clientId,
+            ownerId: failedLeaseOrder.ownerId,
+          });
           await failedLeaseOrder.update({ status: "REJECTED" });
           console.log(
             `❌ LeaseOrderProperty with ID ${leaseOrderId} updated to REJECTED`

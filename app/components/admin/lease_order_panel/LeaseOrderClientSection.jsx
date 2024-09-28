@@ -6,6 +6,8 @@ export default function LeaseOrderClientSection({
   formatDate,
   contract,
 }) {
+  console.log(data);
+
   return (
     <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
       <h2 className="text-xl font-bold text-gray-800">Datos del Cliente</h2>
@@ -31,7 +33,7 @@ export default function LeaseOrderClientSection({
         </p>
       </article>
       <article className="flex flex-wrap gap-4">
-        <div className="bg-white p-4 rounded shadow w-full md:w-1/3 flex flex-col justify-center items-center">
+        {/* <div className="bg-white p-4 rounded shadow w-full md:w-1/3 flex flex-col justify-center items-center">
           <p className="text-gray-600">Identificación</p>
           {data?.documents
             .filter((doc) => doc.type === "IDENTIFICATION")
@@ -64,7 +66,7 @@ export default function LeaseOrderClientSection({
                 );
               })
             )}
-        </div>
+        </div> */}
         <div className="bg-white p-4 rounded shadow w-full md:w-1/3">
           <p className="text-gray-600">Firma</p>
           {data?.signature ? (
@@ -81,7 +83,7 @@ export default function LeaseOrderClientSection({
           )}
         </div>
 
-        <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md ">
+        <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md self-center">
           <h2 className="text-xl font-bold text-gray-800 py-3">Contrato</h2>
           <Link
             target="_blank"

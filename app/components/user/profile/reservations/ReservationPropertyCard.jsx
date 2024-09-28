@@ -3,35 +3,41 @@ import { plus_jakarta } from "@/font";
 import Image from "next/image";
 import { useState } from "react";
 import Tooltip from "../../property/tooltip/Tooltip";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 const { useRouter } = require("next/navigation");
 
 export default function ReservationPropertyCard({ property, leaseOrder }) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
+  const [category, setCategory] = useState(
+    property?.property?.category || property?.category
+  );
 
   const handleRedirect = () => {
-    if (property.category) {
-      route.push("/pages/user/property-details/" + property?.id);
+    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
+      route.push(
+        `/pages/user/property-details/${property.propertyId}/room-details/${property.id}`
+      );
     } else {
-      route.push("/pages/user/property-details/" + property?.propertyId);
+      route.push(`/pages/user/property-details/${property?.id}`);
     }
   };
 
   const handleRedirectToContract = () => {
-    if (property.category) {
-      route.push(
-        "/pages/user/contract/sign-contract/" +
-          property?.id +
-          "?lo=" +
-          leaseOrder.id
-      );
-    } else {
+    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
       route.push(
         "/pages/user/contract/sign-contract/" +
           property?.propertyId +
           "?r=" +
           property.id +
           "&lo=" +
+          leaseOrder.id
+      );
+    } else {
+      route.push(
+        "/pages/user/contract/sign-contract/" +
+          property?.id +
+          "?lo=" +
           leaseOrder.id
       );
     }
@@ -45,46 +51,57 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
     setIsOpen(!isOpen);
   };
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0"); // Obtiene el día y lo formatea a 2 dígitos
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Obtiene el mes (agrega 1 porque enero es 0) y lo formatea
+    const year = String(date.getFullYear()).slice(-2); // Obtiene los últimos 2 dígitos del año
+
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <article
-      className={`${plus_jakarta.className} flex flex-col gap-3 w-full cursor-pointer border p-2 rounded-xl shadow-reservation-drop`}
+      className={`${plus_jakarta.className} max-w-[350px] sm:max-w-60 sm:h-[310px] flex flex-col gap-3 w-full cursor-pointer border p-2 rounded-xl shadow-reservation-drop`}
     >
-      <div onClick={handleRedirect} className="flex gap-3 w-full">
-        <div className="relative h-28 w-28 rounded-xl">
+      <div
+        onClick={handleRedirect}
+        className="flex sm:flex-col gap-3 w-full sm:grow"
+      >
+        <div className="relative h-28 w-28 sm:w-[222px] rounded-xl">
           <Image
             className="h-full rounded-xl"
-            src={property?.property?.images[0] || property?.images[0] || ""}
+            src={property?.images[0] || ""}
             fill
             alt="Imagen de propiedad"
           />
         </div>
-        <div className="flex flex-col justify-between h-28 grow">
+        <div className="flex flex-col justify-between grow gap-2">
           <div className="flex flex-col grow gap-2">
-            <h4 className="flex w-full gap-2 items-center text-[0.81rem] text-[#000000B2] font-normal">
-              {property?.property?.category ||
-                property?.category
-                  .split("_")
-                  .map(
-                    (word) =>
-                      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-                  )
-                  .join(" ") ||
-                ""}{" "}
-              <button
-                type="button"
-                className="relative"
-                onMouseEnter={handleOpen}
-                onMouseLeave={handleClose}
-              >
-                <Image
-                  src={"/property-card/gray-question-icon.svg"}
-                  width={17}
-                  height={17}
-                  alt="Más Información"
-                />
-                <Tooltip isOpen={isOpen} />
-              </button>
-            </h4>
+            <div className="flex w-full gap-2 justify-between items-center text-[0.81rem] text-[#000000B2] font-normal">
+              <div className="flex gap-1 items-center">
+                {category?.split("_").join("").toLowerCase() || ""}
+                <button
+                  type="button"
+                  className="relative"
+                  onMouseEnter={handleOpen}
+                  onMouseLeave={handleClose}
+                >
+                  <Image
+                    src={"/property-card/gray-question-icon.svg"}
+                    width={17}
+                    height={17}
+                    alt="Más Información"
+                  />
+                  <Tooltip isOpen={isOpen} />
+                </button>
+              </div>
+              <div>
+                <h3 className="text-xs text-[#000000B2]">
+                  {formatDate(leaseOrder.date)}
+                </h3>
+              </div>
+            </div>
             <h2 className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-medium">
               <span>
                 <Image
@@ -94,7 +111,7 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
                   alt="Icono de Ubicación"
                 />
               </span>
-              {property?.property
+              {category === "HELLO_ROOM" || category === "HELLO_COLIVING"
                 ? property?.property?.city +
                   ", " +
                   property?.property?.street +
@@ -106,35 +123,32 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
                     " " +
                     property?.streetNumber || ""}
             </h2>
-            <p className="text-[0.68rem] text-[#828282] font-normal">
-              {property?.property?.amenities ||
-                property?.amenities
-                  .map(
-                    (amenity) =>
-                      amenity.charAt(0).toUpperCase() + amenity.slice(1)
-                  )
-                  .join(", ") ||
-                ""}
-            </p>
+            {/* <p className="text-[0.68rem] text-[#828282] font-normal">
+              {category === "HELLO_ROOM" || category === "HELLO_COLIVING"
+                ? property?.property?.amenities
+                    .map(
+                      (amenity) =>
+                        amenity.charAt(0).toUpperCase() + amenity.slice(1)
+                    )
+                    .join(", ") || ""
+                : property?.amenities
+                    .map(
+                      (amenity) =>
+                        amenity.charAt(0).toUpperCase() + amenity.slice(1)
+                    )
+                    .join(", ") || ""}
+            </p> */}
           </div>
-          <div className="flex flex-1 justify-between gap-2">
-            <span className="flex items-center gap-2 self-end text-[#000000B2] font-medium">
-              <Image
-                className=""
-                src={"/property-card/star.svg"}
-                width={13}
-                height={13}
-                alt="Icono de Estrella"
-              />{" "}
-              4.9
-            </span>
+          <div className="flex flex-1 justify-between items-center gap-2">
+            <div>
+              <h3 className="text-xs text-[#000000B2]">
+                Ingreso: {formatDate(leaseOrder.startDate)}
+              </h3>
+              <h3 className="text-xs text-[#000000B2]">
+                Salida: {formatDate(leaseOrder.endDate)}
+              </h3>
+            </div>
             <div className="flex flex-col justify-end items-end font-medium">
-              {property?.property?.offer > 0 || property?.offer > 0 ? (
-                <span className="text-xs text-[#171412] h-[1.06rem] bg-[#FFF06D] px-1">
-                  {property?.property?.offer || property?.offer} OFF
-                </span>
-              ) : null}
-
               {property?.price > 0 && (
                 <h3 className="text-base text-[#000000B2]">
                   {property?.price}{" "}
@@ -145,29 +159,41 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
           </div>
         </div>
       </div>
-      {leaseOrder.isSigned ? (
+      {leaseOrder.isSigned &&
+      leaseOrder.status === "APPROVED" &&
+      !leaseOrder.inReview ? (
         // Si está firmado, solo mostramos el span si está en revisión
-        leaseOrder.isReview ? (
-          <span className="text-red-500">En revisión</span>
-        ) : null
-      ) : // Si no está firmado
-      leaseOrder.status === "PENDING" ? (
-        leaseOrder.isReview ? (
-          // Si está en revisión y pendiente
-          <span className="text-red-500">En revisión</span>
-        ) : (
-          // Si no está en revisión y pendiente
-          <div className="w-full">
-            <button
-              onClick={handleRedirectToContract}
-              title="Firma tu contrato"
-              className="px-4 py-1 rounded-xl bg-resolution-blue text-white"
-            >
-              Firmar Contrato
-            </button>
-          </div>
-        )
-      ) : null}
+        <span className="text-red-500">Contrato Firmado</span>
+      ) : !leaseOrder.isSigned &&
+        leaseOrder.status === "READY_TO_SIGN" &&
+        !leaseOrder.inReview ? (
+        // Si no está en revisión y listo para firmar
+        <div className="w-full">
+          <button
+            onClick={handleRedirectToContract}
+            title="Firma tu contrato"
+            className="px-4 py-1 rounded-xl bg-resolution-blue text-white sm:w-full"
+          >
+            Firmar Contrato
+          </button>
+        </div>
+      ) : !leaseOrder.isSigned &&
+        leaseOrder.status === "PENDING" &&
+        leaseOrder.inReview ? (
+        // Si está en revisión y pendiente
+        <p
+          title="¡Tu solicitud esta bajo revisión. Te notificaremos al finalizar!"
+          className="text-resolution-blue font-bold text-center flex justify-center items-center gap-1.5"
+        >
+          En revisión
+          <QuestionMarkCircleIcon
+            title="¡Tu solicitud esta bajo revisión. Te notificaremos al finalizar!"
+            className="size-4"
+          />
+        </p>
+      ) : (
+        ""
+      )}
     </article>
   );
 }

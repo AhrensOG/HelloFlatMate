@@ -5,16 +5,19 @@ import { useState } from "react";
 import Tooltip from "./tooltip/Tooltip";
 const { useRouter } = require("next/navigation");
 
-export default function PropertyCard({ property, price }) {
-  console.log(price);
+export default function PropertyCard({ property, price, roomId = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
 
   const handleRedirect = () => {
-    if (property.category) {
-      route.push("/pages/user/property-details/" + property?.id);
+    if (
+      (property.category === "HELLO_ROOM" ||
+        property.category === "HELLO_COLIVING") &&
+      roomId
+    ) {
+      route.push(`/pages/user/property-details/${property.id}/room-details/${roomId}`);
     } else {
-      route.push("/pages/user/property-details/" + property?.propertyId);
+      route.push("/pages/user/property-details/" + property?.id);
     }
   };
 
@@ -42,14 +45,8 @@ export default function PropertyCard({ property, price }) {
           <div className="flex flex-col grow gap-2">
             <h4 className="flex w-full gap-2 items-center text-[0.81rem] text-[#000000B2] font-normal">
               {property?.property?.category ||
-                property?.category
-                  .split("_")
-                  .map(
-                    (word) =>
-                      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-                  )
-                  .join(" ") ||
-                ""}{" "}
+                property?.category.toLowerCase().split("_").join("") ||
+                ""}
               <button
                 type="button"
                 className="relative"

@@ -19,10 +19,12 @@ export async function middleware(request) {
   const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
   const allowedPaths = [
+    "/",
     "/pages/auth",
     "/pages/guest",
     "/api/auth",
     "/api/stripe/webhook",
+    "/api/payment",
   ];
   const pathName = new URL(request.url).pathname;
 

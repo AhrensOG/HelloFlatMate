@@ -87,10 +87,13 @@ export async function getPropertyById(id) {
               include: {
                 model: Client,
                 as: "client",
-                include: {
+                include: [{
                   model: Document,
                   as: "documents",
-                },
+                }, {
+                  model: Contract,
+                  as: "contracts",
+                }],
               },
             },
             {
