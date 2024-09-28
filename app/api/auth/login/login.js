@@ -40,6 +40,7 @@ const login = async (req) => {
       // Establecer la cookie con el token codificado
       const cookieStore = cookies();
       cookieStore.set('auth_token', authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
+      console.log(newUser);
 
       return NextResponse.json(newUser, { status: 200 });
     }

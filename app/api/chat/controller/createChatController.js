@@ -8,8 +8,8 @@ export async function createPrivateChat(data) {
     if (!data.type || data.type !== "PRIVATE") {
         return NextResponse.json({ error: "No type provided or invalid" }, { status: 400 });
     }
-    if (!data.senderId || data.senderId.trim() === "") {
-        return NextResponse.json({ error: "No sender id provided" }, { status: 400 });
+    if (!data.ownerId || data.ownerId.trim() === "") {
+        return NextResponse.json({ error: "No owner id provided" }, { status: 400 });
     }
     if (!data.receiverId || data.receiverId.trim() === "") {
         return NextResponse.json({ error: "No receiver id provided" }, { status: 400 });
@@ -17,13 +17,11 @@ export async function createPrivateChat(data) {
 
     const transaction = await Chat.sequelize.transaction();
     try {
-        const sender = await Client.findByPk(data.senderId, { transaction }) ||
-            await Owner.findByPk(data.senderId, { transaction }) ||
-            await Admin.findByPk(data.senderId, { transaction });
+        const owner = await Owner.findByPk(data.ownerId, { transaction }) || await Admin.findByPk(data.ownerId, { transaction });
 
-        if (!sender) {
+        if (!owner) {
             await transaction.rollback();
-            return NextResponse.json({ error: "Sender not found" }, { status: 404 });
+            return NextResponse.json({ error: "owner not found" }, { status: 404 });
         }
 
         const receiver = await Client.findByPk(data.receiverId, { transaction }) ||
@@ -38,7 +36,7 @@ export async function createPrivateChat(data) {
         const chat = await Chat.create({ type: data.type }, { transaction });
 
         await ChatParticipant.bulkCreate([
-            { participantId: sender.id, participantType: sender.role, chatId: chat.id },
+            { participantId: owner.id, participantType: owner.role, chatId: chat.id },
             { participantId: receiver.id, participantType: receiver.role, chatId: chat.id },
         ], { transaction });
 

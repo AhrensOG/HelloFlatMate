@@ -4,6 +4,7 @@ import MessageInput from "@/app/components/user/chats/chat/MessageInput";
 import NavBar from "@/app/components/nav_bar/NavBar";
 import { useState, useEffect } from "react";
 import { getSocket } from "@/app/socket";
+import axios from "axios";
 
 export default function ChatPage() {
   const [isConnected, setIsConnected] = useState(false);
@@ -35,8 +36,21 @@ export default function ChatPage() {
               ...prevMessages,
               { ...message, type: isSender ? "sender" : "receiver" },
             ]);
+            try {
+            } catch (err) {
+              console.log(err);
+            }
           }
         });
+      };
+
+      const saveMessage = async (message) => {
+        try {
+          const res = await axios.post("/api/message", message);
+          console.log(res.data);
+        } catch (err) {
+          console.log(err);
+        }
       };
 
       const handleSocketDisconnect = () => {

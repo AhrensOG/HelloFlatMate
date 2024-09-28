@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room } from "@/db/init";
+import Chat from "@/app/components/user/chats/Chats";
+import { createGroupChat, createPrivateChat } from "@/app/api/chat/controller/createChatController";
 
 // export async function updateLeaseOrder(data) {
 //     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 })
@@ -64,6 +66,20 @@ export async function updateStatusLeaseOrder(data) {
                 property.status = "OCCUPIED"
                 await leaseOrderProperty.save()
                 await property.save()
+
+                //Crear chat con el dueño
+                const chatPrivate = createPrivateChat({
+                    type: "PRIVATE",
+                    ownerId: property.ownerId,
+                    receiverId: leaseOrderProperty.clientId,
+                })
+
+                // //Crear Chat Grupal de la Propiedad
+                // const chatGroup = createGroupChat({
+                //     type: "GROUP",
+                //     ownerId: property.ownerId,
+                // })
+
                 return NextResponse.json({ message: "Lease order property approved" }, { status: 200 })
             } else if (data.action === "REJECTED") {
                 leaseOrderProperty.status = "REJECTED"
@@ -97,6 +113,13 @@ export async function updateStatusLeaseOrder(data) {
             await leaseOrderRoom.save()
             await room.save()
             await property.save()
+
+            //Crear chat con el dueño
+            const chatPrivate = createPrivateChat({
+                type: "PRIVATE",
+                ownerId: property.ownerId,
+                receiverId: leaseOrderRoom.clientId,
+            })
             return NextResponse.json({ message: "Lease order room approved" }, { status: 200 })
         } else if (data.action === "REJECTED") {
             leaseOrderRoom.status = "REJECTED"
