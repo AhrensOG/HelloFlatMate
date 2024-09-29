@@ -2,12 +2,19 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-export default function ChatsCard({ name, image, action = null }) {
+export default function ChatsCard({ name, image, action = null, id }) {
   const router = useRouter();
 
   return (
     <motion.article
-      onClick={action ? () => action() : () => router.push("/pages/user/chats/chat")}
+      onClick={
+        action
+          ? () => action()
+          : () =>
+              router.push(
+                `/pages/user/chats/chat?type=supp&id=${id}&bool=false`
+              )
+      }
       className="flex justify-between items-center gap-1 h-[5rem] p-1 cursor-pointer"
       initial={{ opacity: 0, x: -100 }}
       animate={{ opacity: 1, x: 0 }}

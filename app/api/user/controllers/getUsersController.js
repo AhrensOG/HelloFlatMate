@@ -26,7 +26,10 @@ export async function getUserById(id) {
             {
                 model: Document,
                 as: "documents"
-            },
+            }, {
+                model: ChatParticipant,
+                as: "chats",
+            }
             ]
         }) || await Client.findByPk(id, {
             include: [
@@ -73,7 +76,10 @@ export async function getUserById(id) {
             include: [{
                 model: ToDo,
                 as: "toDos"
-            },]
+            }, {
+                model: ChatParticipant,
+                as: "chats",
+            }]
         });
 
         return NextResponse.json(user);

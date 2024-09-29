@@ -28,6 +28,8 @@ export async function getChatById(id) {
 }
 
 export async function getChatByUser(userId) {
+    console.log("User ID:", userId);
+
     if (!userId) return NextResponse.json({ error: "No id provided" }, { status: 400 });
     try {
         const chats = await Chat.findAll({

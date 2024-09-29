@@ -2,10 +2,12 @@ import { Admin, Chat, ChatParticipant, Client, Message, Owner } from "@/db/init"
 import { NextResponse } from "next/server";
 
 export async function createMessage(data) {
+    console.log(data);
+
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });
     }
-    if (!data.chatId || data.chatId <= 0) {
+    if (!data.chatId || parseInt(data.chatId) <= 0) {
         return NextResponse.json({ error: "No chat id provided" }, { status: 400 });
     }
     if (!data.body || data.body.trim() === "") {
