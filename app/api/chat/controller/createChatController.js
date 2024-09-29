@@ -112,3 +112,52 @@ export async function createGroupChat(data) {
     }
 
 }
+
+
+export async function createSupportChat(data) {
+    console.log(data);
+
+    if (!data) {
+        return NextResponse.json({ error: "No data provided" }, { status: 400 });
+    }
+    if (!data.type || data.type !== "SUPPORT") {
+        return NextResponse.json({ error: "No type provided or invalid" }, { status: 400 });
+    }
+    if (!data.receiverId || data.receiverId.trim() === "") {
+        return NextResponse.json({ error: "No receiver id provided" }, { status: 400 });
+    }
+
+    try {
+        const transaction = await Chat.sequelize.transaction();
+        try {
+            const receiver = await Client.findByPk(data.receiverId, { transaction }) ||
+                await Owner.findByPk(data.receiverId, { transaction });
+
+            if (!receiver) {
+                await transaction.rollback();
+                return NextResponse.json({ error: "Receiver not found" }, { status: 404 });
+            }
+
+            const chat = await Chat.create({ type: data.type }, { transaction });
+
+            console.log('Chat ID:', chat.id);
+            console.log('Receiver ID:', receiver.id);
+            console.log('Participant Type:', receiver.role);
+
+            await ChatParticipant.create({
+                participantId: receiver.id,
+                participantType: receiver.role,
+                chatId: chat.id
+            }, { transaction });
+
+            await transaction.commit();
+            return NextResponse.json({ message: "Chat created successfully", chat }, { status: 200 });
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
+    } catch (err) {
+        console.log(err);
+        return NextResponse.json({ error: "Error creating chat", err }, { status: 500 });
+    }
+}

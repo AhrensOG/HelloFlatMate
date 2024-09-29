@@ -157,6 +157,7 @@ export default function LeaseOrderPanel(data) {
 
   return (
     <main className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
+      {console.log(leaserOrders)}
       <TitleAdminPanel title="Lease Orders" />
       <div className="flex flex-col gap-2">
         <div
