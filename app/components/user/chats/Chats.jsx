@@ -45,11 +45,9 @@ export default function Chat() {
 
   return (
     <div>
-      {console.log(user, chats)}
-
-      <ChatsCard name={"Propietario"} image={"/chat/chat-1.png"} />
+      {/* <ChatsCard name={"Propietario"} image={"/chat/chat-1.png"} />
       <ChatsCard name={"Mantenimiento"} image={"/chat/chat-3.png"} />
-      <ChatsCard name={"Habitacion"} image={"/chat/chat-2.jpg"} />
+      <ChatsCard name={"Habitacion"} image={"/chat/chat-2.jpg"} /> */}
       {!chats?.some((chat) => chat.type === "SUPPORT") ? (
         <ChatsCard name={"Soporte"} image={"/chat/soporte.svg"} id={user.id} />
       ) : (
@@ -60,7 +58,7 @@ export default function Chat() {
             router.push(
               `/pages/user/chats/chat?type=supp&chat=${
                 chats?.find((chat) => chat.type === "SUPPORT").id
-              }&bool=true'`
+              }&bool=true&userId=${user.id}`
             )
           }
         />

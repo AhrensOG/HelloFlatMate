@@ -15,24 +15,15 @@ export default function MyBedroomCard({
 
   useEffect(() => {
     function calculateNextDueDate(startDate, endDate) {
-      const currentDate = new Date();
-      let nextDueDate = new Date(startDate);
-
-      // El primer vencimiento debe ser un mes después del startDate
-      nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-
-      // Incrementar la fecha mensual hasta que sea posterior a la fecha actual
-      while (nextDueDate <= currentDate) {
-        nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-      }
-
-      // Si el próximo vencimiento es después de endDate, usar endDate como el último pago
+      const start = new Date(startDate);
       const end = new Date(endDate);
-      if (nextDueDate > end) {
-        return end;
-      }
+      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 1);
 
-      return nextDueDate;
+      if (nextDue <= end) {
+        return nextDue;
+      } else {
+        return null;
+      }
     }
 
     if (dueDate?.startDate && dueDate?.endDate) {

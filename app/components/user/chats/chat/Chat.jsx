@@ -60,6 +60,7 @@ export default function Chat() {
   useEffect(() => {
     if (chatId) {
       if (socket) {
+        const usuarioId = searchParams.get("userId");
         const handleSocketConnect = () => {
           setIsConnected(true);
           setTransport(socket.io.engine.transport.name);
@@ -82,7 +83,7 @@ export default function Chat() {
               saveMessage({
                 chatId,
                 body: message.text,
-                userId: state?.user?.id,
+                userId: usuarioId,
               });
             }
           });
@@ -134,14 +135,11 @@ export default function Chat() {
     }
   };
 
-  const saveMessage = async (message) => {
-    console.log(message, userId);
+  const saveMessage = async (data) => {
+    console.log(data);
 
     try {
-      const res = await axios.post("/api/message", {
-        ...message,
-        userId: userId,
-      });
+      const res = await axios.post("/api/message", data);
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -154,7 +152,6 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {console.log(userId)}
       <header className="px-2">
         <NavBar />
       </header>
