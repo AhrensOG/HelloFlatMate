@@ -20,7 +20,7 @@ export default function LeaseOrderPanel(data) {
       : null
   );
   const [property, setProperty] = useState(data.data);
-  const [client, setClient] = useState(null);
+  const [client, setClient] = useState(false);
   const [owner, setOwner] = useState(null);
   const [rooms, setRooms] = useState(null);
   const { state } = useContext(Context);
@@ -95,11 +95,10 @@ export default function LeaseOrderPanel(data) {
             ? null
             : leaseOrder.roomId,
       };
-
-      await axios.patch("/api/admin/contract", {
-        contractId: contract.id,
-        status: "APPROVED",
-      });
+      // await axios.patch("/api/admin/contract", {
+      //   contractId: contract.id,
+      //   status: "APPROVED",
+      // });
       await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
       console.log(error);
@@ -163,7 +162,7 @@ export default function LeaseOrderPanel(data) {
           className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white"
           onClick={() => setShowCurrentLeaseOrder(!showCurrentLeaseOrder)}
         >
-          <h2 className="text-xl font-bold text-gray-800">Orden actual</h2>
+          <h2 className="text-xl font-bold text-gray-800">Ordenes actuales</h2>
           <span
             className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
               showCurrentLeaseOrder ? "bg-[#1C8CD65E] rotate-180" : ""
@@ -370,10 +369,7 @@ export default function LeaseOrderPanel(data) {
                     const startDate = new Date(order.startDate);
                     const endDate = new Date(order.endDate);
                     return (
-                      (now >= startDate &&
-                        now <= endDate &&
-                        order.status === "PENDING") ||
-                      order.status === "APPROVED"
+                      order.status === "PENDING" || order.status === "APPROVED"
                     );
                   })
                   .map((leaserOrder, index) => (
@@ -496,14 +492,7 @@ export default function LeaseOrderPanel(data) {
                 (rooms ? (
                   rooms.map((room) => {
                     // Filtra las órdenes que cumplen con los criterios especificados
-                    const filteredOrders = room.leaseOrdersRoom.filter(
-                      (leaseOrder) => {
-                        return (
-                          leaseOrder.isActive === false &&
-                          leaseOrder.status !== "PENDING"
-                        );
-                      }
-                    );
+                    const filteredOrders = room.leaseOrdersRoom;
 
                     const hasFilteredOrders = filteredOrders.length > 0;
 
@@ -576,8 +565,10 @@ export default function LeaseOrderPanel(data) {
           )}
         </AnimatePresence>
       </div>
-      <LeaseOrderPropertySection data={property} formatDate={formatDate} />
-      <LeaseOrderOwnerSection data={owner} formatDate={formatDate} />
+      <div className="w-full flex flex-row gap-4 justify-between items-stretch">
+        <LeaseOrderPropertySection data={property} formatDate={formatDate} />
+        <LeaseOrderOwnerSection data={owner} formatDate={formatDate} />
+      </div>
 
       <div className="flex justify-between gap-2 mt-6">
         <button

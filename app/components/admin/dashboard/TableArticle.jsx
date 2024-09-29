@@ -27,7 +27,7 @@ export default function TableArticle({ data }) {
     "HELLO_COLIVING",
     "HELLO_LANDLORD",
   ];
-  const statuses = ["FREE", "RESERVED", "OCCUPED"];
+  const statuses = ["FREE", "RESERVED", "OCCUPIED"];
 
   useEffect(() => {
     // Filtra los datos cada vez que cambian los filtros o el término de búsqueda

@@ -50,7 +50,7 @@ export default function MyBedroomDetails({ room }) {
   }
 
   return (
-    <section className="flex flex-col gap-5">
+    <section className="w-full flex flex-col gap-5">
       <div className="relative rounded-2xl h-[250px] w-full">
         <SliderDetails rounded="rounded-2xl">
           {images.map((image, index) => {
@@ -68,7 +68,7 @@ export default function MyBedroomDetails({ room }) {
           {type.replace(/_/g, "").toLowerCase()}
         </p>
       </div>
-      <div className="flex justify-between flex-wrap items-center gap-1">
+      <div className="flex flex-wrap justify-between items-start gap-1">
         <div className="flex gap-1">
           <span className="h-6 w-5">
             <MapPinIcon />
