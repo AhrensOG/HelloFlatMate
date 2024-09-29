@@ -1,3 +1,4 @@
+"use client";
 import { Context } from "@/app/context/GlobalContext";
 import ChatsCard from "./ChatsCard";
 import { useRouter } from "next/navigation";

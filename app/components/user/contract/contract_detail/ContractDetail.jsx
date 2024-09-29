@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { plus_jakarta } from "@/font";
 import TitleSection from "../TitleSection";
@@ -8,16 +8,55 @@ import Image from "next/image";
 import { Context } from "@/app/context/GlobalContext";
 import { toast } from "sonner";
 import { createContractPDF } from "@/app/context/actions";
+import { useSearchParams } from "next/navigation";
 
-const ContractDetail = ({
-  handleContinue,
-  handleBack,
-  owner,
-  property,
-  room = false,
-}) => {
+const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   const { state, dispatch } = useContext(Context);
   const [signatureModal, setSignatureModal] = useState(false);
+  const [room, setRoom] = useState(false);
+  const [leaseOrder, setLeaseOrder] = useState(false);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const roomId = searchParams.get("r");
+        const leaseOrderId = searchParams.get("lo");
+
+        if (property && leaseOrderId) {
+          if (roomId) {
+            // Buscar la room si `roomId` está presente
+            const rooms = property.rooms || [];
+            const foundRoom = rooms.find(
+              (room) => room.id === parseInt(roomId)
+            );
+
+            if (foundRoom) {
+              setRoom(foundRoom);
+              // Buscar la leaseOrder dentro de `leaseOrdersRoom` de la room encontrada
+              const foundLeaseOrder = foundRoom.leaseOrdersRoom.find(
+                (order) => order.id === parseInt(leaseOrderId)
+              );
+              setLeaseOrder(foundLeaseOrder || null);
+            } else {
+              setRoom(null);
+              setLeaseOrder(null);
+            }
+          } else {
+            // Si no hay `roomId`, buscar en `leaseOrdersProperty`
+            const foundLeaseOrder = property.leaseOrdersProperty.find(
+              (order) => order.id === parseInt(leaseOrderId)
+            );
+            setLeaseOrder(foundLeaseOrder || null);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [searchParams, property]);
 
   const setMonth = (month) => {
     switch (month) {
@@ -56,6 +95,15 @@ const ContractDetail = ({
     return `${day} de ${setMonth(month)} del ${year}`;
   };
 
+  const parseDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("es-ES", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
   // Property DATA
   const contractDate = setDate();
   const landlordName = owner?.name + " " + owner?.lastName || "Javier García";
@@ -78,8 +126,12 @@ const ContractDetail = ({
   const tenantAddress =
     info?.street + " " + info?.streetNumber || "Av. del Cid, 10";
   const tenantStreet = info?.street || "Av. del Cid";
-  const startDate = info?.startDate || "1 de septiembre de 2024";
-  const endDate = info?.endDate || "31 de agosto de 2025";
+  const startDate = leaseOrder?.startDate
+    ? parseDate(leaseOrder.startDate)
+    : "1 de septiembre de 2024";
+  const endDate = leaseOrder?.endDate
+    ? parseDate(leaseOrder.endDate)
+    : "31 de agosto de 2025";
 
   const handleCreatePDF = async (clientSignature) => {
     try {
@@ -141,7 +193,7 @@ const ContractDetail = ({
         }}
       />
       <div className="w-full grid place-items-center">
-        <div className="container mx-auto p-4 max-w-screen-sm max-h-[50vh] overflow-y-scroll w-full text-justify">
+        <div className="container mx-auto p-4 max-w-screen-lg max-h-[50vh] overflow-y-scroll w-full text-justify">
           <p className="mb-4 text-sm break-words font-light">
             En la ciudad de Valencia, a{" "}
             <span className="font-medium">{contractDate}</span>

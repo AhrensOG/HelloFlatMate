@@ -18,7 +18,8 @@ export default function MyBedroomsList({ action, user, properties }) {
       </p>
       <div className="flex flex-col gap-5 pt-5">
         {properties.map((p) => {
-          const prop = p.leaseOrderRoomRoom || p.property;
+          const prop = p.room || p.property;
+          const category = prop.category || prop.property.category
 
           const location = {
             street: prop.street || prop.property.street,
@@ -26,17 +27,17 @@ export default function MyBedroomsList({ action, user, properties }) {
             city: prop.city || prop.property.city,
           };
           const date = {
-            startDate: p.startDate || p.leaseOrderRoomRoom.startDate,
-            endDate: p.endDate || p.leaseOrderRoomRoom.endDate,
+            startDate: p.startDate,
+            endDate: p.endDate,
           };
 
           const handleAction = () => {
             action({
-              images: prop.images || prop.property.images,
-              type: prop.category || "HelloRoom",
+              images: prop.images,
+              type: category,
               location: location,
               dueDate: date, // Puedes formatear la fecha según sea necesario
-              price: prop.price || p.leaseOrderRoomRoom.price,
+              price: prop.price,
               amenities: prop.amenities || prop.property.amenities,
               id: prop.propertyId || prop.id || prop.property?.id,
             });
@@ -45,12 +46,12 @@ export default function MyBedroomsList({ action, user, properties }) {
           return (
             <MyBedroomCard
               key={p.id}
-              type={prop.category || "HelloRoom"}
+              type={category}
               location={location}
               dueDate={date}
-              price={prop.price || prop.leaseOrderRoomRoom.price}
+              price={prop.price}
               amenities={prop.amenities || prop.property.amenities}
-              images={prop.images?.[0] || prop.property?.images?.[0]}
+              images={prop.images?.[0]}
               action={handleAction}
             />
           );

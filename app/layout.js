@@ -13,8 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <GlobalContext>
-        <Toaster richColors={true} duration={3000} />
-        <body className={roboto.className}>{children}</body>
+        <body className={roboto.className}>
+          {children}
+          <Toaster richColors={true} duration={3000} />
+        </body>
       </GlobalContext>
     </html>
   );
