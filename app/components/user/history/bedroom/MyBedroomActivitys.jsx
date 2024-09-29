@@ -2,8 +2,6 @@ import { useRouter } from "next/navigation";
 import ActivityItem from "./my_bedrooms_activity/ActivityItem";
 
 export default function MyBedroomActivitys({ data }) {
-  console.log(data);
-
   const route = useRouter();
   return (
     <section className="w-full flex flex-col gap-4">

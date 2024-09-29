@@ -113,15 +113,15 @@ export default function MyBedrooms() {
             >
               <NavBar client={true} admin={false} owner={false} />
             </motion.header>
-            <motion.div
-              className="flex h-[calc(100vh-93px)] w-full"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ duration: 0.25 }}
-            >
+            <div className="flex h-[calc(100vh-93px)] w-full">
               {/* Left side: Bedroom list */}
-              <div className="w-3/6 md:w-1/3 h-full overflow-y-auto p-4 border-r">
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ duration: 0.25 }}
+                className="w-3/6 md:w-1/3 h-full overflow-y-auto p-4 border-r"
+              >
                 {propertiesList.length > 0 ? (
                   <MyBedroomsList
                     key="list"
@@ -134,22 +134,34 @@ export default function MyBedrooms() {
                     ¡Aun no tienes dormitorios!
                   </p>
                 )}
-              </div>
+              </motion.div>
 
               {/* Right side: Bedroom details */}
-              <div className="w-3/6 md:w-2/3 h-full overflow-y-auto p-4">
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ duration: 0.25 }}
+                className="w-3/6 md:w-2/3 h-full overflow-y-auto p-4"
+              >
                 {selectedRoom ? (
-                  <div className="flex flex-col justify-center items-center gap-6 w-full">
+                  <motion.div
+                    initial={{ x: "100%" }}
+                    animate={{ x: 0 }}
+                    exit={{ x: "100%" }}
+                    transition={{ duration: 0.25 }}
+                    className="flex flex-col justify-center items-center gap-6 w-full"
+                  >
                     <MyBedroomDetails room={selectedRoom} />
                     <MyBedroomActivitys data={selectedRoom} />
-                  </div>
+                  </motion.div>
                 ) : (
                   <p className="text-center text-xl font-medium text-slate-400">
                     Selecciona un dormitorio para ver los detalles
                   </p>
                 )}
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </AnimatePresence>
       </div>

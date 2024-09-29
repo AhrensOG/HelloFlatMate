@@ -6,30 +6,38 @@ import SliderItem from "../../property-details/header/slider/SliderItem";
 
 export default function MyBedroomDetails({ room }) {
   const { type, location, dueDate, price, amenities, images } = room;
-  console.log(room);
-
   const [nextDueDate, setNextDueDate] = useState(null);
+  const [totalPayments, setTotalPayments] = useState(0);
+  console.log(totalPayments);
 
   useEffect(() => {
     function calculateNextDueDate(startDate, endDate) {
-      const currentDate = new Date();
-      let nextDueDate = new Date(startDate);
-
-      // El primer vencimiento debe ser un mes después del startDate
-      nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-
-      // Incrementar la fecha mensual hasta que sea posterior a la fecha actual
-      while (nextDueDate <= currentDate) {
-        nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-      }
-
-      // Si el próximo vencimiento es después de endDate, usar endDate como el último pago
+      const start = new Date(startDate);
       const end = new Date(endDate);
-      if (nextDueDate > end) {
-        return end;
+      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 1);
+
+      if (nextDue <= end) {
+        return nextDue;
+      } else {
+        return null;
+      }
+    }
+
+    function calculateTotalPayments(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      // Calcular la diferencia de meses entre inicio y finalización
+      let monthsDifference =
+        (end.getFullYear() - start.getFullYear()) * 12 +
+        (end.getMonth() - start.getMonth());
+
+      // Si el contrato comienza el primer día del mes, ya se ha hecho el primer pago
+      if (start.getDate() === 1) {
+        monthsDifference += 1; // Incluir el pago de la reserva
       }
 
-      return nextDueDate;
+      return monthsDifference;
     }
 
     if (dueDate?.startDate && dueDate?.endDate) {
@@ -38,6 +46,12 @@ export default function MyBedroomDetails({ room }) {
         dueDate.endDate
       );
       setNextDueDate(calculatedNextDueDate);
+
+      const calculatedTotalPayments = calculateTotalPayments(
+        dueDate.startDate,
+        dueDate.endDate
+      );
+      setTotalPayments(calculatedTotalPayments);
     }
   }, [dueDate]);
 
