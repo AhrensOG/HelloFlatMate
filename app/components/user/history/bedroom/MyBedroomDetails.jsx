@@ -3,9 +3,20 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import SliderDetails from "../../property-details/header/SliderDetails";
 import SliderItem from "../../property-details/header/slider/SliderItem";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function MyBedroomDetails({ room }) {
-  const { type, location, dueDate, price, amenities, images } = room;
+  const {
+    type,
+    location,
+    dueDate,
+    price,
+    amenities,
+    images,
+    property,
+    leaseOrder,
+  } = room;
   const [nextDueDate, setNextDueDate] = useState(null);
   const [totalPayments, setTotalPayments] = useState(0);
   console.log(totalPayments);
@@ -97,22 +108,47 @@ export default function MyBedroomDetails({ room }) {
       </div>
       <div className="text-sm flex flex-col gap-2">
         <div className="flex justify-between">
-          <p className="font-light">Vencimiento</p>
+          <p className="font-light">
+            {type === "HELLO_STUDIO" ? "Finalización" : "Vencimiento"}
+          </p>
           <p className="font-medium">
-            {nextDueDate ? formatDate(nextDueDate) : "Sin vencimiento"}
+            {type === "HELLO_STUDIO"
+              ? formatDate(new Date(dueDate.endDate))
+              : nextDueDate
+              ? formatDate(nextDueDate)
+              : "Sin vencimiento"}
           </p>
         </div>
         <div className="flex justify-between">
-          <p className="font-light">Cantidad a pagar</p>
-          <p className="font-medium">${price}</p>
+          <p className="font-light">
+            {type === "HELLO_STUDIO" ? "Total pagado" : "Cantidad a pagar"}
+          </p>
+          <p className="font-medium">
+            {type === "HELLO_STUDIO"
+              ? `$${leaseOrder.price || 0}`
+              : `$${price}`}
+          </p>
         </div>
       </div>
-      <button
-        className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-sm h-11"
-        type="button"
-      >
-        Pagar
-      </button>
+      {type === "HELLO_STUDIO" ? (
+        <Link
+          href={`/pages/user/property-details/${property.id}`}
+          className="bg-[#0C1660] rounded-xl text-center flex items-center justify-center text-white font-medium text-sm h-11"
+          type="button"
+        >
+          Nueva Reserva
+        </Link>
+      ) : (
+        <button
+          onClick={() =>
+            toast.info("¡Días antes del vencimiento podrás pagar!")
+          }
+          className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-sm h-11"
+          type="button"
+        >
+          Pagar
+        </button>
+      )}
     </section>
   );
 }

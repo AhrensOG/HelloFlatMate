@@ -10,6 +10,7 @@ export default function MyBedroomCard({
   price,
   dueDate, // Objeto con startDate y endDate
   images,
+  leaseOrder,
 }) {
   const [nextDueDate, setNextDueDate] = useState(null);
 
@@ -44,8 +45,8 @@ export default function MyBedroomCard({
   }
 
   return (
-    <article className="flex gap-1 items-center h-36" onClick={action}>
-      <div className="relative h-[100%] min-w-[7.25rem] w-[7.25rem] rounded-2xl">
+    <article className="flex gap-1 items-center" onClick={action}>
+      <div className="relative h-48 min-w-[7.25rem] w-[7.25rem] rounded-2xl">
         <Image
           className="rounded-2xl"
           alt="Ilustracion de un cuarto"
@@ -70,13 +71,22 @@ export default function MyBedroomCard({
           {amenities.slice(0, 3).join(" - ")}
         </p>
         <p className="font-light text-sm flex justify-between">
-          Vencimiento{" "}
+          {type === "HELLO_STUDIO" ? "Finalización" : "Vencimiento"}
           <span className="font-medium text-sm">
-            {nextDueDate ? formatDate(nextDueDate) : "Sin vencimiento"}
+            {type === "HELLO_STUDIO"
+              ? formatDate(new Date(dueDate.endDate))
+              : nextDueDate
+              ? formatDate(nextDueDate)
+              : "Sin vencimiento"}
           </span>
         </p>
         <p className="font-light text-sm flex justify-between">
-          Cantidad a pagar <span className="font-medium text-sm">${price}</span>
+          {type === "HELLO_STUDIO" ? "Total pagado" : "Cantidad a pagar"}
+          <span className="font-medium text-sm">
+            {type === "HELLO_STUDIO"
+              ? `$${leaseOrder.price || 0}`
+              : `$${price}`}
+          </span>
         </p>
       </div>
     </article>

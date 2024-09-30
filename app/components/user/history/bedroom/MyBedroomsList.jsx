@@ -19,7 +19,7 @@ export default function MyBedroomsList({ action, user, properties }) {
       <div className="flex flex-col gap-5 pt-5">
         {properties.map((p) => {
           const prop = p.room || p.property;
-          const category = prop.category || prop.property.category
+          const category = prop.category || prop.property.category;
 
           const location = {
             street: prop.street || prop.property.street,
@@ -40,6 +40,8 @@ export default function MyBedroomsList({ action, user, properties }) {
               price: prop.price,
               amenities: prop.amenities || prop.property.amenities,
               id: prop.propertyId || prop.id || prop.property?.id,
+              property: prop,
+              leaseOrder: p,
             });
           };
 
@@ -53,6 +55,7 @@ export default function MyBedroomsList({ action, user, properties }) {
               amenities={prop.amenities || prop.property.amenities}
               images={prop.images?.[0]}
               action={handleAction}
+              leaseOrder={p}
             />
           );
         })}
