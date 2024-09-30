@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat } from "@/db/init";
-import { createGroupChat, createPrivateChat } from "@/app/api/chat/controller/createChatController";
+import { createGroupChat, createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
 import { sequelize } from "@/db/models/comment";
 
 // export async function updateLeaseOrder(data) {

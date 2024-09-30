@@ -43,22 +43,39 @@ export default function Chat() {
     );
   }
 
+  // Determina el estado del chat de tipo SUPPORT
+  const supportChat = chats.find((chat) => chat.type === "SUPPORT");
+
+  // Obtener el último mensaje del chat SUPPORT
+  const lastMessage = supportChat?.messages[supportChat.messages.length - 1];
+
   return (
     <div>
-      {/* <ChatsCard name={"Propietario"} image={"/chat/chat-1.png"} />
-      <ChatsCard name={"Mantenimiento"} image={"/chat/chat-3.png"} />
-      <ChatsCard name={"Habitacion"} image={"/chat/chat-2.jpg"} /> */}
-      {!chats?.some((chat) => chat.type === "SUPPORT") ? (
+      {console.log(chats)}
+      {/* Renderizar la tarjeta basada en el estado del chat SUPPORT */}
+      {!supportChat && (
         <ChatsCard name={"Soporte"} image={"/chat/soporte.svg"} id={user.id} />
-      ) : (
+      )}
+      {supportChat && !supportChat.isActive && (
         <ChatsCard
           name={"Soporte"}
           image={"/chat/soporte.svg"}
+          lastMessage={lastMessage}
           action={() =>
             router.push(
-              `/pages/user/chats/chat?type=supp&chat=${
-                chats?.find((chat) => chat.type === "SUPPORT").id
-              }&bool=true&userId=${user.id}`
+              `/pages/user/chats/chat?type=supp&chat=${supportChat.id}&bool=true&userId=${user.id}`
+            )
+          }
+        />
+      )}
+      {supportChat && supportChat.isActive && (
+        <ChatsCard
+          name={"Soporte"}
+          image={"/chat/soporte.svg"}
+          lastMessage={lastMessage}
+          action={() =>
+            router.push(
+              `/pages/user/chats/chat?type=supp&chat=${supportChat.id}&userId=${user.id}`
             )
           }
         />

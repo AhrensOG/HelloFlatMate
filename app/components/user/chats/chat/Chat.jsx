@@ -15,7 +15,9 @@ export default function Chat() {
   const initialChatId = searchParams.get("chat");
 
   const { state, dispatch } = useContext(Context);
-  const [userId, setUserId] = useState(clientId || state?.user?.id);
+  const [userId, setUserId] = useState(
+    searchParams.get("userId") || clientId || state?.user?.id
+  );
 
   const [chatId, setChatId] = useState(initialChatId);
   const [isConnected, setIsConnected] = useState(false);
@@ -51,8 +53,21 @@ export default function Chat() {
   };
 
   useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.get(`/api/message?chatId=${chatId}`);
+        console.log(res.data);
+        setMessages(res.data.messages);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     if (!userId) {
       setUserId(clientId || state?.user?.id);
+    }
+    if (messages.length === 0) {
+      fetchMessages();
     }
   }, [clientId, state?.user?.id]);
 
@@ -75,16 +90,20 @@ export default function Chat() {
           socket.on("newMessage", (message) => {
             console.log("Mensaje recibido en el cliente:", message);
             if (message && message.senderId) {
-              const isSender = message.senderId === socket.id;
+              const isSender = message.senderId == userId;
+              console.log("isSender:", isSender);
+
               setMessages((prevMessages) => [
                 ...prevMessages,
                 { ...message, type: isSender ? "sender" : "receiver" },
               ]);
-              saveMessage({
-                chatId,
-                body: message.text,
-                userId: usuarioId,
-              });
+              if (isSender) {
+                saveMessage({
+                  chatId,
+                  body: message.text,
+                  userId: usuarioId,
+                });
+              }
             }
           });
         };
@@ -126,18 +145,15 @@ export default function Chat() {
       const newMessage = {
         roomId: chatId.toString(),
         text: message,
-        senderId: socket?.id,
+        senderId: userId,
         time: new Date().toLocaleTimeString(),
       };
 
       socket.emit("sendMessage", newMessage);
-      console.log("Mensaje enviado:", newMessage);
     }
   };
 
   const saveMessage = async (data) => {
-    console.log(data);
-
     try {
       const res = await axios.post("/api/message", data);
       console.log(res);
@@ -146,8 +162,12 @@ export default function Chat() {
     }
   };
 
-  if (!userId) {
-    return <div>Loading</div>;
+  if (messages.length === 0) {
+    return (
+      <div className="flex items-center justify-center flex-1 absolute inset-0">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return (
@@ -157,7 +177,7 @@ export default function Chat() {
       </header>
 
       <main className="flex flex-col justify-between items-center flex-grow w-full">
-        <MessageContainer messages={messages} socketId={socket?.id} />
+        <MessageContainer messages={messages} socketId={userId} />
         <MessageInput onSendMessage={sendMessage} />
       </main>
     </div>

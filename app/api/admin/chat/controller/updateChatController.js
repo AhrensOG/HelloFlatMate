@@ -55,3 +55,34 @@ export async function desactivateChat(chatId) {
         return NextResponse.json({ error: "Error deactivating chat" }, { status: 500 });
     }
 }
+
+export async function assignSupport(data) {
+    if (!data) {
+        return NextResponse.json({ error: "No data provided" }, { status: 400 });
+    }
+    if (!data.suppId || data.suppId.trim() === "") {
+        return NextResponse.json({ error: "No supp id provided" }, { status: 400 });
+    }
+    if (!data.chatId || data.chatId <= 0) {
+        return NextResponse.json({ error: "No chat id provided" }, { status: 400 });
+    }
+    try {
+        const transaction = await Chat.sequelize.transaction();
+        try {
+            const chat = await Chat.findByPk(data.chatId, { transaction });
+            if (!chat) {
+                await transaction.rollback();
+                return NextResponse.json({ error: "Chat not found" }, { status: 404 });
+            }
+            chat.ownerId = data.suppId;
+            await chat.save({ transaction });
+            await transaction.commit();
+            return NextResponse.json({ message: "Support assigned" }, { status: 200 });
+        } catch (error) {
+            await transaction.rollback();
+            return NextResponse.json({ error: "Error assigning support" }, { status: 500 });
+        }
+    } catch (error) {
+        return NextResponse.json({ error: "Error assigning support" }, { status: 500 });
+    }
+}
