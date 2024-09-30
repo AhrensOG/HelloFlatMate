@@ -25,8 +25,8 @@ export async function createMessage(data) {
                 await transaction.rollback();
                 return NextResponse.json({ error: "User not found" }, { status: 404 });
             }
-
-            const chat = await Chat.findByPk(data.chatId, {
+            const chatId = parseInt(data.chatId)
+            const chat = await Chat.findOne({ where: { id: chatId } }, {
                 include: {
                     model: ChatParticipant,
                     as: "participants",
