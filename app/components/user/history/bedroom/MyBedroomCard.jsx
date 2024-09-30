@@ -45,8 +45,8 @@ export default function MyBedroomCard({
   }
 
   return (
-    <article className="flex gap-1 items-center" onClick={action}>
-      <div className="relative h-48 min-w-[7.25rem] w-[7.25rem] rounded-2xl">
+    <article className="flex gap-1 items-stretch h-48" onClick={action}>
+      <div className="relative h-full min-w-[7.25rem] w-[7.25rem] rounded-2xl">
         <Image
           className="rounded-2xl"
           alt="Ilustracion de un cuarto"
@@ -55,7 +55,7 @@ export default function MyBedroomCard({
           style={{ objectFit: "cover", objectPosition: "center" }}
         />
       </div>
-      <div className="flex flex-col py-2 pl-1 gap-1.5 grow">
+      <div className="flex flex-col py-2 pl-1 gap-1.5 flex-1 h-full justify-between">
         <p className="text-sm text-white font-medium p-1 text-center bg-[#0E155F] rounded-3xl w-28">
           {type.replace(/_/g, "").toLowerCase()}
         </p>
