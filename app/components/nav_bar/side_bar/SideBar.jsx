@@ -43,7 +43,7 @@ const adminOptions = [
   {
     title: "Mensajes",
     icon: "/nav_bar/side_bar/admin/chats.svg",
-    link: "/pages/user/chats",
+    link: "/pages/admin/chats_panel",
   },
   // {
   //   title: "Ayuda",

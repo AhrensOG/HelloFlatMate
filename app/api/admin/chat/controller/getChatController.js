@@ -11,6 +11,7 @@ export async function getChats() {
         ],
         where: {
             type: "SUPPORT",
+            isActive: true,
         }
     });
     return NextResponse.json(chats, { status: 200 });

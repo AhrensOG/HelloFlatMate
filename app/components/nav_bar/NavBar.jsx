@@ -91,7 +91,7 @@ const adminOptions = [
   {
     title: "Mensajes",
     icon: "/nav_bar/side_bar/admin/chats.svg",
-    link: "/pages/user/chats",
+    link: "/pages/admin/chats_panel",
   },
 ];
 
@@ -213,9 +213,7 @@ export default function NavBar({
                 <div className="relative w-[40px] h-[40px]">
                   <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
-                <h2 className="text-xs text-center text-[#636574]">
-                  Salir
-                </h2>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
             </>
           )}
@@ -231,9 +229,7 @@ export default function NavBar({
                 <div className="relative w-[40px] h-[40px]">
                   <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
-                <h2 className="text-xs text-center text-[#636574]">
-                  Salir
-                </h2>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
             </>
           )}
