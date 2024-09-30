@@ -209,8 +209,6 @@ export default function LeaseOrderPanel(data) {
                       {hasInProgressOrders ? (
                         inProgressOrders.map((leaseOrder) => (
                           <div key={leaseOrder.id}>
-                            {console.log(room, leaseOrder)}
-
                             <h2 className="text-2xl font-bold text-[#222B45] mb-2">
                               {room.name}
                             </h2>
@@ -401,47 +399,104 @@ export default function LeaseOrderPanel(data) {
 
                           <button
                             onClick={() => {
-                              return toast.promise(
-                                aproveLeaseOrder(
-                                  leaserOrder,
-                                  client.contracts.find(
-                                    (contract) =>
-                                      contract.status === "PENDING" &&
-                                      contract.contractableId === property.id &&
-                                      contract.contractableType === "PROPERTY"
-                                  )
-                                ),
-                                {
-                                  loading: "Cargando...",
-                                  success: "Orden de arrendamiento aceptada",
-                                  error:
-                                    "Error al aceptar la orden de arrendamiento",
-                                }
-                              );
+                              toast.custom((t) => (
+                                <div className="bg-white p-4 rounded shadow-md text-center">
+                                  <p className="text-gray-800 mb-4">
+                                    ¿Estás seguro de que deseas aprobar esta
+                                    orden de arrendamiento?
+                                  </p>
+                                  <div className="flex justify-center gap-4">
+                                    <button
+                                      onClick={() => {
+                                        toast.dismiss(t.id); // Cierra el toast actual
+                                        // Inicia la acción de aprobación con el toast de tipo `promise`
+                                        toast.promise(
+                                          aproveLeaseOrder(
+                                            leaserOrder,
+                                            client.contracts.find(
+                                              (contract) =>
+                                                contract.status === "PENDING" &&
+                                                contract.contractableId ===
+                                                  property.id &&
+                                                contract.contractableType ===
+                                                  "PROPERTY"
+                                            )
+                                          ),
+                                          {
+                                            loading: "Cargando...",
+                                            success:
+                                              "Orden de arrendamiento aceptada",
+                                            error:
+                                              "Error al aceptar la orden de arrendamiento",
+                                          }
+                                        );
+                                      }}
+                                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                                    >
+                                      Confirmar
+                                    </button>
+                                    <button
+                                      onClick={() => toast.dismiss(t.id)} // Cierra el toast sin hacer nada
+                                      className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition"
+                                    >
+                                      Cancelar
+                                    </button>
+                                  </div>
+                                </div>
+                              ));
                             }}
                             className="px-6 py-2 bg-[#52B46B] text-white rounded-lg hover:bg-green-600 transition"
                           >
                             Aprobar
                           </button>
+
                           <button
                             onClick={() => {
-                              return toast.promise(
-                                rejectLeaseOrder(
-                                  leaserOrder,
-                                  client.contracts.find(
-                                    (contract) =>
-                                      contract.status === "PENDING" &&
-                                      contract.contractableId === property.id &&
-                                      contract.contractableType === "PROPERTY"
-                                  )
-                                ),
-                                {
-                                  loading: "Cargando...",
-                                  success: "Orden de arrendamiento rechazada",
-                                  error:
-                                    "Error al rechazar la orden de arrendamiento",
-                                }
-                              );
+                              toast.custom((t) => (
+                                <div className="bg-white p-4 rounded shadow-md text-center">
+                                  <p className="text-gray-800 mb-4">
+                                    ¿Estás seguro de que deseas rechazar esta
+                                    orden de arrendamiento?
+                                  </p>
+                                  <div className="flex justify-center gap-4">
+                                    <button
+                                      onClick={() => {
+                                        toast.dismiss(t.id); // Cierra el toast actual
+                                        // Inicia la acción de rechazo con el toast de tipo `promise`
+                                        toast.promise(
+                                          rejectLeaseOrder(
+                                            leaserOrder,
+                                            client.contracts.find(
+                                              (contract) =>
+                                                contract.status === "PENDING" &&
+                                                contract.contractableId ===
+                                                  property.id &&
+                                                contract.contractableType ===
+                                                  "PROPERTY"
+                                            )
+                                          ),
+                                          {
+                                            loading: "Cargando...",
+                                            success:
+                                              "Orden de arrendamiento rechazada",
+                                            error:
+                                              "Error al rechazar la orden de arrendamiento",
+                                          }
+                                        );
+                                      }}
+                                      className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                                    >
+                                      Confirmar
+                                    </button>
+                                    <button
+                                      onClick={() => toast.dismiss(t.id)} // Cierra el toast sin hacer nada
+                                      className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition"
+                                    >
+                                      Cancelar
+                                    </button>
+                                  </div>
+                                </div>
+                              ));
                             }}
                             className="px-6 py-2 bg-[#E74C3C] text-white rounded-lg hover:bg-red-600 transition"
                           >
@@ -541,12 +596,12 @@ export default function LeaseOrderPanel(data) {
                 property?.category === "HELLO_LANDLORD") &&
                 (leaserOrders ? (
                   leaserOrders
-                    .filter((leaserOrder) => {
-                      return (
-                        !leaserOrder.isActive &&
-                        leaserOrder.status !== "PENDING"
-                      );
-                    })
+                    // .filter((leaserOrder) => {
+                    //   return (
+                    //     !leaserOrder.isActive &&
+                    //     leaserOrder.status !== "PENDING"
+                    //   );
+                    // })
                     .map((leaserOrder) => (
                       <LeaseOrderSection
                         data={leaserOrder}
