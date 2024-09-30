@@ -201,6 +201,7 @@ export default function SideBar({
               {clientOptions.map((e) => {
                 return (
                   <SideBarButton
+                    key={e.title}
                     title={e.title}
                     icon={e.icon}
                     redirect={() => handleRedirect(e.link)}
@@ -248,6 +249,7 @@ export default function SideBar({
               {ownerOptions.map((e) => {
                 return (
                   <SideBarButton
+                    key={e.title}
                     title={e.title}
                     icon={e.icon}
                     redirect={() => handleRedirect(e.link)}
@@ -295,6 +297,7 @@ export default function SideBar({
               {adminOptions?.map((e) => {
                 return (
                   <SideBarButton
+                    key={e.title}
                     title={e.title}
                     icon={e.icon}
                     redirect={() => handleRedirect(e.link)}
