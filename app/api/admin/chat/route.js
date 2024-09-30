@@ -29,4 +29,7 @@ export async function PATCH(req) {
     if (data.type === "assing") {
         return await assignSupport(data);
     }
+    if (data.type === "finish") {
+        return await desactivateChat(data.chatId);
+    }
 }
