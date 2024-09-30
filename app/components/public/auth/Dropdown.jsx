@@ -22,7 +22,7 @@ export default function Dropdown() {
                             type='button'
                             className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                         >
-                            mas banderas
+                            Muy pronto...
                         </button>
                     </MenuItem>
                 </div>

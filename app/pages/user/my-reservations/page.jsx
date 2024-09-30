@@ -46,12 +46,12 @@ export default function MyBedrooms() {
   }
   return (
     <AnimatePresence>
-      <>
+      <div className="h-screen flex flex-col w-full">
         <header>
           <NavBar client={true} admin={false} owner={false} />
         </header>
         <ReservationSection data={user} leaseOrdersList={leaseOrdersList} />
-      </>
+      </div>
     </AnimatePresence>
   );
 }

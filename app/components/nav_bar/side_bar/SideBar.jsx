@@ -43,7 +43,7 @@ const adminOptions = [
   {
     title: "Mensajes",
     icon: "/nav_bar/side_bar/admin/chats.svg",
-    link: "/pages/user/chats",
+    link: "/pages/admin/chats_panel",
   },
   // {
   //   title: "Ayuda",
@@ -201,6 +201,7 @@ export default function SideBar({
               {clientOptions.map((e) => {
                 return (
                   <SideBarButton
+                    key={e.title}
                     title={e.title}
                     icon={e.icon}
                     redirect={() => handleRedirect(e.link)}
@@ -248,6 +249,7 @@ export default function SideBar({
               {ownerOptions.map((e) => {
                 return (
                   <SideBarButton
+                    key={e.title}
                     title={e.title}
                     icon={e.icon}
                     redirect={() => handleRedirect(e.link)}
@@ -295,6 +297,7 @@ export default function SideBar({
               {adminOptions?.map((e) => {
                 return (
                   <SideBarButton
+                    key={e.title}
                     title={e.title}
                     icon={e.icon}
                     redirect={() => handleRedirect(e.link)}

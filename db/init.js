@@ -48,14 +48,14 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
 
 
         // LeaseOrderProperty
-        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderPropertyOwner" });
+        LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
         LeaseOrderProperty.belongsTo(Property, { foreignKey: "propertyId", as: "property" }); // Usar el correcto foreignKey
         LeaseOrderProperty.belongsTo(Client, { foreignKey: "clientId", as: "client" });
 
         // LeaseOrderRoom
-        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "leaseOrderRoomRoom" });
-        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "leaseOrderRoomOwner" });
-        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "leaseOrderRoomProperty" });
+        LeaseOrderRoom.belongsTo(Room, { foreignKey: "roomId", as: "room" });
+        LeaseOrderRoom.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
+        LeaseOrderRoom.belongsTo(Property, { foreignKey: "propertyId", as: "property" });
         LeaseOrderRoom.belongsTo(Client, { foreignKey: "clientId", as: "client" });
 
         //COMMENT
@@ -73,6 +73,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         // Uno a Muchos
         Chat.hasMany(Message, { as: "messages", foreignKey: "chatId" });
         Chat.hasMany(ChatParticipant, { as: "participants", foreignKey: "chatId" });
+
 
         //CHATPARTICIPANT
         ChatParticipant.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
@@ -192,26 +193,25 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             constraints: false,
         })
 
-        //Client and Owner
+        // Client and Owner
         Client.hasMany(ChatParticipant, {
-            as: "chatParticipants",
+            as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'Client' }
+            scope: { participantType: 'CLIENT' }
         });
         Owner.hasMany(ChatParticipant, {
-            as: "chatParticipants",
+            as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'Owner' }
-        })
+            scope: { participantType: 'OWNER' }
+        });
         Admin.hasMany(ChatParticipant, {
-            as: "chatParticipants",
+            as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'Admin' }
-        })
-
+            scope: { participantType: 'ADMIN' }
+        });
         //Message Users
         Client.hasMany(Message, {
             as: "messages",
@@ -361,6 +361,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
+
+
 
         // DATA DE PRUEBA
 

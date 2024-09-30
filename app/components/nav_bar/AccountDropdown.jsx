@@ -1,9 +1,12 @@
+import { Context } from "@/app/context/GlobalContext";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
+import { useContext } from "react";
 
 export default function AccountDropdown() {
+  const { state } = useContext(Context);
   return (
     <Menu as="div" className="relative inline-block text-left border-none">
       <div className="w-[48px] h-[48px] flex justify-between items-center">
@@ -12,7 +15,11 @@ export default function AccountDropdown() {
             <div className="relative w-6 h-6">
               <Image src="/nav_bar/account.svg" fill alt="Cuenta del usuario" />
             </div>
-            <span className="hidden sm:block">Cuenta</span>
+            {state.user ? (
+              <Link href={"/pages/user/profile"}>Cuenta</Link>
+            ) : (
+              <span className="hidden sm:block">Cuenta</span>
+            )}
           </div>
         </MenuButton>
       </div>

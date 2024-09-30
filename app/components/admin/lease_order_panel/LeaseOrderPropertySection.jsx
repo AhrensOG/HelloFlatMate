@@ -1,6 +1,6 @@
 export default function LeaseOrderPropertySection({ data, formatDate }) {
   return (
-    <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
+    <section className="w-full min-h-full bg-gray-100 p-6 rounded-lg shadow-md flex flex-col justify-between">
       <h2 className="text-xl font-bold text-gray-800">Datos de la propiedad</h2>
       <p className="text-gray-600">
         Tipo de propiedad: {data?.category || "No definido"}
@@ -19,7 +19,9 @@ export default function LeaseOrderPropertySection({ data, formatDate }) {
       <p className="text-gray-600">
         Número de baños: {data?.bathrooms || "No definido"}
       </p>
-      <p className="text-gray-600">Número de camas: {data?.bed || "No definido"}</p>
+      <p className="text-gray-600">
+        Número de camas: {data?.bed || "No definido"}
+      </p>
     </section>
   );
 }
