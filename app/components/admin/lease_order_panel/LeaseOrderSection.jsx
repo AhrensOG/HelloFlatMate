@@ -1,4 +1,6 @@
 export default function LeaseOrderSection({ data, formatDate, isAll = false }) {
+  console.log(data);
+
   return (
     <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
       <h2 className="text-xl font-bold text-gray-800">

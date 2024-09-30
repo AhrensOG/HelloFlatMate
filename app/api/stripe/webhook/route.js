@@ -133,21 +133,29 @@ export async function POST(req) {
               { status: 404 }
             );
           }
-          await Payment.create({
-            amount: failedLeaseOrderRoom.price,
-            date: new Date(), // La fecha actual
-            status: "REJECTED", // Estado inicial
-            type: "RESERVATION",
-            paymentableId: failedLeaseOrderRoom.roomId,
-            paymentableType: "ROOM",
-            paymentId: session.id,
-            clientId: failedLeaseOrderRoom.clientId,
-            ownerId: failedLeaseOrderRoom.ownerId,
-          });
-          await failedLeaseOrderRoom.update({ status: "REJECTED" });
-          console.log(
-            `❌ LeaseOrderRoom with ID ${leaseOrderId} updated to REJECTED`
-          );
+
+          // Verificar si el estado es APPROVED
+          if (failedLeaseOrderRoom.status !== "APPROVED") {
+            await Payment.create({
+              amount: failedLeaseOrderRoom.price,
+              date: new Date(), // La fecha actual
+              status: "REJECTED", // Estado inicial
+              type: "RESERVATION",
+              paymentableId: failedLeaseOrderRoom.roomId,
+              paymentableType: "ROOM",
+              paymentId: session.id,
+              clientId: failedLeaseOrderRoom.clientId,
+              ownerId: failedLeaseOrderRoom.ownerId,
+            });
+            await failedLeaseOrderRoom.update({ status: "REJECTED" });
+            console.log(
+              `❌ LeaseOrderRoom with ID ${leaseOrderId} updated to REJECTED`
+            );
+          } else {
+            console.log(
+              `LeaseOrderRoom with ID ${leaseOrderId} is already APPROVED. No changes made.`
+            );
+          }
         } else {
           const failedLeaseOrder = await LeaseOrderProperty.findByPk(
             leaseOrderId
@@ -161,21 +169,29 @@ export async function POST(req) {
               { status: 404 }
             );
           }
-          await Payment.create({
-            amount: failedLeaseOrder.price,
-            date: new Date(), // La fecha actual
-            status: "REJECTED", // Estado inicial
-            type: "RESERVATION",
-            paymentableId: failedLeaseOrder.propertyId,
-            paymentableType: "PROPERTY",
-            paymentId: session.id,
-            clientId: failedLeaseOrder.clientId,
-            ownerId: failedLeaseOrder.ownerId,
-          });
-          await failedLeaseOrder.update({ status: "REJECTED" });
-          console.log(
-            `❌ LeaseOrderProperty with ID ${leaseOrderId} updated to REJECTED`
-          );
+
+          // Verificar si el estado es APPROVED
+          if (failedLeaseOrder.status !== "APPROVED") {
+            await Payment.create({
+              amount: failedLeaseOrder.price,
+              date: new Date(), // La fecha actual
+              status: "REJECTED", // Estado inicial
+              type: "RESERVATION",
+              paymentableId: failedLeaseOrder.propertyId,
+              paymentableType: "PROPERTY",
+              paymentId: session.id,
+              clientId: failedLeaseOrder.clientId,
+              ownerId: failedLeaseOrder.ownerId,
+            });
+            await failedLeaseOrder.update({ status: "REJECTED" });
+            console.log(
+              `❌ LeaseOrderProperty with ID ${leaseOrderId} updated to REJECTED`
+            );
+          } else {
+            console.log(
+              `LeaseOrderProperty with ID ${leaseOrderId} is already APPROVED. No changes made.`
+            );
+          }
         }
       } else if (paymentType === "supply") {
         const failedSupply = await Supply.findByPk(supplyId);

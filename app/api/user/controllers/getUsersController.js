@@ -1,4 +1,4 @@
-import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Room, Contract } from "@/db/init";
+import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Room, Contract, Chat, ChatParticipant, Payment } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getUserById(id) {
@@ -26,6 +26,9 @@ export async function getUserById(id) {
             {
                 model: Document,
                 as: "documents"
+            }, {
+                model: ChatParticipant,
+                as: "chats",
             }
             ]
         }) || await Client.findByPk(id, {
@@ -42,7 +45,7 @@ export async function getUserById(id) {
                     as: "leaseOrdersRoom",
                     include: [{
                         model: Room,
-                        as: "leaseOrderRoomRoom",
+                        as: "room",
                         include: [{
                             model: Property,
                             as: "property"
@@ -64,13 +67,22 @@ export async function getUserById(id) {
                 {
                     model: Contract,
                     as: "contracts"
-                }
+                }, {
+                    model: ChatParticipant,
+                    as: "chats",
+                }, {
+                    model: Payment,
+                    as: "payments",
+                },
             ]
         }) || await Admin.findByPk(id, {
-            include: {
+            include: [{
                 model: ToDo,
                 as: "toDos"
-            }
+            }, {
+                model: ChatParticipant,
+                as: "chats",
+            }]
         });
 
         return NextResponse.json(user);

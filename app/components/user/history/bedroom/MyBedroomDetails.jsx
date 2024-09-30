@@ -3,33 +3,52 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import SliderDetails from "../../property-details/header/SliderDetails";
 import SliderItem from "../../property-details/header/slider/SliderItem";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function MyBedroomDetails({ room }) {
-  const { type, location, dueDate, price, amenities, images } = room;
-  console.log(room);
-
+  const {
+    type,
+    location,
+    dueDate,
+    price,
+    amenities,
+    images,
+    property,
+    leaseOrder,
+  } = room;
   const [nextDueDate, setNextDueDate] = useState(null);
+  const [totalPayments, setTotalPayments] = useState(0);
+  console.log(totalPayments);
 
   useEffect(() => {
     function calculateNextDueDate(startDate, endDate) {
-      const currentDate = new Date();
-      let nextDueDate = new Date(startDate);
-
-      // El primer vencimiento debe ser un mes después del startDate
-      nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-
-      // Incrementar la fecha mensual hasta que sea posterior a la fecha actual
-      while (nextDueDate <= currentDate) {
-        nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-      }
-
-      // Si el próximo vencimiento es después de endDate, usar endDate como el último pago
+      const start = new Date(startDate);
       const end = new Date(endDate);
-      if (nextDueDate > end) {
-        return end;
+      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 1);
+
+      if (nextDue <= end) {
+        return nextDue;
+      } else {
+        return null;
+      }
+    }
+
+    function calculateTotalPayments(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      // Calcular la diferencia de meses entre inicio y finalización
+      let monthsDifference =
+        (end.getFullYear() - start.getFullYear()) * 12 +
+        (end.getMonth() - start.getMonth());
+
+      // Si el contrato comienza el primer día del mes, ya se ha hecho el primer pago
+      if (start.getDate() === 1) {
+        monthsDifference += 1; // Incluir el pago de la reserva
       }
 
-      return nextDueDate;
+      return monthsDifference;
     }
 
     if (dueDate?.startDate && dueDate?.endDate) {
@@ -38,6 +57,12 @@ export default function MyBedroomDetails({ room }) {
         dueDate.endDate
       );
       setNextDueDate(calculatedNextDueDate);
+
+      const calculatedTotalPayments = calculateTotalPayments(
+        dueDate.startDate,
+        dueDate.endDate
+      );
+      setTotalPayments(calculatedTotalPayments);
     }
   }, [dueDate]);
 
@@ -50,7 +75,7 @@ export default function MyBedroomDetails({ room }) {
   }
 
   return (
-    <section className="flex flex-col gap-5">
+    <section className="w-full flex flex-col gap-5">
       <div className="relative rounded-2xl h-[250px] w-full">
         <SliderDetails rounded="rounded-2xl">
           {images.map((image, index) => {
@@ -68,7 +93,7 @@ export default function MyBedroomDetails({ room }) {
           {type.replace(/_/g, "").toLowerCase()}
         </p>
       </div>
-      <div className="flex justify-between flex-wrap items-center gap-1">
+      <div className="flex flex-wrap justify-between items-start gap-1">
         <div className="flex gap-1">
           <span className="h-6 w-5">
             <MapPinIcon />
@@ -83,22 +108,47 @@ export default function MyBedroomDetails({ room }) {
       </div>
       <div className="text-sm flex flex-col gap-2">
         <div className="flex justify-between">
-          <p className="font-light">Vencimiento</p>
+          <p className="font-light">
+            {type === "HELLO_STUDIO" ? "Finalización" : "Vencimiento"}
+          </p>
           <p className="font-medium">
-            {nextDueDate ? formatDate(nextDueDate) : "Sin vencimiento"}
+            {type === "HELLO_STUDIO"
+              ? formatDate(new Date(dueDate.endDate))
+              : nextDueDate
+              ? formatDate(nextDueDate)
+              : "Sin vencimiento"}
           </p>
         </div>
         <div className="flex justify-between">
-          <p className="font-light">Cantidad a pagar</p>
-          <p className="font-medium">${price}</p>
+          <p className="font-light">
+            {type === "HELLO_STUDIO" ? "Total pagado" : "Cantidad a pagar"}
+          </p>
+          <p className="font-medium">
+            {type === "HELLO_STUDIO"
+              ? `$${leaseOrder.price || 0}`
+              : `$${price}`}
+          </p>
         </div>
       </div>
-      <button
-        className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-sm h-11"
-        type="button"
-      >
-        Pagar
-      </button>
+      {type === "HELLO_STUDIO" ? (
+        <Link
+          href={`/pages/user/property-details/${property.id}`}
+          className="bg-[#0C1660] rounded-xl text-center flex items-center justify-center text-white font-medium text-sm h-11"
+          type="button"
+        >
+          Nueva Reserva
+        </Link>
+      ) : (
+        <button
+          onClick={() =>
+            toast.info("¡Días antes del vencimiento podrás pagar!")
+          }
+          className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-sm h-11"
+          type="button"
+        >
+          Pagar
+        </button>
+      )}
     </section>
   );
 }

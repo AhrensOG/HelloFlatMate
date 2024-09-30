@@ -14,13 +14,18 @@ const chatInit = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             type: {
-                type: DataTypes.ENUM("PRIVATE", "GROUP"),
+                type: DataTypes.ENUM("PRIVATE", "GROUP", "SUPPORT"),
                 allowNull: false,
             },
             ownerId: {
                 type: DataTypes.STRING(300),
                 allowNull: true, // en caso que sea grupal
-            }
+            },
+            isActive: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: true,
+            },
         },
         {
             sequelize,

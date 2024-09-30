@@ -23,6 +23,7 @@ export async function createContract(data) {
                     clientId: data.clientId,
                     contractableId: data.roomId,
                     contractableType: "ROOM",
+                    status: "APPROVED",
                 }
             } else {
                 leaseOrder = await LeaseOrderProperty.findOne({ where: { propertyId: data.propertyId } })
@@ -33,11 +34,13 @@ export async function createContract(data) {
                     clientId: data.clientId,
                     contractableId: data.propertyId,
                     contractableType: "PROPERTY",
+                    status: "APPROVED",
                 }
             }
 
             if (leaseOrder) {
                 leaseOrder.isSigned = true
+                leaseOrder.inReview = false
                 await leaseOrder.save()
                 await transaction.commit();
             } else {

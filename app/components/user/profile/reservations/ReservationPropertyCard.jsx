@@ -160,13 +160,20 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
         </div>
       </div>
       {leaseOrder.isSigned &&
-      leaseOrder.status === "APPROVED" &&
-      !leaseOrder.inReview ? (
+      leaseOrder.status === "APPROVED" ? (
         // Si está firmado, solo mostramos el span si está en revisión
-        <span className="text-red-500">Contrato Firmado</span>
+        <p
+          title="¡Tu solicitud fue aprobada y el contrato firmado!"
+          className="text-green-800 font-bold text-center flex justify-center items-center gap-1.5"
+        >
+          Contrato Firmado
+          <QuestionMarkCircleIcon
+            title="¡Tu solicitud fue aprobada y el contrato firmado!"
+            className="size-4"
+          />
+        </p>
       ) : !leaseOrder.isSigned &&
-        leaseOrder.status === "READY_TO_SIGN" &&
-        !leaseOrder.inReview ? (
+        leaseOrder.status === "APPROVED" ? (
         // Si no está en revisión y listo para firmar
         <div className="w-full">
           <button

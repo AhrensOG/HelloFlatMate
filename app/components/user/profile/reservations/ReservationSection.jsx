@@ -6,45 +6,29 @@ import ReservationPropertyCard from "./ReservationPropertyCard";
 const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
   return (
     <main
-      className={`${plus_jakarta.className} w-full flex flex-col justify-center items-center p-2`}
+      className={`${plus_jakarta.className} grow w-full flex flex-col justify-center items-center p-2`}
     >
-      <div className="w-full max-w-screen-lg flex flex-col justify-center items-center gap-4">
+      <div className="h-full w-full max-w-screen-lg flex flex-col justify-center items-center gap-4">
         <TitleAdminPanel title={"Mis Reservas"} />
-        <div className="flex flex-col justify-center items-center gap-4 sm:flex-row w-full sm:justify-start sm:flex-wrap max-w-screen-lg">
+        <div className="flex flex-col justify-center items-start gap-4 grow sm:flex-row w-full sm:justify-start sm:flex-wrap max-w-screen-lg">
           {leaseOrdersList !== false && leaseOrdersList.length > 0 ? (
             leaseOrdersList.map((l) => {
-              const date = new Date(l.date);
-              const readableDate = date.toLocaleString("es-ES", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              });
-              const body =
-                l?.status === "PENDING"
-                  ? "Sube la informacion y documentación necesaria para que podamos aprobar tu solicitud de renta."
-                  : l?.status === "APPROVED"
-                  ? "¡Tu solicitud fue aprovada!"
-                  : "";
-              const status =
-                l?.status === "PENDING"
-                  ? "RESERVED"
-                  : l?.status === "APPROVED"
-                  ? "OCCUPIED"
-                  : null;
-              const id = l.id;
-              console.log(l);
+              // Construir una clave única concatenando el tipo y el ID
+              const uniqueKey = `${l.property ? "property" : "room"}-${l.id}`;
               return (
                 <ReservationPropertyCard
-                  key={l.id}
-                  property={l.property || l.leaseOrderRoomRoom}
+                  key={uniqueKey}
+                  property={l.property || l.room}
                   leaseOrder={l}
                 />
               );
             })
           ) : (
-            <span className="text-lg font-bold text-slate-300 py-10">
-              Aun no tienes reservas
-            </span>
+            <div className="grid place-items-center w-full h-full">
+              <span className="text-lg font-bold text-slate-300 py-10">
+                Aun no tienes reservas
+              </span>
+            </div>
           )}
         </div>
       </div>

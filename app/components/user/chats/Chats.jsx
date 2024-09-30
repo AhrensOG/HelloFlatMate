@@ -1,56 +1,85 @@
+"use client";
+import { Context } from "@/app/context/GlobalContext";
 import ChatsCard from "./ChatsCard";
-import { getSocket } from "@/app/socket";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 export default function Chat() {
-  const [chats, setChats] = useState([]);
+  const { state } = useContext(Context);
+  const [user, setUser] = useState(state?.user);
+  const [chats, setChats] = useState();
   const router = useRouter();
-  const socket = getSocket();
-
-  const handleJoinChat = (id) => {
-    socket.emit("joinChat", id, (response) => {
-      router.push(`/pages/user/chats/chat`);
-    });
-  };
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Conectado al servidor Socket.IO");
-    });
+    if (!user) {
+      setUser(state?.user);
+    }
+  }, [state]);
 
-    socket.on("joinedRoom", (message) => {
-      console.log(message); // Confirmación del servidor
-    });
+  useEffect(() => {
+    const fetchChats = async () => {
+      console.log("Fetching chats...");
 
-    return () => {
-      socket.off("joinedRoom");
-      socket.off("connect");
+      try {
+        const { data } = await axios.get("/api/chat?userId=" + user?.id);
+        setChats(data.chats);
+      } catch (error) {
+        console.log(error);
+      }
     };
-  }, []);
+
+    // Llamar a fetchChats si el usuario está disponible y los chats aún no se han cargado
+    if (user && !chats) {
+      fetchChats();
+    }
+  }, [user, chats]); // Dependencias: se ejecutará cuando cambien `user` o `chats`
+
+  if (!user || !chats) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Determina el estado del chat de tipo SUPPORT
+  const supportChat = chats.find((chat) => chat.type === "SUPPORT");
+
+  // Obtener el último mensaje del chat SUPPORT
+  const lastMessage = supportChat?.messages[supportChat.messages.length - 1];
 
   return (
     <div>
-      <ChatsCard
-        name={"Propietario"}
-        image={"/chat/chat-1.png"}
-        action={() => handleJoinChat(1)}
-      />
-      <ChatsCard
-        name={"Mantenimiento"}
-        image={"/chat/chat-3.png"}
-        action={() => handleJoinChat(2)}
-      />
-      <ChatsCard
-        name={"Habitacion"}
-        image={"/chat/chat-2.jpg"}
-        action={() => handleJoinChat(3)}
-      />
-      <ChatsCard
-        name={"Soporte"}
-        image={"/chat/soporte.svg"}
-        action={() => handleJoinChat(4)}
-      />
+      {console.log(chats)}
+      {/* Renderizar la tarjeta basada en el estado del chat SUPPORT */}
+      {!supportChat && (
+        <ChatsCard name={"Soporte"} image={"/chat/soporte.svg"} id={user.id} />
+      )}
+      {supportChat && !supportChat.isActive && (
+        <ChatsCard
+          name={"Soporte"}
+          image={"/chat/soporte.svg"}
+          lastMessage={lastMessage}
+          action={() =>
+            router.push(
+              `/pages/user/chats/chat?type=supp&chat=${supportChat.id}&bool=true&userId=${user.id}`
+            )
+          }
+        />
+      )}
+      {supportChat && supportChat.isActive && (
+        <ChatsCard
+          name={"Soporte"}
+          image={"/chat/soporte.svg"}
+          lastMessage={lastMessage}
+          action={() =>
+            router.push(
+              `/pages/user/chats/chat?type=supp&chat=${supportChat.id}&userId=${user.id}`
+            )
+          }
+        />
+      )}
     </div>
   );
 }
