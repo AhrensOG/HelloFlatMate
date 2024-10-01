@@ -37,8 +37,7 @@ export default function MyBedrooms() {
 
       const allProperties = [...rooms, ...properties];
       const filtered = allProperties.filter(
-        (property) =>
-          property.status === "APPROVED" && property.isSigned
+        (property) => property.status === "APPROVED" && property.isSigned
       );
       setPropertiesList(filtered);
     }
@@ -103,7 +102,7 @@ export default function MyBedrooms() {
         </main>
       </div>
       {/* DESKTOP DESIGN */}
-      <div className="sm:flex flex-col w-full hidden">
+      <div className="sm:flex w-full hidden">
         <AnimatePresence mode="wait">
           <div className="h-screen flex flex-col w-full">
             <motion.header
@@ -114,54 +113,56 @@ export default function MyBedrooms() {
             >
               <NavBar client={true} admin={false} owner={false} />
             </motion.header>
-            <div className="flex h-[calc(100vh-93px)] w-full">
-              {/* Left side: Bedroom list */}
-              <motion.div
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{ duration: 0.25 }}
-                className="w-3/6 md:w-1/3 h-full overflow-y-auto p-4 border-r"
-              >
-                {propertiesList.length > 0 ? (
-                  <MyBedroomsList
-                    key="list"
-                    action={handleShowDetails}
-                    properties={propertiesList}
-                    user={state?.user || false}
-                  />
-                ) : (
-                  <p className="text-center text-xl font-medium text-slate-400">
-                    ¡Aun no tienes dormitorios!
-                  </p>
-                )}
-              </motion.div>
+            <div className="flex justify-center items-center w-full">
+              <div className="flex w-full max-w-screen-xl h-[calc(100vh-93px)]">
+                {/* Left side: Bedroom list */}
+                <motion.div
+                  initial={{ x: "-100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={{ duration: 0.25 }}
+                  className="w-3/6 md:w-1/3 h-full overflow-y-auto p-4 border-r"
+                >
+                  {propertiesList.length > 0 ? (
+                    <MyBedroomsList
+                      key="list"
+                      action={handleShowDetails}
+                      properties={propertiesList}
+                      user={state?.user || false}
+                    />
+                  ) : (
+                    <p className="text-center text-xl font-medium text-slate-400">
+                      ¡Aun no tienes dormitorios!
+                    </p>
+                  )}
+                </motion.div>
 
-              {/* Right side: Bedroom details */}
-              <motion.div
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ duration: 0.25 }}
-                className="w-3/6 md:w-2/3 h-full overflow-y-auto p-4"
-              >
-                {selectedRoom ? (
-                  <motion.div
-                    initial={{ x: "100%" }}
-                    animate={{ x: 0 }}
-                    exit={{ x: "100%" }}
-                    transition={{ duration: 0.25 }}
-                    className="flex flex-col justify-center items-center gap-6 w-full"
-                  >
-                    <MyBedroomDetails room={selectedRoom} />
-                    <MyBedroomActivitys data={selectedRoom} />
-                  </motion.div>
-                ) : (
-                  <p className="text-center text-xl font-medium text-slate-400">
-                    Selecciona un dormitorio para ver los detalles
-                  </p>
-                )}
-              </motion.div>
+                {/* Right side: Bedroom details */}
+                <motion.div
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ duration: 0.25 }}
+                  className="w-3/6 md:w-2/3 h-full overflow-y-auto scrollbar-thin scrollbar-track-resolution-blue/10 scrollbar-thumb-resolution-blue p-4"
+                >
+                  {selectedRoom ? (
+                    <motion.div
+                      initial={{ x: "100%" }}
+                      animate={{ x: 0 }}
+                      exit={{ x: "100%" }}
+                      transition={{ duration: 0.25 }}
+                      className="flex flex-col justify-center items-center gap-6 w-full"
+                    >
+                      <MyBedroomDetails room={selectedRoom} />
+                      <MyBedroomActivitys data={selectedRoom} />
+                    </motion.div>
+                  ) : (
+                    <p className="text-center text-xl font-medium text-slate-400">
+                      Selecciona un dormitorio para ver los detalles
+                    </p>
+                  )}
+                </motion.div>
+              </div>
             </div>
           </div>
         </AnimatePresence>
