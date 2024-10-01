@@ -14,7 +14,8 @@ export default function FilterPage() {
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
   const category = searchParams.get("category");
-  const location = searchParams.get("location"); // Cambiado de `zone` a `location` para representar la búsqueda por ubicación
+  const location = searchParams.get("zone"); // Cambiado de `zone` a `location` para representar la búsqueda por ubicación
+  const occupants = searchParams.get("numberOccupants");
 
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState(state?.properties || []);
@@ -36,6 +37,7 @@ export default function FilterPage() {
       endDate: endDate || "",
       categorys: category ? [category] : [], // Convertir a array si es necesario
       location: location || "",
+      occupants: occupants || "",
     }));
   }, [searchParams]);
 
@@ -113,29 +115,59 @@ export default function FilterPage() {
       }
 
       // Lógica para HELLO_STUDIO
+      // if (property.category === "HELLO_STUDIO") {
+      //   console.log(property);
+      //   return property.rentalPeriods.every((leaseOrder) => {
+      //     const leaseStart = new Date(leaseOrder.startDate);
+      //     const leaseEnd = new Date(leaseOrder.endDate);
+
+      //     console.log(leaseStart);
+      //     console.log(new Date(startDate));
+
+      //     // Verificar el estado de la orden
+      //     if (
+      //       ["IN_PROGRESS", "APPROVED", "PENDING", "OCCUPIED", "FREE"].includes(
+      //         leaseOrder.status
+      //       )
+      //     ) {
+      //       // Lógica de verificación para evitar fechas en conflicto
+      //       if (startDate && endDate) {
+      //         return (
+      //           leaseEnd < new Date(startDate) || leaseStart > new Date(endDate)
+      //         );
+      //       } else if (startDate) {
+      //         return leaseEnd < new Date(startDate);
+      //       } else if (endDate) {
+      //         return leaseStart > new Date(endDate);
+      //       }
+      //     }
+
+      //     // Si el estado no es relevante, entonces no interfiere
+      //     return true;
+      //   });
+      // }
+
+      // Lógica para HELLO_STUDIO
       if (property.category === "HELLO_STUDIO") {
-        return property.leaseOrdersProperty.every((leaseOrder) => {
+        return property.rentalPeriods.some((leaseOrder) => {
           const leaseStart = new Date(leaseOrder.startDate);
           const leaseEnd = new Date(leaseOrder.endDate);
 
-          // Verificar el estado de la orden
+          // Verificar si el estado de la orden es relevante
           if (
-            ["IN_PROGRESS", "APPROVED", "PENDING"].includes(leaseOrder.status)
+            ["IN_PROGRESS", "APPROVED", "PENDING", "OCCUPIED", "FREE"].includes(
+              leaseOrder.status
+            )
           ) {
-            // Lógica de verificación para evitar fechas en conflicto
-            if (startDate && endDate) {
-              return (
-                leaseEnd < new Date(startDate) || leaseStart > new Date(endDate)
-              );
-            } else if (startDate) {
-              return leaseEnd < new Date(startDate);
-            } else if (endDate) {
-              return leaseStart > new Date(endDate);
-            }
+            // Verificar si el startDate proporcionado es mayor o igual al rentalPeriod.startDate
+          }
+          if (startDate) {
+            const providedStartDate = new Date(startDate);
+            return providedStartDate.getTime() >= leaseStart.getTime();
           }
 
-          // Si el estado no es relevante, entonces no interfiere
-          return true;
+          // Si no hay coincidencias, no interfiere
+          return false;
         });
       }
 
@@ -150,8 +182,8 @@ export default function FilterPage() {
     }
     return properties.filter((property) => {
       return filters.categorys.includes(
-        property.category.toLowerCase().replace("_", "")
-      );
+        property.category.replace(/_/g, "").toLowerCase()
+      ); // No necesitas transformar la categoría
     });
   };
 
@@ -164,6 +196,15 @@ export default function FilterPage() {
       const fullLocation =
         `${property.city} ${property.street} ${property.streetNumber} ${property.zone}`.toLowerCase();
       return fullLocation.includes(filters.location.toLowerCase());
+    });
+  };
+
+  const filterByOccupants = (properties) => {
+    if (!filters.occupants) {
+      return properties; // Si no hay filtro de ocupantes, devolver todas las propiedades
+    }
+    return properties.filter((property) => {
+      return property.maximumOccupants >= parseInt(filters.occupants, 10); // Filtrar por el número de ocupantes
     });
   };
 
@@ -216,6 +257,7 @@ export default function FilterPage() {
     result = filterByLocation(result); // Aplicar filtro de ubicación
     result = filterByDateRange(result); // Aplicar filtro de rango de fechas
     result = filterByPriceRange(result); // Aplicar filtro de rango de precio
+    result = filterByOccupants(result); // Aplicar filtro de maximo de ocupantes
     setFilteredProperties(result);
   };
 
@@ -256,8 +298,6 @@ export default function FilterPage() {
                 <div className="w-full flex flex-col justify-center gap-2">
                   <h2>Podrian interesarte</h2>
                   <div className="flex flex-row flex-wrap justify-center gap-7 ">
-                    {console.log(properties)}
-                    {console.log(filteredProperties)}
                     {properties.map((property) => {
                       // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
                       if (
@@ -328,45 +368,7 @@ export default function FilterPage() {
 
           {/* Contenedor de PropertyCard que ocupa el 75% del ancho */}
           <div className="w-[70%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-row flex-wrap justify-center">
-            {filteredProperties?.length === 0 ? (
-              <div className="flex flex-col items-center w-full gap-6">
-                <p className="text-slate-400">
-                  No se encontraron propiedades segun tu búsqueda
-                </p>
-                <div className="w-full flex flex-col justify-center gap-2">
-                  <h2>Podrian interesarte</h2>
-                  <div className="flex flex-row flex-wrap justify-center gap-7 ">
-                    {console.log(properties)}
-                    {console.log(filteredProperties)}
-                    {properties.map((property) => {
-                      // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
-                      if (
-                        property.category === "HELLO_ROOM" ||
-                        property.category === "HELLO_COLIVING"
-                      ) {
-                        return property.rooms.map((room, index) => (
-                          <PropertyCard
-                            key={`${property?.id}-${index}`}
-                            property={property} // Pasar los datos de la propiedad
-                            price={room.price} // Pasar el precio específico de cada room
-                            roomId={room.id}
-                          />
-                        ));
-                      } else {
-                        // Para otras categorías, devolver una sola PropertyCard
-                        return (
-                          <PropertyCard
-                            key={property?.id}
-                            property={property}
-                            price={property.price} // Pasar el precio de la propiedad directamente
-                          />
-                        );
-                      }
-                    })}
-                  </div>
-                </div>
-              </div>
-            ) : (
+            {filteredProperties?.length > 0 ? (
               filteredProperties.map((property) => {
                 // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
                 if (
@@ -392,6 +394,56 @@ export default function FilterPage() {
                   );
                 }
               })
+            ) : (
+              <div className="flex flex-col items-center w-full gap-6">
+                <p className="text-slate-400">
+                  No se encontraron propiedades segun tu búsqueda
+                </p>
+                <div className="w-full flex flex-col justify-center gap-2">
+                  <h2>Podrian interesarte</h2>
+                  <div className="flex flex-row flex-wrap justify-center gap-7 ">
+                    {properties
+                      .filter((property) => {
+                        if (property.category === "HELLO_STUDIO") {
+                          return (
+                            (property.status === "FREE" ||
+                              property.status === "OCCUPIED") &&
+                            property.category === category
+                          );
+                        }
+                        return (
+                          property.status === "FREE" &&
+                          property.category === category
+                        );
+                      })
+                      .map((property) => {
+                        // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
+                        if (
+                          property.category === "HELLO_ROOM" ||
+                          property.category === "HELLO_COLIVING"
+                        ) {
+                          return property.rooms.map((room, index) => (
+                            <PropertyCard
+                              key={`${property?.id}-${index}`}
+                              property={property} // Pasar los datos de la propiedad
+                              price={room.price} // Pasar el precio específico de cada room
+                              roomId={room.id}
+                            />
+                          ));
+                        } else {
+                          // Para otras categorías, devolver una sola PropertyCard
+                          return (
+                            <PropertyCard
+                              key={property?.id}
+                              property={property}
+                              price={property.price} // Pasar el precio de la propiedad directamente
+                            />
+                          );
+                        }
+                      })}
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>

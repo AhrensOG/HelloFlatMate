@@ -14,6 +14,15 @@ const DateRangeFilter = ({ onChange, startDate, endDate }) => {
     onChange("endDate", e.target.value);
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <section className="flex flex-col gap-3 px-4 justify-between">
       <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
@@ -24,7 +33,7 @@ const DateRangeFilter = ({ onChange, startDate, endDate }) => {
         <input
           type="date"
           className="w-full h-[5vh] px-2 appearance-none outline-none rounded-[0.6rem] bg-[#F5F5F5] border-[1px] border-[#00000033] text-[0.93rem] font-medium"
-          value={start}
+          value={formatDate(start)} // Corrección aquí
           onChange={handleStartDateChange}
         />
       </div>
@@ -33,7 +42,7 @@ const DateRangeFilter = ({ onChange, startDate, endDate }) => {
         <input
           type="date"
           className="w-full h-[5vh] px-2 appearance-none outline-none rounded-[0.6rem] bg-[#F5F5F5] border-[1px] border-[#00000033] text-[0.93rem] font-medium"
-          value={end}
+          value={formatDate(end)} // Corrección aquí
           onChange={handleEndDateChange}
         />
       </div>
