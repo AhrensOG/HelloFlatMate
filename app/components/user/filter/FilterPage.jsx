@@ -115,29 +115,59 @@ export default function FilterPage() {
       }
 
       // Lógica para HELLO_STUDIO
+      // if (property.category === "HELLO_STUDIO") {
+      //   console.log(property);
+      //   return property.rentalPeriods.every((leaseOrder) => {
+      //     const leaseStart = new Date(leaseOrder.startDate);
+      //     const leaseEnd = new Date(leaseOrder.endDate);
+
+      //     console.log(leaseStart);
+      //     console.log(new Date(startDate));
+
+      //     // Verificar el estado de la orden
+      //     if (
+      //       ["IN_PROGRESS", "APPROVED", "PENDING", "OCCUPIED", "FREE"].includes(
+      //         leaseOrder.status
+      //       )
+      //     ) {
+      //       // Lógica de verificación para evitar fechas en conflicto
+      //       if (startDate && endDate) {
+      //         return (
+      //           leaseEnd < new Date(startDate) || leaseStart > new Date(endDate)
+      //         );
+      //       } else if (startDate) {
+      //         return leaseEnd < new Date(startDate);
+      //       } else if (endDate) {
+      //         return leaseStart > new Date(endDate);
+      //       }
+      //     }
+
+      //     // Si el estado no es relevante, entonces no interfiere
+      //     return true;
+      //   });
+      // }
+
+      // Lógica para HELLO_STUDIO
       if (property.category === "HELLO_STUDIO") {
-        return property.leaseOrdersProperty.every((leaseOrder) => {
+        return property.rentalPeriods.some((leaseOrder) => {
           const leaseStart = new Date(leaseOrder.startDate);
           const leaseEnd = new Date(leaseOrder.endDate);
 
-          // Verificar el estado de la orden
+          // Verificar si el estado de la orden es relevante
           if (
-            ["IN_PROGRESS", "APPROVED", "PENDING"].includes(leaseOrder.status)
+            ["IN_PROGRESS", "APPROVED", "PENDING", "OCCUPIED", "FREE"].includes(
+              leaseOrder.status
+            )
           ) {
-            // Lógica de verificación para evitar fechas en conflicto
-            if (startDate && endDate) {
-              return (
-                leaseEnd < new Date(startDate) || leaseStart > new Date(endDate)
-              );
-            } else if (startDate) {
-              return leaseEnd < new Date(startDate);
-            } else if (endDate) {
-              return leaseStart > new Date(endDate);
-            }
+            // Verificar si el startDate proporcionado es mayor o igual al rentalPeriod.startDate
+          }
+          if (startDate) {
+            const providedStartDate = new Date(startDate);
+            return providedStartDate.getTime() >= leaseStart.getTime();
           }
 
-          // Si el estado no es relevante, entonces no interfiere
-          return true;
+          // Si no hay coincidencias, no interfiere
+          return false;
         });
       }
 
@@ -151,7 +181,9 @@ export default function FilterPage() {
       return properties;
     }
     return properties.filter((property) => {
-      return filters.categorys.includes(property.category); // No necesitas transformar la categoría
+      return filters.categorys.includes(
+        property.category.replace(/_/g, "").toLowerCase()
+      ); // No necesitas transformar la categoría
     });
   };
 
@@ -371,11 +403,19 @@ export default function FilterPage() {
                   <h2>Podrian interesarte</h2>
                   <div className="flex flex-row flex-wrap justify-center gap-7 ">
                     {properties
-                      .filter(
-                        (property) =>
+                      .filter((property) => {
+                        if (property.category === "HELLO_STUDIO") {
+                          return (
+                            (property.status === "FREE" ||
+                              property.status === "OCCUPIED") &&
+                            property.category === category
+                          );
+                        }
+                        return (
                           property.status === "FREE" &&
                           property.category === category
-                      )
+                        );
+                      })
                       .map((property) => {
                         // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
                         if (
