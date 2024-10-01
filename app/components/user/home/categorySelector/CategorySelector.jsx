@@ -7,6 +7,8 @@ import CategoryCard from "./auxiliarComponents/CategoryCard";
 import Select from "./auxiliarComponents/Select";
 import { useRouter, useSearchParams } from "next/navigation";
 import SelectDate from "./auxiliarComponents/SelectDate";
+import SelectDateHelloStudio from "./SelectDateHelloStudio";
+import DatePickerCategorySelector from "./DatePickerCategoySelector";
 
 const list = [
   {
@@ -31,6 +33,8 @@ const list = [
   },
 ];
 
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
 const CategorySelector = ({
   helloRoomProperties,
   helloColivingProperties,
@@ -44,6 +48,7 @@ const CategorySelector = ({
   const [currentCategory, setCurrentCategory] = useState(null);
   const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
+  const [numberOccupants, setNumberOccupants] = useState();
 
   useEffect(() => {
     if (categoryQuery) {
@@ -63,6 +68,8 @@ const CategorySelector = ({
 
   // Construir la cadena de query string para los parámetros de búsqueda
   const buildQueryString = () => {
+    console.log(data);
+
     const params = new URLSearchParams();
 
     if (data.zone) {
@@ -81,13 +88,15 @@ const CategorySelector = ({
       params.append("category", currentCategory);
     }
 
+    if (numberOccupants) {
+      params.append("numberOccupants", numberOccupants.numberOccupants);
+    }
+
     return params.toString();
   };
 
   // Función que se llama al hacer clic en el botón "Buscar"
   const handleSearch = () => {
-    console.log(date);
-
     const queryString = buildQueryString();
     router.push(`/pages/user/filtered?${queryString}`);
   };
@@ -98,7 +107,7 @@ const CategorySelector = ({
         const helloRoomLocations = extractLocations(helloRoomProperties);
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-center items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
               <Select
                 options={helloRoomLocations}
                 data={data}
@@ -120,12 +129,13 @@ const CategorySelector = ({
         );
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-center items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
               <Select
                 options={helloColivingLocations}
                 data={data}
                 setData={setData}
                 title="¿En qué zona?"
+                name="zone"
               />
               <SelectDate
                 title="Seleccione un rango de fechas"
@@ -139,17 +149,30 @@ const CategorySelector = ({
         const helloStudioLocations = extractLocations(helloStudioProperties);
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-center items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
               <Select
                 options={helloStudioLocations}
                 data={data}
                 setData={setData}
                 title="¿En qué zona?"
+                name="zone"
               />
-              <SelectDate
-                title="Seleccione un rango de fechas"
+              <DatePickerCategorySelector
                 data={date}
                 setData={setDate}
+                type={"start"}
+              />
+              <DatePickerCategorySelector
+                data={date}
+                setData={setDate}
+                type={"end"}
+              />
+              <Select
+                options={numbers}
+                data={numberOccupants}
+                setData={setNumberOccupants}
+                title="Huespedes"
+                name="numberOccupants"
               />
             </div>
           </div>
@@ -160,7 +183,7 @@ const CategorySelector = ({
         );
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-center items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
               <Select
                 options={helloLandlordLocations}
                 data={data}

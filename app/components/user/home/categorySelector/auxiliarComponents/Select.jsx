@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
+import { ChevronUpIcon, CheckIcon } from "@heroicons/react/24/outline";
 
 const Select = ({
   name = false,
@@ -17,8 +17,11 @@ const Select = ({
   };
 
   const handleValueChange = (option) => {
-    setSelectedValue(option);
-    setData({ ...data, [name]: option });
+    if (option) {
+      // Validar que la opción no esté vacía
+      setSelectedValue(option);
+      setData({ ...data, [name]: option });
+    }
     setShowInput(false); // Cerrar el dropdown después de seleccionar una opción
   };
 
@@ -30,7 +33,7 @@ const Select = ({
       >
         {selectedValue}{" "}
         <span
-          className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
+          className={`flex justify-start items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
             showInput ? "bg-[#1C8CD65E] rotate-180" : ""
           }`}
         >
@@ -46,15 +49,29 @@ const Select = ({
             exit={{ opacity: 0, y: -20, scale: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
           >
-            {options.map((option, index) => (
-              <div
-                key={index}
-                className="p-2 cursor-pointer hover:bg-gray-200"
-                onClick={() => handleValueChange(option)}
-              >
-                {option}
-              </div>
-            ))}
+            {options
+              .filter((option) => option) // Filtrar las opciones vacías
+              .map((option, index) => (
+                <div
+                  key={index}
+                  className="p-2 cursor-pointer hover:bg-gray-200 flex items-center"
+                  onClick={() => handleValueChange(option)}
+                >
+                  {/* Checkbox Visual */}
+                  <div
+                    className={`w-4 h-4 mr-2 border rounded-sm flex items-center justify-center ${
+                      selectedValue === option
+                        ? "bg-blue-500 border-blue-500"
+                        : "border-gray-400"
+                    }`}
+                  >
+                    {selectedValue === option && (
+                      <CheckIcon className="w-3 h-3 text-white" />
+                    )}
+                  </div>
+                  {option}
+                </div>
+              ))}
           </motion.div>
         )}
       </AnimatePresence>
