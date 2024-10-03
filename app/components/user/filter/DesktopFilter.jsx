@@ -54,7 +54,7 @@ export default function DesktopFilter({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -500 }}
         transition={{ duration: 0.8 }}
-        className={`${plus_jakarta.className} fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[30vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
+        className={`${plus_jakarta.className} fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
       >
         <div className="h-8 w-full flex items-center px-4">
           <button onClick={() => router.back()}>
@@ -67,7 +67,7 @@ export default function DesktopFilter({
             onClick={handleClearFilters}
             className="w-[45%] py-2 bg-[#CFD5E0] text-[0.9rem] font-bold text-[#1C1C21] rounded-md"
           >
-            Borrar Filtros
+            Borrar
           </button>
           <button
             onClick={handleSeeResults}
@@ -81,7 +81,7 @@ export default function DesktopFilter({
           minValue={filters.minPrice || 0}
           maxValue={filters.maxPrice || 1000000}
         />
-        <div className="overflow-auto space-y-6 px-4">
+        <div className="space-y-6 px-4">
           <section className="flex flex-col gap-3">
             <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
               Ubicacion
