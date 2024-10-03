@@ -25,6 +25,7 @@ export async function middleware(request) {
     "/api/auth",
     "/api/stripe/webhook",
     "/api/payment",
+    "/api/property",
   ];
   const pathName = new URL(request.url).pathname;
 
