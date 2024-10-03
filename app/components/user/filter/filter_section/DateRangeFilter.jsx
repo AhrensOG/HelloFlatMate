@@ -24,7 +24,7 @@ const DateRangeFilter = ({ onChange, startDate, endDate }) => {
   };
 
   return (
-    <section className="flex flex-col gap-3 px-4 justify-between">
+    <section className="flex flex-col gap-3 px-4 sm:px-0 justify-between">
       <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
         Rango de Fechas
       </h2>
