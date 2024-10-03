@@ -26,7 +26,7 @@ export default function FilterSection({
 
   return (
     <section
-      className={`${plus_jakarta.className} flex flex-col gap-3 px-4 text-[#1C1C21]`}
+      className={`${plus_jakarta.className} flex flex-col gap-3 px-4 sm:px-0 text-[#1C1C21]`}
     >
       <h3 className="text-[1.37rem] font-bold">{title}</h3>
       {entries.map((entry) => (

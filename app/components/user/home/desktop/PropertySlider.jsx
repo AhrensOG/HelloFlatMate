@@ -28,7 +28,7 @@ const PropertySlider = ({ data }) => {
                 return item.rooms
                   .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
                   .map((room) => (
-                    <div className="mr-4" key={room.id}>
+                    <div className="" key={room.id}>
                       <PropertyCard
                         roomId={room.id}
                         propertyId={item.id}
@@ -50,7 +50,7 @@ const PropertySlider = ({ data }) => {
             })}
           </HomeSlider>
         ) : (
-          <div className="flex flex-row justify-start items-center overflow-x-scroll scrollbar-none">
+          <div className="flex flex-row flex-wrap justify-center items-center overflow-x-scroll scrollbar-none w-full">
             {skeleton?.map((idx) => (
               <div className="mr-4" key={idx}>
                 <SkeletonPropertyCard />

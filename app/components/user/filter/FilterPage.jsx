@@ -367,7 +367,7 @@ export default function FilterPage() {
           />
 
           {/* Contenedor de PropertyCard que ocupa el 75% del ancho */}
-          <div className="w-[70%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-row flex-wrap justify-center">
+          <div className="w-[75%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-row flex-wrap justify-center">
             {filteredProperties?.length > 0 ? (
               filteredProperties.map((property) => {
                 // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
