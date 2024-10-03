@@ -17,7 +17,7 @@ const PropertySlider = ({ data }) => {
     <section className="p-4 pt-10 flex justify-center items-center">
       <div className="flex flex-col justify-center items-center space-y-2 max-w-screen-xl w-full">
         <h2 className="text-3xl py-10 text-center">Explora nuestras nuevas habitaciones</h2>
-        {properties && properties.length < 0 ? (
+        {properties && properties.length > 0 ? (
           <HomeSlider>
             {properties.map((item) => {
               // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
@@ -28,7 +28,7 @@ const PropertySlider = ({ data }) => {
                 return item.rooms
                   .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
                   .map((room) => (
-                    <div className="mr-4" key={room.id}>
+                    <div className="" key={room.id}>
                       <PropertyCard
                         roomId={room.id}
                         propertyId={item.id}
