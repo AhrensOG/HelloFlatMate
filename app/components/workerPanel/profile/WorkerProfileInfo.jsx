@@ -47,9 +47,9 @@ export default function WorkerProfileInfo() {
             </div>
           </div>
 
-          <p className="underline text-[#000000B2] font-semibold text-xs">
+          {/* <p className="underline text-[#000000B2] font-semibold text-xs">
             Cambiar foto
-          </p>
+          </p> */}
         </div>
         <ProfileItems
           title={"Nombre completo"}

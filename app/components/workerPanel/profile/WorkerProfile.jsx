@@ -19,12 +19,13 @@ export default function WorkerProfile() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.8 }}
+        className="space-y-4"
       >
         <ProfileCard
           name="Usuario"
           email="Correo@gmail.com"
           action={() => {
-            handleRedirect("/pages/profile/service/info");
+            handleRedirect("/pages/user/profile/service/info");
           }}
           image={"/profile/service/service-profile.png"}
         />
