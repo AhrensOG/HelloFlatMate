@@ -2,7 +2,7 @@ import { MapPinIcon } from "@heroicons/react/24/outline";
 
 export default function LocationSection({}) {
   return (
-    <article className="flex flex-col gap-2 text-center w-full">
+    <article className="flex flex-col gap-2 text-center w-full lg:w-[45%]">
       <h3 className="font-semibold text-base text-black">Ubicacion</h3>
       <div className="flex gap-2 items-center text-[#000000E5] justify-center">
         <span className=" w-5 h-6 ">

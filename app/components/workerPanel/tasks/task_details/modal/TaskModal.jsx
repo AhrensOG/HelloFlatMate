@@ -1,4 +1,14 @@
-export default function TaskModal({ type, action }) {
+import { useState } from "react";
+
+export default function TaskModal({ type, action, showModal }) {
+  // Estado para el valor del textarea
+  const [comment, setComment] = useState("");
+
+  // Función para manejar el cambio en el textarea
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-[#A1A0A066] z-50 backdrop-blur-sm">
       <aside className="bg-white p-6 rounded-lg w-72 z-50">
@@ -21,22 +31,22 @@ export default function TaskModal({ type, action }) {
             id="report"
             name="report"
             rows="4"
-            defaultValue={
-              "El toma corrientes se había dañado por un corto, lo reemplacé por uno nuevo y me aseguré de que funcionara bien."
-            }
+            value={comment} // Asignar el estado como valor
+            onChange={handleCommentChange} // Actualizar el estado al cambiar
           ></textarea>
           <div className="flex justify-center items-center gap-2 space-x-4">
             <button
-              onClick={() => action("", "pending")}
+              onClick={() => showModal(false)}
               className="font-bold text-sm text-gray-800 bg-gray-300 w-24 h-10 flex justify-center items-center rounded-lg"
             >
               Cancelar
             </button>
             <button
               onClick={
-                type === "problem"
-                  ? () => action("", "pending")
-                  : () => action("", "completed")
+                () =>
+                  type === "problem"
+                    ? action(comment, "PENDING") // Reportar problema con estado "PENDING"
+                    : action(comment, "COMPLETED") // Completar tarea con estado "COMPLETED"
               }
               className="font-bold text-sm text-white bg-blue-700 w-24 h-10 flex justify-center items-center rounded-lg"
             >

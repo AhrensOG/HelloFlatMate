@@ -18,6 +18,7 @@ const Contract = require("./models/contract");
 const Payment = require("./models/payment");
 const RentalPeriod = require("./models/rentalPeriod");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
+const Worker = require("./models/worker");
 
 (async () => {
     try {
@@ -43,7 +44,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Room.hasMany(LeaseOrderRoom, { as: "leaseOrdersRoom", foreignKey: "roomId" });
 
         //ToDo
-        ToDo.belongsTo(Admin, { as: "admin", foreignKey: "adminId" });
+        ToDo.belongsTo(Worker, { as: "worker", foreignKey: "workerId" });
         ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
 
 
@@ -81,8 +82,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //MESSAGE
         Message.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });
 
-        //ADMIN
-        Admin.hasMany(ToDo, { as: "toDos", foreignKey: "adminId" });
+        //Worker
+        Worker.hasMany(ToDo, { as: "toDos", foreignKey: "workerId" });
 
         //SUPPlY
         Supply.belongsTo(Property, { as: "property", foreignKey: "propertyId" });

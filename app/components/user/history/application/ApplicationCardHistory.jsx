@@ -1,31 +1,35 @@
 import Image from "next/image";
 
-export default function ApplicationCardHistory({
-  type,
-  status,
-  title,
-  resumen,
-  date,
-  body,
-  action,
-}) {
+export default function ApplicationCardHistory({ data, action }) {
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const options = {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    };
+
+    // Formatear la fecha y hora
+    const formattedDate = new Intl.DateTimeFormat("es-ES", options).format(
+      date
+    );
+
+    return formattedDate.replace(",", " a las");
+  }
+
   return (
     <section
-      onClick={() => {
-        action({
-          type: type,
-          status: status,
-          title: title,
-          resumen: resumen,
-          date: date,
-          body: body || null,
-        });
-      }}
-      className="flex items-center justify-between gap-1"
+      onClick={action}
+      className="flex items-center justify-between gap-1 cursor-pointer"
     >
       <div className=" w-14">
         <div className="rounded-full h-14 w-14 flex justify-center items-center bg-[#0E165C]">
-          {type === "CLEAN" ? (
+          {data?.type === "CLEAN" ? (
             <Image
               src={"/history/application/clean-icon.svg"}
               width={38}
@@ -44,20 +48,22 @@ export default function ApplicationCardHistory({
       </div>
 
       <div className="flex flex-col grow p-2">
-        <h2 className="font-semibold text-lg">{title}</h2>
+        <h2 className="font-semibold text-lg">{data?.title}</h2>
         <div className="flex justify-between">
           <div>
             <p className="font-normal text-sm text-[#000000B2] pb-1">
-              {resumen}
+              {data?.body}
             </p>
-            <p className="font-normal text-[0.67rem] text-[#919191]">{date}</p>
+            <p className="font-normal text-[0.67rem] text-[#919191]">
+              {formatDate(data?.startDate)}
+            </p>
           </div>
           <div className="flex items-end">
-            {status === "IN_PROGRESS" ? (
+            {data?.status === "IN_PROGRESS" ? (
               <h3 className="font-bold text-sm text-[#0E165C] align-text-bottom">
                 En Proceso
               </h3>
-            ) : status === "COMPLETED" ? (
+            ) : data?.status === "COMPLETED" ? (
               <h3 className="font-bold text-sm text-[#214802] align-text-bottom">
                 Completado
               </h3>
