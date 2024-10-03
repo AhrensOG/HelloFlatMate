@@ -31,7 +31,7 @@ const userAttributes = {
     allowNull: true,
   },
   role: {
-    type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT"),
+    type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT", "WORKER"),
   },
   isActive: {
     type: DataTypes.BOOLEAN,

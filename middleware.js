@@ -68,6 +68,7 @@ export async function middleware(request) {
 
   const rolesPaths = {
     ADMIN: [
+      "/pages/worker-panel",
       "/pages/admin",
       "/pages/user",
       "/pages/owner",
