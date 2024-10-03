@@ -17,7 +17,7 @@ const PropertySlider = ({ data }) => {
     <section className="p-4 pt-10 flex justify-center items-center">
       <div className="flex flex-col justify-center items-center space-y-2 max-w-screen-xl w-full">
         <h2 className="text-3xl py-10 text-center">Explora nuestras nuevas habitaciones</h2>
-        {properties && properties.length > 0 ? (
+        {properties && properties.length < 0 ? (
           <HomeSlider>
             {properties.map((item) => {
               // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
@@ -50,7 +50,7 @@ const PropertySlider = ({ data }) => {
             })}
           </HomeSlider>
         ) : (
-          <div className="flex flex-row justify-start items-center overflow-x-scroll scrollbar-none">
+          <div className="flex flex-row flex-wrap justify-center items-center overflow-x-scroll scrollbar-none w-full">
             {skeleton?.map((idx) => (
               <div className="mr-4" key={idx}>
                 <SkeletonPropertyCard />

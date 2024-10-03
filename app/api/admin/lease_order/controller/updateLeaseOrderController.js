@@ -73,7 +73,11 @@ export async function updateStatusLeaseOrder(data) {
             if (data.action === "APPROVED") {
                 leaseOrderProperty.status = "APPROVED";
                 leaseOrderProperty.isActive = true;
-                property.status = "OCCUPIED";
+                if (property.category === "HELLO_STUDIO") {
+                    property.status = "FREE";
+                } else {
+                    property.status = "OCCUPIED";
+                }
                 await leaseOrderProperty.save({ transaction });
                 await property.save({ transaction });
 
@@ -122,7 +126,11 @@ export async function updateStatusLeaseOrder(data) {
             leaseOrderRoom.status = "APPROVED";
             leaseOrderRoom.isActive = true;
             room.status = "OCCUPIED";
-            property.status = roomsAvailable.length < 1 ? "OCCUPIED" : "FREE";
+            if (property.category === "HELLO_STUDIO") {
+                property.status = "FREE";
+            } else {
+                property.status = roomsAvailable.length < 1 ? "OCCUPIED" : "FREE";
+            }
 
             await leaseOrderRoom.save({ transaction });
             await room.save({ transaction });
