@@ -80,6 +80,11 @@ const roomInit = (sequelize, DataTypes) => {
                 defaultValue: "FREE",
                 allowNull: false
             },
+            calendar: {
+                type: DataTypes.ENUM('SIMPLE', 'FULL'),
+                defaultValue: "SIMPLE",
+                allowNull: false,
+            },
             bathroom: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false

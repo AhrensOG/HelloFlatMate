@@ -26,6 +26,7 @@ export default function RoomAddModal({
     typology: "MIXED",
     tags: "",
     linkVideo: "",
+    calendar: "SIMPLE",
   });
 
   const [images, setImages] = useState([]);
@@ -201,6 +202,26 @@ export default function RoomAddModal({
                 <option value="ONLY_MEN">ONLY MEN</option>
               </select>
             </div> */}
+
+            {/* Select para el tipo de calendario */}
+            <div className="mt-4">
+              <label className="block mb-1" htmlFor="calendar">
+                Tipo de calendario
+              </label>
+              <select
+                id="calendar"
+                name="calendar"
+                value={dataRoom?.calendar || "SIMPLE"}
+                onChange={(event) =>
+
+                  setDataRoom({ ...dataRoom, calendar: event.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded"
+              >
+                <option value="SIMPLE">Simple</option>
+                <option value="FULL">Completo</option>
+              </select>
+            </div>
             <div className="mt-4">
               <label className="block mb-1" htmlFor="tags">
                 Etiquetas
