@@ -3,7 +3,5 @@ import BaseWorkerPanelTemplate from "@/app/components/workerPanel/BaseWorkerPane
 import WorkerProfile from "@/app/components/workerPanel/profile/WorkerProfile";
 
 export default function UserServiceProfile() {
-  return (
-    <BaseWorkerPanelTemplate children={<WorkerProfile />} section={"home"} />
-  );
+  return <WorkerProfile section={"home"} />;
 }

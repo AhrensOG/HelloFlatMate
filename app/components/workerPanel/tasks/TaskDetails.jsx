@@ -87,7 +87,7 @@ export default function TaskDetails({ section }) {
     try {
       const res = await axios.patch(`/api/to_do?type=asing`, {
         id: task.id,
-        workerId: "101",
+        workerId: user?.id,
       });
       console.log(res);
     } catch (err) {

@@ -8,7 +8,6 @@ export default function ProfileCard({
   email,
   action,
   image = "/profile/profile.jfif",
-  link = "#",
 }) {
   return (
     <section
@@ -34,11 +33,9 @@ export default function ProfileCard({
           </span>
         </p>
       </div>
-      <Link href={link}>
-        <button type="button" className="opacity-50 h-10 w-10">
-          <ChevronRightIcon />
-        </button>
-      </Link>
+      <button onClick={action} type="button" className="opacity-50 h-10 w-10">
+        <ChevronRightIcon />
+      </button>
     </section>
   );
 }

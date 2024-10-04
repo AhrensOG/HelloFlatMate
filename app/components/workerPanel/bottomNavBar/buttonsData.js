@@ -21,6 +21,6 @@ export const buttonsList = [
     img: "/worker-panel/profile.svg",
     alt: "Profile Icon",
     title: "Mi Perfil",
-    link: "/pages/profile/service"
+    link: "/pages/user/profile/service"
   }
 ]
