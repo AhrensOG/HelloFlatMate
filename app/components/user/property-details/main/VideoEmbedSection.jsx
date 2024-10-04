@@ -20,7 +20,7 @@ const VideoEmbedSection = ({ videoUrl }) => {
   }
 
   return (
-    <div className="video-embed">
+    <div className="video-embed w-full">
       <iframe
         className="w-full"
         height="315"

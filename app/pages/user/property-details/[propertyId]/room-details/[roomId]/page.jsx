@@ -133,6 +133,7 @@ export default function RoomDetails({ params }) {
                 <ReservationButton callback={handleShowModal} />
               )}
           </div>
+          {console.log(roomData)}
           {roomData?.description?.length > 0 ? (
             <DescriptionSection
               title="Descripción"
