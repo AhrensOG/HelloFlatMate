@@ -10,7 +10,7 @@ export default function DescriptionSection({
     try {
       // Si es HELLO_ROOM o HELLO_COLIVING, parseamos el JSON
       if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
-        return JSON.parse(item)?.text || item;
+        return item;
       }
       // Si no es necesario parsear, simplemente devolvemos el item
       return item;

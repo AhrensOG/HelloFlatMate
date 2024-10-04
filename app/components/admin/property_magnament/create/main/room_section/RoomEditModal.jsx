@@ -197,7 +197,6 @@ export default function RoomEditModal({
       return;
     }
     let newData = { ...dataRoom };
-    console.log(dataRoom);
 
     if (!dataRoom?.name) {
       return toast.error("Por favor, especifique un nombre");
@@ -344,6 +343,21 @@ export default function RoomEditModal({
                     setDataRoom({ ...dataRoom, tags: [event.target.value] })
                   }
                   className="border rounded px-2 py-1 w-full appearance-none outline-none break-words"
+                />
+              </div>
+              <div className="mt-4">
+                <label className="block mb-1" htmlFor="linkVideo">
+                  Link video
+                </label>
+                <input
+                  type="text"
+                  id="linkVideo"
+                  name="linkVideo"
+                  value={dataRoom.linkVideo || ""}
+                  onChange={(event) =>
+                    setDataRoom({ ...dataRoom, linkVideo: event.target.value })
+                  }
+                  className="w-full p-2 border border-gray-300 rounded break-words"
                 />
               </div>
             </>
