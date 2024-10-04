@@ -10,6 +10,7 @@ import PriceSection from "@/app/components/user/property-details/main/PriceSecti
 import ReservationModal from "@/app/components/user/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/user/property-details/main/ReservationButton";
 import RoomSection from "@/app/components/user/property-details/main/RoomSection";
+import VideoEmbedSection from "@/app/components/user/property-details/main/VideoEmbedSection";
 import GuestInfoRoom from "@/app/components/user/room-details/GuestInfoRoom";
 import { Context } from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
@@ -109,7 +110,9 @@ export default function RoomDetails({ params }) {
         >
           <h1 className="font-bold text-[1.37rem]">
             {roomData.name}
-            <span className="pl-2 font-light text-slate-400">({roomData.serial})</span>
+            <span className="pl-2 font-light text-slate-400">
+              ({roomData.serial})
+            </span>
           </h1>
           <h4 className="text-[#000000B2] text-base">
             {data.city + ", " + data.street}
@@ -147,6 +150,11 @@ export default function RoomDetails({ params }) {
           ) : null}
 
           <AmenitiesSection data={data.amenities} />
+          {roomData.linkVideo ? (
+            <VideoEmbedSection videoUrl={roomData.linkVideo} />
+          ) : (
+            ""
+          )}
           <LocationSection
             street={data?.street}
             streetNumber={data?.streetNumber}

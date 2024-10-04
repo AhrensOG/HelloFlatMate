@@ -11,6 +11,7 @@ import PriceSection from "@/app/components/user/property-details/main/PriceSecti
 import ReservationModal from "@/app/components/user/property-details/main/reservation/ReservationModal";
 import ReservationButton from "@/app/components/user/property-details/main/ReservationButton";
 import RoomSection from "@/app/components/user/property-details/main/RoomSection";
+import VideoEmbedSection from "@/app/components/user/property-details/main/VideoEmbedSection";
 import { Context } from "@/app/context/GlobalContext";
 import { plus_jakarta } from "@/font";
 import axios from "axios";
@@ -71,7 +72,11 @@ export default function PropertyDetails({ params }) {
             </SliderDetails>
           </div>
           <div className="px-3">
-            <NavBarDetails callBack={() => router.back()} />
+            <NavBarDetails
+              callBack={() =>
+                router.back() || router.push("/pages/user/filtered")
+              }
+            />
           </div>
         </header>
         <main
@@ -110,6 +115,11 @@ export default function PropertyDetails({ params }) {
           <DescriptionSection data={data.description} />
           <RoomSection data={data.rooms} category={data.category} />
           <AmenitiesSection data={data.amenities} />
+          {data.linkVideo ? (
+            <VideoEmbedSection videoUrl={data.linkVideo} />
+          ) : (
+            ""
+          )}
           <LocationSection
             street={data?.street}
             streetNumber={data?.streetNumber}
