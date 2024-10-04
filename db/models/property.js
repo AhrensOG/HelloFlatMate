@@ -111,6 +111,11 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD', 'HELLO_ROOM', 'HELLO_COLIVING'),
                 allowNull: false,
             },
+            calendar: {
+                type: DataTypes.ENUM('SIMPLE', 'FULL'),
+                defaultValue: "SIMPLE",
+                allowNull: false,
+            },
             images: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
                 allowNull: false,

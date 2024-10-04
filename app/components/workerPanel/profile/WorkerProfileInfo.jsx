@@ -9,10 +9,33 @@ import {
 import { ArrowLeftIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import { plus_jakarta } from "@/font";
 import ProfileItems from "./ProfileItems";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { Context } from "@/app/context/GlobalContext";
 
 export default function WorkerProfileInfo() {
   const route = useRouter();
+
+  const { state, dispatch } = useContext(Context);
+  const [user, setUser] = useState(state?.user || null);
+
+  useEffect(() => {
+    setUser(state?.user);
+  }, [state?.user]);
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+  };
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -32,50 +55,54 @@ export default function WorkerProfileInfo() {
           >
             <ArrowLeftIcon />
           </button>
-          <h2 className=" text-[#000000CC] font-bold text-xl ml-20">Perfil</h2>
+          <h2 className=" text-[#000000CC] font-bold text-xl ml-20 lg:text-center lg:self-center">
+            Perfil
+          </h2>
         </section>
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="relative h-32 w-32 rounded-full bg-[#875252] overflow-hidden">
-            <Image
-              src={"/profile/service/service-profile.png"}
-              fill
-              alt="Profile image"
-              className="object-cover object-top h-full w-full"
-            />
-            <div className="absolute bottom-0 left-0 right-0 h-12 rounded-b-full bg-[#91919199] backdrop-blur-md flex items-center justify-center">
-              <CameraIcon className="h-7 w-7 text-white" />
+        <div className=" lg:w-[30rem] flex flex-col gap-6">
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <div className="relative h-32 w-32 rounded-full bg-[#875252] overflow-hidden">
+              <Image
+                src={user?.profilePicture}
+                fill
+                alt="Profile image"
+                className="object-cover object-top h-full w-full"
+              />
+              <div className="absolute bottom-0 left-0 right-0 h-12 rounded-b-full bg-[#91919199] backdrop-blur-md flex items-center justify-center">
+                <CameraIcon className="h-7 w-7 text-white" />
+              </div>
             </div>
-          </div>
 
-          <p className="underline text-[#000000B2] font-semibold text-xs">
-            Cambiar foto
-          </p>
+            <p className="underline text-[#000000B2] font-semibold text-xs">
+              Cambiar foto
+            </p>
+          </div>
+          <ProfileItems
+            title={"Nombre completo"}
+            body={user?.name + " " + user?.lastName}
+            icon={<PencilSquareIcon />}
+          />
+          <ProfileItems
+            title={"Genero"}
+            body={"Masculino"}
+            icon={<ChevronDownIcon />}
+          />
+          <ProfileItems
+            title={"Fecha de nacimiento"}
+            body={formatDate(user?.birthDate)}
+            icon={<CalendarDaysIcon />}
+          />
+          <ProfileItems
+            title={"Trabajo"}
+            body={"Mantenimiento"}
+            icon={<ChevronDownIcon />}
+          />
+          <ProfileItems
+            title={"Numero de contacto"}
+            body={"+92-321-1234567"}
+            icon={<PencilSquareIcon />}
+          />
         </div>
-        <ProfileItems
-          title={"Nombre completo"}
-          body={"Jose Sanchez"}
-          icon={<PencilSquareIcon />}
-        />
-        <ProfileItems
-          title={"Genero"}
-          body={"Masculino"}
-          icon={<ChevronDownIcon />}
-        />
-        <ProfileItems
-          title={"Fecha de nacimiento"}
-          body={"20-09-1996"}
-          icon={<CalendarDaysIcon />}
-        />
-        <ProfileItems
-          title={"Trabajo"}
-          body={"Mantenimiento"}
-          icon={<ChevronDownIcon />}
-        />
-        <ProfileItems
-          title={"Numero de contacto"}
-          body={"+92-321-1234567"}
-          icon={<PencilSquareIcon />}
-        />
       </main>
     </>
   );

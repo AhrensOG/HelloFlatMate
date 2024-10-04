@@ -4,11 +4,7 @@ import WorkerProfile from "@/app/components/workerPanel/profile/WorkerProfile";
 import { Suspense } from "react";
 
 export default function UserServiceProfile() {
-  return (
-    <Suspense fallback={<Loader />}>
-      <BaseWorkerPanelTemplate children={<WorkerProfile />} section={"home"} />
-    </Suspense>
-  );
+  return <WorkerProfile section={"home"} />;
 }
 
 const Loader = () => {

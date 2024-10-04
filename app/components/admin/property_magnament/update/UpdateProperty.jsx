@@ -29,6 +29,7 @@ import LinkVideoSection from "../create/main/LinkVideoSection";
 import TagsSection from "../create/main/TagsSection";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
 import { AnimatePresence, motion } from "framer-motion";
+import CalendarSection from "../create/main/CalendarSection";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -61,7 +62,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   const [door, setDoor] = useState();
   const [rentalPeriods, setRentalPeriods] = useState();
   const [typologyAndZone, setTypologyAndZone] = useState();
-  const [linkVideo, setLinkVideo] = useState();
+  const [calendarType, setCalendarType] = useState("SIMPLE");
+  const [linkVideo, setLinkVideo] = useState("");
   const [tags, setTags] = useState();
 
   // Estado para modales
@@ -353,6 +355,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
           zone: typologyAndZone.zone || "",
           linkVideo: linkVideo || "",
           tags: Array.isArray(tags) && tags.length > 0 ? tags : [tags],
+          calendar: calendarType || "SIMPLE",
         };
 
         const response = await axios.put(
@@ -451,7 +454,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 email={selectedEmail || property.owner?.email || ""}
               />{" "}
             </div>
-            {/* <LinkVideoSection data={linkVideo} setData={setLinkVideo} /> */}
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+            )}
             {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
               <TagsSection data={tags} setData={setTags} />
             )}
@@ -479,6 +484,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 setData={setGuestInfo}
               />
             </div>
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              <CalendarSection
+                data={calendarType}
+                setData={setCalendarType}
+                category={category}
+              />
+            )}
             {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
               <RentalPeriodTemplate
                 data={rentalPeriods}
@@ -581,7 +593,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 setDeleteRooms={setDeleteRooms}
                 category={category}
               />
-              {/* <LinkVideoSection data={linkVideo} setData={setLinkVideo} /> */}
               {/* <LocationSectionTemplate data={"hola"} /> */}
               <AmenitiesSection
                 data={amenities || property.amenities}
@@ -663,6 +674,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                   setData={setPrice}
                 />
               )}
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+                <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+              )}
               <div className="flex flex-col gap-6">
                 <GuestInfoSectionTemplate
                   data={
@@ -675,6 +689,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                   setData={setGuestInfo}
                 />
               </div>
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+                <CalendarSection
+                  data={calendarType}
+                  setData={setCalendarType}
+                  category={category}
+                />
+              )}
               <DescriptionSectionTemplate
                 data={description || property.description}
                 action={handleShowDescriptionModal}

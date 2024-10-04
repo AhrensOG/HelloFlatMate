@@ -25,6 +25,7 @@ import LocationSectionTemplate from "./main/LocationSectionTemplate";
 import TypolyAndZoneSection from "./main/TypolyAndZoneSection";
 import LinkVideoSection from "./main/LinkVideoSection";
 import TagsSection from "./main/TagsSection";
+import CalendarSection from "./main/CalendarSection";
 
 export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
@@ -76,6 +77,7 @@ export default function NewProperty({ category, handleBack }) {
     typology: "MIXED",
     zone: "",
   });
+  const [calendarType, setCalendarType] = useState("SIMPLE");
   const [linkVideo, setLinkVideo] = useState("");
   const [tags, setTags] = useState("");
 
@@ -182,6 +184,7 @@ export default function NewProperty({ category, handleBack }) {
         typology: room.typology || "MIXED",
         tags: room.tags || [],
         linkVideo: room.linkVideo,
+        calendar: room.calendar || "SIMPLE",
       }));
     } else {
       rooms = data.map((room) => ({
@@ -262,6 +265,7 @@ export default function NewProperty({ category, handleBack }) {
     zone: typologyAndZone.zone,
     linkVideo: linkVideo,
     tags: [tags],
+    calendar: calendarType,
   };
 
   const createProperty = async () => {
@@ -354,18 +358,25 @@ export default function NewProperty({ category, handleBack }) {
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
           </div>
           {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
-            <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
-          )}
-          {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
             <TagsSection data={tags} setData={setTags} />
           )}
           {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
             <PriceSection data={price} setData={setPrice} />
           )}
           <SizeAndCategorySection data={catAndSize} setData={setCatAndSize} />
+          {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+          )}
           <div className="flex flex-col gap-6">
             <GuestInfoSectionTemplate data={guestInfo} setData={setGuestInfo} />
           </div>
+          {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            <CalendarSection
+              data={calendarType}
+              setData={setCalendarType}
+              category={category}
+            />
+          )}
           {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
             <RentalPeriodTemplate
               data={rentalPeriods}
@@ -470,6 +481,13 @@ export default function NewProperty({ category, handleBack }) {
                 setData={setGuestInfo}
               />
             </div>
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              <CalendarSection
+                data={calendarType}
+                setData={setCalendarType}
+                category={category}
+              />
+            )}
             <DescriptionSectionTemplate
               action={handleShowDescriptionModal}
               data={description}
