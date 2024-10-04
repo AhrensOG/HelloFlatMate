@@ -330,6 +330,25 @@ export default function RoomEditModal({
                 </select>
               </div> */}
 
+              {/* Select para el tipo de calendario */}
+              <div className="mt-4">
+                <label className="block text-sm mb-1" htmlFor="calendar">
+                  Tipo de calendario
+                </label>
+                <select
+                  id="calendar"
+                  name="calendar"
+                  value={dataRoom?.calendar || "SIMPLE"}
+                  onChange={(event) =>
+                    setDataRoom({ ...dataRoom, calendar: event.target.value })
+                  }
+                  className="border rounded px-2 py-1 w-full appearance-none outline-none"
+                >
+                  <option value="SIMPLE">Simple</option>
+                  <option value="FULL">Completo</option>
+                </select>
+              </div>
+
               <div className="mt-4">
                 <label className="block text-sm mb-1" htmlFor="tags">
                   Etiquetas
