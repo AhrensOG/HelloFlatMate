@@ -5,7 +5,7 @@ export default function ProfileOption({ title, icon, action }) {
   return (
     <article
       onClick={action}
-      className="flex gap-3 justify-between items-center p-1 text-[#000000CC]"
+      className="cursor-pointer flex gap-3 justify-between items-center p-1 text-[#000000CC]"
     >
       <div>
         <Image src={icon} width={24} height={24} alt={title} />
