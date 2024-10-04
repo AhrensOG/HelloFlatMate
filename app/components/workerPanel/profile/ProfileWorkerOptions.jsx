@@ -12,20 +12,20 @@ export default function ProfileWorkerOptions() {
         icon="/profile/profile_option/bx-home.svg"
         title="Historial de tareas"
         action={() => {
-          handleRedirect("/pages/history/service/tasks");
+          handleRedirect("/pages/user/history/service/tasks");
         }}
       />
-      <ProfileOption
+      {/* <ProfileOption
         icon="/profile/profile_option/headphonesalt.svg"
         title="Hello soporte"
       />
       <ProfileOption
         icon="/profile/profile_option/card-checklist.svg"
         title="Terminos y condiciones"
-        //   action={() => {
-        //     handleRedirect("/pages/history/applications");
-        //   }}
-      />
+          action={() => {
+            handleRedirect("/pages/history/applications");
+          }}
+      /> */}
     </section>
   );
 }
