@@ -15,7 +15,9 @@ export default function PropertyCard({ property, price, roomId = false }) {
         property.category === "HELLO_COLIVING") &&
       roomId
     ) {
-      route.push(`/pages/user/property-details/${property.id}/room-details/${roomId}`);
+      route.push(
+        `/pages/user/property-details/${property.id}/room-details/${roomId}`
+      );
     } else {
       route.push("/pages/user/property-details/" + property?.id);
     }
@@ -30,19 +32,19 @@ export default function PropertyCard({ property, price, roomId = false }) {
   };
   return (
     <article
-      className={`${plus_jakarta.className} flex flex-col max-h-72 h-full gap-3 w-full sm:max-w-52 cursor-pointer border p-2 rounded-xl shadow-reservation-drop`}
+      className={`${plus_jakarta.className} flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-0 rounded-sm shadow-reservation-drop`}
     >
-      <div onClick={handleRedirect} className="flex sm:flex-col gap-3 w-full">
-        <div className="relative h-28 w-28 sm:w-[190px] rounded-xl">
+      <div onClick={handleRedirect} className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full">
+        <div className="relative h-28 w-28 sm:w-72 sm:h-80 rounded-md">
           <Image
-            className="h-full rounded-xl"
+            className="h-full rounded-sm"
             src={property?.property?.images[0] || property?.images[0] || ""}
             fill
             alt="Imagen de propiedad"
           />
         </div>
-        <div className="flex flex-col justify-between h-28 grow">
-          <div className="flex flex-col grow gap-2">
+        <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 sm:border sm:border-t-0 gap-2">
+          <div className="flex flex-col grow sm:gap-2">
             <h4 className="flex w-full gap-2 items-center text-[0.81rem] text-[#000000B2] font-normal">
               {property?.property?.category ||
                 property?.category.toLowerCase().split("_").join("") ||
@@ -84,14 +86,15 @@ export default function PropertyCard({ property, price, roomId = false }) {
                     property?.streetNumber || ""}
             </h2>
             <p className="text-[0.68rem] text-[#828282] font-normal">
-              {property?.property?.amenities ||
+              {(property?.property?.amenities ||
                 property?.amenities
+                  .slice(0, 3) // Obtener solo los primeros 3 elementos
                   .map(
                     (amenity) =>
                       amenity.charAt(0).toUpperCase() + amenity.slice(1)
                   )
-                  .join(", ") ||
-                ""}
+                  .join(", ")) +
+                (property?.amenities.length > 3 ? ", ..." : "") || ""}
             </p>
           </div>
           <div className="flex flex-1 justify-end items-center gap-2">

@@ -25,6 +25,7 @@ export default function RoomAddModal({
     IVA: "", // Añadir este campo para el IVA
     typology: "MIXED",
     tags: "",
+    linkVideo: "",
   });
 
   const [images, setImages] = useState([]);
@@ -61,6 +62,7 @@ export default function RoomAddModal({
         description: description.map((desc) => desc.text), // Agregar las descripciones,
         typology: dataRoom.typology || "MIXED",
         tags: [dataRoom.tags],
+        linkVideo: dataRoom.linkVideo,
       };
     }
 
@@ -80,8 +82,6 @@ export default function RoomAddModal({
         propertyId,
       };
     }
-    console.log(roomData);
-
     setData([...data, roomData]); // Actualiza los datos globales
     showModal(); // Cierra el modal después de guardar
   };
@@ -216,6 +216,21 @@ export default function RoomAddModal({
                 className="w-full p-2 border border-gray-300 rounded break-words"
               />
             </div>
+            <div className="mt-4">
+              <label className="block mb-1" htmlFor="linkVideo">
+                Link video
+              </label>
+              <input
+                type="text"
+                id="linkVideo"
+                name="linkVideo"
+                value={dataRoom.linkVideo || ""}
+                onChange={(event) =>
+                  setDataRoom({ ...dataRoom, linkVideo: event.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded break-words"
+              />
+            </div>
           </>
         )}
         <div className="flex flex-col gap-3 w-full">
@@ -270,10 +285,7 @@ export default function RoomAddModal({
                 />
               </div>
               <div>
-                <label
-                  className="block mb-1"
-                  htmlFor="amountHelloflatmate"
-                >
+                <label className="block mb-1" htmlFor="amountHelloflatmate">
                   Neto de helloflatmate
                 </label>
                 <input
@@ -294,9 +306,7 @@ export default function RoomAddModal({
 
             <div className="w-full flex flex-col gap-3">
               <div>
-                <h3 className="block mb-1">
-                  Factura de helloflatmate con IVA
-                </h3>
+                <h3 className="block mb-1">Factura de helloflatmate con IVA</h3>
                 <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
                   {(parseInt(dataRoom?.amountHelloflatmate) || 0) -
                     (parseInt(dataRoom?.amountHelloflatmate) *
@@ -318,6 +328,14 @@ export default function RoomAddModal({
                   className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
                 />
               </div>
+            </div>
+
+            <div>
+              <h3 className="block text-sm mb-1">Neto Propietario</h3>
+              <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                {(parseInt(dataRoom?.price) || 0) -
+                  (parseInt(dataRoom?.amountHelloflatmate) || 0)}
+              </p>
             </div>
 
             {/* Periodos de alquiler */}
