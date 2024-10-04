@@ -8,12 +8,11 @@ export default function ProfileCard({
   email,
   action,
   image = "/profile/profile.jfif",
-  link = "#",
 }) {
   return (
     <section
       onClick={action}
-      className="flex justify-between items-center rounded-3xl shadow-profile p-2 pt-3"
+      className="cursor-pointer flex justify-between items-center rounded-3xl shadow-profile p-2 pt-3"
     >
       <div className="h-16 w-16 rounded-full relative bg-[#875252]">
         <Image
@@ -34,11 +33,9 @@ export default function ProfileCard({
           </span>
         </p>
       </div>
-      <Link href={link}>
-        <button type="button" className="opacity-50 h-10 w-10">
-          <ChevronRightIcon />
-        </button>
-      </Link>
+      <button onClick={action} type="button" className="opacity-50 h-10 w-10">
+        <ChevronRightIcon />
+      </button>
     </section>
   );
 }

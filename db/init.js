@@ -397,5 +397,6 @@ module.exports = {
     ChatParticipant,
     Contract,
     Payment,
-    RentalPeriod
+    RentalPeriod,
+    Worker
 };
