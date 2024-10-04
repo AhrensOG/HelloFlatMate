@@ -162,8 +162,6 @@ export default function NewProperty({ category, handleBack }) {
   };
 
   const submitRoom = async (data) => {
-    console.log(data);
-
     let rooms;
     if (data[0].amountOwner || data[0].amountHelloflatmate) {
       rooms = data.map((room) => ({
@@ -183,6 +181,7 @@ export default function NewProperty({ category, handleBack }) {
         description: room.description,
         typology: room.typology || "MIXED",
         tags: room.tags || [],
+        linkVideo: room.linkVideo,
       }));
     } else {
       rooms = data.map((room) => ({
@@ -205,8 +204,6 @@ export default function NewProperty({ category, handleBack }) {
     }
   };
   const setProperty = (data, id) => {
-    console.log(data, id);
-
     const ids = data.map((room) => room.id);
     try {
       const response = axios.patch(`/api/admin/room`, {
@@ -275,8 +272,6 @@ export default function NewProperty({ category, handleBack }) {
         property.images = imagesList;
 
         //Crear habitaciones
-        console.log(dataRoom);
-
         const rooms = await submitRoom(dataRoom);
 
         // Crear propiedad
@@ -358,7 +353,9 @@ export default function NewProperty({ category, handleBack }) {
             <h2 className="font-bold text-[1.2rem]">Propietario</h2>
             <SearchEmail owners={owners} onSelect={handleEmailSelect} />{" "}
           </div>
-          {/* <LinkVideoSection data={linkVideo} setData={setLinkVideo} /> */}
+          {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+          )}
           {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
             <TagsSection data={tags} setData={setTags} />
           )}
@@ -403,29 +400,6 @@ export default function NewProperty({ category, handleBack }) {
             }}
           />
         </main>
-        {showDescriptionModal && (
-          <DescriptionModal
-            data={description}
-            setData={setDescription}
-            showModal={handleShowDescriptionModal}
-          />
-        )}
-        {showRoomEditModal && (
-          <RoomAddModal
-            data={dataRoom}
-            setData={setRoomData}
-            showModal={handleShowRoomEditModal}
-            category={catAndSize.category}
-          />
-        )}
-        {showAddressModal && (
-          <AddressModal
-            data={address}
-            setData={setAddress}
-            showModal={handleShowAddressModal}
-            category={category}
-          />
-        )}
       </div>
 
       <div className="hidden md:flex flex-col w-full gap-2 p-4">
@@ -445,7 +419,6 @@ export default function NewProperty({ category, handleBack }) {
               action={handleShowRoomEditModal}
               category={category}
             />
-            {/* <LinkVideoSection data={linkVideo} setData={setLinkVideo} /> */}
             {/* <LocationSectionTemplate /> */}
             <AmenitiesSectionTemplate data={amenities} setData={setAmenities} />
             <MoreInfoSectionTemplate
@@ -488,6 +461,9 @@ export default function NewProperty({ category, handleBack }) {
             {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
               <PriceSection data={price} setData={setPrice} />
             )}
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
+            )}
             <div className="flex flex-col gap-6">
               <GuestInfoSectionTemplate
                 data={guestInfo}
@@ -522,30 +498,30 @@ export default function NewProperty({ category, handleBack }) {
             />
           </div>
         </main>
-        {showDescriptionModal && (
-          <DescriptionModal
-            data={description}
-            setData={setDescription}
-            showModal={handleShowDescriptionModal}
-          />
-        )}
-        {showRoomEditModal && (
-          <RoomAddModal
-            data={dataRoom}
-            setData={setRoomData}
-            showModal={handleShowRoomEditModal}
-            category={catAndSize.category}
-          />
-        )}
-        {showAddressModal && (
-          <AddressModal
-            data={address}
-            setData={setAddress}
-            showModal={handleShowAddressModal}
-            category={category}
-          />
-        )}
       </div>
+      {showDescriptionModal && (
+        <DescriptionModal
+          data={description}
+          setData={setDescription}
+          showModal={handleShowDescriptionModal}
+        />
+      )}
+      {showRoomEditModal && (
+        <RoomAddModal
+          data={dataRoom}
+          setData={setRoomData}
+          showModal={handleShowRoomEditModal}
+          category={catAndSize.category}
+        />
+      )}
+      {showAddressModal && (
+        <AddressModal
+          data={address}
+          setData={setAddress}
+          showModal={handleShowAddressModal}
+          category={category}
+        />
+      )}
     </div>
   );
 }

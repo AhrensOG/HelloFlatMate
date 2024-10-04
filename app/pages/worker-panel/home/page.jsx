@@ -4,7 +4,7 @@ import WorkerHome from "@/app/components/workerPanel/home/WorkerHome";
 import React from "react";
 
 const WorkerPanelPage = () => {
-  return <BaseWorkerPanelTemplate children={<WorkerHome />} section={"home"} />;
+  return <WorkerHome section={"home"} />;
 };
 
 export default WorkerPanelPage;
