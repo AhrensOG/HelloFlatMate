@@ -6,7 +6,11 @@ let socket;
 export const getSocket = () => {
   if (isBrowser && !socket) {
     // Conecta al servidor de chat
-    socket = io('http://localhost:4000', { // Reemplaza con la URL de tu servidor en producción
+    // Obtener la URL del servidor de Socket.IO desde las variables de entorno
+    const socketServerUrl =
+      process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:4000";
+
+    socket = io(socketServerUrl, {
       transports: ["websocket", "polling"],
       reconnectionAttempts: 5,
       timeout: 10000,
