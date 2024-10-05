@@ -76,6 +76,8 @@ export default function Chat() {
     if (chatId) {
       if (socket) {
         const usuarioId = searchParams.get("userId");
+        console.log(usuarioId);
+
         const handleSocketConnect = () => {
           setIsConnected(true);
           setTransport(socket.io.engine.transport.name);
