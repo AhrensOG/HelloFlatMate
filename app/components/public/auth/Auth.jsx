@@ -1,6 +1,6 @@
 "use client";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthModal from "./AuthModal";
 import { plus_jakarta } from "@/font";
 import Link from "next/link";
@@ -8,15 +8,24 @@ import Image from "next/image";
 import { logInWithGoogle } from "@/app/firebase/logInWithGoogle";
 import { logInWithFacebook } from "@/app/firebase/logInWithFacebook";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Context } from "@/app/context/GlobalContext";
 
 export default function Auth() {
   const searchParams = useSearchParams(); // Captura los parámetros de la URL
   const redirect = searchParams.get("redirect"); // Obtén el valor del parámetro `redirect`
   const createAccount = searchParams.get("register");
-  const [register, setRegister] = useState( createAccount ? true : false);
+  const [register, setRegister] = useState(createAccount ? true : false);
   const [isOpen, setIsOpen] = useState(false);
   const [registerProvider, setRegisterProvider] = useState(null);
   const router = useRouter();
+
+  const { state } = useContext(Context);
+
+  useEffect(() => {
+    if (state.user) {
+      router.push(redirect || "/");
+    }
+  }, [state.user]);
 
   const handleIsRegister = () => {
     setRegister(!register);
