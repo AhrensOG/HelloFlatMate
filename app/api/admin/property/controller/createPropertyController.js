@@ -1,11 +1,9 @@
 
-import { Owner, Property, RentalPeriod, Room } from "@/db/init";
+import { Chat, ChatParticipant, Owner, Property, RentalPeriod, Room } from "@/db/init";
 import rentalPeriod, { sequelize } from "@/db/models/rentalPeriod";
 import { NextResponse } from 'next/server';
 
 const createProperty = async (data) => {
-    console.log(data);
-
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -112,6 +110,18 @@ const createProperty = async (data) => {
                 }
             }))
         }
+
+        const chatGroup = await Chat.create({
+            type: "GROUP",
+            propertyId: property.id,
+            ownerId: property.ownerId
+        })
+
+        const chatParticipant = await ChatParticipant.create({
+            chatId: chatGroup.id,
+            participantId: property.ownerId,
+            participantType: "OWNER",
+        })
 
         return NextResponse.json({ message: "Propiedad cargada con éxito", property });
     } catch (error) {
