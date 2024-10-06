@@ -29,7 +29,7 @@ export async function getUserById(id) {
             }, {
                 model: ChatParticipant,
                 as: "chats",
-            }
+            },
             ]
         }) || await Client.findByPk(id, {
             include: [
