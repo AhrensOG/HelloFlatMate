@@ -6,7 +6,7 @@ import { plus_jakarta } from "@/font";
 import SelectContract from "./SelectContract";
 import ReservationButton from "../ReservationButton";
 import { XMarkIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
@@ -18,7 +18,12 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function ReservationModal({ callback, data, category }) {
+export default function ReservationModal({
+  callback,
+  data,
+  category,
+  calendarType,
+}) {
   const router = useRouter();
   const [info, setInfo] = useState({
     startDate: "",
@@ -28,7 +33,6 @@ export default function ReservationModal({ callback, data, category }) {
   const [dataReservation, setDataReservation] = useState(data);
   const [rentalPeriods, setRentalPeriods] = useState(data.rentalPeriods);
   const [clausesAccepted, setClausesAccepted] = useState(false); // Estado para el checkbox
-
   const handleRedirect = () => {
     router.push("/pages/contract");
   };
@@ -122,6 +126,8 @@ export default function ReservationModal({ callback, data, category }) {
     }
   };
 
+  useEffect(() => {}, [calendarType]);
+
   return (
     <AnimatePresence>
       <motion.aside
@@ -150,7 +156,7 @@ export default function ReservationModal({ callback, data, category }) {
         </div>
         <h2 className="font-medium text-[1.75rem]">Estadía</h2>
         <div className="flex flex-col justify-center items-center gap-5">
-          {(category === "HELLO_ROOM" ||
+          {/* {(category === "HELLO_ROOM" ||
             category === "HELLO_COLIVING" ||
             category === "HELLO_LANDLORD") && (
             <SelectRentalPeriod
@@ -158,15 +164,42 @@ export default function ReservationModal({ callback, data, category }) {
               setData={handleSetDuration}
               info={info}
             />
-          )}
-          {category === "HELLO_STUDIO" && (
+          )} */}
+          {/* {category === "HELLO_STUDIO" && (
             <DatePicker
               data={info}
               setData={setInfo}
               occupedDates={data?.leaseOrdersProperty}
               rentalPeriods={rentalPeriods}
             />
-          )}
+          )} */}
+          {(() => {
+            if (calendarType === "SIMPLE") {
+              return (
+                <SelectRentalPeriod
+                  data={rentalPeriods.filter(
+                    (rental) => rental.status === "FREE"
+                  )}
+                  setData={handleSetDuration}
+                  info={info}
+                />
+              );
+            } else if (calendarType === "FULL") {
+              return (
+                <DatePicker
+                  data={info}
+                  setData={setInfo}
+                  occupedDates={
+                    data?.leaseOrdersProperty || data?.leaseOrdersRoom || []
+                  }
+                  rentalPeriods={rentalPeriods}
+                />
+              );
+            } else {
+              return null; // Si calendarType es undefined u otro valor, no muestra nada
+            }
+          })()}
+
           <ShowClauses />
           <div className="self-center w-[90%]">
             <label className="flex items-center">
@@ -185,7 +218,10 @@ export default function ReservationModal({ callback, data, category }) {
                 toast.promise(handleReservationSubmit(), {
                   loading: "Reservando...",
                   success: "Reservado!",
-                  error: (err) => `Error al reservar: ${ err.response?.data?.message || err.message || err}`,
+                  error: (err) =>
+                    `Error al reservar: ${
+                      err.response?.data?.message || err.message || err
+                    }`,
                 });
               }}
             />
