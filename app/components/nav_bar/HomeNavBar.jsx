@@ -49,8 +49,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           >
             Inicio
           </button>
-          <button
-            onClick={() => setActiveSection("helloroom")}
+          <Link
+            href={"/pages/user/filtered?category=HELLO_ROOM"}
+            // onClick={() => setActiveSection("helloroom")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -58,9 +59,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </button>
-          <button
-            onClick={() => setActiveSection("hellocoliving")}
+          </Link>
+          <Link
+            href={"/pages/user/filtered?category=HELLO_COLIVING"}
+            // onClick={() => setActiveSection("hellocoliving")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
                 ? "font-bold bg-slate-100"
@@ -68,9 +70,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellocoliving
-          </button>
-          <button
-            onClick={() => setActiveSection("hellostudio")}
+          </Link>
+          <Link
+            href={"/pages/user/filtered?category=HELLO_STUDIO"}
+            // onClick={() => setActiveSection("hellostudio")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellostudio"
                 ? "font-bold bg-slate-100"
@@ -78,9 +81,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellostudio
-          </button>
-          <button
-            onClick={() => setActiveSection("hellolandlord")}
+          </Link>
+          <Link
+            href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+            // onClick={() => setActiveSection("hellolandlord")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
                 ? "font-bold bg-slate-100"
@@ -88,7 +92,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -146,8 +150,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           >
             Inicio
           </button>
-          <button
-            onClick={() => setActiveSection("helloroom")}
+          <Link
+            href={"/pages/user/filtered?category=HELLO_ROOM"}
+            // onClick={() => setActiveSection("helloroom")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -155,9 +160,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </button>
-          <button
-            onClick={() => setActiveSection("hellocoliving")}
+          </Link>
+          <Link
+            href={"/pages/user/filtered?category=HELLO_COLIVING"}
+            // onClick={() => setActiveSection("hellocoliving")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
                 ? "font-bold bg-slate-100"
@@ -165,9 +171,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellocoliving
-          </button>
-          <button
-            onClick={() => setActiveSection("hellostudio")}
+          </Link>
+          <Link
+            href={"/pages/user/filtered?category=HELLO_STUDIO"}
+            // onClick={() => setActiveSection("hellostudio")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellostudio"
                 ? "font-bold bg-slate-100"
@@ -175,9 +182,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellostudio
-          </button>
-          <button
-            onClick={() => setActiveSection("hellolandlord")}
+          </Link>
+          <Link
+            href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+            // onClick={() => setActiveSection("hellolandlord")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
                 ? "font-bold bg-slate-100"
@@ -185,7 +193,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </button>
+          </Link>
         </div>
       </div>
     </nav>
