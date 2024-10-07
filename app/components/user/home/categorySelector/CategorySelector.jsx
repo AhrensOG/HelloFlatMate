@@ -9,6 +9,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import SelectDate from "./auxiliarComponents/SelectDate";
 import SelectDateHelloStudio from "./SelectDateHelloStudio";
 import DatePickerCategorySelector from "./DatePickerCategoySelector";
+import HomeSlider from "../desktop/auxiliarComponents/HomeSlider";
+import PropertyCard from "./auxiliarComponents/PropertyCard";
 
 const list = [
   {
@@ -40,6 +42,7 @@ const CategorySelector = ({
   helloColivingProperties,
   helloStudioProperties,
   helloLandlordProperties,
+  allProperties,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -49,7 +52,7 @@ const CategorySelector = ({
   const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [numberOccupants, setNumberOccupants] = useState();
-
+  console.log(allProperties);
   useEffect(() => {
     if (categoryQuery) {
       setCurrentCategory(categoryQuery);
@@ -268,6 +271,41 @@ const CategorySelector = ({
             Buscar
           </button>
         </div>
+      </div>
+      <div className="w-full">
+        <HomeSlider>
+          {allProperties.map((item) => {
+            // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
+            if (
+              item.category === "HELLO_ROOM" ||
+              item.category === "HELLO_COLIVING"
+            ) {
+              return (
+                item.rooms
+                  // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
+                  .map((room) => (
+                    <div className="" key={room.id}>
+                      <PropertyCard
+                        roomId={room.id}
+                        propertyId={item.id}
+                        img={room?.images[0]}
+                        title={room.name}
+                      />
+                    </div>
+                  ))
+              );
+            }
+            return (
+              <div className="mr-4" key={item.id}>
+                <PropertyCard
+                  propertyId={item.id}
+                  img={item?.images[0]}
+                  title={item.name}
+                />
+              </div>
+            );
+          })}
+        </HomeSlider>
       </div>
     </motion.section>
   );

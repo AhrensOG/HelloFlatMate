@@ -59,7 +59,7 @@ export default function Auth() {
   const handleLoginFacebook = async () => {
     try {
       await logInWithFacebook();
-      router.push(redirect || "/"); // Redirige a la URL de redirect o al home
+      return router.push(redirect || "/"); // Redirige a la URL de redirect o al home
     } catch (error) {
       toast.error("Fallo la autenticación. Intente nuevamente.");
     }
@@ -68,7 +68,7 @@ export default function Auth() {
   const handleLoginGoogle = async () => {
     try {
       await logInWithGoogle();
-      router.push(redirect || "/"); // Redirige a la URL de redirect o al home
+      return router.push(redirect || "/"); // Redirige a la URL de redirect o al home
     } catch (error) {
       toast.error("Fallo la autenticación. Intente nuevamente.");
     }
