@@ -1,4 +1,4 @@
-import { Admin, Chat, ChatParticipant, Client, Message, Owner } from "@/db/init";
+import { Admin, Chat, ChatParticipant, Client, Message, Owner, Property } from "@/db/init";
 import { Sequelize, Op } from 'sequelize';
 import { NextResponse } from "next/server";
 
@@ -51,6 +51,10 @@ export async function getChatByUser(userId) {
                 {
                     model: Message,
                     as: 'messages'
+                },
+                {
+                    model: Property,
+                    as: 'property'
                 }
             ],
             // Filtra los chats utilizando una subconsulta para que incluya al usuario como participante

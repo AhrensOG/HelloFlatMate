@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
 import Message from "./Message";
+import { useSearchParams } from "next/navigation";
 
 export default function MessageContainer({ messages, socketId }) {
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type");
+  // Referencia al contenedor de mensajes
   const containerRef = useRef(null);
   console.log(messages);
 
@@ -30,6 +34,8 @@ export default function MessageContainer({ messages, socketId }) {
             } // Comparar senderId con el socketId del cliente
             body={msg.text || msg.body} // Asumiendo que el mensaje tiene un campo 'text'
             time={msg.time || new Date(msg.date).toLocaleTimeString() || "N/A"} // Mostrar la hora si está disponible
+            name={msg.userName || "N/A"} // Mostrar el nombre si esta disponible
+            typeChat={type}
           />
         ))
       )}

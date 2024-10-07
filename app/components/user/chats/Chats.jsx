@@ -54,6 +54,25 @@ export default function Chat() {
   return (
     <div>
       {console.log(chats)}
+
+      {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
+      {groupChats &&
+        groupChats.map((chat) => {
+          return (
+            <ChatsCard
+              key={chat.id}
+              name={chat.property?.name}
+              image="/profile/profile.jpg"
+              lastMessage={chat.messages[chat.messages.length - 1]}
+              action={() =>
+                router.push(
+                  `/pages/user/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`
+                )
+              }
+            />
+          );
+        })}
+
       {/* Renderizar la tarjeta basada en el estado del chat SUPPORT */}
       {privateChats &&
         privateChats.map((chat) => {
