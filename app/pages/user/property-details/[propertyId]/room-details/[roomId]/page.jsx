@@ -251,6 +251,7 @@ export default function RoomDetails({ params }) {
               <RoomSection
                 data={filteredRooms}
                 title="Otras habitaciones en el mismo piso"
+                category={data.category}
               />
             ) : null}
             {roomData.linkVideo ? (
@@ -328,6 +329,7 @@ export default function RoomDetails({ params }) {
           </div>
           {showModal && (
             <ReservationModal
+              calendarType={roomData.calendar}
               callback={handleShowModal}
               category={data.category}
               data={{
@@ -342,6 +344,7 @@ export default function RoomDetails({ params }) {
                 propertyName: data?.name,
                 user: state?.user,
                 rentalPeriods: roomData.rentalPeriods,
+                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
               }}
             />
           )}

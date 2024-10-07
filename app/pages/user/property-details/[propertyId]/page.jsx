@@ -188,7 +188,7 @@ export default function PropertyDetails({ params }) {
           className={`${plus_jakarta.className} flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}
         >
           {/* LEFT SIDE */}
-          <div className="w-full space-y-4">
+          <div className="w-full flex flex-col gap-2">
             <div className="w-full">
               <SliderDetails>
                 {data.images.map((image, index) => {
@@ -271,8 +271,10 @@ export default function PropertyDetails({ params }) {
               ]}
             />
           </div>
+          {console.log(data)}
           {showModal && (
             <ReservationModal
+              calendarType={data.calendar}
               callback={handleShowModal}
               category={data.category}
               data={{

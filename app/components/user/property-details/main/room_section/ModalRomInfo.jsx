@@ -12,13 +12,11 @@ export default function ModalRomInfo({ data, action }) {
       className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center z-40 items-center"
     >
       <div className="w-full m-6 bg-white rounded-xl z-50">
-        {console.log(data)}
-
-        <div className="w-full h-2/6">
+        <div className="w-full h-3/6">
           <SliderDetails>
             {data.images.map((image, index) => {
               return (
-                <SliderItem key={index} img={image} rounded="rounded-t-xl" />
+                <SliderItem key={index} img={image} rounded="rounded-t-xl" height="h-[300px]" />
               );
             })}
           </SliderDetails>
