@@ -24,9 +24,9 @@ export default function AdminProfilePage() {
 
   return (
     <>
-      <headear className="">
+      <header className="">
         <NavBar client={false} admin={true} owner={false} />
-      </headear>
+      </header>
       <DashBoardAdmin data={propertiesSimple} />
     </>
   );

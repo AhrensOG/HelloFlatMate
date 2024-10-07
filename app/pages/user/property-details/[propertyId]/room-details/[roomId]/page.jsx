@@ -177,16 +177,22 @@ export default function RoomDetails({ params }) {
           <MoreInfoSection
             data={[
               {
-                title: "Condicion del alquiler",
+                title: "Características del piso",
+                body: data.roomDescription,
+              },
+              {
+                title: "Condiciones del alquiler",
                 body: data.incomeConditionDescription,
               },
-              { title: "Mantenimiento", body: data.maintenanceDescription },
-              { title: "Habitación", body: data.roomDescription },
               { title: "Facturas", body: data.feeDescription },
-              { title: "Sobre nosotros", body: data.aboutUs },
+              {
+                title: "Mantenimiento",
+                body: data.maintenanceDescription,
+              },
+              { title: "Check-In / Check out", body: data.checkIn },
+              { title: "Opinión del agente", body: data.aboutUs },
               { title: "Normas de convivencia", body: data.houseRules },
-              { title: "Check-In", body: data.checkIn },
-              { title: "Check-Out", body: data.checkOut },
+              { title: "Otros servicios", body: data.checkOut },
             ]}
           />
           {showModal && (
@@ -301,16 +307,22 @@ export default function RoomDetails({ params }) {
             <MoreInfoSection
               data={[
                 {
-                  title: "Condicion del alquiler",
+                  title: "Características del piso",
+                  body: data.roomDescription,
+                },
+                {
+                  title: "Condiciones del alquiler",
                   body: data.incomeConditionDescription,
                 },
-                { title: "Mantenimiento", body: data.maintenanceDescription },
-                { title: "Habitación", body: data.roomDescription },
                 { title: "Facturas", body: data.feeDescription },
-                { title: "Sobre nosotros", body: data.aboutUs },
+                {
+                  title: "Mantenimiento",
+                  body: data.maintenanceDescription,
+                },
+                { title: "Check-In / Check out", body: data.checkIn },
+                { title: "Opinión del agente", body: data.aboutUs },
                 { title: "Normas de convivencia", body: data.houseRules },
-                { title: "Check-In", body: data.checkIn },
-                { title: "Check-Out", body: data.checkOut },
+                { title: "Otros servicios", body: data.checkOut },
               ]}
             />
           </div>
