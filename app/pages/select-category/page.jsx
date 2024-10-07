@@ -43,6 +43,7 @@ const SelectCategoryPage = () => {
       );
 
       // Actualizar los estados locales
+      setProperties(state.properties)
       setHelloRoomProperties(roomProps);
       setHelloColivingProperties(colivingProps);
       setHelloStudioProperties(studioProps);
@@ -62,6 +63,7 @@ const SelectCategoryPage = () => {
           helloColivingProperties={helloColivingProperties}
           helloStudioProperties={helloStudioProperties}
           helloLandlordProperties={helloLandlordProperties}
+          allProperties={properties}
         />
       </Suspense>
     </>

@@ -119,7 +119,7 @@ export default function NavBar({
 
   const handleLogOut = async () => {
     await logOut();
-    handleRedirect("/pages/auth");
+    return handleRedirect("/pages/auth");
   };
 
   // Actualizar el estado del usuario cuando el contexto cambie
