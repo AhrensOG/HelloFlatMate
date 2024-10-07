@@ -187,10 +187,10 @@ export default function TableArticle({ data }) {
               onChange={() => handleStatusChange(status)}
             />
             {status === "FREE"
-              ? "Libres"
+              ? "Disponibles"
               : status === "RESERVED"
-              ? "Reservados"
-              : "Alquilados"}
+              ? "Pendientes"
+              : "Reservados"}
           </label>
         ))}
       </div>

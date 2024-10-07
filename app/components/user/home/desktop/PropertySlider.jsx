@@ -26,7 +26,7 @@ const PropertySlider = ({ data }) => {
                 item.category === "HELLO_COLIVING"
               ) {
                 return item.rooms
-                  .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
+                  // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
                   .map((room) => (
                     <div className="" key={room.id}>
                       <PropertyCard

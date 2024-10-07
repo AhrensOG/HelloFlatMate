@@ -6,7 +6,7 @@ export default function MyBedroomActivitys({ data }) {
   return (
     <section className="w-full flex flex-col gap-4">
       <h2 className="text-[#000000CC] text-base font-bold">
-        Actividades de mi dormitorio
+        Actividades de mi alojamiento
       </h2>
       <div className="flex flex-wrap gap-5 items-center justify-around">
         {/* <ActivityItem
