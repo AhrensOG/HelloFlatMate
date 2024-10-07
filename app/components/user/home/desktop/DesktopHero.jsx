@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function DesktopHero({
-  img = "/home/DesktopHero.jpg",
+  img = "https://www.youtube.com/watch?v=pOFq34PWjV4",
   title = "helloflatmate",
   description = "Simplificamos la forma de compartir tu hogar",
   link = "/pages/select-category",
@@ -12,7 +12,44 @@ export default function DesktopHero({
     <section className="w-full">
       {/* Imagen de fondo con gradiente */}
       <div className="relative">
-        <div className="relative w-full h-80 md:h-96 lg:h-[420px] z-10">
+        <div className="relative w-full h-80 md:h-96 lg:h-[750px] z-10">
+          {img.includes("youtube.com") ? (
+            // Si es un video de YouTube, extraer el ID y usar la URL de inserción
+            <iframe
+              src={`https://www.youtube.com/embed/${
+                img.split("v=")[1]
+              }?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=${
+                img.split("v=")[1]
+              }`}
+              title="YouTube Video"
+              className="w-full h-full object-cover"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            ></iframe>
+          ) : img.includes("vimeo.com") ? (
+            // Si es un video de Vimeo, extraer el ID y usar la URL de inserción
+            <iframe
+              src={`https://player.vimeo.com/video/${img
+                .split("/")
+                .pop()}?autoplay=1&muted=1&loop=1&background=1`}
+              title="Vimeo Video"
+              className="w-full h-full object-cover"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            ></iframe>
+          ) : (
+            // Si es una imagen
+            <Image
+              src={img}
+              alt="Fondo de Hero"
+              fill
+              quality={100}
+              className="object-cover"
+            />
+          )}
+          {/* <div className="absolute h-full w-full bg-gradient-to-r from-black/50 to-black/80 z-10" /> */}
+        </div>
+        {/* <div className="relative w-full h-80 md:h-96 lg:h-[420px] z-10">
           <Image
             src={img}
             alt="Fondo de Hero"
@@ -21,7 +58,7 @@ export default function DesktopHero({
             className="object-cover"
           />
           <div className="absolute h-full w-full bg-gradient-to-r from-black/50 to-black/80 z-10" />
-        </div>
+        </div> */}
         {/* Contenido del Hero */}
         <div className="absolute w-full inset-0 z-20 flex flex-col items-center justify-center text-center text-white">
           {/* Título principal */}

@@ -12,15 +12,15 @@ export default function RoomInfo({ data, action, category }) {
   return (
     <article
       onClick={category === "HELLO_ROOM" || category === "HELLO_COLIVING" ? handleRedirect : () => action(data)}
-      className={`cursor-pointer flex flex-col gap-2 min-w-[8.7rem] max-w-[10rem] items-center justify-between relative`}
+      className={`cursor-pointer flex flex-col gap-2 min-w-[8.7rem] max-w-[12rem] items-center justify-between relative w-full`}
     >
-      <div className="relative h-24 rounded-xl w-full">
+      <div className="relative h-32 rounded-sm w-full">
         <Image
           src={data.images[0]}
           alt={data.name}
           fill
           style={{ objectFit: "cover", objectPosition: "center" }}
-          className="rounded-xl"
+          className="rounded-sm"
         />
       </div>
       <h3 className="text-base font-medium break-words p-1">{data.name}</h3>
