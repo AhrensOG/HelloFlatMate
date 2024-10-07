@@ -29,7 +29,8 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         street: user.street,
         streetNumber: user.streetNumber,
         postalCode: user.postalCode,
-        age: user.age,
+        // age: user.age,
+        genre: user.genre || "MALE",
         birthDate: readableDate, // Usar el formato "YYYY-MM-DD"
         id: user.id,
         emergencyName: user.emergencyName || "",
@@ -49,7 +50,8 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     street: "",
     streetNumber: "",
     postalCode: "",
-    age: "",
+    // age: "",
+    genre: "MALE",
     birthDate: "",
     emergencyName: "",
     emergencyPhone: "",
@@ -77,7 +79,8 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         values.streetNumber.trim() === "" ||
         values.postalCode === "" ||
         values.postalCode.trim() === "" ||
-        values.age === "" ||
+        // values.age === "" ||
+        values.genre === "" ||
         values.birthDate === "" ||
         values.birthDate.trim() === "" ||
         values.emergencyName === null ||
@@ -90,11 +93,9 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         values.emergencyEmail.trim() === ""
       ) {
         return toast.info("¡Recuerda completar todos los campos!");
-      } else if (values.age < 18) {
-        return toast.info("Debe ser mayor de 18 años");
-      }
-      if (values.age !== calculateAge(values.birthDate)) {
-        return toast.info("La fecha de nacimiento no coincide con la edad");
+      } 
+      if (calculateAge(values.birthDate) < 18) {
+        return toast.info("Debes ser mayor de 18");
       }
       try {
         await updateUser(values);
@@ -123,6 +124,11 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     return calculatedAge;
   };
 
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    formik.setFieldValue("genre", selectedValue); // Actualiza el valor del campo 'genre' en formik
+  };
+
   const updateUser = async (data) => {
     const userData = {
       id: prevData.id,
@@ -135,13 +141,13 @@ const ContractForm = ({ handleContinue, handleBack }) => {
       street: data.street,
       streetNumber: data.streetNumber,
       postalCode: data.postalCode,
-      age: data.age,
+      // age: data.age,
+      genre: data.genre,
       birthDate: data.birthDate,
       emergencyName: data.emergencyName,
       emergencyPhone: data.emergencyPhone,
       emergencyEmail: data.emergencyEmail,
     };
-    console.log(userData);
     try {
       toast.promise(axios.put("/api/user", userData), {
         loading: "Guardando información...",
@@ -247,7 +253,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     htmlFor="dni"
                     className="text-xs text-resolution-blue drop-shadow-sm"
                   >
-                    DNI
+                    ID / Passport
                   </label>
                   <input
                     id="dni"
@@ -277,7 +283,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
-                <div className="flex flex-col justify-center w-full">
+                {/* <div className="flex flex-col justify-center w-full">
                   <label
                     htmlFor="age"
                     className="text-xs text-resolution-blue drop-shadow-sm"
@@ -292,6 +298,25 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     value={formik.values.age}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue number-input-no-appearance"
                   />
+                </div> */}
+                <div className="flex flex-col justify-center w-full">
+                  <label
+                    htmlFor="genre"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Género
+                  </label>
+                  <select
+                    id="genre"
+                    name="genre"
+                    value={formik.values.genre}
+                    onChange={handleSelectChange}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  >
+                    <option value="MALE">Masculino</option>
+                    <option value="FEMALE">Femenino</option>
+                    <option value="OTHER">Otro</option>
+                  </select>
                 </div>
               </div>
               <h2 className="form-title">Direccion</h2>

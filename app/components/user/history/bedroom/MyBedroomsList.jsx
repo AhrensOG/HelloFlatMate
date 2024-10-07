@@ -14,7 +14,7 @@ export default function MyBedroomsList({ action, user, properties }) {
         Hola {user.name}
       </h2>
       <p className="font-semibold text-base text-[#000000CC]">
-        Rooms que actualmente rentas
+        Tus alojamientos
       </p>
       <div className="flex flex-col gap-5 pt-5">
         {properties.map((p) => {

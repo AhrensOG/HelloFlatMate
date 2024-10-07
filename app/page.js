@@ -130,7 +130,7 @@ export default function Home() {
 
   useEffect(() => {
     if (state.properties && state.properties !== properties) {
-      setProperties(state.properties.filter((prop) => prop.status === "FREE"));
+      setProperties(state.properties);
       setPropertiesInOffer(filterOffer(state.properties));
       // toast.success("Propiedades actualizadas");
     }
@@ -157,7 +157,7 @@ export default function Home() {
           </div>
         )}
 
-        {activeSection === "helloroom" && (
+        {/* {activeSection === "helloroom" && (
           <div className="w-full flex flex-col">
             <DesktopHero
               img={helloroom.hero.img}
@@ -251,7 +251,7 @@ export default function Home() {
             />
             <PropertySlider data={properties} />
           </div>
-        )}
+        )} */}
         <InfoSection />
         <Banner />
         <Footer />

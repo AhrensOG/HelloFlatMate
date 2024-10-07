@@ -79,7 +79,7 @@ export default function MyBedrooms() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  ¡Aun no tienes dormitorios!
+                  ¡Aun no tienes alojamientos!
                 </motion.p>
               )
             ) : (
@@ -132,7 +132,7 @@ export default function MyBedrooms() {
                     />
                   ) : (
                     <p className="text-center text-xl font-medium text-slate-400">
-                      ¡Aun no tienes dormitorios!
+                      ¡Aun no tienes alojamientos!
                     </p>
                   )}
                 </motion.div>
@@ -158,7 +158,7 @@ export default function MyBedrooms() {
                     </motion.div>
                   ) : (
                     <p className="text-center text-xl font-medium text-slate-400">
-                      Selecciona un dormitorio para ver los detalles
+                      Selecciona un alojamiento para ver los detalles
                     </p>
                   )}
                 </motion.div>

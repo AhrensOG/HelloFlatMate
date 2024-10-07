@@ -14,15 +14,15 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
       <h2 className="font-bold text-[1.2rem]">Más sobre este lugar</h2>
       <div className="lg:flex lg:flex-wrap">
         <MoreInfoItemTemplate
-          property="condicionDeRenta"
-          title="Condición del alquiler"
-          body={data.condicionDeRenta}
+          property="habitacion"
+          title="Características del piso"
+          body={data.habitacion}
           onBodyChange={handleBodyChange}
         />
         <MoreInfoItemTemplate
-          property="habitacion"
-          title="Habitación"
-          body={data.habitacion}
+          property="condicionDeRenta"
+          title="Condiciónes del alquiler"
+          body={data.condicionDeRenta}
           onBodyChange={handleBodyChange}
         />
         <MoreInfoItemTemplate
@@ -38,8 +38,14 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
           onBodyChange={handleBodyChange}
         />
         <MoreInfoItemTemplate
+          property="checkIn"
+          title="Check-in / Check-out"
+          body={data.checkIn}
+          onBodyChange={handleBodyChange}
+        />
+        <MoreInfoItemTemplate
           property="sobreNosotros"
-          title="Sobre nosotros"
+          title="Opinión del agente"
           body={data.sobreNosotros}
           onBodyChange={handleBodyChange}
         />
@@ -50,14 +56,8 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
           onBodyChange={handleBodyChange}
         />
         <MoreInfoItemTemplate
-          property="checkIn"
-          title="Check-in"
-          body={data.checkIn}
-          onBodyChange={handleBodyChange}
-        />
-        <MoreInfoItemTemplate
           property="checkOut"
-          title="Check-out"
+          title="Otros servicios"
           body={data.checkOut}
           onBodyChange={handleBodyChange}
         />

@@ -22,6 +22,9 @@ const clientInit = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },
+            genre: {
+                type: DataTypes.ENUM("MALE", "FEMALE", "OTHER"),
+            },
             phone: {
                 type: DataTypes.STRING,
                 allowNull: true,
