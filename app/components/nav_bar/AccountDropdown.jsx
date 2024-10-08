@@ -22,19 +22,15 @@ export default function AccountDropdown() {
       <div>
         {/* Si el usuario está autenticado, mostrar el enlace correspondiente */}
         {user ? (
-          <div className="w-[48px] h-[48px] flex justify-between items-center">
-            <Link href={userProfileLink}>
+          <div className="w-[48px] h-[48px] flex justify-center items-center">
+            <Link href={userProfileLink || "/"}>
               <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white text-sm font-semibold text-gray-900 ring-inset ring-gray-300 hover:bg-gray-50">
-                <div className="flex items-center gap-2">
-                  <div className="relative w-6 h-6">
-                    <Image
-                      src="/nav_bar/account.svg"
-                      fill
-                      alt="Cuenta del usuario"
-                    />
-                  </div>
-                  {/* Aquí puedes mostrar el nombre del usuario si lo deseas */}
-                  <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+                <div className="relative w-6 h-6">
+                  <Image
+                    src="/nav_bar/account.svg"
+                    fill
+                    alt="Cuenta del usuario"
+                  />
                 </div>
               </MenuButton>
             </Link>

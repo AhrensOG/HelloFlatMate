@@ -77,9 +77,6 @@ export async function getUserById(id) {
             ]
         }) || await Admin.findByPk(id, {
             include: [{
-                model: ToDo,
-                as: "toDos"
-            }, {
                 model: ChatParticipant,
                 as: "chats",
             }]
