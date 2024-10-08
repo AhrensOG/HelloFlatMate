@@ -16,10 +16,10 @@ export default function PropertyCard({ property, price, roomId = false }) {
       roomId
     ) {
       route.push(
-        `/pages/user/property-details/${property.id}/room-details/${roomId}`
+        `/pages/property-details/${property.id}/room-details/${roomId}`
       );
     } else {
-      route.push("/pages/user/property-details/" + property?.id);
+      route.push("/pages/property-details/" + property?.id);
     }
   };
 
@@ -34,7 +34,10 @@ export default function PropertyCard({ property, price, roomId = false }) {
     <article
       className={`${plus_jakarta.className} flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-0 rounded-sm shadow-reservation-drop`}
     >
-      <div onClick={handleRedirect} className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full">
+      <div
+        onClick={handleRedirect}
+        className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full"
+      >
         <div className="relative h-28 w-28 sm:w-72 sm:h-80 rounded-md">
           <Image
             className="h-full rounded-sm"
