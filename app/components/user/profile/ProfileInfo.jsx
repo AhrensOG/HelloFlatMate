@@ -55,28 +55,28 @@ export default function ProfileInfo({
           </h2>
           <ItemInfo
             title={"Fecha de Nacimiento"}
-            body={new Date(data.birthDate).toLocaleDateString()}
+            body={new Date(data?.birthDate).toLocaleDateString()}
           />
           <ItemInfo
             title={"Género"}
-            body={data.genre === "MALE" ? "Masculino" : "Femenino"}
+            body={data?.genre === "MALE" ? "Masculino" : "Femenino"}
           />
-          <ItemInfo title={"Número de Identificación"} body={data.idNum} />
+          <ItemInfo title={"Número de Identificación"} body={data?.idNum} />
         </div>
 
         {/* Tarjeta 3: Contacto */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-[#000000CC] font-bold text-lg mb-4">Contacto</h2>
-          <ItemInfo title={"Número de Teléfono"} body={data.phone} />
+          <ItemInfo title={"Número de Teléfono"} body={data?.phone} />
         </div>
 
         {/* Tarjeta 4: Dirección */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-[#000000CC] font-bold text-lg mb-4">Dirección</h2>
-          <ItemInfo title={"Ciudad"} body={data.city} />
-          <ItemInfo title={"Calle"} body={data.street} />
-          <ItemInfo title={"Número"} body={data.streetNumber} />
-          <ItemInfo title={"Código Postal"} body={data.postalCode} />
+          <ItemInfo title={"Ciudad"} body={data?.city} />
+          <ItemInfo title={"Calle"} body={data?.street} />
+          <ItemInfo title={"Número"} body={data?.streetNumber} />
+          <ItemInfo title={"Código Postal"} body={data?.postalCode} />
         </div>
 
         {/* Tarjeta 5: Información de Emergencia */}
@@ -84,12 +84,12 @@ export default function ProfileInfo({
           <h2 className="text-[#000000CC] font-bold text-lg mb-4">
             Información de Emergencia
           </h2>
-          <ItemInfo title={"Nombre de Emergencia"} body={data.emergencyName} />
+          <ItemInfo title={"Nombre de Emergencia"} body={data?.emergencyName} />
           <ItemInfo
             title={"Teléfono de Emergencia"}
-            body={data.emergencyPhone}
+            body={data?.emergencyPhone}
           />
-          <ItemInfo title={"Email de Emergencia"} body={data.emergencyEmail} />
+          <ItemInfo title={"Email de Emergencia"} body={data?.emergencyEmail} />
         </div>
       </div>
 
