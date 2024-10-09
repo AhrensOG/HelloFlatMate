@@ -45,6 +45,8 @@ export default function Chat() {
 
   // Determina el estado del chat de tipo SUPPORT
   const supportChat = chats.find((chat) => chat.type === "SUPPORT");
+  const privateChats = chats.filter((chat) => chat.type === "PRIVATE");
+  const groupChats = chats.filter((chat) => chat.type === "GROUP");
 
   // Obtener el último mensaje del chat SUPPORT
   const lastMessage = supportChat?.messages[supportChat.messages.length - 1];
@@ -52,7 +54,56 @@ export default function Chat() {
   return (
     <div>
       {console.log(chats)}
+
+      {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
+      {groupChats &&
+        groupChats.map((chat) => {
+          return (
+            <ChatsCard
+              key={chat.id}
+              name={chat.property?.name}
+              image="/profile/profile.jpg"
+              lastMessage={chat.messages[chat.messages.length - 1]}
+              action={() =>
+                router.push(
+                  `/pages/user/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`
+                )
+              }
+            />
+          );
+        })}
+
       {/* Renderizar la tarjeta basada en el estado del chat SUPPORT */}
+      {privateChats &&
+        privateChats.map((chat) => {
+          // Encuentra el participante que sea de tipo "OWNER" y no sea el usuario actual
+          const ownerParticipant = chat.participants.find(
+            (u) => u.participantType === "OWNER" && u.participantId !== user.id
+          );
+
+          return (
+            <ChatsCard
+              key={chat.id}
+              name={
+                ownerParticipant
+                  ? ownerParticipant.owner?.name +
+                    " " +
+                    ownerParticipant.owner?.lastName
+                  : "Unknown"
+              }
+              image={
+                ownerParticipant?.owner?.profilePicture ||
+                "/profile/profile.jpg"
+              }
+              lastMessage={chat.messages[chat.messages.length - 1]}
+              action={() =>
+                router.push(
+                  `/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`
+                )
+              }
+            />
+          );
+        })}
       {!supportChat && (
         <ChatsCard name={"Soporte"} image={"/chat/soporte.svg"} id={user.id} />
       )}
