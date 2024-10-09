@@ -1,10 +1,10 @@
 export default function ItemInfo({ title, body }) {
   return (
-    <article className="flex flex-col gap-1 text-[#000000CC]">
-      <h3 className="font-medium text-base pl-2">{title}</h3>
-      <p className="shadow-item-profile h-[2.5rem] w-full rounded-lg p-2 border border-[#B2B2B2]">
-        {body}
-      </p>
+    <article className="flex flex-col gap-1 text-gray-700">
+      <h3 className="font-semibold text-sm pl-2 text-gray-600">{title}</h3>
+      <div className="bg-gray-100 h-[2.5rem] w-full rounded-md p-2 border border-gray-300 flex items-center">
+        <p className="text-gray-800 text-sm truncate">{body}</p>
+      </div>
     </article>
   );
 }

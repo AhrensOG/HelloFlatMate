@@ -57,11 +57,10 @@ export default function SearchBarFiltered({
             aria-label="Abrir filtros"
             onClick={() => setShowFilters(!showFilters)}
           >
-            Filter
+            Filtros
             <Image
               alt="Abrir filtros"
               src={"/search/filter-arrow.svg"}
-              layout="responsive"
               width={16}
               height={16}
             />

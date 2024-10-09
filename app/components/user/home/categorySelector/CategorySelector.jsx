@@ -52,7 +52,7 @@ const CategorySelector = ({
   const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [numberOccupants, setNumberOccupants] = useState();
-  console.log(allProperties);
+
   useEffect(() => {
     if (categoryQuery) {
       setCurrentCategory(categoryQuery);
@@ -71,12 +71,14 @@ const CategorySelector = ({
 
   // Construir la cadena de query string para los parámetros de búsqueda
   const buildQueryString = () => {
-    console.log(data);
-
     const params = new URLSearchParams();
 
     if (data.zone) {
       params.append("zone", data.zone);
+    }
+
+    if (data.rentalPeriod) {
+      params.append("rentalPeriod", data.rentalPeriod);
     }
 
     if (date.startDate) {
@@ -98,6 +100,53 @@ const CategorySelector = ({
     return params.toString();
   };
 
+  const getRentalPeriods = (propiedades) => {
+    const fechasUnicas = new Set();
+
+    propiedades.forEach((propiedad) => {
+      // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
+      if (
+        propiedad.category === "HELLO_ROOM" ||
+        propiedad.category === "HELLO_COLIVING"
+      ) {
+        // Acceder al array rooms y mapear sobre él
+        propiedad.rooms.forEach((room) => {
+          // Acceder a rentalPeriods y formatear las fechas
+          room.rentalPeriods.forEach((periodo) => {
+            const startDate = new Date(periodo.startDate);
+            const endDate = new Date(periodo.endDate);
+
+            // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
+            const formattedStartDate = `${startDate
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${(startDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}/${startDate
+              .getFullYear()
+              .toString()
+              .slice(-2)}`;
+
+            const formattedEndDate = `${endDate
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${(endDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
+
+            const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
+
+            // Añadir la fecha al Set para evitar duplicados
+            fechasUnicas.add(fecha);
+          });
+        });
+      }
+    });
+
+    // Convertir el Set a un array para devolverlo
+    return Array.from(fechasUnicas);
+  };
+
   // Función que se llama al hacer clic en el botón "Buscar"
   const handleSearch = () => {
     const queryString = buildQueryString();
@@ -108,6 +157,7 @@ const CategorySelector = ({
     switch (currentCategory) {
       case "HELLO_ROOM":
         const helloRoomLocations = extractLocations(helloRoomProperties);
+        const helloRoomRentalPeriods = getRentalPeriods(helloRoomProperties);
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
@@ -118,16 +168,26 @@ const CategorySelector = ({
                 title="¿En qué zona?"
                 name="zone"
               />
-              <SelectDate
+              <Select
+                options={helloRoomRentalPeriods}
+                data={data}
+                setData={setData}
+                title="Selecciona un periodo"
+                name="rentalPeriod"
+              />
+              {/* <SelectDate
                 title="Seleccione un rango de fechas"
                 data={date}
                 setData={setDate}
-              />
+              /> */}
             </div>
           </div>
         );
       case "HELLO_COLIVING":
         const helloColivingLocations = extractLocations(
+          helloColivingProperties
+        );
+        const helloColivingRentalPeriods = getRentalPeriods(
           helloColivingProperties
         );
         return (
@@ -140,11 +200,18 @@ const CategorySelector = ({
                 title="¿En qué zona?"
                 name="zone"
               />
-              <SelectDate
+              <Select
+                options={helloColivingRentalPeriods}
+                data={data}
+                setData={setData}
+                title="Selecciona un periodo"
+                name="rentalPeriod"
+              />
+              {/* <SelectDate
                 title="Seleccione un rango de fechas"
                 data={date}
                 setData={setDate}
-              />
+              /> */}
             </div>
           </div>
         );
@@ -184,6 +251,9 @@ const CategorySelector = ({
         const helloLandlordLocations = extractLocations(
           helloLandlordProperties
         );
+        const helloLandlordRentalPeriods = getRentalPeriods(
+          helloLandlordProperties
+        );
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
@@ -193,11 +263,18 @@ const CategorySelector = ({
                 setData={setData}
                 title="¿En qué zona?"
               />
-              <SelectDate
+              <Select
+                options={helloLandlordRentalPeriods}
+                data={data}
+                setData={setData}
+                title="Selecciona un periodo"
+                name="rentalPeriod"
+              />
+              {/* <SelectDate
                 title="Seleccione un rango de fechas"
                 data={date}
                 setData={setDate}
-              />
+              /> */}
             </div>
           </div>
         );

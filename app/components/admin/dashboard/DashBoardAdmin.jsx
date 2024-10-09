@@ -10,7 +10,7 @@ import CascadeUpdate from "./CascadeUpdate";
 import { useState } from "react";
 export default function DashBoardAdmin({ data }) {
   const router = useRouter();
-  const [showCascadUpdateModal, setShowCascadUpdateModal] = useState(true);
+  const [showCascadUpdateModal, setShowCascadUpdateModal] = useState(false);
   const handleShowCascadUpdateModal = () => {
     setShowCascadUpdateModal(!showCascadUpdateModal);
   };

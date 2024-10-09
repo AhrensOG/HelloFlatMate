@@ -2,7 +2,7 @@ import NavBar from "@/app/components/nav_bar/NavBar";
 import MessageContainer from "./MessageContainer";
 import MessageInput from "./MessageInput";
 import { useSearchParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { getSocket } from "@/app/socket";
 import { Context } from "@/app/context/GlobalContext";
@@ -27,8 +27,6 @@ export default function Chat() {
 
   // Función para crear un nuevo chat de soporte
   const createNewSuppChat = async () => {
-    console.log("creando nuevo chat");
-
     try {
       const res = await axios.post("/api/chat", {
         type: "SUPPORT",
@@ -76,6 +74,8 @@ export default function Chat() {
     if (chatId) {
       if (socket) {
         const usuarioId = searchParams.get("userId");
+        console.log(usuarioId);
+
         const handleSocketConnect = () => {
           setIsConnected(true);
           setTransport(socket.io.engine.transport.name);
@@ -147,6 +147,7 @@ export default function Chat() {
         text: message,
         senderId: userId,
         time: new Date().toLocaleTimeString(),
+        userName: state?.user?.name + " " + state?.user?.lastName,
       };
 
       socket.emit("sendMessage", newMessage);
@@ -177,7 +178,9 @@ export default function Chat() {
       </header>
 
       <main className="flex flex-col justify-between items-center flex-grow w-full">
-        <MessageContainer messages={messages} socketId={userId} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MessageContainer messages={messages} socketId={userId} />
+        </Suspense>
         <MessageInput onSendMessage={sendMessage} />
       </main>
     </div>
