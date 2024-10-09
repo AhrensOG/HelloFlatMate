@@ -16,6 +16,7 @@ export default function FilterPage() {
   const category = searchParams.get("category");
   const location = searchParams.get("zone"); // Cambiado de `zone` a `location` para representar la búsqueda por ubicación
   const occupants = searchParams.get("numberOccupants");
+  const rentalPeriod = searchParams.get("rentalPeriod");
 
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState(state?.properties || []);
@@ -38,6 +39,7 @@ export default function FilterPage() {
       categorys: category ? [category] : [], // Convertir a array si es necesario
       location: location || "",
       occupants: occupants || "",
+      rentalPeriod: rentalPeriod || "",
     }));
   }, [searchParams]);
 
@@ -181,9 +183,12 @@ export default function FilterPage() {
       return properties;
     }
     return properties.filter((property) => {
-      return filters.categorys.includes(
-        property.category.replace(/_/g, "").toLowerCase()
-      ); // No necesitas transformar la categoría
+      return (
+        filters.categorys.includes(property.category) ||
+        filters.categorys.includes(
+          property.category.replace(/_/g, "").toLowerCase()
+        )
+      );
     });
   };
 
@@ -251,6 +256,85 @@ export default function FilterPage() {
     });
   };
 
+  // Función para formatear una fecha a 'DD/MM/YY'
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Los meses son base 0
+    const year = String(d.getFullYear()).slice(-2); // Tomamos los últimos dos dígitos del año
+    return `${day}/${month}/${year}`;
+  };
+
+  // Función para convertir los `rentalPeriods` de las propiedades en un string
+  const convertRentalPeriodToString = (startDate, endDate) => {
+    const start = formatDate(startDate);
+    const end = formatDate(endDate);
+    return `Del ${start} al ${end}`;
+  };
+
+  // Filtro para rentalPeriod
+  const filterByRentalPeriod = (properties) => {
+    if (!filters.rentalPeriod) return properties;
+
+    return properties.filter((property) => {
+      const queryRentalPeriod = filters.rentalPeriod; // El string que llega en el query
+
+      // Lógica para HELLO_ROOM y HELLO_COLIVING
+      if (
+        property.category === "HELLO_ROOM" ||
+        property.category === "HELLO_COLIVING"
+      ) {
+        return property.rooms.some((room) => {
+          return room.rentalPeriods.some((period) => {
+            const rentalPeriodString = convertRentalPeriodToString(
+              period.startDate,
+              period.endDate
+            );
+            return rentalPeriodString === queryRentalPeriod;
+          });
+        });
+      }
+
+      // Lógica para HELLO_STUDIO y HELLO_LANDLORD
+      if (
+        property.category === "HELLO_STUDIO" ||
+        property.category === "HELLO_LANDLORD"
+      ) {
+        return property.rentalPeriods.some((period) => {
+          const rentalPeriodString = convertRentalPeriodToString(
+            period.startDate,
+            period.endDate
+          );
+          return rentalPeriodString === queryRentalPeriod;
+        });
+      }
+
+      return true; // Si no es ninguna de las categorías anteriores, no aplicar filtro
+    });
+  };
+
+  // Función para filtrar las rooms por rentalPeriod durante el renderizado
+  const filterRoomsByRentalPeriod = (rooms) => {
+    if (!filters.rentalPeriod) {
+      // Si no hay rentalPeriod en los filtros, devolver todas las rooms con estado FREE
+      return rooms;
+    }
+
+    return rooms.filter((room) => {
+      return room.rentalPeriods.some((period) => {
+        const rentalPeriodString = convertRentalPeriodToString(
+          period.startDate,
+          period.endDate
+        );
+        return (
+          rentalPeriodString === filters.rentalPeriod &&
+          period.status === "FREE"
+        );
+      });
+    });
+  };
+
+  // Actualiza applyFilters para usar filterByRentalPeriod
   const applyFilters = () => {
     let result = filterBySearch(properties);
     result = filterByCategory(result);
@@ -258,6 +342,7 @@ export default function FilterPage() {
     result = filterByDateRange(result); // Aplicar filtro de rango de fechas
     result = filterByPriceRange(result); // Aplicar filtro de rango de precio
     result = filterByOccupants(result); // Aplicar filtro de maximo de ocupantes
+    result = filterByRentalPeriod(result); // Aplicar filtro de rentalPeriod
     setFilteredProperties(result);
   };
 
@@ -293,18 +378,20 @@ export default function FilterPage() {
             {filteredProperties?.length === 0 ? (
               <div className="flex flex-col items-center w-full gap-6">
                 <p className="text-slate-400">
-                  No se encontraron propiedades segun tu búsqueda
+                  No se encontraron propiedades según tu búsqueda
                 </p>
                 <div className="w-full flex flex-col justify-center gap-2">
-                  <h2>Podrian interesarte</h2>
-                  <div className="flex flex-row flex-wrap justify-center gap-7 ">
+                  <h2>Podrían interesarte</h2>
+                  <div className="flex flex-row flex-wrap justify-center gap-7">
                     {properties.map((property) => {
-                      // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
                       if (
                         property.category === "HELLO_ROOM" ||
                         property.category === "HELLO_COLIVING"
                       ) {
-                        return property.rooms.map((room, index) => (
+                        const filteredRooms = filterRoomsByRentalPeriod(
+                          property.rooms
+                        );
+                        return filteredRooms.map((room, index) => (
                           <PropertyCard
                             key={`${property?.id}-${index}`}
                             property={property} // Pasar los datos de la propiedad
@@ -328,16 +415,19 @@ export default function FilterPage() {
               </div>
             ) : (
               filteredProperties.map((property) => {
-                // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
                 if (
                   property.category === "HELLO_ROOM" ||
                   property.category === "HELLO_COLIVING"
                 ) {
-                  return property.rooms.map((room, index) => (
+                  const filteredRooms = filterRoomsByRentalPeriod(
+                    property.rooms
+                  );
+                  return filteredRooms.map((room, index) => (
                     <PropertyCard
                       key={`${property?.id}-${index}`}
                       property={property} // Pasar los datos de la propiedad
                       price={room.price} // Pasar el precio específico de cada room
+                      roomId={room.id}
                     />
                   ));
                 } else {
@@ -370,12 +460,14 @@ export default function FilterPage() {
           <div className="w-[75%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-row flex-wrap justify-center">
             {filteredProperties?.length > 0 ? (
               filteredProperties.map((property) => {
-                // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
                 if (
                   property.category === "HELLO_ROOM" ||
                   property.category === "HELLO_COLIVING"
                 ) {
-                  return property.rooms.map((room, index) => (
+                  const filteredRooms = filterRoomsByRentalPeriod(
+                    property.rooms
+                  );
+                  return filteredRooms.map((room, index) => (
                     <PropertyCard
                       key={`${property?.id}-${index}`}
                       property={property} // Pasar los datos de la propiedad
@@ -397,10 +489,10 @@ export default function FilterPage() {
             ) : (
               <div className="flex flex-col items-center w-full gap-6">
                 <p className="text-slate-400">
-                  No se encontraron propiedades segun tu búsqueda
+                  No se encontraron propiedades según tu búsqueda
                 </p>
                 <div className="w-full flex flex-col justify-center gap-2">
-                  <h2>Podrian interesarte</h2>
+                  <h2>Podrían interesarte</h2>
                   <div className="flex flex-row flex-wrap justify-center gap-7 ">
                     {properties
                       .filter((property) => {
@@ -417,12 +509,14 @@ export default function FilterPage() {
                         );
                       })
                       .map((property) => {
-                        // Verificar si la propiedad es de categoría HELLO_ROOM o HELLO_COLIVING
                         if (
                           property.category === "HELLO_ROOM" ||
                           property.category === "HELLO_COLIVING"
                         ) {
-                          return property.rooms.map((room, index) => (
+                          const filteredRooms = filterRoomsByRentalPeriod(
+                            property.rooms
+                          );
+                          return filteredRooms.map((room, index) => (
                             <PropertyCard
                               key={`${property?.id}-${index}`}
                               property={property} // Pasar los datos de la propiedad

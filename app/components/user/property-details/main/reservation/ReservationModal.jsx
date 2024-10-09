@@ -102,6 +102,7 @@ export default function ReservationModal({
       startDate: startDate,
       endDate: endDate,
       price: price,
+      inReview: true,
     };
     setDataReservation(reservation);
 

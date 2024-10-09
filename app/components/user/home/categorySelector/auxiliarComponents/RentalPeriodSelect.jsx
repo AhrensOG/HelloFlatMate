@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon, CheckIcon } from "@heroicons/react/24/outline";
 
-const Select = ({
+const RentalPeriodSelect = ({
   name = false,
   options,
   data,
@@ -26,7 +26,7 @@ const Select = ({
   };
 
   return (
-    <section className="w-[18rem] relative">
+    <section className="w-[18rem]">
       <div
         className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white"
         onClick={handleClick}
@@ -43,7 +43,7 @@ const Select = ({
       <AnimatePresence>
         {showInput && (
           <motion.div
-            className="absolute w-full z-10 flex flex-col shadow-reservation-list bg-white max-h-28 overflow-y-scroll scrollbar-thin"
+            className="flex flex-col shadow-reservation-list mt-2 bg-white max-h-28 overflow-y-scroll scrollbar-thin"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0 }}
@@ -79,4 +79,4 @@ const Select = ({
   );
 };
 
-export default Select;
+export default RentalPeriodSelect;

@@ -9,6 +9,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import ProfileInfo from "@/app/components/user/profile/ProfileInfo";
 import { useRouter } from "next/navigation";
 import { Context } from "@/app/context/GlobalContext";
+import NavBar from "@/app/components/nav_bar/NavBar";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function Profile() {
   const { state } = useContext(Context);
@@ -26,36 +28,51 @@ export default function Profile() {
   return (
     <AnimatePresence>
       <div className={`${plus_jakarta.className}`}>
-        <header className="px-2">
-          <NavBarProfile action={!showInfo ? null : handlerShowInfo} />
+        <header>
+          <NavBar />
         </header>
-        <main className="px-4 flex flex-col gap-4">
-          <h1 className="pl-4 font-bold text-xl mt-4">Mi Perfil</h1>
-          {!showInfo ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
+        <div className="w-full flex justify-center items-center p-6">
+          <div className="w-full max-w-screen-xl flex items-center justify-center relative">
+            <button
+              onClick={() => route.back()}
+              type="button"
+              className="w-6 h-6 opacity-90 ml-4 absolute left-0"
             >
-              <ProfileCard
-                image={state?.user?.profilePicture || "/profile/profile.jfif"}
+              <ArrowLeftIcon />
+            </button>
+            <h1 className="text-xl font-bold">Mi perfil</h1>
+          </div>
+        </div>
+        <main className="w-full flex justify-center items-start">
+          <div className="px-4 flex flex-col gap-4 w-full max-w-screen-lg">
+            {/* <h1 className="pl-4 font-bold text-xl mt-4"></h1> */}
+            {!showInfo ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <ProfileCard
+                  image={state?.user?.profilePicture || "/profile/profile.jfif"}
+                  name={state?.user?.name || "Usuario"}
+                  email={state?.user?.email || "Correo@gmail.com"}
+                  action={handlerShowInfo}
+                />
+                <ProfileOptions />
+                <Logout />
+              </motion.div>
+            ) : (
+              <ProfileInfo
+                image={state?.user?.profilePicture || "/profile/profile.jpg"}
                 name={state?.user?.name || "Usuario"}
+                lastName={state?.user?.lasName || "Usuario"}
                 email={state?.user?.email || "Correo@gmail.com"}
                 action={handlerShowInfo}
+                data={state?.user}
               />
-              <ProfileOptions />
-              <Logout />
-            </motion.div>
-          ) : (
-            <ProfileInfo
-              image={state?.user?.profilePicture || "/profile/profile.jfif"}
-              name={state?.user?.name || "Usuario"}
-              lastName={state?.user?.lasName || "Usuario"}
-              email={state?.user?.email || "Correo@gmail.com"}
-              action={handlerShowInfo}
-            />
-          )}
+            )}
+          </div>
         </main>
       </div>
     </AnimatePresence>
