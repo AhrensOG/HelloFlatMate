@@ -49,12 +49,12 @@ export default function Chat() {
   const groupChats = chats.filter((chat) => chat.type === "GROUP");
 
   // Obtener el último mensaje del chat SUPPORT
-  const lastMessage = supportChat?.messages[supportChat.messages.length - 1];
+  const lastMessage = supportChat?.messages
+    .slice() // Hacemos una copia del array para no mutar el original
+    .sort((a, b) => new Date(b.date) - new Date(a.date))[0]; // Ordenamos los mensajes por fecha, de más reciente a más antiguo // Tomamos el primer elemento que será el más reciente
 
   return (
     <div>
-      {console.log(chats)}
-
       {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
       {groupChats &&
         groupChats.map((chat) => {
