@@ -31,7 +31,6 @@ const clientOptions = [
     icon: "/nav_bar/desktop-profile.svg",
     link: "/pages/user/profile",
   },
-  { title: "Soporte", icon: "/nav_bar/desktop-support.svg", link: "#" },
 ];
 
 const ownerOptions = [
@@ -145,9 +144,9 @@ export default function NavBar({
   };
 
   return (
-    <nav className="w-full">
+    <nav className="w-full min-h-[93px]">
       {/* MOBILE */}
-      <div className="w-full flex justify-between items-center sm:hidden p-2">
+      <div className="w-full min-h-[93px] flex justify-between items-center sm:hidden p-2">
         <button onClick={handleOpen} aria-label="Abrir menú">
           <Image
             src="/nav_bar/burger-btn-nav-bar.svg"
@@ -233,19 +232,20 @@ export default function NavBar({
               </button>
             </>
           )}
-
+          {user?.role === "CLIENT" && (
+            <Link
+              href="/pages/user/notification"
+              className="relative w-[34px] h-[34px]"
+            >
+              <Image
+                src="/nav_bar/notification-logo.svg"
+                fill
+                alt="Notificaciones"
+                priority
+              />
+            </Link>
+          )}
           {/* Notificaciones */}
-          <Link
-            href="/pages/user/notification"
-            className="relative w-[34px] h-[34px]"
-          >
-            <Image
-              src="/nav_bar/notification-logo.svg"
-              fill
-              alt="Notificaciones"
-              priority
-            />
-          </Link>
 
           {/* Dropdown */}
           <Dropdown p={0} />

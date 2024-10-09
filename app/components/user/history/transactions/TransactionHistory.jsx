@@ -26,9 +26,21 @@ export default function TransactionHistory({ redirect }) {
     <div>
       {/* MOBILE */}
       <div className="sm:hidden">
-        <header className="my-2">
-          <NavBarHistory redirect={redirect} title={"Transacciones"} />
+        <header>
+          <NavBar />
         </header>
+        <div className="w-full flex justify-center items-center p-6">
+          <div className="w-full max-w-screen-xl flex items-center justify-center relative">
+            <button
+              onClick={redirect}
+              type="button"
+              className="w-6 h-6 opacity-90 ml-4 absolute left-0"
+            >
+              <ArrowLeftIcon />
+            </button>
+            <h1 className="text-xl font-bold">Transacciones</h1>
+          </div>
+        </div>
         <main
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

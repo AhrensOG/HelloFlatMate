@@ -5,8 +5,6 @@ import HeaderDatePicker from "./date_picker_category_selector/HeaderDatePicker";
 import Month from "./date_picker_category_selector/Month";
 
 export default function DatePickerCategorySelector({ data, setData, type }) {
-  console.log(data);
-
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [date] = useState(new Date());
   const [month, setMonth] = useState(date.getMonth());
