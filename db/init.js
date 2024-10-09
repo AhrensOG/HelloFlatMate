@@ -37,7 +37,7 @@ const Worker = require("./models/worker");
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
         Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
-
+        Property.hasOne(Chat, { as: "chat", foreignKey: "propertyId" });
 
         //Room
         Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
@@ -74,7 +74,7 @@ const Worker = require("./models/worker");
         // Uno a Muchos
         Chat.hasMany(Message, { as: "messages", foreignKey: "chatId" });
         Chat.hasMany(ChatParticipant, { as: "participants", foreignKey: "chatId" });
-
+        Chat.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
 
         //CHATPARTICIPANT
         ChatParticipant.belongsTo(Chat, { as: "chat", foreignKey: "chatId" });

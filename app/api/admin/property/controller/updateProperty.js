@@ -1,10 +1,9 @@
-import { Property, RentalPeriod } from "@/db/init";
+import { Chat, ChatParticipant, Property, RentalPeriod } from "@/db/init";
 import { NextResponse } from "next/server";
 import { sequelize } from "@/db/models/comment";
+import chat from "@/db/models/chat";
 
 export async function updateProperty(id, data) {
-    console.log("DATOS: ", data);
-
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -57,7 +56,7 @@ export async function updateProperty(id, data) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
     }
     try {
-        const property = await Property.findByPk(id);
+        const property = await Property.findByPk(id, { include: { model: Chat, as: "chat" } });
         if (!property) {
             return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
         }
@@ -91,6 +90,32 @@ export async function updateProperty(id, data) {
             })
         }
 
+        if (data.ownerId && data.ownerId !== property.ownerId) {
+            // Eliminar al propietario anterior del chat
+            await ChatParticipant.destroy({
+                where: {
+                    participantId: property.ownerId,
+                    chatId: property.chat.id
+                }
+            });
+
+            // Crear un nuevo participante para el nuevo propietario
+            const newParticipant = await ChatParticipant.create({
+                chatId: property.chat.id,
+                participantId: data.ownerId,
+                participantType: "OWNER"
+            });
+
+            if (newParticipant) {
+                const chat = await Chat.findByPk(property.chat.id);
+                if (chat) {
+                    chat.ownerId = data.ownerId;
+                    await chat.save();
+                }
+            }
+        }
+
+        //Actualizar la propiedad
         await property.update(data);
         return NextResponse.json(property, { status: 200 });
     } catch (error) {

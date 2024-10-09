@@ -69,12 +69,7 @@ export async function getUserById(id) {
                     as: "supplies"
                 }
             ]
-        }) || await Admin.findByPk(id, {
-            include: {
-                model: ToDo,
-                as: "toDos"
-            }
-        });
+        }) || await Admin.findByPk(id);
 
         return NextResponse.json(user);
     } catch (error) {

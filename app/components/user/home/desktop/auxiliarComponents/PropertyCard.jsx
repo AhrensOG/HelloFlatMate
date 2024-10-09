@@ -12,8 +12,8 @@ export default function PropertyCard(
 ) {
   // Condicional para definir la ruta de redirección
   const href = roomId
-    ? `/pages/user/property-details/${propertyId}/room-details/${roomId}`
-    : `/pages/user/property-details/${propertyId}`;
+    ? `/pages/property-details/${propertyId}/room-details/${roomId}`
+    : `/pages/property-details/${propertyId}`;
 
   return (
     <div className="relative w-[246px] sm:w-[600px] md:w-[900px] h-[400px] sm:h-[600px] rounded-lg shadow-lg">

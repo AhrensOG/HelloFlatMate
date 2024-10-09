@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat } from "@/db/init";
+import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat, ChatParticipant } from "@/db/init";
 import { createGroupChat, createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
 import { sequelize } from "@/db/models/comment";
 
@@ -64,7 +64,7 @@ export async function updateStatusLeaseOrder(data) {
                 await transaction.rollback();
                 return NextResponse.json({ message: "Lease order property not found" }, { status: 404 });
             }
-            const property = await Property.findByPk(data.propertyId, { transaction });
+            const property = await Property.findByPk(data.propertyId, { include: { model: Chat, as: "chat" } }, { transaction });
             if (!property) {
                 await transaction.rollback();
                 return NextResponse.json({ message: "Property not found" }, { status: 404 });
@@ -87,6 +87,22 @@ export async function updateStatusLeaseOrder(data) {
                     ownerId: property.ownerId,
                     receiverId: leaseOrderProperty.clientId,
                 });
+
+                //Crear participantes del chat
+                const participantCLientPriv = await ChatParticipant.create({
+                    participantId: leaseOrderProperty.clientId,
+                    chatId: chatPrivate.id,
+                    participantType: "CLIENT",
+                })
+
+                //Asignar al chat grupal de la propiedad
+                if (property.chat) {
+                    const participantOwnerPriv = await ChatParticipant.create({
+                        participantId: leaseOrderProperty.clientId,
+                        chatId: property.chat.id,
+                        participantType: "CLIENT",
+                    })
+                }
 
                 await transaction.commit();
                 return NextResponse.json({ message: "Lease order property approved" }, { status: 200 });

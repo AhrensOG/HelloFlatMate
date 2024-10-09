@@ -5,30 +5,30 @@ import { motion } from "framer-motion";
 // Definimos los datos para cada sección
 const data = {
   helloroom: {
-    title: "Diseño Pensado en Estudiantes",
+    title: "Diseño pensado en estudiantes",
     description:
-      "Cada Helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
+      "Cada helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
     img1: "/home/family2.svg",
     img2: "/home/subFamily2.svg",
   },
   hellocoliving: {
-    title: "Diseño Pensado en Estudiantes",
+    title: "Diseño pensado en estudiantes",
     description:
-      "Cada Helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
+      "Cada helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
     img1: "/home/family3.svg",
     img2: "/home/subFamily3.svg",
   },
   hellostudio: {
-    title: "Perfecto para Estudiar Toda tu Carrera en Valencia",
+    title: "Perfecto para estudiar toda tu carrera en valencia",
     description:
-      "HelloStudio ofrece un ambiente productivo y colaborativo diseñado para profesionales y emprendedores. Disfruta de espacios modernos y funcionales que fomentan la creatividad y la eficiencia. En HelloStudio, encontrarás alta tecnología, internet rápido, salas de reuniones equipadas, áreas comunes cómodas y eventos comunitarios que fomentan el networking y la colaboración.",
+      "hellostudio ofrece un ambiente productivo y colaborativo diseñado para profesionales y emprendedores. Disfruta de espacios modernos y funcionales que fomentan la creatividad y la eficiencia. En HelloStudio, encontrarás alta tecnología, internet rápido, salas de reuniones equipadas, áreas comunes cómodas y eventos comunitarios que fomentan el networking y la colaboración.",
     img1: "/home/family4.svg",
     img2: "/home/subFamily4.svg",
   },
   hellolandlord: {
-    title: "Habitaciones Gestionadas para tu Comodidad",
+    title: "Habitaciones gestionadas para tu comodidad",
     description:
-      "Hello Landlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año.",
+      "hellolandlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año.",
     img1: "/home/family1.svg",
     img2: "/home/subFamily1.svg",
   },

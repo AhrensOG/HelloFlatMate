@@ -2,6 +2,8 @@ import { Admin, Client, Owner, Chat, ChatParticipant } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createPrivateChat(data) {
+    console.log(data);
+
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });
     }
@@ -56,8 +58,8 @@ export async function createGroupChat(data) {
     if (!data.type || data.type !== "GROUP") {
         return NextResponse.json({ error: "No type provided or invalid" }, { status: 400 });
     }
-    if (!data.ownerId || data.ownerId.trim() === "") {
-        return NextResponse.json({ error: "No owner id provided" }, { status: 400 });
+    if (!data.propertyId || data.propertyId <= 0) {
+        return NextResponse.json({ error: "No property id provided" }, { status: 400 });
     }
     if (!data.receiverIds || data.receiverIds.length === 0 || Array.isArray(data.receiverIds) === false) {
         return NextResponse.json({ error: "No receivers id provided" }, { status: 400 });
@@ -83,7 +85,7 @@ export async function createGroupChat(data) {
                 return NextResponse.json({ error: "Receivers not found" }, { status: 404 });
             }
 
-            const chat = await Chat.create({ type: data.type, ownerId: data.ownerId }, { transaction });
+            const chat = await Chat.create({ type: data.type, propertyId: data.propertyId }, { transaction });
 
             const participants = receivers.map((receiver) => {
                 return {
@@ -139,10 +141,6 @@ export async function createSupportChat(data) {
             }
 
             const chat = await Chat.create({ type: data.type }, { transaction });
-
-            console.log('Chat ID:', chat.id);
-            console.log('Receiver ID:', receiver.id);
-            console.log('Participant Type:', receiver.role);
 
             await ChatParticipant.create({
                 participantId: receiver.id,
