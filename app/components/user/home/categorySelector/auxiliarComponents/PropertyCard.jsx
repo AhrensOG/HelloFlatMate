@@ -12,8 +12,8 @@ export default function PropertyCard(
 ) {
   // Condicional para definir la ruta de redirección
   const href = roomId
-    ? `/pages/user/property-details/${propertyId}/room-details/${roomId}`
-    : `/pages/user/property-details/${propertyId}`;
+    ? `/pages/property-details/${propertyId}/room-details/${roomId}`
+    : `/pages/property-details/${propertyId}`;
 
   return (
     <div className="relative w-[246px] sm:w-[300px] md:w-[400px] h-[400px] rounded-lg shadow-lg mt-10">
@@ -42,7 +42,10 @@ export default function PropertyCard(
 
         {/* Botón de acción */}
         <div className="flex justify-center">
-          <Link href={href} className="flex items-center justify-center border border-black px-6 py-2 rounded-md hover:bg-black hover:text-white transition">
+          <Link
+            href={href}
+            className="flex items-center justify-center border border-black px-6 py-2 rounded-md hover:bg-black hover:text-white transition"
+          >
             Rentar ahora
           </Link>
         </div>

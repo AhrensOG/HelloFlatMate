@@ -92,7 +92,16 @@ export default function Auth() {
       <div className="buttons-auth flex flex-col gap-5 items-center w-full">
         <button
           type="button"
-          onClick={register ? () => openModal("facebook") : handleLoginFacebook}
+          onClick={
+            register
+              ? () => openModal("facebook")
+              : () =>
+                  toast.promise(handleLoginFacebook(), {
+                    loading: "Cargando...",
+                    success: "Iniciando Sesion",
+                    error: "Fallo la autenticación. Intente nuevamente.",
+                  })
+          }
           className="facebook-auth flex px-0.5 items-center justify-center text-center text-white bg-resolution-blue gap-4 rounded-xl w-[100%] h-[3.25rem] text-base"
           aria-label={
             register
@@ -114,7 +123,16 @@ export default function Auth() {
         </button>
         <button
           type="button"
-          onClick={register ? () => openModal("google") : handleLoginGoogle}
+          onClick={
+            register
+              ? () => openModal("google")
+              : () =>
+                  toast.promise(handleLoginGoogle(), {
+                    loading: "Cargando...",
+                    success: "Iniciando Sesion",
+                    error: "Fallo la autenticación. Intente nuevamente.",
+                  })
+          }
           className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
           aria-label={
             register ? "Registrarse con Google" : "Iniciar Sesión con Google"
@@ -143,7 +161,13 @@ export default function Auth() {
       </div>
       <AuthModal
         isOpen={isOpen}
-        handleAccept={handleAccept}
+        handleAccept={() =>
+          toast.promise(handleAccept(), {
+            loading: "Cargando...",
+            success: "Iniciando Sesion",
+            error: "Fallo la autenticación. Intente nuevamente.",
+          })
+        }
         handleReject={handleReject}
       />
     </section>
