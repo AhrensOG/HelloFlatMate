@@ -15,7 +15,6 @@ export const logInWithGoogle = async () => {
     });
     return res.data;
   } catch (error) {
-    toast.error("Ocurrió un error al autenticar.");
-    return error;
+    throw new Error(error);
   }
 };
