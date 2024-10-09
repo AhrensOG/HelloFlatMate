@@ -34,7 +34,7 @@ export default function Profile() {
         <div className="w-full flex justify-center items-center p-6">
           <div className="w-full max-w-screen-xl flex items-center justify-center relative">
             <button
-              onClick={() => route.back()}
+              onClick={showInfo ? () => handlerShowInfo() : () => route.back()}
               type="button"
               className="w-6 h-6 opacity-90 ml-4 absolute left-0"
             >
