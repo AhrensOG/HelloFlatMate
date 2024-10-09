@@ -74,6 +74,7 @@ export default function FamilySection() {
           fill
           className="object-cover"
           quality={100}
+          priority
         />
 
         {/* Gradiente superpuesto */}
@@ -125,6 +126,7 @@ export default function FamilySection() {
             width={400}
             height={400}
             quality={100}
+            priority
           />
         </motion.div>
       </div>
