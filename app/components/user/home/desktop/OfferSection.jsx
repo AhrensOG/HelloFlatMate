@@ -13,7 +13,7 @@ export default function OffersSection({
         {/* Imagen de fondo con posición absoluta */}
         <div className="absolute w-1/2 h-80">
           <Image
-            src="/home/circle.jpeg"
+            src="/home/gif.gif"
             alt="Ofertas en habitaciones"
             fill
             objectFit="cover"
