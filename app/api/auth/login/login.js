@@ -6,7 +6,7 @@ import { getUserById } from "../../user/controllers/getUsersController";
 // Función para codificar role y accessToken en un solo token
 function encodeToken(role, accessToken) {
   const tokenPayload = JSON.stringify({ role, accessToken });
-  return Buffer.from(tokenPayload).toString('base64');
+  return Buffer.from(tokenPayload).toString("base64");
 }
 
 const login = async (req) => {
@@ -21,11 +21,11 @@ const login = async (req) => {
 
       // Establecer la cookie con el token codificado
       const cookieStore = cookies();
-      cookieStore.set('auth_token', authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
+      cookieStore.set("auth_token", authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
 
       return NextResponse.json(user, { status: 200 });
     } else {
-      const names = body.split(' ');
+      const names = body?.name?.split(" ") || [body.name];
       const newUser = await Client.create({
         id: body.id,
         name: names[0],
@@ -40,7 +40,7 @@ const login = async (req) => {
 
       // Establecer la cookie con el token codificado
       const cookieStore = cookies();
-      cookieStore.set('auth_token', authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
+      cookieStore.set("auth_token", authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
       console.log(newUser);
 
       return NextResponse.json(newUser, { status: 200 });
