@@ -20,7 +20,6 @@ export default function Chat() {
   useEffect(() => {
     const fetchChats = async () => {
       console.log("Fetching chats...");
-
       try {
         const { data } = await axios.get("/api/chat?userId=" + user?.id);
         setChats(data.chats);
@@ -55,6 +54,7 @@ export default function Chat() {
 
   return (
     <div>
+      {console.log(chats)}
       {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
       {groupChats &&
         groupChats.map((chat) => {
@@ -91,10 +91,7 @@ export default function Chat() {
                     ownerParticipant.owner?.lastName
                   : "Unknown"
               }
-              image={
-                ownerParticipant?.owner?.profilePicture ||
-                "/profile/profile.jpg"
-              }
+              image={"/profile/profile.jpg"}
               lastMessage={chat.messages[chat.messages.length - 1]}
               action={() =>
                 router.push(

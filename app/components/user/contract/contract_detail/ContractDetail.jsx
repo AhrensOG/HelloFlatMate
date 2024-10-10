@@ -742,6 +742,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
           setModal={setSignatureModal}
           createContractPDFAndContinue={handleCreatePDF}
           handleContinue={handleContinue}
+          order={leaseOrder?.id}
         />
       )}
     </motion.section>

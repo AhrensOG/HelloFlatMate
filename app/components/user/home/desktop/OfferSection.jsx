@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function OffersSection({
-  title = "Descubre nuestras increíbles habitaciones",
+  title = "Descubre nuestros increíbles alojamientos",
   description = "¿Buscas un lugar cómodo y accesible para vivir? En Helloflatmate, ofrecemos habitaciones modernas y bien equipadas que se adaptan a tus necesidades y presupuesto. Con nosotros, tu nuevo hogar está a solo un clic de distancia.",
   link = "/pages/home",
 }) {
@@ -13,7 +13,7 @@ export default function OffersSection({
         {/* Imagen de fondo con posición absoluta */}
         <div className="absolute w-1/2 h-80">
           <Image
-            src="/home/desktopOfferBg.svg"
+            src="/home/circle.jpeg"
             alt="Ofertas en habitaciones"
             fill
             objectFit="cover"
@@ -22,8 +22,8 @@ export default function OffersSection({
         </div>
 
         {/* Contenido del Hero */}
-        <div className="relative w-full sm:w-5/6 z-10 flex flex-col items-start justify-center p-6 md:p-12 mt-4 ml-8 md:mt-8 md:ml-12 bg-[#1FAECC] md:text-left md:items-start">
-          <div className="flex flex-col w-full sm:w-2/3 md:w-4/5 text-center">
+        <div className="relative w-full sm:w-5/6 z-10 flex flex-col items-start justify-center p-6 md:p-12 mt-4 ml-8 md:mt-24 md:ml-32 bg-[#1FAECC] md:text-left md:items-start">
+          <div className="flex flex-col w-full sm:w-2/3 md:w-5/6 text-center">
             {/* Título */}
             <h2 className="font-extrabold text-[26px] leading-[30px] tracking-[-1.5px] mb-4 sm:text-3xl md:text-4xl">
               {title}
@@ -56,24 +56,24 @@ export default function OffersSection({
           </div>
 
           {/* Logo para mobile (abajo a la derecha) */}
-          <Image
+          {/* <Image
             src="/home/onlyLogo.svg"
             alt="más en habitaciones"
             width={50}
             height={49}
             quality={100}
             className="absolute bottom-6 right-2 sm:hidden"
-          />
+          /> */}
         </div>
         {/* Logo para desktop (arriba a la derecha) */}
-        <Image
+        {/* <Image
           src="/home/onlyLogo.svg"
           alt="más en habitaciones"
           width={50}
           height={49}
           quality={100}
           className="hidden sm:block absolute top-6 right-6"
-        />
+        /> */}
       </div>
     </section>
   );

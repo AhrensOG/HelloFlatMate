@@ -25,7 +25,7 @@ export default function Auth() {
     if (state.user) {
       router.push(redirect || "/");
     }
-  }, [state.user]);
+  }, [state.user, isOpen]);
 
   const handleIsRegister = () => {
     setRegister(!register);

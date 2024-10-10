@@ -5,9 +5,8 @@ export default function LeaseOrderClientSection({
   data,
   formatDate,
   contract,
+  isSigned = false,
 }) {
-  console.log(data);
-
   return (
     <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md space-y-4">
       <h2 className="text-xl font-bold text-gray-800">Datos del Cliente</h2>
@@ -36,30 +35,14 @@ export default function LeaseOrderClientSection({
           {data?.name + " " + data?.emergencyName || "No definido"}
         </p>
         <p className="text-gray-600">
-          Correo electrónico de emergencia: {data?.emergencyEmail || "No definido"}
+          Correo electrónico de emergencia:{" "}
+          {data?.emergencyEmail || "No definido"}
         </p>
         <p className="text-gray-600">
           Teléfono de emergencia: {data?.emergencyPhone || "No definido"}
         </p>
       </article>
       <article className="flex flex-col gap-4 pt-4">
-        {/* <div className="bg-white p-4 rounded shadow w-full md:w-1/3 flex flex-col justify-center items-center">
-          <p className="text-gray-600">Identificación</p>
-          {data?.documents
-            .filter((doc) => doc.type === "IDENTIFICATION")
-            .map((doc) =>
-              doc.urls.map((dc) => {
-                return (
-                  <Image
-                    src={dc || ""}
-                    height={200}
-                    width={200}
-                    className="mt-2"
-                  />
-                );
-              })
-            )}
-        </div> */}
         <div className="w-full flex flex-row flex-wrap gap-4">
           <div className="bg-white p-4 rounded shadow w-full md:w-1/3 flex flex-col justify-center items-center">
             <p className="text-gray-600">Nómina</p>
@@ -82,7 +65,7 @@ export default function LeaseOrderClientSection({
           </div>
           <div className="bg-white p-4 rounded shadow w-full md:w-1/3">
             <p className="text-gray-600">Firma</p>
-            {data?.signature ? (
+            {data?.signature && isSigned ? (
               <Link href={data?.signature || "#"} target="_blank">
                 <Image
                   src={data?.signature || ""}
@@ -100,7 +83,7 @@ export default function LeaseOrderClientSection({
             )}
           </div>
         </div>
-
+        {console.log(contract)}
         <section className="bg-gray-100 rounded-lg shadow-md self-center w-full">
           <h2 className="text-xl font-bold text-gray-800 py-3">Contrato</h2>
           {contract && contract.url ? (

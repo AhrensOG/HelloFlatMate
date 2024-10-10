@@ -16,10 +16,10 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
   const handleRedirect = () => {
     if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
       route.push(
-        `/pages/user/property-details/${property.propertyId}/room-details/${property.id}`
+        `/pages/property-details/${property.propertyId}/room-details/${property.id}`
       );
     } else {
-      route.push(`/pages/user/property-details/${property?.id}`);
+      route.push(`/pages/property-details/${property?.id}`);
     }
   };
 
@@ -159,8 +159,7 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
           </div>
         </div>
       </div>
-      {leaseOrder.isSigned &&
-      leaseOrder.status === "APPROVED" ? (
+      {leaseOrder.isSigned && leaseOrder.status === "APPROVED" ? (
         // Si está firmado, solo mostramos el span si está en revisión
         <p
           title="¡Tu solicitud fue aprobada y el contrato firmado!"
@@ -172,8 +171,7 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
             className="size-4"
           />
         </p>
-      ) : !leaseOrder.isSigned &&
-        leaseOrder.status === "APPROVED" ? (
+      ) : !leaseOrder.isSigned && leaseOrder.status === "APPROVED" ? (
         // Si no está en revisión y listo para firmar
         <div className="w-full">
           <button

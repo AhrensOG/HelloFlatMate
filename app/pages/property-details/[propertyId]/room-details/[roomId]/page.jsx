@@ -120,15 +120,15 @@ export default function RoomDetails({ params }) {
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
-          <h1 className="font-bold text-[1.37rem]">
-            {roomData.name}
-            <span className="pl-2 font-light text-slate-400">
+          <div className="w-full">
+            <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+            <span className="font-light text-[#000000B2]">
               ({roomData.serial})
             </span>
-          </h1>
-          <h4 className="text-[#000000B2] text-base">
-            {data.city + ", " + data.street}
-          </h4>
+            <h4 className="text-[#000000B2] text-base">
+              {data.city + ", " + data.street}
+            </h4>
+          </div>
           {roomData.price && <PriceSection data={roomData.price} />}
           <div className="flex flex-col gap-6">
             <GuestInfoRoom
@@ -270,12 +270,10 @@ export default function RoomDetails({ params }) {
 
           {/* RIGHT SIDE */}
           <div className="w-full space-y-4">
-            <h1 className="font-bold text-[1.37rem]">
-              {roomData.name}
-              <span className="pl-2 font-light text-slate-400">
-                ({roomData.serial})
-              </span>
-            </h1>
+            <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+            <span className="font-light text-[#000000B2]">
+              ({roomData.serial})
+            </span>
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>

@@ -18,8 +18,6 @@ export async function middleware(request) {
   const cookieStore = cookies(); // Usa cookies() para acceder a las cookies
   const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
-  console.log("Token:", token); // Verificar si el token está presente
-
   const allowedPaths = [
     "/",
     "/pages/auth",
@@ -66,7 +64,6 @@ export async function middleware(request) {
   }
 
   const decodedToken = decodeToken(token);
-  console.log("Decoded Token:", decodedToken); // Verificar si el token se decodifica correctamente
 
   if (!decodedToken) {
     const redirectUrl = new URL(
@@ -77,7 +74,6 @@ export async function middleware(request) {
   }
 
   const { role } = decodedToken;
-  console.log("Role:", role); // Verificar si el rol está presente
 
   const rolesPaths = {
     ADMIN: [
@@ -104,8 +100,6 @@ export async function middleware(request) {
   const hasAccess = allowedRolesPaths.some((allowedPath) =>
     pathName.startsWith(allowedPath)
   );
-
-  console.log("Has Access:", hasAccess); // Verificar si tiene acceso a la ruta
 
   if (!hasAccess && pathName !== "/") {
     const redirectUrl = new URL(
