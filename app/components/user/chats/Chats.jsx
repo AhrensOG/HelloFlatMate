@@ -90,10 +90,7 @@ export default function Chat() {
                     ownerParticipant.owner?.lastName
                   : "Unknown"
               }
-              image={
-                ownerParticipant?.owner?.profilePicture ||
-                "/profile/profile.jpg"
-              }
+              image={"/profile/profile.jpg"}
               lastMessage={chat.messages[chat.messages.length - 1]}
               action={() =>
                 router.push(
