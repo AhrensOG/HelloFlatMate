@@ -27,8 +27,8 @@ const login = async (req) => {
     } else {
       const newUser = await Client.create({
         id: body.id,
-        name: body.name,
-        lastName: body.name,
+        name: body.name || "Name",
+        lastName: body.name || "LastName",
         email: body.email,
         profilePicture: body.profile_picture,
         role: "CLIENT",
