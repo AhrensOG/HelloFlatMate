@@ -123,6 +123,7 @@ export default function Chat() {
           socket.off("connect", handleSocketConnect);
           socket.off("disconnect", handleSocketDisconnect);
           socket.off("newMessage");
+          socket.on("disconnect", handleSocketDisconnect);
         };
       }
     }
