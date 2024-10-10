@@ -19,11 +19,11 @@ const SelectCategorySlider = ({ children }) => {
   ];
 
   return (
-    <Flicking plugins={plugins} align="center" circular={true}>
+    <Flicking plugins={plugins} align="center" circular={true} >
       {children}
       <ViewportSlot>
-        <span className="flicking-arrow-prev is-thin hidden sm:block"></span>
-        <span className="flicking-arrow-next is-thin hidden sm:block "></span>
+        <span className="flicking-arrow-prev is-thin custom-arrow hidden sm:block"></span>
+        <span className="flicking-arrow-next is-thin custom-arrow hidden sm:block "></span>
       </ViewportSlot>
     </Flicking>
   );

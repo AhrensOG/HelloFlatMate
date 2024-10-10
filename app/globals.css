@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-arrow::before,
+.custom-arrow::after {
+  background-color: #000000 !important; /* Aquí pones el color que prefieras */
+  width: 24px; /* Ajusta las dimensiones si lo necesitas */
+  height: 6px;
+}

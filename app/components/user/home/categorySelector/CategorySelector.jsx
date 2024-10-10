@@ -372,48 +372,52 @@ const CategorySelector = ({
         </div>
       </div>
 
-      <div className="w-full">
-        <SelectCategorySlider>
-          {allProperties.map((item) => {
-            // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
-            if (
-              item.category === "HELLO_ROOM" ||
-              item.category === "HELLO_COLIVING"
-            ) {
-              return (
-                item.rooms
-                  // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
-                  .map((room) => (
-                    <div className="mr-4" key={room.id}>
-                      {/* <PropertyCard
+      <div className="w-full flex justify-center items-center">
+        <div className="w-full max-w-screen-xl">
+          <SelectCategorySlider>
+            {allProperties.map((item) => {
+              // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
+              if (
+                item.category === "HELLO_ROOM" ||
+                item.category === "HELLO_COLIVING"
+              ) {
+                return (
+                  item.rooms
+                    // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
+                    .map((room) => (
+                      <div className="mr-4" key={room.id}>
+                        {/* <PropertyCard
                         roomId={room.id}
                         propertyId={item.id}
                         img={room?.images[0]}
                         title={room.name}
                       /> */}
-                      <CategorySelectorPropertyCard
-                        img={room?.images[0]}
-                        category={item.category}
-                        propertyId={item.id}
-                        roomId={room.id}
-                        location={{street: item.street, city: item.city}}
-                        description={room.description}
-                      />
-                    </div>
-                  ))
+                        <CategorySelectorPropertyCard
+                          img={room?.images[0]}
+                          category={item.category}
+                          propertyId={item.id}
+                          roomId={room.id}
+                          location={{ street: item.street, city: item.city }}
+                          description={room.description}
+                        />
+                      </div>
+                    ))
+                );
+              }
+              return (
+                <div className="mr-4" key={item.id}>
+                  <CategorySelectorPropertyCard
+                    img={item?.images[0]}
+                    category={item.category}
+                    propertyId={item.id}
+                    location={{ street: item.street, city: item.city }}
+                    description={item.description}
+                  />
+                </div>
               );
-            }
-            return (
-              <div className="mr-4" key={item.id}>
-                <PropertyCard
-                  propertyId={item.id}
-                  img={item?.images[0]}
-                  title={item.name}
-                />
-              </div>
-            );
-          })}
-        </SelectCategorySlider>
+            })}
+          </SelectCategorySlider>
+        </div>
       </div>
     </motion.section>
   );
