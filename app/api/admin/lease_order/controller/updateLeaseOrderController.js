@@ -95,15 +95,6 @@ export async function updateStatusLeaseOrder(data) {
                     participantType: "CLIENT",
                 })
 
-                //Asignar al chat grupal de la propiedad
-                if (property.chat) {
-                    const participantOwnerPriv = await ChatParticipant.create({
-                        participantId: leaseOrderProperty.clientId,
-                        chatId: property.chat.id,
-                        participantType: "CLIENT",
-                    })
-                }
-
                 await transaction.commit();
                 return NextResponse.json({ message: "Lease order property approved" }, { status: 200 });
             } else if (data.action === "REJECTED") {
@@ -158,6 +149,14 @@ export async function updateStatusLeaseOrder(data) {
                 ownerId: property.ownerId,
                 receiverId: leaseOrderRoom.clientId,
             });
+            //Asignar al chat grupal de la propiedad
+            if (property.chat) {
+                const participantOwnerPriv = await ChatParticipant.create({
+                    participantId: leaseOrderRoom.clientId,
+                    chatId: property.chat.id,
+                    participantType: "CLIENT",
+                })
+            }
 
             await transaction.commit();
             return NextResponse.json({ message: "Lease order room approved" }, { status: 200 });
