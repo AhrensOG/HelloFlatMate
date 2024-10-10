@@ -25,11 +25,10 @@ const login = async (req) => {
 
       return NextResponse.json(user, { status: 200 });
     } else {
-      const names = body?.name?.split(" ") || [body.name];
       const newUser = await Client.create({
         id: body.id,
-        name: names[0],
-        lastName: body[1],
+        name: body.name,
+        lastName: body.name,
         email: body.email,
         profilePicture: body.profile_picture,
         role: "CLIENT",
