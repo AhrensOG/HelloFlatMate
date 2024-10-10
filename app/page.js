@@ -59,7 +59,8 @@ const hellocoliving = {
 };
 const hellostudio = {
   hero: {
-    img: "/home/hero4.jpeg",
+    // img: "/home/hero4.",
+    img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
     title: "Trabaja, conecta y crece en HelloStudio",
     description:
       "Espacios de coworking productivos y colaborativos con tecnología avanzada, internet rápido, salas de reuniones, áreas comunes, y eventos comunitarios, ideales para profesionales y emprendedores en crecimiento.",
