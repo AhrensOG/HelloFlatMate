@@ -157,7 +157,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* {activeSection === "helloroom" && (
+        {activeSection === "helloroom" && (
           <div className="w-full flex flex-col">
             <DesktopHero
               img={helloroom.hero.img}
@@ -251,7 +251,7 @@ export default function Home() {
             />
             <PropertySlider data={properties} />
           </div>
-        )} */}
+        )}
         <InfoSection />
         <Banner />
         <Footer />

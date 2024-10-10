@@ -11,6 +11,7 @@ import SelectDateHelloStudio from "./SelectDateHelloStudio";
 import DatePickerCategorySelector from "./DatePickerCategoySelector";
 import HomeSlider from "../desktop/auxiliarComponents/HomeSlider";
 import PropertyCard from "./auxiliarComponents/PropertyCard";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const list = [
   {
@@ -291,23 +292,30 @@ const CategorySelector = ({
       transition={{ duration: 0.5 }}
       className={`${plus_jakarta.className} w-full flex flex-col gap-5 p-4`}
     >
-      <div className="w-full flex flex-row justify-start items-center gap-2 p-5">
+      <div className="w-full flex flex-row justify-between items-center gap-2 p-5">
         <button
           onClick={() => router.push("/")}
           type="button"
-          className="self-start flex justify-center items-center gap-2"
+          className="self-start flex justify-between min-w-20 items-center gap-2"
         >
           <Image
             src={"/payment/back-icon.svg"}
-            width={24}
-            height={24}
+            width={32}
+            height={32}
             alt="Boton para regresar"
           />
           <span className="text-sm underline font-medium">Volver</span>
         </button>
-        <h1 className="w-[calc(100%_-_170px)] text-center font-bold sm:text-lg">
+        <h1 className="w-full text-center font-bold sm:text-lg">
           ¿Qué deseas reservar?
         </h1>
+        <button
+          onClick={() => router.push("/")}
+          type="button"
+          className="self-start flex justify-center min-w-20 items-center gap-2"
+        >
+          <XMarkIcon className="size-8"/>
+        </button>
       </div>
 
       {/* Cards de categorías */}
