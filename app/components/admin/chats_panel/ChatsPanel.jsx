@@ -15,23 +15,25 @@ export default function ChatsPanel({ data }) {
     setUser(state?.user);
   }, [state?.user]);
 
-  const handleRedirect = async (chatId) => {
-    try {
-      const res = await axios.patch("/api/admin/chat", {
-        type: "assing",
-        chatId: chatId,
-        suppId: user?.id,
-      });
-      console.log(res);
-      // Actualizar estado después de asignar el chat
-      setChats((prevChats) =>
-        prevChats.map((chat) =>
-          chat.id === chatId ? { ...chat, ownerId: user?.id } : chat
-        )
-      );
-    } catch (err) {
-      console.log(err);
-      throw err;
+  const handleRedirect = async (chatId, type = "!supp") => {
+    if (type === "supp") {
+      try {
+        const res = await axios.patch("/api/admin/chat", {
+          type: "assing",
+          chatId: chatId,
+          suppId: user?.id,
+        });
+        console.log(res);
+        // Actualizar estado después de asignar el chat
+        setChats((prevChats) =>
+          prevChats.map((chat) =>
+            chat.id === chatId ? { ...chat, ownerId: user?.id } : chat
+          )
+        );
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
     }
   };
 
@@ -64,11 +66,14 @@ export default function ChatsPanel({ data }) {
 
   // Filtrar los chats según las condiciones
   const activeChats = chats.filter(
-    (chat) => chat.isActive && chat.ownerId === user.id
+    (chat) =>
+      chat.isActive && chat.ownerId === user.id && chat.type === "SUPPORT"
   );
   const waitingChats = chats.filter(
-    (chat) => chat.isActive && chat.ownerId === null
+    (chat) => chat.isActive && chat.ownerId === null && chat.type === "SUPPORT"
   );
+
+  const allChats = chats.filter((chat) => chat.type !== "SUPPORT");
 
   return (
     <main className="p-6 rounded-lg space-y-6">
@@ -103,7 +108,7 @@ export default function ChatsPanel({ data }) {
                   </span>
                   <button
                     onClick={() => {
-                      toast.promise(handleRedirect(chat.id), {
+                      toast.promise(handleRedirect(chat.id, "supp"), {
                         loading: "Procesando",
                         success: () => {
                           // Actualiza el estado de los chats para reflejar la asignación
@@ -201,7 +206,7 @@ export default function ChatsPanel({ data }) {
                   </span>
                   <button
                     onClick={() => {
-                      toast.promise(handleRedirect(chat.id), {
+                      toast.promise(handleRedirect(chat.id, "supp"), {
                         loading: "Procesando",
                         success: () => {
                           // Actualiza el estado de los chats para reflejar la asignación
@@ -230,6 +235,67 @@ export default function ChatsPanel({ data }) {
           })
         ) : (
           <p>No hay chats en espera.</p>
+        )}
+      </section>
+
+      {/* Sección de todos los chats */}
+      <section>
+        <h2 className="text-2xl font-bold mb-4">Todos los Chats</h2>
+        {allChats.length > 0 ? (
+          allChats.map((chat, index) => {
+            const filteredMessages = chat.messages.filter(
+              (message) => message.userType !== "ADMIN"
+            );
+            const lastMessage = filteredMessages[filteredMessages.length - 1];
+
+            return (
+              <div
+                key={index}
+                className="p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 bg-gray-100 text-[#0E155F]"
+              >
+                <h3 className="font-bold text-lg">
+                  {lastMessage ? lastMessage.userName : "Chat sin mensajes"}
+                </h3>
+                <p className="mt-2">
+                  {lastMessage
+                    ? lastMessage.body
+                    : "Este chat no tiene mensajes aún."}
+                </p>
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-[#0E155F] text-sm">
+                    {lastMessage
+                      ? new Date(lastMessage.date).toLocaleString()
+                      : "No hay fecha"}
+                  </span>
+                  <button
+                    onClick={() => {
+                      toast.promise(handleRedirect(chat.id), {
+                        loading: "Procesando",
+                        success: () => {
+                          setChats((prevChats) =>
+                            prevChats.map((c) =>
+                              c.id === chat.id ? { ...c, ownerId: user?.id } : c
+                            )
+                          );
+                          window.open(
+                            `/pages/user/chats/chat?type=supp&chat=${chat.id}&userId=${user.id}`,
+                            "_blank"
+                          );
+                          return "Chat asignado";
+                        },
+                        error: "Error al asignar el chat",
+                      });
+                    }}
+                    className="bg-[#0E155F] text-white px-4 py-2 rounded-md transition duration-300 hover:bg-[#4C8BF5]"
+                  >
+                    Ir
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <p>No hay chats disponibles.</p>
         )}
       </section>
     </main>

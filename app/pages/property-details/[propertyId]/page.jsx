@@ -87,9 +87,7 @@ export default function PropertyDetails({ params }) {
         >
           <div className="w-full">
             <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
-            <span className="font-light text-slate-400">
-              ({data.serial})
-            </span>
+            <span className="font-light text-slate-400">({data.serial})</span>
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>
@@ -217,12 +215,8 @@ export default function PropertyDetails({ params }) {
 
           {/* RIGHT SIDE */}
           <div className="w-full space-y-4">
-            <h1 className="font-bold text-[1.37rem]">
-              {data.name}
-              <span className="font-light text-slate-400">
-                ({data.serial})
-              </span>
-            </h1>
+            <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
+            <span className="font-light text-slate-400">({data.serial})</span>
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>

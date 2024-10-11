@@ -16,7 +16,7 @@ export default function AdminProfilePage() {
   }, []);
   if (propertiesSimple.length <= 0) {
     return (
-      <div className="h-screen">
+      <div className="h-screen flex flex-col">
         <header>
           <NavBar client={false} admin={true} owner={false} />
         </header>
