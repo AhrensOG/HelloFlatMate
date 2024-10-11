@@ -85,15 +85,15 @@ export default function PropertyDetails({ params }) {
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
-          <h1 className="font-bold text-[1.37rem]">
-            {data.name}
-            <span className="pl-2 font-light text-slate-400">
+          <div className="w-full">
+            <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
+            <span className="font-light text-slate-400">
               ({data.serial})
             </span>
-          </h1>
-          <h4 className="text-[#000000B2] text-base">
-            {data.city + ", " + data.street}
-          </h4>
+            <h4 className="text-[#000000B2] text-base">
+              {data.city + ", " + data.street}
+            </h4>
+          </div>
           {data.price &&
           (data.category === "HELLO_STUDIO" ||
             data.category === "HELLO_LANDLORD") ? (
@@ -219,7 +219,7 @@ export default function PropertyDetails({ params }) {
           <div className="w-full space-y-4">
             <h1 className="font-bold text-[1.37rem]">
               {data.name}
-              <span className="pl-2 font-light text-slate-400">
+              <span className="font-light text-slate-400">
                 ({data.serial})
               </span>
             </h1>

@@ -53,9 +53,9 @@ const SelectCategoryPage = () => {
 
   return (
     <>
-      <header>
+      {/* <header>
         <NavBar client={true} admin={false} owner={false} />
-      </header>
+      </header> */}
       {/* Suspense para manejar el loader mientras se cargan las propiedades */}
       <Suspense fallback={<Loader />}>
         <CategorySelector

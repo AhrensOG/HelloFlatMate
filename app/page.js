@@ -12,6 +12,7 @@ import PropertySlider from "./components/user/home/desktop/PropertySlider";
 import InfoSection from "./components/user/home/desktop/InfoSection";
 import Banner from "./components/user/home/desktop/Banner";
 import Footer from "./components/user/home/desktop/Footer";
+import MapSection from "./components/user/home/desktop/auxiliarComponents/MapSection";
 
 const helloroom = {
   hero: {
@@ -59,7 +60,8 @@ const hellocoliving = {
 };
 const hellostudio = {
   hero: {
-    img: "/home/hero4.jpeg",
+    // img: "/home/hero4.",
+    img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
     title: "Trabaja, conecta y crece en HelloStudio",
     description:
       "Espacios de coworking productivos y colaborativos con tecnología avanzada, internet rápido, salas de reuniones, áreas comunes, y eventos comunitarios, ideales para profesionales y emprendedores en crecimiento.",
@@ -154,10 +156,11 @@ export default function Home() {
             <CommunitySection />
             <FamilySection />
             <PropertySlider data={properties} />
+            <MapSection />
           </div>
         )}
 
-        {/* {activeSection === "helloroom" && (
+        {activeSection === "helloroom" && (
           <div className="w-full flex flex-col">
             <DesktopHero
               img={helloroom.hero.img}
@@ -178,6 +181,7 @@ export default function Home() {
               img2={helloroom.family.img2}
             />
             <PropertySlider data={properties} />
+            <MapSection />
           </div>
         )}
 
@@ -226,6 +230,7 @@ export default function Home() {
               img2={hellostudio.family.img2}
             />
             <PropertySlider data={properties} />
+            <MapSection />
           </div>
         )}
 
@@ -251,7 +256,7 @@ export default function Home() {
             />
             <PropertySlider data={properties} />
           </div>
-        )} */}
+        )}
         <InfoSection />
         <Banner />
         <Footer />

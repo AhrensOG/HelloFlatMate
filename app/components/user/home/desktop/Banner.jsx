@@ -6,7 +6,7 @@ export default function Banner() {
     <section className="relative w-full bg-[#1FAECC] flex flex-col items-center justify-center p-6 py-16 gap-6">
       {/* Título principal */}
       <h2 className="font-medium text-xl sm:text-3xl text-center text-black max-w-screen-sm">
-        Registrate hoy y disfruta de nuestros increíbles servicios
+        Regístrate hoy y disfrúta de nuestros increíbles servicios
       </h2>
 
       {/* Contenedor del formulario */}

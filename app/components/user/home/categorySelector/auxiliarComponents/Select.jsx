@@ -28,7 +28,7 @@ const Select = ({
   return (
     <section className="w-[18rem] relative">
       <div
-        className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white"
+        className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white border-2"
         onClick={handleClick}
       >
         {selectedValue}{" "}
@@ -43,7 +43,7 @@ const Select = ({
       <AnimatePresence>
         {showInput && (
           <motion.div
-            className="absolute w-full z-10 flex flex-col shadow-reservation-list bg-white max-h-28 overflow-y-scroll scrollbar-thin"
+            className="absolute w-full z-10 flex flex-col shadow-reservation-list bg-white max-h-28 overflow-y-scroll scrollbar-thin border-2 rounded-md"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0 }}

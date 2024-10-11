@@ -10,27 +10,28 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
       {/* Mobile version */}
       <div className="sm:hidden flex-col w-full divide-y">
         <div className="flex h-20 justify-between items-center w-full gap-2">
-          <Link
-            href={"/pages/select-category"}
-            className="bg-[#0E175C] text-sm text-white px-3 py-2 rounded"
-            aria-label="Buscar una habitación"
-          >
-            Buscar habitaciones
-          </Link>
-
-          <Link
-            href="/"
-            className="relative w-[100px] h-[35px]"
-            title="Volver a inicio"
-          >
-            <Image
-              src="/nav_bar/nav-bar-logo.svg"
-              fill
-              alt="Logo de HelloFlatMate"
-              priority
-            />
-          </Link>
-
+          <div className="flex items-center h-20 w-full">
+            <Link
+              href="/"
+              className="relative w-[80px] h-[50px]"
+              title="Volver a inicio"
+            >
+              <Image
+                // src="/nav_bar/nav-bar-logo.svg"
+                src="/home/onlyLogo.svg"
+                fill
+                alt="Logo de HelloFlatMate"
+                priority
+              />
+            </Link>
+            <Link
+              href={"/pages/select-category"}
+              className="px-4 py-2 text-sm font-medium underline underline-offset-2 rounded"
+              aria-label="Buscar una habitación"
+            >
+              Buscar alojamientos
+            </Link>
+          </div>
           <div className="flex items-center gap-2">
             <AccountDropdown />
             <Dropdown p-0 />
@@ -49,9 +50,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           >
             Inicio
           </button>
-          <Link
-            href={"/pages/user/filtered?category=HELLO_ROOM"}
-            // onClick={() => setActiveSection("helloroom")}
+          <button
+            // href={"/pages/user/filtered?category=HELLO_ROOM"}
+            onClick={() => setActiveSection("helloroom")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -59,8 +60,19 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </Link>
-          <Link
+          </button>
+          <button
+            // href={"/pages/user/filtered?category=HELLO_STUDIO"}
+            onClick={() => setActiveSection("hellostudio")}
+            className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
+              activeSection === "hellostudio"
+                ? "font-bold bg-slate-100"
+                : "hover:font-bold hover:bg-slate-100"
+            }`}
+          >
+            hellostudio
+          </button>
+          {/* <Link
             href={"/pages/user/filtered?category=HELLO_COLIVING"}
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
@@ -72,17 +84,6 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             hellocoliving
           </Link>
           <Link
-            href={"/pages/user/filtered?category=HELLO_STUDIO"}
-            // onClick={() => setActiveSection("hellostudio")}
-            className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
-              activeSection === "hellostudio"
-                ? "font-bold bg-slate-100"
-                : "hover:font-bold hover:bg-slate-100"
-            }`}
-          >
-            hellostudio
-          </Link>
-          <Link
             href={"/pages/user/filtered?category=HELLO_LANDLORD"}
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
@@ -92,21 +93,22 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </Link>
+          </Link> */}
         </div>
       </div>
 
       {/* Desktop version */}
       <div className="hidden sm:flex flex-col w-full divide-y">
         <div className="flex justify-between items-center w-full h-20 px-4 md:px-6">
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-1 md:gap-4">
             <Link
               href="/"
-              className="relative w-[120px] h-[40px] md:w-[145px] md:h-[48px]"
+              className="relative w-[80px] h-[50px]"
               title="Volver a inicio"
             >
               <Image
-                src="/nav_bar/nav-bar-logo.svg"
+                // src="/nav_bar/nav-bar-logo.svg"
+                src="/home/onlyLogo.svg"
                 fill
                 alt="Logo de HelloFlatMate"
                 priority
@@ -115,10 +117,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             <div className="h-[40px] md:h-[44px] border-l border-black"></div>
             <Link
               href={"/pages/select-category"}
-              className="bg-[#0E175C] text-white px-4 py-2 md:px-6 md:py-3 rounded"
+              className="px-4 py-2 text-lg font-medium underline underline-offset-2 rounded"
               aria-label="Buscar una habitación"
             >
-              Buscar una habitación
+              Buscar alojamientos
             </Link>
           </div>
 
@@ -150,9 +152,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           >
             Inicio
           </button>
-          <Link
-            href={"/pages/user/filtered?category=HELLO_ROOM"}
-            // onClick={() => setActiveSection("helloroom")}
+          <button
+            // href={"/pages/user/filtered?category=HELLO_ROOM"}
+            onClick={() => setActiveSection("helloroom")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -160,8 +162,19 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </Link>
-          <Link
+          </button>
+          <button
+            // href={"/pages/user/filtered?category=HELLO_STUDIO"}
+            onClick={() => setActiveSection("hellostudio")}
+            className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
+              activeSection === "hellostudio"
+                ? "font-bold bg-slate-100"
+                : "hover:font-bold hover:bg-slate-100"
+            }`}
+          >
+            hellostudio
+          </button>
+          {/* <Link
             href={"/pages/user/filtered?category=HELLO_COLIVING"}
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
@@ -173,17 +186,6 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             hellocoliving
           </Link>
           <Link
-            href={"/pages/user/filtered?category=HELLO_STUDIO"}
-            // onClick={() => setActiveSection("hellostudio")}
-            className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
-              activeSection === "hellostudio"
-                ? "font-bold bg-slate-100"
-                : "hover:font-bold hover:bg-slate-100"
-            }`}
-          >
-            hellostudio
-          </Link>
-          <Link
             href={"/pages/user/filtered?category=HELLO_LANDLORD"}
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
@@ -193,7 +195,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </Link>
+          </Link> */}
         </div>
       </div>
     </nav>

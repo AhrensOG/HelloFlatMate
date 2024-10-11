@@ -29,7 +29,7 @@ export default function DatePickerCategorySelector({ data, setData, type }) {
       {" "}
       {/* Usamos relative para mobile y static para escritorio */}
       <div
-        className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white"
+        className="rounded-lg flex justify-between p-2 items-center shadow-card-action my-2 py-4 cursor-pointer bg-white border-2"
         onClick={() => setShowDatePicker(!showDatePicker)}
       >
         {selectedDate
@@ -48,7 +48,7 @@ export default function DatePickerCategorySelector({ data, setData, type }) {
       <AnimatePresence>
         {showDatePicker && (
           <motion.div
-            className="md:absolute md:z-10 flex flex-col shadow-reservation-list mt-2 bg-white p-4 rounded-md max-w-[18rem]"
+            className="md:absolute md:z-10 flex flex-col shadow-reservation-list bg-white p-4 rounded-md max-w-[18rem] border-2"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0 }}
