@@ -1,5 +1,6 @@
 import { getLeaserOrderById } from './controller/getLeaseOrderController';
 import { createLeasePropertyOrder, createLeaseRoomOrder } from './controller/createLeaseOrderController'
+import { updateIsSignedStatus } from './controller/updateLeaseOrderController';
 export async function POST(req) {
     const data = await req.json();
 
@@ -19,4 +20,10 @@ export async function GET(req) {
         const result = await getLeaserOrderById(id, type)
         return result
     }
+}
+
+export async function PATCH(req) {
+    const data = await req.json();
+    const result = await updateIsSignedStatus(data);
+    return result
 }

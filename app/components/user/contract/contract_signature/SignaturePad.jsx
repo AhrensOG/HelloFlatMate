@@ -9,12 +9,16 @@ import {
   saveUserContractInformation,
 } from "@/app/context/actions";
 import { Context } from "@/app/context/GlobalContext";
+import axios from "axios";
 
 const SignaturePad = ({
   setModal,
   createContractPDFAndContinue,
   handleContinue,
+  order,
 }) => {
+  console.log(order);
+
   const sigCanvas = useRef(null);
   const [loader, setLoader] = useState(false);
   const { state, dispatch } = useContext(Context);
@@ -37,6 +41,20 @@ const SignaturePad = ({
     setModal(false);
     setLoader(false);
     return handleContinue();
+  };
+
+  const changeIsSigned = async () => {
+    try {
+      const res = await axios.patch("/api/lease_order", {
+        id: order.id,
+        isSigned: true,
+      });
+      console.log(res);
+      return;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   };
 
   return (

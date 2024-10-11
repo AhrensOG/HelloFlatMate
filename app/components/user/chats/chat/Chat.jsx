@@ -41,8 +41,6 @@ export default function Chat() {
 
   // Función para cambiar el estado del chat de soporte
   const changeStateSuppChat = async () => {
-    console.log("modificando chat");
-
     try {
       await axios.patch(`/api/chat?id=${chatId}&type=act`);
     } catch (error) {
@@ -118,12 +116,19 @@ export default function Chat() {
         socket.on("connect", handleSocketConnect);
         socket.on("disconnect", handleSocketDisconnect);
 
+        // Evento beforeunload para desconectar socket al salir o refrescar
+        const handleBeforeUnload = () => {
+          socket.disconnect();
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
         return () => {
           // Limpiar eventos al desmontar el componente
           socket.off("connect", handleSocketConnect);
           socket.off("disconnect", handleSocketDisconnect);
           socket.off("newMessage");
-          socket.on("disconnect", handleSocketDisconnect);
+          window.removeEventListener("beforeunload", handleBeforeUnload);
         };
       }
     }
