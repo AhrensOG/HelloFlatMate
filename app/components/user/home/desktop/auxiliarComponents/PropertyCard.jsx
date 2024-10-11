@@ -16,7 +16,7 @@ export default function PropertyCard(
     : `/pages/property-details/${propertyId}`;
 
   return (
-    <div className="relative hover:scale-105 transition duration-500 w-[246px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] rounded-lg shadow-lg">
+    <div className="relative hover:scale-105 transition duration-500 w-[246px] sm:w-[600px] md:w-[700px] h-[400px] sm:h-[600px] rounded-lg shadow-card-action">
       {/* Imagen de fondo */}
       <div className="relative w-full h-52 sm:h-96 ">
         <Image
@@ -36,14 +36,14 @@ export default function PropertyCard(
 
         {/* Descripción */}
         <p className="text-xs sm:text-base leading-tight text-center text-gray-700 mb-4">
-          ¿Buscas una habitación moderna y cómoda? En Helloflatmate, ofrecemos
+          ¿Buscas una habitación moderna y cómoda? En helloflatmate, ofrecemos
           el mejor espacio para vivir. Comparte tu experiencia con nosotros.
         </p>
 
         {/* Botón de acción */}
         <div className="flex justify-center">
           <Link href={href} className="flex items-center justify-center border border-black px-6 py-2 rounded-md hover:bg-black hover:text-white transition">
-            Rentar ahora
+            Mas info...
           </Link>
         </div>
       </div>
