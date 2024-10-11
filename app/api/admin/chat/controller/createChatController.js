@@ -2,8 +2,6 @@ import { Admin, Client, Owner, Chat, ChatParticipant } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createPrivateChat(data) {
-    console.log(data);
-
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });
     }

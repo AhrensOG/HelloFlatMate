@@ -138,6 +138,7 @@ export default function Chat() {
   useEffect(() => {
     if (typeChat === "supp" && !haveChattSupport && !chatId) {
       createNewSuppChat();
+      setChatId(chatId);
       haveChattSupport = true;
     } else if (chatId && typeChat === "supp" && haveChattSupport) {
       changeStateSuppChat();

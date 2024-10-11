@@ -10,7 +10,6 @@ export async function getChats() {
             }
         ],
         where: {
-            type: "SUPPORT",
             isActive: true,
         }
     });
