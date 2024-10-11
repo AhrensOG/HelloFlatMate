@@ -224,7 +224,7 @@ export default function Footer() {
           {/* Derechos reservados */}
           <div className="w-full text-center font-bold">
             <p className="text-sm lg:text-lg text-black">
-              Todos los derechos reservados @ HelloFlatmate 2024
+              Todos los derechos reservados @helloflatmate 2024
             </p>
           </div>
         </div>

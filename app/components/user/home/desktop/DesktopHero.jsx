@@ -12,7 +12,7 @@ export default function DesktopHero({
     <section className="w-full">
       {/* Imagen de fondo con gradiente */}
       <div className="relative">
-        <div className="relative w-full h-80 md:h-96 lg:h-[750px] z-10">
+        <div className="relative w-full h-80 md:h-[750px] z-10">
           {img.includes("youtube.com") ? (
             // Si es un video de YouTube, extraer el ID y usar la URL de inserción
             <iframe
@@ -47,7 +47,7 @@ export default function DesktopHero({
               className="object-cover"
             />
           )}
-          {/* <div className="absolute h-full w-full bg-gradient-to-r from-black/50 to-black/80 z-10" /> */}
+          <div className="absolute top-0 h-full w-full bg-gradient-to-r from-black/50 to-black/50 z-10" />
         </div>
         {/* <div className="relative w-full h-80 md:h-96 lg:h-[420px] z-10">
           <Image
@@ -61,25 +61,27 @@ export default function DesktopHero({
         </div> */}
         {/* Contenido del Hero */}
         <div className="absolute w-full inset-0 z-20 flex flex-col items-center justify-center text-center text-white">
-          {/* Título principal */}
-          <h1 className="font-extrabold text-4xl md:text-7xl leading-none tracking-[-1px]">
-            {title}
-          </h1>
+          <div className="w-2/3 flex flex-col items-center justify-center ">
+            {/* Título principal */}
+            <h1 className="font-extrabold text-4xl md:text-7xl leading-none tracking-[-1px]">
+              {title}
+            </h1>
 
-          {/* Subtítulo */}
-          <p className="mt-4 font-semibold text-[16px] md:text-[24px] leading-tight">
-            {description}
-          </p>
+            {/* Subtítulo */}
+            <p className="mt-4 font-semibold text-[16px] md:text-[24px] leading-tight">
+              {description}
+            </p>
 
-          {/* Botón de reserva */}
-          <div className="mt-12">
-            <Link
-              href={link}
-              className="font-bold text-2xl md:text-4xl text-white border border-white px-6 py-2 md:py-4 rounded-md hover:bg-white hover:text-resolution-blue transition-all flex flex-row justify-center items-center gap-2"
-            >
-              Reservar ahora
-              <ArrowRightIcon className="size-5" />
-            </Link>
+            {/* Botón de reserva */}
+            <div className="mt-12">
+              <Link
+                href={link}
+                className="font-bold text-2xl md:text-4xl text-white border border-white px-6 py-2 md:py-4 rounded-md hover:bg-white hover:text-resolution-blue transition-all flex flex-row justify-center items-center gap-2"
+              >
+                Reservar ahora
+                <ArrowRightIcon className="size-5" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

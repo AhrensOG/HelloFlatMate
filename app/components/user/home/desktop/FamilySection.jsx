@@ -63,8 +63,8 @@ export default function FamilySection() {
       {/* Imagen de fondo - ocupa toda la pantalla en versión móvil y la mitad izquierda en versión escritorio */}
       <motion.div
         key={img1} // Cambiar la clave para que el componente se reanime al cambiar la imagen
-        initial={{ opacity: 0, y: -50 }} // Animación inicial (desplazamiento hacia arriba)
-        animate={{ opacity: 1, y: 0 }} // Animación final (posicionamiento normal)
+        initial={{ opacity: 0 }} // Agregar animación de escala
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }} // Duración de la animación
         className="relative w-full sm:w-5/6 h-[350px] sm:h-[500px]"
       >
@@ -84,8 +84,8 @@ export default function FamilySection() {
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 p-6 sm:max-w-[75%] text-white h-full">
           {/* Título */}
           <motion.h2
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }} // Agregar animación de escala
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             className="font-bold text-[26px] leading-[24px] tracking-[-1.5px] text-center sm:text-left md:text-3xl"
           >
@@ -94,8 +94,8 @@ export default function FamilySection() {
 
           {/* Descripción */}
           <motion.p
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }} // Agregar animación de escala
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }} // Añadir un retraso para que aparezca después del título
             className="font-normal text-[18px] leading-[27px] text-center sm:text-center md:text-2xl"
           >
@@ -106,8 +106,8 @@ export default function FamilySection() {
 
       {/* Cuadro azul solo visible en escritorio */}
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         className="hidden sm:block w-1/2 h-[500px] bg-[#1FAECC]"
       ></motion.div>
@@ -137,7 +137,7 @@ export default function FamilySection() {
           <button
             key={key}
             onClick={() => setActiveSection(key)}
-            className={`w-2 h-2 rounded-full ${
+            className={`w-3 h-3 rounded-full ${
               activeSection === key ? "bg-black scale-150" : "bg-black"
             }`}
           ></button>

@@ -494,47 +494,33 @@ export default function FilterPage() {
                 <div className="w-full flex flex-col justify-center gap-2">
                   <h2>Podrían interesarte</h2>
                   <div className="flex flex-row flex-wrap justify-center gap-7 ">
-                    {properties
-                      .filter((property) => {
-                        if (property.category === "HELLO_STUDIO") {
-                          return (
-                            (property.status === "FREE" ||
-                              property.status === "OCCUPIED") &&
-                            property.category === category
-                          );
-                        }
-                        return (
-                          property.status === "FREE" &&
-                          property.category === category
+                    {properties.map((property) => {
+                      if (
+                        property.category === "HELLO_ROOM" ||
+                        property.category === "HELLO_COLIVING"
+                      ) {
+                        const filteredRooms = filterRoomsByRentalPeriod(
+                          property.rooms
                         );
-                      })
-                      .map((property) => {
-                        if (
-                          property.category === "HELLO_ROOM" ||
-                          property.category === "HELLO_COLIVING"
-                        ) {
-                          const filteredRooms = filterRoomsByRentalPeriod(
-                            property.rooms
-                          );
-                          return filteredRooms.map((room, index) => (
-                            <PropertyCard
-                              key={`${property?.id}-${index}`}
-                              property={property} // Pasar los datos de la propiedad
-                              price={room.price} // Pasar el precio específico de cada room
-                              roomId={room.id}
-                            />
-                          ));
-                        } else {
-                          // Para otras categorías, devolver una sola PropertyCard
-                          return (
-                            <PropertyCard
-                              key={property?.id}
-                              property={property}
-                              price={property.price} // Pasar el precio de la propiedad directamente
-                            />
-                          );
-                        }
-                      })}
+                        return filteredRooms.map((room, index) => (
+                          <PropertyCard
+                            key={`${property?.id}-${index}`}
+                            property={property} // Pasar los datos de la propiedad
+                            price={room.price} // Pasar el precio específico de cada room
+                            roomId={room.id}
+                          />
+                        ));
+                      } else {
+                        // Para otras categorías, devolver una sola PropertyCard
+                        return (
+                          <PropertyCard
+                            key={property?.id}
+                            property={property}
+                            price={property.price} // Pasar el precio de la propiedad directamente
+                          />
+                        );
+                      }
+                    })}
                   </div>
                 </div>
               </div>

@@ -11,6 +11,15 @@ import SelectDateHelloStudio from "./SelectDateHelloStudio";
 import DatePickerCategorySelector from "./DatePickerCategoySelector";
 import HomeSlider from "../desktop/auxiliarComponents/HomeSlider";
 import PropertyCard from "./auxiliarComponents/PropertyCard";
+import {
+  ArrowDownLeftIcon,
+  ArrowLeftCircleIcon,
+  ChevronLeftIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import CategorySelectorPropertyCard from "./auxiliarComponents/CategorySelectorPropertyCard";
+import SelectCategorySlider from "./auxiliarComponents/SelectCategorySlider";
 
 const list = [
   {
@@ -48,7 +57,7 @@ const CategorySelector = ({
   const searchParams = useSearchParams();
   const categoryQuery = searchParams.get("c");
 
-  const [currentCategory, setCurrentCategory] = useState(null);
+  const [currentCategory, setCurrentCategory] = useState("HELLO_ROOM");
   const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [numberOccupants, setNumberOccupants] = useState();
@@ -160,7 +169,7 @@ const CategorySelector = ({
         const helloRoomRentalPeriods = getRentalPeriods(helloRoomProperties);
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
               <Select
                 options={helloRoomLocations}
                 data={data}
@@ -192,7 +201,7 @@ const CategorySelector = ({
         );
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
               <Select
                 options={helloColivingLocations}
                 data={data}
@@ -219,7 +228,7 @@ const CategorySelector = ({
         const helloStudioLocations = extractLocations(helloStudioProperties);
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
               <Select
                 options={helloStudioLocations}
                 data={data}
@@ -256,7 +265,7 @@ const CategorySelector = ({
         );
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-wrap justify-start items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
               <Select
                 options={helloLandlordLocations}
                 data={data}
@@ -291,23 +300,35 @@ const CategorySelector = ({
       transition={{ duration: 0.5 }}
       className={`${plus_jakarta.className} w-full flex flex-col gap-5 p-4`}
     >
-      <div className="w-full flex flex-row justify-start items-center gap-2 p-5">
+      <div className="w-full flex flex-row justify-between items-center gap-2 p-5">
+        <div
+          onClick={() => router.push("/")}
+          type="button"
+          className="self-start flex justify-between min-w-20 items-center gap-2 cursor-pointer"
+        >
+          {/* <Image
+            src={"/payment/back-icon.svg"}
+            width={32}
+            height={32}
+            alt="Boton para regresar"
+          /> */}
+          <div className="p-0.5 rounded-full hover:bg-black transition duration-300">
+            <ChevronLeftIcon className="size-8 font-bold hover:text-white transition duration-300" />
+          </div>
+          <span className="text-sm underline underline-offset-2 font-bold">
+            Volver
+          </span>
+        </div>
+        <h1 className="w-full text-center font-bold sm:text-lg">
+          ¿Qué deseas reservar?
+        </h1>
         <button
           onClick={() => router.push("/")}
           type="button"
-          className="self-start flex justify-center items-center gap-2"
+          className="self-start flex justify-center min-w-20 items-center gap-2"
         >
-          <Image
-            src={"/payment/back-icon.svg"}
-            width={24}
-            height={24}
-            alt="Boton para regresar"
-          />
-          <span className="text-sm underline font-medium">Volver</span>
+          <XMarkIcon className="size-8" />
         </button>
-        <h1 className="w-[calc(100%_-_170px)] text-center font-bold sm:text-lg">
-          ¿Qué deseas reservar?
-        </h1>
       </div>
 
       {/* Cards de categorías */}
@@ -324,65 +345,79 @@ const CategorySelector = ({
           />
         ))}
       </div>
-
-      {currentCategory && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ duration: 0.25 }}
-            className="w-full mt-6 p-4 text-center"
-          >
-            {renderSelectedCategoryContent()}
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      <div className="w-full flex justify-center items-center">
-        <div className="w-full max-w-screen-lg flex justify-start items-center">
-          <button
-            onClick={handleSearch}
-            className="px-10 py-4 bg-[#1FAECC] rounded-md text-white font-bold"
-          >
-            Buscar
-          </button>
+      <div className="w-full flex justify-center items-start">
+        <div className="max-w-screen-xl w-full flex flex-col sm:flex-row justify-between items-center sm:items-start p-4">
+          {currentCategory && (
+            <AnimatePresence mode="wait">
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ duration: 0.25 }}
+                className="w-full text-center"
+              >
+                {renderSelectedCategoryContent()}
+              </motion.div>
+            </AnimatePresence>
+          )}
+          <div className="flex justify-start items-center">
+            <button
+              onClick={handleSearch}
+              className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+            >
+              Buscar alojamiento
+              <MagnifyingGlassIcon className="size-6 text-black" />
+            </button>
+          </div>
         </div>
       </div>
-      <div className="w-full">
-        <HomeSlider>
-          {allProperties.map((item) => {
-            // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
-            if (
-              item.category === "HELLO_ROOM" ||
-              item.category === "HELLO_COLIVING"
-            ) {
-              return (
-                item.rooms
-                  // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
-                  .map((room) => (
-                    <div className="" key={room.id}>
-                      <PropertyCard
+
+      <div className="w-full flex justify-center items-center">
+        <div className="w-full max-w-screen-xl">
+          <SelectCategorySlider>
+            {allProperties.map((item) => {
+              // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
+              if (
+                item.category === "HELLO_ROOM" ||
+                item.category === "HELLO_COLIVING"
+              ) {
+                return (
+                  item.rooms
+                    // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
+                    .map((room) => (
+                      <div className="mr-4" key={room.id}>
+                        {/* <PropertyCard
                         roomId={room.id}
                         propertyId={item.id}
                         img={room?.images[0]}
                         title={room.name}
-                      />
-                    </div>
-                  ))
+                      /> */}
+                        <CategorySelectorPropertyCard
+                          img={room?.images[0]}
+                          category={item.category}
+                          propertyId={item.id}
+                          roomId={room.id}
+                          location={{ street: item.street, city: item.city }}
+                          description={room.description}
+                        />
+                      </div>
+                    ))
+                );
+              }
+              return (
+                <div className="mr-4" key={item.id}>
+                  <CategorySelectorPropertyCard
+                    img={item?.images[0]}
+                    category={item.category}
+                    propertyId={item.id}
+                    location={{ street: item.street, city: item.city }}
+                    description={item.description}
+                  />
+                </div>
               );
-            }
-            return (
-              <div className="mr-4" key={item.id}>
-                <PropertyCard
-                  propertyId={item.id}
-                  img={item?.images[0]}
-                  title={item.name}
-                />
-              </div>
-            );
-          })}
-        </HomeSlider>
+            })}
+          </SelectCategorySlider>
+        </div>
       </div>
     </motion.section>
   );

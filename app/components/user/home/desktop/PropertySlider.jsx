@@ -16,7 +16,7 @@ const PropertySlider = ({ data }) => {
   return (
     <section className="p-4 pt-10 flex justify-center items-center">
       <div className="flex flex-col justify-center items-center space-y-2 max-w-screen-xl w-full">
-        <h2 className="text-3xl py-10 text-center">Explora nuestras nuevas habitaciones</h2>
+        <h2 className="text-3xl font-medium py-10 text-center">Explora nuestros nuevos alojamientos</h2>
         {properties && properties.length > 0 ? (
           <HomeSlider>
             {properties.map((item) => {

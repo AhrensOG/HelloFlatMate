@@ -22,8 +22,8 @@ const HomeSlider = ({ children }) => {
     <Flicking plugins={plugins} align="center" circular={true}>
       {children}
       <ViewportSlot>
-        <span className="flicking-arrow-prev is-thin hidden sm:block "></span>
-        <span className="flicking-arrow-next is-thin hidden sm:block "></span>
+        <span className="flicking-arrow-prev hidden sm:block custom-arrow-2 bg-black rounded-full"></span>
+        <span className="flicking-arrow-next hidden sm:block custom-arrow-2 bg-black rounded-full"></span>
       </ViewportSlot>
     </Flicking>
   );

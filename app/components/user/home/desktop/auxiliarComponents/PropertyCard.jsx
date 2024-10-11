@@ -16,7 +16,7 @@ export default function PropertyCard(
     : `/pages/property-details/${propertyId}`;
 
   return (
-    <div className="relative w-[246px] sm:w-[600px] md:w-[900px] h-[400px] sm:h-[600px] rounded-lg shadow-lg">
+    <div className="relative hover:scale-105 transition duration-500 w-[246px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] rounded-lg shadow-lg">
       {/* Imagen de fondo */}
       <div className="relative w-full h-52 sm:h-96 ">
         <Image
@@ -28,7 +28,7 @@ export default function PropertyCard(
       </div>
 
       {/* Contenido de la tarjeta */}
-      <div className="absolute bottom-0 left-0 p-4 w-full bg-white min-h-48 sm:min-h-56">
+      <div className="absolute bottom-0 left-0 p-4 w-full bg-slate-100 border-2 border-t-0 min-h-48 sm:min-h-56">
         {/* Título */}
         <h2 className="font-medium text-sm sm:text-lg text-center mb-2">
           {title}
