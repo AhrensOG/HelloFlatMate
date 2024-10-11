@@ -47,7 +47,7 @@ const InfoSection = () => {
         <h2 className="text-2xl sm:text-3xl font-medium">
           ¿Por qué elegir helloflatmate?
         </h2>
-        <div className="flex flex-row flex-wrap justify-around items-center gap-4 space-y-4">
+        <div className="flex flex-row flex-wrap justify-around items-center gap-4">
           {list.map((item) => {
             return (
               <InfoCard

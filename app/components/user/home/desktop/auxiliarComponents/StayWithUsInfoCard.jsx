@@ -1,9 +1,18 @@
 import { BuildingOfficeIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
-export default function InfoCard({ img, title, description }) {
+export default function StayWithUsInfoCard({
+  img,
+  title,
+  description,
+  section,
+  setActiveSection = false,
+}) {
   return (
-    <div className="relative hover:scale-105 transition duration-500 w-full max-w-[300px] h-[270px] bg-white border border-gray-200 rounded-lg p-4 shadow-card-action gap-2 flex flex-col sm:mb-4">
+    <div
+      onClick={section ? () => setActiveSection(section) : () => ""}
+      className="cursor-pointer relative hover:scale-105 transition duration-500 w-full max-w-[300px] h-[270px] bg-white border border-gray-200 rounded-lg p-4 shadow-card-action gap-2 flex flex-col sm:mb-4"
+    >
       {/* Icono Image */}
 
       <Image src={img} width={50} height={50} alt={title} />
