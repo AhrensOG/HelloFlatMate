@@ -12,6 +12,7 @@ import PropertySlider from "./components/user/home/desktop/PropertySlider";
 import InfoSection from "./components/user/home/desktop/InfoSection";
 import Banner from "./components/user/home/desktop/Banner";
 import Footer from "./components/user/home/desktop/Footer";
+import MapSection from "./components/user/home/desktop/auxiliarComponents/MapSection";
 
 const helloroom = {
   hero: {
@@ -155,6 +156,7 @@ export default function Home() {
             <CommunitySection />
             <FamilySection />
             <PropertySlider data={properties} />
+            <MapSection/>
           </div>
         )}
 
