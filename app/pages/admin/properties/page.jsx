@@ -20,18 +20,18 @@ export default function PropertiesPanelPage() {
     fetchData();
   }, []);
 
-  if (propertiesSimple.length <= 0) {
-    return (
-      <div className="h-screen flex flex-col">
-        <headear>
-          <NavBar client={false} admin={true} owner={false} />
-        </headear>
-        <div className="flex items-center justify-center flex-1">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-        </div>
-      </div>
-    );
-  }
+  // if (propertiesSimple.length <= 0) {
+  //   return (
+  //     <div className="h-screen flex flex-col">
+  //       <headear>
+  //         <NavBar client={false} admin={true} owner={false} />
+  //       </headear>
+  //       <div className="flex items-center justify-center flex-1">
+  //         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
   return (
     <>
       <header>

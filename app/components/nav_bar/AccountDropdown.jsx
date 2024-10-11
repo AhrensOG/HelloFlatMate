@@ -23,7 +23,10 @@ export default function AccountDropdown() {
         {/* Si el usuario está autenticado, mostrar el enlace correspondiente */}
         {user ? (
           <div className="h-[48px] flex justify-center items-center">
-            <Link href={userProfileLink || "/"} className="h-full flex justify-center items-center">
+            <Link
+              href={userProfileLink || "/"}
+              className="h-full flex justify-center items-center"
+            >
               <MenuButton className="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md bg-white text-sm font-semibold text-gray-900 ring-inset ring-gray-300 hover:bg-gray-50">
                 <div className="relative w-8 h-8">
                   <Image
@@ -38,17 +41,17 @@ export default function AccountDropdown() {
           </div>
         ) : (
           // Si no hay usuario, mostrar opciones de "Registrarse" y "Iniciar sesión"
-          <div className="w-[48px] h-[48px] flex justify-between items-center">
+          <div className="h-[48px] flex justify-between items-center">
             <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white text-sm font-semibold text-gray-900 ring-inset ring-gray-300 hover:bg-gray-50">
               <div className="flex items-center gap-2">
-                <div className="relative w-6 h-6">
+                <div className="relative w-8 h-8">
                   <Image
                     src="/nav_bar/account.svg"
                     fill
                     alt="Cuenta del usuario"
                   />
-                  <span>Account</span>
                 </div>
+                <span>Account</span>
               </div>
             </MenuButton>
             <MenuItems
