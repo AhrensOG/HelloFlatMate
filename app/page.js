@@ -156,7 +156,7 @@ export default function Home() {
             <CommunitySection />
             <FamilySection />
             <PropertySlider data={properties} />
-            <MapSection/>
+            <MapSection />
           </div>
         )}
 
@@ -181,6 +181,7 @@ export default function Home() {
               img2={helloroom.family.img2}
             />
             <PropertySlider data={properties} />
+            <MapSection />
           </div>
         )}
 
@@ -229,6 +230,7 @@ export default function Home() {
               img2={hellostudio.family.img2}
             />
             <PropertySlider data={properties} />
+            <MapSection />
           </div>
         )}
 

@@ -16,7 +16,7 @@ export default function PropertyCard(
     : `/pages/property-details/${propertyId}`;
 
   return (
-    <div className="relative w-[246px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] rounded-lg shadow-lg">
+    <div className="relative hover:scale-105 transition duration-500 w-[246px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] rounded-lg shadow-lg">
       {/* Imagen de fondo */}
       <div className="relative w-full h-52 sm:h-96 ">
         <Image
