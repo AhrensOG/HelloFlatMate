@@ -156,7 +156,6 @@ export default function LeaseOrderPanel(data) {
 
   return (
     <main className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-      {console.log(leaserOrders)}
       <TitleAdminPanel title="Lease Orders" />
       <div className="flex flex-col gap-2">
         <div
@@ -221,11 +220,13 @@ export default function LeaseOrderPanel(data) {
                               formatDate={formatDate}
                               contract={leaseOrder.client.contracts.find(
                                 (contract) =>
-                                  contract.contractableId ==
+                                  (contract.contractableId ==
                                     leaseOrder.roomId &&
-                                  contract.contractableType == "ROOM" &&
-                                  contract.status == "PENDING"
+                                    contract.contractableType == "ROOM" &&
+                                    contract.status == "PENDING") ||
+                                  contract.status == "APPROVED"
                               )}
+                              isSigned={leaseOrder.isSigned}
                             />
                             {leaseOrder.status === "PENDING" && (
                               <div className="flex justify-between gap-4">
@@ -361,38 +362,32 @@ export default function LeaseOrderPanel(data) {
               {/* Propiedades sin room con precio */}
               {(property?.category === "HELLO_STUDIO" ||
                 property?.category === "HELLO_LANDLORD") &&
-              leaserOrders ? (
+              leaserOrders?.length > 0 ? (
                 leaserOrders
-                  .filter((order) => {
-                    const now = new Date();
-                    const startDate = new Date(order.startDate);
-                    const endDate = new Date(order.endDate);
-                    return (
+                  .filter(
+                    (order) =>
                       order.status === "PENDING" || order.status === "APPROVED"
-                    );
-                  })
-                  .map((leaserOrder, index) => (
+                  )
+                  .map((leaserOrder) => (
                     <div key={leaserOrder.id} className="my-4">
                       <LeaseOrderSection
                         data={leaserOrder}
                         formatDate={formatDate}
                       />
-
                       {client && (
                         <LeaseOrderClientSection
                           data={client}
                           formatDate={formatDate}
                           contract={client.contracts.find(
                             (contract) =>
-                              contract.status === "PENDING" ||
-                              (contract.status === "APPROVED" &&
-                                contract.contractableId === property.id &&
-                                contract.contractableType === "PROPERTY")
+                              (contract.status === "PENDING" ||
+                                contract.status === "APPROVED") &&
+                              contract.contractableId === property.id &&
+                              contract.contractableType === "PROPERTY"
                           )}
+                          isSigned={leaserOrder.isSigned}
                         />
                       )}
-
-                      {/* Mostrar los botones solo si la orden de arrendamiento actual está en estado "PENDING" */}
                       {leaserOrder.status === "PENDING" && (
                         <div className="flex justify-between gap-4 mb-4">
                           {console.log(client)}
