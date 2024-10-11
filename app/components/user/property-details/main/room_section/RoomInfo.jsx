@@ -6,7 +6,7 @@ export default function RoomInfo({ data, action, category }) {
   const router = useRouter();
   const handleRedirect = () => {
     router.push(
-      `/pages/user/property-details/${data.propertyId}/room-details/${data.id}`
+      `/pages/property-details/${data.propertyId}/room-details/${data.id}`
     );
   };
   return (

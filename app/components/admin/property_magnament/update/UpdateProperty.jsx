@@ -408,7 +408,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             <NavBarDetails
               link={() => router.back()}
               callBack={handleBack}
-              detailLink={`/pages/user/property-details/${data?.id}`}
+              detailLink={`/pages/property-details/${data?.id}`}
             />
           </header>
           <main
