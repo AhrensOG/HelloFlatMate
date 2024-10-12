@@ -36,6 +36,7 @@ export async function updateStatusLeaseOrder(data) {
             if (data.action === "APPROVED") {
                 leaseOrderProperty.status = "APPROVED";
                 leaseOrderProperty.isActive = true;
+                leaseOrderProperty.inReview = false;
                 if (property.category === "HELLO_STUDIO") {
                     property.status = "FREE";
                 } else {
@@ -45,7 +46,7 @@ export async function updateStatusLeaseOrder(data) {
                 await property.save({ transaction });
 
                 // Crear chat con el dueño
-                const chatPrivate = createPrivateChat({
+                const chatPrivate = await createPrivateChat({
                     type: "PRIVATE",
                     ownerId: property.ownerId,
                     receiverId: leaseOrderProperty.clientId,
@@ -63,6 +64,7 @@ export async function updateStatusLeaseOrder(data) {
             } else if (data.action === "REJECTED") {
                 leaseOrderProperty.status = "REJECTED";
                 leaseOrderProperty.isActive = false;
+                leaseOrderProperty.inReview = false;
                 property.status = "FREE";
                 await leaseOrderProperty.save({ transaction });
                 await property.save({ transaction });
@@ -98,6 +100,7 @@ export async function updateStatusLeaseOrder(data) {
         if (data.action === "APPROVED") {
             leaseOrderRoom.status = "APPROVED";
             leaseOrderRoom.isActive = true;
+            leaseOrderRoom.inReview = false;
             room.status = "OCCUPIED";
             if (property.category === "HELLO_STUDIO") {
                 property.status = "FREE";
@@ -110,13 +113,11 @@ export async function updateStatusLeaseOrder(data) {
             await property.save({ transaction });
 
             // Crear chat con el dueño
-            const chatPrivate = createPrivateChat({
+            const chatPrivate = await createPrivateChat({
                 type: "PRIVATE",
                 ownerId: property.ownerId,
                 receiverId: leaseOrderRoom.clientId,
             });
-
-            console.log(property.toJSON());
 
             //Asignar al chat grupal de la propiedad
             if (property.chat) {
@@ -132,6 +133,7 @@ export async function updateStatusLeaseOrder(data) {
         } else if (data.action === "REJECTED") {
             leaseOrderRoom.status = "REJECTED";
             leaseOrderRoom.isActive = false;
+            leaseOrderRoom.inReview = false;
             room.status = "FREE";
             property.status = roomsAvailable.length > 0 ? "OCCUPIED" : "FREE";
 

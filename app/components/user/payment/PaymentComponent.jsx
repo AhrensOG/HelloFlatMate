@@ -16,7 +16,7 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
     nomina: state.reservationInfo?.nomina,
     contract: state.contractPdfData,
   };
-  console.log(userDocuments);
+  console.log(Array.isArray(userDocuments.nomina));
   console.log(state);
   const [existingDocuments, setExistingDocuments] = useState(
     state.user?.documents || []
@@ -66,14 +66,20 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
         //Verifiar si tiene ya el documento
         const existingNomina = findExistingDocument("ROSTER");
         // Primero, sube el archivo a Firebase Storage
+        const formatFiles = Object.values(userDocuments.nomina).filter(
+          (file) => {
+            file && typeof file === "object";
+          }
+        );
         const nominaUrl = await uploadFiles(
-          userDocuments.nomina,
+          formatFiles,
           "Documentos",
           state.reservationInfo?.userContractInformation.name +
             " " +
             state.reservationInfo?.userContractInformation.lastName +
             " - Nomina"
         );
+        console.log(nominaUrl);
         if (nominaUrl && nominaUrl.length > 0) {
           // Si ya existe un documento, lo actualizas
           if (existingNomina) {
