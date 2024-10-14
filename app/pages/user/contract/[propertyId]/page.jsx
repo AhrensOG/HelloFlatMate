@@ -13,7 +13,7 @@ import ThankYou from "@/app/components/user/thank_you/ThankYou";
 import axios from "axios";
 
 export default function Contract({ params }) {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const [owner, setOwner] = useState();
   const propertyId = params.propertyId;
   const router = useRouter();
