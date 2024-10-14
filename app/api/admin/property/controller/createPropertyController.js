@@ -7,74 +7,30 @@ const createProperty = async (data) => {
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
-    if (data.name.trim() === "") {
-        return NextResponse.json({ error: "El nombre no puede estar vacío" }, { status: 400 });
-    }
-    if (data.serial.trim() === "") {
-        return NextResponse.json({ error: "El serial no puede estar vacío" }, { status: 400 });
-    }
-    if (data.city.trim() === "") {
-        return NextResponse.json({ error: "La ciudad no puede estar vacío" }, { status: 400 });
-    }
-    if (data.street.trim() === "") {
-        return NextResponse.json({ error: "La calle no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.streetNumber) {
-        return NextResponse.json({ error: "El número no puede estar vacío" }, { status: 400 });
-    }
-    if (data.postalCode.trim() === "") {
-        return NextResponse.json({ error: "El Código Postal no puede estar vacío" }, { status: 400 });
-    }
-    if (data.size <= 0) {
-        return NextResponse.json({ error: "El tamaño no puede estar vacío" }, { status: 400 });
-    }
-    if (data.roomsCount <= 0) {
-        return NextResponse.json({ error: "El número de habitaciones no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (data.bathrooms <= 0 || typeof data.bathrooms !== "number") {
-        return NextResponse.json({ error: "El número de baños no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (data.bed <= 0 || typeof data.bed !== "number") {
-        return NextResponse.json({ error: "El número de camas no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (data.maximunOccupants <= 0 || typeof data.maximunOccupants !== "number") {
-        console.log(typeof data.maximunOccupants);
-
-        return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
-    }
 
     const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
     }
-    if (data.images.length === 0) {
-        return NextResponse.json({ error: "Las imágenes no pueden estar vacías" }, { status: 400 });
-    }
-    if (data.amenities.length === 0) {
-        return NextResponse.json({ error: "Las amenidades no pueden estar vacías" }, { status: 400 });
-    }
-    if (data.description.length <= 0) {
-        return NextResponse.json({ error: "La descripción no puede estar vacía" }, { status: 400 });
-    }
 
     try {
         const property = await Property.create({
-            name: data.name,
-            serial: data.serial,
-            city: data.city,
-            street: data.street,
-            streetNumber: data.streetNumber,
-            postalCode: data.postalCode,
-            floor: data.floor,
-            door: data.door,
-            size: data.size,
-            roomsCount: data.roomsCount,
-            bathrooms: data.bathrooms,
-            bed: data.bed,
-            maximunOccupants: data.maximunOccupants,
-            typology: data?.typology || null,
-            zone: data.zone,
-            price: data.amountOwner + data.amountHelloflatmate || 0,
+            name: data.name || "Sin nombre",  // Valor predeterminado
+            serial: data.serial || "Sin serial",
+            city: data.city || "Sin ciudad",
+            street: data.street || "Sin calle",
+            streetNumber: data.streetNumber || 0,
+            postalCode: data.postalCode || "0000",
+            floor: data.floor || null,
+            door: data.door || null,
+            size: data.size || 0,
+            roomsCount: data.roomsCount || 0,
+            bathrooms: data.bathrooms || 0,
+            bed: data.bed || 0,
+            maximunOccupants: data.maximunOccupants || 0,
+            typology: data?.typology || "MIXED",
+            zone: data.zone || null,
+            price: (data.amountOwner || 0) + (data.amountHelloflatmate || 0),
             offer: data.offer || 0,
             IVA: data.IVA || 0,
             amountOwner: data.amountOwner || 0,
@@ -83,10 +39,10 @@ const createProperty = async (data) => {
             isActive: true,
             isBussy: false,
             category: data.category,
-            images: data.images,
+            images: data.images || [],
             linkVideo: data.linkVideo || "",
-            amenities: data.amenities,
-            description: data.description,
+            amenities: data.amenities || [],
+            description: data.description || "Sin descripción",
             incomeConditionDescription: data.incomeConditionDescription || "",
             maintenanceDescription: data.maintenanceDescription || "",
             roomDescription: data.roomDescription || "",
@@ -100,7 +56,7 @@ const createProperty = async (data) => {
             calendar: data.calendar || "SIMPLE"
         });
 
-        if (data.rentalPeriods) {
+        if (data.rentalPeriods && data.rentalPeriods.length > 0) {
             await RentalPeriod.bulkCreate(data.rentalPeriods.map((rentalPeriod) => {
                 return {
                     startDate: new Date(rentalPeriod.startDate),
@@ -109,28 +65,29 @@ const createProperty = async (data) => {
                     rentalPeriodableId: property.id,
                     rentalPeriodableType: "PROPERTY"
                 }
-            }))
+            }));
         }
 
-        const chatGroup = await Chat.create({
-            type: "GROUP",
-            propertyId: property.id,
-            ownerId: property.ownerId
-        })
+        if (property.ownerId) {
+            const chatGroup = await Chat.create({
+                type: "GROUP",
+                propertyId: property.id,
+                ownerId: property.ownerId
+            });
 
-        const chatParticipant = await ChatParticipant.create({
-            chatId: chatGroup.id,
-            participantId: property.ownerId,
-            participantType: "OWNER",
-        })
+            await ChatParticipant.create({
+                chatId: chatGroup.id,
+                participantId: property.ownerId,
+                participantType: "OWNER",
+            });
+        }
 
         return NextResponse.json({ message: "Propiedad cargada con éxito", property });
     } catch (error) {
         console.log(error);
-
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
-}
+};
 
 export async function cloneProperty(data) {
     console.log(data);

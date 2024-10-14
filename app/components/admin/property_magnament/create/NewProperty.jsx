@@ -135,32 +135,24 @@ export default function NewProperty({ category, handleBack }) {
       IVA: price.IVA,
     };
 
-    const validationResult = validateData(allData);
-
-    if (!validationResult.isValid) {
-      toast.error(validationResult.message);
-      return false;
-    }
-    return true;
-  };
-
-  const saveImages = async (images) => {
-    if (images.length > 0) {
-      const prevImages = images.map((image) => image.fileData);
-      try {
-        const response = await uploadFiles(prevImages);
-        if (response instanceof Error) {
+    const saveImages = async (images) => {
+      if (images.length > 0) {
+        const prevImages = images.map((image) => image.fileData);
+        try {
+          const response = await uploadFiles(prevImages);
+          if (response instanceof Error) {
+            toast.error("Error al cargar archivos");
+            return;
+          } else {
+            const imagesUrl = response.map((file) => file.url);
+            toast.success("Imagenes cargadas correctamente");
+            return imagesUrl;
+          }
+        } catch (error) {
           toast.error("Error al cargar archivos");
-          return;
-        } else {
-          const imagesUrl = response.map((file) => file.url);
-          toast.success("Imagenes cargadas correctamente");
-          return imagesUrl;
         }
-      } catch (error) {
-        toast.error("Error al cargar archivos");
       }
-    }
+    };
   };
 
   const submitRoom = async (data) => {

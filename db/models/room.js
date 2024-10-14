@@ -53,23 +53,23 @@ const roomInit = (sequelize, DataTypes) => {
             isActive: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true,
-                allowNull: false
+                allowNull: true
             },
             serial: {
                 type: DataTypes.STRING(100),
-                allowNull: false,
+                allowNull: true,
             },
             name: {
                 type: DataTypes.STRING(100),
-                allowNull: false,
+                allowNull: true,
             },
             numberBeds: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             images: {
                 type: DataTypes.ARRAY(DataTypes.STRING),
-                allowNull: false,
+                allowNull: true,
             },
             linkVideo: {
                 type: DataTypes.STRING(100),
@@ -78,12 +78,12 @@ const roomInit = (sequelize, DataTypes) => {
             status: {
                 type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
                 defaultValue: "FREE",
-                allowNull: false
+                allowNull: true
             },
             calendar: {
                 type: DataTypes.ENUM('SIMPLE', 'FULL'),
                 defaultValue: "SIMPLE",
-                allowNull: false,
+                allowNull: true,
             },
             bathroom: {
                 type: DataTypes.BOOLEAN,
