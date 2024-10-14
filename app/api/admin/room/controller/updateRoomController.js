@@ -89,7 +89,7 @@ export async function updateRoom(id, data) {
             })
         }
 
-        await room.update(data);
+        await room.update({ ...data, isActive: true });
         return NextResponse.json(room, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al actualizar la habitacion" }, { status: 500 });

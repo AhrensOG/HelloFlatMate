@@ -12,19 +12,37 @@ export async function createRoom(data) {
     const dataArray = isArray ? data : [data];  // Asegurarse de que sea un array
 
     try {
-        // Mapeamos las habitaciones a crear, agregando valores predeterminados si faltan
-        const addStatus = dataArray.map((room) => ({
-            ...room,
-            status: "FREE",  // Si no hay status, se asigna "FREE"
-            amountOwner: room.price ? (room.price - room.amountHelloflatmate || 0) : 0,  // Calculo básico del dueño
-        }));
-
         const createdRooms = []; // Array para almacenar las habitaciones creadas
 
-        for (const roomData of addStatus) {
+        for (const roomData of dataArray) {
+            // Si el precio no está definido, asignar 0
+            const price = roomData.price || 0;
+            const amountHelloflatmate = roomData.amountHelloflatmate || 0;
+            const amountOwner = price - amountHelloflatmate;
+
+            // Verificar si todos los campos obligatorios están presentes
+            const requiredFields = [
+                roomData.name,
+                roomData.serial,
+                roomData.numberBeds,
+                roomData.typology,
+                roomData.zone,
+                roomData.bathroom,
+                roomData.couple,
+            ];
+
+            // Verificar si la habitación está completa
+            const isComplete = requiredFields.every(field => field !== undefined && field !== null);
+
             try {
                 // Crear la habitación
-                const room = await Room.create(roomData);  // Crea la habitación con los datos disponibles
+                const room = await Room.create({
+                    ...roomData,
+                    price: price,  // Precio ajustado, 0 si no está definido
+                    amountOwner: amountOwner,  // Calculado si hay un precio
+                    status: "FREE",  // Si no hay status, se asigna "FREE"
+                    isActive: isComplete,  // Si los campos obligatorios no están completos, isActive será false
+                });
 
                 // Almacenar la habitación creada
                 createdRooms.push(room);

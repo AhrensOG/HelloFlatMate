@@ -116,11 +116,10 @@ export async function updateProperty(id, data) {
         }
 
         //Actualizar la propiedad
-        await property.update(data);
+        await property.update({ ...data, isActive: true });
         return NextResponse.json(property, { status: 200 });
     } catch (error) {
         console.log(error);
-
         return NextResponse.json({ error: "Error al actualizar la propiedad" }, { status: 500 });
     }
 }

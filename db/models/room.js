@@ -52,7 +52,7 @@ const roomInit = (sequelize, DataTypes) => {
             },
             isActive: {
                 type: DataTypes.BOOLEAN,
-                defaultValue: true,
+                defaultValue: false,
                 allowNull: true
             },
             serial: {
