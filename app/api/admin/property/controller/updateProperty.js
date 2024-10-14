@@ -10,88 +10,76 @@ export async function updateProperty(id, data) {
     if (!id) {
         return NextResponse.json({ error: "El id no puede estar vacío o no es un número" }, { status: 400 });
     }
-    if (!data.name || data.name.trim() === "") {
-        return NextResponse.json({ error: "El nombre no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.serial || data.serial.trim() === "") {
-        return NextResponse.json({ error: "El serial no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.city || data.city.trim() === "") {
-        return NextResponse.json({ error: "La ciudad no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.street || data.street.trim() === "") {
-        return NextResponse.json({ error: "La calle no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.streetNumber || data.streetNumber <= 0) {
-        return NextResponse.json({ error: "El número no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.postalCode || data.postalCode.trim() === "") {
-        return NextResponse.json({ error: "El Código Postal no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.size || data.size <= 0) {
-        return NextResponse.json({ error: "El tamaño no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.roomsCount || typeof data.roomsCount !== "number" || data.bedrooms <= 0) {
-        return NextResponse.json({ error: "El número de habitaciones no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (!data.bathrooms || typeof data.bathrooms !== "number" || data.bathrooms <= 0) {
-        return NextResponse.json({ error: "El número de baños no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (!data.bed || typeof data.bed !== "number" || data.bed <= 0) {
-        return NextResponse.json({ error: "El número de camas no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (!data.maximunOccupants || typeof data.maximunOccupants !== "number" || data.maximunOccupants <= 0) {
-        return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (!data.images || data.images.length === 0) {
-        return NextResponse.json({ error: "Las imágenes no pueden estar vacías" }, { status: 400 });
-    }
-    if (!data.amenities || data.amenities.length === 0) {
-        return NextResponse.json({ error: "Las amenidades no pueden estar vacías" }, { status: 400 });
-    }
+
+    // Validación de los campos requeridos
+    const requiredFields = {
+        name: data.name,
+        serial: data.serial,
+        city: data.city,
+        street: data.street,
+        streetNumber: data.streetNumber,
+        postalCode: data.postalCode,
+        size: data.size,
+        roomsCount: data.roomsCount,
+        bathrooms: data.bathrooms,
+        bed: data.bed,
+        maximunOccupants: data.maximunOccupants,
+        zone: data.zone,
+    };
 
     const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
 
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
     }
+
+    // Verificar si alguno de los campos requeridos está vacío o incompleto
+    const isComplete = Object.values(requiredFields).every(value => {
+        return value !== undefined && value !== null && value !== "" && (typeof value !== "number" || value > 0);
+    });
+
     try {
         const property = await Property.findByPk(id, { include: { model: Chat, as: "chat" } });
         if (!property) {
             return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
         }
 
-        //Actualizar las fechas
+        // Actualizar las fechas de alquiler existentes
         if (data.rentalPeriods.length > 0) {
             data.rentalPeriods.forEach(async (rentalPeriod) => {
                 await RentalPeriod.update(rentalPeriod, {
                     where: {
                         id: rentalPeriod.id
                     }
-                })
-            })
+                });
+            });
         }
 
-        //Crear nuevas fechas
+        // Crear nuevas fechas de alquiler
         if (data.newRentalPeriods.length > 0) {
             data.newRentalPeriods.forEach(async (rentalPeriod) => {
-                await RentalPeriod.create({ startDate: new Date(rentalPeriod.startDate), endDate: new Date(rentalPeriod.endDate), rentalPeriodableId: property.id, rentalPeriodableType: "PROPERTY" })
-            })
+                await RentalPeriod.create({
+                    startDate: new Date(rentalPeriod.startDate),
+                    endDate: new Date(rentalPeriod.endDate),
+                    rentalPeriodableId: property.id,
+                    rentalPeriodableType: "PROPERTY"
+                });
+            });
         }
 
-        //Borrar fechas
+        // Eliminar fechas de alquiler
         if (data.deleteRentalPeriods.length > 0) {
             data.deleteRentalPeriods.forEach(async (rentalPeriod) => {
                 await RentalPeriod.destroy({
                     where: {
                         id: rentalPeriod
                     }
-                })
-            })
+                });
+            });
         }
 
+        // Actualizar el propietario si es necesario
         if (data.ownerId && data.ownerId !== property.ownerId) {
-            // Eliminar al propietario anterior del chat
             await ChatParticipant.destroy({
                 where: {
                     participantId: property.ownerId,
@@ -99,30 +87,29 @@ export async function updateProperty(id, data) {
                 }
             });
 
-            // Crear un nuevo participante para el nuevo propietario
-            const newParticipant = await ChatParticipant.create({
+            await ChatParticipant.create({
                 chatId: property.chat.id,
                 participantId: data.ownerId,
                 participantType: "OWNER"
             });
 
-            if (newParticipant) {
-                const chat = await Chat.findByPk(property.chat.id);
-                if (chat) {
-                    chat.ownerId = data.ownerId;
-                    await chat.save();
-                }
+            const chat = await Chat.findByPk(property.chat.id);
+            if (chat) {
+                chat.ownerId = data.ownerId;
+                await chat.save();
             }
         }
 
-        //Actualizar la propiedad
-        await property.update({ ...data, isActive: true });
+        // Actualizar la propiedad y establecer isActive en función de si está completa o no
+        await property.update({ ...data, isActive: isComplete });
+
         return NextResponse.json(property, { status: 200 });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ error: "Error al actualizar la propiedad" }, { status: 500 });
     }
 }
+
 export async function updateStatusProperty(data) {
     if (!data) {
         return NextResponse.json({ error: "Need data" }, { status: 400 })

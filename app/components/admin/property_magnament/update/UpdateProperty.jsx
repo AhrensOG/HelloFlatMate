@@ -212,163 +212,121 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
     }
   };
 
-  // Validación
-  const handleSubmit = () => {
-    const allData = {
-      name: name,
-      serial: serial,
-      city: address.city,
-      street: address.street,
-      streetNumber: address.streetNumber,
-      postalCode: address.postalCode,
-      size: catAndSize.size,
-      roomsCount: dataRooms.length,
-      bathrooms: guestInfo.bathrooms,
-      bed: guestInfo.beds,
-      maximunOccupants: guestInfo.occupants,
-      price: price.price,
-      offer: price.offer,
-      IVA: price.IVA,
-      amountHelloflatmate: price.amountHelloflatmate,
-      amountOwner: price.amountOwner,
-      category: catAndSize.category,
-      amenities: amenities,
-      description: description,
-      checkIn: moreInfo.checkIn,
-      checkOut: moreInfo.checkOut,
-      images: sliderImage.map((image) => image.url), // Asegúrate de tener URLs aquí
-    };
-
-    const validationResult = validateData(allData);
-
-    if (!validationResult.isValid) {
-      toast.error(validationResult.message);
-      return false;
-    }
-    return true;
-  };
-
   const updateProperty = async () => {
-    if (handleSubmit()) {
+    try {
       try {
-        try {
-          if (deleteRooms.length > 0) {
-            await axios.delete(`/api/admin/room`, {
-              data: {
-                rooms: deleteRooms,
-              },
-            });
-            setDeleteRooms([]);
-            toast.success("Habitaciones eliminadas");
-          }
-        } catch (error) {
-          toast.error("Error en la eliminación de habitaciones");
-          throw error;
+        if (deleteRooms.length > 0) {
+          await axios.delete(`/api/admin/room`, {
+            data: {
+              rooms: deleteRooms,
+            },
+          });
+          setDeleteRooms([]);
+          toast.success("Habitaciones eliminadas");
         }
+      } catch (error) {
+        toast.error("Error en la eliminación de habitaciones");
+        throw error;
+      }
 
-        try {
-          const newRooms = dataRooms.filter(
-            (room) => !room.hasOwnProperty("id")
+      try {
+        const newRooms = dataRooms.filter((room) => !room.hasOwnProperty("id"));
+
+        const roomsFormated = newRooms.map((room) => {
+          return {
+            ...room,
+            floor: room.floor !== "" ? parseInt(room.floor) : null,
+            door: room.door !== "" ? room.door : null,
+            propertyId: property?.id,
+          };
+        });
+
+        if (newRooms.length > 0) {
+          const createdRooms = await axios.post(
+            "/api/admin/room",
+            roomsFormated
           );
-
-          const roomsFormated = newRooms.map((room) => {
+          toast.success("Habitaciones creadas");
+        }
+      } catch (err) {
+        toast.error("Error en la creación de habitaciones");
+        throw err;
+      }
+      //UpdateRooms
+      try {
+        if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
+          const roomsUpdate = dataRooms.map((room) => {
             return {
               ...room,
-              floor: room.floor !== "" ? parseInt(room.floor) : null,
-              door: room.door !== "" ? room.door : null,
+              price: 0,
+              amountOwner: 0,
+              amountHelloflatmate: 0,
+              IVA: 0,
               propertyId: property?.id,
             };
           });
-
-          if (newRooms.length > 0) {
-            const createdRooms = await axios.post(
-              "/api/admin/room",
-              roomsFormated
-            );
-            toast.success("Habitaciones creadas");
-          }
-        } catch (err) {
-          toast.error("Error en la creación de habitaciones");
-          throw err;
+          await axios.put("/api/admin/room", roomsUpdate);
+          toast.success("Habitaciones actualizadas");
         }
-        //UpdateRooms
-        try {
-          if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
-            const roomsUpdate = dataRooms.map((room) => {
-              return {
-                ...room,
-                price: 0,
-                amountOwner: 0,
-                amountHelloflatmate: 0,
-                IVA: 0,
-                propertyId: property?.id,
-              };
-            });
-            await axios.put("/api/admin/room", roomsUpdate);
-            toast.success("Habitaciones actualizadas");
-          }
-        } catch (error) {
-          toast.error("Error en la actualización de habitaciones");
-          throw error;
-        }
-
-        //DATOS DE LA PROPIEDAD
-        let updateDataProperty = {
-          name: name,
-          serial: serial,
-          city: address.city,
-          street: address.street,
-          streetNumber: parseInt(address.streetNumber),
-          postalCode: address.postalCode,
-          floor: parseInt(floor),
-          door: door,
-          size: parseInt(catAndSize.size),
-          roomsCount: property.roomsCount,
-          bathrooms: parseInt(guestInfo.bathrooms),
-          bed: parseInt(guestInfo.beds),
-          maximunOccupants: parseInt(guestInfo.occupants),
-          puntuation: [],
-          category: catAndSize.category,
-          images: sliderImage,
-          amenities: amenities,
-          description: description,
-          incomeConditionDescription: moreInfo.condicionDeRenta,
-          maintenanceDescription: moreInfo.mantenimiento,
-          roomDescription: moreInfo.habitacion,
-          feeDescription: moreInfo.facturas,
-          aboutUs: moreInfo.sobreNosotros,
-          houseRules: moreInfo.normasDeConvivencia,
-          checkIn: moreInfo.checkIn,
-          checkOut: moreInfo.checkOut,
-          price: parseFloat(price.price),
-          amountHelloflatmate: parseFloat(price.amountHelloflatmate) || 0,
-          amountOwner:
-            parseFloat(price.price) - parseFloat(price.amountHelloflatmate) ||
-            0,
-          offer: parseFloat(price.offer) || 0,
-          IVA: parseFloat(price.IVA) || 0,
-          ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
-          rentalPeriods: rentalPeriods.rentalPeriods || [],
-          deleteRentalPeriods: rentalPeriods.deleteRentalPeriods || [],
-          newRentalPeriods: rentalPeriods.newRentalPeriods || [],
-          typology: typologyAndZone.typology || "",
-          zone: typologyAndZone.zone || "",
-          linkVideo: linkVideo || "",
-          tags: Array.isArray(tags) && tags.length > 0 ? tags : [tags],
-          calendar: calendarType || "SIMPLE",
-        };
-
-        const response = await axios.put(
-          `/api/admin/property?id=${data.id}`,
-          updateDataProperty
-        );
-        toast.success("Propiedad actualizada correctamente");
       } catch (error) {
-        toast.error("Error al actualizar la propiedad");
+        toast.error("Error en la actualización de habitaciones");
         throw error;
       }
-    } else {
-      toast.error("No dejes datos incompletos");
+
+      //DATOS DE LA PROPIEDAD
+      let updateDataProperty = {
+        name: name || null,
+        serial: serial || null,
+        city: address.city || null,
+        street: address.street || null,
+        streetNumber: parseInt(address.streetNumber) || null,
+        postalCode: address.postalCode || null,
+        floor: parseInt(floor) || null,
+        door: door || null,
+        size: parseInt(catAndSize.size) || null,
+        roomsCount: property.roomsCount || null,
+        bathrooms: parseInt(guestInfo.bathrooms) || null,
+        bed: parseInt(guestInfo.beds) || null,
+        maximunOccupants: parseInt(guestInfo.occupants) || null,
+        puntuation: [],
+        category: catAndSize.category || null,
+        images: sliderImage || null,
+        amenities: amenities || null,
+        description: description || null,
+        incomeConditionDescription: moreInfo.condicionDeRenta || null,
+        maintenanceDescription: moreInfo.mantenimiento || null,
+        roomDescription: moreInfo.habitacion || null,
+        feeDescription: moreInfo.facturas || null,
+        aboutUs: moreInfo.sobreNosotros || null,
+        houseRules: moreInfo.normasDeConvivencia || null,
+        checkIn: moreInfo.checkIn || null,
+        checkOut: moreInfo.checkOut || null,
+        price: parseFloat(price.price) || 0,
+        amountHelloflatmate: parseFloat(price.amountHelloflatmate) || 0,
+        amountOwner:
+          parseFloat(price.price) - parseFloat(price.amountHelloflatmate) || 0,
+        offer: parseFloat(price.offer) || 0,
+        IVA: parseFloat(price.IVA) || 0,
+        ownerId:
+          owners?.find((owner) => owner.email === selectedEmail)?.id || null,
+        rentalPeriods: rentalPeriods.rentalPeriods || [],
+        deleteRentalPeriods: rentalPeriods.deleteRentalPeriods || [],
+        newRentalPeriods: rentalPeriods.newRentalPeriods || [],
+        typology: typologyAndZone.typology || "",
+        zone: typologyAndZone.zone || "",
+        linkVideo: linkVideo || "",
+        tags: Array.isArray(tags) && tags.length > 0 ? tags : [tags],
+        calendar: calendarType || "SIMPLE",
+      };
+
+      const response = await axios.put(
+        `/api/admin/property?id=${data.id}`,
+        updateDataProperty
+      );
+      toast.success("Propiedad actualizada correctamente");
+    } catch (error) {
+      toast.error("Error al actualizar la propiedad");
+      throw error;
     }
   };
 
