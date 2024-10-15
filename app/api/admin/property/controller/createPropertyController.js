@@ -3,104 +3,108 @@ import { Chat, ChatParticipant, Owner, Property, RentalPeriod, Room } from "@/db
 import rentalPeriod, { sequelize } from "@/db/models/rentalPeriod";
 import { NextResponse } from 'next/server';
 
-const createProperty = async (data) => {
+export async function createProperty(data) {
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
-    }
-    if (data.name.trim() === "") {
-        return NextResponse.json({ error: "El nombre no puede estar vacío" }, { status: 400 });
-    }
-    if (data.serial.trim() === "") {
-        return NextResponse.json({ error: "El serial no puede estar vacío" }, { status: 400 });
-    }
-    if (data.city.trim() === "") {
-        return NextResponse.json({ error: "La ciudad no puede estar vacío" }, { status: 400 });
-    }
-    if (data.street.trim() === "") {
-        return NextResponse.json({ error: "La calle no puede estar vacío" }, { status: 400 });
-    }
-    if (!data.streetNumber) {
-        return NextResponse.json({ error: "El número no puede estar vacío" }, { status: 400 });
-    }
-    if (data.postalCode.trim() === "") {
-        return NextResponse.json({ error: "El Código Postal no puede estar vacío" }, { status: 400 });
-    }
-    if (data.size <= 0) {
-        return NextResponse.json({ error: "El tamaño no puede estar vacío" }, { status: 400 });
-    }
-    if (data.roomsCount <= 0) {
-        return NextResponse.json({ error: "El número de habitaciones no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (data.bathrooms <= 0 || typeof data.bathrooms !== "number") {
-        return NextResponse.json({ error: "El número de baños no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (data.bed <= 0 || typeof data.bed !== "number") {
-        return NextResponse.json({ error: "El número de camas no puede estar vacío o no es un número" }, { status: 400 });
-    }
-    if (data.maximunOccupants <= 0 || typeof data.maximunOccupants !== "number") {
-        console.log(typeof data.maximunOccupants);
-
-        return NextResponse.json({ error: "El número máximo de ocupantes no puede estar vacío o no es un número" }, { status: 400 });
     }
 
     const validCategories = ["HELLO_ROOM", "HELLO_STUDIO", "HELLO_COLIVING", "HELLO_LANDLORD"];
     if (!validCategories.includes(data.category)) {
         return NextResponse.json({ error: "La categoría no es válida" }, { status: 400 });
     }
-    if (data.images.length === 0) {
-        return NextResponse.json({ error: "Las imágenes no pueden estar vacías" }, { status: 400 });
+
+    // Definir los campos importantes y validar el precio según la categoría
+    let price = 0;
+    let amountOwner = 0;
+    let amountHelloflatmate = 0;
+    let IVA = 0;
+
+    // Si es HELLO_ROOM o HELLO_COLIVING, el precio y los valores relacionados pueden ser 0
+    if (data.category === "HELLO_ROOM" || data.category === "HELLO_COLIVING") {
+        price = data.price || 0;
+        amountOwner = data.amountOwner || 0;
+        amountHelloflatmate = data.amountHelloflatmate || 0;
+        IVA = data.IVA || 0;
     }
-    if (data.amenities.length === 0) {
-        return NextResponse.json({ error: "Las amenidades no pueden estar vacías" }, { status: 400 });
+
+    // Si es HELLO_STUDIO o HELLO_LANDLORD, el precio y los valores relacionados deben ser mayores que 0
+    if (data.category === "HELLO_STUDIO" || data.category === "HELLO_LANDLORD") {
+        // if (!data.price || data.price <= 0) {
+        //     return NextResponse.json({ error: "El precio debe ser mayor a 0 para HELLO_STUDIO o HELLO_LANDLORD" }, { status: 400 });
+        // }
+        price = data.price;
+        amountOwner = data.amountOwner || 0;
+        amountHelloflatmate = data.amountHelloflatmate || 0;
+        IVA = data.IVA || 0;
+
+        // Verificar que el monto para el dueño y Helloflatmate también sea válido
+        // if (amountOwner <= 0 || amountHelloflatmate <= 0) {
+        //     return NextResponse.json({ error: "Los montos para el dueño y Helloflatmate deben ser mayores a 0" }, { status: 400 });
+        // }
     }
-    if (data.description.length <= 0) {
-        return NextResponse.json({ error: "La descripción no puede estar vacía" }, { status: 400 });
-    }
+
+    // Definir si la propiedad está completa y debe estar activa
+    const requiredFields = [
+        data.name,
+        data.serial,
+        data.city,
+        data.street,
+        data.streetNumber,
+        data.postalCode,
+        data.size,
+        data.roomsCount,
+        data.bathrooms,
+        data.bed,
+        data.maximunOccupants,
+        data.zone,
+        price
+    ];
+    const isComplete = requiredFields.every(field => field !== undefined && field !== null && field !== "");
 
     try {
         const property = await Property.create({
-            name: data.name,
-            serial: data.serial,
-            city: data.city,
-            street: data.street,
-            streetNumber: data.streetNumber,
-            postalCode: data.postalCode,
-            floor: data.floor,
-            door: data.door,
-            size: data.size,
-            roomsCount: data.roomsCount,
-            bathrooms: data.bathrooms,
-            bed: data.bed,
-            maximunOccupants: data.maximunOccupants,
-            typology: data?.typology || null,
-            zone: data.zone,
-            price: data.amountOwner + data.amountHelloflatmate || 0,
+            name: data.name || "Sin nombre",
+            serial: data.serial || "Sin serial",
+            city: data.city || "Sin ciudad",
+            street: data.street || "Sin calle",
+            streetNumber: data.streetNumber || 0,
+            postalCode: data.postalCode || "0000",
+            floor: data.floor || null,
+            door: data.door || null,
+            size: data.size || 0,
+            roomsCount: data.roomsCount || 0,
+            bathrooms: data.bathrooms || 0,
+            bed: data.bed || 0,
+            maximunOccupants: data.maximunOccupants || 0,
+            zone: data.zone || null,
+            price: price, // Precio ajustado según la categoría
             offer: data.offer || 0,
-            IVA: data.IVA || 0,
-            amountOwner: data.amountOwner || 0,
-            amountHelloflatmate: data.amountHelloflatmate || 0,
-            puntuation: [],
-            isActive: true,
+            IVA: IVA, // IVA ajustado según la categoría
+            amountOwner: amountOwner, // Monto del dueño ajustado según la categoría
+            amountHelloflatmate: amountHelloflatmate, // Monto de Helloflatmate ajustado según la categoría
+            isActive: isComplete, // Si los campos requeridos están completos
             isBussy: false,
             category: data.category,
-            images: data.images,
+            images: data.images || [],
             linkVideo: data.linkVideo || "",
-            amenities: data.amenities,
-            description: data.description,
-            incomeConditionDescription: data.incomeConditionDescription || "",
-            maintenanceDescription: data.maintenanceDescription || "",
-            roomDescription: data.roomDescription || "",
-            feeDescription: data.feeDescription || "",
-            aboutUs: data.aboutUs || "",
-            houseRules: data.houseRules || "",
-            checkIn: data.checkIn || "",
-            checkOut: data.checkOut || "",
+            amenities: data.amenities || [],
+            description: data.description || "Sin descripción",
             ownerId: data.ownerId || "1",
             tags: data.tags || [],
-            calendar: data.calendar || "SIMPLE"
+            calendar: data.calendar || "SIMPLE",
+            typology: data.typology || null,
+            incomeConditionDescription: data.incomeConditionDescription || null,
+            maintenanceDescription: data.maintenanceDescription || null,
+            roomDescription: data.roomDescription || null,
+            feeDescription: data.feeDescription || null,
+            aboutUs: data.aboutUs || null,
+            houseRules: data.houseRules || null,
+            checkIn: data.checkIn || null,
+            checkOut: data.checkOut || null,
         });
 
-        if (data.rentalPeriods) {
+        // Crear períodos de alquiler si existen
+        if (data.rentalPeriods && data.rentalPeriods.length > 0) {
             await RentalPeriod.bulkCreate(data.rentalPeriods.map((rentalPeriod) => {
                 return {
                     startDate: new Date(rentalPeriod.startDate),
@@ -108,29 +112,32 @@ const createProperty = async (data) => {
                     status: "FREE",
                     rentalPeriodableId: property.id,
                     rentalPeriodableType: "PROPERTY"
-                }
-            }))
+                };
+            }));
         }
 
-        const chatGroup = await Chat.create({
-            type: "GROUP",
-            propertyId: property.id,
-            ownerId: property.ownerId
-        })
+        // Crear el grupo de chat si existe un propietario
+        if (property.ownerId) {
+            const chatGroup = await Chat.create({
+                type: "GROUP",
+                propertyId: property.id,
+                ownerId: property.ownerId
+            });
 
-        const chatParticipant = await ChatParticipant.create({
-            chatId: chatGroup.id,
-            participantId: property.ownerId,
-            participantType: "OWNER",
-        })
+            await ChatParticipant.create({
+                chatId: chatGroup.id,
+                participantId: property.ownerId,
+                participantType: "OWNER",
+            });
+        }
 
         return NextResponse.json({ message: "Propiedad cargada con éxito", property });
     } catch (error) {
         console.log(error);
-
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
-}
+};
+
 
 export async function cloneProperty(data) {
     console.log(data);
@@ -221,5 +228,3 @@ export async function cloneProperty(data) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
-
-export default createProperty;

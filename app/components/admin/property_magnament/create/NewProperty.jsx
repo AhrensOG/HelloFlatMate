@@ -27,6 +27,173 @@ import LinkVideoSection from "./main/LinkVideoSection";
 import TagsSection from "./main/TagsSection";
 import CalendarSection from "./main/CalendarSection";
 
+const categoryData = {
+  HELLO_ROOM: {
+    condicionDeRenta: `La reserva: Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+
+Depósito: El día de tu llegada dejarás 300 € en depósito.
+
+La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
+
+Suministros: El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
+
+Wifi: El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
+
+Tasa de la agencia: La tasa es de 380€ más iva (459'80€).
+
+Limpieza check out: Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+
+Ropa de cama: En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.`,
+    facturas: `Luz, agua e internet, no incluido. (*Ver condiciones de alquiler).
+
+Seguro de hogar, incluido.
+
+Gastos del edificio, incluidos.`,
+    mantenimiento: `¿Ha dejado de funcionar algo? 
+
+No te preocupes, avisa a nuestros agentes a través del grupo de WhatsApp y el personal de mantenimiento irá a solucionarlo.
+
+Así de fácil.`,
+    normasDeConvivencia: `No fiestas: Por tu seguridad, la nuestra y la buena convivencia con los vecinos, no está permitido hacer fiestas.
+
+No mascotas: ¡Nos encantan! Pero lamentablemente no podríamos acogerlas a todas.
+
+No se permite fumar.`,
+    checkIn: `Check in: De lunes a viernes de 9 a 17 h.
+
+Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
+
+Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.
+
+Check out: La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.`,
+    checkOut: `Disfruta de atención personalizada 365 días al año.
+
+Durante el día podrás contactar con nuestros agentes encargados de hacer vuestra estancia cómoda y placentera.
+
+Fuera de horario laboral (después de las 17h o durante los fines de semana) podéis contactarnos a nuestro teléfono de emergencia.
+
+Más seguridad y más atención imposible.`,
+    habitacion: "",
+    sobreNosotros: "",
+  },
+  HELLO_LANDLORD: {
+    condicionDeRenta: `La reserva: Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+
+Depósito: El día de tu llegada dejarás 300 € en depósito.
+
+La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
+
+Suministros: El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
+
+Wifi: El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
+
+Tasa de la agencia: La tasa es de 380€ más iva (459'80€).
+
+Limpieza check out: Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+
+Ropa de cama: En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.`,
+    facturas: `Luz, agua e internet, no incluido. (*Ver condiciones de alquiler).
+
+Seguro de hogar, incluido.
+
+Gastos del edificio, incluidos.`,
+    mantenimiento: `El propietario tendrá obligación de pagar sin derecho a subir el alquiler las reparaciones que por ley le obligue.
+
+El inquilino deberá de pagar las pequeñas reparaciones que por LEY obliga.
+
+Mira este artículo sobre las responsabilidades del propietario y del inquilino: https://www.elconfidencial.com/vivienda/2016-04-15/caseros-versus-inquilinos-quien-paga-que-en-caso-de-reparaciones-y-averias_1183478/`,
+    normasDeConvivencia: `No fiestas: Por tu seguridad, la nuestra y la buena convivencia con los vecinos, no está permitido hacer fiestas.
+
+No mascotas: ¡Nos encantan! Pero lamentablemente no podríamos acogerlas a todas.
+
+No se permite fumar.`,
+    checkIn: `Check in: De lunes a viernes de 9 a 17 h.
+
+Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
+
+Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.
+
+Check out: La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.`,
+    checkOut: `Servicios que presta la agencia:
+
+    - Formalización de contrato entre inquilino y propietario.
+    - Entrega de llaves.
+    - Atención al inquilino en caso de conflicto con la propiedad.
+
+Servicios que presta la propiedad:
+
+    - Atención al inquilino.
+    - Informe de consumos (luz, agua, gas).
+    - Mediación entre inquilinos en caso de conflicto.
+    - Gestión de incidencias de mantenimiento.`,
+    habitacion: "",
+    sobreNosotros: "",
+  },
+  HELLO_COLIVING: {
+    condicionDeRenta: `La reserva: Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+
+Depósito: El día de tu llegada dejarás 500 € en depósito.
+
+La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
+
+Suministros: El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
+
+Wifi: El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
+
+Tasa de la agencia: La tasa es de 380€ más iva (459'80€).
+
+Limpieza check out: Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+
+Ropa de cama: En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.`,
+    facturas: `Luz, agua, gas no incluido. (*Ver condiciones de alquiler).
+
+Seguro de hogar, incluido.
+
+Gastos del edificio, incluidos.`,
+    mantenimiento: `¿Ha dejado de funcionar algo? 
+
+No te preocupes, avisa a nuestros agentes a través del grupo de WhatsApp y el personal de mantenimiento irá a solucionarlo.
+
+Así de fácil.`,
+    normasDeConvivencia: `No fiestas: Por tu seguridad, la nuestra y la buena convivencia con los vecinos, no está permitido hacer fiestas.
+
+No mascotas: ¡Nos encantan! Pero lamentablemente no podríamos acogerlas a todas.
+
+No se permite fumar.`,
+    checkIn: `Check in: De lunes a viernes de 9 a 17h. Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
+
+Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.`,
+    checkOut: `2 limpiezas semanales de zonas comunes.
+
+Wifi incluido.
+
+Disfruta de atención personalizada 365 días al año.
+
+Durante el día podrás contactar con nuestros agentes encargados de hacer vuestra estancia cómoda y placentera.
+
+Fuera de horario laboral (después de las 17h o durante los fines de semana) podéis contactarnos a nuestro teléfono de emergencia.
+
+Más seguridad y más atención imposible.`,
+    habitacion: "",
+    sobreNosotros: "",
+  },
+};
+
+const getMoreInfoByCategory = (category) => {
+  return (
+    categoryData[category] || {
+      condicionDeRenta: "",
+      habitacion: "",
+      facturas: "",
+      mantenimiento: "",
+      sobreNosotros: "",
+      normasDeConvivencia: "",
+      checkIn: "",
+      checkOut: "",
+    }
+  );
+};
+
 export default function NewProperty({ category, handleBack }) {
   const router = useRouter();
 
@@ -49,16 +216,7 @@ export default function NewProperty({ category, handleBack }) {
   const [description, setDescription] = useState([]);
   const [sliderImage, setSliderImage] = useState([]);
   const [amenities, setAmenities] = useState([]);
-  const [moreInfo, setMoreInfo] = useState({
-    condicionDeRenta: "",
-    habitacion: "",
-    facturas: "",
-    mantenimiento: "",
-    sobreNosotros: "",
-    normasDeConvivencia: "",
-    checkIn: "",
-    checkOut: "",
-  });
+  const [moreInfo, setMoreInfo] = useState(getMoreInfoByCategory(category));
   const [catAndSize, setCatAndSize] = useState({
     category: category,
     size: null,
@@ -109,41 +267,6 @@ export default function NewProperty({ category, handleBack }) {
     setShowRoomEditModal(!showRoomEditModal);
   };
 
-  // Validation and submission
-  const handleSubmit = () => {
-    const allData = {
-      name: name,
-      city: address.city,
-      street: address.street,
-      streetNumber: address.streetNumber,
-      postalCode: address.postalCode,
-      size: catAndSize.size,
-      roomsCount: dataRoom.length,
-      bathrooms: guestInfo.bathrooms,
-      bed: guestInfo.beds,
-      maximunOccupants: guestInfo.occupants,
-      price: price.price,
-      amountHelloflatmate: price.amountHelloflatmate,
-      amountOwner: price.amountOwner,
-      category: catAndSize.category,
-      amenities: amenities,
-      description: description,
-      checkIn: moreInfo.checkIn,
-      checkOut: moreInfo.checkOut,
-      images: sliderImage.map((image) => image.url), // Asegúrate de tener URLs aquí
-      offer: price.offer,
-      IVA: price.IVA,
-    };
-
-    const validationResult = validateData(allData);
-
-    if (!validationResult.isValid) {
-      toast.error(validationResult.message);
-      return false;
-    }
-    return true;
-  };
-
   const saveImages = async (images) => {
     if (images.length > 0) {
       const prevImages = images.map((image) => image.fileData);
@@ -165,35 +288,36 @@ export default function NewProperty({ category, handleBack }) {
 
   const submitRoom = async (data) => {
     let rooms;
-    if (data[0].amountOwner || data[0].amountHelloflatmate) {
+    if (data[0]?.amountOwner || data[0]?.amountHelloflatmate) {
       rooms = data.map((room) => ({
-        name: room.name,
-        floor: parseInt(room.floor),
-        door: room.door,
-        images: room.images,
-        numberBeds: parseInt(room.numberBeds),
-        couple: room.couple,
-        bathroom: room.bathroom,
-        serial: room.serial,
-        price: parseInt(room.price),
-        amountOwner: parseInt(room.price) - parseInt(room.amountHelloflatmate),
-        amountHelloflatmate: parseInt(room.amountHelloflatmate),
-        IVA: parseInt(room.IVA),
-        rentalPeriods: room.rentalPeriods,
-        description: room.description,
-        typology: room.typology || "MIXED",
-        tags: room.tags || [],
-        linkVideo: room.linkVideo,
-        calendar: room.calendar || "SIMPLE",
+        name: room?.name || null,
+        floor: parseInt(room?.floor) || null,
+        door: room?.door || null,
+        images: room?.images || null,
+        numberBeds: parseInt(room?.numberBeds) || null,
+        couple: room?.couple || null,
+        bathroom: room?.bathroom || null,
+        serial: room?.serial || null,
+        price: parseInt(room?.price || 0),
+        amountOwner:
+          parseInt(room?.price) - parseInt(room?.amountHelloflatmate) || 0,
+        amountHelloflatmate: parseInt(room?.amountHelloflatmate) || 0,
+        IVA: parseInt(room?.IVA) || 0,
+        rentalPeriods: room?.rentalPeriods || null,
+        description: room?.description || null,
+        typology: room?.typology || "MIXED",
+        tags: room?.tags || [],
+        linkVideo: room?.linkVideo || null,
+        calendar: room?.calendar || "SIMPLE",
       }));
     } else {
       rooms = data.map((room) => ({
-        name: room.name,
-        images: room.images,
-        numberBeds: parseInt(room.numberBeds),
-        couple: room.couple,
-        bathroom: room.bathroom,
-        serial: room.serial,
+        name: room?.name || null,
+        images: room?.images || null,
+        numberBeds: parseInt(room?.numberBeds || 0),
+        couple: room?.couple || null,
+        bathroom: room?.bathroom || null,
+        serial: room?.serial || null,
       }));
     }
 
@@ -226,78 +350,76 @@ export default function NewProperty({ category, handleBack }) {
   };
 
   let property = {
-    name: name,
-    serial: serial,
-    city: address.city,
-    street: address.street,
-    streetNumber: address.streetNumber,
-    postalCode: address.postalCode,
-    floor: address.floor,
-    door: address.door,
-    size: parseInt(catAndSize.size),
-    roomsCount: dataRoom.length,
-    bathrooms: parseInt(guestInfo.bathrooms),
-    bed: parseInt(guestInfo.beds),
-    maximunOccupants: parseInt(guestInfo.occupants),
-    amountHelloflatmate: parseInt(price.amountHelloflatmate),
-    amountOwner: parseInt(price.amountOwner),
+    name: name || null,
+    serial: serial || null,
+    city: address.city || null,
+    street: address.street || null,
+    streetNumber: address.streetNumber || null,
+    postalCode: address.postalCode || null,
+    floor: address.floor || null,
+    door: address.door || null,
+    size: parseInt(catAndSize.size) || null,
+    roomsCount: dataRoom.length || null,
+    bathrooms: parseInt(guestInfo.bathrooms) || null,
+    bed: parseInt(guestInfo.beds) || null,
+    maximunOccupants: parseInt(guestInfo.occupants) || null,
+    amountHelloflatmate: parseInt(price.amountHelloflatmate) || 0,
+    amountOwner: parseInt(price.amountOwner) || 0,
     puntuation: [],
-    category: catAndSize.category,
-    amenities: amenities,
-    description: description,
-    incomeConditionDescription: moreInfo.condicionDeRenta,
-    maintenanceDescription: moreInfo.mantenimiento,
-    roomDescription: moreInfo.habitacion,
-    feeDescription: moreInfo.facturas,
-    aboutUs: moreInfo.sobreNosotros,
-    houseRules: moreInfo.normasDeConvivencia,
-    checkIn: moreInfo.checkIn,
-    checkOut: moreInfo.checkOut,
+    category: catAndSize.category || null,
+    amenities: amenities || null,
+    description: description || null,
+    incomeConditionDescription: moreInfo.condicionDeRenta || null,
+    maintenanceDescription: moreInfo.mantenimiento || null,
+    roomDescription: moreInfo.habitacion || null,
+    feeDescription: moreInfo.facturas || null,
+    aboutUs: moreInfo.sobreNosotros || null,
+    houseRules: moreInfo.normasDeConvivencia || null,
+    checkIn: moreInfo.checkIn || null,
+    checkOut: moreInfo.checkOut || null,
     price: parseFloat(price.price) || 0,
     amountHelloflatmate: parseFloat(price.amountHelloflatmate) || 0,
     amountOwner:
       parseFloat(price.price) - parseFloat(price.amountHelloflatmate) || 0,
     offer: parseFloat(price.offer) || 0,
     IVA: parseFloat(price.IVA) || 0,
-    ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id,
-    rentalPeriods: rentalPeriods.newRentalPeriods,
-    typology: typologyAndZone.typology,
-    zone: typologyAndZone.zone,
-    linkVideo: linkVideo,
+    ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id || null,
+    rentalPeriods: rentalPeriods.newRentalPeriods || null,
+    typology: typologyAndZone.typology || null,
+    zone: typologyAndZone.zone || null,
+    linkVideo: linkVideo || null,
     tags: [tags],
-    calendar: calendarType,
+    calendar: calendarType || "SIMPLE",
   };
 
   const createProperty = async () => {
-    if (handleSubmit()) {
-      try {
-        //Guardar Imagenes
-        const imagesList = await saveImages(sliderImage);
-        property.images = imagesList;
+    try {
+      //Guardar Imagenes
+      const imagesList = await saveImages(sliderImage);
+      property.images = imagesList;
 
-        //Crear habitaciones
-        const rooms = await submitRoom(dataRoom);
+      //Crear habitaciones
+      const rooms = await submitRoom(dataRoom);
 
-        // Crear propiedad
-        const propertyResponse = await axios.post(
-          "/api/admin/property",
-          property
-        );
-        const propertyId = propertyResponse.data.property.id;
+      // Crear propiedad
+      const propertyResponse = await axios.post(
+        "/api/admin/property",
+        property
+      );
+      const propertyId = propertyResponse.data.property.id;
 
-        // Asignar habitaciones
-        const roomsResponse = await setProperty(rooms.data, propertyId);
+      // Asignar habitaciones
+      const roomsResponse = await setProperty(rooms.data, propertyId);
 
-        // Redirigir después de un retraso
-        setTimeout(() => {
-          router.push(
-            `/pages/admin/update/${propertyId}/${catAndSize.category}`
-          );
-        }, 1000);
-      } catch (error) {
-        toast.error("Ocurrió un error");
-        throw error;
-      }
+      // Redirigir después de un retraso
+      setTimeout(() => {
+        router.push(`/pages/admin/update/${propertyId}/${catAndSize.category}`);
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Ocurrió un error");
+      throw error;
     }
   };
 

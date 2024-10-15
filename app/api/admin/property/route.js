@@ -1,4 +1,4 @@
-import createProperty from './controller/createPropertyController';
+import { createProperty } from './controller/createPropertyController';
 import { deleteProperty, desactivateProperty } from './controller/deletePropertyController';
 import { getAllProperties, getAllPropertiesSimple, getPropertyById } from './controller/getPropertyController';
 import { activateProperty, cascadeUpdateByCategory, updateProperty } from './controller/updateProperty';

@@ -26,7 +26,7 @@ const list = [
     id: "HELLO_LANDLORD",
   },
 ];
-
+ 
 const CategorySelectSection = ({
   handleContinue,
   handleBack,
@@ -63,17 +63,18 @@ const CategorySelectSection = ({
             currentCategory={currentCategory}
             setCurrentCategory={setCurrentCategory}
             categoryId={e.id}
+            handleContinue={handleContinue}
           />
         ))}
       </div>
-      <button
+      {/* <button
         onClick={handleContinue}
         alt="Reservar"
         type="button"
         className="self-center text-base font-normal text-white h-[3.25rem] rounded-lg w-[90%] bg-payment-button-gradient hover:bg-payment-button-gradient-hover transition-all duration-300 lg:w-[21rem]"
       >
         Continuar
-      </button>
+      </button> */}
     </motion.section>
   );
 };

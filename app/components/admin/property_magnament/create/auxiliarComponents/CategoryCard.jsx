@@ -7,10 +7,14 @@ const CategoryCard = ({
   title,
   image,
   categoryId,
+  handleContinue,
 }) => {
   return (
     <div
-      onClick={() => setCurrentCategory(categoryId)}
+      onClick={() => {
+        setCurrentCategory(categoryId);
+        handleContinue();
+      }}
       className={`${
         currentCategory === categoryId
           ? "scale-110 border-resolution-blue"
