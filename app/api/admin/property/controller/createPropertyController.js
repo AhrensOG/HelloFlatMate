@@ -91,7 +91,16 @@ export async function createProperty(data) {
             description: data.description || "Sin descripción",
             ownerId: data.ownerId || "1",
             tags: data.tags || [],
-            calendar: data.calendar || "SIMPLE"
+            calendar: data.calendar || "SIMPLE",
+            typology: data.typology || null,
+            incomeConditionDescription: data.incomeConditionDescription || null,
+            maintenanceDescription: data.maintenanceDescription || null,
+            roomDescription: data.roomDescription || null,
+            feeDescription: data.feeDescription || null,
+            aboutUs: data.aboutUs || null,
+            houseRules: data.houseRules || null,
+            checkIn: data.checkIn || null,
+            checkOut: data.checkOut || null,
         });
 
         // Crear períodos de alquiler si existen
