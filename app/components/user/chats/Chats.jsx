@@ -77,18 +77,30 @@ export default function Chat() {
       {privateChats &&
         privateChats.map((chat) => {
           // Encuentra el participante que sea de tipo "OWNER" y no sea el usuario actual
-          const ownerParticipant = chat.participants.find(
-            (u) => u.participantType === "OWNER" && u.participantId !== user.id
-          );
+          const participants = chat.participants.find((u) => {
+            if (user.role === "OWNER") {
+              return (
+                u.participantId !== user.id && u.participantType === "CLIENT"
+              );
+            } else {
+              return (
+                u.participantId !== user.id && u.participantType === "OWNER"
+              );
+            }
+          });
 
           return (
             <ChatsCard
               key={chat.id}
               name={
-                ownerParticipant
-                  ? ownerParticipant.owner?.name +
+                participants.owner
+                  ? participants.owner?.name +
                     " " +
-                    ownerParticipant.owner?.lastName
+                    participants.owner?.lastName
+                  : participants.client
+                  ? participants.client?.name +
+                    " " +
+                    participants.client?.lastName
                   : "Unknown"
               }
               image={"/profile/profile.jpg"}
