@@ -48,22 +48,34 @@ export default function RequestService({ type, id }) {
         className={`${plus_jakarta.className} relative flex flex-col gap-4 m-4 text-[#0D171C]`}
       >
         <h1 className="font-bold text-2xl text-[#0D171C]">
-          Servicio de limpieza
+          {type === "CLEAN"
+            ? "Servicio de limpieza"
+            : "Servicio de mantenimiento"}
         </h1>
         <DescriptionSection
           title={"Descripcion"}
           body={
-            "Mantén tu espacio impecable con nuestro servicio de limpieza profesional, diseñado para adaptarse a todas tus necesidades."
+            type === "CLEAN"
+              ? "Mantén tu espacio impecable con nuestro servicio de limpieza profesional, diseñado para adaptarse a todas tus necesidades."
+              : "Indícanos el problema e iremos a resolverlo."
           }
         />
         <WhatIncludes
           title={"¿Qué incluye?"}
-          items={[
-            " Limpieza profunda de todas las áreas: habitaciones, baños, cocina y áreas comunes.",
-            "Desinfección de superficies de alto contacto para asegurar un entorno seguro.",
-            "Aspirado y limpieza de pisos, alfombras y muebles.",
-            "Limpieza de ventanas y eliminación de polvo en lugares difíciles de alcanzar.",
-          ]}
+          items={
+            type === "CLEAN"
+              ? [
+                  "Limpieza profunda de todas las áreas: habitaciones, baños, cocina y áreas comunes.",
+                  "Desinfección de superficies de alto contacto para asegurar un entorno seguro.",
+                  "Aspirado y limpieza de pisos, alfombras y muebles.",
+                  "Limpieza de ventanas y eliminación de polvo en lugares difíciles de alcanzar.",
+                ]
+              : [
+                  "Atención personalziada.",
+                  "Trabajadores altamente capacitados.",
+                  "Reparaciones de todo tipo.",
+                ]
+          }
         />
         <ButtonServices title={"Solicitar Servicio"} action={handleShowModal} />
       </main>
