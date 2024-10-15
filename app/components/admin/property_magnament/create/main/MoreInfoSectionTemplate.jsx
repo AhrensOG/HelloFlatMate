@@ -21,7 +21,7 @@ export default function MoreInfoSectionTemplate({ data, setData }) {
         />
         <MoreInfoItemTemplate
           property="condicionDeRenta"
-          title="Condiciónes del alquiler"
+          title="Condiciones del alquiler"
           body={data.condicionDeRenta}
           onBodyChange={handleBodyChange}
         />

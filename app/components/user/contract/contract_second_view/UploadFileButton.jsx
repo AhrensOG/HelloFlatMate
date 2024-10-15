@@ -16,6 +16,8 @@ export default function UploadFileButton({ description, id }) {
 
   const handleFileChange = (event) => {
     const files = event.target.files;
+    console.log(files);
+
     if (files.length > 2) {
       return toast.info("Máximo permitido: 2 Imagenes");
     }

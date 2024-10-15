@@ -95,10 +95,10 @@ export default function LeaseOrderPanel(data) {
             ? null
             : leaseOrder.roomId,
       };
-      // await axios.patch("/api/admin/contract", {
-      //   contractId: contract.id,
-      //   status: "APPROVED",
-      // });
+      await axios.patch("/api/admin/contract", {
+        contractId: contract.id,
+        status: "APPROVED",
+      });
       await axios.patch(`/api/admin/lease_order`, dataRequest);
     } catch (error) {
       console.log(error);

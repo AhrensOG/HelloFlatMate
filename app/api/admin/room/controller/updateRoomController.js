@@ -6,95 +6,126 @@ export async function updateRoom(id, data) {
     console.log(data);
 
     if (!data) return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
+
+    // Validar datos según la categoría
+    const validateRoomData = (roomData) => {
+        const isBaseComplete =
+            roomData.name && roomData.name.trim() !== '' &&
+            roomData.numberBeds && roomData.numberBeds > 0 &&
+            roomData.images && roomData.images.length > 0 &&
+            roomData.typology && roomData.zone !== undefined;
+
+        // Validar campos relacionados con el precio según la categoría
+        if (roomData.category === "HELLO_ROOM" || roomData.category === "HELLO_COLIVING") {
+            return isBaseComplete;  // Para estas categorías, no se requiere precio mayor a 0
+        } else if (roomData.category === "HELLO_STUDIO" || roomData.category === "HELLO_LANDLORD") {
+            return isBaseComplete && roomData.price && roomData.price > 0 && roomData.IVA >= 0 && roomData.amountHelloflatmate >= 0;
+        }
+        return false; // Si la categoría no es válida o faltan campos obligatorios
+    };
+
     if (Array.isArray(data) && data.length > 0) {
         for (let i = 0; i < data.length; i++) {
-            if (!data[i].name || data[i].name.trim() === '') return NextResponse.json({ error: "Se requieren nombre" }, { status: 400 });
-            if (data[i].numberBeds <= 0 || data[i].numberBeds === '') return NextResponse.json({ error: "Se requieren numero de camas" }, { status: 400 });
-            if (data[i].images.length === 0) return NextResponse.json({ error: "Se requieren imagen" }, { status: 400 });
+            // Validación de cada habitación
+            const isComplete = validateRoomData(data[i]);
 
             try {
                 const room = await Room.findByPk(data[i].id);
-                if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
-                //Actualizar fechas
+                if (!room) return NextResponse.json({ error: "Habitación no encontrada" }, { status: 404 });
+
+                // Actualizar fechas existentes
                 if (data[i].rentalPeriods.length > 0) {
                     data[i].rentalPeriods.forEach(async (period) => {
                         await RentalPeriod.update(period, {
                             where: {
                                 id: period.id
                             }
-                        })
-                    })
+                        });
+                    });
                 }
 
-                //Crear Fechas en caso que agregaran nuevas
+                // Crear nuevas fechas si se agregaron
                 if (data[i].newRentalPeriods.length > 0) {
                     data[i].newRentalPeriods.forEach(async (period) => {
-                        await RentalPeriod.create({ startDate: new Date(period.startDate), endDate: new Date(period.endDate), rentalPeriodableId: data[i].id, rentalPeriodableType: "ROOM" })
-                    })
+                        await RentalPeriod.create({
+                            startDate: new Date(period.startDate),
+                            endDate: new Date(period.endDate),
+                            rentalPeriodableId: data[i].id,
+                            rentalPeriodableType: "ROOM"
+                        });
+                    });
                 }
 
-                //Borrar fechas
+                // Borrar fechas si es necesario
                 if (data[i].deleteRentalPeriod.length > 0) {
                     data[i].deleteRentalPeriod.forEach(async (period) => {
                         await RentalPeriod.destroy({
                             where: {
                                 id: period
                             }
-                        })
-                    })
+                        });
+                    });
                 }
-                await room.update(data[i]);
+
+                // Actualizar la habitación y definir isActive según la validación
+                await room.update({ ...data[i], isActive: isComplete });
             } catch (error) {
-                return NextResponse.json({ error: "Error al actualizar la habitacion" }, { status: 500 });
+                return NextResponse.json({ error: "Error al actualizar la habitación" }, { status: 500 });
             }
         }
         return NextResponse.json({ message: "Habitaciones actualizadas" }, { status: 200 });
     }
-    if (data.name.trim() === '') return NextResponse.json({ error: "Se requieren nombre" }, { status: 400 });
-    if (data.numberBeds <= 0 || data.numberBeds === '') return NextResponse.json({ error: "Se requieren numero de camas" }, { status: 400 });
-    if (data.images.length === 0) return NextResponse.json({ error: "Se requieren imagen" }, { status: 400 });
+
+    // Validar los datos de la habitación individual
+    const isComplete = validateRoomData(data);
 
     try {
-
         const room = await Room.findByPk(id);
+        if (!room) return NextResponse.json({ error: "Habitación no encontrada" }, { status: 404 });
 
-        if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
-
-        //Actualizar fechas
+        // Actualizar fechas existentes
         if (data.rentalPeriods.length > 0) {
             data.rentalPeriods.forEach(async (period) => {
                 await RentalPeriod.update(period, {
                     where: {
                         id: period.id
                     }
-                })
-            })
+                });
+            });
         }
 
-        //Crear Fechas en caso que agregaran nuevas
+        // Crear nuevas fechas si se agregaron
         if (data.newRentalPeriods.length > 0) {
             data.newRentalPeriods.forEach(async (period) => {
-                await RentalPeriod.create({ startDate: new Date(period.startDate), endDate: new Date(period.endDate), rentalPeriodableId: room.id, rentalPeriodableType: "ROOM" })
-            })
+                await RentalPeriod.create({
+                    startDate: new Date(period.startDate),
+                    endDate: new Date(period.endDate),
+                    rentalPeriodableId: room.id,
+                    rentalPeriodableType: "ROOM"
+                });
+            });
         }
 
-        //Borrar fechas
+        // Borrar fechas si es necesario
         if (data.deleteRentalPeriod.length > 0) {
             data.deleteRentalPeriod.forEach(async (period) => {
                 await RentalPeriod.destroy({
                     where: {
                         id: period
                     }
-                })
-            })
+                });
+            });
         }
 
-        await room.update(data);
+        // Actualizar la habitación y definir isActive según la validación
+        await room.update({ ...data, isActive: isComplete });
         return NextResponse.json(room, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: "Error al actualizar la habitacion" }, { status: 500 });
+        return NextResponse.json({ error: "Error al actualizar la habitación" }, { status: 500 });
     }
 }
+
+
 
 export async function updateStatusRoom(data) {
     if (!data) {

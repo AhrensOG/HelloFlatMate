@@ -15,20 +15,21 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             serial: {
                 type: DataTypes.STRING(100),
-                defaultValue: "PB-1",
-                allowNull: false,
+                defaultValue: "...",
+                allowNull: true,
             },
             name: {
                 type: DataTypes.STRING(100),
-                allowNull: false,
+                allowNull: true,
+
             },
             city: {
                 type: DataTypes.STRING(100),
-                allowNull: false,
+                allowNull: true,
             },
             street: {
                 type: DataTypes.STRING(700),
-                allowNull: false,
+                allowNull: true,
             },
             streetNumber: {
                 type: DataTypes.INTEGER,
@@ -36,7 +37,7 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             postalCode: {
                 type: DataTypes.STRING(10),
-                allowNull: false,
+                allowNull: true,
             },
             floor: {
                 type: DataTypes.INTEGER,
@@ -48,23 +49,23 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             size: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             roomsCount: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             bathrooms: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             bed: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             maximunOccupants: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             price: {
                 type: DataTypes.FLOAT,
@@ -96,11 +97,11 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             puntuation: {
                 type: DataTypes.ARRAY(DataTypes.FLOAT),
-                allowNull: false,
+                allowNull: true,
             },
             isActive: {
                 type: DataTypes.BOOLEAN,
-                allowNull: false,
+                allowNull: true,
             },
             status: {
                 type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED", "DELETED"),
@@ -109,16 +110,16 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             category: {
                 type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD', 'HELLO_ROOM', 'HELLO_COLIVING'),
-                allowNull: false,
+                allowNull: true,
             },
             calendar: {
                 type: DataTypes.ENUM('SIMPLE', 'FULL'),
                 defaultValue: "SIMPLE",
-                allowNull: false,
+                allowNull: true,
             },
             images: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
-                allowNull: false,
+                allowNull: true,
             },
             linkVideo: {
                 type: DataTypes.TEXT,
@@ -126,11 +127,11 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             amenities: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
-                allowNull: false,
+                allowNull: true,
             },
             description: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
-                allowNull: false,
+                allowNull: true,
             },
             incomeConditionDescription: {
                 type: DataTypes.STRING(5500),
