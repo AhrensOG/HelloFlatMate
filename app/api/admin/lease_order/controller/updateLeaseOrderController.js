@@ -124,11 +124,12 @@ export async function updateStatusLeaseOrder(data) {
                 })) {
                     room.status = "FREE";
                 } else {
-                    property.status = roomsAvailable.length > 0 ? "FREE" : "OCCUPIED";
+                    room.status = "OCCUPIED"
                 }
             } else {
                 room.status = "FREE";
             }
+            property.status = roomsAvailable.length > 0 ? "FREE" : "OCCUPIED";
 
             await leaseOrderRoom.save({ transaction });
             await room.save({ transaction });
