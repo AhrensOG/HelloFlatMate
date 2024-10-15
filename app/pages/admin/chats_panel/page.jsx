@@ -26,8 +26,13 @@ export default function ChatsPanelPage() {
 
   if (!chats) {
     return (
-      <div className="flex items-center justify-center flex-1 absolute inset-0">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="h-screen flex flex-col">
+        <headear>
+          <NavBar client={false} admin={true} owner={false} />
+        </headear>
+        <div className="flex items-center justify-center grow absolute inset-0">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+        </div>
       </div>
     );
   }
