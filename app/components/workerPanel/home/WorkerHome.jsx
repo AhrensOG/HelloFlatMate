@@ -118,7 +118,7 @@ export default function WorkerHome({ section }) {
               <h2 className="font-bold text-2xl text-[#121417]">
                 Historial de tareas
               </h2>
-              {filterOldTasks > 0 ? (
+              {filteredOldTasks.length > 0 ? (
                 filteredOldTasks?.map((item) => (
                   <TaskCardSimple
                     key={item?.id}
