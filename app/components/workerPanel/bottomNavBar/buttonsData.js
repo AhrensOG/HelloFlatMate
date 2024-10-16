@@ -11,12 +11,12 @@ export const buttonsList = [
     title: "Tareas",
     link: "/pages/worker-panel/tasks"
   },
-  {
-    img: "/worker-panel/chat.svg",
-    alt: "Chat Icon",
-    title: "Mensajes",
-    link: "/pages/worker-panel/chats"
-  },
+  // {
+  //   img: "/worker-panel/chat.svg",
+  //   alt: "Chat Icon",
+  //   title: "Mensajes",
+  //   link: "/pages/worker-panel/chats"
+  // },
   {
     img: "/worker-panel/profile.svg",
     alt: "Profile Icon",
