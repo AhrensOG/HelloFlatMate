@@ -14,7 +14,7 @@ export default function TodayTaskSection({ data, section }) {
   return (
     <section className="flex flex-col gap-4">
       <h2 className="font-bold text-2xl text-[#121417]">Mis tareas</h2>
-      {data?.lenght === 0 ? (
+      {data?.lenght > 0 ? (
         data?.map((item) => (
           <TaskCardSimple
             action={() => handleShowdetails(item?.id)}
