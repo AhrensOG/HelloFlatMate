@@ -10,7 +10,7 @@ export default function TodayTaskSection({ data, section }) {
   const handleShowdetails = (id) => {
     route.push("/pages/worker-panel/tasks/details?id=" + id);
   };
-
+console.log(data)
   return (
     <section className="flex flex-col gap-4">
       <h2 className="font-bold text-2xl text-[#121417]">Mis tareas</h2>
