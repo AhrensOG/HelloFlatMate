@@ -94,6 +94,10 @@ export async function middleware(request) {
       "/pages/select-category",
       "/api",
     ],
+    WORKER: [
+      "/pages/worker-panel",
+      "/api",
+    ],
     CLIENT: ["/pages/user", "/pages/home", "/api"],
   };
 

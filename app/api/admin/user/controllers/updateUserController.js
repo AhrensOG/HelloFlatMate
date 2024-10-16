@@ -1,4 +1,4 @@
-import { Client, Owner, Admin } from "@/db/init";
+import { Client, Owner, Admin, Worker } from "@/db/init";
 import { sequelize } from "@/db/models/comment";
 import { NextResponse } from "next/server";
 
@@ -80,7 +80,7 @@ export async function updateRoleUser(data) {
     const transaction = await sequelize.transaction();
 
     try {
-        let user = await Client.findByPk(data.id) || await Owner.findByPk(data.id) || await Admin.findByPk(data.id, { transaction });
+        let user = await Client.findByPk(data.id) || await Owner.findByPk(data.id) || await Admin.findByPk(data.id, { transaction }) || await Worker.findByPk(data.id, { transaction });
         if (!user) {
             await transaction.rollback();
             return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
@@ -93,9 +93,13 @@ export async function updateRoleUser(data) {
             newUser = await Admin.create({ ...userData, role: "ADMIN" }, { transaction });
         } else if (data.role === "OWNER") {
             newUser = await Owner.create({ ...userData, role: "OWNER" }, { transaction });
-        } else if (data.role === "CLIENT") {
+        }
+        else if (data.role === "CLIENT") {
             newUser = await Client.create({ ...userData, role: "CLIENT" }, { transaction });
-        } else {
+        } else if (data.role === "WORKER") {
+            newUser = await Worker.create({ ...userData, role: "WORKER" }, { transaction });
+        }
+        else {
             await transaction.rollback();
             return NextResponse.json({ error: "Rol no válido" }, { status: 400 });
         }
