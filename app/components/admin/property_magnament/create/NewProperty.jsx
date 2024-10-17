@@ -29,21 +29,36 @@ import CalendarSection from "./main/CalendarSection";
 
 const categoryData = {
   HELLO_ROOM: {
-    condicionDeRenta: `La reserva: Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+    condicionDeRenta: `La reserva
 
-Depósito: El día de tu llegada dejarás 300 € en depósito.
+Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+
+Depósito
+
+El día de tu llegada dejarás 300 € en depósito.
 
 La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
 
-Suministros: El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
+Suministros
 
-Wifi: El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
+El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
 
-Tasa de la agencia: La tasa es de 380€ más iva (459'80€).
+Wifi
 
-Limpieza check out: Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
 
-Ropa de cama: En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.`,
+Tasa de la agencia
+
+La tasa es de 380€ más iva (459'80€).
+
+Limpieza check out
+
+Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+
+Ropa de cama
+
+En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.
+`,
     facturas: `Luz, agua e internet, no incluido. (*Ver condiciones de alquiler).
 
 Seguro de hogar, incluido.
@@ -59,13 +74,17 @@ Así de fácil.`,
 No mascotas: ¡Nos encantan! Pero lamentablemente no podríamos acogerlas a todas.
 
 No se permite fumar.`,
-    checkIn: `Check in: De lunes a viernes de 9 a 17 h.
+    checkIn: `Check in
+
+De lunes a viernes de 9 a 17 h.
 
 Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
 
 Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.
 
-Check out: La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.`,
+Check out
+
+La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.`,
     checkOut: `Disfruta de atención personalizada 365 días al año.
 
 Durante el día podrás contactar con nuestros agentes encargados de hacer vuestra estancia cómoda y placentera.
@@ -77,21 +96,35 @@ Más seguridad y más atención imposible.`,
     sobreNosotros: "",
   },
   HELLO_LANDLORD: {
-    condicionDeRenta: `La reserva: Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+    condicionDeRenta: `La reserva
 
-Depósito: El día de tu llegada dejarás 300 € en depósito.
+Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+
+Depósito
+
+El día de tu llegada dejarás 300 € en depósito.
 
 La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
 
-Suministros: El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
+Suministros
 
-Wifi: El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
+El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
 
-Tasa de la agencia: La tasa es de 380€ más iva (459'80€).
+Wifi
 
-Limpieza check out: Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
 
-Ropa de cama: En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.`,
+Tasa de la agencia
+
+La tasa es de 380€ más iva (459'80€).
+
+Limpieza check out
+
+Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+
+Ropa de cama
+
+En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.`,
     facturas: `Luz, agua e internet, no incluido. (*Ver condiciones de alquiler).
 
 Seguro de hogar, incluido.
@@ -101,26 +134,32 @@ Gastos del edificio, incluidos.`,
 
 El inquilino deberá de pagar las pequeñas reparaciones que por LEY obliga.
 
-Mira este artículo sobre las responsabilidades del propietario y del inquilino: https://www.elconfidencial.com/vivienda/2016-04-15/caseros-versus-inquilinos-quien-paga-que-en-caso-de-reparaciones-y-averias_1183478/`,
+Mira este artículo sobre las responsabilidades del propietario y del inquilino:
+
+https://www.elconfidencial.com/vivienda/2016-04-15/caseros-versus-inquilinos-quien-paga-que-en-caso-de-reparaciones-y-averias_1183478/`,
     normasDeConvivencia: `No fiestas: Por tu seguridad, la nuestra y la buena convivencia con los vecinos, no está permitido hacer fiestas.
 
 No mascotas: ¡Nos encantan! Pero lamentablemente no podríamos acogerlas a todas.
 
 No se permite fumar.`,
-    checkIn: `Check in: De lunes a viernes de 9 a 17 h.
+    checkIn: `Check in
+
+De lunes a viernes de 9 a 17 h.
 
 Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
 
 Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.
 
-Check out: La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.`,
-    checkOut: `Servicios que presta la agencia:
+Check out
+
+La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.`,
+    checkOut: `Servicios que presta la agencia
 
     - Formalización de contrato entre inquilino y propietario.
     - Entrega de llaves.
     - Atención al inquilino en caso de conflicto con la propiedad.
 
-Servicios que presta la propiedad:
+Servicios que presta la propiedad
 
     - Atención al inquilino.
     - Informe de consumos (luz, agua, gas).
@@ -130,21 +169,35 @@ Servicios que presta la propiedad:
     sobreNosotros: "",
   },
   HELLO_COLIVING: {
-    condicionDeRenta: `La reserva: Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+    condicionDeRenta: `La reserva
+    
+Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
 
-Depósito: El día de tu llegada dejarás 500 € en depósito.
+Depósito
+
+El día de tu llegada dejarás 500 € en depósito.
 
 La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
 
-Suministros: El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
+Suministros
 
-Wifi: El día de tu llegada debes entregar 80€ para los primeros 5 meses, es una tasa fija.
+El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
 
-Tasa de la agencia: La tasa es de 380€ más iva (459'80€).
+Wifi
 
-Limpieza check out: Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+Incluido.
 
-Ropa de cama: En las habitaciones no se incluye el textil: ropa de cama, almohadas ni toallas.`,
+Tasa de la agencia
+
+La tasa es de 380€ más iva (459'80€).
+
+Limpieza check out
+
+Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+
+Ropa de cama
+
+En las habitaciones se incluye el textil: ropa de cama, almohadas ni toallas.`,
     facturas: `Luz, agua, gas no incluido. (*Ver condiciones de alquiler).
 
 Seguro de hogar, incluido.
@@ -160,9 +213,83 @@ Así de fácil.`,
 No mascotas: ¡Nos encantan! Pero lamentablemente no podríamos acogerlas a todas.
 
 No se permite fumar.`,
-    checkIn: `Check in: De lunes a viernes de 9 a 17h. Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
+    checkIn: `Check in
+    
+De lunes a viernes de 9 a 17h. Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
 
-Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.`,
+Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.
+
+Check out
+
+La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.
+`,
+    checkOut: `2 limpiezas semanales de zonas comunes.
+
+Wifi incluido.
+
+Disfruta de atención personalizada 365 días al año.
+
+Durante el día podrás contactar con nuestros agentes encargados de hacer vuestra estancia cómoda y placentera.
+
+Fuera de horario laboral (después de las 17h o durante los fines de semana) podéis contactarnos a nuestro teléfono de emergencia.
+
+Más seguridad y más atención imposible.`,
+    habitacion: "",
+    sobreNosotros: "",
+  },
+  HELLO_STUDIO: {
+    condicionDeRenta: `La reserva
+    
+Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu primer mes de alquiler, según contrato.
+
+Depósito
+
+El día de tu llegada dejarás 500 € en depósito.
+
+La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
+
+Suministros
+
+El día de tu llegada dejarás 200 € por persona en adelanto para los primeros 5 meses (electricidad, agua, gas). Se regularizará con las facturas reales de las compañías.
+
+Wifi
+
+Incluido.
+
+Tasa de la agencia: La tasa es de 380€ más iva (459'80€).
+
+Limpieza check out
+
+Junto a la renta del último mes de contrato se abonará la cantidad de 50€ en concepto de limpieza a fondo.
+
+Ropa de cama
+
+En las habitaciones se incluye el textil: ropa de cama, almohada y toallas.`,
+    facturas: `Luz, agua, gas no incluido. (*Ver condiciones de alquiler).
+
+Seguro de hogar, incluido.
+
+Gastos del edificio, incluidos.`,
+    mantenimiento: `¿Ha dejado de funcionar algo? 
+
+No te preocupes, avisa a nuestros agentes a través del grupo de WhatsApp y el personal de mantenimiento irá a solucionarlo.
+
+Así de fácil.`,
+    normasDeConvivencia: `No fiestas: Por tu seguridad, la nuestra y la buena convivencia con los vecinos, no está permitido hacer fiestas.
+
+No mascotas: ¡Nos encantan! Pero lamentablemente no podríamos acogerlas a todas.
+
+No se permite fumar.`,
+    checkIn: `Check in
+    
+De lunes a viernes de 9 a 17h. Fuera de este horario podrás recoger las llaves en la consigna de nuestra oficina, sin coste adicional.
+
+Si quieres que uno de nuestros agentes te entregue las llaves fuera del horario en el apartamento, tendrá un coste extra de 30 € hasta las 21 h. Después de las 21h consultar disponibilidad.
+
+Check out
+
+La salida de los inquilinos es antes de las 9 a.m. del día de check out que figura en el contrato.
+`,
     checkOut: `2 limpiezas semanales de zonas comunes.
 
 Wifi incluido.
