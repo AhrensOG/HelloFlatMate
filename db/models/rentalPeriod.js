@@ -19,21 +19,6 @@ const rentalPeriodInit = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false
         },
-        status: {
-            type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
-            defaultValue: "FREE",
-            allowNull: false
-        },
-        rentalPeriodableId: {
-            type: DataTypes.INTEGER,
-            defaultValue: "1",
-            allowNull: false
-        },
-        rentalPeriodableType: {
-            type: DataTypes.ENUM("PROPERTY", "ROOM"),
-            defaultValue: "PROPERTY",
-            allowNull: false
-        }
     },
         {
             sequelize,

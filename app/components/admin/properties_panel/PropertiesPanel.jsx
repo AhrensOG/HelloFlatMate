@@ -3,6 +3,7 @@ import { plus_jakarta } from "@/font";
 import PropertyCard from "./PropertyCard";
 import TableArticle from "../dashboard/TableArticle";
 import Link from "next/link";
+import AddRentalPeriodsModal from "./rental_periods/AddRentalPeriodsModal";
 
 export default function PropertiesPanel({ data }) {
   return (
@@ -23,6 +24,7 @@ export default function PropertiesPanel({ data }) {
           Nueva Propiedad
         </Link>
       )}
+      <AddRentalPeriodsModal />
       {data.length > 0 && <TableArticle data={data} />}
     </main>
   );
