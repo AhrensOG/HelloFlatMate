@@ -393,6 +393,8 @@ export default function FilterPage() {
                         );
                         return filteredRooms.map((room, index) => (
                           <PropertyCard
+                            name={room?.name}
+                            images={room?.images[0]}
                             key={`${property?.id}-${index}`}
                             property={property} // Pasar los datos de la propiedad
                             price={room.price} // Pasar el precio específico de cada room
@@ -424,6 +426,8 @@ export default function FilterPage() {
                   );
                   return filteredRooms.map((room, index) => (
                     <PropertyCard
+                      name={room?.name}
+                      images={room?.images[0]}
                       key={`${property?.id}-${index}`}
                       property={property} // Pasar los datos de la propiedad
                       price={room.price} // Pasar el precio específico de cada room
@@ -469,6 +473,8 @@ export default function FilterPage() {
                   );
                   return filteredRooms.map((room, index) => (
                     <PropertyCard
+                      name={room?.name}
+                      images={room?.images[0]}
                       key={`${property?.id}-${index}`}
                       property={property} // Pasar los datos de la propiedad
                       price={room.price} // Pasar el precio específico de cada room
@@ -504,6 +510,8 @@ export default function FilterPage() {
                         );
                         return filteredRooms.map((room, index) => (
                           <PropertyCard
+                            name={room?.name}
+                            images={room?.images[0]}
                             key={`${property?.id}-${index}`}
                             property={property} // Pasar los datos de la propiedad
                             price={room.price} // Pasar el precio específico de cada room
