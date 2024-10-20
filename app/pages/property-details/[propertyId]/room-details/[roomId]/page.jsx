@@ -57,7 +57,7 @@ export default function RoomDetails({ params }) {
 
           // Verificar si la habitación tiene alguna leaseOrderRoom con estado "active"
           const hasActiveLeaseOrder = roomData?.leaseOrdersRoom?.some(
-            (order) => order.status === "active"
+            (order) => order.isActive === true
           );
 
           // Guardar en el estado local si hay alguna leaseOrderRoom con estado "active"
@@ -104,40 +104,31 @@ export default function RoomDetails({ params }) {
           <div className="w-full">
             <SliderDetails>
               {allImages.map((image, index) => {
-                return <SliderItem key={index} img={image} />;
+                return (
+                  <SliderItem key={index} img={image} height="h-[23rem]" />
+                );
               })}
             </SliderDetails>
           </div>
           <div className="px-3">
             <NavBarDetails callBack={() => router.back()} />
           </div>
-          <span className="px-3 text-lg font-light text-slate-400">
-            {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
-              ? "Reservada"
-              : ""}
-          </span>
         </header>
         <main
           className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
-          <div className="w-full">
+          <div className="w-full space-y-2 sticky top-0 min-h-56 bg-white z-10 pt-2 pb-1">
             <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
-            <span className="font-light text-[#000000B2]">
-              ({roomData.serial})
-            </span>
+            <h4 className="font-light text-[#000000B2]">({roomData.serial})</h4>
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>
-          </div>
-          {roomData.price && <PriceSection data={roomData.price} />}
-          <div className="flex flex-col gap-6">
-            <GuestInfoRoom
-              data={[
-                { type: "bed", number: roomData.numberBeds },
-                { type: "bathroom", boolean: roomData.bathroom },
-                { type: "couple", boolean: roomData.couple },
-              ]}
-            />
+            <h4 className="text-base font-light text-slate-400">
+              {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
+                ? "Reservada"
+                : ""}
+            </h4>
+            {roomData.price && <PriceSection data={roomData.price} />}
             {(data.category === "HELLO_ROOM" ||
               data.category === "HELLO_COLIVING") &&
               roomData.price &&
@@ -154,10 +145,17 @@ export default function RoomDetails({ params }) {
           ) : (
             <DescriptionSection title="Descripción" data={data.description} />
           )}
+          <GuestInfoRoom
+            data={[
+              { type: "bed", number: roomData.numberBeds },
+              { type: "bathroom", boolean: roomData.bathroom },
+              { type: "couple", boolean: roomData.couple },
+            ]}
+          />
           {filteredRooms.length > 0 ? (
             <RoomSection
               data={filteredRooms}
-              title="Otras habitaciones en el piso"
+              title="Otras habitaciones en el mismo piso"
             />
           ) : null}
 
@@ -238,16 +236,11 @@ export default function RoomDetails({ params }) {
               <SliderDetails>
                 {allImages.map((image, index) => {
                   return (
-                    <SliderItem key={index} img={image} height="h-[24rem]" />
+                    <SliderItem key={index} img={image} height="h-[30rem]" />
                   );
                 })}
               </SliderDetails>
             </div>
-            <span className="px-3 text-lg font-light text-slate-400">
-              {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
-                ? "Reservada"
-                : ""}
-            </span>
             {filteredRooms.length > 0 ? (
               <RoomSection
                 data={filteredRooms}
@@ -270,16 +263,45 @@ export default function RoomDetails({ params }) {
           <div className="border" />
 
           {/* RIGHT SIDE */}
-          <div className="w-full space-y-4">
-            <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
-            <span className="font-light text-[#000000B2]">
-              ({roomData.serial})
-            </span>
-            <h4 className="text-[#000000B2] text-base">
-              {data.city + ", " + data.street}
-            </h4>
-            {roomData.price && <PriceSection data={roomData.price} />}
-            <div className="flex flex-col gap-6">
+          <div className="relative w-full">
+            <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
+              <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+              <h6 className="font-light text-[#000000B2]">
+                ({roomData.serial})
+              </h6>
+              <h6 className="text-[#000000B2] text-base">
+                {data.city + ", " + data.street}
+              </h6>
+              <h6 className="text-base font-light text-slate-400">
+                {roomData.status === "RESERVED" ||
+                roomData.status === "OCCUPIED"
+                  ? "Reservada"
+                  : ""}
+              </h6>
+              {roomData.price && <PriceSection data={roomData.price} />}
+              <div className="flex flex-col gap-6">
+                {(data.category === "HELLO_ROOM" ||
+                  data.category === "HELLO_COLIVING") &&
+                  roomData.price &&
+                  !isLeaseOrderActive && (
+                    <ReservationButton callback={handleShowModal} />
+                  )}
+              </div>
+            </div>
+
+            <div className="w-full space-y-4">
+              {roomData?.description?.length > 0 ? (
+                <DescriptionSection
+                  title="Descripción"
+                  data={roomData.description}
+                  category="HELLO_ROOM"
+                />
+              ) : (
+                <DescriptionSection
+                  title="Descripción"
+                  data={data.description}
+                />
+              )}
               <GuestInfoRoom
                 data={[
                   { type: "bed", number: roomData.numberBeds },
@@ -287,45 +309,28 @@ export default function RoomDetails({ params }) {
                   { type: "couple", boolean: roomData.couple },
                 ]}
               />
-              {(data.category === "HELLO_ROOM" ||
-                data.category === "HELLO_COLIVING") &&
-                roomData.price &&
-                roomData.leaseOrdersRoom < 1 && (
-                  <ReservationButton callback={handleShowModal} />
-                )}
-            </div>
-            {roomData?.description?.length > 0 ? (
-              <DescriptionSection
-                title="Descripción"
-                data={roomData.description}
-                category="HELLO_ROOM"
+              <AmenitiesSection data={data.amenities} />
+              <MoreInfoSection
+                data={[
+                  {
+                    title: "Características del piso",
+                    body: data.roomDescription,
+                  },
+                  {
+                    title: "Condiciones del alquiler",
+                    body: data.incomeConditionDescription,
+                  },
+                  { title: "Facturas", body: data.feeDescription },
+                  { title: "Mantenimiento", body: data.maintenanceDescription },
+                  { title: "Check-In / Check out", body: data.checkIn },
+                  { title: "Opinión del agente", body: data.aboutUs },
+                  { title: "Normas de convivencia", body: data.houseRules },
+                  { title: "Otros servicios", body: data.checkOut },
+                ]}
               />
-            ) : (
-              <DescriptionSection title="Descripción" data={data.description} />
-            )}
-            <AmenitiesSection data={data.amenities} />
-            <MoreInfoSection
-              data={[
-                {
-                  title: "Características del piso",
-                  body: data.roomDescription,
-                },
-                {
-                  title: "Condiciones del alquiler",
-                  body: data.incomeConditionDescription,
-                },
-                { title: "Facturas", body: data.feeDescription },
-                {
-                  title: "Mantenimiento",
-                  body: data.maintenanceDescription,
-                },
-                { title: "Check-In / Check out", body: data.checkIn },
-                { title: "Opinión del agente", body: data.aboutUs },
-                { title: "Normas de convivencia", body: data.houseRules },
-                { title: "Otros servicios", body: data.checkOut },
-              ]}
-            />
+            </div>
           </div>
+
           {showModal && (
             <ReservationModal
               calendarType={roomData.calendar}
