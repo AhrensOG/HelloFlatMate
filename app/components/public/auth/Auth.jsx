@@ -9,6 +9,7 @@ import { logInWithGoogle } from "@/app/firebase/logInWithGoogle";
 import { logInWithFacebook } from "@/app/firebase/logInWithFacebook";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Context } from "@/app/context/GlobalContext";
+import { logInWithEmailAndPassword } from "@/app/firebase/loginWithEmailAndPassword";
 
 export default function Auth() {
   const searchParams = useSearchParams(); // Captura los parámetros de la URL
@@ -17,8 +18,9 @@ export default function Auth() {
   const [register, setRegister] = useState(createAccount ? true : false);
   const [isOpen, setIsOpen] = useState(false);
   const [registerProvider, setRegisterProvider] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
-
   const { state } = useContext(Context);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function Auth() {
         toast.error("No se reconoce el proveedor de registro");
       }
       setIsOpen(false);
-      router.push(redirect || "/"); // Redirige a la URL de redirect o al home
+      return router.push(redirect || "/");
     } catch (error) {
       toast.error("Fallo la autenticación. Intente nuevamente.");
     }
@@ -59,7 +61,7 @@ export default function Auth() {
   const handleLoginFacebook = async () => {
     try {
       await logInWithFacebook();
-      return router.push(redirect || "/"); // Redirige a la URL de redirect o al home
+      return router.push(redirect || "/");
     } catch (error) {
       toast.error("Fallo la autenticación. Intente nuevamente.");
     }
@@ -68,9 +70,20 @@ export default function Auth() {
   const handleLoginGoogle = async () => {
     try {
       await logInWithGoogle();
-      return router.push(redirect || "/"); // Redirige a la URL de redirect o al home
+      return router.push(redirect || "/");
     } catch (error) {
       toast.error("Fallo la autenticación. Intente nuevamente.");
+    }
+  };
+
+  const handleLoginWithEmail = async (e) => {
+    e.preventDefault();
+    try {
+      await logInWithEmailAndPassword(email, password);
+      toast.success("Inicio de sesión exitoso.");
+      router.push(redirect || "/");
+    } catch (error) {
+      toast.error("Fallo la autenticación. Verifica tu correo y contraseña.");
     }
   };
 
@@ -86,27 +99,50 @@ export default function Auth() {
         width={100}
         height={100}
       />
-      {/* <h1 className="title-auth pb-5">
-        {register ? "Crear una Cuenta" : "Iniciar Sesión"}
-      </h1> */}
       <div className="buttons-auth flex flex-col gap-5 items-center w-full">
+        {!register && (
+          // Formulario de inicio de sesión
+          <form
+            onSubmit={handleLoginWithEmail}
+            className="flex flex-col gap-4 w-full"
+          >
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Correo electrónico"
+              className="border p-2 rounded-md"
+              required
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              className="border p-2 rounded-md"
+              required
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            >
+              Iniciar Sesión
+            </button>
+          </form>
+        )}
+        <span className="flex items-center text-sm font-thin w-full">
+          <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
+          {/* Línea izquierda */}
+          También puedes
+          <span className="flex-1 border-t border-gray-300 ml-2"></span>{" "}
+          {/* Línea derecha */}
+        </span>
         <button
           type="button"
-          onClick={
-            register
-              ? () => openModal("facebook")
-              : () =>
-                  toast.promise(handleLoginFacebook(), {
-                    loading: "Cargando...",
-                    success: "Iniciando Sesion",
-                    error: "Fallo la autenticación. Intente nuevamente.",
-                  })
-          }
+          onClick={register ? () => openModal("facebook") : handleLoginFacebook}
           className="facebook-auth flex px-0.5 items-center justify-center text-center text-white bg-resolution-blue gap-4 rounded-xl w-[100%] h-[3.25rem] text-base"
           aria-label={
-            register
-              ? "Registrarse con Facebook"
-              : "Iniciar Sesión con Facebook"
+            register ? "Regístrate con Facebook" : "Iniciar con Facebook"
           }
         >
           <span className="pl-0.5">
@@ -117,26 +153,13 @@ export default function Auth() {
               height={24}
             />
           </span>
-          {register
-            ? "Registrarse con Facebook"
-            : "Iniciar Sesión con Facebook"}
+          {register ? "Regístrate con Facebook" : "Iniciar con Facebook"}
         </button>
         <button
           type="button"
-          onClick={
-            register
-              ? () => openModal("google")
-              : () =>
-                  toast.promise(handleLoginGoogle(), {
-                    loading: "Cargando...",
-                    success: "Iniciando Sesion",
-                    error: "Fallo la autenticación. Intente nuevamente.",
-                  })
-          }
+          onClick={register ? () => openModal("google") : handleLoginGoogle}
           className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
-          aria-label={
-            register ? "Registrarse con Google" : "Iniciar Sesión con Google"
-          }
+          aria-label={register ? "Regístrate con Google" : "Iniciar con Google"}
         >
           <span>
             <Image
@@ -146,7 +169,7 @@ export default function Auth() {
               height={24}
             />
           </span>
-          {register ? "Registrarse con Google" : "Iniciar Sesión con Google"}
+          {register ? "Regístrate con Google" : "Iniciar con Google"}
         </button>
         <p className="register-or-login-auth text-wrap text-xs">
           {register ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?"}
@@ -155,7 +178,7 @@ export default function Auth() {
             className="a-auth text-resolution-blue"
             href="#"
           >
-            {register ? " Iniciar Sesión" : " Registrarse"}
+            {register ? " Iniciar Sesión" : " Regístrate"}
           </Link>
         </p>
       </div>

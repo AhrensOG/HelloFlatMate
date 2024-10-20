@@ -58,7 +58,8 @@ export async function updateClient(data) {
         user.homeUniversity = data.homeUniversity || user.homeUniversity;
         user.arrivalDate = data.arrivalDate ? new Date(data.arrivalDate) : user.arrivalDate;
         user.arrivalTime = data.arrivalTime ? new Date(data.arrivalTime) : user.arrivalTime;
-        user.genre = data.genre || user.genre;
+        user.genre = data.genre || user.genre || "OTHER";
+        user.age = data.age || user.age;
 
         await user.save({ transaction });
 
