@@ -87,10 +87,15 @@ export async function middleware(request) {
       "/api",
     ],
     OWNER: [
+      "/pages/worker-panel",
       "/pages/owner",
       "/pages/user",
       "/pages/home",
       "/pages/select-category",
+      "/api",
+    ],
+    WORKER: [
+      "/pages/worker-panel",
       "/api",
     ],
     CLIENT: ["/pages/user", "/pages/home", "/api"],

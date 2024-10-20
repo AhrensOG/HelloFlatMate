@@ -7,8 +7,8 @@ import "@egjs/flicking-plugins/dist/arrow.css";
 
 const HomeSlider = ({ children }) => {
   const plugins = [
-    new Perspective({ rotate: 0.25 }),
-    new Fade(),
+    new Perspective({ rotate: 0 }),
+    // new Fade(),
     new Arrow({ disabledClass: true }),
     new AutoPlay({
       duration: 2000,

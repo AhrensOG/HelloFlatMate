@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat, ChatParticipant } from "@/db/init";
+import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat, ChatParticipant, RentalPeriod } from "@/db/init";
 import { createGroupChat, createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
 import { sequelize } from "@/db/models/comment";
 
@@ -27,7 +27,12 @@ export async function updateStatusLeaseOrder(data) {
                 await transaction.rollback();
                 return NextResponse.json({ message: "Lease order property not found" }, { status: 404 });
             }
-            const property = await Property.findByPk(data.propertyId, { transaction });
+            const property = await Property.findByPk(data.propertyId, {
+                include: {
+                    model: RentalPeriod,
+                    as: "rentalPeriods",
+                }
+            }, { transaction });
             if (!property) {
                 await transaction.rollback();
                 return NextResponse.json({ message: "Property not found" }, { status: 404 });
@@ -37,10 +42,13 @@ export async function updateStatusLeaseOrder(data) {
                 leaseOrderProperty.status = "APPROVED";
                 leaseOrderProperty.isActive = true;
                 leaseOrderProperty.inReview = false;
-                if (property.category === "HELLO_STUDIO") {
-                    property.status = "FREE";
+                if (property.calendar === "SIMPLE") {
+                    let isFree = property.rentalPeriods.some(rentalPeriod => {
+                        return rentalPeriod.status === "FREE";
+                    })
+                    property.status = isFree ? "FREE" : "OCCUPIED";
                 } else {
-                    property.status = "OCCUPIED";
+                    property.status = "FREE";
                 }
                 await leaseOrderProperty.save({ transaction });
                 await property.save({ transaction });
@@ -80,7 +88,7 @@ export async function updateStatusLeaseOrder(data) {
             await transaction.rollback();
             return NextResponse.json({ message: "Lease order room not found" }, { status: 404 });
         }
-        const room = await Room.findByPk(data.roomId, { transaction });
+        const room = await Room.findByPk(data.roomId, { include: { model: RentalPeriod, as: "rentalPeriods" } }, { transaction });
         if (!room) {
             await transaction.rollback();
             return NextResponse.json({ message: "Room not found" }, { status: 404 });
@@ -101,12 +109,27 @@ export async function updateStatusLeaseOrder(data) {
             leaseOrderRoom.status = "APPROVED";
             leaseOrderRoom.isActive = true;
             leaseOrderRoom.inReview = false;
-            room.status = "OCCUPIED";
-            if (property.category === "HELLO_STUDIO") {
-                property.status = "FREE";
+
+            // if (room.rentalPeriods.some(rentalPeriod => {
+            //     return rentalPeriod.status === "FREE";
+            // })) {
+            //     room.status = "FREE";
+            // } else {
+            //     room.status = roomsAvailable.length > 0 ? "FREE" : "OCCUPIED";
+            // }
+
+            if (room.calendar === "SIMPLE") {
+                if (room.rentalPeriods.some(rentalPeriod => {
+                    return rentalPeriod.status === "FREE";
+                })) {
+                    room.status = "FREE";
+                } else {
+                    room.status = "OCCUPIED"
+                }
             } else {
-                property.status = roomsAvailable.length < 1 ? "OCCUPIED" : "FREE";
+                room.status = "FREE";
             }
+            property.status = roomsAvailable.length > 0 ? "FREE" : "OCCUPIED";
 
             await leaseOrderRoom.save({ transaction });
             await room.save({ transaction });

@@ -87,6 +87,7 @@ export default function SetRolModal({ action, data, reload }) {
               <option value="ADMIN">ADMIN</option>
               <option value="OWNER">OWNER</option>
               <option value="CLIENT">CLIENT</option>
+              <option value="WORKER">WORKER</option>
             </select>
           </div>
         </div>

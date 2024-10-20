@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function OffersSection({
   title = "Descubre nuestros increíbles alojamientos",
-  description = "¿Buscas un lugar cómodo y accesible para vivir? En Helloflatmate, ofrecemos habitaciones modernas y bien equipadas que se adaptan a tus necesidades y presupuesto. Con nosotros, tu nuevo hogar está a solo un clic de distancia.",
+  description = "¿Buscas un lugar cómodo y accesible para vivir? En helloflatmate, ofrecemos habitaciones modernas y bien equipadas que se adaptan a tus necesidades y presupuesto. Con nosotros, tu nuevo hogar está a solo un clic de distancia.",
   link = "/pages/home",
 }) {
   return (

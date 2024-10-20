@@ -72,8 +72,8 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           >
             hellostudio
           </button>
-          {/* <Link
-            href={"/pages/user/filtered?category=HELLO_COLIVING"}
+          <button
+            // href={"/pages/user/filtered?category=HELLO_COLIVING"}
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
@@ -82,9 +82,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellocoliving
-          </Link>
-          <Link
-            href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+          </button>
+          <button
+            // href={"/pages/user/filtered?category=HELLO_LANDLORD"}
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
@@ -93,7 +93,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </Link> */}
+          </button>
         </div>
       </div>
 
@@ -174,8 +174,8 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           >
             hellostudio
           </button>
-          {/* <Link
-            href={"/pages/user/filtered?category=HELLO_COLIVING"}
+          <button
+            // href={"/pages/user/filtered?category=HELLO_COLIVING"}
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
@@ -184,9 +184,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellocoliving
-          </Link>
-          <Link
-            href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+          </button>
+          <button
+            // href={"/pages/user/filtered?category=HELLO_LANDLORD"}
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
@@ -195,7 +195,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </Link> */}
+          </button>
         </div>
       </div>
     </nav>

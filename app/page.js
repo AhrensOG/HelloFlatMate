@@ -13,10 +13,12 @@ import InfoSection from "./components/user/home/desktop/InfoSection";
 import Banner from "./components/user/home/desktop/Banner";
 import Footer from "./components/user/home/desktop/Footer";
 import MapSection from "./components/user/home/desktop/auxiliarComponents/MapSection";
+import StayWithUs from "./components/user/home/desktop/StayWithUs";
 
 const helloroom = {
   hero: {
-    img: "/home/hero2.jpeg",
+    // img: "/home/hero2.jpeg",
+    img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
     title: "Listo para vivir, listo para estudiar",
     description:
       "Ideales para nómadas digitales, incluyen servicios de atención, limpieza, suministros, Internet y convivencia con compañeros similares, fomentando colaboración y comunidad.",
@@ -25,13 +27,13 @@ const helloroom = {
   offer: {
     title: "Vive una Experiencia Lista para Habitar desde el Primer Momento",
     description:
-      "Nuestras acogedoras Hello Rooms están diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento dado que vienen a Valencia por menos de un año y son gestionadas por los agentes de helloflatmate",
+      "Nuestras acogedoras hellorooms están diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento dado que vienen a Valencia por menos de un año y son gestionadas por los agentes de helloflatmate",
     link: "/pages/select-category?c=HELLO_ROOM",
   },
   family: {
     title: "Diseño Pensado en Estudiantes",
     description:
-      "Cada Helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
+      "Cada helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
     img1: "/home/family2.svg",
     img2: "/home/subFamily2.svg",
   },
@@ -62,21 +64,21 @@ const hellostudio = {
   hero: {
     // img: "/home/hero4.",
     img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
-    title: "Trabaja, conecta y crece en HelloStudio",
+    title: "Trabaja, conecta y crece en hellostudio",
     description:
       "Espacios de coworking productivos y colaborativos con tecnología avanzada, internet rápido, salas de reuniones, áreas comunes, y eventos comunitarios, ideales para profesionales y emprendedores en crecimiento.",
     link: "/pages/select-category?c=HELLO_STUDIO",
   },
   offer: {
-    title: "Flexibilidad y Comodidad",
+    title: "Flexibilidad y comodidad",
     description:
       "Nuestros espacios están diseñados para adaptarse a tus horarios y necesidades. Ya sea que necesites trabajar temprano en la mañana o tarde en la noche, hellostudio está siempre disponible para ti.",
     link: "/pages/select-category?c=HELLO_STUDIO",
   },
   family: {
-    title: "Perfecto para Estudiar Toda tu Carrera en Valencia",
+    title: "Perfecto para estudiar toda tu carrera en Valencia",
     description:
-      "HelloStudio ofrece un ambiente productivo y colaborativo diseñado para profesionales y emprendedores. Disfruta de espacios modernos y funcionales que fomentan la creatividad y la eficiencia.En HelloStudio, encontrarás alta tecnología, internet rápido, salas de reuniones equipadas, áreas comunes cómodas y eventos comunitarios que fomentan el networking y la colaboración",
+      "hellostudio ofrece un ambiente productivo y colaborativo diseñado para profesionales y emprendedores. Disfruta de espacios modernos y funcionales que fomentan la creatividad y la eficiencia.En HelloStudio, encontrarás alta tecnología, internet rápido, salas de reuniones equipadas, áreas comunes cómodas y eventos comunitarios que fomentan el networking y la colaboración",
     img1: "/home/family4.svg",
     img2: "/home/subFamily4.svg",
   },
@@ -155,6 +157,7 @@ export default function Home() {
             <OffersSection />
             <CommunitySection />
             <FamilySection />
+            <StayWithUs setActiveSection={setActiveSection}/>
             <PropertySlider data={properties} />
             <MapSection />
           </div>

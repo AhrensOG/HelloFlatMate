@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function DesktopHero({
-  img = "https://www.youtube.com/watch?v=pOFq34PWjV4",
+  img = "https://www.youtube.com/watch?v=TbgLp9EpTyI",
   title = "helloflatmate",
   description = "Simplificamos la forma de compartir tu hogar",
   link = "/pages/select-category",

@@ -12,12 +12,8 @@ import axios from "axios";
 export default function PaymentComponent({ handleContinue, handleBack }) {
   const { state } = useContext(Context);
   const userDocuments = {
-    // dni: state.reservationInfo?.dni,
     nomina: state.reservationInfo?.nomina,
-    contract: state.contractPdfData,
   };
-  console.log(Array.isArray(userDocuments.nomina));
-  console.log(state);
   const [existingDocuments, setExistingDocuments] = useState(
     state.user?.documents || []
   );
@@ -33,42 +29,13 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
   const uploadDocuments = async () => {
     try {
       // // Cargar o actualizar DNI en Firebase
-      // if (userDocuments.dni) {
-      //   const existingDni = findExistingDocument("IDENTIFICATION");
-      //   const dniUrl = await uploadFiles(
-      //     userDocuments.dni,
-      //     "Documentos",
-      //     state.reservationInfo?.userContractInformation.name +
-      //       " " +
-      //       state.reservationInfo?.userContractInformation.lastName +
-      //       " - Identificacion"
-      //   );
-      //   if (existingDni && dniUrl.length > 0) {
-      //     await updateDocument({
-      //       ...existingDni,
-      //       urls: dniUrl.map((doc) => doc.url),
-      //     });
-      //   } else if (dniUrl) {
-      //     createDocument({
-      //       name: dniUrl[0].name,
-      //       type: "IDENTIFICATION",
-      //       urls: dniUrl.map((doc) => doc.url),
-      //       userId: state.reservationInfo?.userContractInformation.id,
-      //       typeUser: "CLIENT",
-      //     });
-      //   } else {
-      //     toast.error("Error al cargar la identificación");
-      //   }
-      // }
-
-      // Cargar o actualizar Nómina en Firebase
       if (userDocuments.nomina) {
         //Verifiar si tiene ya el documento
         const existingNomina = findExistingDocument("ROSTER");
         // Primero, sube el archivo a Firebase Storage
         const formatFiles = Object.values(userDocuments.nomina).filter(
           (file) => {
-            file && typeof file === "object";
+            return file && typeof file === "object";
           }
         );
         const nominaUrl = await uploadFiles(
@@ -79,7 +46,6 @@ export default function PaymentComponent({ handleContinue, handleBack }) {
             state.reservationInfo?.userContractInformation.lastName +
             " - Nomina"
         );
-        console.log(nominaUrl);
         if (nominaUrl && nominaUrl.length > 0) {
           // Si ya existe un documento, lo actualizas
           if (existingNomina) {

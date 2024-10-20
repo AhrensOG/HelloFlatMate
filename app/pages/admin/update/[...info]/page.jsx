@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 
 export default function UpdatePropertyPage({ params }) {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const router = useRouter();
   const [currentCategory, setCurrentCategory] = useState(false);
 
@@ -23,7 +23,6 @@ export default function UpdatePropertyPage({ params }) {
       const getData = async () => {
         try {
           const response = await axios.get(`/api/admin/property?id=${id}`);
-          console.log(response);
 
           setInitialData(response.data.property);
           setCurrentCategory(category);

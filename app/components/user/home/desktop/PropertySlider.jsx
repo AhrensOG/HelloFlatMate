@@ -28,7 +28,7 @@ const PropertySlider = ({ data }) => {
                 return item.rooms
                   // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
                   .map((room) => (
-                    <div className="" key={room.id}>
+                    <div className="my-5" key={room.id}>
                       <PropertyCard
                         roomId={room.id}
                         propertyId={item.id}
@@ -39,7 +39,7 @@ const PropertySlider = ({ data }) => {
                   ));
               }
               return (
-                <div className="mr-4" key={item.id}>
+                <div className="my-5" key={item.id}>
                   <PropertyCard
                     propertyId={item.id}
                     img={item?.images[0]}

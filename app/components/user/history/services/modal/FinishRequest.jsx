@@ -43,7 +43,7 @@ export default function FinishRequest({ next, prev, data }) {
     propertyId: data.propertyId || "",
     typeUser: data.user.role || "",
     clientMessage: message || "", // El mensaje que deja el cliente
-    isPresent: isPresent || "", // Si el cliente estará presente
+    isPresent: isPresent || false, // Si el cliente estará presente
   };
 
   const submitRequest = async () => {

@@ -197,6 +197,7 @@ export default function RoomDetails({ params }) {
           />
           {showModal && (
             <ReservationModal
+              calendarType={roomData.calendar}
               callback={handleShowModal}
               category={data.category}
               data={{

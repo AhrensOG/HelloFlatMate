@@ -8,7 +8,7 @@ export default function MoreInfoModal({ body, onSave, onCancel, title }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+    <div className="fixed z-10 inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
       <div className="bg-white p-4 rounded-lg shadow-lg w-[17rem] lg:w-[30rem] lg:h-[35rem] lg:items-baseline">
         <h2 className="font-bold text-[1.37rem] w-full p-1 text-center">
           {title}

@@ -68,7 +68,7 @@ export default function WorkerHome({ section }) {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await axios.get(`/api/to_do?id=${user.id}`);
+        const res = await axios.get(`/api/to_do?userId=${user.id}`);
         const tasks = res.data;
         setNewTasks(tasks.filter((task) => task.status === "PENDING"));
         setOldTasks(tasks.filter((task) => task.status !== "PENDING"));
@@ -118,7 +118,7 @@ export default function WorkerHome({ section }) {
               <h2 className="font-bold text-2xl text-[#121417]">
                 Historial de tareas
               </h2>
-              {filterOldTasks > 0 ? (
+              {filteredOldTasks.length > 0 ? (
                 filteredOldTasks?.map((item) => (
                   <TaskCardSimple
                     key={item?.id}
