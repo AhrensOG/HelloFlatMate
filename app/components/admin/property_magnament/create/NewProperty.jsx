@@ -357,6 +357,7 @@ export default function NewProperty({ category, handleBack }) {
     IVA: 0,
   });
   const [rentalPeriods, setRentalPeriods] = useState([]);
+  const [predefineRentalPeriod, setPredefineRentalPeriod] = useState([]);
   const [serial, setSerial] = useState("");
   const [typologyAndZone, setTypologyAndZone] = useState({
     typology: "MIXED",
@@ -555,7 +556,14 @@ export default function NewProperty({ category, handleBack }) {
       const res = await axios.get("/api/admin/user?role=OWNER");
       setOwners(res.data);
     };
+    const fetchRentalPeriods = async () => {
+      const res = await axios.get("/api/admin/rental_period");
+      console.log(res.data);
+      
+      setPredefineRentalPeriod(res.data.rentalPeriods);
+    }
     fetchOwners();
+    fetchRentalPeriods();
   }, []);
 
   if (!owners) {
@@ -630,6 +638,7 @@ export default function NewProperty({ category, handleBack }) {
             <RentalPeriodTemplate
               data={rentalPeriods}
               setData={setRentalPeriods}
+              predefineRental={predefineRentalPeriod}
             />
           )}
           <DescriptionSectionTemplate

@@ -16,13 +16,13 @@ const rentalItemInit = (sequelize, DataTypes) => {
             allowNull: false,
         },
         relatedType: {
-            type: DataTypes.STRING, // 'Room' o 'Property'
+            type: DataTypes.ENUM('ROOM', 'PROPERTY'), // 'Room' o 'Property'
             allowNull: false,
         },
-        status: {
-            type: DataTypes.ENUM('PENDING', 'APPROVED', 'REJECTED'),
-            defaultValue: 'PENDING',
-            allowNull: false
+        isFree: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
         }
     }, {
         sequelize,

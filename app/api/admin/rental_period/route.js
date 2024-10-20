@@ -5,7 +5,7 @@ import { updateRentalPeriod, updateRentalPeriodStatus } from "./controller/updat
 
 export async function GET(req) {
     const rentalPeriods = await getRentalPeriods();
-    return NextResponse.json({ rentalPeriods }, { status: 200 })
+    return rentalPeriods
 }
 
 export async function POST(req) {
