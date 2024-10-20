@@ -41,6 +41,7 @@ export default function UpdateClient() {
         homeUniversity: user.homeUniversity || "",
         arrivalDate: user.arrivalDate || "",
         arrivalTime: user.arrivalTime || "",
+        genre: user.genre || "",
       });
     }
   }, [state]);
@@ -65,12 +66,13 @@ export default function UpdateClient() {
     homeUniversity: "",
     arrivalDate: "",
     arrivalTime: "",
+    genre: "",
   };
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (
         values.name === "" ||
         values.name.trim() === "" ||
@@ -90,7 +92,14 @@ export default function UpdateClient() {
         values.postalCode.trim() === "" ||
         values.age === "" ||
         values.birthDate === "" ||
-        values.birthDate.trim() === ""
+        values.birthDate.trim() === "" ||
+        values.genre === "" ||
+        values.emergencyName.trim() === "" ||
+        values.emergencyEmail.trim() === "" ||
+        values.emergencyPhone.trim() === "" ||
+        values.emergencyName === "" ||
+        values.emergencyEmail === "" ||
+        values.emergencyPhone === ""
       ) {
         return toast.info("¡Recuerda completar todos los campos!");
       } else if (values.age < 18) {
@@ -99,14 +108,12 @@ export default function UpdateClient() {
       if (values.age !== calculateAge(values.birthDate)) {
         return toast.info("La fecha de nacimiento no coincide con la edad");
       }
-      toast.promise(updateUser(values), {
-        loading: "Actualizando información...",
-        success: () => {
-          toast.success("Información actualizada con éxito");
-          router.push("/pages/user/profile");
-        },
-        error: "Error al actualizar la información",
-      });
+      try {
+        await updateUser(values);
+        // router.push("/pages/user/profile");
+      } catch (error) {
+        return toast.error("Error al actualizar la información");
+      }
     },
   });
 
@@ -145,6 +152,7 @@ export default function UpdateClient() {
       homeUniversity: data.homeUniversity,
       arrivalDate: data.arrivalDate,
       arrivalTime: data.arrivalTime,
+      genre: data.genre,
     };
     try {
       const response = await axios.put("/api/user", userData);
@@ -153,6 +161,7 @@ export default function UpdateClient() {
       }
     } catch (error) {
       console.error("Error updating user data:", error);
+      return toast.error("Error al actualizar la información");
     }
   };
 
@@ -209,6 +218,26 @@ export default function UpdateClient() {
                     value={formik.values.lastName}
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
+                </div>
+                <div className="w-full flex flex-col">
+                  <label
+                    htmlFor="genre"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Selecciona tu género
+                  </label>
+                  <select
+                    id="genre"
+                    name="genre"
+                    onChange={formik.handleChange}
+                    value={formik.values.genre}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  >
+                    <option value="">Selecciona</option>
+                    <option value="MALE">Masculino</option>
+                    <option value="FEMALE">Femenino</option>
+                    <option value="OTHER">Otro</option>
+                  </select>
                 </div>
               </div>
 
