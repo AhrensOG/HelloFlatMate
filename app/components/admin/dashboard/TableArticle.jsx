@@ -281,7 +281,7 @@ export default function TableArticle({ data }) {
                     {item.size}
                   </td>
                   <td className="px-4 py-4 text-center text-sm border-r">
-                    {item.rooms?.length || item.roomsCount}
+                    {item.rooms?.length || 0}
                   </td>
                   <td className="px-4 py-4 text-center text-sm border-r">
                     {item.bathrooms}
