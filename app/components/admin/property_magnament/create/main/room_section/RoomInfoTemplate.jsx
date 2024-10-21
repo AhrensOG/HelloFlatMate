@@ -2,6 +2,7 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 import { PencilSquareIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function RoomInfoTemplate({
   img,
@@ -115,9 +116,40 @@ export default function RoomInfoTemplate({
         </div>
       </div>
       {onDelete ? (
+        // <button
+        //   className="absolute z-50 top-0 right-0 bg-red-500 text-white rounded-full p-1"
+        //   onClick={() => onDelete()}
+        // >
+        //   <XMarkIcon className="h-4 w-4" />
+        // </button>
         <button
           className="absolute z-50 top-0 right-0 bg-red-500 text-white rounded-full p-1"
-          onClick={() => onDelete()}
+          onClick={() =>
+            toast.custom((t) => (
+              <div className="bg-white p-6 rounded-lg shadow-card-action border-2 max-w-md mx-auto text-center">
+                <p className="text-gray-800 mb-4 font-medium">
+                  ¿Estás seguro de que deseas eliminar esta habitación?
+                </p>
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={() => {
+                      toast.dismiss(t.id); // Cierra el toast actual
+                      onDelete();
+                    }}
+                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-300"
+                  >
+                    Confirmar
+                  </button>
+                  <button
+                    onClick={() => toast.dismiss(t.id)} // Cierra el toast sin hacer nada
+                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors duration-300"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            ))
+          }
         >
           <XMarkIcon className="h-4 w-4" />
         </button>
