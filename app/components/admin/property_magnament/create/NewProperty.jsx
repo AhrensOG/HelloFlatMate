@@ -559,7 +559,6 @@ export default function NewProperty({ category, handleBack }) {
     const fetchRentalPeriods = async () => {
       const res = await axios.get("/api/admin/rental_period");
       console.log(res.data);
-      
       setPredefineRentalPeriod(res.data.rentalPeriods);
     }
     fetchOwners();

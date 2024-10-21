@@ -10,7 +10,7 @@ export default function RentalPeriodTemplate({ data, setData, predefineRental })
      // Si predefineRental tiene periodos, establecer los IDs en selectedPeriodIds
      setSelectedPeriodIds(predefineRental.map(period => period.id));
    }
- }, [predefineRental]);
+ }, []);
 
  const handleAddPeriod = () => {
    setData((prevData) => ({
