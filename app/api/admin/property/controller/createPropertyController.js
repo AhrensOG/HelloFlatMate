@@ -186,7 +186,7 @@ export async function cloneProperty(data) {
                 checkIn: data.checkIn || "", // Información de check-in
                 checkOut: data.checkOut || "", // Información de check-out
                 ownerId: data.ownerId || "1", // Propietario por defecto
-                tags: data.tags || [], // Lista vacía de etiquetas si no hay
+                tags: data.tags || null, // Lista vacía de etiquetas si no hay
               });
 
             if (data.rooms.length > 0) {
