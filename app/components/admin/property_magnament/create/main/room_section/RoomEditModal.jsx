@@ -296,7 +296,7 @@ export default function RoomEditModal({
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+          {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") && (
             <>
               {/* <div>
                 <label className="block text-sm mb-1">Piso (Opcional):</label>
@@ -397,7 +397,7 @@ export default function RoomEditModal({
             />
           </div>
         </div>
-        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD" ) && (
           <>
             <div>
               <label

@@ -412,13 +412,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 email={selectedEmail || property.owner?.email || ""}
               />{" "}
             </div>
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
             )}
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <TagsSection data={tags} setData={setTags} />
             )}
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <PriceSection data={price || property.price} setData={setPrice} />
             )}
             <SizeAndCategorySection
@@ -442,14 +442,14 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 setData={setGuestInfo}
               />
             </div>
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <CalendarSection
                 data={calendarType}
                 setData={setCalendarType}
                 category={category}
               />
             )}
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <RentalPeriodTemplate
                 data={rentalPeriods}
                 setData={setRentalPeriods}
@@ -601,7 +601,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 setAddress={setAddress}
                 action={handleShowAddressModal}
               />
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <TagsSection data={tags} setData={setTags} />
               )}
               <div>
@@ -626,13 +626,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                   email={selectedEmail || property.owner?.email || ""}
                 />
               </div>
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <PriceSection
                   data={price || property.price}
                   setData={setPrice}
                 />
               )}
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
               )}
               <div className="flex flex-col gap-6">
@@ -647,7 +647,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                   setData={setGuestInfo}
                 />
               </div>
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <CalendarSection
                   data={calendarType}
                   setData={setCalendarType}
@@ -671,7 +671,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 }
                 setData={setCatAndSize}
               />
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <RentalPeriodTemplate
                   data={rentalPeriods}
                   setData={setRentalPeriods}

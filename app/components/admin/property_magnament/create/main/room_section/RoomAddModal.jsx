@@ -50,7 +50,7 @@ export default function RoomAddModal({
     let roomData;
 
     // Construir el objeto roomData dependiendo de la categoría
-    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
+    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD" ) {
       roomData = {
         ...dataRoom,
         temporaryId: uuidv4(),
@@ -67,7 +67,7 @@ export default function RoomAddModal({
       };
     }
 
-    if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
+    if (category === "HELLO_STUDIO") {
       roomData = {
         ...dataRoom,
         temporaryId: uuidv4(),
@@ -169,7 +169,7 @@ export default function RoomAddModal({
             className="w-full p-2 border border-gray-300 rounded"
           />
         </div>
-        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") && (
           <>
             {/* <div>
               <label className="block mb-1">Piso (Opcional):</label>
@@ -287,7 +287,7 @@ export default function RoomAddModal({
           </div>
         </div>
 
-        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") && (
           <>
             <div className="w-full flex flex-col gap-3">
               <div>
