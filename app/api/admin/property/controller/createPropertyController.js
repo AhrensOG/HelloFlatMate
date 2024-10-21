@@ -140,7 +140,6 @@ export async function createProperty(data) {
 
 
 export async function cloneProperty(data) {
-    console.log(data);
 
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });
