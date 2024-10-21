@@ -195,9 +195,9 @@ export default function TableArticle({ data }) {
         ))}
       </div>
       {/* Table */}
-      <div className="w-full max-w-full border-2 border-primary rounded-lg overflow-x-auto overflow-y-auto max-h-96">
-        <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
-          <thead className="bg-[#0e1863ff] text-white sticky top-0 z-5">
+      <div className="w-full max-w-full border-2 border-primary rounded-lg overflow-x-auto overflow-y-auto max-h-[35rem]">
+        <table className="relative min-w-full bg-white rounded-lg shadow-lg">
+          <thead className="bg-[#0e1863ff] text-white sticky top-0 z-10">
             <tr>
               <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
                 Código
@@ -281,7 +281,7 @@ export default function TableArticle({ data }) {
                     {item.size}
                   </td>
                   <td className="px-4 py-4 text-center text-sm border-r">
-                    {item.roomsCount}
+                    {item.rooms?.length || item.roomsCount}
                   </td>
                   <td className="px-4 py-4 text-center text-sm border-r">
                     {item.bathrooms}
