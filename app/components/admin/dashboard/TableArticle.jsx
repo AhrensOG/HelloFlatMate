@@ -52,9 +52,9 @@ export default function TableArticle({ data }) {
         if (a.isActive === b.isActive) {
           // Ordenar por nombre si tienen el mismo isActive
           if (alphabeticalOrder) {
-            return a.name.localeCompare(b.name); // Ordenar A → Z
+            return a.serial.localeCompare(b.serial); // Ordenar A → Z
           } else {
-            return b.name.localeCompare(a.name); // Ordenar Z → A
+            return b.serial.localeCompare(a.serial); // Ordenar Z → A
           }
         }
         return a.isActive ? -1 : 1; // `true` primero, `false` después
