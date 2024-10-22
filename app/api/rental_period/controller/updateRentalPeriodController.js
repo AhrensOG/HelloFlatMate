@@ -24,7 +24,6 @@ export async function updateRentalPeriodStatus(data) {
             rentalPeriod.status = data.status;
             await rentalPeriod.save({ transaction });
             await transaction.commit();
-            console.log(rentalPeriod.toJSON());
 
             return NextResponse.json({ rentalPeriod }, { status: 200 })
         } catch (error) {

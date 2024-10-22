@@ -6,6 +6,7 @@ import {
   LeaseOrderRoom,
   Owner,
   Property,
+  RentalItem,
   RentalPeriod,
   Room,
 } from "@/db/init";
@@ -212,12 +213,16 @@ export async function getAllPropertiesSimple() {
       include: [
         { model: Owner, as: "owner", attributes: ["email"] },
         { model: Room, as: "rooms", attributes: ["id"] },
+        {model: RentalItem},
       ],
     });
     return NextResponse.json(properties, { status: 200 });
   } catch (error) {
+
+    console.log(error)
+
     return NextResponse.json(
-      { error: "Error al obtener las propiedades" },
+      { error: "Error al obtener las propiedades", error },
       { status: 500 }
     );
   }
