@@ -575,6 +575,7 @@ export default function NewProperty({ category, handleBack }) {
   }
   return (
     <div className="w-full flex justify-center items-center">
+      {/* MOBILE */}
       <div className="flex flex-col w-full md:hidden gap-2 p-2">
         <header className="w-full space-y-4">
           <ImageUploader setImages={setSliderImage} images={sliderImage} />
@@ -671,6 +672,7 @@ export default function NewProperty({ category, handleBack }) {
         </main>
       </div>
 
+      {/* DESKTOP */}
       <div className="hidden md:flex flex-col w-full gap-2 p-4">
         <header className="w-full space-y-4">
           <NavBarDetails callBack={handleBack} />
@@ -761,6 +763,7 @@ export default function NewProperty({ category, handleBack }) {
               <RentalPeriodTemplate
                 data={rentalPeriods}
                 setData={setRentalPeriods}
+                predefineRental={predefineRentalPeriod}
               />
             )}
             <SaveButton
