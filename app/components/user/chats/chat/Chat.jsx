@@ -23,14 +23,16 @@ export default function Chat() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
   const [messages, setMessages] = useState([]);
-  const socket = getSocket();
+  // const socket = getSocket();
+  const [socket, setSocket] = useState(false);
+  const [isConnectedToRoom, setIsConnectedToRoom] = useState(false);
 
   // Función para crear un nuevo chat de soporte
   const createNewSuppChat = async () => {
     try {
       const res = await axios.post("/api/chat", {
         type: "SUPPORT",
-        receiverId: clientId,
+        receiverId: clientId || userId,
       });
       // Asumiendo que la respuesta contiene el ID del nuevo chat
       setChatId(res.data.chat.id);
@@ -49,10 +51,15 @@ export default function Chat() {
   };
 
   useEffect(() => {
+    if (state.user?.id && !socket) {
+      setSocket(getSocket(state.user.id));
+    }
+  }, [state?.user?.id]);
+
+  useEffect(() => {
     const fetchMessages = async () => {
       try {
         const res = await axios.get(`/api/message?chatId=${chatId}`);
-        console.log(res.data);
         setMessages(res.data.messages);
       } catch (err) {
         console.log(err);
@@ -72,7 +79,6 @@ export default function Chat() {
     if (chatId) {
       if (socket) {
         const usuarioId = searchParams.get("userId");
-        console.log(usuarioId);
 
         const handleSocketConnect = () => {
           setIsConnected(true);
@@ -82,6 +88,7 @@ export default function Chat() {
           // Unir al usuario a la sala de chat
           socket.emit("joinChat", chatId.toString(), () => {
             console.log(`Unido a la sala ${chatId}`);
+            setIsConnectedToRoom(true);
           });
 
           // Escuchar el evento de mensajes entrantes
@@ -172,8 +179,15 @@ export default function Chat() {
 
   if (false) {
     return (
-      <div className="flex items-center justify-center flex-1 absolute inset-0">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="flex flex-col min-h-screen">
+        <header className="px-2">
+          <NavBar />
+        </header>
+        <main className="flex flex-col justify-between items-center flex-grow w-full">
+          <div className="flex items-center justify-center flex-1 absolute inset-0">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+          </div>
+        </main>
       </div>
     );
   }
