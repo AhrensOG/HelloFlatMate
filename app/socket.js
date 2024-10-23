@@ -47,3 +47,12 @@ export const getSocket = () => {
 
   return socket;
 };
+
+// Función para desconectar el socket
+export const disconnectSocket = () => {
+  if (socket) {
+    socket.disconnect();
+    socket = null; // Limpiar la referencia para evitar reconexiones accidentales
+    console.log("Socket disconnected");
+  }
+};

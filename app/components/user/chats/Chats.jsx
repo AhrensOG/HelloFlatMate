@@ -19,7 +19,6 @@ export default function Chat() {
 
   useEffect(() => {
     const fetchChats = async () => {
-      console.log("Fetching chats...");
       try {
         const { data } = await axios.get("/api/chat?userId=" + user?.id);
         setChats(data.chats);
