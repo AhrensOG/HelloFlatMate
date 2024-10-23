@@ -11,15 +11,19 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
 import Link from "next/link";
+import CreateLeaseOrderModal from "../create_lo_modal/CreateLeaseOrderModal";
+import AddRentalPeriodsModal from "../properties_panel/rental_periods/AddRentalPeriodsModal";
 
 export default function TableArticle({ data }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [originalData, setOriginalData] = useState(data); // Estado para los datos originales
-  const [filteredData, setFilteredData] = useState(data); // Estado para los datos filtrados
+  const [originalData, setOriginalData] = useState(data.properties); // Estado para los datos originales
+  const [filteredData, setFilteredData] = useState(data.properties); // Estado para los datos filtrados
   const [alphabeticalOrder, setAlphabeticalOrder] = useState(true); // Estado para el orden alfabético
+  const [showLeaseOrderModal, setShowLeaseOrderModal] = useState(false);
+  const [showRentalPeriodModal, setShowRentalPeriodModal] = useState(false);
 
   const categories = [
     "HELLO_ROOM",
@@ -136,7 +140,19 @@ export default function TableArticle({ data }) {
   return (
     <article className="flex flex-col justify-center items-center gap-4 w-full p-4">
       {/* Contenedor de botón alfabético y barra de búsqueda */}
-      <div className="flex items-center gap-2 w-full max-w-screen-sm mb-4">
+      <div className="flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4">
+        <button
+          onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
+          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+        >
+          Periodo de alquiler
+        </button>
+        <button
+          onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
+          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+        >
+          Orden de alquiler
+        </button>
         <Link
           href={"/pages/admin/create"}
           className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
@@ -144,7 +160,7 @@ export default function TableArticle({ data }) {
           Nueva Propiedad
         </Link>
         {/* Search bar con ícono de lupa */}
-        <div className="relative flex-grow">
+        <div className="relative flex-grow max-w-[12rem] w-full">
           <input
             type="text"
             placeholder="Buscar por nombre, código o ubicación..."
@@ -429,6 +445,17 @@ export default function TableArticle({ data }) {
           </tbody>
         </table>
       </div>
+      {showLeaseOrderModal && (
+        <CreateLeaseOrderModal
+          data={data}
+          onClose={() => setShowLeaseOrderModal(false)}
+        />
+      )}
+      {showRentalPeriodModal && (
+        <AddRentalPeriodsModal
+          onClose={() => setShowRentalPeriodModal(false)}
+        />
+      )}
     </article>
   );
 }
