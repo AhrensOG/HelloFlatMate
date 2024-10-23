@@ -17,8 +17,9 @@ const ChatParticipant = require("./models/chatParticipant");
 const Contract = require("./models/contract");
 const Payment = require("./models/payment");
 const RentalPeriod = require("./models/rentalPeriod");
-const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 const Worker = require("./models/worker");
+const RentalItem = require("./models/rentalItem");
+const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
     try {
@@ -323,40 +324,47 @@ const Worker = require("./models/worker");
             }
         })
 
-        //RentalPeriod
-        RentalPeriod.belongsTo(Property, {
-            as: "property",
-            foreignKey: "rentalPeriodableId",
-            constraints: false,
-            scope: {
-                rentalPeriodableType: "PROPERTY"
-            }
-        })
-        RentalPeriod.belongsTo(Room, {
-            as: "room",
-            foreignKey: "rentalPeriodableId",
-            constraints: false,
-            scope: {
-                rentalPeriodableType: "ROOM"
-            }
-        })
+        // RentalPeriod
+        RentalPeriod.hasMany(RentalItem, {
+            as: "rentalItems",
+            foreignKey: "rentalPeriodId",
+        });
 
-        Property.hasMany(RentalPeriod, {
-            as: "rentalPeriods",
-            foreignKey: "rentalPeriodableId",
+        // RentalItem
+        RentalItem.belongsTo(RentalPeriod, {
+            as: "rentalPeriod",
+            foreignKey: "rentalPeriodId",
+        });
+
+        // Property
+        Property.hasMany(RentalItem, {
+            foreignKey: "relatedId",
             constraints: false,
+            as: "rentalItems",
             scope: {
-                rentalPeriodableType: "PROPERTY"
-            }
-        })
-        Room.hasMany(RentalPeriod, {
-            as: "rentalPeriods",
-            foreignKey: "rentalPeriodableId",
+                relatedType: "PROPERTY",
+            },
+        });
+
+        RentalItem.belongsTo(Property, {
+            foreignKey: "relatedId",
             constraints: false,
+        });
+
+        // Room
+        Room.hasMany(RentalItem, {
+            foreignKey: "relatedId",
+            constraints: false,
+            as: "rentalItems",
             scope: {
-                rentalPeriodableType: "ROOM"
-            }
-        })
+                relatedType: "ROOM",
+            },
+        });
+
+        RentalItem.belongsTo(Room, {
+            foreignKey: "relatedId",
+            constraints: false,
+        });
 
 
         // await connection.drop({ cascade: true })
@@ -398,5 +406,6 @@ module.exports = {
     Contract,
     Payment,
     RentalPeriod,
+    RentalItem,
     Worker
 };

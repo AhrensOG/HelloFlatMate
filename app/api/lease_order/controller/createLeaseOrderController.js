@@ -56,8 +56,7 @@ export async function createLeasePropertyOrder(data) {
         if (!client) return NextResponse.json({ message: "Client not found" }, { status: 404 });
 
         // Crear la nueva orden de alquiler
-        const leaseOrder = await LeaseOrderProperty.create({ ...data, status: "IN_PROGRESS" });
-        property.status = "RESERVED";
+        const leaseOrder = await LeaseOrderProperty.create({ ...data, status: data?.status || "IN_PROGRESS" });
         await property.save();
 
         return NextResponse.json(leaseOrder, { message: "Orden creada con exito" }, { status: 201 });

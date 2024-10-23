@@ -3,6 +3,7 @@ import { plus_jakarta } from "@/font";
 import PropertyCard from "./PropertyCard";
 import TableArticle from "../dashboard/TableArticle";
 import Link from "next/link";
+import CreateLeaseOrderModal from "../create_lo_modal/CreateLeaseOrderModal";
 
 export default function PropertiesPanel({ data }) {
   return (
@@ -24,6 +25,7 @@ export default function PropertiesPanel({ data }) {
         </Link>
       )}
       {data.length > 0 && <TableArticle data={data} />}
+      <CreateLeaseOrderModal data={data} />
     </main>
   );
 }

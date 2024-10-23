@@ -1,140 +1,94 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function RentalPeriodTemplate({ data, setData }) {
-  // Manejo de la adición de un nuevo periodo
-  const handleAddPeriod = () => {
-    setData((prevData) => ({
-      ...prevData,
-      newRentalPeriods: [
-        ...(prevData.newRentalPeriods || []),
-        { startDate: "", endDate: "" },
-      ],
-    }));
-  };
+export default function RentalPeriodTemplate({ data, setData, predefineRental }) {
+  console.log(predefineRental);
+ // Inicializar selectedPeriodIds con los IDs de predefineRental
+ const [selectedPeriodIds, setSelectedPeriodIds] = useState([]);
 
-  const handleRemovePeriod = (index) => {
-    // Combina los periodos existentes y los nuevos
-    const combinedPeriods = [
-      ...(data.rentalPeriods || []),
-      ...(data.newRentalPeriods || []),
-    ];
+ useEffect(() => {
+   if (predefineRental) {
+     // Si predefineRental tiene periodos, establecer los IDs en selectedPeriodIds
+     setSelectedPeriodIds(predefineRental.map(period => period.id));
+   }
+ }, []);
 
-    // Verifica si el índice está dentro del rango combinado
-    if (index < combinedPeriods.length) {
-      const periodToRemove = combinedPeriods[index];
+ const handleAddPeriod = () => {
+   setData((prevData) => ({
+     ...prevData,
+     newRentalPeriods: [
+       ...(prevData.newRentalPeriods || []),
+       { startDate: "", endDate: "" },
+     ],
+   }));
+   setSelectedPeriodIds((prevIds) => [...prevIds, null]);
+ };
 
-      // Si es un periodo nuevo
-      if (index >= (data.rentalPeriods?.length || 0)) {
-        setData((prevData) => ({
-          ...prevData,
-          newRentalPeriods: prevData.newRentalPeriods.filter(
-            (_, i) => i !== index - (data.rentalPeriods?.length || 0)
-          ),
-        }));
-        return;
-      }
+ const handleRemovePeriod = (index) => {
+   setSelectedPeriodIds((prevIds) => prevIds.filter((_, i) => i !== index));
+   setData((prevData) => ({
+     ...prevData,
+     newRentalPeriods: prevData.newRentalPeriods.filter((_, i) => i !== index),
+   }));
+ };
 
-      // Si es un periodo existente
-      if (periodToRemove?.id) {
-        setData((prevData) => ({
-          ...prevData,
-          deleteRentalPeriods: [
-            ...(prevData.deleteRentalPeriods || []),
-            periodToRemove.id,
-          ],
-        }));
-      }
+ const handlePeriodChange = (index, value) => {
+   const periodId = predefineRental.find((date) => date.id === parseInt(value))?.id;
 
-      // Eliminar el periodo de rentalPeriods
-      setData((prevData) => ({
-        ...prevData,
-        rentalPeriods: prevData.rentalPeriods.filter((_, i) => i !== index),
-      }));
-    } else {
-      console.warn("Índice fuera de rango para periodos combinados");
-    }
-  };
+   if (periodId) {
+     setSelectedPeriodIds((prevIds) => {
+       const updatedIds = [...prevIds];
+       updatedIds[index] = periodId;
+       return updatedIds;
+     });
 
-  const handlePeriodChange = (index, field, value) => {
-    // Verifica si el índice es para un periodo existente
-    if (data.rentalPeriods && index < data.rentalPeriods.length) {
-      const updatedPeriods = data.rentalPeriods.map((period, i) => {
-        if (i === index) {
-          return {
-            ...period,
-            [field]: value, // Solo actualiza la propiedad indicada
-          };
-        }
-        return period;
-      });
-      setData({ ...data, rentalPeriods: updatedPeriods });
-    } else {
-      // Modificando un nuevo periodo
-      const newIndex = index - (data.rentalPeriods?.length || 0); // Ajusta el índice
-      const updatedNewPeriods = data.newRentalPeriods.map((period, i) => {
-        if (i === newIndex) {
-          return {
-            ...period,
-            [field]: value, // Solo actualiza la propiedad indicada
-          };
-        }
-        return period;
-      });
-      setData({ ...data, newRentalPeriods: updatedNewPeriods });
-    }
-  };
-
-  const formatedDate = (date) => {
-    if (date !== "") {
-      const newDate = new Date(date);
-      return newDate.toISOString().slice(0, 10);
-    }
-    return;
-  };
-
-  const combinedPeriods = [
-    ...(data.rentalPeriods || []),
-    ...(data.newRentalPeriods || []),
-  ];
+     setData((prevData) => ({
+       ...prevData,
+       newRentalPeriods: [
+         ...(prevData.newRentalPeriods || []),
+         { id: periodId }, // Agregar el nuevo período seleccionado
+       ],
+     }));
+   }
+ };
 
   return (
     <div className="flex flex-col gap-3">
       <h3 className="font-bold text-[1.2rem]">Periodos de alquiler</h3>
       <ul className="list-none flex flex-col gap-3">
-        {combinedPeriods.length > 0 ? (
-          combinedPeriods.map((period, index) => (
-            <li
-              key={index}
-              className="flex gap-3 items-center flex-wrap lg:w-full lg:flex-row lg:justyfy-between"
+        {selectedPeriodIds.map((_, index) => (
+          <li
+            key={index}
+            className="flex gap-3 items-center flex-wrap lg:w-full lg:flex-row lg:justify-between"
+          >
+            {/* Select para seleccionar el periodo */}
+            <select
+              value={selectedPeriodIds[index] || ""}
+              onChange={(e) => handlePeriodChange(index, e.target.value)}
+              className="appearance-none outline-none w-full p-2 border border-gray-300 rounded lg:w-[15rem]"
             >
-              <input
-                type="date"
-                value={formatedDate(period.startDate) || ""}
-                onChange={(e) =>
-                  handlePeriodChange(index, "startDate", e.target.value)
-                }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded lg:w-[10rem]"
-              />
-              <input
-                type="date"
-                value={formatedDate(period.endDate) || ""}
-                onChange={(e) =>
-                  handlePeriodChange(index, "endDate", e.target.value)
-                }
-                className="appearance-none outline-none w-full p-2 border border-gray-300 rounded lg:w-[10rem]"
-              />
-              <button
-                type="button"
-                onClick={() => handleRemovePeriod(index)}
-                className="bg-red-500 text-white px-2 py-1 rounded"
-              >
-                Eliminar
-              </button>
-            </li>
-          ))
-        ) : (
-          <h2 className="text-center">No hay periodos de alquiler</h2>
-        )}
+              <option value="">Selecciona un periodo</option>
+              {predefineRental
+                .filter((dateOption) =>
+                  dateOption.id !== undefined && // Asegúrate de que id está definido
+                  (!selectedPeriodIds.includes(dateOption.id) ||
+                  (selectedPeriodIds[index] === dateOption.id))
+                )
+                .map((dateOption) => (
+                  <option key={dateOption.id} value={dateOption.id}>
+                    {new Date(dateOption.startDate).toLocaleDateString()} - {new Date(dateOption.endDate).toLocaleDateString()}
+                  </option>
+                ))}
+            </select>
+
+            <button
+              type="button"
+              onClick={() => handleRemovePeriod(index)}
+              className="bg-red-500 text-white px-2 py-1 rounded"
+            >
+              Eliminar
+            </button>
+          </li>
+        ))}
       </ul>
       <button
         type="button"
