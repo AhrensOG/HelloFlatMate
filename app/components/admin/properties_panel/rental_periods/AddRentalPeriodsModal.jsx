@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-export default function AddRentalPeriodsModal() {
+export default function AddRentalPeriodsModal({ onClose }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [newRentalPeriods, setNewRentalPeriods] = useState([]);
@@ -69,6 +69,7 @@ export default function AddRentalPeriodsModal() {
     setStartDate("");
     setEndDate("");
     setNewRentalPeriods([]);
+    onClose()
   };
 
   return (

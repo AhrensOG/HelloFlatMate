@@ -1,10 +1,7 @@
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import { plus_jakarta } from "@/font";
-import PropertyCard from "./PropertyCard";
 import TableArticle from "../dashboard/TableArticle";
 import Link from "next/link";
-import CreateLeaseOrderModal from "../create_lo_modal/CreateLeaseOrderModal";
-import AddRentalPeriodsModal from "./rental_periods/AddRentalPeriodsModal";
 
 export default function PropertiesPanel({ data }) {
   return (
@@ -17,7 +14,9 @@ export default function PropertiesPanel({ data }) {
         item.update = `/pages/admin/update/${item.id}/${item.category}`;
         return <PropertyCard key={item?.id} data={item} />;
       })} */}
-      {data.length <= 0 && (
+      {data.properties?.length > 0 && data.users?.length > 0 ? (
+        <TableArticle data={data} />
+      ) : (
         <Link
           href={"/pages/admin/create"}
           className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
@@ -25,9 +24,6 @@ export default function PropertiesPanel({ data }) {
           Nueva Propiedad
         </Link>
       )}
-      {data.length > 0 && <TableArticle data={data} />}
-      <AddRentalPeriodsModal />
-      {/* <CreateLeaseOrderModal data={data} /> */}
     </main>
   );
 }
