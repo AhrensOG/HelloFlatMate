@@ -117,6 +117,8 @@ function formatDate(data) {
         ownerId: selectedProperty.owner.id, // Utiliza selectedProperty para obtener el ownerId
         roomId: selectedRoom?.id || null, // Incluir el ID de la habitación seleccionada
         status: "APPROVED",
+        isActive:true,
+        isSigned:true
       });
       console.log(res.data);
     } catch (error) {

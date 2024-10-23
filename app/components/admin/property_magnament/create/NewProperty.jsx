@@ -512,7 +512,7 @@ export default function NewProperty({ category, handleBack }) {
     offer: parseFloat(price.offer) || 0,
     IVA: parseFloat(price.IVA) || 0,
     ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id || null,
-    rentalPeriods: rentalPeriods.newRentalPeriods || null,
+    rentalPeriods: rentalPeriods.rentalPeriodIds || null,
     typology: typologyAndZone.typology || null,
     zone: typologyAndZone.zone || null,
     linkVideo: linkVideo || null,
@@ -522,6 +522,8 @@ export default function NewProperty({ category, handleBack }) {
 
   const createProperty = async () => {
     try {
+      console.log(property);
+      
       //Guardar Imagenes
       const imagesList = await saveImages(sliderImage);
       property.images = imagesList;
@@ -790,6 +792,7 @@ export default function NewProperty({ category, handleBack }) {
           setData={setRoomData}
           showModal={handleShowRoomEditModal}
           category={catAndSize.category}
+          rentalPeriods={predefineRentalPeriod}
         />
       )}
       {showAddressModal && (

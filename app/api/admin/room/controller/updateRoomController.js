@@ -1,10 +1,8 @@
-import { RentalPeriod, Room, RoomWithPrice } from "@/db/init";
-import message from "@/db/models/message";
+import { RentalItem, RentalPeriod, Room, RoomWithPrice } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function updateRoom(id, data) {
-    console.log(data);
-
+        
     if (!data) return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
 
     // Validar datos según la categoría
@@ -25,6 +23,8 @@ export async function updateRoom(id, data) {
     };
 
     if (Array.isArray(data) && data.length > 0) {
+        console.log("entre al primer if");
+        
         for (let i = 0; i < data.length; i++) {
             // Validación de cada habitación
             const isComplete = validateRoomData(data[i]);
@@ -32,42 +32,48 @@ export async function updateRoom(id, data) {
             try {
                 const room = await Room.findByPk(data[i].id);
                 if (!room) return NextResponse.json({ error: "Habitación no encontrada" }, { status: 404 });
-
-                // Actualizar fechas existentes
-                if (data[i].rentalPeriods.length > 0) {
-                    data[i].rentalPeriods.forEach(async (period) => {
-                        await RentalPeriod.update(period, {
-                            where: {
-                                id: period.id
-                            }
-                        });
+            
+                // Manejar los rentalItems
+                if (data[i].rentalPeriods?.length > 0) {
+                    const rentalItemsRoom = await RentalItem.findAll({
+                        where: {
+                            relatedId: data[i].id,
+                            relatedType: "ROOM"
+                        }
                     });
-                }
-
-                // Crear nuevas fechas si se agregaron
-                if (data[i].newRentalPeriods.length > 0) {
-                    data[i].newRentalPeriods.forEach(async (period) => {
-                        await RentalPeriod.create({
-                            startDate: new Date(period.startDate),
-                            endDate: new Date(period.endDate),
-                            rentalPeriodableId: data[i].id,
-                            rentalPeriodableType: "ROOM"
-                        });
+            
+                    const rentalIds = rentalItemsRoom.map((item) => item.rentalPeriodId);
+            
+                    // Crear nuevas RentalItems si es necesario
+                    const createRentalItemPromises = data[i].rentalPeriods?.map(async (period) => {
+                        if (!rentalIds.includes(period.id)) {
+                            return await RentalItem.create({
+                                rentalPeriodId: period.id,
+                                relatedId: data[i].id,
+                                relatedType: "ROOM",
+                                isFree: true
+                            });
+                        }
                     });
+            
+                    await Promise.all(createRentalItemPromises);
+                    
                 }
-
+            
                 // Borrar fechas si es necesario
-                if (data[i].deleteRentalPeriod.length > 0) {
-                    data[i].deleteRentalPeriod.forEach(async (period) => {
-                        await RentalPeriod.destroy({
+                if (data[i].deleteRentalPeriods?.length > 0) {
+                    await Promise.all(data[i].deleteRentalPeriods.map(async (period) => {
+                        await RentalItem.destroy({
                             where: {
-                                id: period
+                                id: period,
+                                relatedType:"ROOM",
+                                relatedId: data[i].id
                             }
                         });
-                    });
+                    }));
                 }
-
-                // Actualizar la habitación y definir isActive según la validación
+            
+                // Actualizar la habitación
                 await room.update({ ...data[i], isActive: isComplete });
             } catch (error) {
                 return NextResponse.json({ error: "Error al actualizar la habitación" }, { status: 500 });
@@ -82,39 +88,44 @@ export async function updateRoom(id, data) {
     try {
         const room = await Room.findByPk(id);
         if (!room) return NextResponse.json({ error: "Habitación no encontrada" }, { status: 404 });
-
         // Actualizar fechas existentes
-        if (data.rentalPeriods.length > 0) {
-            data.rentalPeriods.forEach(async (period) => {
-                await RentalPeriod.update(period, {
-                    where: {
-                        id: period.id
-                    }
-                });
-            });
-        }
 
         // Crear nuevas fechas si se agregaron
-        if (data.newRentalPeriods.length > 0) {
-            data.newRentalPeriods.forEach(async (period) => {
-                await RentalPeriod.create({
-                    startDate: new Date(period.startDate),
-                    endDate: new Date(period.endDate),
-                    rentalPeriodableId: room.id,
-                    rentalPeriodableType: "ROOM"
-                });
+        if (data.rentalPeriods?.length > 0) {
+            const rentalItems = await RentalItem.findAll({
+                where: {
+                    relatedId: id,
+                    relatedType: "ROOM"
+                }
+            })
+
+            const rentalIds = rentalItems.map((item) => item.rentalPeriodId);
+
+            const createRentalItemPromises = data.rentalPeriods.map(async (period) => {
+                if (!rentalIds.includes(period.id)) {
+                    return await RentalItem.create({
+                        rentalPeriodId: period.id,
+                        relatedId: id,
+                        relatedType: "ROOM",
+                        isFree: true
+                    });
+                }
             });
+            await Promise.all(createRentalItemPromises);
         }
 
+
         // Borrar fechas si es necesario
-        if (data.deleteRentalPeriod.length > 0) {
-            data.deleteRentalPeriod.forEach(async (period) => {
-                await RentalPeriod.destroy({
+        if (data.deleteRentalPeriods?.length > 0) {
+            await Promise.all(data.deleteRentalPeriods?.map(async (period) => {
+                await RentalItem.destroy({
                     where: {
-                        id: period
+                        rentalPeriodId: period,
+                        relatedType:"ROOM",
+                        relatedId: room.id
                     }
-                });
-            });
+                })
+            }));
         }
 
         // Actualizar la habitación y definir isActive según la validación

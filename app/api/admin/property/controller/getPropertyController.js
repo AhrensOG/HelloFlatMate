@@ -38,8 +38,12 @@ export async function getAllProperties() {
               as: "contracts",
             },
             {
-              model: RentalPeriod,
-              as: "rentalPeriods",
+              model: RentalItem,
+              as: "rentalItems",
+              include: {
+                model: RentalPeriod,
+                as: "rentalPeriod",
+              }
             },
           ],
         },
@@ -60,8 +64,12 @@ export async function getAllProperties() {
           as: "contracts",
         },
         {
-          model: RentalPeriod,
-          as: "rentalPeriods",
+          model: RentalItem,
+          as: "rentalItems",
+          include: {
+            model: RentalPeriod,
+            as: "rentalPeriod",
+          }
         },
       ],
     });
@@ -102,8 +110,12 @@ export async function getPropertyById(id) {
               as: "contracts",
             },
             {
-              model: RentalPeriod,
-              as: "rentalPeriods",
+              model: RentalItem,
+              as: "rentalItems",
+              include: {
+                model: RentalPeriod,
+                as: "rentalPeriod",
+              }
             },
           ],
         },
@@ -124,8 +136,12 @@ export async function getPropertyById(id) {
           as: "contracts",
         },
         {
-          model: RentalPeriod,
-          as: "rentalPeriods",
+          model: RentalItem,
+          as: "rentalItems",
+          include: {
+            model: RentalPeriod,
+            as: "rentalPeriod",
+          }
         },
       ],
     });

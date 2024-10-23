@@ -1,4 +1,4 @@
-import { Chat, ChatParticipant, Property, RentalPeriod } from "@/db/init";
+import { Chat, ChatParticipant, Property, RentalItem, RentalPeriod } from "@/db/init";
 import { NextResponse } from "next/server";
 import { sequelize } from "@/db/models/comment";
 import chat from "@/db/models/chat";
@@ -44,39 +44,49 @@ export async function updateProperty(id, data) {
             return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
         }
 
-        // Actualizar las fechas de alquiler existentes
-        if (data.rentalPeriods.length > 0) {
-            data.rentalPeriods.forEach(async (rentalPeriod) => {
-                await RentalPeriod.update(rentalPeriod, {
-                    where: {
-                        id: rentalPeriod.id
-                    }
-                });
-            });
-        }
-
         // Crear nuevas fechas de alquiler
         if (data.newRentalPeriods.length > 0) {
-            data.newRentalPeriods.forEach(async (rentalPeriod) => {
-                await RentalPeriod.create({
-                    startDate: new Date(rentalPeriod.startDate),
-                    endDate: new Date(rentalPeriod.endDate),
-                    rentalPeriodableId: property.id,
-                    rentalPeriodableType: "PROPERTY"
-                });
+            const alreadyRentalItems= await RentalItem.findAll({
+                where: {
+                    relatedId: property.id,
+                    relatedType: "PROPERTY",
+                }
             });
+
+            const rentalPeriodIds= alreadyRentalItems.map((item)=>{
+                return item.rentalPeriodId
+            });
+            
+
+            const createRentalItems= data.newRentalPeriods?.map(async (item) => {
+                if (!rentalPeriodIds.includes(item.id)) {
+                    const rentalItem = await RentalItem.create({
+                        relatedId: property.id,
+                        relatedType: "PROPERTY",
+                        rentalPeriodId: item.id,
+                        isFree: true
+                    });
+                }
+            })
+
+            await Promise.all(createRentalItems);
         }
 
-        // Eliminar fechas de alquiler
-        if (data.deleteRentalPeriods.length > 0) {
-            data.deleteRentalPeriods.forEach(async (rentalPeriod) => {
-                await RentalPeriod.destroy({
+        console.log(data);
+        
+        /// Borrar fechas si es necesario
+        if (data.deleteRentalPeriods?.length > 0) {
+
+            await Promise.all(data.deleteRentalPeriods?.map(async (period) => {
+                await RentalItem.destroy({
                     where: {
-                        id: rentalPeriod
+                        relatedId: property.id,
+                        rentalPeriodId: period,
+                        relatedType:"PROPERTY"
                     }
-                });
-            });
-        }
+                })
+            }));
+        };
 
         // Actualizar el propietario si es necesario
         if (data.ownerId && data.ownerId !== property.ownerId) {
@@ -93,7 +103,7 @@ export async function updateProperty(id, data) {
                 participantType: "OWNER"
             });
 
-            const chat = await Chat.findByPk(property.chat.id);
+            const chat = await Chat.findByPk(property.chat?.id);
             if (chat) {
                 chat.ownerId = data.ownerId;
                 await chat.save();
