@@ -208,12 +208,13 @@ export async function getAllPropertiesSimple() {
         "roomsCount",
         "bathrooms",
         "isActive",
+        "price"
       ],
       where: { status: { [Op.ne]: "DELETED" } },
       include: [
-        { model: Owner, as: "owner", attributes: ["email"] },
-        { model: Room, as: "rooms", attributes: ["id"] },
-        {model: RentalItem},
+        { model: Owner, as: "owner", attributes: ["email", "id"] },
+        { model: Room, as: "rooms", attributes: ["id","serial"] },
+        {model: RentalItem,as :"rentalItems", include:{model:RentalPeriod,as:"rentalPeriod"}},
       ],
     });
     return NextResponse.json(properties, { status: 200 });

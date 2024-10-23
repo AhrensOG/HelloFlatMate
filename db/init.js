@@ -340,6 +340,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Property.hasMany(RentalItem, {
             foreignKey: "relatedId",
             constraints: false,
+            as: "rentalItems",
             scope: {
                 relatedType: "PROPERTY",
             },
@@ -354,6 +355,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Room.hasMany(RentalItem, {
             foreignKey: "relatedId",
             constraints: false,
+            as: "rentalItems",
             scope: {
                 relatedType: "ROOM",
             },

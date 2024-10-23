@@ -9,16 +9,16 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   const [roomsData, setRoomsData] = useState([]);
   
   const [propertySearch, setPropertySearch] = useState("");
+  const [selectedProperty, setSelectedProperty] = useState(null); // Estado para la propiedad seleccionada
   const [document, setDocument] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState("");
   const [selectedRentalItem, setSelectedRentalItem] = useState("");
-  
-  // Estado para seleccionar la habitación
   const [selectedRoom, setSelectedRoom] = useState(null);
-
-  // Estado para coincidencias
+  const [price, setPrice] = useState(0);
+  
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
@@ -27,29 +27,14 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
     setPropertySearch(value);
     const filtered = filterProperties(value);
     setFilteredProperties(filtered);
-
-    // Cargar rentalItems correspondientes al seleccionar una propiedad
-    if (filtered.length === 1) {
-      setRentalItemsData(filtered[0].rentalItems || []);
-      
-      // Filtrar habitaciones según la categoría
-      const rooms = filtered[0].rooms || [];
-      const filteredRooms = rooms.filter(room => 
-        filtered[0].category === "HELLO_COLIVING" || 
-        filtered[0].category === "HELLO_ROOM"
-      );
-      setRoomsData(filteredRooms); // Guardar habitaciones filtradas
-    } else {
-      setRentalItemsData([]);
-      setRoomsData([]); // Limpiar habitaciones si no hay coincidencias
-    }
   };
 
   const handleUserChange = (event) => {
     const value = event.target.value;
-    setUser(value);
+    setEmail(value);
     const filtered = filterUsers(value);
     setFilteredUsers(filtered);
+    setUser(filtered[0]);
   };
 
   const filterUsers = (value) => {
@@ -60,61 +45,78 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   };
 
   const filterProperties = (value) => {
+    console.log(value);
+    
     if (!value) return data?.properties || [];
     return data?.properties.filter((property) =>
-      property.id === value ||
-      property.name.toLowerCase().includes(value.toLowerCase()) ||
-      property.serial.toLowerCase().includes(value.toLowerCase())
+      property.name.toLowerCase().includes(value.toLowerCase())
     );
   };
 
   const handleRentalItemChange = (event) => {
     const rentalItemId = event.target.value;
-    const rentalItem = rentalItemsData.find(item => item.id === rentalItemId);
+    console.log(rentalItemId);
+    
+    const rentalItem = rentalItemsData.find(item => item.id == rentalItemId);
+    console.log(rentalItem);
     
     setSelectedRentalItem(rentalItemId);
 
     if (rentalItem) {
-      setStartDate(rentalItem.startDate);
-      setEndDate(rentalItem.endDate);
+      setStartDate(rentalItem.rentalPeriod.startDate);
+      setEndDate(rentalItem.rentalPeriod.endDate);
     }
   };
 
   const handleRoomChange = (event) => {
     setSelectedRoom(event.target.value); // Guardar habitación seleccionada
   };
+  
+  const handleSelectProperty = (property) => {
+    console.log(property.rentalItems);
+    
+    setPropertySearch(property.name);
+    setSelectedProperty(property); // Guardar la propiedad seleccionada
+    setFilteredProperties([]);
+    setRentalItemsData(property.rentalItems || []);
+    
+    // Filtrar habitaciones
+    const rooms = property.rooms || [];
+    const filteredRooms = rooms.filter(room =>
+      property.category === "HELLO_COLIVING" || 
+      property.category === "HELLO_ROOM"
+    );
+    setRoomsData(filteredRooms);
+  }
 
   useEffect(() => {
     setUsersData(data?.users || []);
     setPropertiesData(data?.properties || []);
   }, [data]);
 
-  function calculateDurationInMonths(startDate, endDate) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    
-    const startYear = start.getFullYear();
-    const startMonth = start.getMonth();
-    const endYear = end.getFullYear();
-    const endMonth = end.getMonth();
 
-    const yearDifference = endYear - startYear;
-    const monthDifference = endMonth - startMonth;
+function formatDate(data) {
+  const date = new Date(data);
+  const day = String(date.getDate()).padStart(2, '0');  // Asegura que el día tenga dos dígitos
+  const month = String(date.getMonth() + 1).padStart(2, '0');  // Los meses en JavaScript van de 0 a 11, por eso se suma 1
+  const year = date.getFullYear();
 
-    return yearDifference * 12 + monthDifference;
-  }
+  return `${day}/${month}/${year}`;
+}
 
   const createLeaseOrder = async () => {
     try {
       const res = await axios.post("/api/lease_order", {
-        propertyId: propertySearch.id,
+        propertyId: selectedProperty.id, // Utiliza selectedProperty en lugar de propertySearch
         date: new Date(),
         startDate: startDate,
         endDate: endDate,
-        userId: user.id,
-        ownerId: propertySearch.owner.id,
-        duration: calculateDurationInMonths(startDate, endDate),
-        roomId: selectedRoom.id || null, // Incluir el ID de la habitación seleccionada
+        itemRentalId: selectedRentalItem?.id || null,
+        clientId: user.id,
+        price:price,
+        ownerId: selectedProperty.owner.id, // Utiliza selectedProperty para obtener el ownerId
+        roomId: selectedRoom?.id || null, // Incluir el ID de la habitación seleccionada
+        status: "APPROVED",
       });
       console.log(res.data);
     } catch (error) {
@@ -123,18 +125,20 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   };
 
   const uploadedContract = async () => {
+    console.log(user);
+    
     try {
       const uploadedContract = await uploadContractPDF(document, user.name + " "+ user.lastName);
       const res = await axios.post("/api/contract", selectedRoom ? ({
         roomId: selectedRoom.id,
-        userId: user.id,
-        ownerId: propertySearch.owner.id,
+        clientId: user.id,
+        ownerId: selectedProperty.owner.id, // Usa selectedProperty
         name: uploadedContract.name,
         url: uploadedContract.url,
       }):({
-        propertyId: propertySearch.id,
-        userId: user.id,
-        ownerId: propertySearch.owner.id,
+        propertyId: selectedProperty.id, // Usa selectedProperty
+        clientId: user.id,
+        ownerId: selectedProperty.owner.id,
         name: uploadedContract.name,
         url: uploadedContract.url,
       }))
@@ -147,8 +151,6 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   const handleSubmit = async () => {
     await createLeaseOrder();
     await uploadedContract();
-    clearForm();
-    handleClose();
   };
 
   const clearForm = () => {
@@ -159,6 +161,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
     setUser("");
     setSelectedRentalItem("");
     setSelectedRoom("");
+    setSelectedProperty(null);
     setFilteredProperties([]);
     setFilteredUsers([]);
     setRentalItemsData([]);
@@ -169,7 +172,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">
         <h2 className="text-lg font-bold mb-4">Buscar Propiedad y Subir Documento</h2>
-
+  
         {/* Input para buscar propiedades */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -182,26 +185,13 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
             placeholder="Nombre o ID de la propiedad"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
           />
-          {/* Desplegable para mostrar coincidencias de propiedades */}
           {filteredProperties.length > 0 && (
             <ul className="border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto">
               {filteredProperties.map((property) => (
                 <li
                   key={property.id}
                   className="px-3 py-2 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => {
-                    setPropertySearch(property.name);
-                    setFilteredProperties([]);
-                    setRentalItemsData(property.rentalItems || []);
-                    
-                    // Filtrar habitaciones
-                    const rooms = property.rooms || [];
-                    const filteredRooms = rooms.filter(room =>
-                      property.category === "HELLO_COLIVING" || 
-                      property.category === "HELLO_ROOM"
-                    );
-                    setRoomsData(filteredRooms);
-                  }}
+                  onClick={() => handleSelectProperty(property)}
                 >
                   {property.name}
                 </li>
@@ -209,7 +199,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
             </ul>
           )}
         </div>
-
+  
         {/* Select para elegir Rental Item */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -225,7 +215,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
                 <option value="">Seleccione un ítem de alquiler</option>
                 {rentalItemsData.map((item) => (
                   <option key={item.id} value={item.id}>
-                    {`${item.startDate} a ${item.endDate}`}
+                    {`${formatDate(item.rentalPeriod.startDate)} a ${formatDate(item.rentalPeriod.endDate)}`}
                   </option>
                 ))}
               </>
@@ -234,7 +224,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
             )}
           </select>
         </div>
-
+  
         {/* Select para elegir la habitación */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -250,7 +240,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
                 <option value="">Seleccione una habitación</option>
                 {roomsData.map((room) => (
                   <option key={room.id} value={room.id}>
-                    {room.serial} {/* Muestra el serial de la habitación */}
+                    {room.serial}
                   </option>
                 ))}
               </>
@@ -259,7 +249,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
             )}
           </select>
         </div>
-
+  
         {/* Input para buscar usuario */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -267,12 +257,11 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
           </label>
           <input
             type="text"
-            value={user}
+            value={email}
             onChange={handleUserChange}
             placeholder="Nombre o ID del usuario"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
           />
-          {/* Desplegable para mostrar coincidencias de usuarios */}
           {filteredUsers.length > 0 && (
             <ul className="border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto">
               {filteredUsers.map((user) => (
@@ -280,7 +269,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
                   key={user.id}
                   className="px-3 py-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => {
-                    setUser(user.email);
+                    setEmail(user.email);
                     setFilteredUsers([]);
                   }}
                 >
@@ -291,36 +280,43 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
           )}
         </div>
 
-        {/* Input para subir documento */}
+        {/* Input para el precio */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Subir Documento
+            Precio
+          </label>
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Ingrese el precio"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+          />
+        </div>
+  
+        {/* Input para subir el contrato */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Subir Contrato (PDF)
           </label>
           <input
             type="file"
+            accept="application/pdf"
             onChange={(e) => setDocument(e.target.files[0])}
-            className="w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
-
-        <div className="flex space-x-2">
+  
+        <div className="flex justify-end">
           <button
-            onClick={createLeaseOrder}
-            className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+            onClick={handleSubmit}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-blue-600"
           >
             Crear Orden de Alquiler
           </button>
-
-          <button
-            onClick={clearForm}
-            className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition duration-200"
-          >
-            Limpiar
-          </button>
-
           <button
             onClick={onClose}
-            className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-200"
+            className="ml-2 bg-gray-300 text-black px-4 py-2 rounded-lg shadow-sm hover:bg-gray-400"
           >
             Cancelar
           </button>
@@ -328,4 +324,5 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
       </div>
     </div>
   );
+  
 }
