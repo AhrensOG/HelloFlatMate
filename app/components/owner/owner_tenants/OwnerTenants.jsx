@@ -19,11 +19,6 @@ const OwnerTenants = () => {
           <TenantCard />
           <TenantCard />
           <TenantCard />
-          <TenantCard />
-          <TenantCard />
-          <TenantCard />
-          <TenantCard />
-          <TenantCard />
         </div>
       </div>
     </section>

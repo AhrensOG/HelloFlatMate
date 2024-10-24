@@ -6,7 +6,7 @@ const TenantCard = ({
   name = "Briana González",
   location = "Villa Edén",
   action,
-  image = "/profile/profile.jfif",
+  image = "/profile/profile.jpg",
   link = "/pages/owner/my-tenants/detail",
 }) => {
   return (
