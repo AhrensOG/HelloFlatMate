@@ -6,8 +6,6 @@ export async function createRoom(data) {
         return NextResponse.json({ error: "Se requieren datos" }, { status: 400 });
     }
 
-    console.log(data);
-
     const isArray = Array.isArray(data);
     const dataArray = isArray ? data : [data];  // Asegurarse de que sea un array
 
@@ -48,13 +46,13 @@ export async function createRoom(data) {
                 createdRooms.push(room);
 
                 // Verificar si tiene períodos de alquiler asociados
-                if (roomData.rentalPeriods && roomData.rentalPeriods.length > 0) {
+                if (roomData.rentalPeriods && roomData.rentalPeriods?.length > 0) {
                     // Crear los períodos de alquiler si están presentes
                     const rentalPeriods = roomData.rentalPeriods.map((rental)=>{
                         return {
                             relatedId: room.id,
-                            relatedType:"ROOM",
-                            rentalPeriod:rental
+                            relatedType: "ROOM",
+                            rentalPeriodId: rental
                         }
                     })
 
