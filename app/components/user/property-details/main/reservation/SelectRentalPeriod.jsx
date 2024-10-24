@@ -29,11 +29,11 @@ export default function SelectRentalPeriod({ data, setData }) {
       setSelectedValue(selectedId); // Guarda el ID del periodo seleccionado
       // Actualiza setData con un objeto
       setData(
-        selectedPeriod.startDate,
-        selectedPeriod.endDate,
+        selectedPeriod.rentalPeriod?.startDate,
+        selectedPeriod.rentalPeriod?.endDate,
         calculateDurationInMonths(
-          selectedPeriod.startDate,
-          selectedPeriod.endDate
+          selectedPeriod.rentalPeriod?.startDate,
+          selectedPeriod.rentalPeriod?.endDate
         ),
         selectedPeriod.id
       );
@@ -62,11 +62,9 @@ export default function SelectRentalPeriod({ data, setData }) {
       >
         {selectedValue
           ? `Del ${formatedDate(
-              data.find((period) => period.id === parseInt(selectedValue))
-                .startDate
+              data.find((period) => period.id === parseInt(selectedValue)).rentalPeriod?.startDate
             )} al ${formatedDate(
-              data.find((period) => period.id === parseInt(selectedValue))
-                .endDate
+              data.find((period) => period.id === parseInt(selectedValue)).rentalPeriod?.endDate
             )}`
           : "Selecciona un contrato"}
         <span
@@ -92,8 +90,8 @@ export default function SelectRentalPeriod({ data, setData }) {
                 onClick={() => handleValueChange(period.id)}
                 className="cursor-pointer p-2 hover:bg-gray-100"
               >
-                {`Del ${formatedDate(period.startDate)} al ${formatedDate(
-                  period.endDate
+                {`Del ${formatedDate(period.rentalPeriod?.startDate)} al ${formatedDate(
+                  period.rentalPeriod?.endDate
                 )}`}
               </div>
             ))}

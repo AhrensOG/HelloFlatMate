@@ -1,4 +1,4 @@
-import { Client, Document, LeaseOrderProperty, LeaseOrderRoom, Property, RentalPeriod, Room } from "@/db/init";
+import { Client, Document, LeaseOrderProperty, LeaseOrderRoom, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
 
 
@@ -9,12 +9,20 @@ export async function getAllProperties() {
                 model: Room,
                 as: 'rooms',
                 include: [{
-                    model: RentalPeriod,
-                    as: 'rentalPeriods'
+                    model: RentalItem,
+                    as: 'rentalItems',
+                    include: {
+                        model: RentalPeriod,
+                        as: 'rentalPeriod'
+                    }
                 }]
             }, {
-                model: RentalPeriod,
-                as: 'rentalPeriods'
+                model: RentalItem,
+                    as: 'rentalItems',
+                    include: {
+                        model: RentalPeriod,
+                        as: 'rentalPeriod'
+                    }
             }, {
                 model: LeaseOrderProperty,
                 as: 'leaseOrdersProperty'
@@ -47,8 +55,12 @@ export async function getPropertyById(id) {
                         }
                     },
                     {
+                        model: RentalItem,
+                    as: 'rentalItems',
+                    include: {
                         model: RentalPeriod,
-                        as: "rentalPeriods"
+                        as: 'rentalPeriod'
+                    }
                     }
                 ]
             },
@@ -65,8 +77,12 @@ export async function getPropertyById(id) {
                 }
             },
             {
-                model: RentalPeriod,
-                as: 'rentalPeriods'
+                model: RentalItem,
+                    as: 'rentalItems',
+                    include: {
+                        model: RentalPeriod,
+                        as: 'rentalPeriod'
+                    }
             }]
         });
         if (!property) return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
