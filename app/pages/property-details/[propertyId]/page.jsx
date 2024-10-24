@@ -165,7 +165,7 @@ export default function PropertyDetails({ params }) {
                 ownerId: data.ownerId,
                 propertyName: data?.name,
                 user: state?.user,
-                rentalPeriods: data.rentalPeriods,
+                rentalPeriods: data.rentalItems,
                 leaseOrdersProperty: data?.leaseOrdersProperty || null,
               }}
             />
@@ -267,7 +267,6 @@ export default function PropertyDetails({ params }) {
               ]}
             />
           </div>
-          {console.log(data)}
           {showModal && (
             <ReservationModal
               calendarType={data.calendar}

@@ -33,8 +33,8 @@ export default function DatePicker({
 
   // Obtener el rango de fechas válidas de rentalPeriods
   const rentalDateRanges = rentalPeriods.map((period) => ({
-    start: new Date(period.startDate),
-    end: new Date(period.endDate),
+    start: new Date(period.rentalPeriod?.startDate),
+    end: new Date(period.rentalPeriod?.endDate),
   }));
 
   // Función para verificar si una fecha está ocupada o fuera del rango
