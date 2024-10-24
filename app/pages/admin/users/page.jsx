@@ -16,6 +16,7 @@ export default function UsersPanelPage() {
           ...data.data.owners,
           ...data.data.clients,
           ...data.data.admins,
+          ...data.data.workers,
         ]);
       }
     } catch (error) {
