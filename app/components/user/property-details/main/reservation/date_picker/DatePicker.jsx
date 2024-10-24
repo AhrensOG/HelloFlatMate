@@ -57,7 +57,9 @@ export default function DatePicker({
     if (!startDate && !endDate) return "Seleccione las fechas";
     if (startDate && !endDate) return `Ingreso: ${formatDate(startDate)}`;
     if (startDate && endDate)
-      return `Ingreso: ${formatDate(startDate)} - Salida: ${formatDate(endDate)}`;
+      return `Ingreso: ${formatDate(startDate)} - Salida: ${formatDate(
+        endDate
+      )}`;
   };
 
   // Formatear fecha en dd/mm
