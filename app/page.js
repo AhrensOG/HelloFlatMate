@@ -153,7 +153,7 @@ export default function Home() {
         {/* Sección activa controlada por el estado */}
         {activeSection === "inicio" && (
           <div className="w-full flex flex-col">
-            <DesktopHero />
+            <DesktopHero img="https://www.youtube.com/watch?v=ie78B4HShZ0"/>
             <OffersSection />
             <CommunitySection />
             <FamilySection />
