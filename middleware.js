@@ -97,6 +97,7 @@ export async function middleware(request) {
     WORKER: [
       "/pages/worker-panel",
       "/api",
+      "/pages/user",
     ],
     CLIENT: ["/pages/user", "/pages/home", "/api"],
   };

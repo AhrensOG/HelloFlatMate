@@ -11,15 +11,19 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
 import Link from "next/link";
+import CreateLeaseOrderModal from "../create_lo_modal/CreateLeaseOrderModal";
+import AddRentalPeriodsModal from "../properties_panel/rental_periods/AddRentalPeriodsModal";
 
-export default function TableArticle({ data }) {
+export default function TableArticle({ data , role="ADMIN"}) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [originalData, setOriginalData] = useState(data); // Estado para los datos originales
-  const [filteredData, setFilteredData] = useState(data); // Estado para los datos filtrados
+  const [originalData, setOriginalData] = useState(data.properties); // Estado para los datos originales
+  const [filteredData, setFilteredData] = useState(data.properties); // Estado para los datos filtrados
   const [alphabeticalOrder, setAlphabeticalOrder] = useState(true); // Estado para el orden alfabético
+  const [showLeaseOrderModal, setShowLeaseOrderModal] = useState(false);
+  const [showRentalPeriodModal, setShowRentalPeriodModal] = useState(false);
 
   const categories = [
     "HELLO_ROOM",
@@ -136,15 +140,30 @@ export default function TableArticle({ data }) {
   return (
     <article className="flex flex-col justify-center items-center gap-4 w-full p-4">
       {/* Contenedor de botón alfabético y barra de búsqueda */}
-      <div className="flex items-center gap-2 w-full max-w-screen-sm mb-4">
+        <div className={role==="OWNER" ? ("flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4 justify-center"):("flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4")}>
+        {role==="ADMIN" && (
+          <>
+          <button
+          onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
+          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+        >
+          Periodo de alquiler
+        </button>
+        <button
+          onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
+          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+        >
+          Orden de alquiler
+        </button>
         <Link
           href={"/pages/admin/create"}
           className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
         >
           Nueva Propiedad
-        </Link>
+        </Link></>
+        )}
         {/* Search bar con ícono de lupa */}
-        <div className="relative flex-grow">
+        <div className={role==="OWNER"?("relative flex-grow max-w-[40rem] w-full self-center flex justify-center"):("relative flex-grow max-w-[12rem] w-full")}>
           <input
             type="text"
             placeholder="Buscar por nombre, código o ubicación..."
@@ -155,16 +174,19 @@ export default function TableArticle({ data }) {
           {/* Ícono de lupa dentro del input */}
           <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
-        {/* Botón de orden alfabético */}
-        <button
+       {role==="ADMIN" && (
+        <>
+         {/* Botón de orden alfabético */}
+         <button
           onClick={toggleAlphabeticalOrder}
           className="p-2 bg-blue-500 text-white rounded"
         >
           {alphabeticalOrder ? "A → Z" : "Z → A"}
-        </button>
+        </button></>
+       )}
       </div>
-      {/* Category filters */} {/* Status filters */}
-      <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
+     {/* Category filters */} {/* Status filters */}
+     <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
         <h2 className="text-xl font-bold text-primary w-full">
           Categorías y estados
         </h2>
@@ -232,12 +254,12 @@ export default function TableArticle({ data }) {
               <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
                 Baños
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              {role === "ADMIN" && <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
                 Propietario
-              </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              </th>}
+              {role==="ADMIN" && <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
                 Acciones
-              </th>
+              </th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -245,9 +267,12 @@ export default function TableArticle({ data }) {
               filteredData.map((item, index) => (
                 <tr
                   key={item.id}
-                  className={`${
+                  className={role==="ADMIN"?(`${
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } hover:bg-blue-50 transition-colors duration-300 ease-in-out`}
+                  } hover:bg-blue-50 transition-colors duration-300 ease-in-out`):(`${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  } hover:bg-blue-50 transition-colors duration-300 ease-in-out cursor-pointer`)}
+                  onClick={role === "OWNER" ? ()=> router.push(`/pages/property-details/${item.id}`) : null}
                 >
                   <td className="px-4 py-4 text-center text-sm border-r">
                     {item.serial}
@@ -289,7 +314,7 @@ export default function TableArticle({ data }) {
                   <td className="px-4 py-4 text-center text-sm border-r">
                     {item.owner?.email}
                   </td>
-                  <td className="px-4 py-4 text-center">
+                 {role==="ADMIN" &&  <td className="px-4 py-4 text-center">
                     <div className="flex gap-6 items-center justify-center">
                       {/* Botón de Activar/Desactivar */}
                       <div className="relative group inline-block">
@@ -413,7 +438,7 @@ export default function TableArticle({ data }) {
                         </span>
                       </div>
                     </div>
-                  </td>
+                  </td>}
                 </tr>
               ))
             ) : (
@@ -429,6 +454,17 @@ export default function TableArticle({ data }) {
           </tbody>
         </table>
       </div>
+      {showLeaseOrderModal && (
+        <CreateLeaseOrderModal
+          data={data}
+          onClose={() => setShowLeaseOrderModal(false)}
+        />
+      )}
+      {showRentalPeriodModal && (
+        <AddRentalPeriodsModal
+          onClose={() => setShowRentalPeriodModal(false)}
+        />
+      )}
     </article>
   );
 }

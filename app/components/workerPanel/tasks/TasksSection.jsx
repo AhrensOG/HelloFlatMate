@@ -57,8 +57,13 @@ export default function TasksSection({ section }) {
 
   if (!tasks) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center h-screen ">
+        <header className="w-full">
+          <UserSerivceNavBar />
+        </header>
+        <main className="w-full grow grid place-items-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+        </main>
       </div>
     );
   }
@@ -84,15 +89,6 @@ export default function TasksSection({ section }) {
             className={`${plus_jakarta.className} flex flex-col gap-2 py-4 m-4`}
           >
             <div className="flex justify-center items-center mb-4 w-full">
-              <button
-                onClick={() => {
-                  route.back();
-                }}
-                type="button"
-                className="w-6 h-6 opacity-70 ml-4"
-              >
-                <ArrowLeftIcon />
-              </button>
               <h2 className="text-[#000000CC] font-bold text-xl mx-auto ml-24 lg:mx-auto">
                 Tareas
               </h2>

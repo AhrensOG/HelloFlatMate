@@ -15,6 +15,8 @@ export default function AccountDropdown() {
       ? "/pages/user/profile"
       : user?.role === "ADMIN"
       ? "/pages/admin"
+      : user?.role === "WORKER"
+      ? "/pages/worker-panel/home"
       : null;
 
   return (

@@ -1,12 +1,18 @@
 import Image from "next/image";
 import Dropdown from "../../public/auth/Dropdown";
 import { plus_jakarta } from "@/font";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 export default function UserSerivceNavBar() {
+  const router = useRouter();
   return (
     <nav
-      className={`${plus_jakarta.className} flex w-full justify-between p-1.5`}
+      className={`${plus_jakarta.className} flex w-full items-center justify-between p-3 max-h-[72px]`}
     >
+      <button onClick={() => router.back()}>
+        <ArrowLeftIcon className="size-8" />
+      </button>
       <div className="h-full flex m-auto">
         {" "}
         <Image
@@ -18,7 +24,7 @@ export default function UserSerivceNavBar() {
           alt="Logo de FlatMate"
         />
       </div>
-      <div className="flex items-center gap-2 w-[87px] h-[34px]">
+      <div className="flex items-center gap-2 w-[87px]">
         <button
           onClick={() => handleRedirect("/pages/notification")}
           type="button"

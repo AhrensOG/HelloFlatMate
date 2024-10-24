@@ -12,7 +12,7 @@ export default function ProfileWorkerOptions() {
         icon="/profile/profile_option/bx-home.svg"
         title="Historial de tareas"
         action={() => {
-          handleRedirect("/pages/user/history/service/tasks");
+          handleRedirect("/pages/worker-panel/home");
         }}
       />
       {/* <ProfileOption

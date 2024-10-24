@@ -1,9 +1,11 @@
 
-import { Chat, ChatParticipant, Owner, Property, RentalPeriod, Room } from "@/db/init";
+import { Chat, ChatParticipant, Owner, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import rentalPeriod, { sequelize } from "@/db/models/rentalPeriod";
 import { NextResponse } from 'next/server';
 
 export async function createProperty(data) {
+    console.log(data);
+    
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -29,18 +31,10 @@ export async function createProperty(data) {
 
     // Si es HELLO_STUDIO o HELLO_LANDLORD, el precio y los valores relacionados deben ser mayores que 0
     if (data.category === "HELLO_STUDIO" || data.category === "HELLO_LANDLORD") {
-        // if (!data.price || data.price <= 0) {
-        //     return NextResponse.json({ error: "El precio debe ser mayor a 0 para HELLO_STUDIO o HELLO_LANDLORD" }, { status: 400 });
-        // }
         price = data.price;
         amountOwner = data.amountOwner || 0;
         amountHelloflatmate = data.amountHelloflatmate || 0;
         IVA = data.IVA || 0;
-
-        // Verificar que el monto para el dueño y Helloflatmate también sea válido
-        // if (amountOwner <= 0 || amountHelloflatmate <= 0) {
-        //     return NextResponse.json({ error: "Los montos para el dueño y Helloflatmate deben ser mayores a 0" }, { status: 400 });
-        // }
     }
 
     // Definir si la propiedad está completa y debe estar activa
@@ -105,15 +99,13 @@ export async function createProperty(data) {
 
         // Crear períodos de alquiler si existen
         if (data.rentalPeriods && data.rentalPeriods.length > 0) {
-            await RentalPeriod.bulkCreate(data.rentalPeriods.map((rentalPeriod) => {
-                return {
-                    startDate: new Date(rentalPeriod.startDate),
-                    endDate: new Date(rentalPeriod.endDate),
-                    status: "FREE",
-                    rentalPeriodableId: property.id,
-                    rentalPeriodableType: "PROPERTY"
-                };
-            }));
+            await RentalItem.bulkCreate(
+                data.rentalPeriods.map((rentalPeriod) => ({
+                relatedId: property.id,
+                relatedType: "PROPERTY",
+                rentalPeriodId: rentalPeriod,
+                isFree:true
+            })))
         }
 
         // Crear el grupo de chat si existe un propietario

@@ -3,25 +3,28 @@ import { toast } from "sonner";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import axios from "axios";
 import ImageUploader from "@/app/components/admin/drag-and-drop/ImageUploader";
+import RentalPeriodRoomEdit from "./RentalPeriodRoomEdit";
 export default function RoomEditModal({
   data,
   setData,
   showModal,
   selectedRoom,
   category,
+  predefineRental,
 }) {
   const [dataRoom, setDataRoom] = useState({});
   const [files, setFiles] = useState([]);
   const [initialImages, setInitialImages] = useState([]);
+  const [rentalPeriods, setRentalPeriods] = useState(data?.rentalItems|| []);
+  const [newRentalPeriods, setNewRentalPeriods] = useState([]);
 
   useEffect(() => {
     if (selectedRoom) {
       setDataRoom({
         ...selectedRoom,
-        deleteRentalPeriod: [],
-        newRentalPeriods: [],
       });
       setInitialImages(selectedRoom.images || []); // Cargar imágenes iniciales
+      setRentalPeriods(selectedRoom?.rentalItems || []);
     }
   }, [selectedRoom]);
 
@@ -74,91 +77,8 @@ export default function RoomEditModal({
     const { name, value } = event.target;
     setDataRoom({ ...dataRoom, [name]: value === "yes" });
   };
-  // Manejo de periodos de alquiler
-  const handleAddPeriod = () => {
-    setDataRoom((prevDataRoom) => ({
-      ...prevDataRoom,
-      newRentalPeriods: [
-        ...(prevDataRoom.newRentalPeriods || []),
-        { startDate: "", endDate: "" },
-      ],
-    }));
-  };
 
-  const handlePeriodChange = (index, field, value) => {
-    // Verifica si el índice es para un periodo existente
-    if (dataRoom.rentalPeriods && index < dataRoom.rentalPeriods.length) {
-      const updatedPeriods = dataRoom.rentalPeriods.map((period, i) => {
-        if (i === index) {
-          return {
-            ...period,
-            [field]: value, // Solo actualiza la propiedad indicada
-          };
-        }
-        return period;
-      });
-      setDataRoom({ ...dataRoom, rentalPeriods: updatedPeriods });
-    } else {
-      // Modificando un nuevo periodo
-      const newIndex = index - (dataRoom.rentalPeriods?.length || 0); // Ajusta el índice
-      const updatedNewPeriods = dataRoom.newRentalPeriods.map((period, i) => {
-        if (i === newIndex) {
-          return {
-            ...period,
-            [field]: value, // Solo actualiza la propiedad indicada
-          };
-        }
-        return period;
-      });
-      setDataRoom({ ...dataRoom, newRentalPeriods: updatedNewPeriods });
-    }
-  };
 
-  const handleRemovePeriod = (index) => {
-    const combinedPeriods = [
-      ...(dataRoom.rentalPeriods || []),
-      ...(dataRoom.newRentalPeriods || []),
-    ];
-
-    // Verifica si el índice está dentro del rango combinado
-    if (index < combinedPeriods.length) {
-      const periodToRemove = combinedPeriods[index];
-
-      // Si el periodo es de newRentalPeriods
-      if (index >= (dataRoom.rentalPeriods?.length || 0)) {
-        setDataRoom((prevDataRoom) => ({
-          ...prevDataRoom,
-          newRentalPeriods: prevDataRoom.newRentalPeriods.filter(
-            (_, i) => i !== index - (dataRoom.rentalPeriods.length || 0)
-          ),
-        }));
-        console.log("Eliminado de newRentalPeriods");
-      } else {
-        // Si el periodo es de rentalPeriods
-        if (periodToRemove?.id) {
-          // Si el periodo tiene un ID, lo agregamos a rentalPeriodsDeleted
-          setDataRoom((prevDataRoom) => ({
-            ...prevDataRoom,
-            deleteRentalPeriod: [
-              ...(prevDataRoom.deleteRentalPeriod || []),
-              periodToRemove.id,
-            ],
-          }));
-        }
-
-        // Eliminar el periodo de rentalPeriods
-        setDataRoom((prevDataRoom) => ({
-          ...prevDataRoom,
-          rentalPeriods: prevDataRoom.rentalPeriods.filter(
-            (_, i) => i !== index
-          ),
-        }));
-        console.log("Eliminado de rentalPeriods");
-      }
-    } else {
-      console.warn("Índice fuera de rango para periodos combinados");
-    }
-  };
 
   // Manejo de descripciones
   const handleAddDescription = () => {
@@ -183,21 +103,15 @@ export default function RoomEditModal({
     setDataRoom({ ...dataRoom, description: updatedDescription });
   };
 
-  const formatedDate = (date) => {
-    if (date !== "") {
-      const newDate = new Date(date);
-      return newDate.toISOString().slice(0, 10);
-    }
-    return;
-  };
 
   const handleSubmit = async () => {
     if (!isModified(dataRoom, selectedRoom) && files.length === 0) {
       showModal();
       return;
     }
-    let newData = { ...dataRoom };
-
+    
+    let newData = { ...dataRoom, rentalPeriods:newRentalPeriods.newRentalPeriods, deleteRentalPeriods: newRentalPeriods.deletedRentalPeriods };
+    
     if (!dataRoom?.name) {
       return toast.error("Por favor, especifique un nombre");
     }
@@ -475,69 +389,12 @@ export default function RoomEditModal({
             </div>
 
             <div className="flex flex-col gap-3">
+              {console.log(newRentalPeriods)}
+              
               {/* Periodos de alquiler */}
-              <div className="flex flex-col gap-3">
-                <h3 className="block text-sm mb-1">Periodos de alquiler</h3>
-                <ul className="list-none flex flex-col gap-3">
-                  {dataRoom?.rentalPeriods?.length > 0 ||
-                  dataRoom?.newRentalPeriods?.length > 0 ? (
-                    [
-                      ...(dataRoom.rentalPeriods || []),
-                      ...(dataRoom.newRentalPeriods || []),
-                    ].map((period, index) => (
-                      <li
-                        key={index}
-                        className="flex gap-3 items-center flex-wrap"
-                      >
-                        <label className="block text-xs mb-1" htmlFor="start">
-                          Fecha de ingreso
-                        </label>
-                        <input
-                          id="startDate"
-                          type="date"
-                          value={formatedDate(period.startDate) || ""}
-                          onChange={(e) =>
-                            handlePeriodChange(
-                              index,
-                              "startDate",
-                              e.target.value
-                            )
-                          }
-                          className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-                        />
-                        <label className="block text-xs mb-1" htmlFor="endDate">
-                          Fecha de egreso
-                        </label>
-                        <input
-                          id="endDate"
-                          type="date"
-                          value={formatedDate(period.endDate) || ""}
-                          onChange={(e) =>
-                            handlePeriodChange(index, "endDate", e.target.value)
-                          }
-                          className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemovePeriod(index)}
-                          className="bg-red-500 text-white px-2 py-1 rounded"
-                        >
-                          Eliminar
-                        </button>
-                      </li>
-                    ))
-                  ) : (
-                    <h2 className="text-center">No hay periodos de alquiler</h2>
-                  )}
-                </ul>
-                <button
-                  type="button"
-                  onClick={handleAddPeriod}
-                  className="bg-blue-500 text-white px-2 py-1 rounded w-[10rem] self-start"
-                >
-                  Añadir Periodo
-                </button>
-              </div>
+              {rentalPeriods.length > 0 && (
+                <RentalPeriodRoomEdit data={newRentalPeriods || []} setData={setNewRentalPeriods} predefineRental={predefineRental} oldRentalPeriods={rentalPeriods.map((period)=>{return {itemPeriodId:period.id, ...period.rentalPeriod}})} />
+              )}
 
               {/* Descripciones */}
               <div className="w-full flex flex-col gap-3">

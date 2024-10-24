@@ -1,4 +1,4 @@
-import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply } from "@/db/init";
+import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Worker } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllUsers() {
@@ -6,7 +6,8 @@ export async function getAllUsers() {
         const owners = await Owner.findAll();
         const clients = await Client.findAll();
         const admins = await Admin.findAll();
-        return NextResponse.json({ owners, clients, admins });
+        const workers = await Worker.findAll();
+        return NextResponse.json({ owners, clients, admins, workers });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

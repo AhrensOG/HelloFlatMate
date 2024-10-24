@@ -357,6 +357,7 @@ export default function NewProperty({ category, handleBack }) {
     IVA: 0,
   });
   const [rentalPeriods, setRentalPeriods] = useState([]);
+  const [predefineRentalPeriod, setPredefineRentalPeriod] = useState([]);
   const [serial, setSerial] = useState("");
   const [typologyAndZone, setTypologyAndZone] = useState({
     typology: "MIXED",
@@ -511,7 +512,7 @@ export default function NewProperty({ category, handleBack }) {
     offer: parseFloat(price.offer) || 0,
     IVA: parseFloat(price.IVA) || 0,
     ownerId: owners?.find((owner) => owner.email === selectedEmail)?.id || null,
-    rentalPeriods: rentalPeriods.newRentalPeriods || null,
+    rentalPeriods: rentalPeriods.rentalPeriodIds || null,
     typology: typologyAndZone.typology || null,
     zone: typologyAndZone.zone || null,
     linkVideo: linkVideo || null,
@@ -521,6 +522,8 @@ export default function NewProperty({ category, handleBack }) {
 
   const createProperty = async () => {
     try {
+      console.log(property);
+      
       //Guardar Imagenes
       const imagesList = await saveImages(sliderImage);
       property.images = imagesList;
@@ -555,7 +558,13 @@ export default function NewProperty({ category, handleBack }) {
       const res = await axios.get("/api/admin/user?role=OWNER");
       setOwners(res.data);
     };
+    const fetchRentalPeriods = async () => {
+      const res = await axios.get("/api/admin/rental_period");
+      console.log(res.data);
+      setPredefineRentalPeriod(res.data.rentalPeriods);
+    }
     fetchOwners();
+    fetchRentalPeriods();
   }, []);
 
   if (!owners) {
@@ -567,6 +576,7 @@ export default function NewProperty({ category, handleBack }) {
   }
   return (
     <div className="w-full flex justify-center items-center">
+      {/* MOBILE */}
       <div className="flex flex-col w-full md:hidden gap-2 p-2">
         <header className="w-full space-y-4">
           <ImageUploader setImages={setSliderImage} images={sliderImage} />
@@ -630,6 +640,7 @@ export default function NewProperty({ category, handleBack }) {
             <RentalPeriodTemplate
               data={rentalPeriods}
               setData={setRentalPeriods}
+              predefineRental={predefineRentalPeriod}
             />
           )}
           <DescriptionSectionTemplate
@@ -662,6 +673,7 @@ export default function NewProperty({ category, handleBack }) {
         </main>
       </div>
 
+      {/* DESKTOP */}
       <div className="hidden md:flex flex-col w-full gap-2 p-4">
         <header className="w-full space-y-4">
           <NavBarDetails callBack={handleBack} />
@@ -752,6 +764,7 @@ export default function NewProperty({ category, handleBack }) {
               <RentalPeriodTemplate
                 data={rentalPeriods}
                 setData={setRentalPeriods}
+                predefineRental={predefineRentalPeriod}
               />
             )}
             <SaveButton
@@ -779,6 +792,7 @@ export default function NewProperty({ category, handleBack }) {
           setData={setRoomData}
           showModal={handleShowRoomEditModal}
           category={catAndSize.category}
+          rentalPeriods={predefineRentalPeriod}
         />
       )}
       {showAddressModal && (

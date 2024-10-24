@@ -6,6 +6,7 @@ import {
   LeaseOrderRoom,
   Owner,
   Property,
+  RentalItem,
   RentalPeriod,
   Room,
 } from "@/db/init";
@@ -37,8 +38,12 @@ export async function getAllProperties() {
               as: "contracts",
             },
             {
-              model: RentalPeriod,
-              as: "rentalPeriods",
+              model: RentalItem,
+              as: "rentalItems",
+              include: {
+                model: RentalPeriod,
+                as: "rentalPeriod",
+              }
             },
           ],
         },
@@ -59,8 +64,12 @@ export async function getAllProperties() {
           as: "contracts",
         },
         {
-          model: RentalPeriod,
-          as: "rentalPeriods",
+          model: RentalItem,
+          as: "rentalItems",
+          include: {
+            model: RentalPeriod,
+            as: "rentalPeriod",
+          }
         },
       ],
     });
@@ -101,8 +110,12 @@ export async function getPropertyById(id) {
               as: "contracts",
             },
             {
-              model: RentalPeriod,
-              as: "rentalPeriods",
+              model: RentalItem,
+              as: "rentalItems",
+              include: {
+                model: RentalPeriod,
+                as: "rentalPeriod",
+              }
             },
           ],
         },
@@ -123,8 +136,12 @@ export async function getPropertyById(id) {
           as: "contracts",
         },
         {
-          model: RentalPeriod,
-          as: "rentalPeriods",
+          model: RentalItem,
+          as: "rentalItems",
+          include: {
+            model: RentalPeriod,
+            as: "rentalPeriod",
+          }
         },
       ],
     });
@@ -207,17 +224,22 @@ export async function getAllPropertiesSimple() {
         "roomsCount",
         "bathrooms",
         "isActive",
+        "price"
       ],
       where: { status: { [Op.ne]: "DELETED" } },
       include: [
-        { model: Owner, as: "owner", attributes: ["email"] },
-        { model: Room, as: "rooms", attributes: ["id"] },
+        { model: Owner, as: "owner", attributes: ["email", "id"] },
+        { model: Room, as: "rooms", attributes: ["id","serial"] },
+        {model: RentalItem,as :"rentalItems", include:{model:RentalPeriod,as:"rentalPeriod"}},
       ],
     });
     return NextResponse.json(properties, { status: 200 });
   } catch (error) {
+
+    console.log(error)
+
     return NextResponse.json(
-      { error: "Error al obtener las propiedades" },
+      { error: "Error al obtener las propiedades", error },
       { status: 500 }
     );
   }
