@@ -14,22 +14,27 @@ export default function PropertiesPanelPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get("/api/property?ownerId=" + "1");
+      const res = await axios.get("/api/property?ownerId=" + state.user?.id);
       setPropertiesSimple(res.data);
     };
-    
+    if (state.user?.id) {
       fetchData();
-  }, []);
+    }
+  }, [state.user?.id]);
 
   return (
     <>
-    {propertiesSimple.length > 0 && (
-      <>
-      <header>
-        <NavBar client={false} admin={false} owner={true} />
-      </header>
-      <PropertiesPanel data={{properties:propertiesSimple}} role={"OWNER"} />
+      {propertiesSimple.length > 0 && (
+        <>
+          <header>
+            <NavBar client={false} admin={false} owner={true} />
+          </header>
+          <PropertiesPanel
+            data={{ properties: propertiesSimple }}
+            role={"OWNER"}
+          />
+        </>
+      )}
     </>
-    )}</>
   );
 }
