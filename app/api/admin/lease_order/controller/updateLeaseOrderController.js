@@ -33,7 +33,7 @@ export async function updateStatusLeaseOrder(data) {
                     as: "rentalItems",
                     include: {
                         model: RentalPeriod,
-                        as: "rentalPeriods",
+                        as: "rentalPeriod",
                     }
                 }
             }, { transaction });
@@ -97,7 +97,7 @@ export async function updateStatusLeaseOrder(data) {
             as: "rentalItems",
             include: {
                 model: RentalPeriod,
-                as: "rentalPeriods",
+                as: "rentalPeriod",
             }
         } }, { transaction });
         if (!room) {
