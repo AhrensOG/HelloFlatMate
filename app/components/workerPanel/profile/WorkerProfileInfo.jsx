@@ -31,8 +31,13 @@ export default function WorkerProfileInfo() {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center h-screen ">
+        <header className="w-full">
+          <UserSerivceNavBar />
+        </header>
+        <main className="w-full grow grid place-items-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+        </main>
       </div>
     );
   }
@@ -43,10 +48,10 @@ export default function WorkerProfileInfo() {
         <UserSerivceNavBar />
       </header>
       <main
-        className={`${plus_jakarta.className} flex flex-col items-center m-10 gap-5`}
+        className={`${plus_jakarta.className} flex flex-col items-center gap-5 w-full p-4`}
       >
         <section className="flex items-center mb-4 w-full">
-          <button
+          {/* <button
             onClick={() => {
               route.back();
             }}
@@ -54,9 +59,9 @@ export default function WorkerProfileInfo() {
             className="w-6 h-6 opacity-70 ml-4"
           >
             <ArrowLeftIcon />
-          </button>
-          <h2 className=" text-[#000000CC] font-bold text-xl ml-20 lg:text-center lg:self-center">
-            Perfil
+          </button> */}
+          <h2 className=" text-[#000000CC] font-bold text-xl lg:text-center lg:self-center w-full">
+            Mi perfil
           </h2>
         </section>
         <div className=" lg:w-[30rem] flex flex-col gap-6">
@@ -68,40 +73,40 @@ export default function WorkerProfileInfo() {
                 alt="Profile image"
                 className="object-cover object-top h-full w-full"
               />
-              <div className="absolute bottom-0 left-0 right-0 h-12 rounded-b-full bg-[#91919199] backdrop-blur-md flex items-center justify-center">
+              {/* <div className="absolute bottom-0 left-0 right-0 h-12 rounded-b-full bg-[#91919199] backdrop-blur-md flex items-center justify-center">
                 <CameraIcon className="h-7 w-7 text-white" />
-              </div>
+              </div> */}
             </div>
-
+            {/* 
             <p className="underline text-[#000000B2] font-semibold text-xs">
               Cambiar foto
-            </p>
+            </p> */}
           </div>
           <ProfileItems
             title={"Nombre completo"}
             body={user?.name + " " + user?.lastName}
             icon={<PencilSquareIcon />}
           />
-          <ProfileItems
+          {/* <ProfileItems
             title={"Genero"}
-            body={"Masculino"}
+            body={ user.genre || "No definido"}
             icon={<ChevronDownIcon />}
           />
           <ProfileItems
             title={"Fecha de nacimiento"}
-            body={formatDate(user?.birthDate)}
+            body={formatDate(user?.birthDate) || "No definido"}
             icon={<CalendarDaysIcon />}
-          />
+          /> */}
           <ProfileItems
             title={"Trabajo"}
             body={"Mantenimiento"}
             icon={<ChevronDownIcon />}
           />
-          <ProfileItems
+          {/* <ProfileItems
             title={"Numero de contacto"}
             body={"+92-321-1234567"}
             icon={<PencilSquareIcon />}
-          />
+          /> */}
         </div>
       </main>
     </>

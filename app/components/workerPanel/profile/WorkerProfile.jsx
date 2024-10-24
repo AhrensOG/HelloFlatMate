@@ -24,8 +24,13 @@ export default function WorkerProfile({ section }) {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center h-screen ">
+        <header className="w-full">
+          <UserSerivceNavBar />
+        </header>
+        <main className="w-full grow grid place-items-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+        </main>
       </div>
     );
   }
@@ -42,27 +47,30 @@ export default function WorkerProfile({ section }) {
         <header>
           <UserSerivceNavBar />
         </header>
-        <main className="px-4 flex flex-col gap-4 flex-grow lg:w-[30rem] self-center">
-          <h1 className="pl-4 font-bold text-xl mt-4">
+        <main className="px-4 flex flex-col gap-4 flex-grow w-full items-center justify-start">
+          <h1 className="pl-4 font-bold text-xl mt-4 w-full text-center">
             Perfil de mantenimiento
           </h1>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <ProfileCard
-              name={user.name + " " + user.lastName}
-              email={user.email}
-              action={() => {
-                handleRedirect("/pages/user/profile/service/info");
-              }}
-              image={user.profilePicture || "/profile/profile.jfif"}
-            />
-            <ProfileWorkerOptions />
-            <Logout />
-          </motion.div>
+          <div className="w-full flex justify-center items-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="w-full max-w-screen-lg flex flex-col gap-2"
+            >
+              <ProfileCard
+                name={user.name + " " + user.lastName}
+                email={user.email}
+                action={() => {
+                  handleRedirect("/pages/user/profile/service/info");
+                }}
+                image={user.profilePicture || "/profile/profile.jfif"}
+              />
+              <ProfileWorkerOptions />
+              <Logout />
+            </motion.div>
+          </div>
         </main>
         <footer>
           <BottomNavBar section={section} />
