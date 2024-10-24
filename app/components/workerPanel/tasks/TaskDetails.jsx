@@ -133,7 +133,7 @@ export default function TaskDetails({ section }) {
 
             <section className="flex flex-col justify-center items-center gap-6 lg:flex-row-reverse lg:flex-wrap">
               <div className="flex flex-col gap-4 lg:w-[45%] lg:justify-around">
-                <DescriptionSection />
+                <DescriptionSection body={task?.isPresent}/>
                 <TenatnsNote body={task?.clientMessage || ""} />
               </div>
               <LocationSection />

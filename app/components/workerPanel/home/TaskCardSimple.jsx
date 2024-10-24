@@ -4,7 +4,7 @@ export default function TaskCardSimple({ type, status, title, action }) {
   return (
     <section
       onClick={action}
-      className="flex items-center justify-between gap-1 cursor-pointer hover:scale-110"
+      className="flex items-center justify-between gap-1 cursor-pointer"
     >
       <div className=" w-14">
         <div className="rounded-full h-14 w-14 flex justify-center items-center bg-[#0E165C]">
