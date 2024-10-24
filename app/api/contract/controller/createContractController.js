@@ -1,4 +1,4 @@
-import { Contract, LeaseOrderProperty, LeaseOrderRoom } from "@/db/init"
+import { Contract, LeaseOrderProperty, LeaseOrderRoom, Supply } from "@/db/init"
 import { NextResponse } from "next/server"
 export async function createContract(data) {
 
@@ -48,6 +48,57 @@ export async function createContract(data) {
                 return NextResponse.json({ message: "Property or Room not found" }, { status: 400 })
             }
             const contract = await Contract.create(contractData)
+            const currentDate = new Date();
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 5); // Establecer 5 días en el futuro
+
+            await Supply.bulkCreate([
+            {
+                name: "Depósito",
+                amount: 300,
+                date: currentDate,
+                status: "PENDING",
+                propertyId: data.propertyId,
+                clientId: data.clientId,
+                reference: data.reference || "",
+                type: "OTHERS",
+                expirationDate: expirationDate
+            },
+            {
+                name: "Suministros",
+                amount: 200, 
+                date: currentDate,
+                status: "PENDING",
+                propertyId: data.propertyId,
+                clientId: data.clientId,
+                reference: data.reference || "",
+                type: "OTHERS",
+                expirationDate: expirationDate
+            },
+            {
+                name: "Wifi",
+                amount: 80,
+                date: currentDate,
+                status: "PENDING",
+                propertyId: data.propertyId,
+                clientId: data.clientId,
+                reference: data.reference || "",
+                type: "OTHERS",
+                expirationDate: expirationDate
+            },
+            {
+                name: "Tasa de la agencia",
+                amount: 459.80, // 380€ + IVA
+                date: currentDate,
+                status: "PENDING",
+                propertyId: data.propertyId,
+                clientId: data.clientId,
+                reference: data.reference || "",
+                type: "OTHERS",
+                expirationDate: expirationDate
+            }
+            ]);
+
             return NextResponse.json({ message: "Contract created successfully" }, { status: 200 })
         } catch (error) { await transaction.rollback(); return NextResponse.json({ message: "Contract not created" }, { status: 400 }) }
     } catch (error) {
