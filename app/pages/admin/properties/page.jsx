@@ -40,7 +40,7 @@ export default function PropertiesPanelPage() {
       <header>
         <NavBar client={false} admin={true} owner={false} />
       </header>
-      <PropertiesPanel data={{properties:propertiesSimple, users: users}} />
+      <PropertiesPanel data={{properties:propertiesSimple, users: users}}  role={"ADMIN"} />
     </>
   );
 }

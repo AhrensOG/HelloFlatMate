@@ -1,5 +1,6 @@
 import { Client, Document, LeaseOrderProperty, LeaseOrderRoom, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from 'next/server';
+import { Op } from "sequelize";
 
 
 export async function getAllProperties() {
@@ -92,5 +93,37 @@ export async function getPropertyById(id) {
         console.log(error);
 
         return NextResponse.json({ error: "Error al obtener la propiedad" }, { status: 500 });
+    }
+}
+
+export async function getPropertiesByOwnerId(id) {
+    try{
+        const properties = await Property.findAll({
+            attributes: [
+                "name",
+                "serial",
+                "id",
+                "category",
+                "status",
+                "street",
+                "streetNumber",
+                "city",
+                "postalCode",
+                "zone",
+                "typology",
+                "size",
+                "roomsCount",
+                "bathrooms",
+                "isActive",
+                "price",
+                "ownerId"
+              ],
+              where: { status: { [Op.ne]: "DELETED" }, ownerId: id },
+        })
+
+        return NextResponse.json(properties, { status: 200 });
+    }catch(error){
+
+        return NextResponse.json({ error: "Error al obtener las propiedades" }, { status: 500 });
     }
 }
