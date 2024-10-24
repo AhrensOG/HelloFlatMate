@@ -1,4 +1,4 @@
-import { RentalPeriod, Room } from "@/db/init";
+import { RentalItem, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createRoom(data) {
@@ -50,16 +50,16 @@ export async function createRoom(data) {
                 // Verificar si tiene períodos de alquiler asociados
                 if (roomData.rentalPeriods && roomData.rentalPeriods.length > 0) {
                     // Crear los períodos de alquiler si están presentes
-                    const rentalPeriods = roomData.rentalPeriods.map((rental) => ({
-                        startDate: new Date(rental.startDate),
-                        endDate: new Date(rental.endDate),
-                        status: "FREE",
-                        rentalPeriodableId: room.id, // Asignar el ID de la habitación creada
-                        rentalPeriodableType: "ROOM",
-                    }));
+                    const rentalPeriods = roomData.rentalPeriods.map((rental)=>{
+                        return {
+                            relatedId: room.id,
+                            relatedType:"ROOM",
+                            rentalPeriod:rental
+                        }
+                    })
 
                     // Crear los períodos de alquiler en la base de datos
-                    await RentalPeriod.bulkCreate(rentalPeriods);
+                    await RentalItem.bulkCreate(rentalPeriods);
                 }
 
                 console.log(`Room ${room.id} and its rental periods created successfully.`);

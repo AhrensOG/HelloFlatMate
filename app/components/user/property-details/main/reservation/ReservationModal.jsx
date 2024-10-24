@@ -104,6 +104,8 @@ export default function ReservationModal({
       price: price,
       inReview: true,
     };
+    console.log(reservation);
+    
     setDataReservation(reservation);
 
     try {
@@ -179,7 +181,7 @@ export default function ReservationModal({
               return (
                 <SelectRentalPeriod
                   data={rentalPeriods.filter(
-                    (rental) => rental.status === "FREE"
+                    (rental) => rental.isFree
                   )}
                   setData={handleSetDuration}
                   info={info}

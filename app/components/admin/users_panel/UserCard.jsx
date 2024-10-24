@@ -3,30 +3,33 @@ export default function UserCard({ data, action }) {
     switch (type) {
       case "ADMIN":
         return (
-          <span className="w-full bg-[#0C1660] text-xs rounded-lg text-white p-2">
+          <span className="w-full bg-resolution-blue text-xs rounded-lg text-white p-2">
             Admin
           </span>
         );
-        break;
       case "OWNER":
         return (
-          <span className="w-full bg-[#0C1660] text-xs rounded-lg text-white p-2">
+          <span className="w-full bg-[#FF851B] text-xs rounded-lg text-white p-2">
             Propietario
           </span>
         );
-        break;
       case "CLIENT":
         return (
-          <span className="w-full bg-[#21ABCC] text-xs rounded-lg text-white p-2">
+          <span className="w-full bg-[#0074D9] text-xs rounded-lg text-white p-2">
             Inquilino
           </span>
         );
-        break;
+      case "WORKER":
+        return (
+          <span className="w-full bg-[#2ECC40] text-xs rounded-lg text-white p-2">
+            Trabajador
+          </span>
+        );
       default:
         return null;
-        break;
     }
   };
+  
 
   return (
     <article

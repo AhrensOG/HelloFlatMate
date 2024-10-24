@@ -4,6 +4,7 @@ import { uploadFiles } from "@/app/firebase/uploadFiles";
 import ImageUploader from "@/app/components/admin/drag-and-drop/ImageUploader";
 import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
+import RentalPeriodTemplate from "../RentalPeriodTemplate";
 
 export default function RoomAddModal({
   data,
@@ -11,6 +12,7 @@ export default function RoomAddModal({
   showModal,
   propertyId,
   category,
+  rentalPeriods
 }) {
   const [dataRoom, setDataRoom] = useState({
     name: "",
@@ -30,9 +32,7 @@ export default function RoomAddModal({
   });
 
   const [images, setImages] = useState([]);
-  const [rentalPeriods, setRentalPeriods] = useState([
-    { startDate: "", endDate: "" },
-  ]); // Estado para manejar fechas y meses
+  const [rentalPeriodIds, setRentalPeriodIds] = useState([]); // Estado para manejar fechas y meses
   const [description, setDescription] = useState([{ text: "" }]); // Estado para manejar descripciones
 
   const handleSubmit = async () => {
@@ -50,7 +50,7 @@ export default function RoomAddModal({
     let roomData;
 
     // Construir el objeto roomData dependiendo de la categoría
-    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
+    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD" ) {
       roomData = {
         ...dataRoom,
         temporaryId: uuidv4(),
@@ -59,7 +59,7 @@ export default function RoomAddModal({
         couple: dataRoom.couple === "yes",
         bathroom: dataRoom.bathroom === "yes",
         propertyId,
-        rentalPeriods: rentalPeriods, // Agregar los periodos de alquiler
+        rentalPeriods: rentalPeriodIds.rentalPeriodIds || [], // Agregar los periodos de alquiler
         description: description.map((desc) => desc.text), // Agregar las descripciones,
         typology: dataRoom.typology || "MIXED",
         tags: [dataRoom.tags],
@@ -67,7 +67,7 @@ export default function RoomAddModal({
       };
     }
 
-    if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
+    if (category === "HELLO_STUDIO") {
       roomData = {
         ...dataRoom,
         temporaryId: uuidv4(),
@@ -97,17 +97,7 @@ export default function RoomAddModal({
     const { name, value } = event.target;
     setDataRoom({ ...dataRoom, [name]: value }); // Almacenar directamente "yes" o "no"
   };
-
-  // Manejo de fechas de inicio y fin
-  const handleAddPeriod = () => {
-    setRentalPeriods([...rentalPeriods, { startDate: "", endDate: "" }]);
-  };
-
-  const handleRemovePeriod = (index) => {
-    const updatedPeriods = rentalPeriods.filter((_, i) => i !== index);
-    setRentalPeriods(updatedPeriods);
-  };
-
+  
   const handlePeriodChange = (index, field, value) => {
     const updatedPeriods = rentalPeriods.map((period, i) =>
       i === index ? { ...period, [field]: value } : period
@@ -169,7 +159,7 @@ export default function RoomAddModal({
             className="w-full p-2 border border-gray-300 rounded"
           />
         </div>
-        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") && (
           <>
             {/* <div>
               <label className="block mb-1">Piso (Opcional):</label>
@@ -287,7 +277,7 @@ export default function RoomAddModal({
           </div>
         </div>
 
-        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING") && (
+        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") && (
           <>
             <div className="w-full flex flex-col gap-3">
               <div>
@@ -360,53 +350,7 @@ export default function RoomAddModal({
             </div>
 
             {/* Periodos de alquiler */}
-            <div>
-              <h3 className="block mb-1">Periodos de alquiler</h3>
-              {rentalPeriods.map((period, index) => (
-                <div key={index} className="flex flex-col gap-2 mb-2">
-                  <label className="block text-xs mb-1" htmlFor="startDate">
-                    Fecha de ingreso
-                  </label>
-                  <input
-                    id="startDate"
-                    type="date"
-                    value={period.startDate}
-                    onChange={(e) =>
-                      handlePeriodChange(index, "startDate", e.target.value)
-                    }
-                    className="w-1/2 p-2 border border-gray-300 rounded"
-                  />
-                  <label className="block text-xs mb-1" htmlFor="endDate">
-                    Fecha de egreso
-                  </label>
-                  <input
-                    id="endDate"
-                    type="date"
-                    value={period.endDate}
-                    onChange={(e) =>
-                      handlePeriodChange(index, "endDate", e.target.value)
-                    }
-                    className="w-1/2 p-2 border border-gray-300 rounded"
-                  />
-                  {rentalPeriods.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePeriod(index)}
-                      className="bg-red-500 text-white px-2 py-1 rounded"
-                    >
-                      Eliminar
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={handleAddPeriod}
-                className="bg-blue-500 text-white px-2 py-1 rounded"
-              >
-                Añadir Periodo
-              </button>
-            </div>
+            <RentalPeriodTemplate data={rentalPeriodIds} setData={setRentalPeriodIds} predefineRental={rentalPeriods}/>
 
             {/* Descripciones */}
             <div className="w-full">

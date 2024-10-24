@@ -10,6 +10,7 @@ export default function RoomSectionTemplate({
   deleteRooms,
   setDeleteRooms,
   category,
+  predefineRental
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -70,6 +71,7 @@ export default function RoomSectionTemplate({
           showModal={handleShowModal}
           selectedRoom={selectedRoom} // Pasa la habitación seleccionada al modal
           category={category}
+          predefineRental={predefineRental}
         />
       )}
     </section>

@@ -7,7 +7,6 @@ export default function MessageContainer({ messages, socketId }) {
   const type = searchParams.get("type");
   // Referencia al contenedor de mensajes
   const containerRef = useRef(null);
-  console.log(messages);
 
   // Efecto para desplazar el contenedor de mensajes hacia abajo cuando se añaden nuevos mensajes
   useEffect(() => {
@@ -19,7 +18,8 @@ export default function MessageContainer({ messages, socketId }) {
   return (
     <section
       ref={containerRef}
-      className="flex flex-col gap-2 w-full my-4 overflow-y-scroll grow p-2 bg-white rounded-md shadow-inner max-h-[78vh]"
+      className="flex flex-col gap-2 w-full overflow-y-scroll grow p-4 bg-white rounded-md shadow-inner"
+      style={{ maxHeight: `calc(100vh - 181px)` }}
     >
       {messages.length === 0 ? (
         <p className="font-normal text-xs text-[#919191] self-center">

@@ -28,7 +28,7 @@ const getCoordinates = async (address) => {
 // Estilos para el contenedor del mapa
 const containerStyle = {
   width: "100%",
-  height: "200px",
+  height: "350px",
 };
 
 export default function LocationSection({

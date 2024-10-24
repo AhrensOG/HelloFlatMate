@@ -24,6 +24,8 @@ import { toast } from "sonner";
 export default function PropertyDetails({ params }) {
   const { state } = useContext(Context);
   const id = params.propertyId;
+  console.log(id);
+  
   const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
@@ -281,7 +283,7 @@ export default function PropertyDetails({ params }) {
                 ownerId: data.ownerId,
                 propertyName: data?.name,
                 user: state?.user,
-                rentalPeriods: data.rentalPeriods,
+                rentalPeriods: data.rentalItems,
                 leaseOrdersProperty: data?.leaseOrdersProperty || null,
               }}
             />

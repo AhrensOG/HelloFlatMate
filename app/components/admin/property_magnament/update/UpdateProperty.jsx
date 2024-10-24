@@ -30,6 +30,7 @@ import TagsSection from "../create/main/TagsSection";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
 import { AnimatePresence, motion } from "framer-motion";
 import CalendarSection from "../create/main/CalendarSection";
+import RentalPeriodRoomEdit from "../create/main/room_section/RentalPeriodRoomEdit";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
   const [property, setProperty] = useState(data ? data : null);
@@ -65,6 +66,8 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   const [calendarType, setCalendarType] = useState("SIMPLE");
   const [linkVideo, setLinkVideo] = useState("");
   const [tags, setTags] = useState();
+  const [predefineRental, setPredefineRental] = useState();
+  const [newRentalPeriods, setNewRentalPeriods] = useState([]);
 
   // Estado para modales
   const [showSliderModal, setShowSliderModal] = useState(false);
@@ -130,13 +133,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       });
       setFloor(property?.floor || 0);
       setDoor(property?.door || 0);
-      setRentalPeriods(
-        {
-          rentalPeriods: property?.rentalPeriods,
-          newRentalPeriods: [],
-          deleteRentalPeriods: [],
-        } || []
-      );
+      setRentalPeriods(property?.rentalItems || []);
       setTypologyAndZone({
         typology: property?.typology || "MIXED",
         zone: property?.zone || "",
@@ -146,6 +143,14 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
     }
     fetchOwners();
   }, [property]);
+
+  useEffect(() => {
+    const fetchRentalPeriods = async () => {
+      const res = await axios.get("/api/admin/rental_period");
+      setPredefineRental(res.data.rentalPeriods);
+    }
+    fetchRentalPeriods();
+  },[])
 
   //funcion para manejar la edicion de habitaciones
   const handleRoomUpdate = (updatedRoom) => {
@@ -309,16 +314,16 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         IVA: parseFloat(price.IVA) || 0,
         ownerId:
           owners?.find((owner) => owner.email === selectedEmail)?.id || null,
-        rentalPeriods: rentalPeriods.rentalPeriods || [],
-        deleteRentalPeriods: rentalPeriods.deleteRentalPeriods || [],
-        newRentalPeriods: rentalPeriods.newRentalPeriods || [],
+        deleteRentalPeriods: newRentalPeriods.deletedRentalPeriods,
+        newRentalPeriods: newRentalPeriods.newRentalPeriods,
         typology: typologyAndZone.typology || "",
         zone: typologyAndZone.zone || "",
         linkVideo: linkVideo || "",
         tags: Array.isArray(tags) && tags.length > 0 ? tags : [tags],
         calendar: calendarType || "SIMPLE",
       };
-
+      console.log(newRentalPeriods);
+      
       const response = await axios.put(
         `/api/admin/property?id=${data.id}`,
         updateDataProperty
@@ -355,6 +360,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="w-full flex justify-center items-center">
+
         <div className="flex flex-col w-full md:hidden gap-2">
           <header className="w-full space-y-4">
             <div className="w-full">
@@ -412,13 +418,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 email={selectedEmail || property.owner?.email || ""}
               />{" "}
             </div>
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
             )}
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <TagsSection data={tags} setData={setTags} />
             )}
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <PriceSection data={price || property.price} setData={setPrice} />
             )}
             <SizeAndCategorySection
@@ -442,18 +448,16 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 setData={setGuestInfo}
               />
             </div>
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
               <CalendarSection
                 data={calendarType}
                 setData={setCalendarType}
                 category={category}
               />
             )}
-            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
-              <RentalPeriodTemplate
-                data={rentalPeriods}
-                setData={setRentalPeriods}
-              />
+            {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
+              <RentalPeriodRoomEdit predefineRental={predefineRental} data={newRentalPeriods} setData={setNewRentalPeriods} 
+              oldRentalPeriods={rentalPeriods.map((period)=>{return {itemPeriodId:period.id, ...period.rentalPeriod}})} />
             )}
             <DescriptionSectionTemplate
               data={description || property.description}
@@ -467,6 +471,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
               deleteRooms={deleteRooms}
               setDeleteRooms={setDeleteRooms}
               category={category}
+              predefineRental={predefineRental}
             />
 
             <AmenitiesSection
@@ -550,6 +555,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 deleteRooms={deleteRooms}
                 setDeleteRooms={setDeleteRooms}
                 category={category}
+                predefineRental={predefineRental}
               />
               {/* <LocationSectionTemplate data={"hola"} /> */}
               <AmenitiesSection
@@ -601,7 +607,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 setAddress={setAddress}
                 action={handleShowAddressModal}
               />
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <TagsSection data={tags} setData={setTags} />
               )}
               <div>
@@ -626,13 +632,13 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                   email={selectedEmail || property.owner?.email || ""}
                 />
               </div>
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <PriceSection
                   data={price || property.price}
                   setData={setPrice}
                 />
               )}
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <LinkVideoSection data={linkVideo} setData={setLinkVideo} />
               )}
               <div className="flex flex-col gap-6">
@@ -647,7 +653,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                   setData={setGuestInfo}
                 />
               </div>
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
                 <CalendarSection
                   data={calendarType}
                   setData={setCalendarType}
@@ -671,11 +677,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 }
                 setData={setCatAndSize}
               />
-              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && (
-                <RentalPeriodTemplate
-                  data={rentalPeriods}
-                  setData={setRentalPeriods}
-                />
+              {category !== "HELLO_ROOM" && category !== "HELLO_COLIVING" && category !== "HELLO_LANDLORD" && (
+               <RentalPeriodRoomEdit predefineRental={predefineRental} data={newRentalPeriods} setData={setNewRentalPeriods} oldRentalPeriods={rentalPeriods.map((period)=>{return {itemPeriodId:period.id, ...period.rentalPeriod}})} />
+            
               )}
 
               <SaveButton

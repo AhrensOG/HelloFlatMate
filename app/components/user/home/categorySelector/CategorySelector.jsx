@@ -121,9 +121,9 @@ const CategorySelector = ({
         // Acceder al array rooms y mapear sobre él
         propiedad.rooms.forEach((room) => {
           // Acceder a rentalPeriods y formatear las fechas
-          room.rentalPeriods.forEach((periodo) => {
-            const startDate = new Date(periodo.startDate);
-            const endDate = new Date(periodo.endDate);
+          room.rentalItems?.forEach((periodo) => {
+            const startDate = new Date(periodo.rentalPeriod.startDate);
+            const endDate = new Date(periodo.rentalPeriod.endDate);
 
             // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
             const formattedStartDate = `${startDate
