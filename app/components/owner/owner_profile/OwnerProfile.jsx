@@ -20,8 +20,8 @@ const OwnerProfile = () => {
           />
         </div>
         <Wallet />
-        <ChatSection />
-        <AdviseSection />
+        {/* <ChatSection /> */}
+        {/* <AdviseSection /> */}
       </div>
     </section>
   );
