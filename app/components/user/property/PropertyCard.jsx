@@ -15,7 +15,6 @@ export default function PropertyCard({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
-  console.log(property);
 
   const handleRedirect = () => {
     if (

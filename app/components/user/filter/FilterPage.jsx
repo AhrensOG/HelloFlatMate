@@ -99,11 +99,11 @@ export default function FilterPage() {
       ) {
         return property.rooms?.some((room) => {
           return room.rentalItems?.some((period) => {
-            const periodStart = new Date(period.rentalPeriod?.startDate);
-            const periodEnd = new Date(period.rentalPeriod?.endDate);
+            const periodStart = new Date(period.rentalItem?.rentalPeriod?.startDate);
+            const periodEnd = new Date(period.rentalItem?.rentalPeriod?.endDate);
 
             // Verificar que el periodo esté libre
-            if (period.status !== "FREE") {
+            if (!period.period.rentalItem?.isFree) {
               return false;
             }
 
