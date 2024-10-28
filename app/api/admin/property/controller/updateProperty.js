@@ -91,12 +91,12 @@ export async function updateProperty(id, data) {
             await ChatParticipant.destroy({
                 where: {
                     participantId: property.ownerId,
-                    chatId: property.chat.id
+                    chatId: property.chat?.id
                 }
             });
 
             await ChatParticipant.create({
-                chatId: property.chat.id,
+                chatId: property.chat?.id,
                 participantId: data.ownerId,
                 participantType: "OWNER"
             });
