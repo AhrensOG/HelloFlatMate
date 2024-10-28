@@ -4,6 +4,7 @@ import TableArticle from "../dashboard/TableArticle";
 import Link from "next/link";
 
 export default function PropertiesPanel({ data , role }) {
+  console.log(data)
   return (
     <main
       className={`${plus_jakarta.className} flex flex-col justify-center items-center p-2 gap-6`}
@@ -17,7 +18,7 @@ export default function PropertiesPanel({ data , role }) {
         Nueva Propiedad
       </Link>
       )}
-      {data.properties?.length > 0 && data.users?.length > 0 && (
+      {data.properties?.length > 0 && (
         <TableArticle data={data} />)}
       {data.properties?.length > 0 && role === "OWNER" &&(
         <TableArticle data={data} role={role}/>
