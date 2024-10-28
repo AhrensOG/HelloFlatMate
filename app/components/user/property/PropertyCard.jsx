@@ -86,7 +86,7 @@ export default function PropertyCard({
               </span>
             </h4>
             <h2 className="flex w-full gap-2 items-center text-sm text-black/80 font-medium">
-              {name|| ""}
+              {name || ""}
             </h2>
             <h2 className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-medium">
               <span>
@@ -102,15 +102,30 @@ export default function PropertyCard({
                 : property?.city + ", " + property?.street || ""}
             </h2>
             <p className="text-[0.68rem] text-[#828282] font-normal">
-              {(property?.property?.amenities ||
-                property?.amenities
-                  .slice(0, 3) // Obtener solo los primeros 3 elementos
-                  .map(
-                    (amenity) =>
-                      amenity.charAt(0).toUpperCase() + amenity.slice(1)
-                  )
-                  .join(", ")) +
-                (property?.amenities.length > 3 ? ", ..." : "") || ""}
+              {
+                // Si existen `property?.property?.amenities` o `property?.amenities`
+                Array.isArray(property?.property?.amenities) &&
+                property?.property?.amenities?.length > 0
+                  ? property?.property?.amenities
+                      ?.slice(0, 3) // Obtener solo los primeros 3 elementos
+                      .map(
+                        (amenity) =>
+                          amenity.charAt(0).toUpperCase() + amenity.slice(1)
+                      )
+                      .join(", ") +
+                    (property?.property?.amenities.length > 3 ? ", ..." : "")
+                  : Array.isArray(property?.amenities) &&
+                    property?.amenities?.length > 0
+                  ? property?.amenities
+                      ?.slice(0, 3) // Obtener solo los primeros 3 elementos
+                      .map(
+                        (amenity) =>
+                          amenity.charAt(0).toUpperCase() + amenity.slice(1)
+                      )
+                      .join(", ") +
+                    (property?.amenities.length > 3 ? ", ..." : "")
+                  : ""
+              }
             </p>
           </div>
           <div className="flex flex-1 justify-end items-center gap-2">
