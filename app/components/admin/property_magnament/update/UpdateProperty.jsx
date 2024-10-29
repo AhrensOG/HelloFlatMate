@@ -292,7 +292,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
         roomsCount: property.roomsCount || null,
         bathrooms: parseInt(guestInfo.bathrooms) || null,
         bed: parseInt(guestInfo.beds) || null,
-        maximunOccupants: parseInt(guestInfo.occupants) || null,
+        maximunOccupants: guestInfo.occupants || null,
         puntuation: [],
         category: catAndSize.category || null,
         images: sliderImage || null,
