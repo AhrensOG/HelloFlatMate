@@ -54,7 +54,7 @@ export default function Profile() {
                 transition={{ duration: 0.8 }}
               >
                 <ProfileCard
-                  image={state?.user?.profilePicture || "/profile/profile.jfif"}
+                  image={state?.user?.profilePicture || "/profile/profile.jpg"}
                   name={state?.user?.name || "Usuario"}
                   email={state?.user?.email || "Correo@gmail.com"}
                   action={handlerShowInfo}

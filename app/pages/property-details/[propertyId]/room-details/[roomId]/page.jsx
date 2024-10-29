@@ -102,13 +102,17 @@ export default function RoomDetails({ params }) {
       <div className="flex flex-col max-w-screen-sm sm:hidden w-full gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
-            <SliderDetails>
-              {allImages.map((image, index) => {
-                return (
-                  <SliderItem key={index} img={image} height="h-[23rem]" />
-                );
-              })}
-            </SliderDetails>
+            {allImages.length > 0 ? (
+              <SliderDetails>
+                {allImages.map((image, index) => {
+                  return (
+                    <SliderItem key={index} img={image} height="h-[23rem]" />
+                  );
+                })}
+              </SliderDetails>
+            ) : (
+              <div className="h-[23rem] w-full bg-gray-200 animate-pulse" />
+            )}
           </div>
           <div className="px-3">
             <NavBarDetails callBack={() => router.back()} />
@@ -234,13 +238,17 @@ export default function RoomDetails({ params }) {
           {/* LEFT SIDE */}
           <div className="w-full space-y-4">
             <div className="w-full">
-              <SliderDetails>
-                {allImages.map((image, index) => {
-                  return (
-                    <SliderItem key={index} img={image} height="h-[30rem]" />
-                  );
-                })}
-              </SliderDetails>
+              {allImages.length > 0 ? (
+                <SliderDetails>
+                  {allImages.map((image, index) => {
+                    return (
+                      <SliderItem key={index} img={image} height="h-[30rem]" />
+                    );
+                  })}
+                </SliderDetails>
+              ) : (
+                <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
+              )}
             </div>
             {filteredRooms.length > 0 ? (
               <RoomSection

@@ -13,8 +13,8 @@ export default function CalendarSection({ data, setData, category }) {
           onChange={(event) => setData(event.target.value)}
           className="border rounded px-2 py-1 w-full appearance-none outline-none"
         >
-          <option value="SIMPLE">Simple</option>
-          <option value="FULL">Completo</option>
+          <option value="SIMPLE">hello</option>
+          <option value="FULL">personalizable</option>
         </select>
       </div>
     </section>

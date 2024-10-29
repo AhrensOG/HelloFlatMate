@@ -64,7 +64,7 @@ const propertyInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             maximunOccupants: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING(50),
                 allowNull: true,
             },
             price: {

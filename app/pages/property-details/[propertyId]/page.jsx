@@ -24,8 +24,7 @@ import { toast } from "sonner";
 export default function PropertyDetails({ params }) {
   const { state } = useContext(Context);
   const id = params.propertyId;
-  console.log(id);
-  
+
   const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
@@ -70,11 +69,15 @@ export default function PropertyDetails({ params }) {
       <div className="flex flex-col max-w-screen-sm sm:hidden w-full gap-2 ">
         <header className="w-full space-y-4">
           <div className="w-full">
-            <SliderDetails>
-              {data.images.map((image, index) => {
-                return <SliderItem key={index} img={image} />;
-              })}
-            </SliderDetails>
+            {data.images?.length > 0 ? (
+              <SliderDetails>
+                {data.images.map((image, index) => {
+                  return <SliderItem key={index} img={image} height="h-[23rem]" />;
+                })}
+              </SliderDetails>
+            ) : (
+              <div className="h-[23rem] w-full bg-gray-200 animate-pulse" />
+            )}
           </div>
           <div className="px-3">
             <NavBarDetails
@@ -102,9 +105,9 @@ export default function PropertyDetails({ params }) {
           <div className="flex flex-col gap-6">
             <GuestInfo
               data={[
-                { quantity: data.maximunOccupants, type: "Huespedes" },
-                { quantity: data.bathrooms, type: "Baños" },
-                { quantity: data.bed, type: "Camas" },
+                { quantity: data.maximunOccupants || "-", type: "Huespedes" },
+                { quantity: data.bathrooms || "-", type: "Baños" },
+                { quantity: data.bed || "-", type: "Camas" },
               ]}
             />
             {data.category === "HELLO_LANDLORD" &&
@@ -190,13 +193,15 @@ export default function PropertyDetails({ params }) {
           {/* LEFT SIDE */}
           <div className="w-full flex flex-col gap-2">
             <div className="w-full">
-              <SliderDetails>
-                {data.images.map((image, index) => {
-                  return (
-                    <SliderItem key={index} img={image} height="h-[24rem]" />
-                  );
-                })}
-              </SliderDetails>
+              {data.images?.length > 0 ? (
+                <SliderDetails>
+                  {data.images.map((image, index) => {
+                    return <SliderItem key={index} img={image} height="h-[30rem]" />;
+                  })}
+                </SliderDetails>
+              ) : (
+                <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
+              )}
             </div>
             <RoomSection data={data.rooms} category={data.category} />
             {data.linkVideo ? (
@@ -230,9 +235,9 @@ export default function PropertyDetails({ params }) {
             <div className="flex flex-col gap-6">
               <GuestInfo
                 data={[
-                  { quantity: data.maximunOccupants, type: "Huespedes" },
-                  { quantity: data.bathrooms, type: "Baños" },
-                  { quantity: data.bed, type: "Camas" },
+                  { quantity: data.maximunOccupants || "-", type: "Huespedes" },
+                  { quantity: data.bathrooms || "-", type: "Baños" },
+                  { quantity: data.bed || "-", type: "Camas" },
                 ]}
               />
               {data.category === "HELLO_LANDLORD" &&

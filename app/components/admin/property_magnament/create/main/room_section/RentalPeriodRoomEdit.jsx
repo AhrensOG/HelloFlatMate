@@ -1,70 +1,92 @@
 import { useEffect, useState } from "react";
 
-export default function RentalPeriodRoomEdit({ data, setData, predefineRental, oldRentalPeriods }) {
-    // console.log(oldRentalPeriods);
-    
+export default function RentalPeriodRoomEdit({
+  data,
+  setData,
+  predefineRental,
+  oldRentalPeriods,
+}) {
+  // console.log(oldRentalPeriods);
 
   const [selectedRentalPeriods, setSelectedRentalPeriods] = useState([]);
 
   // Inicializar los periodos ya existentes al cargar el componente
   useEffect(() => {
-    const existingRentalPeriods = oldRentalPeriods.map(item => ({
+    const existingRentalPeriods = oldRentalPeriods?.map((item) => ({
       id: item.id,
       startDate: item.startDate,
       endDate: item.endDate,
     }));
-    if(existingRentalPeriods.length > 0) {
+    if (existingRentalPeriods?.length > 0) {
       setSelectedRentalPeriods(existingRentalPeriods);
     }
   }, []);
 
   const handleAddPeriod = () => {
     // Añadir un nuevo objeto para representar un nuevo periodo
-    setSelectedRentalPeriods((prevPeriods) => [...prevPeriods, { id: null, startDate: null, endDate: null }]);
+    setSelectedRentalPeriods((prevPeriods) => [
+      ...prevPeriods,
+      { id: null, startDate: null, endDate: null },
+    ]);
   };
 
   const handleRemovePeriod = (index) => {
     // Obtener el periodo que se está eliminando
     const removedPeriod = selectedRentalPeriods[index];
-  
+
     // Eliminar el objeto correspondiente
     setSelectedRentalPeriods((prevPeriods) => {
       const updatedPeriods = prevPeriods.filter((_, i) => i !== index);
       return updatedPeriods;
     });
-  
+
     // Agregar el id al array de periodos borrados
     setData((prevData) => ({
       ...prevData,
       deletedRentalPeriods: [
         ...(prevData.deletedRentalPeriods || []), // Asegurarse de que deletedRentalPeriods sea un array
-        removedPeriod.id // Agregar el id del periodo eliminado
+        removedPeriod.id, // Agregar el id del periodo eliminado
       ],
     }));
   };
-  
+
   const handlePeriodChange = (index, value) => {
+    if (value === "none") return;
     const periodId = parseInt(value, 10);
+
     setSelectedRentalPeriods((prevPeriods) => {
       const updatedPeriods = [...prevPeriods];
-      const periodSelected = predefineRental.find(period => period.id == periodId);
+      const periodSelected = predefineRental.find(
+        (period) => period.id == periodId
+      );
+
+      // Asigna los nuevos valores
       updatedPeriods[index].startDate = periodSelected.startDate;
       updatedPeriods[index].endDate = periodSelected.endDate;
       updatedPeriods[index].id = periodId;
-      
+
+      // Llenar data con los nuevos periodos elegidos
+      const newRentalPeriods = updatedPeriods
+        .map((period) =>
+          period.id
+            ? {
+                id: period.id,
+                startDate: period.startDate,
+                endDate: period.endDate,
+              }
+            : null
+        )
+        .filter(Boolean);
+
+      // Actualizar data con los nuevos periodos
+      setData((prevData) => ({
+        ...prevData,
+        newRentalPeriods: newRentalPeriods,
+      }));
+
+      // Retorna los nuevos periodos para que setSelectedRentalPeriods se actualice
       return updatedPeriods;
     });
-
-    // Llenar data con los nuevos periodos elegidos
-    const newRentalPeriods = selectedRentalPeriods
-      .map((period) => (period.id ? { id: period.id, startDate: period.startDate, endDate: period.endDate } : null))
-      .filter(Boolean);
-
-    // Actualizar data con los nuevos periodos
-    setData((prevData) => ({
-      ...prevData,
-      newRentalPeriods: newRentalPeriods,
-    }));
   };
 
   return (
@@ -82,12 +104,15 @@ export default function RentalPeriodRoomEdit({ data, setData, predefineRental, o
               onChange={(e) => handlePeriodChange(index, e.target.value)}
               className="appearance-none outline-none w-full p-2 border border-gray-300 rounded lg:w-[15rem]"
             >
-              <option value="">Selecciona un periodo</option>
+              <option value="none">Selecciona un periodo</option>
               {predefineRental
                 .filter(
                   (dateOption) =>
                     dateOption.id !== undefined &&
-                    (!selectedRentalPeriods.some((p) => p.id === dateOption.id) || period.id === dateOption.id)
+                    (!selectedRentalPeriods.some(
+                      (p) => p.id === dateOption.id
+                    ) ||
+                      period.id === dateOption.id)
                 )
                 .map((dateOption) => (
                   <option key={dateOption.id} value={dateOption.id}>
