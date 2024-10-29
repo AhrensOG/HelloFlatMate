@@ -14,7 +14,7 @@ import Link from "next/link";
 import CreateLeaseOrderModal from "../create_lo_modal/CreateLeaseOrderModal";
 import AddRentalPeriodsModal from "../properties_panel/rental_periods/AddRentalPeriodsModal";
 
-export default function TableArticle({ data , role="ADMIN"}) {
+export default function TableArticle({ data, role = "ADMIN" }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -140,30 +140,43 @@ export default function TableArticle({ data , role="ADMIN"}) {
   return (
     <article className="flex flex-col justify-center items-center gap-4 w-full p-4">
       {/* Contenedor de botón alfabético y barra de búsqueda */}
-        <div className={role==="OWNER" ? ("flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4 justify-center"):("flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4")}>
-        {role==="ADMIN" && (
+      <div
+        className={
+          role === "OWNER"
+            ? "flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4 justify-center"
+            : "flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4"
+        }
+      >
+        {role === "ADMIN" && (
           <>
-          <button
-          onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
-          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
-        >
-          Periodo de alquiler
-        </button>
-        <button
-          onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
-          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
-        >
-          Orden de alquiler
-        </button>
-        <Link
-          href={"/pages/admin/create"}
-          className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
-        >
-          Nueva Propiedad
-        </Link></>
+            <button
+              onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
+              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+            >
+              Periodo de alquiler
+            </button>
+            <button
+              onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
+              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+            >
+              Orden de alquiler
+            </button>
+            <Link
+              href={"/pages/admin/create"}
+              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+            >
+              Nueva Propiedad
+            </Link>
+          </>
         )}
         {/* Search bar con ícono de lupa */}
-        <div className={role==="OWNER"?("relative flex-grow max-w-[40rem] w-full self-center flex justify-center"):("relative flex-grow max-w-[12rem] w-full")}>
+        <div
+          className={
+            role === "OWNER"
+              ? "relative flex-grow max-w-[40rem] w-full self-center flex justify-center"
+              : "relative flex-grow max-w-[12rem] w-full"
+          }
+        >
           <input
             type="text"
             placeholder="Buscar por nombre, código o ubicación..."
@@ -174,19 +187,20 @@ export default function TableArticle({ data , role="ADMIN"}) {
           {/* Ícono de lupa dentro del input */}
           <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
-       {role==="ADMIN" && (
-        <>
-         {/* Botón de orden alfabético */}
-         <button
-          onClick={toggleAlphabeticalOrder}
-          className="p-2 bg-blue-500 text-white rounded"
-        >
-          {alphabeticalOrder ? "A → Z" : "Z → A"}
-        </button></>
-       )}
+        {role === "ADMIN" && (
+          <>
+            {/* Botón de orden alfabético */}
+            <button
+              onClick={toggleAlphabeticalOrder}
+              className="p-2 bg-blue-500 text-white rounded"
+            >
+              {alphabeticalOrder ? "A → Z" : "Z → A"}
+            </button>
+          </>
+        )}
       </div>
-     {/* Category filters */} {/* Status filters */}
-     <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
+      {/* Category filters */} {/* Status filters */}
+      <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
         <h2 className="text-xl font-bold text-primary w-full">
           Categorías y estados
         </h2>
@@ -254,12 +268,16 @@ export default function TableArticle({ data , role="ADMIN"}) {
               <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
                 Baños
               </th>
-              {role === "ADMIN" && <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
-                Propietario
-              </th>}
-              {role==="ADMIN" && <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
-                Acciones
-              </th>}
+              {role === "ADMIN" && (
+                <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                  Propietario
+                </th>
+              )}
+              {role === "ADMIN" && (
+                <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                  Acciones
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -267,12 +285,20 @@ export default function TableArticle({ data , role="ADMIN"}) {
               filteredData.map((item, index) => (
                 <tr
                   key={item.id}
-                  className={role==="ADMIN"?(`${
-                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } hover:bg-blue-50 transition-colors duration-300 ease-in-out`):(`${
-                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } hover:bg-blue-50 transition-colors duration-300 ease-in-out cursor-pointer`)}
-                  onClick={role === "OWNER" ? ()=> router.push(`/pages/property-details/${item.id}`) : null}
+                  className={
+                    role === "ADMIN"
+                      ? `${
+                          index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                        } hover:bg-blue-50 transition-colors duration-300 ease-in-out`
+                      : `${
+                          index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                        } hover:bg-blue-50 transition-colors duration-300 ease-in-out cursor-pointer`
+                  }
+                  onClick={
+                    role === "OWNER"
+                      ? () => router.push(`/pages/property-details/${item.id}`)
+                      : null
+                  }
                 >
                   <td className="px-4 py-4 text-center text-sm border-r">
                     {item.serial}
@@ -314,131 +340,135 @@ export default function TableArticle({ data , role="ADMIN"}) {
                   <td className="px-4 py-4 text-center text-sm border-r">
                     {item.owner?.email}
                   </td>
-                 {role==="ADMIN" &&  <td className="px-4 py-4 text-center">
-                    <div className="flex gap-6 items-center justify-center">
-                      {/* Botón de Activar/Desactivar */}
-                      <div className="relative group inline-block">
-                        <button
-                          onClick={() =>
-                            toast.promise(
+                  {role === "ADMIN" && (
+                    <td className="px-4 py-4 text-center">
+                      <div className="flex gap-6 items-center justify-center">
+                        {/* Botón de Activar/Desactivar */}
+                        <div className="relative group inline-block">
+                          <button
+                            onClick={() =>
+                              toast.promise(
+                                item.isActive
+                                  ? handleDesactivateProperty(item.id)
+                                  : handleActiveProperty(item.id),
+                                {
+                                  loading: item.isActive
+                                    ? "Desactivando..."
+                                    : "Activando...",
+                                  success: item.isActive
+                                    ? "Desactivado correctamente"
+                                    : "Activado correctamente",
+                                  error: item.isActive
+                                    ? "Error al desactivar"
+                                    : "Error al activar",
+                                }
+                              )
+                            }
+                            className={`${
                               item.isActive
-                                ? handleDesactivateProperty(item.id)
-                                : handleActiveProperty(item.id),
-                              {
-                                loading: item.isActive
-                                  ? "Desactivando..."
-                                  : "Activando...",
-                                success: item.isActive
-                                  ? "Desactivado correctamente"
-                                  : "Activado correctamente",
-                                error: item.isActive
-                                  ? "Error al desactivar"
-                                  : "Error al activar",
-                              }
-                            )
-                          }
-                          className={`${
-                            item.isActive
-                              ? "text-green-600 hover:text-green-800"
-                              : "text-gray-600 hover:text-gray-800"
-                          } transition-colors duration-200`}
-                          aria-label={item.isActive ? "Desactivar" : "Activar"}
-                        >
-                          {item.isActive ? (
-                            <PowerIcon className="w-6 h-6 text-green-600" />
-                          ) : (
-                            <PowerIcon className="w-6 h-6 text-red-600" />
-                          )}
-                        </button>
-                        {/* Tooltip personalizado */}
-                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
-                          {item.isActive ? "Desactivar" : "Activar"}
-                        </span>
-                      </div>
+                                ? "text-green-600 hover:text-green-800"
+                                : "text-gray-600 hover:text-gray-800"
+                            } transition-colors duration-200`}
+                            aria-label={
+                              item.isActive ? "Desactivar" : "Activar"
+                            }
+                          >
+                            {item.isActive ? (
+                              <PowerIcon className="w-6 h-6 text-green-600" />
+                            ) : (
+                              <PowerIcon className="w-6 h-6 text-red-600" />
+                            )}
+                          </button>
+                          {/* Tooltip personalizado */}
+                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                            {item.isActive ? "Desactivar" : "Activar"}
+                          </span>
+                        </div>
 
-                      {/* Botón Editar */}
-                      <div className="relative group inline-block">
-                        <button
-                          onClick={() =>
-                            router.push(
-                              `/pages/admin/update/${item.id}/${item.category}`
-                            )
-                          }
-                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                          aria-label="Editar"
-                        >
-                          <PencilIcon className="w-5 h-5" />
-                        </button>
-                        {/* Tooltip personalizado */}
-                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
-                          Editar
-                        </span>
-                      </div>
+                        {/* Botón Editar */}
+                        <div className="relative group inline-block">
+                          <button
+                            onClick={() =>
+                              router.push(
+                                `/pages/admin/update/${item.id}/${item.category}`
+                              )
+                            }
+                            className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                            aria-label="Editar"
+                          >
+                            <PencilIcon className="w-5 h-5" />
+                          </button>
+                          {/* Tooltip personalizado */}
+                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                            Editar
+                          </span>
+                        </div>
 
-                      {/* Botón Eliminar */}
-                      <div className="relative group inline-block">
-                        <button
-                          onClick={() =>
-                            toast.custom((t) => (
-                              <div className="bg-white p-6 rounded-lg shadow-card-action border-2 max-w-md mx-auto text-center">
-                                <p className="text-gray-800 mb-4 font-medium">
-                                  ¿Estás seguro de que deseas eliminar esta
-                                  propiedad?
-                                </p>
-                                <div className="flex justify-center gap-4">
-                                  <button
-                                    onClick={() => {
-                                      toast.dismiss(t.id); // Cierra el toast actual
-                                      toast.promise(handleDelete(item.id), {
-                                        loading: "Eliminando...",
-                                        success: "Eliminado correctamente",
-                                        error: "Error al eliminar",
-                                      });
-                                    }}
-                                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-300"
-                                  >
-                                    Confirmar
-                                  </button>
-                                  <button
-                                    onClick={() => toast.dismiss(t.id)} // Cierra el toast sin hacer nada
-                                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors duration-300"
-                                  >
-                                    Cancelar
-                                  </button>
+                        {/* Botón Eliminar */}
+                        <div className="relative group inline-block">
+                          <button
+                            onClick={() =>
+                              toast.custom((t) => (
+                                <div className="bg-white p-6 rounded-lg shadow-card-action border-2 max-w-md mx-auto text-center">
+                                  <p className="text-gray-800 mb-4 font-medium">
+                                    ¿Estás seguro de que deseas eliminar esta
+                                    propiedad?
+                                  </p>
+                                  <div className="flex justify-center gap-4">
+                                    <button
+                                      onClick={() => {
+                                        toast.dismiss(t.id); // Cierra el toast actual
+                                        toast.promise(handleDelete(item.id), {
+                                          loading: "Eliminando...",
+                                          success: "Eliminado correctamente",
+                                          error: "Error al eliminar",
+                                        });
+                                      }}
+                                      className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-300"
+                                    >
+                                      Confirmar
+                                    </button>
+                                    <button
+                                      onClick={() => toast.dismiss(t.id)} // Cierra el toast sin hacer nada
+                                      className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors duration-300"
+                                    >
+                                      Cancelar
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            ))
-                          }
-                          className="text-red-600 hover:text-red-800 transition-colors duration-200"
-                          aria-label="Eliminar"
-                        >
-                          <TrashIcon className="w-5 h-5" />
-                        </button>
+                              ))
+                            }
+                            className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                            aria-label="Eliminar"
+                          >
+                            <TrashIcon className="w-5 h-5" />
+                          </button>
 
-                        {/* Tooltip personalizado */}
-                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
-                          Eliminar
-                        </span>
-                      </div>
+                          {/* Tooltip personalizado */}
+                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                            Eliminar
+                          </span>
+                        </div>
 
-                      {/* Botón de Ver Órdenes */}
-                      <div className="relative group inline-block">
-                        <button
-                          onClick={() =>
-                            router.push(`/pages/admin/lease_order/${item.id}`)
-                          }
-                          className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
-                          aria-label="Ver Órdenes"
-                        >
-                          <DocumentMagnifyingGlassIcon className="w-5 h-5" />
-                        </button>
-                        {/* Tooltip personalizado */}
-                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
-                          Ver Órdenes
-                        </span>
+                        {/* Botón de Ver Órdenes */}
+                        <div className="relative group inline-block">
+                          <button
+                            onClick={() =>
+                              router.push(`/pages/admin/lease_order/${item.id}`)
+                            }
+                            className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
+                            aria-label="Ver Órdenes"
+                          >
+                            <DocumentMagnifyingGlassIcon className="w-5 h-5" />
+                          </button>
+                          {/* Tooltip personalizado */}
+                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                            Ver Órdenes
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </td>}
+                    </td>
+                  )}
                 </tr>
               ))
             ) : (

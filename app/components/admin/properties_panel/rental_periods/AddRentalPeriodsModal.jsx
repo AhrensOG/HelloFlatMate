@@ -1,10 +1,25 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function AddRentalPeriodsModal({ onClose }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [newRentalPeriods, setNewRentalPeriods] = useState([]);
+  const [oldRentalPeriods, setOldRentalPeriods] = useState([]);
+
+  const getPeriods = async () => {
+    try {
+      const data = await axios.get("/api/admin/rental_period");
+      setOldRentalPeriods(data.data?.rentalPeriods);
+    } catch (error) {
+      toast.warning("Ocurrió un error al obtener los periodos");
+    }
+  };
+
+  useEffect(() => {
+    getPeriods();
+  }, []);
 
   const formatDateInput = (value) => {
     const cleanedValue = value.replace(/\D/g, "");
@@ -46,6 +61,22 @@ export default function AddRentalPeriodsModal({ onClose }) {
     setNewRentalPeriods(newRentalPeriods.filter((_, i) => i !== index));
   };
 
+  const handleDeleteOldPeriods = async (id) => {
+    const toastId = toast.loading("Eliminando periodo de alquiler...");
+
+    try {
+      await axios.delete(`/api/admin/rental_period?id=${id}`);
+      await getPeriods();
+
+      toast.success("Periodo de alquiler eliminado con éxito", {
+        id: toastId,
+      });
+    } catch (error) {
+      toast.error("Error al eliminar el periodo de alquiler", { id: toastId });
+      console.error("Error al eliminar el periodo de alquiler", error);
+    }
+  };
+
   const handleSubmitPeriods = async () => {
     const formatNewRentalPeriodsToISO = newRentalPeriods.map((period) => {
       return {
@@ -53,14 +84,20 @@ export default function AddRentalPeriodsModal({ onClose }) {
         endDate: formatISODate(period.endDate),
       };
     });
+
+    const toastId = toast.loading("Creando periodo de alquiler...");
+
     try {
       const response = await axios.post(
         "/api/admin/rental_period",
         formatNewRentalPeriodsToISO
       );
-      console.log(response.data);
       setNewRentalPeriods([]);
+      await getPeriods();
+
+      toast.success("Periodo de alquiler creado con éxito", { id: toastId });
     } catch (error) {
+      toast.error("Error al crear el periodo de alquiler.", { id: toastId });
       console.error("Error al crear los períodos de alquiler", error);
     }
   };
@@ -69,13 +106,49 @@ export default function AddRentalPeriodsModal({ onClose }) {
     setStartDate("");
     setEndDate("");
     setNewRentalPeriods([]);
-    onClose()
+    onClose();
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-        <h2 className="text-lg font-bold mb-4">Agregar Período de Alquiler</h2>
+        <h2 className="text-lg font-bold mb-4">Periodos de alquiler</h2>
+        {oldRentalPeriods.length > 0 ? (
+          <div className="mb-4">
+            <ul className="list-disc list-inside space-y-1">
+              {oldRentalPeriods.map((period, index) => {
+                const formatDate = (isoDate) => {
+                  const date = new Date(isoDate);
+                  const day = String(date.getDate()).padStart(2, "0");
+                  const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses en JavaScript son base 0
+                  const year = date.getFullYear();
+                  return `${day}/${month}/${year}`;
+                };
+
+                return (
+                  <li key={index} className="flex justify-between items-center">
+                    <span>
+                      {formatDate(period.startDate)} -{" "}
+                      {formatDate(period.endDate)}
+                    </span>
+                    <button
+                      className="text-red-500 hover:text-red-700"
+                      onClick={() => handleDeleteOldPeriods(period.id)}
+                    >
+                      Borrar
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : (
+          <div className="mb-4">
+            <h2>No hay periodos de alquiler</h2>
+          </div>
+        )}
+
+        <h2 className="text-lg font-bold mb-4">Agregar periodo de alquiler</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Fecha de Inicio
@@ -104,7 +177,7 @@ export default function AddRentalPeriodsModal({ onClose }) {
         </div>
         <div className="flex justify-end space-x-2 mb-4">
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full"
             onClick={handleAddPeriod}
           >
             Agregar
@@ -112,7 +185,9 @@ export default function AddRentalPeriodsModal({ onClose }) {
         </div>
         {newRentalPeriods.length > 0 && (
           <div className="mb-4">
-            <h3 className="text-sm font-medium mb-2">Períodos Agregados:</h3>
+            <h3 className="text-sm font-medium mb-2">
+              Nuevos periodos agregados:
+            </h3>
             <ul className="list-disc list-inside space-y-1">
               {newRentalPeriods.map((period, index) => (
                 <li key={index} className="flex justify-between items-center">
@@ -132,13 +207,13 @@ export default function AddRentalPeriodsModal({ onClose }) {
         )}
         <div className="flex justify-between space-x-2 ">
           <button
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 w-full"
             onClick={handleCancel}
           >
             Cancelar
           </button>
           <button
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 w-full"
             onClick={handleSubmitPeriods}
           >
             Crear
