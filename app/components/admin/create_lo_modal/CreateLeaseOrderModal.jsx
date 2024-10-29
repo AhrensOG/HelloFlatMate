@@ -7,7 +7,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   const [usersData, setUsersData] = useState(data?.users || []);
   const [rentalItemsData, setRentalItemsData] = useState([]);
   const [roomsData, setRoomsData] = useState([]);
-  
+
   const [propertySearch, setPropertySearch] = useState("");
   const [selectedProperty, setSelectedProperty] = useState(null); // Estado para la propiedad seleccionada
   const [document, setDocument] = useState("");
@@ -18,7 +18,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   const [selectedRentalItem, setSelectedRentalItem] = useState("");
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [price, setPrice] = useState(0);
-  
+
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
@@ -45,21 +45,24 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   };
 
   const filterProperties = (value) => {
-    console.log(value);
-    
     if (!value) return data?.properties || [];
-    return data?.properties.filter((property) =>
-      property.name.toLowerCase().includes(value.toLowerCase())
-    );
+
+    return data?.properties.filter((property) => {
+      const lowerCaseValue = value.toLowerCase();
+      return (
+        property.name.toLowerCase().includes(lowerCaseValue) ||
+        property.serial.toLowerCase().includes(lowerCaseValue) // Asegúrate de que "serial" sea la propiedad correcta
+      );
+    });
   };
 
   const handleRentalItemChange = (event) => {
     const rentalItemId = event.target.value;
     console.log(rentalItemId);
-    
-    const rentalItem = rentalItemsData.find(item => item.id == rentalItemId);
+
+    const rentalItem = rentalItemsData.find((item) => item.id == rentalItemId);
     console.log(rentalItem);
-    
+
     setSelectedRentalItem(rentalItemId);
 
     if (rentalItem) {
@@ -71,38 +74,38 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   const handleRoomChange = (event) => {
     setSelectedRoom(event.target.value); // Guardar habitación seleccionada
   };
-  
+
   const handleSelectProperty = (property) => {
     console.log(property.rentalItems);
-    
+
     setPropertySearch(property.name);
     setSelectedProperty(property); // Guardar la propiedad seleccionada
     setFilteredProperties([]);
     setRentalItemsData(property.rentalItems || []);
-    
+
     // Filtrar habitaciones
     const rooms = property.rooms || [];
-    const filteredRooms = rooms.filter(room =>
-      property.category === "HELLO_COLIVING" || 
-      property.category === "HELLO_ROOM"
+    const filteredRooms = rooms.filter(
+      (room) =>
+        property.category === "HELLO_COLIVING" ||
+        property.category === "HELLO_ROOM"
     );
     setRoomsData(filteredRooms);
-  }
+  };
 
   useEffect(() => {
     setUsersData(data?.users || []);
     setPropertiesData(data?.properties || []);
   }, [data]);
 
+  function formatDate(data) {
+    const date = new Date(data);
+    const day = String(date.getDate()).padStart(2, "0"); // Asegura que el día tenga dos dígitos
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses en JavaScript van de 0 a 11, por eso se suma 1
+    const year = date.getFullYear();
 
-function formatDate(data) {
-  const date = new Date(data);
-  const day = String(date.getDate()).padStart(2, '0');  // Asegura que el día tenga dos dígitos
-  const month = String(date.getMonth() + 1).padStart(2, '0');  // Los meses en JavaScript van de 0 a 11, por eso se suma 1
-  const year = date.getFullYear();
-
-  return `${day}/${month}/${year}`;
-}
+    return `${day}/${month}/${year}`;
+  }
 
   const createLeaseOrder = async () => {
     try {
@@ -113,12 +116,12 @@ function formatDate(data) {
         endDate: endDate,
         itemRentalId: selectedRentalItem?.id || null,
         clientId: user.id,
-        price:price,
+        price: price,
         ownerId: selectedProperty.owner.id, // Utiliza selectedProperty para obtener el ownerId
         roomId: selectedRoom?.id || null, // Incluir el ID de la habitación seleccionada
         status: "APPROVED",
-        isActive:true,
-        isSigned:true
+        isActive: true,
+        isSigned: true,
       });
       console.log(res.data);
     } catch (error) {
@@ -127,28 +130,34 @@ function formatDate(data) {
   };
 
   const uploadedContract = async () => {
-    console.log(user);
-    
     try {
-      const uploadedContract = await uploadContractPDF(document, user.name + " "+ user.lastName);
-      const res = await axios.post("/api/contract", selectedRoom ? ({
-        roomId: selectedRoom.id,
-        clientId: user.id,
-        ownerId: selectedProperty.owner.id, // Usa selectedProperty
-        name: uploadedContract.name,
-        url: uploadedContract.url,
-      }):({
-        propertyId: selectedProperty.id, // Usa selectedProperty
-        clientId: user.id,
-        ownerId: selectedProperty.owner.id,
-        name: uploadedContract.name,
-        url: uploadedContract.url,
-      }))
+      const uploadedContract = await uploadContractPDF(
+        document,
+        user.name + " " + user.lastName
+      );
+      const res = await axios.post(
+        "/api/contract",
+        selectedRoom
+          ? {
+              roomId: selectedRoom.id,
+              clientId: user.id,
+              ownerId: selectedProperty.owner.id, // Usa selectedProperty
+              name: uploadedContract.name,
+              url: uploadedContract.url,
+            }
+          : {
+              propertyId: selectedProperty.id, // Usa selectedProperty
+              clientId: user.id,
+              ownerId: selectedProperty.owner.id,
+              name: uploadedContract.name,
+              url: uploadedContract.url,
+            }
+      );
       console.log(res.data);
-    }catch (error) {
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleSubmit = async () => {
     await createLeaseOrder();
@@ -173,8 +182,10 @@ function formatDate(data) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-        <h2 className="text-lg font-bold mb-4">Buscar Propiedad y Subir Documento</h2>
-  
+        <h2 className="text-lg font-bold mb-4">
+          Buscar Propiedad y Subir Documento
+        </h2>
+
         {/* Input para buscar propiedades */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -192,16 +203,16 @@ function formatDate(data) {
               {filteredProperties.map((property) => (
                 <li
                   key={property.id}
-                  className="px-3 py-2 hover:bg-gray-200 cursor-pointer"
+                  className="px-3 py-2 hover:bg-gray-200 cursor-pointer text-sm"
                   onClick={() => handleSelectProperty(property)}
                 >
-                  {property.name}
+                  {`${property.serial} - ${property.name}`}
                 </li>
               ))}
             </ul>
           )}
         </div>
-  
+
         {/* Select para elegir Rental Item */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -217,7 +228,9 @@ function formatDate(data) {
                 <option value="">Seleccione un ítem de alquiler</option>
                 {rentalItemsData.map((item) => (
                   <option key={item.id} value={item.id}>
-                    {`${formatDate(item.rentalPeriod.startDate)} a ${formatDate(item.rentalPeriod.endDate)}`}
+                    {`${formatDate(item.rentalPeriod.startDate)} a ${formatDate(
+                      item.rentalPeriod.endDate
+                    )}`}
                   </option>
                 ))}
               </>
@@ -226,7 +239,7 @@ function formatDate(data) {
             )}
           </select>
         </div>
-  
+
         {/* Select para elegir la habitación */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -251,7 +264,7 @@ function formatDate(data) {
             )}
           </select>
         </div>
-  
+
         {/* Input para buscar usuario */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -295,7 +308,7 @@ function formatDate(data) {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
-  
+
         {/* Input para subir el contrato */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -308,7 +321,7 @@ function formatDate(data) {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
-  
+
         <div className="flex justify-end">
           <button
             onClick={handleSubmit}
@@ -326,5 +339,4 @@ function formatDate(data) {
       </div>
     </div>
   );
-  
 }
