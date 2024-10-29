@@ -9,7 +9,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   const [roomsData, setRoomsData] = useState([]);
 
   const [propertySearch, setPropertySearch] = useState("");
-  const [selectedProperty, setSelectedProperty] = useState(null); // Estado para la propiedad seleccionada
+  const [selectedProperty, setSelectedProperty] = useState(false); // Estado para la propiedad seleccionada
   const [document, setDocument] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -72,25 +72,37 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
   };
 
   const handleRoomChange = (event) => {
-    setSelectedRoom(event.target.value); // Guardar habitación seleccionada
+    const selectedRoomId = event.target.value;
+    const room = roomsData.find((room) => room.id == selectedRoomId);
+
+    setSelectedRoom(selectedRoomId);
+
+    if (room) {
+      setRentalItemsData(room.rentalItems || []);
+    } else {
+      setRentalItemsData([]);
+    }
   };
 
   const handleSelectProperty = (property) => {
-    console.log(property.rentalItems);
-
     setPropertySearch(property.name);
     setSelectedProperty(property); // Guardar la propiedad seleccionada
     setFilteredProperties([]);
-    setRentalItemsData(property.rentalItems || []);
 
     // Filtrar habitaciones
     const rooms = property.rooms || [];
     const filteredRooms = rooms.filter(
       (room) =>
         property.category === "HELLO_COLIVING" ||
-        property.category === "HELLO_ROOM"
+        property.category === "HELLO_ROOM" ||
+        property.category === "HELLO_LANDLORD"
     );
     setRoomsData(filteredRooms);
+    if (property.category === "HELLO_STUDIO") {
+      setRentalItemsData(property.rentalItems || []);
+    } else {
+      setRentalItemsData([]);
+    }
   };
 
   useEffect(() => {
@@ -109,7 +121,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
 
   const createLeaseOrder = async () => {
     try {
-      const res = await axios.post("/api/lease_order", {
+      const leaseOrderData = {
         propertyId: selectedProperty.id, // Utiliza selectedProperty en lugar de propertySearch
         date: new Date(),
         startDate: startDate,
@@ -118,11 +130,17 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
         clientId: user.id,
         price: price,
         ownerId: selectedProperty.owner.id, // Utiliza selectedProperty para obtener el ownerId
-        roomId: selectedRoom?.id || null, // Incluir el ID de la habitación seleccionada
         status: "APPROVED",
         isActive: true,
         isSigned: true,
-      });
+      };
+
+      // Si la propiedad no es de tipo HELLO_STUDIO, incluir roomId
+      if (selectedProperty.category !== "HELLO_STUDIO" && selectedRoom) {
+        leaseOrderData.roomId = selectedRoom;
+      }
+
+      const res = await axios.post("/api/lease_order", leaseOrderData);
       console.log(res.data);
     } catch (error) {
       console.log(error);
@@ -139,6 +157,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
         "/api/contract",
         selectedRoom
           ? {
+              propertyId: selectedProperty.id, // Usa selectedProperty
               roomId: selectedRoom.id,
               clientId: user.id,
               ownerId: selectedProperty.owner.id, // Usa selectedProperty
@@ -213,6 +232,34 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
           )}
         </div>
 
+        {/* Select para elegir la habitación */}
+        {selectedProperty !== false &&
+          selectedProperty?.category !== "HELLO_STUDIO" && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Seleccionar Habitación
+              </label>
+              <select
+                value={selectedRoom}
+                onChange={handleRoomChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                {roomsData.length > 0 ? (
+                  <>
+                    <option value="">Seleccione una habitación</option>
+                    {roomsData.map((room) => (
+                      <option key={room.id} value={room.id}>
+                        {room.serial}
+                      </option>
+                    ))}
+                  </>
+                ) : (
+                  <option value="">No hay habitaciones disponibles</option>
+                )}
+              </select>
+            </div>
+          )}
+
         {/* Select para elegir Rental Item */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -236,31 +283,6 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
               </>
             ) : (
               <option value="">No hay items de alquiler disponibles</option>
-            )}
-          </select>
-        </div>
-
-        {/* Select para elegir la habitación */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Seleccionar Habitación
-          </label>
-          <select
-            value={selectedRoom}
-            onChange={handleRoomChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            {roomsData.length > 0 ? (
-              <>
-                <option value="">Seleccione una habitación</option>
-                {roomsData.map((room) => (
-                  <option key={room.id} value={room.id}>
-                    {room.serial}
-                  </option>
-                ))}
-              </>
-            ) : (
-              <option value="">No hay habitaciones disponibles</option>
             )}
           </select>
         </div>

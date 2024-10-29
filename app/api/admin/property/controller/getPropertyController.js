@@ -43,7 +43,7 @@ export async function getAllProperties() {
               include: {
                 model: RentalPeriod,
                 as: "rentalPeriod",
-              }
+              },
             },
           ],
         },
@@ -69,7 +69,7 @@ export async function getAllProperties() {
           include: {
             model: RentalPeriod,
             as: "rentalPeriod",
-          }
+          },
         },
       ],
     });
@@ -96,13 +96,16 @@ export async function getPropertyById(id) {
               include: {
                 model: Client,
                 as: "client",
-                include: [{
-                  model: Document,
-                  as: "documents",
-                }, {
-                  model: Contract,
-                  as: "contracts",
-                }],
+                include: [
+                  {
+                    model: Document,
+                    as: "documents",
+                  },
+                  {
+                    model: Contract,
+                    as: "contracts",
+                  },
+                ],
               },
             },
             {
@@ -115,7 +118,7 @@ export async function getPropertyById(id) {
               include: {
                 model: RentalPeriod,
                 as: "rentalPeriod",
-              }
+              },
             },
           ],
         },
@@ -141,7 +144,7 @@ export async function getPropertyById(id) {
           include: {
             model: RentalPeriod,
             as: "rentalPeriod",
-          }
+          },
         },
       ],
     });
@@ -224,19 +227,31 @@ export async function getAllPropertiesSimple() {
         "roomsCount",
         "bathrooms",
         "isActive",
-        "price"
+        "price",
       ],
       where: { status: { [Op.ne]: "DELETED" } },
       include: [
         { model: Owner, as: "owner", attributes: ["email", "id"] },
-        { model: Room, as: "rooms", attributes: ["id","serial"] },
-        {model: RentalItem,as :"rentalItems", include:{model:RentalPeriod,as:"rentalPeriod"}},
+        {
+          model: Room,
+          as: "rooms",
+          attributes: ["id", "serial"],
+          include: {
+            model: RentalItem,
+            as: "rentalItems",
+            include: { model: RentalPeriod, as: "rentalPeriod" },
+          },
+        },
+        {
+          model: RentalItem,
+          as: "rentalItems",
+          include: { model: RentalPeriod, as: "rentalPeriod" },
+        },
       ],
     });
     return NextResponse.json(properties, { status: 200 });
   } catch (error) {
-
-    console.log(error)
+    console.log(error);
 
     return NextResponse.json(
       { error: "Error al obtener las propiedades", error },
