@@ -24,7 +24,7 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
   };
 
   const handleRedirectToContract = () => {
-    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
+    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") {
       route.push(
         "/pages/user/contract/sign-contract/" +
           property?.propertyId +
@@ -111,7 +111,7 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
                   alt="Icono de Ubicación"
                 />
               </span>
-              {category === "HELLO_ROOM" || category === "HELLO_COLIVING"
+              {category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD"
                 ? property?.property?.city +
                   ", " +
                   property?.property?.street +

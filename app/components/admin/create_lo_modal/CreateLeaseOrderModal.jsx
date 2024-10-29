@@ -158,7 +158,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
         selectedRoom
           ? {
               propertyId: selectedProperty.id, // Usa selectedProperty
-              roomId: selectedRoom.id,
+              roomId: selectedRoom,
               clientId: user.id,
               ownerId: selectedProperty.owner.id, // Usa selectedProperty
               name: uploadedContract.name,
