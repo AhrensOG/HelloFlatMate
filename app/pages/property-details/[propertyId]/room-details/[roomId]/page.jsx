@@ -22,347 +22,286 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function RoomDetails({ params }) {
-  const { state } = useContext(Context);
-  const { propertyId, roomId } = params;
-  const router = useRouter();
+    const { state } = useContext(Context);
+    const { propertyId, roomId } = params;
+    const router = useRouter();
 
-  const [showModal, setShowModal] = useState(false);
-  const [data, setData] = useState(
-    state.properties
-      ? state.properties.find((property) => propertyId === property.id)
-      : null
-  );
-  const [roomData, setRoomData] = useState();
-  const [filteredRooms, setFilteredRooms] = useState([]);
-  const [allImages, setAllImages] = useState([]);
-  const [isLeaseOrderActive, setIsLeaseOrderActive] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [data, setData] = useState(state.properties ? state.properties.find((property) => propertyId === property.id) : null);
+    const [roomData, setRoomData] = useState();
+    const [filteredRooms, setFilteredRooms] = useState([]);
+    const [allImages, setAllImages] = useState([]);
+    const [isLeaseOrderActive, setIsLeaseOrderActive] = useState(true);
 
-  useEffect(() => {
-    if (!data) {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(`/api/property?id=${propertyId}`);
-          const propertyData = response.data.property;
+    useEffect(() => {
+        if (!data) {
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(`/api/property?id=${propertyId}`);
+                    const propertyData = response.data.property;
 
-          setData(propertyData);
+                    setData(propertyData);
 
-          const roomData = propertyData.rooms.find((room) => roomId == room.id);
-          setRoomData(roomData);
+                    const roomData = propertyData.rooms.find((room) => roomId == room.id);
+                    setRoomData(roomData);
 
-          // Filtramos las habitaciones que no son la actual
-          const filtered = propertyData.rooms.filter(
-            (room) => room.id !== Number(roomId)
-          );
-          setFilteredRooms(filtered);
+                    // Filtramos las habitaciones que no son la actual
+                    const filtered = propertyData.rooms.filter((room) => room.id !== Number(roomId));
+                    setFilteredRooms(filtered);
 
-          // Verificar si la habitación tiene alguna leaseOrderRoom con estado "active"
-          const hasActiveLeaseOrder = roomData?.leaseOrdersRoom?.some(
-            (order) => order.isActive === true
-          );
+                    // Verificar si la habitación tiene alguna leaseOrderRoom con estado "active"
+                    const hasActiveLeaseOrder = roomData?.leaseOrdersRoom?.some((order) => order.isActive === true);
 
-          // Guardar en el estado local si hay alguna leaseOrderRoom con estado "active"
-          setIsLeaseOrderActive(hasActiveLeaseOrder || false);
+                    // Guardar en el estado local si hay alguna leaseOrderRoom con estado "active"
+                    setIsLeaseOrderActive(hasActiveLeaseOrder || false);
 
-          // Obtenemos las imágenes de la propiedad y de la habitación actual
-          const propertyImages = propertyData?.images || [];
-          const roomImages = roomData?.images || [];
+                    // Obtenemos las imágenes de la propiedad y de la habitación actual
+                    const propertyImages = propertyData?.images || [];
+                    const roomImages = roomData?.images || [];
 
-          // Combinamos ambos arrays de imágenes en uno solo
-          const allImages = [...roomImages, ...propertyImages];
+                    // Combinamos ambos arrays de imágenes en uno solo
+                    const allImages = [...roomImages, ...propertyImages];
 
-          // Aquí puedes hacer lo que necesites con el array de imágenes combinado (e.g., guardarlo en un estado)
-          setAllImages(allImages);
-        } catch (error) {
-          console.error("Error fetching property data:", error);
+                    // Aquí puedes hacer lo que necesites con el array de imágenes combinado (e.g., guardarlo en un estado)
+                    setAllImages(allImages);
+                } catch (error) {
+                    console.error("Error fetching property data:", error);
+                }
+            };
+
+            fetchData();
         }
-      };
+    }, [data, propertyId]);
 
-      fetchData();
+    if (!data) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+            </div>
+        );
     }
-  }, [data, propertyId]);
+    const handleShowModal = () => {
+        if (!state?.user?.id) {
+            toast.info("Inicia sesión antes de continuar");
+            return router.push("/pages/auth");
+        }
+        setShowModal(!showModal);
+    };
 
-  if (!data) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-      </div>
+        <div className="flex flex-col justify-center items-center relative">
+            {/* MOBILE */}
+            <div className="flex flex-col max-w-screen-sm sm:hidden w-full gap-2 ">
+                <header className="w-full space-y-4">
+                    <div className="w-full">
+                        {allImages.length > 0 ? (
+                            <SliderDetails>
+                                {allImages.map((image, index) => {
+                                    return <SliderItem key={index} img={image} height="h-[23rem]" />;
+                                })}
+                            </SliderDetails>
+                        ) : (
+                            <div className="h-[23rem] w-full bg-gray-200 animate-pulse" />
+                        )}
+                    </div>
+                    <div className="px-3">
+                        <NavBarDetails callBack={() => router.back()} />
+                    </div>
+                </header>
+                <main className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}>
+                    <div className="w-full space-y-2 sticky top-0 min-h-56 bg-white z-10 pt-2 pb-1">
+                        <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+                        <h4 className="font-light text-[#000000B2]">({roomData.serial})</h4>
+                        <h4 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h4>
+                        <h4 className="text-base font-light text-slate-400">
+                            {roomData.status === "RESERVED" || roomData.status === "OCCUPIED" ? "Reservada" : ""}
+                        </h4>
+                        {roomData.price && <PriceSection data={roomData.price} />}
+                        {(data.category === "HELLO_ROOM" || data.category === "HELLO_COLIVING") && roomData.price && !isLeaseOrderActive && (
+                            <ReservationButton callback={handleShowModal} />
+                        )}
+                    </div>
+                    {roomData?.description?.length > 0 ? (
+                        <DescriptionSection title="Descripción" data={roomData.description} category="HELLO_ROOM" />
+                    ) : (
+                        <DescriptionSection title="Descripción" data={data.description} />
+                    )}
+                    <GuestInfoRoom
+                        data={[
+                            { type: "bed", number: roomData.numberBeds },
+                            { type: "bathroom", boolean: roomData.bathroom },
+                            { type: "couple", boolean: roomData.couple },
+                        ]}
+                    />
+                    {filteredRooms.length > 0 ? <RoomSection data={filteredRooms} title="Otras habitaciones en el mismo piso" /> : null}
+
+                    <AmenitiesSection data={data.amenities} />
+                    {roomData.linkVideo ? <VideoEmbedSection videoUrl={roomData.linkVideo} /> : ""}
+                    <LocationSection
+                        street={data?.street}
+                        streetNumber={data?.streetNumber}
+                        postalCode={data?.postalCode}
+                        city={data?.city}
+                        country={"España"}
+                    />
+                    <MoreInfoSection
+                        data={[
+                            {
+                                title: "Características del piso",
+                                body: data.roomDescription,
+                            },
+                            {
+                                title: "Condiciones del alquiler",
+                                body: data.incomeConditionDescription,
+                            },
+                            { title: "Facturas", body: data.feeDescription },
+                            {
+                                title: "Mantenimiento",
+                                body: data.maintenanceDescription,
+                            },
+                            { title: "Check-In / Check out", body: data.checkIn },
+                            { title: "Opinión del agente", body: data.aboutUs },
+                            { title: "Normas de convivencia", body: data.houseRules },
+                            { title: "Otros servicios", body: data.checkOut },
+                        ]}
+                    />
+                    {showModal && (
+                        <ReservationModal
+                            calendarType={roomData.calendar}
+                            callback={handleShowModal}
+                            category={data.category}
+                            data={{
+                                date: null,
+                                startDate: null,
+                                endDate: null,
+                                price: roomData.price,
+                                propertyId: data.id,
+                                clientId: state?.user?.id,
+                                ownerId: data.ownerId,
+                                roomId: roomData.id,
+                                propertyName: data?.name,
+                                user: state?.user,
+                                rentalPeriods: roomData.rentalItems,
+                                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+                            }}
+                        />
+                    )}
+                </main>
+            </div>
+            {/* DESKTOP */}
+            <div className="hidden sm:flex flex-col items-center w-full">
+                {console.log(data)}
+
+                <header className="w-full space-y-4">
+                    <NavBar />
+                    <div className="px-3">
+                        <DesktopNavBarDetails callBack={() => router.back() || router.push("/pages/user/filtered")} />
+                    </div>
+                </header>
+                <main className={`${plus_jakarta.className} flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}>
+                    {/* LEFT SIDE */}
+                    <div className="w-full space-y-4">
+                        <div className="w-full">
+                            {allImages.length > 0 ? (
+                                <SliderDetails>
+                                    {allImages.map((image, index) => {
+                                        return <SliderItem key={index} img={image} height="h-[30rem]" />;
+                                    })}
+                                </SliderDetails>
+                            ) : (
+                                <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
+                            )}
+                        </div>
+                        {filteredRooms.length > 0 ? (
+                            <RoomSection data={filteredRooms} title="Otras habitaciones en el mismo piso" category={data.category} />
+                        ) : null}
+                        {roomData.linkVideo ? <VideoEmbedSection videoUrl={roomData.linkVideo} /> : null}
+                        <LocationSection
+                            street={data?.street}
+                            streetNumber={data?.streetNumber}
+                            postalCode={data?.postalCode}
+                            city={data?.city}
+                            country={"España"}
+                        />
+                    </div>
+
+                    <div className="border" />
+
+                    {/* RIGHT SIDE */}
+                    <div className="relative w-full">
+                        <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
+                            <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+                            <h6 className="font-light text-[#000000B2]">({roomData.serial})</h6>
+                            <h6 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h6>
+                            <h6 className="text-base font-light text-slate-400">
+                                {roomData.status === "RESERVED" || roomData.status === "OCCUPIED" ? "Reservada" : ""}
+                            </h6>
+                            {roomData.price && <PriceSection data={roomData.price} />}
+                            <div className="flex flex-col gap-6">
+                                {(data.category === "HELLO_ROOM" || data.category === "HELLO_COLIVING") && roomData.price && !isLeaseOrderActive && (
+                                    <ReservationButton callback={handleShowModal} />
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="w-full space-y-4">
+                            {roomData?.description?.length > 0 ? (
+                                <DescriptionSection title="Descripción" data={roomData.description} category="HELLO_ROOM" />
+                            ) : (
+                                <DescriptionSection title="Descripción" data={data.description} />
+                            )}
+                            <GuestInfoRoom
+                                data={[
+                                    { type: "bed", number: roomData.numberBeds },
+                                    { type: "bathroom", boolean: roomData.bathroom },
+                                    { type: "couple", boolean: roomData.couple },
+                                ]}
+                            />
+                            <AmenitiesSection data={data.amenities} />
+                            <MoreInfoSection
+                                data={[
+                                    {
+                                        title: "Características del piso",
+                                        body: data.roomDescription,
+                                    },
+                                    {
+                                        title: "Condiciones del alquiler",
+                                        body: data.incomeConditionDescription,
+                                    },
+                                    { title: "Facturas", body: data.feeDescription },
+                                    { title: "Mantenimiento", body: data.maintenanceDescription },
+                                    { title: "Check-In / Check out", body: data.checkIn },
+                                    { title: "Opinión del agente", body: data.aboutUs },
+                                    { title: "Normas de convivencia", body: data.houseRules },
+                                    { title: "Otros servicios", body: data.checkOut },
+                                ]}
+                            />
+                        </div>
+                    </div>
+
+                    {showModal && (
+                        <ReservationModal
+                            calendarType={roomData.calendar}
+                            callback={handleShowModal}
+                            category={data.category}
+                            data={{
+                                date: null,
+                                startDate: null,
+                                endDate: null,
+                                price: roomData.price,
+                                propertyId: data.id,
+                                clientId: state?.user?.id,
+                                ownerId: data.ownerId,
+                                roomId: roomData.id,
+                                propertyName: data?.name,
+                                user: state?.user,
+                                rentalPeriods: roomData.rentalItems,
+                                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+                            }}
+                        />
+                    )}
+                </main>
+            </div>
+        </div>
     );
-  }
-  const handleShowModal = () => {
-    if (!state?.user?.id) {
-      toast.info("Inicia sesión antes de continuar");
-      return router.push("/pages/auth");
-    }
-    setShowModal(!showModal);
-  };
-
-  return (
-    <div className="flex flex-col justify-center items-center relative">
-      {/* MOBILE */}
-      <div className="flex flex-col max-w-screen-sm sm:hidden w-full gap-2 ">
-        <header className="w-full space-y-4">
-          <div className="w-full">
-            {allImages.length > 0 ? (
-              <SliderDetails>
-                {allImages.map((image, index) => {
-                  return (
-                    <SliderItem key={index} img={image} height="h-[23rem]" />
-                  );
-                })}
-              </SliderDetails>
-            ) : (
-              <div className="h-[23rem] w-full bg-gray-200 animate-pulse" />
-            )}
-          </div>
-          <div className="px-3">
-            <NavBarDetails callBack={() => router.back()} />
-          </div>
-        </header>
-        <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
-        >
-          <div className="w-full space-y-2 sticky top-0 min-h-56 bg-white z-10 pt-2 pb-1">
-            <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
-            <h4 className="font-light text-[#000000B2]">({roomData.serial})</h4>
-            <h4 className="text-[#000000B2] text-base">
-              {data.city + ", " + data.street}
-            </h4>
-            <h4 className="text-base font-light text-slate-400">
-              {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
-                ? "Reservada"
-                : ""}
-            </h4>
-            {roomData.price && <PriceSection data={roomData.price} />}
-            {(data.category === "HELLO_ROOM" ||
-              data.category === "HELLO_COLIVING") &&
-              roomData.price &&
-              !isLeaseOrderActive && (
-                <ReservationButton callback={handleShowModal} />
-              )}
-          </div>
-          {roomData?.description?.length > 0 ? (
-            <DescriptionSection
-              title="Descripción"
-              data={roomData.description}
-              category="HELLO_ROOM"
-            />
-          ) : (
-            <DescriptionSection title="Descripción" data={data.description} />
-          )}
-          <GuestInfoRoom
-            data={[
-              { type: "bed", number: roomData.numberBeds },
-              { type: "bathroom", boolean: roomData.bathroom },
-              { type: "couple", boolean: roomData.couple },
-            ]}
-          />
-          {filteredRooms.length > 0 ? (
-            <RoomSection
-              data={filteredRooms}
-              title="Otras habitaciones en el mismo piso"
-            />
-          ) : null}
-
-          <AmenitiesSection data={data.amenities} />
-          {roomData.linkVideo ? (
-            <VideoEmbedSection videoUrl={roomData.linkVideo} />
-          ) : (
-            ""
-          )}
-          <LocationSection
-            street={data?.street}
-            streetNumber={data?.streetNumber}
-            postalCode={data?.postalCode}
-            city={data?.city}
-            country={"España"}
-          />
-          <MoreInfoSection
-            data={[
-              {
-                title: "Características del piso",
-                body: data.roomDescription,
-              },
-              {
-                title: "Condiciones del alquiler",
-                body: data.incomeConditionDescription,
-              },
-              { title: "Facturas", body: data.feeDescription },
-              {
-                title: "Mantenimiento",
-                body: data.maintenanceDescription,
-              },
-              { title: "Check-In / Check out", body: data.checkIn },
-              { title: "Opinión del agente", body: data.aboutUs },
-              { title: "Normas de convivencia", body: data.houseRules },
-              { title: "Otros servicios", body: data.checkOut },
-            ]}
-          />
-          {showModal && (
-            <ReservationModal
-              calendarType={roomData.calendar}
-              callback={handleShowModal}
-              category={data.category}
-              data={{
-                date: null,
-                startDate: null,
-                endDate: null,
-                price: roomData.price,
-                propertyId: data.id,
-                clientId: state?.user?.id,
-                ownerId: data.ownerId,
-                roomId: roomData.id,
-                propertyName: data?.name,
-                user: state?.user,
-                rentalPeriods: roomData.rentalItems,
-                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
-              }}
-            />
-          )}
-        </main>
-      </div>
-      {/* DESKTOP */}
-      <div className="hidden sm:flex flex-col items-center w-full">
-        <header className="w-full space-y-4">
-          <NavBar />
-          <div className="px-3">
-            <DesktopNavBarDetails
-              callBack={() =>
-                router.back() || router.push("/pages/user/filtered")
-              }
-            />
-          </div>
-        </header>
-        <main
-          className={`${plus_jakarta.className} flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}
-        >
-          {/* LEFT SIDE */}
-          <div className="w-full space-y-4">
-            <div className="w-full">
-              {allImages.length > 0 ? (
-                <SliderDetails>
-                  {allImages.map((image, index) => {
-                    return (
-                      <SliderItem key={index} img={image} height="h-[30rem]" />
-                    );
-                  })}
-                </SliderDetails>
-              ) : (
-                <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
-              )}
-            </div>
-            {filteredRooms.length > 0 ? (
-              <RoomSection
-                data={filteredRooms}
-                title="Otras habitaciones en el mismo piso"
-                category={data.category}
-              />
-            ) : null}
-            {roomData.linkVideo ? (
-              <VideoEmbedSection videoUrl={roomData.linkVideo} />
-            ) : null}
-            <LocationSection
-              street={data?.street}
-              streetNumber={data?.streetNumber}
-              postalCode={data?.postalCode}
-              city={data?.city}
-              country={"España"}
-            />
-          </div>
-
-          <div className="border" />
-
-          {/* RIGHT SIDE */}
-          <div className="relative w-full">
-            <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
-              <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
-              <h6 className="font-light text-[#000000B2]">
-                ({roomData.serial})
-              </h6>
-              <h6 className="text-[#000000B2] text-base">
-                {data.city + ", " + data.street}
-              </h6>
-              <h6 className="text-base font-light text-slate-400">
-                {roomData.status === "RESERVED" ||
-                roomData.status === "OCCUPIED"
-                  ? "Reservada"
-                  : ""}
-              </h6>
-              {roomData.price && <PriceSection data={roomData.price} />}
-              <div className="flex flex-col gap-6">
-                {(data.category === "HELLO_ROOM" ||
-                  data.category === "HELLO_COLIVING") &&
-                  roomData.price &&
-                  !isLeaseOrderActive && (
-                    <ReservationButton callback={handleShowModal} />
-                  )}
-              </div>
-            </div>
-
-            <div className="w-full space-y-4">
-              {roomData?.description?.length > 0 ? (
-                <DescriptionSection
-                  title="Descripción"
-                  data={roomData.description}
-                  category="HELLO_ROOM"
-                />
-              ) : (
-                <DescriptionSection
-                  title="Descripción"
-                  data={data.description}
-                />
-              )}
-              <GuestInfoRoom
-                data={[
-                  { type: "bed", number: roomData.numberBeds },
-                  { type: "bathroom", boolean: roomData.bathroom },
-                  { type: "couple", boolean: roomData.couple },
-                ]}
-              />
-              <AmenitiesSection data={data.amenities} />
-              <MoreInfoSection
-                data={[
-                  {
-                    title: "Características del piso",
-                    body: data.roomDescription,
-                  },
-                  {
-                    title: "Condiciones del alquiler",
-                    body: data.incomeConditionDescription,
-                  },
-                  { title: "Facturas", body: data.feeDescription },
-                  { title: "Mantenimiento", body: data.maintenanceDescription },
-                  { title: "Check-In / Check out", body: data.checkIn },
-                  { title: "Opinión del agente", body: data.aboutUs },
-                  { title: "Normas de convivencia", body: data.houseRules },
-                  { title: "Otros servicios", body: data.checkOut },
-                ]}
-              />
-            </div>
-          </div>
-
-          {showModal && (
-            <ReservationModal
-              calendarType={roomData.calendar}
-              callback={handleShowModal}
-              category={data.category}
-              data={{
-                date: null,
-                startDate: null,
-                endDate: null,
-                price: roomData.price,
-                propertyId: data.id,
-                clientId: state?.user?.id,
-                ownerId: data.ownerId,
-                roomId: roomData.id,
-                propertyName: data?.name,
-                user: state?.user,
-                rentalPeriods: roomData.rentalItems,
-                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
-              }}
-            />
-          )}
-        </main>
-      </div>
-    </div>
-  );
 }

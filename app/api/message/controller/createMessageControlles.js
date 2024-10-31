@@ -20,21 +20,24 @@ export async function createMessage(data) {
     try {
         const transaction = await Message.sequelize.transaction();
         try {
-            const user = await Client.findByPk(data.userId) || await Owner.findByPk(data.userId) || await Admin.findByPk(data.userId);
+            const user = (await Client.findByPk(data.userId)) || (await Owner.findByPk(data.userId)) || (await Admin.findByPk(data.userId));
             if (!user) {
                 await transaction.rollback();
                 return NextResponse.json({ error: "User not found" }, { status: 404 });
             }
-            const chatId = parseInt(data.chatId)
-            const chat = await Chat.findOne({ where: { id: chatId } }, {
-                include: {
-                    model: ChatParticipant,
-                    as: "participants",
-                    where: {
-                        participantId: user.id
-                    }
+            const chatId = parseInt(data.chatId);
+            const chat = await Chat.findOne(
+                { where: { id: chatId } },
+                {
+                    include: {
+                        model: ChatParticipant,
+                        as: "participants",
+                        where: {
+                            participantId: user.id,
+                        },
+                    },
                 }
-            });
+            );
 
             if (!chat) {
                 await transaction.rollback();
@@ -47,13 +50,13 @@ export async function createMessage(data) {
                 userId: data.userId,
                 userName: user.name + " " + user.lastName,
                 date: new Date(),
-                userType: user.role
-            })
+                userType: user.role,
+            });
             return NextResponse.json({ message }, { status: 200 });
         } catch (error) {
-            throw error
+            throw error;
         }
     } catch (error) {
-        return NextResponse.json({ message: "Error creating message", error: error }, { status: 500 })
+        return NextResponse.json({ message: "Error creating message", error: error }, { status: 500 });
     }
 }
