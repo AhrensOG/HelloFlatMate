@@ -235,7 +235,7 @@ export async function getAllPropertiesSimple() {
         {
           model: Room,
           as: "rooms",
-          attributes: ["id", "serial"],
+          attributes: ["id", "serial", "price"],
           include: {
             model: RentalItem,
             as: "rentalItems",
