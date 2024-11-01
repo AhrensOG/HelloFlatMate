@@ -58,10 +58,8 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
 
   const handleRentalItemChange = (event) => {
     const rentalItemId = event.target.value;
-    console.log(rentalItemId);
 
     const rentalItem = rentalItemsData.find((item) => item.id == rentalItemId);
-    console.log(rentalItem);
 
     setSelectedRentalItem(rentalItemId);
 
@@ -143,7 +141,6 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
       }
 
       const res = await axios.post("/api/lease_order", leaseOrderData);
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
