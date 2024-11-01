@@ -209,7 +209,8 @@ export default function RoomDetails({ params }) {
                 roomId: roomData.id,
                 propertyName: data?.name,
                 user: state?.user,
-                rentalPeriods: roomData.rentalPeriods,
+                rentalPeriods: roomData.rentalItems,
+                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
               }}
             />
           )}
@@ -347,7 +348,7 @@ export default function RoomDetails({ params }) {
                 roomId: roomData.id,
                 propertyName: data?.name,
                 user: state?.user,
-                rentalPeriods: roomData.rentalPeriods,
+                rentalPeriods: roomData.rentalItems,
                 leaseOrdersProperty: roomData.leaseOrdersRoom || null,
               }}
             />

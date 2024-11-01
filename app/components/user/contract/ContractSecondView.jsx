@@ -35,7 +35,7 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
           <DocumentsSection
             id="nomina"
             img={"/contract/second_view/file-icon.svg"}
-            description={"Nomina o Certificado de curso universitario"}
+            description={"Nómina o certificado de matrícula universitaria."}
             width={135}
             height={135}
           />

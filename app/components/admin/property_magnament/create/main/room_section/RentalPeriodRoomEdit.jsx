@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function RentalPeriodRoomEdit({ data, setData, predefineRental, oldRentalPeriods }) {
-    console.log(oldRentalPeriods);
+    // console.log(oldRentalPeriods);
     
 
   const [selectedRentalPeriods, setSelectedRentalPeriods] = useState([]);

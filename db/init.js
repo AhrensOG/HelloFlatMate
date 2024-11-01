@@ -1,7 +1,6 @@
-
 const connection = require(".");
 const Comment = require("./models/comment");
-const Document = require("./models/document")
+const Document = require("./models/document");
 const Owner = require("./models/owner");
 const Message = require("./models/message");
 const Property = require("./models/property");
@@ -47,7 +46,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //ToDo
         ToDo.belongsTo(Worker, { as: "worker", foreignKey: "workerId" });
         ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
-
 
         // LeaseOrderProperty
         LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
@@ -105,18 +103,18 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             constraints: false,
             as: "documents",
             scope: {
-                documentableType: "CLIENT"
-            }
-        })
+                documentableType: "CLIENT",
+            },
+        });
         //Owner
         Owner.hasMany(Document, {
             foreignKey: "documentableId",
             constraints: false,
             as: "documents",
             scope: {
-                documentableType: "OWNER"
-            }
-        })
+                documentableType: "OWNER",
+            },
+        });
 
         //Documents
         Document.belongsTo(Owner, {
@@ -124,18 +122,18 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "documentableId",
             constraints: false,
             scope: {
-                documentableType: "OWNER"
-            }
-        })
+                documentableType: "OWNER",
+            },
+        });
 
         Document.belongsTo(Client, {
             as: "client",
             foreignKey: "documentableId",
             constraints: false,
             scope: {
-                documentableType: "CLIENT"
-            }
-        })
+                documentableType: "CLIENT",
+            },
+        });
 
         //ToDo
 
@@ -144,8 +142,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "userId",
             constraints: false,
             scope: {
-                typeUser: "OWNER"
-            }
+                typeUser: "OWNER",
+            },
         });
 
         ToDo.belongsTo(Client, {
@@ -153,8 +151,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "userId",
             constraints: false,
             scope: {
-                typeUser: "CLIENT"
-            }
+                typeUser: "CLIENT",
+            },
         });
 
         Client.hasMany(ToDo, {
@@ -162,8 +160,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "userId",
             constraints: false,
             scope: {
-                typeUser: "CLIENT"
-            }
+                typeUser: "CLIENT",
+            },
         });
 
         Owner.hasMany(ToDo, {
@@ -171,88 +169,86 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "userId",
             constraints: false,
             scope: {
-                typeUser: "OWNER"
-            }
+                typeUser: "OWNER",
+            },
         });
 
         //Chat
         //ChatParticipant
-        ChatParticipant.belongsTo(Client,
-            {
-                as: "client",
-                foreignKey: "participantId",
-                constraints: false,
-            });
-        ChatParticipant.belongsTo(Owner,
-            {
-                as: "owner",
-                foreignKey: "participantId",
-                constraints: false,
-            });
+        ChatParticipant.belongsTo(Client, {
+            as: "client",
+            foreignKey: "participantId",
+            constraints: false,
+        });
+        ChatParticipant.belongsTo(Owner, {
+            as: "owner",
+            foreignKey: "participantId",
+            constraints: false,
+        });
         ChatParticipant.belongsTo(Admin, {
             as: "admin",
             foreignKey: "participantId",
             constraints: false,
-        })
+        });
 
         // Client and Owner
         Client.hasMany(ChatParticipant, {
             as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'CLIENT' }
+            scope: { participantType: "CLIENT" },
         });
         Owner.hasMany(ChatParticipant, {
             as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'OWNER' }
+            scope: { participantType: "OWNER" },
         });
         Admin.hasMany(ChatParticipant, {
             as: "chats",
             foreignKey: "participantId",
             constraints: false,
-            scope: { participantType: 'ADMIN' }
+            scope: { participantType: "ADMIN" },
         });
         //Message Users
         Client.hasMany(Message, {
             as: "messages",
             foreignKey: "userId",
             constraints: false,
-            scope: { userType: 'CLIENT' }
-        })
+            scope: { userType: "CLIENT" },
+        });
         Owner.hasMany(Message, {
             as: "messages",
             foreignKey: "userId",
             constraints: false,
-            scope: { userType: 'OWNER' }
-        })
+            scope: { userType: "OWNER" },
+        });
         Admin.hasMany(Message, {
             as: "messages",
             foreignKey: "userId",
             constraints: false,
-            scope: { userType: 'ADMIN' }
-        })
+            scope: { userType: "ADMIN" },
+        });
 
         //Message
         Message.belongsTo(Client, {
             as: "client",
             foreignKey: "userId",
             constraints: false,
-            scope: { userType: 'CLIENT' }
-        })
+            scope: { userType: "CLIENT" },
+        });
         Message.belongsTo(Owner, {
             as: "owner",
             foreignKey: "userId",
             constraints: false,
-            scope: { userType: 'OWNER' }
-        })
+            scope: { userType: "OWNER" },
+        });
         Message.belongsTo(Admin, {
             as: "admin",
             foreignKey: "userId",
             constraints: false,
-            scope: { userType: 'ADMIN' }
-        })
+            scope: { userType: "ADMIN" },
+        });
 
         //PAYMENT
         Payment.belongsTo(Property, {
@@ -260,34 +256,34 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "paymentableId",
             constraints: false,
             scope: {
-                paymentableType: "PROPERTY"
-            }
-        })
+                paymentableType: "PROPERTY",
+            },
+        });
         Payment.belongsTo(Room, {
             as: "room",
             foreignKey: "paymentableId",
             constraints: false,
             scope: {
-                paymentableType: "ROOM"
-            }
-        })
+                paymentableType: "ROOM",
+            },
+        });
 
         Property.hasMany(Payment, {
             as: "payments",
             foreignKey: "paymentableId",
             constraints: false,
             scope: {
-                paymentableType: "PROPERTY"
-            }
-        })
+                paymentableType: "PROPERTY",
+            },
+        });
         Room.hasMany(Payment, {
             as: "payments",
             foreignKey: "paymentableId",
             constraints: false,
             scope: {
-                paymentableType: "ROOM"
-            }
-        })
+                paymentableType: "ROOM",
+            },
+        });
 
         //CONTRACT
         Contract.belongsTo(Property, {
@@ -295,34 +291,34 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "contractableId",
             constraints: false,
             scope: {
-                contractableType: "PROPERTY"
-            }
-        })
+                contractableType: "PROPERTY",
+            },
+        });
         Contract.belongsTo(Room, {
             as: "room",
             foreignKey: "contractableId",
             constraints: false,
             scope: {
-                contractableType: "ROOM"
-            }
-        })
+                contractableType: "ROOM",
+            },
+        });
 
         Property.hasMany(Contract, {
             as: "contracts",
             foreignKey: "contractableId",
             constraints: false,
             scope: {
-                contractableType: "PROPERTY"
-            }
-        })
+                contractableType: "PROPERTY",
+            },
+        });
         Room.hasMany(Contract, {
             as: "contracts",
             foreignKey: "contractableId",
             constraints: false,
             scope: {
-                contractableType: "ROOM"
-            }
-        })
+                contractableType: "ROOM",
+            },
+        });
 
         // RentalPeriod
         RentalPeriod.hasMany(RentalItem, {
@@ -366,23 +362,19 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             constraints: false,
         });
 
-
         // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
 
-
-
         // DATA DE PRUEBA
 
-        // await Property.bulkCreate(propertyData)
-        // await Client.bulkCreate(testClientData)
-        // await Admin.bulkCreate(testAdminData)
-        // await Owner.bulkCreate(testOwnerData)
-        // await Room.bulkCreate(testRoom)
+        // await Property.bulkCreate(propertyData);
+        // await Client.bulkCreate(testClientData);
+        // await Admin.bulkCreate(testAdminData);
+        // await Owner.bulkCreate(testOwnerData);
+        // await Room.bulkCreate(testRoom);
 
-        // console.log("Data inserted")
-
+        // console.log("Data inserted");
     } catch (error) {
         console.log(error);
     }
@@ -407,5 +399,5 @@ module.exports = {
     Payment,
     RentalPeriod,
     RentalItem,
-    Worker
+    Worker,
 };

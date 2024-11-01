@@ -15,7 +15,7 @@ export default function RoomEditModal({
   const [dataRoom, setDataRoom] = useState({});
   const [files, setFiles] = useState([]);
   const [initialImages, setInitialImages] = useState([]);
-  const [rentalPeriods, setRentalPeriods] = useState(data?.rentalItems|| []);
+  const [rentalPeriods, setRentalPeriods] = useState(data?.rentalItems || []);
   const [newRentalPeriods, setNewRentalPeriods] = useState([]);
 
   useEffect(() => {
@@ -27,6 +27,10 @@ export default function RoomEditModal({
       setRentalPeriods(selectedRoom?.rentalItems || []);
     }
   }, [selectedRoom]);
+
+  useEffect(() => {
+    setRentalPeriods(selectedRoom?.rentalItems);
+  }, [selectedRoom?.rentalItems]);
 
   const uploadNewImages = async () => {
     const filesToUpload = files.filter((file) => file.fileData);
@@ -78,8 +82,6 @@ export default function RoomEditModal({
     setDataRoom({ ...dataRoom, [name]: value === "yes" });
   };
 
-
-
   // Manejo de descripciones
   const handleAddDescription = () => {
     setDataRoom((prevDataRoom) => ({
@@ -103,15 +105,18 @@ export default function RoomEditModal({
     setDataRoom({ ...dataRoom, description: updatedDescription });
   };
 
-
   const handleSubmit = async () => {
     if (!isModified(dataRoom, selectedRoom) && files.length === 0) {
       showModal();
       return;
     }
-    
-    let newData = { ...dataRoom, rentalPeriods:newRentalPeriods.newRentalPeriods, deleteRentalPeriods: newRentalPeriods.deletedRentalPeriods };
-    
+
+    let newData = {
+      ...dataRoom,
+      rentalPeriods: newRentalPeriods.newRentalPeriods,
+      deleteRentalPeriods: newRentalPeriods.deletedRentalPeriods,
+    };
+
     if (!dataRoom?.name) {
       return toast.error("Por favor, especifique un nombre");
     }
@@ -210,7 +215,9 @@ export default function RoomEditModal({
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") && (
+          {(category === "HELLO_ROOM" ||
+            category === "HELLO_COLIVING" ||
+            category === "HELLO_LANDLORD") && (
             <>
               {/* <div>
                 <label className="block text-sm mb-1">Piso (Opcional):</label>
@@ -311,7 +318,9 @@ export default function RoomEditModal({
             />
           </div>
         </div>
-        {(category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD" ) && (
+        {(category === "HELLO_ROOM" ||
+          category === "HELLO_COLIVING" ||
+          category === "HELLO_LANDLORD") && (
           <>
             <div>
               <label
@@ -389,11 +398,26 @@ export default function RoomEditModal({
             </div>
 
             <div className="flex flex-col gap-3">
-              {console.log(newRentalPeriods)}
-              
+
               {/* Periodos de alquiler */}
-              {rentalPeriods.length > 0 && (
-                <RentalPeriodRoomEdit data={newRentalPeriods || []} setData={setNewRentalPeriods} predefineRental={predefineRental} oldRentalPeriods={rentalPeriods.map((period)=>{return {itemPeriodId:period.id, ...period.rentalPeriod}})} />
+              {selectedRoom.rentalItems?.length > 0 ? (
+                <RentalPeriodRoomEdit
+                  data={newRentalPeriods || []}
+                  setData={setNewRentalPeriods}
+                  predefineRental={predefineRental}
+                  oldRentalPeriods={selectedRoom.rentalItems?.map((period) => {
+                    return { itemPeriodId: period.id, ...period.rentalPeriod };
+                  })}
+                />
+              ) : (
+                <RentalPeriodRoomEdit
+                  data={newRentalPeriods || []}
+                  setData={setNewRentalPeriods}
+                  predefineRental={predefineRental}
+                  oldRentalPeriods={selectedRoom.rentalItems?.map((period) => {
+                    return { itemPeriodId: period.id, ...period.rentalPeriod };
+                  })}
+                />
               )}
 
               {/* Descripciones */}

@@ -47,17 +47,26 @@ export default function FilterPage() {
     const fetchProperties = async () => {
       try {
         await getAllProperties(dispatch);
-        setProperties(state.properties || []);
-        setFilteredProperties(filterBySearch(state.properties || []));
+        // Filtrar las propiedades
+        const activeProperties = (state.properties || []).filter(
+          (property) => property.isActive && property.status !== "DELETED"
+        );
+        setProperties(activeProperties);
+        setFilteredProperties(filterBySearch(activeProperties));
       } catch (error) {
         toast.error("Error al obtener propiedades");
       }
     };
+
     if (state.properties === undefined) {
       fetchProperties();
     } else {
-      setProperties(state.properties);
-      setFilteredProperties(filterBySearch(state.properties || []));
+      // Filtrar las propiedades
+      const activeProperties = state.properties.filter(
+        (property) => property.isActive && property.status !== "DELETED"
+      );
+      setProperties(activeProperties);
+      setFilteredProperties(filterBySearch(activeProperties));
     }
   }, [state.properties, dispatch]);
 
@@ -88,10 +97,10 @@ export default function FilterPage() {
         property.category === "HELLO_ROOM" ||
         property.category === "HELLO_COLIVING"
       ) {
-        return property.rooms.some((room) => {
-          return room.rentalPeriods.some((period) => {
-            const periodStart = new Date(period.startDate);
-            const periodEnd = new Date(period.endDate);
+        return property.rooms?.some((room) => {
+          return room.rentalItems?.some((period) => {
+            const periodStart = new Date(period.rentalPeriod?.startDate);
+            const periodEnd = new Date(period.rentalPeriod?.endDate);
 
             // Verificar que el periodo esté libre
             if (period.status !== "FREE") {
@@ -151,7 +160,7 @@ export default function FilterPage() {
 
       // Lógica para HELLO_STUDIO
       if (property.category === "HELLO_STUDIO") {
-        return property.rentalPeriods.some((leaseOrder) => {
+        return property.rentalPeriods?.some((leaseOrder) => {
           const leaseStart = new Date(leaseOrder.startDate);
           const leaseEnd = new Date(leaseOrder.endDate);
 
@@ -284,11 +293,11 @@ export default function FilterPage() {
         property.category === "HELLO_ROOM" ||
         property.category === "HELLO_COLIVING"
       ) {
-        return property.rooms.some((room) => {
-          return room.rentalPeriods.some((period) => {
+        return property.rooms?.some((room) => {
+          return room.rentalItem?.some((period) => {
             const rentalPeriodString = convertRentalPeriodToString(
-              period.startDate,
-              period.endDate
+              period.rentalPeriod?.startDate,
+              period.rentalPeriod?.endDate
             );
             return rentalPeriodString === queryRentalPeriod;
           });
@@ -300,10 +309,10 @@ export default function FilterPage() {
         property.category === "HELLO_STUDIO" ||
         property.category === "HELLO_LANDLORD"
       ) {
-        return property.rentalPeriods.some((period) => {
+        return property.rentalItem?.some((period) => {
           const rentalPeriodString = convertRentalPeriodToString(
-            period.startDate,
-            period.endDate
+            period.rentalPeriod?.startDate,
+            period.rentalPeriod?.endDate
           );
           return rentalPeriodString === queryRentalPeriod;
         });
@@ -321,10 +330,10 @@ export default function FilterPage() {
     }
 
     return rooms.filter((room) => {
-      return room.rentalPeriods.some((period) => {
+      return room.rentalItem?.some((period) => {
         const rentalPeriodString = convertRentalPeriodToString(
-          period.startDate,
-          period.endDate
+          period.rentalPeriod?.startDate,
+          period.rentalPeriod?.endDate
         );
         return (
           rentalPeriodString === filters.rentalPeriod &&
@@ -388,9 +397,10 @@ export default function FilterPage() {
                         property.category === "HELLO_ROOM" ||
                         property.category === "HELLO_COLIVING"
                       ) {
-                        const filteredRooms = filterRoomsByRentalPeriod(
-                          property.rooms
-                        );
+                        // const filteredRooms = filterRoomsByRentalPeriod(
+                        //   property.rooms
+                        // );
+                        const filteredRooms = property.rooms;
                         return filteredRooms.map((room, index) => (
                           <PropertyCard
                             name={room?.name}
@@ -421,9 +431,10 @@ export default function FilterPage() {
                   property.category === "HELLO_ROOM" ||
                   property.category === "HELLO_COLIVING"
                 ) {
-                  const filteredRooms = filterRoomsByRentalPeriod(
-                    property.rooms
-                  );
+                  // const filteredRooms = filterRoomsByRentalPeriod(
+                  //   property.rooms
+                  // );
+                  const filteredRooms = property.rooms;
                   return filteredRooms.map((room, index) => (
                     <PropertyCard
                       name={room?.name}
@@ -468,9 +479,11 @@ export default function FilterPage() {
                   property.category === "HELLO_ROOM" ||
                   property.category === "HELLO_COLIVING"
                 ) {
-                  const filteredRooms = filterRoomsByRentalPeriod(
-                    property.rooms
-                  );
+                  // const filteredRooms = filterRoomsByRentalPeriod(
+                  //   property.rooms
+                  // );
+                  const filteredRooms = property.rooms;
+
                   return filteredRooms.map((room, index) => (
                     <PropertyCard
                       name={room?.name}
@@ -505,9 +518,11 @@ export default function FilterPage() {
                         property.category === "HELLO_ROOM" ||
                         property.category === "HELLO_COLIVING"
                       ) {
-                        const filteredRooms = filterRoomsByRentalPeriod(
-                          property.rooms
-                        );
+                        // const filteredRooms = filterRoomsByRentalPeriod(
+                        //   property.rooms
+                        // );
+                        const filteredRooms = property.rooms;
+
                         return filteredRooms.map((room, index) => (
                           <PropertyCard
                             name={room?.name}

@@ -55,12 +55,12 @@ const ownerOptions = [
   {
     title: "Dashboard",
     icon: "/nav_bar/side_bar/owner/configuration.svg",
-    link: "/pages/admin/dashboard",
+    link: "/pages/owner",
   },
   {
     title: "Propiedades",
     icon: "/nav_bar/side_bar/owner/properties.svg",
-    link: "/pages/admin/properties",
+    link: "/pages/owner/properties",
   },
   {
     title: "Mis Inquilinos",
@@ -72,11 +72,11 @@ const ownerOptions = [
     icon: "/nav_bar/side_bar/owner/chats.svg",
     link: "/pages/user/chats",
   },
-  {
-    title: "Servicios",
-    icon: "/nav_bar/side_bar/owner/services.svg",
-    link: "/pages/admin/supplies",
-  },
+  // {
+  //   title: "Servicios",
+  //   icon: "/nav_bar/side_bar/owner/services.svg",
+  //   link: "/pages/admin/supplies",
+  // },
 ];
 const clientOptions = [
   {

@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
 const messageInit = (sequelize, DataTypes) => {
-    class Message extends Model { }
+    class Message extends Model {}
 
     Message.init(
         {
@@ -20,6 +20,16 @@ const messageInit = (sequelize, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: false,
             },
+            isRead: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false,
+            },
+            type: {
+                type: DataTypes.ENUM("TEXT", "FILE", "IMAGE", "VIDEO"),
+                allowNull: false,
+                defaultValue: "TEXT",
+            },
             userName: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
@@ -30,8 +40,8 @@ const messageInit = (sequelize, DataTypes) => {
             },
             userType: {
                 type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT"),
-                allowNull: false
-            }
+                allowNull: false,
+            },
         },
         {
             sequelize,
@@ -42,6 +52,6 @@ const messageInit = (sequelize, DataTypes) => {
     );
 
     return Message;
-}
+};
 
-module.exports = messageInit(connection, DataTypes)
+module.exports = messageInit(connection, DataTypes);

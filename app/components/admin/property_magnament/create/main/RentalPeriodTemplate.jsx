@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-export default function RentalPeriodTemplate({ data, setData, predefineRental }) {
+export default function RentalPeriodTemplate({
+  data,
+  setData,
+  predefineRental,
+}) {
   const [selectedPeriodIds, setSelectedPeriodIds] = useState([]);
 
   const handleAddPeriod = () => {
@@ -50,19 +54,20 @@ export default function RentalPeriodTemplate({ data, setData, predefineRental })
               className="appearance-none outline-none w-full p-2 border border-gray-300 rounded lg:w-[15rem]"
             >
               <option value="">Selecciona un periodo</option>
-              {predefineRental
-                .filter(
-                  (dateOption) =>
-                    dateOption.id !== undefined &&
-                    (!selectedPeriodIds.includes(dateOption.id) ||
-                      selectedPeriodIds[index] === dateOption.id)
-                )
-                .map((dateOption) => (
-                  <option key={dateOption.id} value={dateOption.id}>
-                    {new Date(dateOption.startDate).toLocaleDateString()} -{" "}
-                    {new Date(dateOption.endDate).toLocaleDateString()}
-                  </option>
-                ))}
+              {predefineRental?.length > 0 &&
+                predefineRental
+                  .filter(
+                    (dateOption) =>
+                      dateOption.id !== undefined &&
+                      (!selectedPeriodIds.includes(dateOption.id) ||
+                        selectedPeriodIds[index] === dateOption.id)
+                  )
+                  .map((dateOption) => (
+                    <option key={dateOption.id} value={dateOption.id}>
+                      {new Date(dateOption.startDate).toLocaleDateString()} -{" "}
+                      {new Date(dateOption.endDate).toLocaleDateString()}
+                    </option>
+                  ))}
             </select>
 
             <button

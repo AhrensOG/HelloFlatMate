@@ -54,16 +54,16 @@ const ownerOptions = [
     icon: "/nav_bar/side_bar/owner/chats.svg",
     link: "/pages/user/chats",
   },
-  {
-    title: "Servicios",
-    icon: "/nav_bar/side_bar/owner/services.svg",
-    link: "/pages/supplies",
-  },
-  {
-    title: "Soporte",
-    icon: "/nav_bar/side_bar/owner/support.svg",
-    link: "#",
-  },
+  // {
+  //   title: "Servicios",
+  //   icon: "/nav_bar/side_bar/owner/services.svg",
+  //   link: "/pages/supplies",
+  // },
+  // {
+  //   title: "Soporte",
+  //   icon: "/nav_bar/side_bar/owner/support.svg",
+  //   link: "#",
+  // },
 ];
 
 const adminOptions = [

@@ -13,7 +13,7 @@ export default async function pdfBuilder(
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     let page = pdfDoc.addPage();
 
-    // Descargar las imágenes desde las URLs proporcionadas y obtenerlas como buffers
+    // Descargar las imágenes de las firmas
     const [clientSignatureResponse, ownerSignatureResponse] = await Promise.all(
       [
         axios.get(clientSignatureUrl, { responseType: "arraybuffer" }),
@@ -42,19 +42,11 @@ export default async function pdfBuilder(
     const margin = 50;
     let yPosition = height - margin - 20;
     const maxWidth = width - 2 * margin; // Ancho máximo del texto
-
-    // Dividir el contenido del contrato en líneas
-    const lines = contractText.split("\n");
     const fontSize = 12;
     const lineHeight = fontSize * 1.2;
 
-    // Función para añadir una nueva página si es necesario
-    const addNewPageIfNeeded = () => {
-      if (yPosition < margin + lineHeight) {
-        page = pdfDoc.addPage();
-        yPosition = page.getHeight() - margin - 20;
-      }
-    };
+    // Altura necesaria para las firmas
+    const signatureSectionHeight = signatureHeight + 40; // Espacio para las firmas y texto de "Firma del Cliente/Dueño"
 
     // Función para dividir el texto en líneas que se ajusten al ancho máximo
     const splitTextIntoLines = (text, maxWidth, fontSize, font) => {
@@ -78,7 +70,42 @@ export default async function pdfBuilder(
       return lines;
     };
 
-    // Añadir el contenido línea por línea
+    // Función para añadir las firmas a la página actual
+    const addSignaturesToPage = () => {
+      page.drawImage(clientSignatureImage, {
+        x: margin,
+        y: margin,
+        width: signatureWidth,
+        height: signatureHeight,
+      });
+
+      page.drawText("Firma del Cliente", {
+        x: margin + 40,
+        y: margin - 20,
+        size: fontSize,
+        font: font,
+        color: rgb(0, 0, 0),
+      });
+
+      page.drawImage(ownerSignatureImage, {
+        x: width - margin - signatureWidth,
+        y: margin,
+        width: signatureWidth,
+        height: signatureHeight,
+      });
+
+      page.drawText("Firma del Dueño", {
+        x: width - margin - signatureWidth + 20,
+        y: margin - 20,
+        size: fontSize,
+        font: font,
+        color: rgb(0, 0, 0),
+      });
+    };
+
+    // Añadir el contenido línea por línea, reservando espacio para las firmas
+    const lines = contractText.split("\n");
+
     for (const line of lines) {
       let isTitle = line.startsWith("#"); // Suponiendo que los títulos comienzan con '#'
       let isListItem = line.startsWith("-"); // Suponiendo que los elementos de lista comienzan con '-'
@@ -94,7 +121,13 @@ export default async function pdfBuilder(
       );
 
       for (const wrappedLine of wrappedLines) {
-        addNewPageIfNeeded();
+        // Reservar espacio para las firmas si se está cerca del final de la página
+        if (yPosition < margin + lineHeight + signatureSectionHeight) {
+          addSignaturesToPage(); // Añadir firmas a la página actual antes de crear una nueva
+          page = pdfDoc.addPage();
+          yPosition = page.getHeight() - margin - 20;
+        }
+
         page.drawText(wrappedLine, {
           x: margin,
           y: yPosition,
@@ -107,45 +140,8 @@ export default async function pdfBuilder(
       }
     }
 
-    // Añadir espacio antes de las firmas
-    yPosition -= lineHeight * 3;
-
-    // Verificar si hay suficiente espacio para las firmas en la página actual
-    if (yPosition < margin + signatureHeight) {
-      page = pdfDoc.addPage();
-      yPosition = page.getHeight() - margin - 20;
-    }
-
-    // Ajustar las posiciones para firmas
-    page.drawImage(clientSignatureImage, {
-      x: margin,
-      y: yPosition - signatureHeight,
-      width: signatureWidth,
-      height: signatureHeight,
-    });
-
-    page.drawText("Firma del Cliente", {
-      x: margin + 40,
-      y: yPosition - signatureHeight - 20,
-      size: fontSize,
-      font: font,
-      color: rgb(0, 0, 0),
-    });
-
-    page.drawImage(ownerSignatureImage, {
-      x: width - margin - signatureWidth,
-      y: yPosition - signatureHeight,
-      width: signatureWidth,
-      height: signatureHeight,
-    });
-
-    page.drawText("Firma del Dueño", {
-      x: width - margin - signatureWidth + 20,
-      y: yPosition - signatureHeight - 20,
-      size: fontSize,
-      font: font,
-      color: rgb(0, 0, 0),
-    });
+    // Añadir las firmas a la última página
+    addSignaturesToPage();
 
     const pdfBytes = await pdfDoc.save();
     return Buffer.from(pdfBytes);

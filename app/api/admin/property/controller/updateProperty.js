@@ -45,7 +45,7 @@ export async function updateProperty(id, data) {
         }
 
         // Crear nuevas fechas de alquiler
-        if (data.newRentalPeriods.length > 0) {
+        if (data.newRentalPeriods?.length > 0) {
             const alreadyRentalItems= await RentalItem.findAll({
                 where: {
                     relatedId: property.id,
@@ -72,8 +72,6 @@ export async function updateProperty(id, data) {
             await Promise.all(createRentalItems);
         }
 
-        console.log(data);
-        
         /// Borrar fechas si es necesario
         if (data.deleteRentalPeriods?.length > 0) {
 
