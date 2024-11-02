@@ -194,34 +194,31 @@ export default function Chat() {
         }
     };
 
-    const sendFile = (files) => {
+    const sendFile = async (files) => {
         if (socket && files?.length > 0) {
-            const file = files[0];
             setIsUploading(true); // Activa el spinner antes de comenzar la carga
+
+            const uploadedFile = await uploadFiles([files[0]]);
 
             // Crea un objeto de mensaje con el archivo como Blob
             const newMessage = {
                 roomId: chatId.toString(),
-                image: file, // Pasamos el archivo como Blob directamente
+                image: uploadedFile[0].url, // Pasamos el archivo como Blob directamente
                 senderId: userId,
                 time: new Date().toLocaleTimeString(),
                 userName: `${state?.user?.name} ${state?.user?.lastName}`,
-                fileType: file.type,
             };
             // Emitimos el archivo al servidor
             socket.emit("sendFile", newMessage);
         }
     };
+
     const handleFileUpload = async (message) => {
         try {
-            const file = arrayBufferToFile(message.image, `${message.userName} img_`, message.fileType);
-
-            // Llamada a la función asincrónica para subir el archivo
-            const uploadedFile = await uploadFiles([file]);
             // Llamada a saveMessage después de obtener la URL del archivo subido
             saveMessage({
                 chatId,
-                body: uploadedFile[0].url,
+                body: message.image,
                 userId: message.senderId,
                 type: "IMAGE",
             });
