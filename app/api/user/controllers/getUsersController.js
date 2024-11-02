@@ -13,7 +13,6 @@ import {
     ChatParticipant,
     Payment,
     Worker,
-    RentPayment,
 } from "@/db/init";
 import { NextResponse } from "next/server";
 
@@ -36,12 +35,6 @@ export async function getUserById(id) {
                     {
                         model: LeaseOrderRoom,
                         as: "leaseOrdersRoom",
-                        include: [
-                            {
-                                model: Room,
-                                as: "room",
-                            },
-                        ],
                     },
                     {
                         model: Property,
@@ -71,10 +64,6 @@ export async function getUserById(id) {
                                 model: Property,
                                 as: "property",
                             },
-                            {
-                                model: RentPayment,
-                                as: "rentPayments",
-                            },
                         ],
                     },
                     {
@@ -90,10 +79,6 @@ export async function getUserById(id) {
                                         as: "property",
                                     },
                                 ],
-                            },
-                            {
-                                model: RentPayment,
-                                as: "rentPayments",
                             },
                         ],
                     },

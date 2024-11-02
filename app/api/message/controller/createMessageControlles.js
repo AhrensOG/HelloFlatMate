@@ -16,6 +16,11 @@ export async function createMessage(data) {
     if (!data.userId || data.userId.trim() === "") {
         return NextResponse.json({ error: "No user id provided" }, { status: 400 });
     }
+    if (!data.type || (data.type !== "TEXT" && data.type !== "FILE" && data.type !== "AUDIO" && data.type !== "VIDEO" && data.type !== "IMAGE")) {
+        {
+            return NextResponse.json({ error: "No type provided" }, { status: 400 });
+        }
+    }
 
     try {
         const transaction = await Message.sequelize.transaction();
@@ -51,6 +56,7 @@ export async function createMessage(data) {
                 userName: user.name + " " + user.lastName,
                 date: new Date(),
                 userType: user.role,
+                type: data.type,
             });
             return NextResponse.json({ message }, { status: 200 });
         } catch (error) {

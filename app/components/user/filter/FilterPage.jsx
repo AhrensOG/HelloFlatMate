@@ -14,7 +14,7 @@ export default function FilterPage() {
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
     const category = searchParams.get("category");
-    const location = searchParams.get("zone"); // Cambiado de `zone` a `location` para representar la búsqueda por ubicación
+    const location = searchParams.get("zone");
     const occupants = searchParams.get("numberOccupants");
     const rentalPeriod = searchParams.get("rentalPeriod");
 
@@ -32,20 +32,9 @@ export default function FilterPage() {
     });
     const [filteredProperties, setFilteredProperties] = useState(properties);
 
-    // Extraer los parámetros de búsqueda al cargar la página y aplicar filtros iniciales
-    useEffect(() => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            startDate: startDate || "",
-            endDate: endDate || "",
-            categorys: category ? [category] : [],
-            location: location || "",
-            occupants: occupants || "",
-            rentalPeriod: rentalPeriod || "",
-        }));
-
-        applyFilters(); // Aplica los filtros al cargar la página
-    }, [searchParams]);
+    const hasURLFilters = () => {
+        return startDate || endDate || category || location || occupants || rentalPeriod;
+    };
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -54,7 +43,11 @@ export default function FilterPage() {
                 const activeProperties = (state.properties || []).filter((property) => property.isActive && property.status !== "DELETED");
                 setProperties(activeProperties);
                 setFilteredProperties(activeProperties);
-                applyFilters(); // Aplica los filtros después de obtener las propiedades
+
+                // Aplica los filtros solo si hay parámetros en la URL
+                if (hasURLFilters() && activeProperties.length > 0) {
+                    applyFilters();
+                }
             } catch (error) {
                 toast.error("Error al obtener propiedades");
             }
@@ -66,9 +59,19 @@ export default function FilterPage() {
             const activeProperties = state.properties.filter((property) => property.isActive && property.status !== "DELETED");
             setProperties(activeProperties);
             setFilteredProperties(activeProperties);
-            applyFilters(); // Aplica los filtros cuando ya existen propiedades en el estado
+
+            // Aplica los filtros solo si hay parámetros en la URL
+            if (hasURLFilters() && activeProperties.length > 0) {
+                applyFilters();
+            }
         }
     }, [state.properties, dispatch]);
+
+    useEffect(() => {
+        if (hasURLFilters() && properties.length > 0) {
+            applyFilters();
+        }
+    }, [properties]);
 
     const handleFilterChange = (filterName, selectedValues) => {
         setFilters((prevFilters) => ({
@@ -77,24 +80,23 @@ export default function FilterPage() {
         }));
     };
 
-    // Filtros
     const filterByDateRange = (properties) => {
         const { startDate, endDate } = filters;
 
         if (!startDate && !endDate) {
-            return properties; // No aplicar filtro si no hay fechas
+            return properties;
         }
 
         return properties.filter((property) => {
             if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING") {
-                return property.rooms?.some((room) => {
-                    return room.rentalItems?.some((period) => {
-                        const periodStart = new Date(period.rentalItem?.rentalPeriod?.startDate);
-                        const periodEnd = new Date(period.rentalItem?.rentalPeriod?.endDate);
+                if (!property.rooms) return false;
 
-                        if (!period.period.rentalItem?.isFree) {
-                            return false;
-                        }
+                const roomsInRange = property.rooms.filter((room) =>
+                    room.rentalItems?.some((period) => {
+                        const periodStart = new Date(period.rentalPeriod.startDate);
+                        const periodEnd = new Date(period.rentalPeriod.endDate);
+
+                        if (!period.isFree) return false;
 
                         if (startDate && endDate) {
                             return periodStart <= new Date(endDate) && periodEnd >= new Date(startDate);
@@ -103,25 +105,34 @@ export default function FilterPage() {
                         } else if (endDate) {
                             return periodStart <= new Date(endDate);
                         }
-                    });
-                });
+                    })
+                );
+
+                return roomsInRange.length > 0;
             }
 
             if (property.category === "HELLO_STUDIO") {
-                return property.rentalPeriods?.some((leaseOrder) => {
-                    const leaseStart = new Date(leaseOrder.startDate);
-                    const leaseEnd = new Date(leaseOrder.endDate);
+                if (!property.rentalItems) return false;
 
-                    if (startDate) {
-                        const providedStartDate = new Date(startDate);
-                        return providedStartDate.getTime() >= leaseStart.getTime();
+                const itemsInRange = property.rentalItems.some((period) => {
+                    const periodStart = new Date(period.rentalPeriod.startDate);
+                    const periodEnd = new Date(period.rentalPeriod.endDate);
+
+                    if (!period.isFree) return false;
+
+                    if (startDate && endDate) {
+                        return periodStart <= new Date(endDate) && periodEnd >= new Date(startDate);
+                    } else if (startDate) {
+                        return periodEnd >= new Date(startDate);
+                    } else if (endDate) {
+                        return periodStart <= new Date(endDate);
                     }
-
-                    return false;
                 });
+
+                return itemsInRange;
             }
 
-            return true;
+            return false;
         });
     };
 
@@ -194,15 +205,15 @@ export default function FilterPage() {
 
             if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING") {
                 return property.rooms?.some((room) => {
-                    return room.rentalItem?.some((period) => {
+                    return room.rentalItems?.some((period) => {
                         const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
                         return rentalPeriodString === queryRentalPeriod;
                     });
                 });
             }
 
-            if (property.category === "HELLO_STUDIO" || property.category === "HELLO_LANDLORD") {
-                return property.rentalItem?.some((period) => {
+            if (property.category === "HELLO_STUDIO") {
+                return property.rentalItems?.some((period) => {
                     const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
                     return rentalPeriodString === queryRentalPeriod;
                 });
@@ -212,7 +223,6 @@ export default function FilterPage() {
         });
     };
 
-    // Aplicar los filtros solo al hacer clic en "Aplicar filtro"
     const applyFilters = () => {
         let result = filterBySearch(properties);
         result = filterByCategory(result);
@@ -223,19 +233,6 @@ export default function FilterPage() {
         result = filterByRentalPeriod(result);
         setFilteredProperties(result);
     };
-
-    if (properties.length === 0) {
-        return (
-            <div className="h-screen flex flex-col">
-                <header className="px-2">
-                    <NavBar />
-                </header>
-                <main className="grow flex justify-center items-center">
-                    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-                </main>
-            </div>
-        );
-    }
 
     return (
         <div className="h-screen flex flex-col">
@@ -250,7 +247,7 @@ export default function FilterPage() {
                         showFilters={showFilters}
                         setShowFilters={setShowFilters}
                         onChange={handleFilterChange}
-                        onApplyFilters={applyFilters} // Aplicar filtros solo cuando se hace clic en "Aplicar filtro"
+                        onApplyFilters={applyFilters}
                     />
                     <div className="flex flex-col m-3 mt-7 gap-7">
                         {filteredProperties?.length === 0 ? (
@@ -258,9 +255,7 @@ export default function FilterPage() {
                                 <p className="text-slate-400">No se encontraron propiedades según tu búsqueda</p>
                             </div>
                         ) : (
-                            filteredProperties.map((property) => {
-                                return <PropertyCard key={property?.id} property={property} price={property.price} />;
-                            })
+                            filteredProperties.map((property) => <PropertyCard key={property?.id} property={property} price={property.price} />)
                         )}
                     </div>
                 </div>
@@ -271,7 +266,7 @@ export default function FilterPage() {
                         setOpen={setShowFilters}
                         filters={filters}
                         setFilters={setFilters}
-                        onApplyFilters={applyFilters} // Aplicar filtros solo cuando se hace clic en "Aplicar filtro"
+                        onApplyFilters={applyFilters}
                         onFilterChange={handleFilterChange}
                     />
                     <div className="w-[75%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-row flex-wrap justify-center">
@@ -290,7 +285,7 @@ export default function FilterPage() {
                 setOpen={setShowFilters}
                 filters={filters}
                 setFilters={setFilters}
-                onApplyFilters={applyFilters} // Aplicar filtros solo cuando se hace clic en "Aplicar filtro"
+                onApplyFilters={applyFilters}
                 onFilterChange={handleFilterChange}
             />
         </div>

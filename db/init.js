@@ -293,73 +293,6 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             },
         });
 
-        //RentPayment
-        RentPayment.belongsTo(Property, {
-            as: "property",
-            foreignKey: "paymentableId",
-            constraints: false,
-            scope: {
-                paymentableType: "PROPERTY",
-            },
-        });
-        RentPayment.belongsTo(Room, {
-            as: "room",
-            foreignKey: "paymentableId",
-            constraints: false,
-            scope: {
-                paymentableType: "ROOM",
-            },
-        });
-        RentPayment.belongsTo(LeaseOrderProperty, {
-            as: "leaseOrderProperty",
-            foreignKey: "leaseOrderId",
-            constraints: false,
-            scope: {
-                leaseOrderType: "PROPERTY",
-            },
-        });
-        RentPayment.belongsTo(LeaseOrderRoom, {
-            as: "leaseOrderRoom",
-            foreignKey: "leaseOrderId",
-            constraints: false,
-            scope: {
-                leaseOrderType: "ROOM",
-            },
-        });
-
-        Property.hasMany(RentPayment, {
-            as: "rentPayments",
-            foreignKey: "paymentableId",
-            constraints: false,
-            scope: {
-                paymentableType: "PROPERTY",
-            },
-        });
-        Room.hasMany(RentPayment, {
-            as: "rentPayments",
-            foreignKey: "paymentableId",
-            constraints: false,
-            scope: {
-                paymentableType: "ROOM",
-            },
-        });
-        LeaseOrderProperty.hasMany(RentPayment, {
-            as: "rentPayments",
-            foreignKey: "leaseOrderId",
-            constraints: false,
-            scope: {
-                leaseOrderType: "PROPERTY",
-            },
-        });
-        LeaseOrderRoom.hasMany(RentPayment, {
-            as: "rentPayments",
-            foreignKey: "leaseOrderId",
-            constraints: false,
-            scope: {
-                leaseOrderType: "ROOM",
-            },
-        });
-
         //CONTRACT
         Contract.belongsTo(Property, {
             as: "property",
@@ -443,13 +376,13 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
 
         // DATA DE PRUEBA
 
-        // await Property.bulkCreate(propertyData)
-        // await Client.bulkCreate(testClientData)
-        // await Admin.bulkCreate(testAdminData)
-        // await Owner.bulkCreate(testOwnerData)
-        // await Room.bulkCreate(testRoom)
+        // await Property.bulkCreate(propertyData);
+        // await Client.bulkCreate(testClientData);
+        // await Admin.bulkCreate(testAdminData);
+        // await Owner.bulkCreate(testOwnerData);
+        // await Room.bulkCreate(testRoom);
 
-        // console.log("Data inserted")
+        // console.log("Data inserted");
     } catch (error) {
         console.log(error);
     }
@@ -475,5 +408,4 @@ module.exports = {
     RentalPeriod,
     RentalItem,
     Worker,
-    RentPayment,
 };
