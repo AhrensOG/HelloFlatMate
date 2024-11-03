@@ -740,7 +740,9 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
               onChange={(e) => setIsChecked(e.target.checked)}
               className="form-checkbox"
             />
-            <span>Acepto los términos y condiciones</span>
+            <span>
+              Habiendo leído el contrato acepto los términos y condiciones
+            </span>
           </label>
           <ButtonReadAndSingContract
             action={() => setSignatureModal(true)}

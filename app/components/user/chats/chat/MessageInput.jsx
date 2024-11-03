@@ -1,5 +1,6 @@
 import { PaperAirplaneIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function MessageInput({ onSendMessage, onSendFile }) {
     const [message, setMessage] = useState("");
@@ -16,8 +17,8 @@ export default function MessageInput({ onSendMessage, onSendFile }) {
         }
     };
 
-    const handleFileChange = (e) => {
-        onSendFile(e.target.files);
+    const handleFileChange = async (e) => {
+        await onSendFile(e.target.files);
     };
 
     return (
@@ -52,7 +53,13 @@ export default function MessageInput({ onSendMessage, onSendFile }) {
                             name="img_chat"
                             id="img_chat"
                             className="hidden"
-                            onChange={handleFileChange} // Llama a la función cuando se selecciona un archivo
+                            onChange={(e) =>
+                                toast.promise(handleFileChange(e), {
+                                    loading: "Enviando imagen...",
+                                    success: "Imagen enviada correctamente",
+                                    error: "Error al enviar la imagen",
+                                })
+                            } // Llama a la función cuando se selecciona un archivo
                             accept="image/png, image/jpeg, image/jpg, image/gif, image/webp, image/svg"
                         />
 
