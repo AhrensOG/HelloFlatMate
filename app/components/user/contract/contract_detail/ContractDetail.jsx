@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+import { AnimatePresence, motion } from "framer-motion";
+import { plus_jakarta, poppins } from "@/font";
 import TitleSection from "../TitleSection";
 import ButtonReadAndSingContract from "../ButtonReadAndSingContract";
 import SignaturePad from "../contract_signature/SignaturePad";
@@ -15,6 +15,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   const [signatureModal, setSignatureModal] = useState(false);
   const [room, setRoom] = useState(false);
   const [leaseOrder, setLeaseOrder] = useState(false);
+  const [isChecked, setIsChecked] = useState(false); // Estado para el checkbox
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -184,14 +185,13 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+      className={`${plus_jakarta.className} w-full flex flex-col p-4`}
     >
-      <TitleSection
-        title={"Contrato de renta"}
-        action={() => {
-          handleBack();
-        }}
-      />
+      <h1
+        className={`${poppins.className} w-full text-center text-[#191B23] font-semibold text-xl pb-5`}
+      >
+        Contrato de alojamiento
+      </h1>
       <div className="w-full grid place-items-center">
         <div className="container mx-auto p-4 max-w-screen-lg max-h-[50vh] overflow-y-scroll w-full text-justify">
           <p className="mb-4 text-sm break-words font-light">
@@ -732,19 +732,39 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
             </li>
           </ol>
         </div>
-        <ButtonReadAndSingContract
-          action={() => setSignatureModal(true)}
-          title={"Firmar contrato"}
-        />
+        <div className="pt-5 space-y-2">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
+              className="form-checkbox"
+            />
+            <span>Acepto los términos y condiciones</span>
+          </label>
+          <ButtonReadAndSingContract
+            action={() => setSignatureModal(true)}
+            title={"Firmar contrato"}
+            isChecked={isChecked}
+          />
+        </div>
       </div>
-      {signatureModal && (
-        <SignaturePad
-          setModal={setSignatureModal}
-          createContractPDFAndContinue={handleCreatePDF}
-          handleContinue={handleContinue}
-          order={leaseOrder?.id}
-        />
-      )}
+      <AnimatePresence
+        mode="wait"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        {signatureModal && (
+          <SignaturePad
+            setModal={setSignatureModal}
+            createContractPDFAndContinue={handleCreatePDF}
+            handleContinue={handleContinue}
+            order={leaseOrder?.id}
+          />
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 };

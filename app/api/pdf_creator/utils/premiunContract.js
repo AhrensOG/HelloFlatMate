@@ -27,7 +27,7 @@ const createPremiumContract = ({
   
   De una parte, D./Dª ${landlordName}, como parte ARRENDADORA, siendo mayor de edad, con NIF ${landlordNIF}, propietario/a en pleno dominio del inmueble sito en Valencia: C/ ${landlordStreet} nº ${landlordStreetNumber} - PUERTA ${landlordDoorNumber}, Valencia ${landlordPostalCode}. Dicho inmueble se halla amueblado y consta de ${numberOfRooms} habitaciones, sala de estar, cocina y ${numberOfBathrooms} cuartos de baño.\n
   
-  EL ARRENDADOR autoriza a Hello Flat Mate S.L. con CIF B98358963, bajo mandato expreso, únicamente la formalización de este contrato.
+  EL ARRENDADOR autoriza a helloflatmate S.L. con CIF B98358963, bajo mandato expreso, únicamente la formalización de este contrato.
   De otra parte, D/Dª ${tenantName}, mayor de edad, con D.N.I o pasaporte ${tenantID}, nº de teléfono ${tenantPhone}, email ${tenantEmail}, y con domicilio en ${tenantAddress}, C/ ${tenantStreet}, actuando como parte ARRENDATARIA, está interesado en arrendar la habitación n.º R${roomNumber} del mencionado inmueble.\n
   
   INTERVIENEN\n
@@ -93,7 +93,7 @@ const createPremiumContract = ({
   DÉCIMOPRIMERA. – EMPADRONAMIENTO.\n
   El ARRENDATARIO tendrá derecho a empadronarse en la vivienda compartida, siempre y cuando, cumpla con los requisitos exigidos en la normativa local de referencia.
   Los contratos de arrendamiento de habitación cuya duración sea inferior a SEIS (6) MESES no darán derecho a empadronamiento por así venir previsto por el Ayuntamiento de Valencia.
-  Para el caso de que el ARRENDATARIO esté interesado en que sea HELLO FLAT MATE quien gestione la tramitación del empadronamiento ante las autoridades, el ARRENDATARIO deberá abonar un suplemento de 150 €.
+  Para el caso de que el ARRENDATARIO esté interesado en que sea helloflatmate quien gestione la tramitación del empadronamiento ante las autoridades, el ARRENDATARIO deberá abonar un suplemento de 150 €.
   En todo caso, una vez finalizado el arrendamiento, el ARRENDATARIO se obliga a presentar ante la OFICINA DEL PADRÓN MUNICIPAL la solicitud de Baja.
   Si no lo hiciera, y no hubiera abonado el suplemento previsto en concepto de gestión, se descontarán del depósito 50 €.\n
   

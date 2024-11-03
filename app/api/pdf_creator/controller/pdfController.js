@@ -1,8 +1,35 @@
 import { NextResponse } from "next/server";
 import pdfBuilder from "../utils/pdfBuilder";
 import createPremiumContract from "../utils/premiunContract";
+import { UAParser } from "ua-parser-js";
 
 export async function handleGetRequest(request) {
+  const userAgentString = request.headers.get("user-agent");
+  const clientIp =
+    request.headers.get("x-forwarded-for") || // Cuando hay proxy
+    request.headers.get("x-real-ip") || // Otro posible header
+    request.connection?.remoteAddress || // Fallback si no hay proxy
+    request.ip ||
+    "IP no disponible";
+
+  // Utilizar UAParser para obtener los detalles del dispositivo, navegador y sistema operativo
+  const parser = new UAParser();
+  const result = parser.setUA(userAgentString).getResult();
+
+  const device = result.device.type || false;
+  const browserName = result.browser.name || false;
+  const browserVersion = result.browser.version || false;
+  const os = result.os.name || false;
+
+  const userData = {
+    IP: clientIp,
+    device: device,
+    browserName: browserName,
+    browserVersion: browserVersion,
+    OS: os,
+  };
+
+  // Lógica existente para obtener los valores y generar el PDF
   const { values, clientSignatureUrl, ownerSignatureUrl } =
     await request.json();
   const contractText = createPremiumContract(values);
@@ -15,11 +42,12 @@ export async function handleGetRequest(request) {
   }
 
   try {
-    // Configurar la respuesta para enviar un PDF como archivo adjunto
+    // Aquí se construye el PDF
     const pdfStream = await pdfBuilder(
       clientSignatureUrl,
       ownerSignatureUrl,
-      contractText
+      contractText,
+      userData
     );
 
     return new NextResponse(pdfStream, {

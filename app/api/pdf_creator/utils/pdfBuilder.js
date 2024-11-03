@@ -4,7 +4,8 @@ import axios from "axios";
 export default async function pdfBuilder(
   clientSignatureUrl,
   ownerSignatureUrl,
-  contractText
+  contractText,
+  userData
 ) {
   try {
     // Crear un nuevo documento PDF
@@ -34,8 +35,8 @@ export default async function pdfBuilder(
     const ownerSignatureImage = await pdfDoc.embedPng(ownerSignatureBuffer);
 
     // Tamaño de las firmas
-    const signatureWidth = 200;
-    const signatureHeight = 100;
+    const signatureWidth = 150;
+    const signatureHeight = 75;
 
     // Añadir el contenido del contrato
     const { width, height } = page.getSize();
@@ -45,8 +46,8 @@ export default async function pdfBuilder(
     const fontSize = 12;
     const lineHeight = fontSize * 1.2;
 
-    // Altura necesaria para las firmas
-    const signatureSectionHeight = signatureHeight + 40; // Espacio para las firmas y texto de "Firma del Cliente/Dueño"
+    // Altura necesaria para las firmas y datos del usuario
+    const signatureSectionHeight = signatureHeight + 100; // Espacio ajustado para firmas y userData
 
     // Función para dividir el texto en líneas que se ajusten al ancho máximo
     const splitTextIntoLines = (text, maxWidth, fontSize, font) => {
@@ -70,18 +71,19 @@ export default async function pdfBuilder(
       return lines;
     };
 
-    // Función para añadir las firmas a la página actual
-    const addSignaturesToPage = () => {
+    // Función para añadir las firmas y los datos de userData (si existen) a la página actual
+    const addSignaturesAndUserDataToPage = () => {
+      // Añadir las firmas
       page.drawImage(clientSignatureImage, {
         x: margin,
-        y: margin,
+        y: margin + 60, // Ajustado para dejar más espacio
         width: signatureWidth,
         height: signatureHeight,
       });
 
       page.drawText("Firma del Cliente", {
         x: margin + 40,
-        y: margin - 20,
+        y: margin + 40, // Ajustado para dejar más espacio
         size: fontSize,
         font: font,
         color: rgb(0, 0, 0),
@@ -89,21 +91,72 @@ export default async function pdfBuilder(
 
       page.drawImage(ownerSignatureImage, {
         x: width - margin - signatureWidth,
-        y: margin,
+        y: margin + 60,
         width: signatureWidth,
         height: signatureHeight,
       });
 
       page.drawText("Firma del Dueño", {
         x: width - margin - signatureWidth + 20,
-        y: margin - 20,
+        y: margin + 40,
         size: fontSize,
         font: font,
         color: rgb(0, 0, 0),
       });
+
+      // Añadir los datos de userData si existen
+      if (userData) {
+        let yUserData = margin + 10; // Añadir espacio adicional entre las firmas y los datos
+
+        if (userData.IP) {
+          page.drawText(`IP: ${userData.IP}`, {
+            x: margin,
+            y: yUserData,
+            size: fontSize,
+            font: font,
+            color: rgb(0, 0, 0),
+          });
+          yUserData -= lineHeight;
+        }
+
+        if (userData.device) {
+          page.drawText(`Dispositivo: ${userData.device}`, {
+            x: margin,
+            y: yUserData,
+            size: fontSize,
+            font: font,
+            color: rgb(0, 0, 0),
+          });
+          yUserData -= lineHeight;
+        }
+
+        if (userData.browserName && userData.browserVersion) {
+          page.drawText(
+            `Navegador: ${userData.browserName} ${userData.browserVersion}`,
+            {
+              x: margin,
+              y: yUserData,
+              size: fontSize,
+              font: font,
+              color: rgb(0, 0, 0),
+            }
+          );
+          yUserData -= lineHeight;
+        }
+
+        if (userData.OS) {
+          page.drawText(`SO: ${userData.OS}`, {
+            x: margin,
+            y: yUserData,
+            size: fontSize,
+            font: font,
+            color: rgb(0, 0, 0),
+          });
+        }
+      }
     };
 
-    // Añadir el contenido línea por línea, reservando espacio para las firmas
+    // Añadir el contenido línea por línea, reservando espacio para las firmas y los datos
     const lines = contractText.split("\n");
 
     for (const line of lines) {
@@ -121,9 +174,9 @@ export default async function pdfBuilder(
       );
 
       for (const wrappedLine of wrappedLines) {
-        // Reservar espacio para las firmas si se está cerca del final de la página
+        // Reservar espacio para las firmas y datos si se está cerca del final de la página
         if (yPosition < margin + lineHeight + signatureSectionHeight) {
-          addSignaturesToPage(); // Añadir firmas a la página actual antes de crear una nueva
+          addSignaturesAndUserDataToPage(); // Añadir firmas y datos a la página actual antes de crear una nueva
           page = pdfDoc.addPage();
           yPosition = page.getHeight() - margin - 20;
         }
@@ -140,8 +193,8 @@ export default async function pdfBuilder(
       }
     }
 
-    // Añadir las firmas a la última página
-    addSignaturesToPage();
+    // Añadir las firmas y los datos de userData a la última página
+    addSignaturesAndUserDataToPage();
 
     const pdfBytes = await pdfDoc.save();
     return Buffer.from(pdfBytes);

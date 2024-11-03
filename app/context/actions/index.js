@@ -42,7 +42,6 @@ export const createContractPDF = async (
     const formattedDate = now.toISOString().slice(0, 10); // Format YYYY-MM-DD
     const fileName = `contract_${formattedDate}.pdf`;
     const data = await uploadContractPDF(pdfBlob, fileName, "Contratos");
-    console.log(dataContract);
 
     if (data) {
       const clientSignatureUpdate = await axios.patch('/api/user', { id: dataContract.clientId, signature: clientSignatureUrl })
