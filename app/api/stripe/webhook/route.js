@@ -1,6 +1,16 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import { LeaseOrderProperty, LeaseOrderRoom, Payment, Supply } from "@/db/init"; // Importa el modelo Supply
+import {
+  Client,
+  LeaseOrderProperty,
+  LeaseOrderRoom,
+  Payment,
+  Property,
+  RentPayment,
+  Room,
+  Supply,
+} from "@/db/init"; // Importa el modelo Supply
+import rentPayment from "@/db/models/rentPayment";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -35,6 +45,7 @@ export async function POST(req) {
     data: { object: session },
   } = event;
   const { paymentType, roomId, leaseOrderId, supplyId } = session.metadata;
+  const data = session.metadata;
 
   try {
     if (type === "checkout.session.completed") {
@@ -114,11 +125,59 @@ export async function POST(req) {
           );
         }
         await successSupply.update({
-          paymentId: session.id, // Asigna el ID del pago de Stripe
+          paymentId: session.payment_intent, // Asigna el ID del pago de Stripe
           paymentDate: new Date(), // Establece la fecha de pago actual
           status: "PAID", // Cambia el estado a 'PAID'
         });
         console.log(`✅ Supply with ID ${supplyId} updated to PAID`);
+      } else if (paymentType === "monthly") {
+        const property =
+          data.paymentableType === "PROPERTY"
+            ? await Property.findByPk(data.paymentableId)
+            : await Room.findByPk(data.paymentableId, {
+                include: {
+                  model: Property,
+                  as: "property",
+                  attributes: ["ownerId"],
+                },
+              });
+        if (!property) {
+          return NextResponse.json(
+            { error, message: "Paymentable not found" },
+            { status: 404 }
+          );
+        }
+
+        const client = await Client.findByPk(data.clientId);
+        if (!client) {
+          return NextResponse.json(
+            { error, message: "Client not found" },
+            { status: 404 }
+          );
+        }
+
+        const paymenData = {
+          amount: data.amount,
+          type: data.type,
+          paymentableId: data.paymentableId,
+          paymentableType: data.paymentableType,
+          clientId: data.clientId,
+          leaseOrderId: data.leaseOrderId,
+          leaseOrderType: data.leaseOrderType,
+          status: "APPROVED",
+          quotaNumber: data.quotaNumber ? data.quotaNumber : 1,
+          date: new Date(),
+          ownerId:
+            data.paymentableType === "PROPERTY"
+              ? property.ownerId
+              : property.property.ownerId,
+          paymentId: session.payment_intent,
+        };
+
+        const rentPayment = await RentPayment.create(paymenData);
+        console.log(
+          `✅ Rent Payment with ID ${rentPayment.id} updated to APPROVED`
+        );
       }
     } else if (type === "checkout.session.expired") {
       if (paymentType === "reservation") {
@@ -206,6 +265,8 @@ export async function POST(req) {
           status: "NOT_PAID",
         });
         console.log(`❌ Supply with ID ${supplyId} updated to NOT_PAID`);
+      } else if (paymentType === "monthly") {
+        console.log(`❌ Rent Payment expired`);
       }
     } else {
       console.log(`Unhandled event type ${type}`);

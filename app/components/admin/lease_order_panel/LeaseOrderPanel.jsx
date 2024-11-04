@@ -12,6 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 export default function LeaseOrderPanel(data) {
+  console.log(data.data);
+
   const router = useRouter();
   const [leaserOrders, setLeaserOrders] = useState(
     data.data?.category === "HELLO_STUDIO" ||
