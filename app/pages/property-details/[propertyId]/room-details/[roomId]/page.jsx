@@ -134,7 +134,8 @@ export default function RoomDetails({ params }) {
             </h4>
             {roomData.price && <PriceSection data={roomData.price} />}
             {(data.category === "HELLO_ROOM" ||
-              data.category === "HELLO_COLIVING") &&
+              data.category === "HELLO_COLIVING" ||
+              data.category === "HELLO_LANDLORD") &&
               roomData.price &&
               !isLeaseOrderActive && (
                 <ReservationButton callback={handleShowModal} />
@@ -197,7 +198,7 @@ export default function RoomDetails({ params }) {
               { title: "Otros servicios", body: data.checkOut },
             ]}
           />
-          {showModal && (
+          {/* {showModal && (
             <ReservationModal
               calendarType={roomData.calendar}
               callback={handleShowModal}
@@ -211,13 +212,14 @@ export default function RoomDetails({ params }) {
                 clientId: state?.user?.id,
                 ownerId: data.ownerId,
                 roomId: roomData.id,
-                propertyName: data?.name,
+                propertyName: roomData?.name,
                 user: state?.user,
                 rentalPeriods: roomData.rentalItems,
                 leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+                room: { roomData },
               }}
             />
-          )}
+          )} */}
         </main>
       </div>
       {/* DESKTOP */}
@@ -290,7 +292,8 @@ export default function RoomDetails({ params }) {
               {roomData.price && <PriceSection data={roomData.price} />}
               <div className="flex flex-col gap-6">
                 {(data.category === "HELLO_ROOM" ||
-                  data.category === "HELLO_COLIVING") &&
+                  data.category === "HELLO_COLIVING" ||
+                  data.category === "HELLO_LANDLORD") &&
                   roomData.price &&
                   !isLeaseOrderActive && (
                     <ReservationButton callback={handleShowModal} />
@@ -339,30 +342,29 @@ export default function RoomDetails({ params }) {
               />
             </div>
           </div>
-
-          {showModal && (
-            <ReservationModal
-              calendarType={roomData.calendar}
-              callback={handleShowModal}
-              category={data.category}
-              data={{
-                date: null,
-                startDate: null,
-                endDate: null,
-                price: roomData.price,
-                propertyId: data.id,
-                clientId: state?.user?.id,
-                ownerId: data.ownerId,
-                roomId: roomData.id,
-                propertyName: data?.name,
-                user: state?.user,
-                rentalPeriods: roomData.rentalItems,
-                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
-              }}
-            />
-          )}
         </main>
       </div>
+      {showModal && (
+        <ReservationModal
+          calendarType={roomData.calendar}
+          callback={handleShowModal}
+          category={data.category}
+          data={{
+            date: null,
+            startDate: null,
+            endDate: null,
+            price: roomData.price,
+            propertyId: data.id,
+            clientId: state?.user?.id,
+            ownerId: data.ownerId,
+            roomId: roomData.id,
+            propertyName: roomData?.name,
+            user: state?.user,
+            rentalPeriods: roomData.rentalItems,
+            leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+          }}
+        />
+      )}
     </div>
   );
 }

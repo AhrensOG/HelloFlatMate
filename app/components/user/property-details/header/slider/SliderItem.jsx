@@ -9,6 +9,7 @@ const SliderItem = ({ img, rounded = "", height = "h-[12.5rem]" }) => {
         className={`object-cover object-center ${rounded}`}
         src={img}
         alt="slider-img"
+        unoptimized={true}
         fill
         priority
       />

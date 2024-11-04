@@ -62,18 +62,72 @@ export async function POST(req) {
             );
           }
 
-          // Crear el Payment
-          await Payment.create({
-            amount: successLeaseOrderRoom.price,
-            date: new Date(), // La fecha actual
-            status: "APPROVED", // Estado inicial
-            type: "RESERVATION",
-            paymentableId: successLeaseOrderRoom.roomId,
-            paymentableType: "ROOM",
-            paymentId: session.id,
-            clientId: successLeaseOrderRoom.clientId,
-            ownerId: successLeaseOrderRoom.ownerId,
+          const property = await Room.findByPk(data.roomId, {
+            include: {
+              model: Property,
+              as: "property",
+              attributes: ["ownerId"],
+            },
           });
+          if (!property) {
+            return NextResponse.json(
+              { error, message: "Paymentable / Room not found" },
+              { status: 404 }
+            );
+          }
+
+          const client = await Client.findOne({
+            where: { email: data.userEmail },
+          });
+          if (!client) {
+            return NextResponse.json(
+              { error, message: "Client not found" },
+              { status: 404 }
+            );
+          }
+
+          const type =
+            data.category === "HELLO_ROOM" ||
+            data.category === "HELLO_COLIVING" ||
+            data.category === "HELLO_LANDLORD"
+              ? "ROOM"
+              : "PROPERTY";
+
+          const paymenData = {
+            amount: data.price,
+            type: "RESERVATION",
+            paymentableId: data.roomId,
+            paymentableType: type,
+            clientId: client.id,
+            leaseOrderId: data.leaseOrderId,
+            leaseOrderType: type,
+            status: "APPROVED",
+            quotaNumber: 1,
+            date: new Date(),
+            ownerId:
+              type === "PROPERTY"
+                ? property.ownerId
+                : property.property.ownerId,
+            paymentId: session.payment_intent,
+          };
+
+          const rentPayment = await RentPayment.create(paymenData);
+          await property.update({
+            isActive: false,
+          });
+
+          // // Crear el Payment
+          // await Payment.create({
+          //   amount: successLeaseOrderRoom.price,
+          //   date: new Date(), // La fecha actual
+          //   status: "APPROVED", // Estado inicial
+          //   type: "RESERVATION",
+          //   paymentableId: successLeaseOrderRoom.roomId,
+          //   paymentableType: "ROOM",
+          //   paymentId: session.id,
+          //   clientId: successLeaseOrderRoom.clientId,
+          //   ownerId: successLeaseOrderRoom.ownerId,
+          // });
 
           await successLeaseOrderRoom.update({
             status: "PENDING",
@@ -81,6 +135,9 @@ export async function POST(req) {
           });
           console.log(
             `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
+          );
+          console.log(
+            `✅ Reservation Payment with ID ${rentPayment.id} updated to APPROVED`
           );
         } else {
           const successLeaseOrder = await LeaseOrderProperty.findByPk(
@@ -96,22 +153,70 @@ export async function POST(req) {
             );
           }
 
-          // Crear el Payment
-          await Payment.create({
-            amount: successLeaseOrder.price,
-            date: new Date(), // La fecha actual
-            status: "APPROVED", // Estado inicial
-            type: "RESERVATION",
-            paymentableId: successLeaseOrder.propertyId,
-            paymentableType: "PROPERTY",
-            paymentId: session.id,
-            clientId: successLeaseOrder.clientId,
-            ownerId: successLeaseOrder.ownerId,
-          });
+          const property = await Property.findByPk(data.propertyId);
+          if (!property) {
+            return NextResponse.json(
+              { error, message: "Paymentable / Property not found" },
+              { status: 404 }
+            );
+          }
 
+          const client = await Client.findOne({
+            where: { email: data.userEmail },
+          });
+          if (!client) {
+            return NextResponse.json(
+              { error, message: "Client not found" },
+              { status: 404 }
+            );
+          }
+
+          const type =
+            data.category === "HELLO_ROOM" ||
+            data.category === "HELLO_COLIVING" ||
+            data.category === "HELLO_LANDLORD"
+              ? "ROOM"
+              : "PROPERTY";
+
+          const paymenData = {
+            amount: data.price,
+            type: "RESERVATION",
+            paymentableId: data.propertyId,
+            paymentableType: type,
+            clientId: client.id,
+            leaseOrderId: data.leaseOrderId,
+            leaseOrderType: type,
+            status: "APPROVED",
+            quotaNumber: 1,
+            date: new Date(),
+            ownerId:
+              type === "PROPERTY"
+                ? property.ownerId
+                : property.property.ownerId,
+            paymentId: session.payment_intent,
+          };
+
+          const rentPayment = await RentPayment.create(paymenData);
+
+          // // Crear el Payment
+          // await Payment.create({
+          //   amount: successLeaseOrder.price,
+          //   date: new Date(), // La fecha actual
+          //   status: "APPROVED", // Estado inicial
+          //   type: "RESERVATION",
+          //   paymentableId: successLeaseOrder.propertyId,
+          //   paymentableType: "PROPERTY",
+          //   paymentId: session.id,
+          //   clientId: successLeaseOrder.clientId,
+          //   ownerId: successLeaseOrder.ownerId,
+          // });
+          await property.update({ isActive: false });
           await successLeaseOrder.update({ status: "PENDING", inReview: true });
           console.log(
             `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`
+          );
+          console.log(
+            `✅ Reservation Payment with ID ${rentPayment.id} updated to APPROVED`
           );
         }
       } else if (paymentType === "supply") {
@@ -192,27 +297,83 @@ export async function POST(req) {
               { status: 404 }
             );
           }
+          const property = await Room.findByPk(data.roomId, {
+            include: {
+              model: Property,
+              as: "property",
+              attributes: ["ownerId"],
+            },
+          });
+          if (!property) {
+            return NextResponse.json(
+              { error, message: "Paymentable / Room not found" },
+              { status: 404 }
+            );
+          }
+
+          const client = await Client.findOne({
+            where: { email: data.userEmail },
+          });
+          if (!client) {
+            return NextResponse.json(
+              { error, message: "Client not found" },
+              { status: 404 }
+            );
+          }
+
+          const type =
+            data.category === "HELLO_ROOM" ||
+            data.category === "HELLO_COLIVING" ||
+            data.category === "HELLO_LANDLORD"
+              ? "ROOM"
+              : "PROPERTY";
 
           // Verificar si el estado es APPROVED
-          if (failedLeaseOrderRoom.status !== "APPROVED") {
-            await Payment.create({
-              amount: failedLeaseOrderRoom.price,
-              date: new Date(), // La fecha actual
-              status: "REJECTED", // Estado inicial
+          if (failedLeaseOrderRoom.status === "IN_PROGRESS") {
+            const paymenData = {
+              amount: data.price,
               type: "RESERVATION",
-              paymentableId: failedLeaseOrderRoom.roomId,
-              paymentableType: "ROOM",
-              paymentId: session.id,
-              clientId: failedLeaseOrderRoom.clientId,
-              ownerId: failedLeaseOrderRoom.ownerId,
-            });
+              paymentableId: data.roomId,
+              paymentableType: type,
+              clientId: client.id,
+              leaseOrderId: data.leaseOrderId,
+              leaseOrderType: type,
+              status: "REJECTED",
+              quotaNumber: 1,
+              date: new Date(),
+              ownerId:
+                type === "PROPERTY"
+                  ? property.ownerId
+                  : property.property.ownerId,
+              paymentId: session.payment_intent,
+            };
+
+            const rentPayment = await RentPayment.create(paymenData);
+            // await Payment.create({
+            //   amount: failedLeaseOrderRoom.price,
+            //   date: new Date(), // La fecha actual
+            //   status: "REJECTED", // Estado inicial
+            //   type: "RESERVATION",
+            //   paymentableId: failedLeaseOrderRoom.roomId,
+            //   paymentableType: "ROOM",
+            //   paymentId: session.id,
+            //   clientId: failedLeaseOrderRoom.clientId,
+            //   ownerId: failedLeaseOrderRoom.ownerId,
+            // });
+            await property.update({ status: "FREE" });
             await failedLeaseOrderRoom.update({ status: "REJECTED" });
             console.log(
               `❌ LeaseOrderRoom with ID ${leaseOrderId} updated to REJECTED`
             );
+            console.log(
+              `❌ Reservation Payment with ID ${rentPayment.id} updated to REJECTED`
+            );
           } else {
             console.log(
               `LeaseOrderRoom with ID ${leaseOrderId} is already APPROVED. No changes made.`
+            );
+            console.log(
+              `Reservation Payment with ID ${rentPayment.id} is not IN_PROGRESS. No changes made`
             );
           }
         } else {
@@ -228,27 +389,78 @@ export async function POST(req) {
               { status: 404 }
             );
           }
+          const property = await Property.findByPk(data.propertyId);
+          if (!property) {
+            return NextResponse.json(
+              { error, message: "Paymentable / Property not found" },
+              { status: 404 }
+            );
+          }
+
+          const client = await Client.findOne({
+            where: { email: data.userEmail },
+          });
+          if (!client) {
+            return NextResponse.json(
+              { error, message: "Client not found" },
+              { status: 404 }
+            );
+          }
+
+          const type =
+            data.category === "HELLO_ROOM" ||
+            data.category === "HELLO_COLIVING" ||
+            data.category === "HELLO_LANDLORD"
+              ? "ROOM"
+              : "PROPERTY";
 
           // Verificar si el estado es APPROVED
-          if (failedLeaseOrder.status !== "APPROVED") {
-            await Payment.create({
-              amount: failedLeaseOrder.price,
-              date: new Date(), // La fecha actual
-              status: "REJECTED", // Estado inicial
+          if (failedLeaseOrder.status === "IN_PROGRESS") {
+            const paymenData = {
+              amount: data.price,
               type: "RESERVATION",
-              paymentableId: failedLeaseOrder.propertyId,
-              paymentableType: "PROPERTY",
-              paymentId: session.id,
-              clientId: failedLeaseOrder.clientId,
-              ownerId: failedLeaseOrder.ownerId,
-            });
+              paymentableId: data.propertyId,
+              paymentableType: type,
+              clientId: client.id,
+              leaseOrderId: data.leaseOrderId,
+              leaseOrderType: type,
+              status: "REJECTED",
+              quotaNumber: 1,
+              date: new Date(),
+              ownerId:
+                type === "PROPERTY"
+                  ? property.ownerId
+                  : property.property.ownerId,
+              paymentId: session.payment_intent,
+            };
+
+            const rentPayment = await RentPayment.create(paymenData);
+
+            // await Payment.create({
+            //   amount: failedLeaseOrder.price,
+            //   date: new Date(), // La fecha actual
+            //   status: "REJECTED", // Estado inicial
+            //   type: "RESERVATION",
+            //   paymentableId: failedLeaseOrder.propertyId,
+            //   paymentableType: "PROPERTY",
+            //   paymentId: session.id,
+            //   clientId: failedLeaseOrder.clientId,
+            //   ownerId: failedLeaseOrder.ownerId,
+            // });
+            await property.update({ status: "FREE" });
             await failedLeaseOrder.update({ status: "REJECTED" });
             console.log(
               `❌ LeaseOrderProperty with ID ${leaseOrderId} updated to REJECTED`
             );
+            console.log(
+              `❌ Reservation Payment with ID ${rentPayment.id} updated to REJECTED`
+            );
           } else {
             console.log(
               `LeaseOrderProperty with ID ${leaseOrderId} is already APPROVED. No changes made.`
+            );
+            console.log(
+              `Reservation Payment with ID ${rentPayment.id} is not IN_PROGRESS. No changes made`
             );
           }
         }
