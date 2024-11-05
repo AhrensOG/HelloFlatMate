@@ -12,7 +12,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 export default function LeaseOrderPanel(data) {
-  console.log(data.data);
+  const [property, setProperty] = useState(data.data);
+  const [client, setClient] = useState(false);
+  const [owner, setOwner] = useState(null);
+  const [rooms, setRooms] = useState(null);
+  const { state } = useContext(Context);
+  const [currentUser, setCurrentUser] = useState(state?.user);
 
   const router = useRouter();
   const [leaserOrders, setLeaserOrders] = useState(
@@ -21,12 +26,6 @@ export default function LeaseOrderPanel(data) {
       ? data.data?.leaseOrdersProperty
       : null
   );
-  const [property, setProperty] = useState(data.data);
-  const [client, setClient] = useState(false);
-  const [owner, setOwner] = useState(null);
-  const [rooms, setRooms] = useState(null);
-  const { state } = useContext(Context);
-  const [currentUser, setCurrentUser] = useState(state?.user);
 
   const [showCurrentLeaseOrder, setShowCurrentLeaseOrder] = useState(
     leaserOrders?.length > 0 ? true : false

@@ -61,7 +61,8 @@ export default function MyBedroomDetails({ room }) {
       const end = new Date(endDate);
       return (
         (end.getFullYear() - start.getFullYear()) * 12 +
-        (end.getMonth() - start.getMonth())
+        (end.getMonth() - start.getMonth()) +
+        1
       );
     }
 
@@ -148,8 +149,6 @@ export default function MyBedroomDetails({ room }) {
 
   return (
     <div className="w-full">
-      {console.log(room)}
-
       <section className="w-full flex flex-col gap-2">
         <div className="relative rounded-2xl h-[250px] w-full">
           <SliderDetails rounded="rounded-2xl">
@@ -173,7 +172,7 @@ export default function MyBedroomDetails({ room }) {
             <span className="h-6 w-5">
               <MapPinIcon />
             </span>
-            <h3 className="text-sm font-medium text-[#000000E5]">{`${location.street}, ${location.postalCode} ${location.city}`}</h3>
+            <h3 className="text-sm font-medium text-[#000000E5]">{`${location.street}, ${location.postalCode ? location.postalCode : ""} ${location.city}`}</h3>
           </div>
           <p className="text-xs font-normal text-[#828282] pl-2">
             {amenities.join(" - ")}
@@ -202,7 +201,24 @@ export default function MyBedroomDetails({ room }) {
                 : `$${price}`}
             </p>
           </div>
-          <p className="font-medium text-gray-600">{`Duración del contrato: ${leaseDurationMonths} meses`}</p>
+          <div className="flex justify-between">
+            <p className="font-light">Duración del contrato</p>
+            <p className="font-medium">{`${leaseDurationMonths} meses`}</p>
+          </div>
+          <div className="flex justify-between">
+            <p className="font-light">Fecha de ingreso</p>
+            <p className="font-medium">
+              {dueDate.startDate
+                ? formatDate(new Date(dueDate.startDate))
+                : "-"}
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <p className="font-light">Fecha de salida</p>
+            <p className="font-medium">
+              {dueDate.endDate ? formatDate(new Date(dueDate.endDate)) : "-"}
+            </p>
+          </div>
         </div>
         {type === "HELLO_STUDIO" ? (
           <Link

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import pdfBuilder from "../utils/pdfBuilder";
 import createPremiumContract from "../utils/premiunContract";
+<<<<<<< HEAD
 import { UAParser } from "ua-parser-js";
 
 export async function handleGetRequest(request) {
@@ -33,14 +34,31 @@ export async function handleGetRequest(request) {
   const { values, clientSignatureUrl, ownerSignatureUrl } =
     await request.json();
   const contractText = createPremiumContract(values);
+=======
+import helloroomContractTemplate from "../utils/helloroomContractTemplate";
 
-  if (!clientSignatureUrl || !ownerSignatureUrl) {
-    return NextResponse.json(
-      { error: "Faltan las URLs de las firmas." },
-      { status: 400 }
-    );
-  }
+export async function handleGetRequest(request) {
+    const { values, clientSignatureUrl, ownerSignatureUrl } = await request.json();
+    let contractText;
+    if (values.propertyCategory === "HELLO_STUDIO") {
+        contractText = createPremiumContract(values);
+    }
+    if (values.propertyCategory === "HELLO_ROOM") {
+        contractText = helloroomContractTemplate(values);
+    }
+    if (values.propertyCategory === "HELLO_COLIVING") {
+        contractText = helloroomContractTemplate(values);
+    }
+    if (values.propertyCategory === "HELLO_LANDLORD") {
+        contractText = helloroomContractTemplate(values);
+    }
+>>>>>>> 3005cc37b1223a3c4f9dc3417f62b9a7dd76e6ac
 
+    if (!clientSignatureUrl || !ownerSignatureUrl) {
+        return NextResponse.json({ error: "Faltan las URLs de las firmas." }, { status: 400 });
+    }
+
+<<<<<<< HEAD
   try {
     // Aquí se construye el PDF
     const pdfStream = await pdfBuilder(
@@ -49,18 +67,20 @@ export async function handleGetRequest(request) {
       contractText,
       userData
     );
+=======
+    try {
+        // Configurar la respuesta para enviar un PDF como archivo adjunto
+        const pdfStream = await pdfBuilder(clientSignatureUrl, ownerSignatureUrl, contractText);
+>>>>>>> 3005cc37b1223a3c4f9dc3417f62b9a7dd76e6ac
 
-    return new NextResponse(pdfStream, {
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": 'attachment; filename="contrato.pdf"',
-      },
-    });
-  } catch (error) {
-    console.error("Error generando el PDF:", error);
-    return NextResponse.json(
-      { error: "Error generando el PDF." },
-      { status: 400 }
-    );
-  }
+        return new NextResponse(pdfStream, {
+            headers: {
+                "Content-Type": "application/pdf",
+                "Content-Disposition": 'attachment; filename="contrato.pdf"',
+            },
+        });
+    } catch (error) {
+        console.error("Error generando el PDF:", error);
+        return NextResponse.json({ error: "Error generando el PDF." }, { status: 400 });
+    }
 }
