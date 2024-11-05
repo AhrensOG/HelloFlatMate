@@ -64,7 +64,7 @@ export default function MyBedroomCard({
             <MapPinIcon />
           </span>
           <h3 className="text-xs text-[#000000E5] align-text-bottom">
-            {`${location.street}, ${location.postalCode} ${location.city}`}
+            {`${location.street}, ${location.postalCode ? location.postalCode : "" } ${location.city}`}
           </h3>
         </div>
         <p className="text-[10px] font-normal text-[#828282]">

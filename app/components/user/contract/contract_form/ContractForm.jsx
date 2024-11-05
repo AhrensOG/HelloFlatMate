@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+import { plus_jakarta, poppins } from "@/font";
 import TitleSection from "../TitleSection";
 import { Context } from "@/app/context/GlobalContext";
 import { saveUserContractInformation } from "@/app/context/actions";
@@ -62,7 +62,6 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     initialValues,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      console.log("holaaaaaa");
       if (
         values.name === "" ||
         values.name.trim() === "" ||
@@ -93,7 +92,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         values.emergencyEmail.trim() === ""
       ) {
         return toast.info("¡Recuerda completar todos los campos!");
-      } 
+      }
       if (calculateAge(values.birthDate) < 18) {
         return toast.info("Debes ser mayor de 18");
       }
@@ -171,15 +170,20 @@ const ContractForm = ({ handleContinue, handleBack }) => {
       transition={{ duration: 0.5 }}
       className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
     >
-      <TitleSection
+      {/* <TitleSection
         title={"Contrato de renta"}
         action={() => {
           handleBack();
         }}
-      />
+      /> */}
       <div className="w-full grid place-items-center">
         <div className="w-full p-2 space-y-8 max-w-screen-sm">
           <section className="w-full">
+            <h1
+              className={`${poppins.className} w-full text-center text-[#191B23] font-semibold text-xl pb-5`}
+            >
+              Contrato de alojamiento
+            </h1>
             <div className="w-full text-center">
               <span className="font-medium">
                 Necesitaremos que complete el siguiente formulario

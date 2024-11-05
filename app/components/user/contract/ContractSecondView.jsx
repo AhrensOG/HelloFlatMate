@@ -42,6 +42,7 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
           <ButtonReadAndSingContract
             action={() => handleContinue()}
             title={"Continuar"}
+            isChecked={true}
           />
         </div>
       </div>

@@ -198,7 +198,7 @@ export default function RoomDetails({ params }) {
               { title: "Otros servicios", body: data.checkOut },
             ]}
           />
-          {showModal && (
+          {/* {showModal && (
             <ReservationModal
               calendarType={roomData.calendar}
               callback={handleShowModal}
@@ -212,13 +212,14 @@ export default function RoomDetails({ params }) {
                 clientId: state?.user?.id,
                 ownerId: data.ownerId,
                 roomId: roomData.id,
-                propertyName: data?.name,
+                propertyName: roomData?.name,
                 user: state?.user,
                 rentalPeriods: roomData.rentalItems,
                 leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+                room: { roomData },
               }}
             />
-          )}
+          )} */}
         </main>
       </div>
       {/* DESKTOP */}
@@ -341,30 +342,29 @@ export default function RoomDetails({ params }) {
               />
             </div>
           </div>
-
-          {showModal && (
-            <ReservationModal
-              calendarType={roomData.calendar}
-              callback={handleShowModal}
-              category={data.category}
-              data={{
-                date: null,
-                startDate: null,
-                endDate: null,
-                price: roomData.price,
-                propertyId: data.id,
-                clientId: state?.user?.id,
-                ownerId: data.ownerId,
-                roomId: roomData.id,
-                propertyName: data?.name,
-                user: state?.user,
-                rentalPeriods: roomData.rentalItems,
-                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
-              }}
-            />
-          )}
         </main>
       </div>
+      {showModal && (
+        <ReservationModal
+          calendarType={roomData.calendar}
+          callback={handleShowModal}
+          category={data.category}
+          data={{
+            date: null,
+            startDate: null,
+            endDate: null,
+            price: roomData.price,
+            propertyId: data.id,
+            clientId: state?.user?.id,
+            ownerId: data.ownerId,
+            roomId: roomData.id,
+            propertyName: roomData?.name,
+            user: state?.user,
+            rentalPeriods: roomData.rentalItems,
+            leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+          }}
+        />
+      )}
     </div>
   );
 }

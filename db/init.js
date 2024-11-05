@@ -18,6 +18,7 @@ const Payment = require("./models/payment");
 const RentalPeriod = require("./models/rentalPeriod");
 const Worker = require("./models/worker");
 const RentalItem = require("./models/rentalItem");
+const RentPayment = require("./models/rentPayment");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 
 (async () => {
@@ -29,6 +30,8 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Owner.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "ownerId" });
         Owner.hasMany(Property, { as: "properties", foreignKey: "ownerId" });
         Owner.hasMany(Contract, { as: "contracts", foreignKey: "ownerId" });
+        Owner.hasMany(Payment, { as: "payments", foreignKey: "ownerId" });
+        Owner.hasMany(RentPayment, { as: "rentPayments", foreignKey: "ownerId" });
 
         //PROPERTY
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
@@ -68,6 +71,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Client.hasMany(Supply, { as: "supplies", foreignKey: "clientId" });
         Client.hasMany(Contract, { as: "contracts", foreignKey: "clientId" });
         Client.hasMany(Payment, { as: "payments", foreignKey: "clientId" });
+        Client.hasMany(RentPayment, { as: "rentPayments", foreignKey: "clientId" });
 
         //CHAT
         // Uno a Muchos
@@ -95,6 +99,10 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //PAYMENT
         Payment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
         Payment.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+
+        //RentPayment
+        RentPayment.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+        RentPayment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
         //Relaciones polimorficas
         //Client
@@ -400,4 +408,5 @@ module.exports = {
     RentalPeriod,
     RentalItem,
     Worker,
+    RentPayment,
 };

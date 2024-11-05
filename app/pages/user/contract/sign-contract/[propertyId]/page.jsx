@@ -48,7 +48,7 @@ export default function Contract({ params }) {
 
   if (!owner || !property) {
     return (
-      <div className="w-full h-screen">
+      <div className="w-full h-screen flex flex-col">
         <header>
           <NavBar />
         </header>
