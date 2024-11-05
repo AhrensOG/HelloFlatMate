@@ -25,14 +25,14 @@ export default function NavServices() {
         />
       </div>
 
-      <button className="m-3 cursor-pointer">
+      {/* <button className="m-3 cursor-pointer">
         <Image
           src={"/services/rigth-arrow-box.svg"}
           alt="icon"
           width={24}
           height={24}
         />
-      </button>
+      </button> */}
     </nav>
   );
 }
