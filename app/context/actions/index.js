@@ -28,7 +28,7 @@ export const createContractPDF = async (
   values,
   dataContract,
   clientSignatureUrl,
-  ownerSignatureUrl = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Signature1.png?alt=media&token=f5cb811c-dd0b-4cdc-9158-40546ac70b06"
+  ownerSignatureUrl = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Firmas%2FhelloflatmateSignature.png?alt=media&token=d2049b5a-fccf-4407-bfcd-cd5d73f462a2"
 ) => {
   try {
     const contractInfo = { values, clientSignatureUrl, ownerSignatureUrl };

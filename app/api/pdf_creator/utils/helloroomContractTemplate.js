@@ -103,7 +103,7 @@ const helloroomContractTemplate = ({
   
     Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.
   
-    ARRENDADOR/A                                                      ARRENDATARIO/A
+    Firma ARRENDADORA                                                      Firma ARRENDATARIA\n
 
     ANEXO I – NORMAS DE CONVIVENCIA
 

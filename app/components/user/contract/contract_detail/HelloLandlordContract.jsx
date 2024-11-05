@@ -250,11 +250,6 @@ export default function HelloLandlordContract({ handleModal }) {
                 <p className="mb-4 text-sm font-light">
                     Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.
                 </p>
-                <p className="mb-4 text-sm break-words font-light">
-                    Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.
-                    {/* En prueba de conformidad, y para que así conste, firman el presente
-            contrato por duplicado en el lugar y fecha al principio indicados. */}
-                </p>
 
                 <div className="mt-8 text-center w-full flex flex-wrap items-start justify-around">
                     <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">Firma ARRENDATARIA: </p>

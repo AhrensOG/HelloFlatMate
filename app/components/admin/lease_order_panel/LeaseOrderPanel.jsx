@@ -182,7 +182,8 @@ export default function LeaseOrderPanel(data) {
             >
               {/* Propiedades con room con precio */}
               {(property?.category === "HELLO_ROOM" ||
-                property?.category === "HELLO_COLIVING") &&
+                property?.category === "HELLO_COLIVING" ||
+                property?.category === "HELLO_LANDLORD") &&
                 rooms?.length > 0 &&
                 rooms.map((room) => {
                   // Filtra las órdenes que están en progreso (dentro del rango de fechas y con estado PENDING o APPROVED)
@@ -221,11 +222,11 @@ export default function LeaseOrderPanel(data) {
                               formatDate={formatDate}
                               contract={leaseOrder.client.contracts.find(
                                 (contract) =>
-                                  (contract.contractableId ==
+                                  contract.contractableId ===
                                     leaseOrder.roomId &&
-                                    contract.contractableType == "ROOM" &&
-                                    contract.status == "PENDING") ||
-                                  contract.status == "APPROVED"
+                                  contract.contractableType === "ROOM" &&
+                                  (contract.status === "PENDING" ||
+                                    contract.status === "APPROVED")
                               )}
                               isSigned={leaseOrder.isSigned}
                             />
@@ -361,8 +362,7 @@ export default function LeaseOrderPanel(data) {
                 })}
 
               {/* Propiedades sin room con precio */}
-              {(property?.category === "HELLO_STUDIO" ||
-                property?.category === "HELLO_LANDLORD") &&
+              {property?.category === "HELLO_STUDIO" &&
               leaserOrders?.length > 0 ? (
                 leaserOrders
                   .filter(
@@ -391,8 +391,6 @@ export default function LeaseOrderPanel(data) {
                       )}
                       {leaserOrder.status === "PENDING" && (
                         <div className="flex justify-between gap-4 mb-4">
-                          {console.log(client)}
-
                           <button
                             onClick={() => {
                               toast.custom((t) => (
@@ -540,7 +538,8 @@ export default function LeaseOrderPanel(data) {
             >
               {/* Propiedades con room con precio */}
               {(property?.category === "HELLO_ROOM" ||
-                property?.category === "HELLO_COLIVING") &&
+                property?.category === "HELLO_COLIVING" ||
+                property?.category === "HELLO_LANDLORD") &&
                 (rooms ? (
                   rooms.map((room) => {
                     // Filtra las órdenes que cumplen con los criterios especificados
@@ -588,8 +587,7 @@ export default function LeaseOrderPanel(data) {
                 ))}
 
               {/* Propiedades sin room con precio */}
-              {(property?.category === "HELLO_STUDIO" ||
-                property?.category === "HELLO_LANDLORD") &&
+              {property?.category === "HELLO_STUDIO" &&
                 (leaserOrders ? (
                   leaserOrders
                     // .filter((leaserOrder) => {

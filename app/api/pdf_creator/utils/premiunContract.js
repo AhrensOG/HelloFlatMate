@@ -123,7 +123,62 @@ const createPremiumContract = ({
   DÉCIMOSEXTA. - SUMISIÓN.\n
   Los contratantes se someten expresamente a los Juzgados y Tribunales de la ciudad de Valencia para todas aquellas cuestiones litigiosas que pudieran derivarse del presente contrato, por ser el lugar donde se encuentra la habitación arrendada.\n
   
-  Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.\n`;
+  Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.\n
+  
+  Firma ARRENDADORA                                                      Firma ARRENDATARIA\n
+
+  ANEXO I – NORMAS DE CONVIVENCIA
+
+  1. La parte arrendataria afirma que ha sido informada y se someterá durante toda la vigencia del contrato a las normas establecidas por la comunidad de propietarios, especialmente las relativas a la convivencia vecinal.
+
+  2. El arrendatario deberá tener especial cuidado con los ruidos, a cualquier hora:
+  
+      En particular, se establece que «se consideran actividades no tolerables» acciones como «gritar, vociferar o emplear un tono excesivamente alto de la voz humana o la actividad directa de las personas, movimiento de muebles y/o enseres, etc». Entra dentro de esta categoría usar aparatos e instrumentos musicales o acústicos, radio, televisión, cuando causen molestias.
+  
+      Asimismo, se considera una actividad no tolerable «usar electrodomésticos o maquinaria susceptibles de producir ruidos» molestos; se pone el ejemplo de un taladro. Por último, se añade también «la posesión de animales sin adoptar las medidas necesarias para evitar que los ruidos producidos por éstos ocasionen molestias a los vecinos». Estos comportamientos se consideran «especialmente gravosos» entre las 22.00 y las 8.00 horas.
+
+  3. También deberá cumplir y respetar las normas internas de convivencia razonable que sean decididas por la mayoría de los arrendatarios de la vivienda, entre las que se incluye el cumplimiento de los turnos de limpieza de zonas comunes, baños y cocina, bajar la basura y el resto de las tareas domésticas básicas.
+
+  4. Queda prohibida expresamente la tenencia de cualquier tipo de animal o mascota en la vivienda.
+
+  5. El arrendamiento de la habitación tiene incluido el uso de las zonas comunes de la vivienda. Se establecen como normas de utilización de zonas comunes de la vivienda las siguientes:
+  
+      a. Uso de los cuartos de baño, cocina y sala de estar: se podrá utilizar en cualquier horario respetando en todo momento las necesidades de utilización del resto de usuarios.
+  
+      b. El arrendatario acepta de forma expresa la prohibición de fumar dentro de cualquier dependencia de la vivienda, así como el consumo de sustancias estupefacientes. En caso de que se denuncie esta circunstancia por parte del resto de arrendatarios de la vivienda o de los vecinos, quedará el arrendador facultado para resolver el presente contrato con pérdida de las cantidades previamente abonadas en concepto de fianza y suministros abonadas por el arrendatario.
+  
+      c. Además, tampoco se podrá llevar a cabo ningún tipo de fiesta, cena o comida multitudinaria en la vivienda. Máximo se admiten 3 invitados a la vez, entre todos los compañeros del piso.
+  
+        Para el caso de que esta circunstancia sea denunciada por el resto de los arrendatarios de la vivienda o de los vecinos, quedará facultado el arrendador para resolver el presente contrato con la pérdida de la fianza abonada por el arrendatario:
+
+        - Primer aviso por molestias vecinales (0€)
+        - Segundo aviso (200€) ampliación de fianza.
+        - Tercer aviso: expulsión de la vivienda con pérdida de las aportaciones de fianza, suministros y wifi.
+  
+      d. El arrendatario da su consentimiento expreso de poder compartir las zonas comunes de la vivienda con personas de distinto género, etnia, nacionalidad o religión.
+
+  6. Se hablará con educación y respeto o se penalizará con 100€ las faltas de respeto, insultos, etc. al arrendador, a la agencia, a los trabajadores de mantenimiento y limpieza, o a los propios compañeros.
+
+  7. El arrendatario no podrá hacer uso de las habitaciones de la vivienda que no se encuentren arrendadas, siendo que para el caso de que efectivamente lo haga, podrá ser detraído el 100% de la cantidad entregada en concepto de fianza.
+
+  8. Queda terminantemente prohibido el encendido de velas, candelas, incienso y cualquier otro material que arda y pueda incendiar la habitación o el piso.
+
+  9. El arrendatario se obliga a estar en el grupo de Whatsapp del piso mientras resida en el piso.
+
+  10. Visitas - Se puede recibir visitas en el piso siempre y cuando se informe a los compañeros y a la agencia a través del grupo de Whatsapp y los compañeros estén de acuerdo. La duración de la estancia es de máximo 3 noches y no pueden coincidir más de 3 invitados de manera simultánea en la vivienda.
+
+      Si el invitado supera las 3 noches de estancia, deberá contribuir con 20 €/semana para los gastos comunes del piso, previa aceptación por parte de los compañeros y de la agencia. En ningún caso debe convertirse en una costumbre, solo visitas esporádicas.
+  
+      El visitante no puede dormir en las zonas comunes del piso, ni en el sofá. Siempre deberá hacerlo dentro de la habitación de su anfitrión.
+  
+      No puede haber un invitado pernoctando en el piso cuando su anfitrión se encuentre fuera de la ciudad.
+
+  11. Para el supuesto de que el arrendatario extravíe las llaves de la vivienda o no las entregue a la finalización, deberá abonar los gastos ocasionados por el cambio de la cerradura de la puerta de entrada principal, más un juego de llaves por cada habitación de la vivienda y dos juegos de llaves extra que le corresponderá al arrendador.
+
+  12. Una vez finalizado el presente contrato, el arrendatario deberá dejar la habitación, así como las zonas comunes, totalmente limpias y sin enseres personales, tal y como la encontró a su llegada.
+
+      En caso de desperfectos ocasionados en las zonas comunes de la vivienda, y para el caso de que el causante de los daños no se identifique, responderán de los costes de las reparaciones pertinentes todos los inquilinos de forma solidaria con sus respectivas fianzas, sin perjuicio de que posteriormente puedan entablar las acciones legales pertinentes de forma interna para la restitución de dichos importes frente al responsable de los desperfectos.
+  `;
 };
 
 export default createPremiumContract;
