@@ -13,13 +13,7 @@ export default function DocumentListItem({
     <article
       className={`${
         plus_jakarta.className
-      } flex flex-col w-full gap-3 border border-[#ECECEC] p-3 rounded-2xl ${
-        status === "APPROVED"
-          ? "border-green-500"
-          : status === "REJECTED"
-          ? "border-red-500"
-          : "border-yellow-300"
-      }`}
+      } flex flex-col w-full gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
     >
       <div className="flex items-center justify-between">
         {type === "pdf" ? (
