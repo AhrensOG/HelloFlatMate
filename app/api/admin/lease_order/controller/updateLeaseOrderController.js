@@ -64,12 +64,12 @@ export async function updateStatusLeaseOrder(data) {
                     receiverId: leaseOrderProperty.clientId,
                 });
 
-                //Crear participantes del chat
-                const participantCLientPriv = await ChatParticipant.create({
-                    participantId: leaseOrderProperty.clientId,
-                    chatId: chatPrivate.id,
-                    participantType: "CLIENT",
-                })
+                // //Crear participantes del chat
+                // const participantCLientPriv = await ChatParticipant.create({
+                //     participantId: leaseOrderProperty.clientId,
+                //     chatId: chatPrivate.id,
+                //     participantType: "CLIENT",
+                // })
 
                 await transaction.commit();
                 return NextResponse.json({ message: "Lease order property approved" }, { status: 200 });
