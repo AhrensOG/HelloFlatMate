@@ -96,7 +96,7 @@ export default function ModalService({ action, type, propertyId, user }) {
             Selecciona un día y horario
           </h2>
           <div className="flex flex-col gap-3 items-center justify-center h-full w-full">
-            <div className="flex gap-2 items-center justify-center overflow-x-auto">
+            <div className="flex gap-2 items-center justify-start overflow-x-auto w-full scrollbar-thin pb-1 max-w-sm">
               {days.map((day, index) => (
                 <DayCard
                   key={index}
@@ -111,7 +111,7 @@ export default function ModalService({ action, type, propertyId, user }) {
                 />
               ))}
             </div>
-            <div className="flex gap-3 items-center justify-center overflow-x-auto w-full">
+            <div className="flex gap-3 items-center justify-start overflow-x-auto w-full sm:max-w-full sm:justify-center">
               {times.map((time, index) => (
                 <TimeCard
                   key={index}

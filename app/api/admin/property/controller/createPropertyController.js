@@ -1,11 +1,10 @@
-
 import { Chat, ChatParticipant, Owner, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import rentalPeriod, { sequelize } from "@/db/models/rentalPeriod";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function createProperty(data) {
     console.log(data);
-    
+
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -51,9 +50,9 @@ export async function createProperty(data) {
         data.bed,
         data.maximunOccupants,
         data.zone,
-        price
+        price,
     ];
-    const isComplete = requiredFields.every(field => field !== undefined && field !== null && field !== "");
+    const isComplete = requiredFields.every((field) => field !== undefined && field !== null && field !== "");
 
     try {
         const property = await Property.create({
@@ -101,11 +100,12 @@ export async function createProperty(data) {
         if (data.rentalPeriods && data.rentalPeriods.length > 0) {
             await RentalItem.bulkCreate(
                 data.rentalPeriods.map((rentalPeriod) => ({
-                relatedId: property.id,
-                relatedType: "PROPERTY",
-                rentalPeriodId: rentalPeriod,
-                isFree:true
-            })))
+                    relatedId: property.id,
+                    relatedType: "PROPERTY",
+                    rentalPeriodId: rentalPeriod,
+                    isFree: true,
+                }))
+            );
         }
 
         // Crear el grupo de chat si existe un propietario
@@ -113,7 +113,9 @@ export async function createProperty(data) {
             const chatGroup = await Chat.create({
                 type: "GROUP",
                 propertyId: property.id,
-                ownerId: property.ownerId
+                ownerId: property.ownerId,
+                relatedId: property.id,
+                relatedType: "PROPERTY",
             });
 
             await ChatParticipant.create({
@@ -128,11 +130,9 @@ export async function createProperty(data) {
         console.log(error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
-};
-
+}
 
 export async function cloneProperty(data) {
-
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });
     }
@@ -179,29 +179,31 @@ export async function cloneProperty(data) {
                 checkOut: data.checkOut || "", // Información de check-out
                 ownerId: data.ownerId || "1", // Propietario por defecto
                 tags: data.tags || null, // Lista vacía de etiquetas si no hay
-              });
+            });
 
             if (data.rooms.length > 0) {
-                await Room.bulkCreate(data.rooms.map((room) => {
-                    return {
-                        name: `${room.name} - CLON` || "Nombre predeterminado por CLON",
-                        floor: parseInt(room.floor) || null,
-                        door: room.door || null,
-                        images: room.images || null,
-                        numberBeds: parseInt(room.numberBeds) || 0,
-                        couple: room.couple,
-                        bathroom: room.bathroom,
-                        serial: room.serial,
-                        price: parseFloat(room.price) || null,
-                        amountOwner: parseFloat(room.amountOwner) || null,
-                        amountHelloflatmate: parseFloat(room.amountHelloflatmate) || null,
-                        IVA: parseFloat(room.IVA) || null,
-                        description: room.description || [],
-                        typology: room.typology || "MIXED",
-                        tags: room.tags || [],
-                        propertyId: property.id
-                    }
-                }))
+                await Room.bulkCreate(
+                    data.rooms.map((room) => {
+                        return {
+                            name: `${room.name} - CLON` || "Nombre predeterminado por CLON",
+                            floor: parseInt(room.floor) || null,
+                            door: room.door || null,
+                            images: room.images || null,
+                            numberBeds: parseInt(room.numberBeds) || 0,
+                            couple: room.couple,
+                            bathroom: room.bathroom,
+                            serial: room.serial,
+                            price: parseFloat(room.price) || null,
+                            amountOwner: parseFloat(room.amountOwner) || null,
+                            amountHelloflatmate: parseFloat(room.amountHelloflatmate) || null,
+                            IVA: parseFloat(room.IVA) || null,
+                            description: room.description || [],
+                            typology: room.typology || "MIXED",
+                            tags: room.tags || [],
+                            propertyId: property.id,
+                        };
+                    })
+                );
             }
 
             await transaction.commit();

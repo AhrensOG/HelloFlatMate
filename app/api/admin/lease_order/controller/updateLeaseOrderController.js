@@ -3,10 +3,10 @@ import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Roo
 import { createGroupChat, createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
 import { sequelize } from "@/db/models/comment";
 
-
 export async function updateStatusLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 });
-    if (!data.action || (data.action !== "REJECTED" && data.action !== "APPROVED")) return NextResponse.json({ message: "No status provided" }, { status: 400 });
+    if (!data.action || (data.action !== "REJECTED" && data.action !== "APPROVED"))
+        return NextResponse.json({ message: "No status provided" }, { status: 400 });
     if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 });
     if (!data.adminId || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 });
     if (!data.propertyId && !data.roomId) return NextResponse.json({ message: "No property id or room id provided" }, { status: 400 });
@@ -17,7 +17,7 @@ export async function updateStatusLeaseOrder(data) {
         // Iniciar la transacción
         transaction = await sequelize.transaction();
 
-        const admin = await Admin.findByPk(data.adminId, { transaction }) || await Client.findByPk(data.adminId, { transaction });
+        const admin = (await Admin.findByPk(data.adminId, { transaction })) || (await Client.findByPk(data.adminId, { transaction }));
         if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 });
 
         if (data.type === "PROPERTY") {
@@ -27,16 +27,20 @@ export async function updateStatusLeaseOrder(data) {
                 await transaction.rollback();
                 return NextResponse.json({ message: "Lease order property not found" }, { status: 404 });
             }
-            const property = await Property.findByPk(data.propertyId, {
-                include: {
-                    model: RentalItem,
-                    as: "rentalItems",
+            const property = await Property.findByPk(
+                data.propertyId,
+                {
                     include: {
-                        model: RentalPeriod,
-                        as: "rentalPeriod",
-                    }
-                }
-            }, { transaction });
+                        model: RentalItem,
+                        as: "rentalItems",
+                        include: {
+                            model: RentalPeriod,
+                            as: "rentalPeriod",
+                        },
+                    },
+                },
+                { transaction }
+            );
             if (!property) {
                 await transaction.rollback();
                 return NextResponse.json({ message: "Property not found" }, { status: 404 });
@@ -47,9 +51,9 @@ export async function updateStatusLeaseOrder(data) {
                 leaseOrderProperty.isActive = true;
                 leaseOrderProperty.inReview = false;
                 if (property.calendar === "SIMPLE") {
-                    let isFree = property.rentalItems.some(rentalPeriod => {
+                    let isFree = property.rentalItems.some((rentalPeriod) => {
                         return rentalPeriod.isFree;
-                    })
+                    });
                     property.status = isFree ? "FREE" : "OCCUPIED";
                 } else {
                     property.status = "FREE";
@@ -62,6 +66,8 @@ export async function updateStatusLeaseOrder(data) {
                     type: "PRIVATE",
                     ownerId: property.ownerId,
                     receiverId: leaseOrderProperty.clientId,
+                    relatedType: "PROPERTY",
+                    relatedId: property.id,
                 });
 
                 //Crear participantes del chat
@@ -69,7 +75,7 @@ export async function updateStatusLeaseOrder(data) {
                     participantId: leaseOrderProperty.clientId,
                     chatId: chatPrivate.id,
                     participantType: "CLIENT",
-                })
+                });
 
                 await transaction.commit();
                 return NextResponse.json({ message: "Lease order property approved" }, { status: 200 });
@@ -92,29 +98,38 @@ export async function updateStatusLeaseOrder(data) {
             await transaction.rollback();
             return NextResponse.json({ message: "Lease order room not found" }, { status: 404 });
         }
-        const room = await Room.findByPk(data.roomId, { include: {
-            model: RentalItem,
-            as: "rentalItems",
-            include: {
-                model: RentalPeriod,
-                as: "rentalPeriod",
-            }
-        } }, { transaction });
+        const room = await Room.findByPk(
+            data.roomId,
+            {
+                include: {
+                    model: RentalItem,
+                    as: "rentalItems",
+                    include: {
+                        model: RentalPeriod,
+                        as: "rentalPeriod",
+                    },
+                },
+            },
+            { transaction }
+        );
         if (!room) {
             await transaction.rollback();
             return NextResponse.json({ message: "Room not found" }, { status: 404 });
         }
         const property = await Property.findByPk(room.propertyId, {
-            include: [{
-                model: Room,
-                as: "rooms",
-            }, {
-                model: Chat,
-                as: "chat",
-            }],
-            transaction
+            include: [
+                {
+                    model: Room,
+                    as: "rooms",
+                },
+                {
+                    model: Chat,
+                    as: "chat",
+                },
+            ],
+            transaction,
         });
-        const roomsAvailable = property.rooms.filter(room => room.status === "FREE");
+        const roomsAvailable = property.rooms.filter((room) => room.status === "FREE");
 
         if (data.action === "APPROVED") {
             leaseOrderRoom.status = "APPROVED";
@@ -130,12 +145,14 @@ export async function updateStatusLeaseOrder(data) {
             // }
 
             if (room.calendar === "SIMPLE") {
-                if (room.rentalItems.some(rentalPeriod => {
-                    return rentalPeriod.isFree;
-                })) {
+                if (
+                    room.rentalItems.some((rentalPeriod) => {
+                        return rentalPeriod.isFree;
+                    })
+                ) {
                     room.status = "FREE";
                 } else {
-                    room.status = "OCCUPIED"
+                    room.status = "OCCUPIED";
                 }
             } else {
                 room.status = "FREE";
@@ -151,6 +168,8 @@ export async function updateStatusLeaseOrder(data) {
                 type: "PRIVATE",
                 ownerId: property.ownerId,
                 receiverId: leaseOrderRoom.clientId,
+                relatedType: "ROOM",
+                relatedId: room.id,
             });
 
             //Asignar al chat grupal de la propiedad
@@ -159,7 +178,7 @@ export async function updateStatusLeaseOrder(data) {
                     participantId: leaseOrderRoom.clientId,
                     chatId: property.chat.id,
                     participantType: "CLIENT",
-                })
+                });
             }
 
             await transaction.commit();

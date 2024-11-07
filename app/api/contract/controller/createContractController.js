@@ -1,4 +1,4 @@
-import { Contract, LeaseOrderProperty, LeaseOrderRoom, Supply } from "@/db/init"
+import { Contract, LeaseOrderProperty, LeaseOrderRoom, Property, Room, Supply } from "@/db/init"
 import { NextResponse } from "next/server"
 export async function createContract(data) {
 
@@ -14,7 +14,9 @@ export async function createContract(data) {
         try {
             let contractData
             let leaseOrder
+            let room
             if (data.roomId) {
+                room = await Room.findByPk(data.roomId)
                 leaseOrder = await LeaseOrderRoom.findOne({ where: { roomId: data.roomId } })
                 contractData = {
                     name: data.name,
@@ -58,10 +60,10 @@ export async function createContract(data) {
                 amount: 300,
                 date: currentDate,
                 status: "PENDING",
-                propertyId: data.propertyId,
+                propertyId: data.propertyId || room.propertyId,
                 clientId: data.clientId,
                 reference: data.reference || "",
-                type: "OTHERS",
+                type: "EXPENSES",
                 expirationDate: expirationDate
             },
             {
@@ -69,10 +71,10 @@ export async function createContract(data) {
                 amount: 200, 
                 date: currentDate,
                 status: "PENDING",
-                propertyId: data.propertyId,
+                propertyId: data.propertyId || room.propertyId,
                 clientId: data.clientId,
                 reference: data.reference || "",
-                type: "OTHERS",
+                type: "ELECTRICITY",
                 expirationDate: expirationDate
             },
             {
@@ -80,10 +82,10 @@ export async function createContract(data) {
                 amount: 80,
                 date: currentDate,
                 status: "PENDING",
-                propertyId: data.propertyId,
+                propertyId: data.propertyId || room.propertyId,
                 clientId: data.clientId,
                 reference: data.reference || "",
-                type: "OTHERS",
+                type: "INTERNET",
                 expirationDate: expirationDate
             },
             {
@@ -91,10 +93,10 @@ export async function createContract(data) {
                 amount: 459.80, // 380€ + IVA
                 date: currentDate,
                 status: "PENDING",
-                propertyId: data.propertyId,
+                propertyId: data.propertyId || room.propertyId,
                 clientId: data.clientId,
                 reference: data.reference || "",
-                type: "OTHERS",
+                type: "EXPENSES",
                 expirationDate: expirationDate
             }
             ]);

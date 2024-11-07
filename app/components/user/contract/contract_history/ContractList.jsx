@@ -12,8 +12,6 @@ export default function ContractList({ action }) {
   const [historyContracts, setHistoryContracts] = useState([]);
 
   useEffect(() => {
-    console.log(state.user);
-
     setUser(state.user);
     setPendingContracts(
       state?.user?.contracts.filter((cont) => cont.status === "PENDING")

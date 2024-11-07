@@ -106,6 +106,41 @@ export async function updateProperty(id, data) {
                 chat.ownerId = data.ownerId;
                 await chat.save();
             }
+
+            // Buscar todos los chats de tipo PRIVATE que pertenezcan al antiguo ownerId
+            const privateChats = await Chat.findAll({
+                where: {
+                    ownerId: property.ownerId,  // Antiguo ownerId
+                    type: 'PRIVATE'
+                },
+                attributes: ['id']  // Solo necesitamos los IDs de los chats
+            });
+
+            // Obtener los IDs de esos chats
+            const privateChatIds = privateChats.map(chat => chat.id);
+
+            if (privateChatIds.length > 0) {
+                // Actualizar el participantId en ChatParticipant donde participantType sea OWNER
+                await ChatParticipant.update(
+                    { participantId: data.ownerId },  // Nuevo ownerId
+                    {
+                        where: {
+                            chatId: privateChatIds,      // Solo los chats encontrados
+                            participantType: "OWNER"     // Solo para el tipo OWNER
+                        }
+                    }
+                );
+
+                // Actualizar también el ownerId en los chats encontrados
+                await Chat.update(
+                    { ownerId: data.ownerId },  // Nuevo ownerId
+                    {
+                        where: {
+                            id: privateChatIds  // Solo los chats encontrados
+                        }
+                    }
+                );
+            }
         }
 
         // Actualizar la propiedad y establecer isActive en función de si está completa o no

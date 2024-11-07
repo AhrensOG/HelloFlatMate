@@ -14,31 +14,41 @@ export async function createPrivateChat(data) {
     if (!data.receiverId || data.receiverId.trim() === "") {
         return NextResponse.json({ error: "No receiver id provided" }, { status: 400 });
     }
+    if (!data.relatedType || (data.relatedType !== "ROOM" && data.relatedType !== "PROPERTY")) {
+        return NextResponse.json({ error: "No related type provided" }, { status: 400 });
+    }
+    if (!data.relatedId || data.relatedId <= 0) {
+        return NextResponse.json({ error: "No related id provided" }, { status: 400 });
+    }
 
     const transaction = await Chat.sequelize.transaction();
     try {
-        const owner = await Owner.findByPk(data.ownerId, { transaction }) || await Admin.findByPk(data.ownerId, { transaction });
+        const owner = (await Owner.findByPk(data.ownerId, { transaction })) || (await Admin.findByPk(data.ownerId, { transaction }));
 
         if (!owner) {
             await transaction.rollback();
             return NextResponse.json({ error: "owner not found" }, { status: 404 });
         }
 
-        const receiver = await Client.findByPk(data.receiverId, { transaction }) ||
-            await Owner.findByPk(data.receiverId, { transaction }) ||
-            await Admin.findByPk(data.receiverId, { transaction });
+        const receiver =
+            (await Client.findByPk(data.receiverId, { transaction })) ||
+            (await Owner.findByPk(data.receiverId, { transaction })) ||
+            (await Admin.findByPk(data.receiverId, { transaction }));
 
         if (!receiver) {
             await transaction.rollback();
             return NextResponse.json({ error: "Receiver not found" }, { status: 404 });
         }
 
-        const chat = await Chat.create({ type: data.type }, { transaction });
+        const chat = await Chat.create({ type: data.type, relatedType: data.relatedType, relatedId: data.relatedId }, { transaction });
 
-        await ChatParticipant.bulkCreate([
-            { participantId: owner.id, participantType: owner.role, chatId: chat.id },
-            { participantId: receiver.id, participantType: receiver.role, chatId: chat.id },
-        ], { transaction });
+        await ChatParticipant.bulkCreate(
+            [
+                { participantId: owner.id, participantType: owner.role, chatId: chat.id },
+                { participantId: receiver.id, participantType: receiver.role, chatId: chat.id },
+            ],
+            { transaction }
+        );
 
         await transaction.commit();
         return NextResponse.json({ message: "Chat created successfully", chat }, { status: 200 });
@@ -62,11 +72,17 @@ export async function createGroupChat(data) {
     if (!data.receiverIds || data.receiverIds.length === 0 || Array.isArray(data.receiverIds) === false) {
         return NextResponse.json({ error: "No receivers id provided" }, { status: 400 });
     }
+    if (!data.relatedType || (data.relatedType !== "ROOM" && data.relatedType !== "PROPERTY")) {
+        return NextResponse.json({ error: "No related type provided" }, { status: 400 });
+    }
+    if (!data.relatedId || data.relatedId <= 0) {
+        return NextResponse.json({ error: "No related id provided" }, { status: 400 });
+    }
 
     try {
         const transaction = await Chat.sequelize.transaction();
         try {
-            const owner = await Owner.findByPk(data.ownerId, { transaction }) || await Admin.findByPk(data.ownerId, { transaction });
+            const owner = (await Owner.findByPk(data.ownerId, { transaction })) || (await Admin.findByPk(data.ownerId, { transaction }));
             if (!owner) {
                 await transaction.rollback();
                 return NextResponse.json({ error: "Owner not found" }, { status: 404 });
@@ -76,27 +92,30 @@ export async function createGroupChat(data) {
             const owners = await Owner.findAll({ where: { id: data.receiverIds }, transaction });
             const admins = await Admin.findAll({ where: { id: data.receiverIds }, transaction });
 
-            const receivers = [...clients, ...owners, ...admins]
+            const receivers = [...clients, ...owners, ...admins];
 
             if (!receivers) {
                 await transaction.rollback();
                 return NextResponse.json({ error: "Receivers not found" }, { status: 404 });
             }
 
-            const chat = await Chat.create({ type: data.type, ownerId: data.ownerId }, { transaction });
+            const chat = await Chat.create(
+                { type: data.type, ownerId: data.ownerId, relatedType: data.relatedType, relatedId: data.relatedId },
+                { transaction }
+            );
 
             const participants = receivers.map((receiver) => {
                 return {
                     participantId: receiver.id,
                     participantType: receiver.role,
-                    chatId: chat.id
-                }
-            })
+                    chatId: chat.id,
+                };
+            });
             participants.push({
                 participantId: owner.id,
                 participantType: owner.role,
-                chatId: chat.id
-            })
+                chatId: chat.id,
+            });
 
             await ChatParticipant.bulkCreate(participants, { transaction });
 
@@ -110,9 +129,7 @@ export async function createGroupChat(data) {
         console.log(err);
         return NextResponse.json({ error: "Error creating chat", err }, { status: 500 });
     }
-
 }
-
 
 export async function createSupportChat(data) {
     console.log(data);
@@ -130,8 +147,7 @@ export async function createSupportChat(data) {
     try {
         const transaction = await Chat.sequelize.transaction();
         try {
-            const receiver = await Client.findByPk(data.receiverId, { transaction }) ||
-                await Owner.findByPk(data.receiverId, { transaction });
+            const receiver = (await Client.findByPk(data.receiverId, { transaction })) || (await Owner.findByPk(data.receiverId, { transaction }));
 
             if (!receiver) {
                 await transaction.rollback();
@@ -140,15 +156,18 @@ export async function createSupportChat(data) {
 
             const chat = await Chat.create({ type: data.type }, { transaction });
 
-            console.log('Chat ID:', chat.id);
-            console.log('Receiver ID:', receiver.id);
-            console.log('Participant Type:', receiver.role);
+            console.log("Chat ID:", chat.id);
+            console.log("Receiver ID:", receiver.id);
+            console.log("Participant Type:", receiver.role);
 
-            await ChatParticipant.create({
-                participantId: receiver.id,
-                participantType: receiver.role,
-                chatId: chat.id
-            }, { transaction });
+            await ChatParticipant.create(
+                {
+                    participantId: receiver.id,
+                    participantType: receiver.role,
+                    chatId: chat.id,
+                },
+                { transaction }
+            );
 
             await transaction.commit();
             return NextResponse.json({ message: "Chat created successfully", chat }, { status: 200 });
