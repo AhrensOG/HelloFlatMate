@@ -98,8 +98,22 @@ export default function RoomDetails({ params }) {
 
   if (!data) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center h-screen w-full">
+        <div className="flex flex-col justify-center items-center relative w-full">
+          {/* MOBILE */}
+          <div className="flex flex-col justify-center items-center max-w-screen-sm sm:hidden w-full gap-2 h-screen">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+          </div>
+          {/* DESKTOP */}
+          <div className="hidden sm:flex flex-col items-center w-full h-screen">
+            <header className="w-full space-y-4">
+              <NavBar />
+            </header>
+            <div className="w-full grow grid place-items-center">
+              <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -142,7 +156,7 @@ export default function RoomDetails({ params }) {
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>
-            <h4 className="text-base font-light text-slate-400">
+            <h4 className="text-base font-bold text-resolution-blue">
               {isLeaseOrderActive
                 ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
                     isLeaseOrderActive.endDate
