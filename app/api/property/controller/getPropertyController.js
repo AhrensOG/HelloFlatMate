@@ -16,6 +16,9 @@ export async function getAllProperties() {
                         model: RentalPeriod,
                         as: 'rentalPeriod'
                     }
+                }, {
+                    model: LeaseOrderRoom,
+                    as: 'leaseOrdersRoom',
                 }]
             }, {
                 model: RentalItem,

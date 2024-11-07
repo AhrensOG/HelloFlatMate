@@ -6,12 +6,26 @@ import Tooltip from "./tooltip/Tooltip";
 import { ClockIcon } from "@heroicons/react/24/outline";
 const { useRouter } = require("next/navigation");
 
+function formatDate(dateString) {
+  if (!dateString) return "-"; // Si la fecha no es válida, devuelve "-"
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) return "-"; // Verifica si es una fecha válida
+
+  const day = date.getUTCDate().toString().padStart(2, "0");
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0"); // Meses van de 0-11
+  const year = date.getUTCFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 export default function PropertyCard({
   name,
   images,
   property,
   price,
   roomId = false,
+  room = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const route = useRouter();
@@ -19,7 +33,8 @@ export default function PropertyCard({
   const handleRedirect = () => {
     if (
       (property.category === "HELLO_ROOM" ||
-        property.category === "HELLO_COLIVING") &&
+        property.category === "HELLO_COLIVING" ||
+        property.category === "HELLO_LANDLORD") &&
       roomId
     ) {
       route.push(
@@ -62,7 +77,8 @@ export default function PropertyCard({
           <div className="flex flex-col grow sm:gap-2">
             <h4 className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-normal">
               {property?.category === "HELLO_ROOM" ||
-              property?.category === "HELLO_COLIVING"
+              property?.category === "HELLO_COLIVING" ||
+              property?.category === "HELLO_LANDLORD"
                 ? "HABTITACION"
                 : property?.category.toLowerCase().split("_").join("")}
               {/* <button
@@ -81,7 +97,15 @@ export default function PropertyCard({
               </button> */}
               <ClockIcon className="size-4" />
               <span className="text-xs font-medium text-black/80">
-                Disponible 01 Junio 2025
+                {room?.leaseOrdersRoom?.some((order) => order.isActive === true)
+                  ? // Si hay una leaseOrder activa, mostrar la fecha de disponibilidad
+                    `Disponible ${formatDate(
+                      room?.leaseOrdersRoom.find(
+                        (order) => order.isActive === true
+                      )?.endDate
+                    )}`
+                  : // Si no hay leaseOrder activa, mostrar "Disponible ahora!"
+                    "Disponible ahora!"}
               </span>
             </h4>
             <h2 className="flex w-full gap-2 items-center text-sm text-black/80 font-medium">
