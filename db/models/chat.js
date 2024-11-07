@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
 const chatInit = (sequelize, DataTypes) => {
-    class Chat extends Model { }
+    class Chat extends Model {}
 
     Chat.init(
         {
@@ -26,6 +26,14 @@ const chatInit = (sequelize, DataTypes) => {
                 allowNull: false,
                 defaultValue: true,
             },
+            relatedType: {
+                type: DataTypes.ENUM("ROOM", "PROPERTY"),
+                allowNull: false,
+            },
+            relatedId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
         },
         {
             sequelize,
@@ -36,6 +44,6 @@ const chatInit = (sequelize, DataTypes) => {
     );
 
     return Chat;
-}
+};
 
-module.exports = chatInit(connection, DataTypes)
+module.exports = chatInit(connection, DataTypes);

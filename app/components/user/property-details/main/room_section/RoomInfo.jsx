@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ModalRomInfo from "./ModalRomInfo";
+import { CurrencyEuroIcon } from "@heroicons/react/24/outline";
 
 export default function RoomInfo({ data, action, category }) {
   const router = useRouter();
@@ -34,6 +35,15 @@ export default function RoomInfo({ data, action, category }) {
         )}
       </div>
       <h3 className="text-base font-medium break-words p-1">{data.name}</h3>
+      <section className="flex gap-2 w-full">
+        <h3 className="font-bold">Precio:</h3>
+        <h4 className="text-[#000000B2] font-semibold flex gap-1 items-center">
+          <span className="h-4 w-4 flex items-center">
+            <CurrencyEuroIcon />
+          </span>
+          {data.price}
+        </h4>
+      </section>
       <div
         className={`font-normal text-sm text-[#4F7A94] w-full flex justify-start gap-8 items-center p-1 ${
           !data.numberBeds ? "text-gray-500" : "text-black"

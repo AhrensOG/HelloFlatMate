@@ -21,6 +21,21 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
+function formatDateToDDMMYYYY(isoDate) {
+  const date = new Date(isoDate);
+
+  // Verificar si la fecha es válida
+  if (isNaN(date.getTime())) {
+    return "-";
+  }
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 export default function RoomDetails({ params }) {
   const { state } = useContext(Context);
   const { propertyId, roomId } = params;
@@ -56,12 +71,12 @@ export default function RoomDetails({ params }) {
           setFilteredRooms(filtered);
 
           // Verificar si la habitación tiene alguna leaseOrderRoom con estado "active"
-          const hasActiveLeaseOrder = roomData?.leaseOrdersRoom?.some(
+          const activeLeaseOrder = roomData?.leaseOrdersRoom?.find(
             (order) => order.isActive === true
           );
 
           // Guardar en el estado local si hay alguna leaseOrderRoom con estado "active"
-          setIsLeaseOrderActive(hasActiveLeaseOrder || false);
+          setIsLeaseOrderActive(activeLeaseOrder || false);
 
           // Obtenemos las imágenes de la propiedad y de la habitación actual
           const propertyImages = propertyData?.images || [];
@@ -128,17 +143,21 @@ export default function RoomDetails({ params }) {
               {data.city + ", " + data.street}
             </h4>
             <h4 className="text-base font-light text-slate-400">
-              {roomData.status === "RESERVED" || roomData.status === "OCCUPIED"
-                ? "Reservada"
+              {isLeaseOrderActive
+                ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
+                    isLeaseOrderActive.endDate
+                  )}`
                 : ""}
             </h4>
             {roomData.price && <PriceSection data={roomData.price} />}
             {(data.category === "HELLO_ROOM" ||
               data.category === "HELLO_COLIVING" ||
               data.category === "HELLO_LANDLORD") &&
-              roomData.price &&
-              !isLeaseOrderActive && (
-                <ReservationButton callback={handleShowModal} />
+              roomData.price && (
+                <ReservationButton
+                  callback={handleShowModal}
+                  disabled={isLeaseOrderActive || false}
+                />
               )}
           </div>
           {roomData?.description?.length > 0 ? (
@@ -283,10 +302,11 @@ export default function RoomDetails({ params }) {
               <h6 className="text-[#000000B2] text-base">
                 {data.city + ", " + data.street}
               </h6>
-              <h6 className="text-base font-light text-slate-400">
-                {roomData.status === "RESERVED" ||
-                roomData.status === "OCCUPIED"
-                  ? "Reservada"
+              <h6 className="text-base font-bold text-resolution-blue">
+                {isLeaseOrderActive
+                  ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
+                      isLeaseOrderActive.endDate
+                    )}`
                   : ""}
               </h6>
               {roomData.price && <PriceSection data={roomData.price} />}
@@ -294,9 +314,11 @@ export default function RoomDetails({ params }) {
                 {(data.category === "HELLO_ROOM" ||
                   data.category === "HELLO_COLIVING" ||
                   data.category === "HELLO_LANDLORD") &&
-                  roomData.price &&
-                  !isLeaseOrderActive && (
-                    <ReservationButton callback={handleShowModal} />
+                  roomData.price && (
+                    <ReservationButton
+                      callback={handleShowModal}
+                      disabled={isLeaseOrderActive || false}
+                    />
                   )}
               </div>
             </div>

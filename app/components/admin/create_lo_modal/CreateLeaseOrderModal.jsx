@@ -140,7 +140,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
         leaseOrderData.roomId = selectedRoom;
       }
 
-      const res = await axios.post("/api/lease_order", leaseOrderData);
+      const res = await axios.post("/api/lease_order/manualCreate", leaseOrderData);
     } catch (error) {
       console.log(error);
     }
