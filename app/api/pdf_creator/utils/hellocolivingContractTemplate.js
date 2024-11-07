@@ -109,7 +109,7 @@ const hellocolivingContractTemplate = ({
   
     Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.\n
   
-    ARRENDADOR/A                                                      ARRENDATARIO/A\n
+    Firma ARRENDADORA                                                      Firma ARRENDATARIA\n
     
     ANEXO I – NORMAS DE CONVIVENCIA\n
 

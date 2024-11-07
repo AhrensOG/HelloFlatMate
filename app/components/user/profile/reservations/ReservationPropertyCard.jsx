@@ -12,9 +12,14 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
   const [category, setCategory] = useState(
     property?.property?.category || property?.category
   );
+  console.log(property);
 
   const handleRedirect = () => {
-    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING") {
+    if (
+      category === "HELLO_ROOM" ||
+      category === "HELLO_COLIVING" ||
+      category === "HELLO_LANDLORD"
+    ) {
       route.push(
         `/pages/property-details/${property.propertyId}/room-details/${property.id}`
       );
@@ -24,7 +29,11 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
   };
 
   const handleRedirectToContract = () => {
-    if (category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD") {
+    if (
+      category === "HELLO_ROOM" ||
+      category === "HELLO_COLIVING" ||
+      category === "HELLO_LANDLORD"
+    ) {
       route.push(
         "/pages/user/contract/sign-contract/" +
           property?.propertyId +
@@ -41,6 +50,10 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
           leaseOrder.id
       );
     }
+  };
+
+  const handleRedirectToForm = () => {
+    route.push("/pages/user/contract/" + property?.propertyId || property?.id);
   };
 
   const handleOpen = () => {
@@ -111,7 +124,9 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
                   alt="Icono de Ubicación"
                 />
               </span>
-              {category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD"
+              {category === "HELLO_ROOM" ||
+              category === "HELLO_COLIVING" ||
+              category === "HELLO_LANDLORD"
                 ? property?.property?.city +
                   ", " +
                   property?.property?.street +
@@ -186,16 +201,25 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
         leaseOrder.status === "PENDING" &&
         leaseOrder.inReview ? (
         // Si está en revisión y pendiente
-        <p
-          title="¡Tu solicitud esta bajo revisión. Te notificaremos al finalizar!"
-          className="text-resolution-blue font-bold text-center flex justify-center items-center gap-1.5"
-        >
-          En revisión
-          <QuestionMarkCircleIcon
+        <div className="w-full flex flex-col justify-center items-center gap-1">
+          <p
             title="¡Tu solicitud esta bajo revisión. Te notificaremos al finalizar!"
-            className="size-4"
-          />
-        </p>
+            className="text-resolution-blue font-bold text-center flex justify-center items-center gap-1.5"
+          >
+            En revisión
+            <QuestionMarkCircleIcon
+              title="¡Tu solicitud esta bajo revisión. Te notificaremos al finalizar!"
+              className="size-4"
+            />
+          </p>
+          <button
+            onClick={handleRedirectToForm}
+            title="Completa el formulario con tu información personal"
+            className="px-4 py-1 rounded-xl bg-resolution-blue text-white sm:w-full"
+          >
+            Completar información
+          </button>
+        </div>
       ) : (
         ""
       )}

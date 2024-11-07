@@ -28,7 +28,7 @@ export const createContractPDF = async (
   values,
   dataContract,
   clientSignatureUrl,
-  ownerSignatureUrl = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Signature1.png?alt=media&token=f5cb811c-dd0b-4cdc-9158-40546ac70b06"
+  ownerSignatureUrl = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Firmas%2FhelloflatmateSignature.png?alt=media&token=d2049b5a-fccf-4407-bfcd-cd5d73f462a2"
 ) => {
   try {
     const contractInfo = { values, clientSignatureUrl, ownerSignatureUrl };
@@ -42,7 +42,6 @@ export const createContractPDF = async (
     const formattedDate = now.toISOString().slice(0, 10); // Format YYYY-MM-DD
     const fileName = `contract_${formattedDate}.pdf`;
     const data = await uploadContractPDF(pdfBlob, fileName, "Contratos");
-    console.log(dataContract);
 
     if (data) {
       const clientSignatureUpdate = await axios.patch('/api/user', { id: dataContract.clientId, signature: clientSignatureUrl })

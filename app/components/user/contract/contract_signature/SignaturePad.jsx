@@ -17,7 +17,6 @@ const SignaturePad = ({
   handleContinue,
   order,
 }) => {
-  console.log(order);
 
   const sigCanvas = useRef(null);
   const [loader, setLoader] = useState(false);
@@ -82,8 +81,8 @@ const SignaturePad = ({
             ref={sigCanvas}
             penColor="black"
             canvasProps={{
-              width: 200,
-              height: 100,
+              width: 250,
+              height: 125,
               className: "border-2 border-gray-300 rounded-md",
             }}
           />

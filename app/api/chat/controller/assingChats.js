@@ -14,12 +14,12 @@ export async function assingChats() {
                     model: Room,
                     as: "room",
                     attributes: ["id"],
-                    include: { model: Property, as: "property", include: { model: Chat, as: "chats" } },
+                    include: { model: Property, as: "property", include: { model: Chat, as: "chat" } },
                 },
             });
             const leaseOrdersProperty = await LeaseOrderProperty.findAll({
                 transaction,
-                include: { model: Property, as: "property", include: { model: Chat, as: "chats" } },
+                include: { model: Property, as: "property", include: { model: Chat, as: "chat" } },
             });
 
             //Crear y asignar chats Privados
@@ -42,7 +42,7 @@ export async function assingChats() {
                     },
                 ]);
 
-                const chatGroupId = order.property.chats.find((chat) => chat.type === "GROUP");
+                const chatGroupId = order.property.chat?.find((chat) => chat.type === "GROUP");
                 if (!chatGroupId) {
                     const chatGroup = await Chat.create({
                         type: "GROUP",
@@ -72,6 +72,7 @@ export async function assingChats() {
                 const chat = await Chat.create({
                     type: "PRIVATE",
                     propertyId: order.propertyId,
+                    ownerId: order.ownerId,
                     isActive: true,
                 });
                 const chatParticipants = await ChatParticipant.bulkCreate([
@@ -87,12 +88,13 @@ export async function assingChats() {
                     },
                 ]);
 
-                const chatGroupId = order.room.property.chats.filter((chat) => chat.type === "GROUP");
+                const chatGroupId = order.room.property.chat?.filter((chat) => chat.type === "GROUP");
 
                 if (!chatGroupId) {
                     const chatGroup = await Chat.create({
                         type: "GROUP",
-                        propertyId: order.room.propertyId,
+                        propertyId: order.propertyId,
+                        ownerId: order.ownerId,
                         isActive: true,
                     });
                     const chatParticipantGroup = await ChatParticipant.create({

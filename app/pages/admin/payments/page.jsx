@@ -5,9 +5,9 @@ import NavBar from "@/app/components/nav_bar/NavBar";
 export default function PaymentsPanelPage() {
   return (
     <>
-      <headear>
+      <header>
         <NavBar client={false} admin={true} owner={false} />
-      </headear>
+      </header>
       <PaymentHistoryPanel />
     </>
   );

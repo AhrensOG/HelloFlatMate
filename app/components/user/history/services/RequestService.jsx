@@ -33,12 +33,11 @@ export default function RequestService({ type, id }) {
   return (
     <AnimatePresence>
       <header>
-        {console.log(state.user)}
         <div className="relative h-[13.7rem] w-full">
           <Image
-            src={"/services/clean-stock-1.jpg"}
+            src={type === "CLEAN" ? "/services/clean-stock-2.jpg" : "/services/repair-stock-2.jpg"}
             fill
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            className="object-cover object-center"
             alt="Imagen-stock"
           />
         </div>

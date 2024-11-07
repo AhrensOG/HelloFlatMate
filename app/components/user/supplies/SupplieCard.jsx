@@ -9,8 +9,6 @@ const stripePromise = loadStripe(
 );
 
 export default function SupplieCard({ data, user }) {
-  console.log(data);
-  console.log(user);
   const formatedDate = (date) => {
     if (!date) {
       return;
@@ -72,7 +70,7 @@ export default function SupplieCard({ data, user }) {
   };
 
   return (
-    <article className="w-[19rem] flex flex-col gap-3 shadow-supplie-card rounded-lg p-4">
+    <article className="w-full max-w-xl flex flex-col gap-3 shadow-supplie-card rounded-lg p-4 border-2">
       <div className="flex gap-2 items-center">
         <div className=" flex justify-center items-center w-11 h-11 rounded-lg shadow-supplie-card bg-[#ECF0F3]">
           <Image
@@ -97,7 +95,7 @@ export default function SupplieCard({ data, user }) {
         <p>Fecha de pago: {formatedDate(data?.paymentDate) || "-"}</p>
       </div>
       <div className="flex justify-between items-center w-full">
-        <span className="text-[#4C5368] font-semibold text-base  border border-[#21ABCC] w-[3.7rem] h-9 rounded-2xl flex justify-center items-center">
+        <span className="text-[#4C5368] font-semibold text-base  border border-[#21ABCC] w-[6rem] h-9 rounded-2xl flex justify-center items-center">
           Є {data?.amount || ""}
         </span>
         {data?.status === "NOT_PAID" ? (

@@ -1,9 +1,7 @@
-import { ArrowLeftIcon, ChevronLeftIcon } from "@heroicons/react/20/solid";
+import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import SupplieCard from "./SupplieCard";
 import { useRouter } from "next/navigation";
 import { plus_jakarta } from "@/font";
-import { useContext } from "react";
-import { Context } from "@/app/context/GlobalContext";
 
 export default function Supplies({ data, user }) {
   const route = useRouter();
@@ -21,7 +19,7 @@ export default function Supplies({ data, user }) {
           Suministros
         </h1>
       </section>
-      <section className="flex flex-col p-2 gap-4 w-full items-center">
+      <section className="flex flex-col p-2 gap-4 w-full items-center sm:flex-row sm:flex-wrap sm:justify-evenly">
         {data && data.length > 0 ? (
           data.map((supplie) => (
             <SupplieCard key={supplie.id} data={supplie} user={user} />

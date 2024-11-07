@@ -45,7 +45,7 @@ export default function ReservationModal({
   const handleCheckout = async (reservation, user, leaseOrderId) => {
     const propertyId = reservation?.propertyId;
     const userEmail = user?.email;
-    const price = parseInt(reservation?.unitPrice * 100);
+    const price = parseInt(reservation?.unitPrice);
     const propertyName = reservation?.propertyName;
 
     try {
@@ -61,6 +61,7 @@ export default function ReservationModal({
           propertyName,
           leaseOrderId,
           roomId: reservation?.roomId || false,
+          category,
         }),
       });
       const session = await response.json();
@@ -78,7 +79,6 @@ export default function ReservationModal({
   };
 
   const handleSetDuration = (startDate, endDate, duration, rentalPeriodId) => {
-    console.log(startDate, endDate, duration);
     setInfo({
       startDate: startDate,
       endDate: endDate,
@@ -101,19 +101,18 @@ export default function ReservationModal({
       date: new Date().toISOString(),
       startDate: startDate,
       endDate: endDate,
-      price: price,
+      price: category === "HELLO_STUDIO" ? price : data.price,
       inReview: true,
     };
-    console.log(reservation);
-    
+
     setDataReservation(reservation);
 
     try {
       const response = await axios.post("/api/lease_order", reservation);
       if (
-        data.category === "HELLO_ROOM" ||
-        data.category === "HELLO_COLIVING" ||
-        data.category === "HELLO_LANDLORD"
+        category === "HELLO_ROOM" ||
+        category === "HELLO_COLIVING" ||
+        category === "HELLO_LANDLORD"
       ) {
         await axios.patch("/api/rental_period", {
           id: rentalPeriodId,
@@ -180,9 +179,7 @@ export default function ReservationModal({
             if (calendarType === "SIMPLE") {
               return (
                 <SelectRentalPeriod
-                  data={rentalPeriods.filter(
-                    (rental) => rental.isFree
-                  )}
+                  data={rentalPeriods.filter((rental) => rental.isFree)}
                   setData={handleSetDuration}
                   info={info}
                 />

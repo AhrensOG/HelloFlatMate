@@ -83,7 +83,6 @@ export default function LeaseOrderClientSection({
             )}
           </div>
         </div>
-        {console.log(contract)}
         <section className="bg-gray-100 rounded-lg shadow-md self-center w-full">
           <h2 className="text-xl font-bold text-gray-800 py-3">Contrato</h2>
           {contract && contract.url ? (

@@ -434,4 +434,5 @@ module.exports = {
     RentalPeriod,
     RentalItem,
     Worker,
+    RentPayment,
 };

@@ -58,10 +58,8 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
 
   const handleRentalItemChange = (event) => {
     const rentalItemId = event.target.value;
-    console.log(rentalItemId);
 
     const rentalItem = rentalItemsData.find((item) => item.id == rentalItemId);
-    console.log(rentalItem);
 
     setSelectedRentalItem(rentalItemId);
 
@@ -79,6 +77,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
 
     if (room) {
       setRentalItemsData(room.rentalItems || []);
+      setPrice(room.price || 0);
     } else {
       setRentalItemsData([]);
     }
@@ -100,6 +99,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
     setRoomsData(filteredRooms);
     if (property.category === "HELLO_STUDIO") {
       setRentalItemsData(property.rentalItems || []);
+      setPrice(property.price || 0);
     } else {
       setRentalItemsData([]);
     }
@@ -140,8 +140,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
         leaseOrderData.roomId = selectedRoom;
       }
 
-      const res = await axios.post("/api/lease_order", leaseOrderData);
-      console.log(res.data);
+      const res = await axios.post("/api/lease_order/manualCreate", leaseOrderData);
     } catch (error) {
       console.log(error);
     }
@@ -180,7 +179,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
 
   const handleSubmit = async () => {
     await createLeaseOrder();
-    await uploadedContract();
+    // await uploadedContract();
   };
 
   const clearForm = () => {
@@ -327,12 +326,12 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="Ingrese el precio"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300 number-input-no-appearance"
           />
         </div>
 
         {/* Input para subir el contrato */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Subir Contrato (PDF)
           </label>
@@ -342,7 +341,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
             onChange={(e) => setDocument(e.target.files[0])}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
           />
-        </div>
+        </div> */}
 
         <div className="flex justify-end">
           <button

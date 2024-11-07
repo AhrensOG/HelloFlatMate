@@ -98,8 +98,7 @@ export default function PropertyDetails({ params }) {
             </h4>
           </div>
           {data.price &&
-          (data.category === "HELLO_STUDIO" ||
-            data.category === "HELLO_LANDLORD") ? (
+          (data.category === "HELLO_STUDIO") ? (
             <PriceSection data={data.price} />
           ) : null}
           <div className="flex flex-col gap-6">
@@ -110,10 +109,6 @@ export default function PropertyDetails({ params }) {
                 { quantity: data.bed || "-", type: "Camas" },
               ]}
             />
-            {data.category === "HELLO_LANDLORD" &&
-              data.leaseOrdersProperty.length < 1 && (
-                <ReservationButton callback={handleShowModal} />
-              )}
             {data.category === "HELLO_STUDIO" && (
               <ReservationButton callback={handleShowModal} />
             )}
@@ -228,8 +223,7 @@ export default function PropertyDetails({ params }) {
               {data.city + ", " + data.street}
             </h4>
             {data.price &&
-            (data.category === "HELLO_STUDIO" ||
-              data.category === "HELLO_LANDLORD") ? (
+            (data.category === "HELLO_STUDIO") ? (
               <PriceSection data={data.price} />
             ) : null}
             <div className="flex flex-col gap-6">
@@ -240,10 +234,6 @@ export default function PropertyDetails({ params }) {
                   { quantity: data.bed || "-", type: "Camas" },
                 ]}
               />
-              {data.category === "HELLO_LANDLORD" &&
-                data.leaseOrdersProperty.length < 1 && (
-                  <ReservationButton callback={handleShowModal} />
-                )}
               {data.category === "HELLO_STUDIO" && (
                 <ReservationButton callback={handleShowModal} />
               )}

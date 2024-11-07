@@ -10,9 +10,9 @@ export default function AdminProfilePage() {
 
   return (
     <>
-      <headear>
+      <header>
         <NavBar client={false} admin={true} owner={false} />
-      </headear>
+      </header>
       <AdminProfile
         image={state?.user?.profilePicture || "/profile/profile.jfif"}
         name={state?.user?.name || "Usuario"}

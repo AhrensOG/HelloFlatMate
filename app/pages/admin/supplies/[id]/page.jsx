@@ -7,9 +7,9 @@ export default function SuppliesPanelPage({ params }) {
   const { id } = params;
   return (
     <>
-      <headear>
+      <header>
         <NavBar client={false} admin={true} owner={false} />
-      </headear>
+      </header>
       <SuppliesPanel propertyId={id} />
     </>
   );

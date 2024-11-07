@@ -4,6 +4,11 @@ import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { motion } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
+import {
+  ArrowDownTrayIcon,
+  EllipsisVerticalIcon,
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function DocumentsList({ action }) {
   const { state, dispatch } = useContext(Context);
@@ -35,19 +40,34 @@ export default function DocumentsList({ action }) {
           <ArrowLeftIcon />
         </button>
         <h1 className="font-semibold text-xl text-[#191B23] grow text-center ">
-          Documentos importantes
+          Mis documentos
         </h1>
       </div>
       <div className="flex flex-col gap-3 py-4 px-4 w-full">
         {user?.documents?.length > 0 ? (
           user?.documents?.map((doc) => {
+            // Verificar si doc.urls existe y tiene al menos una URL
             return (
-              <DocumentListItem
-                type={doc?.type === "IDENTIFICATION" ? "raw" : "pdf"}
-                title={doc?.name}
-                date={formatDate(doc?.updatedAt)}
-                status={doc?.status}
-              />
+              doc?.urls &&
+              doc?.urls.length > 0 &&
+              doc.urls.map((url, index) => (
+                <DocumentListItem
+                  key={index} // Añadir una key única por cada URL
+                  type={doc?.type === "IDENTIFICATION" ? "raw" : "pdf"}
+                  title={doc?.name}
+                  date={formatDate(doc?.updatedAt)}
+                  status={doc?.status}
+                  button={
+                    url ? (
+                      <Link target="_blank" href={url}>
+                        <ArrowDownTrayIcon className="w-6 h-6" />
+                      </Link>
+                    ) : (
+                      false
+                    )
+                  }
+                />
+              ))
             );
           })
         ) : (

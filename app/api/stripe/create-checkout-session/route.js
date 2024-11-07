@@ -5,8 +5,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
   try {
-    const { propertyId, userEmail, price, propertyName, leaseOrderId, roomId } =
-      await req.json();
+    const {
+      propertyId,
+      userEmail,
+      price,
+      propertyName,
+      leaseOrderId,
+      roomId,
+      category,
+    } = await req.json();
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -17,7 +24,7 @@ export async function POST(req) {
             product_data: {
               name: `Reserva de Habitación ${propertyName}`,
             },
-            unit_amount: price, // El precio debe ser en centavos (5000 = $50.00)
+            unit_amount: price * 100, // El precio debe ser en centavos (5000 = $50.00)
           },
           quantity: 1,
         },
@@ -32,7 +39,8 @@ export async function POST(req) {
         price,
         leaseOrderId,
         roomId,
-        paymentType: "reservation"
+        paymentType: "reservation",
+        category,
       },
     });
     return NextResponse.json({ id: session.id });

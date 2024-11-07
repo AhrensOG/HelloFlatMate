@@ -17,7 +17,6 @@ export default function SuppliesPage({ params }) {
       const result = supplies.filter((supply) => supply.propertyId == id);
       setSupplies(result);
     }
-    console.log(supplies)
   }, [state?.user]);
 
   if (!supplies) {
