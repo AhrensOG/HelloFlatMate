@@ -44,14 +44,22 @@ export const createContractPDF = async (
     const data = await uploadContractPDF(pdfBlob, fileName, "Contratos");
 
     if (data) {
-      const clientSignatureUpdate = await axios.patch('/api/user', { id: dataContract.clientId, signature: clientSignatureUrl })
-      const contract = await loadContract({ ownerId: dataContract.ownerId, clientId: dataContract.clientId, name: data.name, url: data.url, ...dataContract })
+      const clientSignatureUpdate = await axios.patch("/api/user", {
+        id: dataContract.clientId,
+        signature: clientSignatureUrl,
+      });
+      const contract = await loadContract({
+        ownerId: dataContract.ownerId,
+        clientId: dataContract.clientId,
+        name: data.name,
+        url: data.url,
+        ...dataContract,
+      });
     }
     return dispatch({
       type: "CONTRACT_PDF_DATA",
       payload: data,
     });
-
   } catch (error) {
     throw new Error("Internal Server Error: SAVE_USER_CONTRACT_INFORMATION");
   }
@@ -59,32 +67,59 @@ export const createContractPDF = async (
 
 export const getAllProperties = async (dispatch) => {
   try {
-    const properties = await axios.get("/api/property")
+    const properties = await axios.get("/api/property");
     return dispatch({
       type: "GET_ALL_PROPERTIES",
-      payload: properties.data
-    })
+      payload: properties.data,
+    });
   } catch (error) {
-    throw new Error({ message: "Internal Server Error: GET_ALL_PROPERTIES", error: error })
+    throw new Error({
+      message: "Internal Server Error: GET_ALL_PROPERTIES",
+      error: error,
+    });
   }
-}
+};
 
 export const saveToDos = (dispatch, toDos) => {
   return dispatch({
     type: "SAVE_TO_DOS",
-    payload: toDos
-  })
-}
+    payload: toDos,
+  });
+};
 
 const loadContract = async (data) => {
-  const res = await axios.post('/api/contract', data)
-  return res
-}
+  const res = await axios.post("/api/contract", data);
+  return res;
+};
+
+export const sendEmail = async (emailData) => {
+  try {
+    const { to, subject, text } = emailData;
+
+    // Verificar si faltan datos
+    if (!to || !subject || !text) {
+      throw new Error("Missing required email data (to, subject, text)");
+    }
+
+    // Realizar la solicitud POST al endpoint de envío de correos
+    await axios.post("/api/send-email", {
+      to,
+      subject,
+      text,
+    });
+  } catch (error) {
+    console.error("Error al enviar el correo:", error);
+    throw new Error({
+      message: "Internal Server Error: SEND_EMAIL",
+      error: error,
+    });
+  }
+};
 
 export const initialImageState = {
-  imageUrl: {}
-}
+  imageUrl: {},
+};
 
 export const initialUserState = {
-  user: {}
-}
+  user: {},
+};
