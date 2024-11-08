@@ -1,7 +1,6 @@
 import { Chat, ChatParticipant, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 import { sequelize } from "@/db/models/comment";
-import chat from "@/db/models/chat";
 
 export async function updateProperty(id, data) {
     if (!data) {
