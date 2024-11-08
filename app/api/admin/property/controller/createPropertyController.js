@@ -112,7 +112,6 @@ export async function createProperty(data) {
         if (property.ownerId) {
             const chatGroup = await Chat.create({
                 type: "GROUP",
-                propertyId: property.id,
                 ownerId: property.ownerId,
                 relatedId: property.id,
                 relatedType: "PROPERTY",
@@ -204,6 +203,22 @@ export async function cloneProperty(data) {
                         };
                     })
                 );
+            }
+
+            // Crear el grupo de chat si existe un propietario
+            if (property.ownerId) {
+                const chatGroup = await Chat.create({
+                    type: "GROUP",
+                    ownerId: property.ownerId,
+                    relatedId: property.id,
+                    relatedType: "PROPERTY",
+                });
+
+                await ChatParticipant.create({
+                    chatId: chatGroup.id,
+                    participantId: property.ownerId,
+                    participantType: "OWNER",
+                });
             }
 
             await transaction.commit();

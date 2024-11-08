@@ -28,11 +28,11 @@ const chatInit = (sequelize, DataTypes) => {
             },
             relatedType: {
                 type: DataTypes.ENUM("ROOM", "PROPERTY"),
-                allowNull: false,
+                allowNull: true,
             },
             relatedId: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
         },
         {
