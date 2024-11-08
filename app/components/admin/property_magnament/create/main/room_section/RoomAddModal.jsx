@@ -22,9 +22,9 @@ export default function RoomAddModal({
     numberBeds: "",
     bathroom: "",
     couple: "",
-    price: "",
-    amountHelloflatmate: "",
-    IVA: "", // Añadir este campo para el IVA
+    price: "0",
+    amountHelloflatmate: "0",
+    IVA: "0", // Añadir este campo para el IVA
     typology: "MIXED",
     tags: "",
     linkVideo: "",
