@@ -1,7 +1,6 @@
-import { Chat, ChatParticipant, Property, RentalItem, RentalPeriod } from "@/db/init";
+import { Chat, ChatParticipant, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 import { sequelize } from "@/db/models/comment";
-import chat from "@/db/models/chat";
 
 export async function updateProperty(id, data) {
     if (!data) {
@@ -39,11 +38,10 @@ export async function updateProperty(id, data) {
     });
 
     try {
-        const property = await Property.findByPk(id, { include: { model: Chat, as: "chat" } });
+        const property = await Property.findByPk(id, { include: [{ model: Chat, as: "chats" }, { model: Room, as: "rooms", include: {model: Chat, as: "chats"} }] });
         if (!property) {
             return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
         }
-
         // Crear nuevas fechas de alquiler
         if (data.newRentalPeriods?.length > 0) {
             const alreadyRentalItems= await RentalItem.findAll({
@@ -86,62 +84,67 @@ export async function updateProperty(id, data) {
             }));
         };
 
-        // Actualizar el propietario si es necesario
         if (data.ownerId && data.ownerId !== property.ownerId) {
-            await ChatParticipant.destroy({
-                where: {
-                    participantId: property.ownerId,
-                    chatId: property.chat?.id
+            // Verificar si la propiedad tiene chats
+            if (property.chats && property.chats.length > 0) {
+                const chatPromises = property.chats.map(async (chat) => {
+                    // Eliminar al antiguo propietario del chat
+                    await ChatParticipant.destroy({
+                        where: {
+                            participantId: chat.ownerId,
+                            chatId: chat.id,
+                        },
+                    });
+        
+                    // Agregar el nuevo propietario al chat
+                    await ChatParticipant.create({
+                        chatId: chat.id,
+                        participantId: data.ownerId,
+                        participantType: "OWNER",
+                    });
+        
+                    // Actualizar el ownerId del chat
+                    chat.ownerId = data.ownerId;
+                    await chat.save();
+                });
+        
+                // Ejecutar todas las promesas para modificar los chats
+                await Promise.all(chatPromises);
+            }
+        
+            // Verificar si la propiedad tiene cuartos
+            if (property.rooms && property.rooms.length > 0) {
+                const roomChatPromises = property.rooms.map(async (room) => {
+                if (room.chats && room.chats.length > 0) {
+                    const roomChats = room.chats.map(async (roomChat) => {
+                        // Eliminar al antiguo propietario del chat del room
+                        await ChatParticipant.destroy({
+                            where: {
+                                participantId: roomChat.ownerId,
+                                chatId: roomChat.id,
+                            },
+                        });
+
+                        // Agregar el nuevo propietario al chat del room
+                        await ChatParticipant.create({
+                            chatId: roomChat.id,
+                            participantId: data.ownerId,
+                            participantType: "OWNER",
+                        });
+
+                        // Actualizar el ownerId del chat del room
+                        roomChat.ownerId = data.ownerId;
+                        await roomChat.save();
+                    });
+                    return Promise.all(roomChats);
                 }
             });
-
-            await ChatParticipant.create({
-                chatId: property.chat?.id,
-                participantId: data.ownerId,
-                participantType: "OWNER"
-            });
-
-            const chat = await Chat.findByPk(property.chat?.id);
-            if (chat) {
-                chat.ownerId = data.ownerId;
-                await chat.save();
-            }
-
-            // Buscar todos los chats de tipo PRIVATE que pertenezcan al antiguo ownerId
-            const privateChats = await Chat.findAll({
-                where: {
-                    ownerId: property.ownerId,  // Antiguo ownerId
-                    type: 'PRIVATE'
-                },
-                attributes: ['id']  // Solo necesitamos los IDs de los chats
-            });
-
-            // Obtener los IDs de esos chats
-            const privateChatIds = privateChats.map(chat => chat.id);
-
-            if (privateChatIds.length > 0) {
-                // Actualizar el participantId en ChatParticipant donde participantType sea OWNER
-                await ChatParticipant.update(
-                    { participantId: data.ownerId },  // Nuevo ownerId
-                    {
-                        where: {
-                            chatId: privateChatIds,      // Solo los chats encontrados
-                            participantType: "OWNER"     // Solo para el tipo OWNER
-                        }
-                    }
-                );
-
-                // Actualizar también el ownerId en los chats encontrados
-                await Chat.update(
-                    { ownerId: data.ownerId },  // Nuevo ownerId
-                    {
-                        where: {
-                            id: privateChatIds  // Solo los chats encontrados
-                        }
-                    }
-                );
+        
+            // Ejecutar todas las promesas para los chats de las rooms
+            await Promise.all(roomChatPromises);
             }
         }
+        
 
         // Actualizar la propiedad y establecer isActive en función de si está completa o no
         await property.update({ ...data, isActive: isComplete });

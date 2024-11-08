@@ -116,7 +116,8 @@ const CategorySelector = ({
       // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
       if (
         propiedad.category === "HELLO_ROOM" ||
-        propiedad.category === "HELLO_COLIVING"
+        propiedad.category === "HELLO_COLIVING" ||
+        propiedad.category === "HELLO_LANDLORD"
       ) {
         // Acceder al array rooms y mapear sobre él
         propiedad.rooms.forEach((room) => {
@@ -379,7 +380,8 @@ const CategorySelector = ({
               // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
               if (
                 item.category === "HELLO_ROOM" ||
-                item.category === "HELLO_COLIVING"
+                item.category === "HELLO_COLIVING" ||
+                item.category === "HELLO_LANDLORD"
               ) {
                 return (
                   item.rooms
