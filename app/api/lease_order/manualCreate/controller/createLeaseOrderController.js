@@ -22,7 +22,7 @@ export async function createLeasePropertyOrder(data) {
                 },
                 {
                     model: Chat,
-                    as: "chat",
+                    as: "chats",
                 },
             ],
         });
@@ -77,12 +77,13 @@ export async function createLeasePropertyOrder(data) {
             relatedId: property.id,
             relatedType: "PROPERTY",
         });
-        if (property.chat) {
-            const chatGroup = property.chat.find((chat) => chat.type === "GROUP");
+        if (property.chats && property.chats.length > 0) {
+            const chatGroup = property.chats.find((chat) => chat.type === "GROUP");
+            
             if (chatGroup) {
                 await ChatParticipant.create({
                     participantId: data.clientId,
-                    chatId: property.chat.id,
+                    chatId: chatGroup.id, // Usamos el id del chat de tipo GROUP
                     participantType: "CLIENT",
                 });
             }
@@ -114,7 +115,7 @@ export async function createLeaseRoomOrder(data) {
                 },
                 {
                     model: Chat,
-                    as: "chat",
+                    as: "chats",
                 },
             ],
         });
@@ -155,12 +156,13 @@ export async function createLeaseRoomOrder(data) {
             relatedType: "ROOM",
         });
 
-        if (property.chat) {
-            const chatGroup = property.chat.find((chat) => chat.type === "GROUP");
+        if (property.chats && property.chats.length > 0) {
+            const chatGroup = property.chats.find((chat) => chat.type === "GROUP");
+            
             if (chatGroup) {
                 await ChatParticipant.create({
                     participantId: data.clientId,
-                    chatId: property.chat.id,
+                    chatId: chatGroup.id, // Usamos el id del chat de tipo GROUP
                     participantType: "CLIENT",
                 });
             }

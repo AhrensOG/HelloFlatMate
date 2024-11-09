@@ -259,7 +259,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       }
       //UpdateRooms
       try {
-        if (category === "HELLO_STUDIO" || category === "HELLO_LANDLORD") {
+        if (category === "HELLO_STUDIO") {
           const roomsUpdate = dataRooms.map((room) => {
             return {
               ...room,

@@ -34,7 +34,7 @@ export async function createPrivateChat(data) {
             return NextResponse.json({ error: "Receiver not found" }, { status: 404 });
         }
 
-        const chat = await Chat.create({ type: data.type, ownerId: owner.id }, { transaction });
+        const chat = await Chat.create({ type: data.type, ownerId: owner.id, relatedType: data.relatedType, relatedId: data.relatedId }, { transaction });
 
         await ChatParticipant.bulkCreate(
             [
