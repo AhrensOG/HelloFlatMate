@@ -13,7 +13,7 @@ function decodeToken(encodedToken) {
 }
 
 export async function middleware(request) {
-    const cookieStore = cookies(); // Usa cookies() para acceder a las cookies
+    const cookieStore = await cookies(); // Usa cookies() para acceder a las cookies
     const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
     const allowedPaths = [
