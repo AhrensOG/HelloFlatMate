@@ -13,17 +13,17 @@ const ChatSection = () => {
         />
         <ChatCard
           link="/pages/user/chats/chat"
-          image="/profile/profile.jpg"
+          image="/profile/profile.png"
           title="Tobi Lateef"
         />
         <ChatCard
           link="/pages/user/chats/chat"
-          image="/profile/profile.jpg"
+          image="/profile/profile.png"
           title="Queen Needle"
         />
         <ChatCard
           link="/pages/user/chats/chat"
-          image="/profile/profile.jpg"
+          image="/profile/profile.png"
           title="Joan Blessing"
         />
       </div>
