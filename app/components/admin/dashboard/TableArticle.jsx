@@ -337,9 +337,11 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                   <td className="px-4 py-4 text-center text-sm border-r">
                     {item.bathrooms}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
-                    {item.owner?.email}
-                  </td>
+                  {role === "ADMIN" && (
+                    <td className="px-4 py-4 text-center text-sm border-r">
+                      {item.owner?.email}
+                    </td>
+                  )}
                   {role === "ADMIN" && (
                     <td className="px-4 py-4 text-center">
                       <div className="flex gap-6 items-center justify-center">

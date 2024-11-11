@@ -6,36 +6,33 @@ const TenantCard = ({
   name = "Briana González",
   location = "Villa Edén",
   action,
-  image = "/profile/profile.jpg",
-  link = "/pages/owner/my-tenants/detail",
+  image = false,
 }) => {
+  console.log(image);
   return (
-    <div className="w-full p-2 rounded-lg flex justify-between items-center gap-2 shadow-profile shadow-black/40">
-      <div className="h-16 w-16 min-w-16 rounded-full relative bg-[#875252]">
-        <Image
-          className="rounded-full"
-          src={image}
-          fill
-          alt="Ilustracion de perfil"
-          objectPosition="top"
-          style={{ objectFit: "cover" }}
-        />
-      </div>
-      <div>
-        <h1 className="font-bold text-base">{name}</h1>
-        <span>{location}</span>
+    <div className="w-full p-2 rounded-lg flex justify-between items-center gap-2 shadow-profile shadow-black/40 border-2">
+      <div className="w-full flex justify-start items-center gap-4">
+        <div className="h-16 w-16 min-w-16 rounded-full relative">
+          <Image
+            className="rounded-full"
+            src={image || "/profile/profile.png"}
+            fill
+            alt="Ilustracion de perfil"
+            style={{ objectFit: "cover", objectPosition: "top" }}
+          />
+        </div>
+        <div>
+          <h1 className="font-bold text-base">{name}</h1>
+          <span>{location}</span>
+        </div>
       </div>
       <div className="w-full max-w-20 flex flex-col justify-between items-center gap-2">
-        <Link href={link} className="w-full">
-          <button className="bg-resolution-blue border border-resolution-blue text-sm text-white font-light w-full p-1 rounded-lg">
-            Detalles
-          </button>
-        </Link>
-        <Link href={link} className="w-full">
-          <button className="bg-white border border-resolution-blue text-sm text-black font-light w-full p-1 rounded-lg">
-            Contactar
-          </button>
-        </Link>
+        <button
+          onClick={action}
+          className="bg-resolution-blue border border-resolution-blue text-sm text-white font-light w-full p-1 rounded-lg"
+        >
+          Detalles
+        </button>
       </div>
     </div>
   );

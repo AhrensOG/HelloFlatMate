@@ -54,7 +54,7 @@ export default function Profile() {
                 transition={{ duration: 0.8 }}
               >
                 <ProfileCard
-                  image={state?.user?.profilePicture || "/profile/profile.jpg"}
+                  image={state?.user?.profilePicture || "/profile/profile.png"}
                   name={state?.user?.name || "Usuario"}
                   email={state?.user?.email || "Correo@gmail.com"}
                   action={handlerShowInfo}
@@ -64,7 +64,7 @@ export default function Profile() {
               </motion.div>
             ) : (
               <ProfileInfo
-                image={state?.user?.profilePicture || "/profile/profile.jpg"}
+                image={state?.user?.profilePicture || "/profile/profile.png"}
                 name={state?.user?.name || "Usuario"}
                 lastName={state?.user?.lasName || "Usuario"}
                 email={state?.user?.email || "Correo@gmail.com"}

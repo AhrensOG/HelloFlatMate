@@ -17,7 +17,7 @@ export default function PropertiesPanel({ data , role }) {
         Nueva Propiedad
       </Link>
       )}
-      {data.properties?.length > 0 && (
+      {data.properties?.length > 0 && role === "ADMIN" && (
         <TableArticle data={data} />)}
       {data.properties?.length > 0 && role === "OWNER" &&(
         <TableArticle data={data} role={role}/>
