@@ -151,19 +151,19 @@ export default function TableArticle({ data, role = "ADMIN" }) {
           <>
             <button
               onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
-              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+              className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
             >
               Periodo de alquiler
             </button>
             <button
               onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
-              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+              className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
             >
-              Orden de alquiler
+              Crear orden de alquiler
             </button>
             <Link
               href={"/pages/admin/create"}
-              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+              className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
             >
               Nueva Propiedad
             </Link>
@@ -174,12 +174,12 @@ export default function TableArticle({ data, role = "ADMIN" }) {
           className={
             role === "OWNER"
               ? "relative flex-grow max-w-[40rem] w-full self-center flex justify-center"
-              : "relative flex-grow max-w-[12rem] w-full"
+              : "relative flex-grow max-w-[16rem] w-full"
           }
         >
           <input
             type="text"
-            placeholder="Buscar por nombre, código o ubicación..."
+            placeholder="Nombre, código o ubicación..."
             className="p-2 pl-10 border border-gray-300 rounded w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
