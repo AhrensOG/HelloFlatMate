@@ -235,46 +235,46 @@ export default function TableArticle({ data, role = "ADMIN" }) {
         <table className="relative min-w-full bg-white rounded-lg shadow-lg">
           <thead className="bg-[#0e1863ff] text-white sticky top-0 z-10">
             <tr>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Código
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Nombre
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Categoría
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Estado
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Dirección
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Código Postal
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Zona
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Tipología
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
-                Superficie M2
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
+                Área (m²)
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Habitaciones
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Baños
               </th>
               {role === "ADMIN" && (
-                <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                   Propietario
                 </th>
               )}
               {role === "ADMIN" && (
-                <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                   Acciones
                 </th>
               )}
@@ -289,10 +289,10 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                     role === "ADMIN"
                       ? `${
                           index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                        } hover:bg-blue-50 transition-colors duration-300 ease-in-out`
+                        } hover:bg-blue-100 transition-colors duration-300 ease-in-out`
                       : `${
                           index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                        } hover:bg-blue-50 transition-colors duration-300 ease-in-out cursor-pointer`
+                        } hover:bg-blue-100 transition-colors duration-300 ease-in-out cursor-pointer`
                   }
                   onClick={
                     role === "OWNER"
@@ -300,26 +300,26 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                       : null
                   }
                 >
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.serial}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.name}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.category.replace(/_/g, "").toLowerCase()}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.status}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">{`${item.street} ${item.streetNumber}, ${item.city}`}</td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">{`${item.street} ${item.streetNumber}, ${item.city}`}</td>
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.postalCode}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.zone}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.typology
                       ? item.typology === "ONLY_MEN"
                         ? "Solo hombres"
@@ -328,23 +328,23 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                         : "Mixto"
                       : ""}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.size}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.rooms?.length || 0}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.bathrooms}
                   </td>
                   {role === "ADMIN" && (
-                    <td className="px-4 py-4 text-center text-sm border-r">
+                    <td className="px-1.5 py-2 text-center text-xs border-r">
                       {item.owner?.email}
                     </td>
                   )}
                   {role === "ADMIN" && (
-                    <td className="px-4 py-4 text-center">
-                      <div className="flex gap-6 items-center justify-center">
+                    <td className="px-1.5 py-2 text-center">
+                      <div className="flex gap-4 items-center justify-center">
                         {/* Botón de Activar/Desactivar */}
                         <div className="relative group inline-block">
                           <button
@@ -382,7 +382,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                             )}
                           </button>
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             {item.isActive ? "Desactivar" : "Activar"}
                           </span>
                         </div>
@@ -401,7 +401,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                             <PencilIcon className="w-5 h-5" />
                           </button>
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             Editar
                           </span>
                         </div>
@@ -447,7 +447,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                           </button>
 
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             Eliminar
                           </span>
                         </div>
@@ -464,7 +464,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                             <DocumentMagnifyingGlassIcon className="w-5 h-5" />
                           </button>
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             Ver Órdenes
                           </span>
                         </div>
