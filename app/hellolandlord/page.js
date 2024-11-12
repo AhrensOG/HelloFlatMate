@@ -43,7 +43,7 @@ export default function HelloLandlord() {
 
   const filterByCategory = (properties) => {
     return properties.filter(
-      (property) => property.category === "HELLO_STUDIO"
+      (property) => property.category === "HELLO_LANDLORD"
     );
   };
 
