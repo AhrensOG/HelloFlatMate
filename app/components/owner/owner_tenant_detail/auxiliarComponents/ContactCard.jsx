@@ -26,7 +26,6 @@ const ContactCard = ({
           src={image || "/profile/profile.png"}
           fill
           alt="Ilustración de perfil"
-          objectPosition="top"
           style={{ objectFit: "cover" }}
         />
       </div>
