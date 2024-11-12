@@ -6,7 +6,7 @@ export async function createSupply(data) {
     if (!data.title || data.title.trim() === "") return NextResponse.json({ error: "No title provided" }, { status: 400 });
     if (!data.amount || data.amount <= 0) return NextResponse.json({ error: "Invalid amount provided" }, { status: 400 });
     if (!data.propertyId || data.propertyId <= 0) return NextResponse.json({ error: "No property id provided" }, { status: 400 });
-    if (!data.typeSupply || data.typeSupply !== "EXPENSES" && data.typeSupply !== "WATER" && data.typeSupply !== "GAS" && data.typeSupply !== "ELECTRICITY" && data.typeSupply !== "INTERNET") return NextResponse.json({ error: "Invalid type provided" }, { status: 400 });
+    if (!data.typeSupply || (data.typeSupply !== "EXPENSES" && data.typeSupply !== "WATER" && data.typeSupply !== "GAS" && data.typeSupply !== "ELECTRICITY" && data.typeSupply !== "INTERNET" && data.typeSupply !== "OTHERS")) return NextResponse.json({ error: "Invalid type provided" }, { status: 400 });
     if (!data.expirationDate) return NextResponse.json({ error: "No expiration date provided" }, { status: 400 });
 
     try {
@@ -39,7 +39,7 @@ export async function createSupply(data) {
 
         let supplies = [];
 
-        if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING") {
+        if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
             const clients = property.rooms.flatMap(room =>
                 room.leaseOrdersRoom
                     .filter(leaseOrder => leaseOrder.isActive)

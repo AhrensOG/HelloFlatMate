@@ -40,6 +40,7 @@ const MyTenantsPage = () => {
                 streetNumber: property.streetNumber,
                 city: property.city,
                 category: property.category,
+                propertyId: property.id,
               })
             );
 
@@ -64,13 +65,13 @@ const MyTenantsPage = () => {
                 streetNumber: property.streetNumber,
                 city: property.city,
                 category: property.category,
+                propertyId: property.id,
               }))
             );
 
             // Combinamos los dos arrays (lease orders de la propiedad y de las habitaciones)
             return [...propertyLeaseOrders, ...roomLeaseOrders];
           });
-          console.log(mappedTenants);
           setTenantsData(mappedTenants);
         } catch (error) {
           console.error("Error al obtener los inquilinos:", error);
@@ -80,6 +81,19 @@ const MyTenantsPage = () => {
 
     fetchTenants();
   }, [state.user]);
+
+  if (!tenantsData || tenantsData.length <= 0) {
+    return (
+      <div className="flex flex-col">
+        <header>
+          <NavBar client={false} admin={false} owner={true} />
+        </header>
+        <main className="grow w-full">
+          {/* <OwnerTenants data={tenantsData} /> */}
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col">

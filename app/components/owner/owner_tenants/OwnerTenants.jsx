@@ -11,6 +11,7 @@ const OwnerTenants = ({ data = false }) => {
   const handleOpenModal = (tenant) => {
     setSelectedTenant(tenant);
     setIsModalOpen(true);
+    console.log(tenant);
   };
 
   const handleCloseModal = () => {
@@ -19,61 +20,61 @@ const OwnerTenants = ({ data = false }) => {
   };
 
   return (
-    <section className="w-full flex flex-col justify-center items-center">
-      <div className="w-full max-w-screen-xl flex flex-col justify-start items-center p-4 space-y-6">
-        <div className="w-full flex justify-start items-center gap-6">
-          <TitleAdminPanel title={"Mis inquilinos"} />
-        </div>
-        <div className="w-full max-w-screen-md flex flex-grow flex-col justify-start items-center gap-4">
-          {data &&
-            data.map((tenant) => {
-              const name = `${tenant.name} ${tenant.lastName}`;
-              const location = `${tenant.street} ${tenant.streetNumber}, ${tenant.city}`;
-              const image =
-                tenant.profilePicture === "" || !tenant.profilePicture
-                  ? false
-                  : tenant.profilePicture;
+    <section className="w-full flex justify-center items-center relative">
+      <AnimatePresence>
+        {!isModalOpen && (
+          <motion.div
+            initial={{ x: "110%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.25 }}
+            className="w-full absolute top-0 max-w-screen-xl flex flex-col justify-start items-center p-4 space-y-6"
+          >
+            <div className="w-full flex justify-start items-center gap-6">
+              <TitleAdminPanel title={"Mis inquilinos"} />
+            </div>
+            <div className="w-full max-w-screen-md flex flex-grow flex-col justify-start items-center gap-4">
+              {data &&
+                data.map((tenant) => {
+                  const name = `${tenant.name} ${tenant.lastName}`;
+                  const location = `${tenant.street} ${tenant.streetNumber}, ${tenant.city}`;
+                  const image =
+                    tenant.profilePicture === "" || !tenant.profilePicture
+                      ? false
+                      : tenant.profilePicture;
 
-              return (
-                <TenantCard
-                  key={tenant.tenantId}
-                  name={name}
-                  location={location}
-                  image={image}
-                  action={() => handleOpenModal(tenant)}
-                />
-              );
-            })}
-        </div>
-      </div>
+                  return (
+                    <TenantCard
+                      key={tenant.tenantId}
+                      name={name}
+                      location={location}
+                      image={image}
+                      action={() => handleOpenModal(tenant)}
+                    />
+                  );
+                })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {isModalOpen && (
-          <>
-            <motion.div
-              key="background"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-40 bg-black bg-opacity-50 h-screen"
-            />
-            <motion.div
-              key="details"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="z-50 fixed top-0 flex items-center justify-center p-4 w-full overflow-hidden h-screen"
-            >
-              <div className="bg-white rounded-lg max-w-xl w-full relative flex justify-center items-center h-auto">
-                <OwnerTenantDetail
-                  tenant={selectedTenant}
-                  action={handleCloseModal}
-                />
-              </div>
-            </motion.div>
-          </>
+          <motion.div
+            key="details"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.25 }}
+            className="flex items-start justify-center w-full"
+          >
+            <div className="bg-white absolute top-0 rounded-lg w-full flex justify-center items-center">
+              <OwnerTenantDetail
+                tenant={selectedTenant}
+                action={handleCloseModal}
+              />
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </section>

@@ -8,7 +8,6 @@ const TenantCard = ({
   action,
   image = false,
 }) => {
-  console.log(image);
   return (
     <div className="w-full p-2 rounded-lg flex justify-between items-center gap-2 shadow-profile shadow-black/40 border-2">
       <div className="w-full flex justify-start items-center gap-4">
