@@ -84,19 +84,19 @@ const MyTenantsPage = () => {
 
   if (!tenantsData || tenantsData.length <= 0) {
     return (
-      <div className="flex flex-col">
+      <div className="h-screen flex flex-col w-full">
         <header>
-          <NavBar client={false} admin={false} owner={true} />
+          <NavBar client={true} admin={false} owner={false} />
         </header>
-        <main className="grow w-full">
-          {/* <OwnerTenants data={tenantsData} /> */}
-        </main>
+        <div className="flex items-center justify-center grow">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-x-hidden h-screen">
       <header>
         <NavBar client={false} admin={false} owner={true} />
       </header>

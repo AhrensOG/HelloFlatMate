@@ -74,13 +74,15 @@ const OwnerTenantDetail = ({ tenant, action }) => {
           />
           <StaySection tenant={tenant} />
         </div>
-        <TransactionSection />
-        <button
-          onClick={openModal}
-          className="w-full p-3 text-lg text-white bg-resolution-blue rounded-lg"
-        >
-          Solicitar Pago
-        </button>
+        <TransactionSection id={tenant.tenantId} />
+        {tenant.category === "HELLO_LANDLORD" && (
+          <button
+            onClick={openModal}
+            className="w-full p-3 text-lg text-white bg-resolution-blue rounded-lg"
+          >
+            Solicitar Pago
+          </button>
+        )}
       </div>
 
       <AnimatePresence>
