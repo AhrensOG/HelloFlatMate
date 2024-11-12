@@ -19,20 +19,20 @@ const list = [
   {
     img: "/home/hellocolivingIcon.png",
     title: "Aprende sobre hellocoliving",
-    section: false,
+    section: "hellocoliving",
     description:
       "Nuestros acogedores y modernos alojamientos hellocoliving están diseñados específicamente para nómadas digitales que buscan un espacio listo para habitar desde el primer momento.",
   },
   {
     img: "/home/hellolandlordIcon.png",
     title: "Visita nuestros hellolandlord",
-    section: false,
+    section: "hellolandlord",
     description:
       "Nuestras hellolandlord son habitaciones gestionadas por propietarios de confianza, diseñadas para estudiantes nacionales e internacionales que buscan un espacio listo para habitar al llegar a Valencia por menos de un año.",
   },
 ];
 
-const StayWithUs = ({ setActiveSection }) => {
+const StayWithUs = () => {
   return (
     <div className="p-2 flex flex-col justify-center items-center gap-4 py-20 pt-10">
       <div className="flex flex-col justify-center items-start gap-10 max-w-screen-lg w-full">
@@ -48,7 +48,6 @@ const StayWithUs = ({ setActiveSection }) => {
                 description={item.description}
                 key={item.title}
                 section={item.section}
-                setActiveSection={setActiveSection}
               />
             );
           })}

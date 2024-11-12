@@ -152,7 +152,7 @@ export default function Home() {
           <OffersSection />
           <CommunitySection />
           <FamilySection />
-          <StayWithUs setActiveSection={setActiveSection} />
+          <StayWithUs />
           <PropertySlider data={properties} />
           <MapSection />
         </div>
