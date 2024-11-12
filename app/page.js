@@ -144,20 +144,17 @@ export default function Home() {
     <div>
       <div className="flex flex-col sm:min-h-screen">
         <header>
-          <HomeNavBar
-            setActiveSection={setActiveSection}
-            activeSection={activeSection}
-          />
+          <HomeNavBar activeSection={"inicio"}/>
         </header>
 
         {/* Sección activa controlada por el estado */}
         {activeSection === "inicio" && (
           <div className="w-full flex flex-col">
-            <DesktopHero img="https://www.youtube.com/watch?v=ie78B4HShZ0"/>
+            <DesktopHero img="https://www.youtube.com/watch?v=ie78B4HShZ0" />
             <OffersSection />
             <CommunitySection />
             <FamilySection />
-            <StayWithUs setActiveSection={setActiveSection}/>
+            <StayWithUs setActiveSection={setActiveSection} />
             <PropertySlider data={properties} />
             <MapSection />
           </div>

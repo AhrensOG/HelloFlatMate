@@ -40,8 +40,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
 
         {/* Segunda fila - Navegación */}
         <div className="w-full h-10 flex flex-wrap items-center justify-start gap-1">
-          <button
-            onClick={() => setActiveSection("inicio")}
+          <Link
+            href={"/"}
+            // onClick={() => setActiveSection("inicio")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "inicio"
                 ? "font-bold bg-slate-100"
@@ -49,10 +50,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             Inicio
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_ROOM"}
-            onClick={() => setActiveSection("helloroom")}
+          </Link>
+          <Link
+            href={"/helloroom"}
+            // onClick={() => setActiveSection("helloroom")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -60,10 +61,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_STUDIO"}
-            onClick={() => setActiveSection("hellostudio")}
+          </Link>
+          <Link
+            href={"/hellostudio"}
+            // onClick={() => setActiveSection("hellostudio")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellostudio"
                 ? "font-bold bg-slate-100"
@@ -71,9 +72,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellostudio
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_COLIVING"}
+          </Link>
+          <Link
+            href={"/hellocoliving"}
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
@@ -82,9 +83,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellocoliving
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+          </Link>
+          <Link
+            href={"/hellolandlord"}
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
@@ -93,7 +94,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -142,8 +143,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
         </div>
 
         <div className="w-full h-16 flex items-center justify-start gap-3 md:gap-4 px-4 md:px-6">
-          <button
-            onClick={() => setActiveSection("inicio")}
+          <Link
+            href={"/"}
+            // onClick={() => setActiveSection("inicio")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "inicio"
                 ? "font-bold bg-slate-100"
@@ -151,10 +153,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             Inicio
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_ROOM"}
-            onClick={() => setActiveSection("helloroom")}
+          </Link>
+          <Link
+            href={"/helloroom"}
+            // onClick={() => setActiveSection("helloroom")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -162,10 +164,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_STUDIO"}
-            onClick={() => setActiveSection("hellostudio")}
+          </Link>
+          <Link
+            href={"/hellostudio"}
+            // onClick={() => setActiveSection("hellostudio")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellostudio"
                 ? "font-bold bg-slate-100"
@@ -173,9 +175,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellostudio
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_COLIVING"}
+          </Link>
+          <Link
+            href={"/hellocoliving"}
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
@@ -184,9 +186,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellocoliving
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+          </Link>
+          <Link
+            href={"/hellolandlord"}
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
@@ -195,7 +197,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </button>
+          </Link>
         </div>
       </div>
     </nav>
