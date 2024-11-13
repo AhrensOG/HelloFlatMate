@@ -16,8 +16,9 @@ export default function OffersSection({
             src="/home/gif.gif"
             alt="Ofertas en habitaciones"
             fill
-            objectFit="cover"
+            className="object-cover object-center"
             quality={100}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
 
