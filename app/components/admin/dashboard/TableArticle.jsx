@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import CreateLeaseOrderModal from "../create_lo_modal/CreateLeaseOrderModal";
 import AddRentalPeriodsModal from "../properties_panel/rental_periods/AddRentalPeriodsModal";
+import LeaseOrdersListModal from "../create_lo_modal/LeaseOrdersListModal";
 
 export default function TableArticle({ data, role = "ADMIN" }) {
   const router = useRouter();
@@ -23,6 +24,8 @@ export default function TableArticle({ data, role = "ADMIN" }) {
   const [filteredData, setFilteredData] = useState(data.properties); // Estado para los datos filtrados
   const [alphabeticalOrder, setAlphabeticalOrder] = useState(true); // Estado para el orden alfabético
   const [showLeaseOrderModal, setShowLeaseOrderModal] = useState(false);
+  const [showLeaseOrdersListModal, setShowLeaseOrdersListModal] =
+    useState(false);
   const [showRentalPeriodModal, setShowRentalPeriodModal] = useState(false);
 
   const categories = [
@@ -147,57 +150,67 @@ export default function TableArticle({ data, role = "ADMIN" }) {
             : "flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4"
         }
       >
-        {role === "ADMIN" && (
-          <>
-            <button
-              onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
-              className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+        <div className="flex flex-col justify-center items-center gap-2 w-full">
+          <div className="flex justify-center items-center gap-2 w-full">
+            <div
+              className={
+                role === "OWNER"
+                  ? "relative flex-grow max-w-[40rem] w-full self-center flex justify-center"
+                  : "relative flex-grow max-w-[22rem] w-full"
+              }
             >
-              Periodo de alquiler
-            </button>
-            <button
-              onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
-              className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
-            >
-              Crear orden de alquiler
-            </button>
-            <Link
-              href={"/pages/admin/create"}
-              className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
-            >
-              Nueva Propiedad
-            </Link>
-          </>
-        )}
-        {/* Search bar con ícono de lupa */}
-        <div
-          className={
-            role === "OWNER"
-              ? "relative flex-grow max-w-[40rem] w-full self-center flex justify-center"
-              : "relative flex-grow max-w-[16rem] w-full"
-          }
-        >
-          <input
-            type="text"
-            placeholder="Nombre, código o ubicación..."
-            className="p-2 pl-10 border border-gray-300 rounded w-full"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {/* Ícono de lupa dentro del input */}
-          <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Nombre, código o ubicación..."
+                className="p-2 pl-10 border border-gray-300 rounded w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {/* Ícono de lupa dentro del input */}
+              <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
+            {role === "ADMIN" && (
+              // Botón de orden alfabético
+              <button
+                onClick={toggleAlphabeticalOrder}
+                className="p-2 bg-blue-500 text-white rounded"
+              >
+                {alphabeticalOrder ? "A → Z" : "Z → A"}
+              </button>
+            )}
+          </div>
+          {/* Search bar con ícono de lupa */}
+          {role === "ADMIN" && (
+            <div className="w-full flex flex-wrap justify-center items-center gap-2">
+              <button
+                onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Periodo de alquiler
+              </button>
+              <button
+                onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Crear orden de alquiler
+              </button>
+              <button
+                onClick={() =>
+                  setShowLeaseOrdersListModal(!showLeaseOrdersListModal)
+                }
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Ordenes de alquiler
+              </button>
+              <Link
+                href={"/pages/admin/create"}
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Nueva Propiedad
+              </Link>
+            </div>
+          )}
         </div>
-        {role === "ADMIN" && (
-          <>
-            {/* Botón de orden alfabético */}
-            <button
-              onClick={toggleAlphabeticalOrder}
-              className="p-2 bg-blue-500 text-white rounded"
-            >
-              {alphabeticalOrder ? "A → Z" : "Z → A"}
-            </button>
-          </>
-        )}
       </div>
       {/* Category filters */} {/* Status filters */}
       <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
@@ -486,6 +499,11 @@ export default function TableArticle({ data, role = "ADMIN" }) {
           </tbody>
         </table>
       </div>
+      {showLeaseOrdersListModal && (
+        <LeaseOrdersListModal
+          onClose={() => setShowLeaseOrdersListModal(false)}
+        />
+      )}
       {showLeaseOrderModal && (
         <CreateLeaseOrderModal
           data={data}
