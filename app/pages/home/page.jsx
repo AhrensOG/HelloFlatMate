@@ -1,5 +1,6 @@
 "use client";
 import NavBar from "@/app/components/nav_bar/NavBar";
+import BotIcon from "@/app/components/public/chat-bot/BotIcon";
 import FeaturedSection from "@/app/components/user/home/FeaturedSection";
 import Hero from "@/app/components/user/home/Hero";
 import PromotionSection from "@/app/components/user/home/PromotionSection";

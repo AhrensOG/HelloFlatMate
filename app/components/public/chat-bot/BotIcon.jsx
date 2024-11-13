@@ -11,7 +11,7 @@ export default function BotIcon() {
     };
 
     return (
-        <div className="fixed bottom-10 right-10 flex items-center justify-center">
+        <div className="fixed bottom-10 right-10 flex items-center justify-center z-50">
             <button
                 onClick={handleOpen}
                 className="h-16 w-16 rounded-full flex items-center justify-center"
