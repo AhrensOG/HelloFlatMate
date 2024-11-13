@@ -133,7 +133,17 @@ export default function AddRentalPeriodsModal({ onClose }) {
                     </span>
                     <button
                       className="text-red-500 hover:text-red-700"
-                      onClick={() => handleDeleteOldPeriods(period.id)}
+                      onClick={() =>
+                        toast(
+                          "¿Estás seguro de que deseas borrar este periodo?",
+                          {
+                            action: {
+                              label: "Confirmar",
+                              onClick: () => handleDeleteOldPeriods(period.id),
+                            },
+                          }
+                        )
+                      }
                     >
                       Borrar
                     </button>

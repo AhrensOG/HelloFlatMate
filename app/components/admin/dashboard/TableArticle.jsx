@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import CreateLeaseOrderModal from "../create_lo_modal/CreateLeaseOrderModal";
 import AddRentalPeriodsModal from "../properties_panel/rental_periods/AddRentalPeriodsModal";
+import LeaseOrdersListModal from "../create_lo_modal/LeaseOrdersListModal";
 
 export default function TableArticle({ data, role = "ADMIN" }) {
   const router = useRouter();
@@ -23,6 +24,8 @@ export default function TableArticle({ data, role = "ADMIN" }) {
   const [filteredData, setFilteredData] = useState(data.properties); // Estado para los datos filtrados
   const [alphabeticalOrder, setAlphabeticalOrder] = useState(true); // Estado para el orden alfabético
   const [showLeaseOrderModal, setShowLeaseOrderModal] = useState(false);
+  const [showLeaseOrdersListModal, setShowLeaseOrdersListModal] =
+    useState(false);
   const [showRentalPeriodModal, setShowRentalPeriodModal] = useState(false);
 
   const categories = [
@@ -147,57 +150,67 @@ export default function TableArticle({ data, role = "ADMIN" }) {
             : "flex flex-wrap items-center gap-2 w-full max-w-screen-lg mb-4"
         }
       >
-        {role === "ADMIN" && (
-          <>
-            <button
-              onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
-              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
+        <div className="flex flex-col justify-center items-center gap-2 w-full">
+          <div className="flex justify-center items-center gap-2 w-full">
+            <div
+              className={
+                role === "OWNER"
+                  ? "relative flex-grow max-w-[40rem] w-full self-center flex justify-center"
+                  : "relative flex-grow max-w-[22rem] w-full"
+              }
             >
-              Periodo de alquiler
-            </button>
-            <button
-              onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
-              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
-            >
-              Orden de alquiler
-            </button>
-            <Link
-              href={"/pages/admin/create"}
-              className="border border-resolution-blue px-5 py-2 max-w-[12rem] text-center w-full rounded-md bg-resolution-blue text-white font-medium"
-            >
-              Nueva Propiedad
-            </Link>
-          </>
-        )}
-        {/* Search bar con ícono de lupa */}
-        <div
-          className={
-            role === "OWNER"
-              ? "relative flex-grow max-w-[40rem] w-full self-center flex justify-center"
-              : "relative flex-grow max-w-[12rem] w-full"
-          }
-        >
-          <input
-            type="text"
-            placeholder="Buscar por nombre, código o ubicación..."
-            className="p-2 pl-10 border border-gray-300 rounded w-full"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {/* Ícono de lupa dentro del input */}
-          <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Nombre, código o ubicación..."
+                className="p-2 pl-10 border border-gray-300 rounded w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {/* Ícono de lupa dentro del input */}
+              <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
+            {role === "ADMIN" && (
+              // Botón de orden alfabético
+              <button
+                onClick={toggleAlphabeticalOrder}
+                className="p-2 bg-blue-500 text-white rounded"
+              >
+                {alphabeticalOrder ? "A → Z" : "Z → A"}
+              </button>
+            )}
+          </div>
+          {/* Search bar con ícono de lupa */}
+          {role === "ADMIN" && (
+            <div className="w-full flex flex-wrap justify-center items-center gap-2">
+              <button
+                onClick={() => setShowRentalPeriodModal(!showRentalPeriodModal)}
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Periodo de alquiler
+              </button>
+              <button
+                onClick={() => setShowLeaseOrderModal(!showLeaseOrderModal)}
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Crear orden de alquiler
+              </button>
+              <button
+                onClick={() =>
+                  setShowLeaseOrdersListModal(!showLeaseOrdersListModal)
+                }
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Ordenes de alquiler
+              </button>
+              <Link
+                href={"/pages/admin/create"}
+                className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+              >
+                Nueva Propiedad
+              </Link>
+            </div>
+          )}
         </div>
-        {role === "ADMIN" && (
-          <>
-            {/* Botón de orden alfabético */}
-            <button
-              onClick={toggleAlphabeticalOrder}
-              className="p-2 bg-blue-500 text-white rounded"
-            >
-              {alphabeticalOrder ? "A → Z" : "Z → A"}
-            </button>
-          </>
-        )}
       </div>
       {/* Category filters */} {/* Status filters */}
       <div className="flex flex-wrap gap-4 mb-4 w-full justify-start lg:justify-center">
@@ -235,46 +248,46 @@ export default function TableArticle({ data, role = "ADMIN" }) {
         <table className="relative min-w-full bg-white rounded-lg shadow-lg">
           <thead className="bg-[#0e1863ff] text-white sticky top-0 z-10">
             <tr>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Código
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Nombre
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Categoría
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Estado
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Dirección
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Código Postal
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Zona
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Tipología
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
-                Superficie M2
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
+                Área (m²)
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Habitaciones
               </th>
-              <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+              <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                 Baños
               </th>
               {role === "ADMIN" && (
-                <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                   Propietario
                 </th>
               )}
               {role === "ADMIN" && (
-                <th className="text-sm text-center px-3 py-4 font-medium uppercase tracking-wider border-b border-gray-200">
+                <th className="text-sm text-center px-1.5 py-2 font-medium border-b border-gray-200">
                   Acciones
                 </th>
               )}
@@ -289,10 +302,10 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                     role === "ADMIN"
                       ? `${
                           index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                        } hover:bg-blue-50 transition-colors duration-300 ease-in-out`
+                        } hover:bg-blue-100 transition-colors duration-300 ease-in-out`
                       : `${
                           index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                        } hover:bg-blue-50 transition-colors duration-300 ease-in-out cursor-pointer`
+                        } hover:bg-blue-100 transition-colors duration-300 ease-in-out cursor-pointer`
                   }
                   onClick={
                     role === "OWNER"
@@ -300,26 +313,26 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                       : null
                   }
                 >
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.serial}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.name}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.category.replace(/_/g, "").toLowerCase()}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.status}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">{`${item.street} ${item.streetNumber}, ${item.city}`}</td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">{`${item.street} ${item.streetNumber}, ${item.city}`}</td>
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.postalCode}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.zone}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.typology
                       ? item.typology === "ONLY_MEN"
                         ? "Solo hombres"
@@ -328,21 +341,23 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                         : "Mixto"
                       : ""}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.size}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.rooms?.length || 0}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
+                  <td className="px-1.5 py-2 text-center text-xs border-r">
                     {item.bathrooms}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm border-r">
-                    {item.owner?.email}
-                  </td>
                   {role === "ADMIN" && (
-                    <td className="px-4 py-4 text-center">
-                      <div className="flex gap-6 items-center justify-center">
+                    <td className="px-1.5 py-2 text-center text-xs border-r">
+                      {item.owner?.email}
+                    </td>
+                  )}
+                  {role === "ADMIN" && (
+                    <td className="px-1.5 py-2 text-center">
+                      <div className="flex gap-4 items-center justify-center">
                         {/* Botón de Activar/Desactivar */}
                         <div className="relative group inline-block">
                           <button
@@ -380,7 +395,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                             )}
                           </button>
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             {item.isActive ? "Desactivar" : "Activar"}
                           </span>
                         </div>
@@ -399,7 +414,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                             <PencilIcon className="w-5 h-5" />
                           </button>
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             Editar
                           </span>
                         </div>
@@ -445,7 +460,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                           </button>
 
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             Eliminar
                           </span>
                         </div>
@@ -462,7 +477,7 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                             <DocumentMagnifyingGlassIcon className="w-5 h-5" />
                           </button>
                           {/* Tooltip personalizado */}
-                          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs rounded py-1 px-2">
+                          <span className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
                             Ver Órdenes
                           </span>
                         </div>
@@ -484,6 +499,11 @@ export default function TableArticle({ data, role = "ADMIN" }) {
           </tbody>
         </table>
       </div>
+      {showLeaseOrdersListModal && (
+        <LeaseOrdersListModal
+          onClose={() => setShowLeaseOrdersListModal(false)}
+        />
+      )}
       {showLeaseOrderModal && (
         <CreateLeaseOrderModal
           data={data}

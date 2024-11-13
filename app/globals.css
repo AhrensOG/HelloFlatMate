@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 .custom-arrow::before,
 .custom-arrow::after {
   background-color: #000000 !important; /* Aquí pones el color que prefieras */

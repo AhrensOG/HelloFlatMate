@@ -61,7 +61,7 @@ export default function Chat() {
                         <ChatsCard
                             key={chat.id}
                             name={chat.relatedModel?.serial}
-                            image="/profile/profile.jpg"
+                            image="/profile/profile.png"
                             lastMessage={chat.messages[chat.messages.length - 1]}
                             action={() => router.push(`/pages/user/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`)}
                         />
@@ -86,7 +86,7 @@ export default function Chat() {
                             <ChatsCard
                                 key={chat.id}
                                 name={chat.relatedModel?.serial ? chat.relatedModel?.serial : "Unknown"}
-                                image={"/profile/profile.jpg"}
+                                image={"/profile/profile.png"}
                                 lastMessage={chat.messages[chat.messages.length - 1]}
                                 action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
                             />

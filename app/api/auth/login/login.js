@@ -20,7 +20,7 @@ const login = async (req) => {
       const authToken = encodeToken(user.role, body.accessToken);
 
       // Establecer la cookie con el token codificado
-      const cookieStore = cookies();
+      const cookieStore = await cookies();
       cookieStore.set("auth_token", authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
 
       return NextResponse.json(user, { status: 200 });
@@ -38,9 +38,8 @@ const login = async (req) => {
       const authToken = encodeToken(newUser.role, body.accessToken);
 
       // Establecer la cookie con el token codificado
-      const cookieStore = cookies();
+      const cookieStore = await cookies();
       cookieStore.set("auth_token", authToken, { maxAge: 24 * 60 * 60 }); // Establece la cookie por 24 horas
-      console.log(newUser);
 
       return NextResponse.json(newUser, { status: 200 });
     }
