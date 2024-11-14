@@ -34,8 +34,7 @@ const CategorySelectorPropertyCard = ({
       {/* Contenido */}
       <div className="p-4">
         <p className="text-gray-700 text-base">
-          {" "}
-          {description[0] || "Increíble alojamiento"}{" "}
+          {description || "Increíble alojamiento"}
         </p>
       </div>
 
@@ -53,7 +52,10 @@ const CategorySelectorPropertyCard = ({
             {category.split("_").join("").toLowerCase() || "hellostudio"}
           </span>
         </div>
-        <Link href={href} className="bg-transparent text-[#1FAECC] font-semibold py-2 px-4 border border-[#1FAECC] rounded hover:bg-[#1FAECC] hover:text-white transition duration-500">
+        <Link
+          href={href}
+          className="bg-transparent text-[#1FAECC] font-semibold py-2 px-4 border border-[#1FAECC] rounded hover:bg-[#1FAECC] hover:text-white transition duration-500"
+        >
           Más info...
         </Link>
       </div>
