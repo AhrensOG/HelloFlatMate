@@ -53,7 +53,7 @@ export default function SearchBarFiltered({
           </form>
 
           <button
-            className="flex font-medium text-base items-center gap-1 min-w-[59px]"
+            className="flex font-medium text-base items-center gap-1 min-w-[75px]"
             aria-label="Abrir filtros"
             onClick={() => setShowFilters(!showFilters)}
           >
