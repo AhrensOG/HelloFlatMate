@@ -5,32 +5,32 @@ import { motion } from "framer-motion";
 // Definimos los datos para cada sección
 const data = {
   helloroom: {
-    title: "Diseño pensado en estudiantes",
+    title: "hellorooms",
     description:
-      "Cada helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
+      " Habitaciones de media estancia en Valencia, gestionadas por el equipo de helloflatmate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones. ¡Vive con otros estudiantes como tú!",
     img1: "/home/family2.svg",
     img2: "/home/subFamily2.svg",
   },
-  hellocoliving: {
-    title: "Diseño pensado en estudiantes",
+  hellolandlord: {
+    title: "hellolandlord",
     description:
-      "Cada helloroom está equipada con todo lo que necesitas para tener éxito académico y disfrutar de tu vida universitaria. Desde escritorios amplios hasta espacios de almacenamiento eficiente, hemos pensado en cada detalle.",
-    img1: "/home/family3.svg",
-    img2: "/home/subFamily3.svg",
+      "Son habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por helloflatmate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes. \n ¡Comparte con estudiantes como tú!",
+    img1: "/home/family1.svg",
+    img2: "/home/subFamily1.svg",
   },
   hellostudio: {
-    title: "Perfecto para estudiar toda tu carrera en valencia",
+    title: "hellostudios",
     description:
-      "hellostudio ofrece un ambiente productivo y colaborativo diseñado para profesionales y emprendedores. Disfruta de espacios modernos y funcionales que fomentan la creatividad y la eficiencia. En HelloStudio, encontrarás alta tecnología, internet rápido, salas de reuniones equipadas, áreas comunes cómodas y eventos comunitarios que fomentan el networking y la colaboración.",
+      "Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables. Ideal para estudiantes y nómadas digitales que buscan comodidad y privacidad.",
     img1: "/home/family4.svg",
     img2: "/home/subFamily4.svg",
   },
-  hellolandlord: {
-    title: "Habitaciones gestionadas para tu comodidad",
+  hellocoliving: {
+    title: "hellocoliving",
     description:
-      "hellolandlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año.",
-    img1: "/home/family1.svg",
-    img2: "/home/subFamily1.svg",
+      "Espacios de coliving para estudiantes en Valencia, con ambiente comunitario, servicio de limpieza y gestión de estancia por helloflatmate para una experiencia cómoda y segura.",
+    img1: "/home/family3.svg",
+    img2: "/home/subFamily3.svg",
   },
 };
 
