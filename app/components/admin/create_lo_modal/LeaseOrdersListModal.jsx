@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import EditLeaseOrderModal from "./auxiliarComponents/EditLeaseOrderModal";
+import AssignPaymentModal from "./auxiliarComponents/AssignPaymentModal";
 
 const getStatusDescription = (status) => {
   switch (status) {
@@ -32,6 +33,8 @@ export default function LeaseOrdersListModal({ onClose }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingLeaseOrder, setEditingLeaseOrder] = useState(null); // Estado para la lease order seleccionada
   const [showEditModal, setShowEditModal] = useState(false); // Estado para mostrar el modal de edición
+  const [showPaymentModal, setShowPaymentModal] = useState(false); // Estado para el modal de pago
+  const [selectedLeaseOrder, setSelectedLeaseOrder] = useState(null); // Estado para la lease order seleccionada para el pago
 
   const fetchLeaseOrders = async () => {
     try {
@@ -63,6 +66,11 @@ export default function LeaseOrdersListModal({ onClose }) {
   const handleEdit = (leaseOrder) => {
     setEditingLeaseOrder(leaseOrder); // Establece la lease order seleccionada
     setShowEditModal(true); // Muestra el modal de edición
+  };
+
+  const handleAssignPayment = (leaseOrder) => {
+    setSelectedLeaseOrder(leaseOrder); // Guardar la orden de alquiler seleccionada
+    setShowPaymentModal(true); // Mostrar el modal de pago
   };
 
   // const handleDelete = async (leaseOrderId) => {
@@ -100,7 +108,7 @@ export default function LeaseOrdersListModal({ onClose }) {
 
         {/* Lista de lease orders */}
         {filteredLeaseOrders.length > 0 ? (
-          <ul className="max-h-64 overflow-y-auto border border-gray-300 rounded-lg">
+          <ul className="max-h-96 overflow-y-auto border border-gray-300 rounded-lg">
             {filteredLeaseOrders.map((order) => {
               const statusInfo = getStatusDescription(order.status);
               return (
@@ -117,7 +125,10 @@ export default function LeaseOrdersListModal({ onClose }) {
                         Room: {order.room?.serial}
                       </span>
                     )}
-                    <span className="block text-gray-700">
+                    <span
+                      className="block text-blue-600 hover:underline cursor-pointer"
+                      onClick={() => handleAssignPayment(order)}
+                    >
                       Cliente: {order.client?.email}
                     </span>
                     <span className="block text-gray-700">
@@ -131,6 +142,11 @@ export default function LeaseOrdersListModal({ onClose }) {
                       className={`block text-sm px-2 py-1 rounded-full font-semibold ${statusInfo.color}`}
                     >
                       {statusInfo.label}
+                    </span>
+                    <span
+                      className={`block text-sm px-2 py-1 mt-1 rounded-full font-semibold ${order.isActive ? "bg-violet-100 text-violet-800" : "bg-gray-100 text-gray-800"}`}
+                    >
+                      {order.isActive ? "Orden activa" : "Orden inactiva"}
                     </span>
                   </div>
                   <div className="flex space-x-2">
@@ -171,6 +187,12 @@ export default function LeaseOrdersListModal({ onClose }) {
           leaseOrder={editingLeaseOrder}
           onClose={() => setShowEditModal(false)}
           fetch={fetchLeaseOrders}
+        />
+      )}
+      {showPaymentModal && (
+        <AssignPaymentModal
+          leaseOrder={selectedLeaseOrder}
+          onClose={() => setShowPaymentModal(false)}
         />
       )}
     </div>

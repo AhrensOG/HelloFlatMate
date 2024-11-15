@@ -22,8 +22,8 @@ const EditLeaseOrderModal = ({ leaseOrder, onClose, fetch }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
-      <div className="">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="w-full max-w-lg">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
           <h2 className="text-lg font-bold mb-4 text-gray-800">
             Editar Orden de Alquiler <br />
