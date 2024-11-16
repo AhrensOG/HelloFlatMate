@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
 const chatParticipantInit = (sequelize, DataTypes) => {
-    class ChatParticipant extends Model { }
+    class ChatParticipant extends Model {}
 
     ChatParticipant.init(
         {
@@ -18,9 +18,9 @@ const chatParticipantInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             participantType: {
-                type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT"),
-                allowNull: false
-            }
+                type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT", "WORKER"),
+                allowNull: false,
+            },
         },
         {
             sequelize,
@@ -31,6 +31,6 @@ const chatParticipantInit = (sequelize, DataTypes) => {
     );
 
     return ChatParticipant;
-}
+};
 
-module.exports = chatParticipantInit(connection, DataTypes)
+module.exports = chatParticipantInit(connection, DataTypes);
