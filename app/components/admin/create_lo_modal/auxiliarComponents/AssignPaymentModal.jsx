@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import EditPaymentModal from "./EditPaymentModal";
+import { toast } from "sonner";
 
 const statusMap = {
   APPROVED: "Aprobado",
@@ -70,17 +71,21 @@ export default function PaymentModal({ leaseOrder, onClose }) {
   };
 
   const handleSubmitEdit = async (editedPayment) => {
-    // Lógica para enviar la actualización al backend
-    console.log("Actualizando pago: ", editedPayment);
-    if (editedPayment.paymentType === "supply") {
-      await axios.put(`/api/admin/supply/manualCreate`, editedPayment);
+    let toastId;
+    try {
+      toastId = toast.loading("Actualizando...");
+      if (editedPayment.paymentType === "supply") {
+        await axios.put(`/api/admin/supply/manualCreate`, editedPayment);
+      }
+      if (editedPayment.paymentType === "rent") {
+        await axios.put(`/api/admin/rent_payment`, editedPayment);
+      }
+      toast.success("Pago actualizado!", { id: toastId });
+    } catch (error) {
+      toast.info(`Error actualizando el pago: ${error.message}`, {
+        id: toastId,
+      });
     }
-    if (editedPayment.paymentType === "rent") {
-      await axios.put(`/api/admin/rent_payment`, editedPayment);
-    }
-
-    // Cerrar modal después de la actualización
-    // handleCloseModal();
   };
 
   // Función de envío para RentPayment
