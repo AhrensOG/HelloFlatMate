@@ -22,7 +22,6 @@ const supplyTypeMap = {
 };
 
 export default function PaymentModal({ leaseOrder, onClose }) {
-  console.log(leaseOrder);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [paymentType, setPaymentType] = useState("");
@@ -90,8 +89,9 @@ export default function PaymentModal({ leaseOrder, onClose }) {
 
   // Función de envío para RentPayment
   const handleRentPaymentSubmit = async (values) => {
+    let toastId;
     try {
-      // Aquí realizarías la llamada a la API para registrar el pago de rentPayment
+      toastId = toast.loading("Asignando...");
       const data = {
         ...values,
         paymentableId:
@@ -105,26 +105,35 @@ export default function PaymentModal({ leaseOrder, onClose }) {
         clientId: leaseOrder.clientId,
       };
       await axios.post("/api/admin/rent_payment", data);
-      // onClose(); // Cierra el modal al finalizar
+      toast.success("Pago de renta asignado!", { id: toastId });
+      onClose(); // Cierra el modal al finalizar (si es necesario)
     } catch (error) {
-      console.error("Error al enviar RentPayment:", error);
+      console.log(error);
+      toast.info(`Error asignando el pago`, {
+        id: toastId,
+      });
     }
   };
 
   // Función de envío para Supply
   const handleSupplySubmit = async (values) => {
+    let toastId;
     try {
-      // Aquí realizarías la llamada a la API para registrar el pago de supply
+      toastId = toast.loading("Asignando...");
+
       const data = {
         ...values,
         propertyId: leaseOrder.propertyId,
         clientId: leaseOrder.clientId,
       };
-      console.log(data);
       await axios.post("/api/admin/supply/manualCreate", data);
-      // onClose(); // Cierra el modal al finalizar
+      toast.success("Pago de suministros asignado!", { id: toastId });
+      onClose(); // Cierra el modal al finalizar (si es necesario)
     } catch (error) {
-      console.error("Error al enviar SupplyPayment:", error);
+      console.log(error);
+      toast.info(`Error asignando el pago`, {
+        id: toastId,
+      });
     }
   };
 
