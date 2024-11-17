@@ -109,6 +109,7 @@ export async function POST(req) {
                 ? property.ownerId
                 : property.property.ownerId,
             paymentId: session.payment_intent,
+            description: "Pago reserva",
           };
 
           const rentPayment = await RentPayment.create(paymenData);
@@ -194,6 +195,7 @@ export async function POST(req) {
                 ? property.ownerId
                 : property.property.ownerId,
             paymentId: session.payment_intent,
+            description: "Pago reserva",
           };
 
           const rentPayment = await RentPayment.create(paymenData);
@@ -277,6 +279,7 @@ export async function POST(req) {
               ? property.ownerId
               : property.property.ownerId,
           paymentId: session.payment_intent,
+          description: "Pago mensual",
         };
 
         const rentPayment = await RentPayment.create(paymenData);
@@ -346,6 +349,7 @@ export async function POST(req) {
                   ? property.ownerId
                   : property.property.ownerId,
               paymentId: session.payment_intent,
+              description: "Pago reserva",
             };
 
             const rentPayment = await RentPayment.create(paymenData);
@@ -432,6 +436,7 @@ export async function POST(req) {
                   ? property.ownerId
                   : property.property.ownerId,
               paymentId: session.payment_intent,
+              description: "Pago reserva",
             };
 
             const rentPayment = await RentPayment.create(paymenData);
