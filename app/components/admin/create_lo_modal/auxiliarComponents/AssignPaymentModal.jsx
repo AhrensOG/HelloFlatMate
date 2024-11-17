@@ -1,14 +1,86 @@
 import { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import axios from "axios";
+import EditPaymentModal from "./EditPaymentModal";
+
+const statusMap = {
+  APPROVED: "Aprobado",
+  PENDING: "Pendiente",
+  PAID: "Pagado",
+  CANCELED: "Cancelado",
+  REJECTED: "Rechazado",
+};
+
+const supplyTypeMap = {
+  WATER: "Agua",
+  GAS: "Gas",
+  ELECTRICITY: "Electricidad",
+  EXPENSES: "Expensas",
+  INTERNET: "Internet",
+  OTHERS: "Otros",
+};
 
 export default function PaymentModal({ leaseOrder, onClose }) {
   console.log(leaseOrder);
-  const [paymentType, setPaymentType] = useState(""); // Estado para controlar el tipo de pago
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  const [paymentType, setPaymentType] = useState("");
+  const [editPaymentType, setEditPaymentType] = useState("");
+  const [clientPayments, setClientPayments] = useState({
+    rentPayments: leaseOrder.client?.rentPayments,
+    supplies: leaseOrder.client?.supplies,
+    payments: leaseOrder.client?.payments,
+  });
 
   // Función para manejar la selección del tipo de pago
   const handlePaymentTypeChange = (e) => {
     setPaymentType(e.target.value);
+  };
+
+  // Función para eliminar un pago
+  const handleDeletePayment = async (paymentId, type) => {
+    try {
+      const url =
+        type === "rent" ? "/api/admin/rent_payment" : "/api/admin/supply";
+      // await axios.delete(`${url}/${paymentId}`);
+      // Actualiza los pagos del cliente después de la eliminación
+      setClientPayments((prevState) => ({
+        ...prevState,
+        rentPayments: prevState.rentPayments.filter(
+          (payment) => payment.id !== paymentId
+        ),
+        supplies: prevState.supplies.filter(
+          (supply) => supply.id !== paymentId
+        ),
+      }));
+    } catch (error) {
+      console.error("Error al eliminar el pago:", error);
+    }
+  };
+
+  const handleEditPayment = (payment, type) => {
+    setSelectedPayment(payment);
+    setEditPaymentType(type);
+    setEditModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setEditModalOpen(false);
+    setSelectedPayment(null);
+  };
+
+  const handleSubmitEdit = async (editedPayment) => {
+    // Lógica para enviar la actualización al backend
+    console.log("Actualizando pago: ", editedPayment);
+    if (editedPayment.paymentType === "supply") {
+      await axios.put(`/api/admin/supply/manualCreate`, editedPayment);
+    }
+    if (editedPayment.paymentType === "rent") {
+      await axios.put(`/api/admin/rent_payment`, editedPayment);
+    }
+
+    // Cerrar modal después de la actualización
+    // handleCloseModal();
   };
 
   // Función de envío para RentPayment
@@ -53,9 +125,133 @@ export default function PaymentModal({ leaseOrder, onClose }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg max-h-[80%] flex flex-col">
-        <h2 className="text-lg font-bold mb-4">Asignar Pago</h2>
-        <div className="grow overflow-y-auto border-2 border-gray-300 rounded-lg p-2">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg max-h-[90%] flex flex-col">
+        {/* Mostrar los pagos existentes del cliente */}
+        <h3 className="text-md font-semibold bg-white w-full">
+          Pagos del Cliente
+        </h3>
+        <div className="mb-2 max-h-60 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-2">
+          {clientPayments.rentPayments.length === 0 &&
+          clientPayments.supplies.length === 0 ? (
+            <p className="text-gray-500 text-center">
+              No hay pagos realizados.
+            </p>
+          ) : (
+            <>
+              {clientPayments.rentPayments.map((payment) => (
+                <div
+                  key={payment.id}
+                  className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-sm"
+                >
+                  <div>
+                    <p className="font-semibold text-lg text-gray-700">
+                      {payment.type === "MONTHLY"
+                        ? `Renta (Cuota ${payment.quotaNumber})`
+                        : "Reserva"}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Fecha: {new Date(payment.date).toLocaleDateString()}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Descripción: {payment.description}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      ID de pago: {payment.paymentId}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <p className="text-lg font-bold text-green-600">
+                      {payment.amount}€
+                    </p>
+                    <span
+                      className={`text-sm font-medium ${
+                        payment.status === "APPROVED"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {statusMap[payment.status] || payment.status}
+                    </span>
+                    <div className="flex space-x-2 mt-2">
+                      <button
+                        onClick={() => handleEditPayment(payment, "rent")}
+                        className="text-blue-500 hover:text-blue-700"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDeletePayment(payment.id, "rent")}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {clientPayments.supplies.map((supply) => (
+                <div
+                  key={supply.id}
+                  className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-sm"
+                >
+                  <div>
+                    <p className="font-semibold text-lg text-gray-700">
+                      Suministro ({supplyTypeMap[supply.type] || supply.type})
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Fecha de Expiración:{" "}
+                      {new Date(supply.expirationDate).toLocaleDateString()}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Fecha de Pago:{" "}
+                      {supply.paymentDate
+                        ? new Date(supply.paymentDate).toLocaleDateString()
+                        : "-"}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Referencia: {supply.reference}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      ID de pago: {supply.paymentId || "N/A"}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <p className="text-lg font-bold text-green-600">
+                      {supply.amount}€
+                    </p>
+                    <span
+                      className={`text-sm font-medium ${
+                        supply.status === "PAID"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {statusMap[supply.status] || supply.status}
+                    </span>
+                    <div className="flex space-x-2 mt-2">
+                      <button
+                        onClick={() => handleEditPayment(supply, "supply")}
+                        className="text-blue-500 hover:text-blue-700"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDeletePayment(supply.id, "supply")}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+
+        <h2 className="text-md font-semibold">Asignar Pago</h2>
+        <div className="grow overflow-y-auto border border-gray-300 rounded-lg p-2">
           {/* Selector de tipo de pago */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
@@ -309,6 +505,15 @@ export default function PaymentModal({ leaseOrder, onClose }) {
           </button>
         </div>
       </div>
+      {isEditModalOpen && (
+        <EditPaymentModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseModal}
+          payment={selectedPayment}
+          paymentType={editPaymentType}
+          onSubmit={handleSubmitEdit}
+        />
+      )}
     </div>
   );
 }

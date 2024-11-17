@@ -87,7 +87,7 @@ export default function LeaseOrdersListModal({ onClose }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl h-[95%] flex flex-col">
         <h2 className="text-lg font-bold mb-4 text-gray-800">
           Lista de Ordenes de Alquiler
         </h2>
@@ -108,7 +108,7 @@ export default function LeaseOrdersListModal({ onClose }) {
 
         {/* Lista de lease orders */}
         {filteredLeaseOrders.length > 0 ? (
-          <ul className="max-h-96 overflow-y-auto border border-gray-300 rounded-lg">
+          <ul className="grow overflow-y-auto border border-gray-300 rounded-lg">
             {filteredLeaseOrders.map((order) => {
               const statusInfo = getStatusDescription(order.status);
               return (
@@ -144,7 +144,11 @@ export default function LeaseOrdersListModal({ onClose }) {
                       {statusInfo.label}
                     </span>
                     <span
-                      className={`block text-sm px-2 py-1 mt-1 rounded-full font-semibold ${order.isActive ? "bg-violet-100 text-violet-800" : "bg-gray-100 text-gray-800"}`}
+                      className={`block text-sm px-2 py-1 mt-1 rounded-full font-semibold ${
+                        order.isActive
+                          ? "bg-violet-100 text-violet-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
                     >
                       {order.isActive ? "Orden activa" : "Orden inactiva"}
                     </span>
