@@ -68,7 +68,7 @@ export default function HelloColiving() {
   return (
     <div>
       <div className="flex flex-col sm:min-h-screen">
-        <header>
+        <header className="mb-[144px]">
           <HomeNavBar activeSection={"hellocoliving"} />
         </header>
         <div className="w-full flex flex-col">
