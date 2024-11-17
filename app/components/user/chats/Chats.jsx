@@ -64,6 +64,11 @@ export default function Chat() {
                             image="/profile/profile.png"
                             lastMessage={chat.messages[chat.messages.length - 1]}
                             action={() => router.push(`/pages/user/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`)}
+                            notReadCount={
+                                chat.messages.filter(
+                                    (message) => !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                                ).length
+                            }
                         />
                     );
                 })}
@@ -89,6 +94,12 @@ export default function Chat() {
                                     image={"/profile/profile.png"}
                                     lastMessage={chat.messages[chat.messages.length - 1]}
                                     action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
+                                    notReadCount={
+                                        chat.messages.filter(
+                                            (message) =>
+                                                !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                                        ).length
+                                    }
                                 />
                             ) : (
                                 <ChatsCard
@@ -111,6 +122,12 @@ export default function Chat() {
                                     image={"/profile/profile.png"}
                                     lastMessage={chat.messages[chat.messages.length - 1]}
                                     action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
+                                    notReadCount={
+                                        chat.messages.filter(
+                                            (message) =>
+                                                !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                                        ).length
+                                    }
                                 />
                             )}
                         </>
@@ -123,6 +140,11 @@ export default function Chat() {
                     image={"/chat/soporte.svg"}
                     lastMessage={lastMessage}
                     action={() => router.push(`/pages/user/chats/chat?type=supp&chat=${supportChat.id}&bool=true&userId=${user.id}`)}
+                    notReadCount={
+                        supportChat.messages.filter(
+                            (message) => !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                        ).length
+                    }
                 />
             )}
             {supportChat && supportChat.isActive && (
@@ -131,6 +153,11 @@ export default function Chat() {
                     image={"/chat/soporte.svg"}
                     lastMessage={lastMessage}
                     action={() => router.push(`/pages/user/chats/chat?type=supp&chat=${supportChat.id}&userId=${user.id}`)}
+                    notReadCount={
+                        supportChat.messages.filter(
+                            (message) => !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                        ).length
+                    }
                 />
             )}
         </div>

@@ -2,7 +2,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-export default function ChatsCard({ name, image, action = null, id, lastMessage, typeChat }) {
+export default function ChatsCard({ name, image, action = null, id, lastMessage, typeChat, notReadCount }) {
+    console.log(lastMessage);
+
     const router = useRouter();
 
     return (
@@ -23,8 +25,12 @@ export default function ChatsCard({ name, image, action = null, id, lastMessage,
                 <h3 className="font-semibold text-sm">{typeChat === "GROUP" ? "Grupo - " + name : name || ""}</h3>
                 <p className="font-normal text-xs text-[#919191] truncate">{lastMessage?.body || "No hay mensajes"}</p>
             </div>
-            <div className="flex flex-col h-full justify-between items-end">
-                <span className="h-5 w-5 rounded-full text-white font-normal text-xs bg-[#FF0000] flex justify-center items-center">1</span>
+            <div className="flex flex-col h-full justify-around items-end">
+                {notReadCount > 0 && (
+                    <div className="flex items-center justify-center h-6 w-6 bg-[#FFD7D1] rounded-full">
+                        <p className="font-semibold text-sm text-[#FF5C5C]">{notReadCount}</p>
+                    </div>
+                )}
                 <p className="font-normal text-xs text-[#919191]">
                     {lastMessage
                         ? new Date(lastMessage.date).toLocaleTimeString([], {
