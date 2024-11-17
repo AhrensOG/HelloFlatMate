@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function DesktopHero({
   img = "https://www.youtube.com/watch?v=TbgLp9EpTyI",
   title = "helloflatmate",
-  description = "Simplificamos la forma de compartir tu hogar",
+  description = "Alojamientos para estudiantes en Valencia",
   link = "/pages/select-category",
 }) {
   return (

@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function OffersSection({
-  title = "Descubre nuestros increíbles alojamientos",
-  description = "¿Buscas un lugar cómodo y accesible para vivir? En helloflatmate, ofrecemos habitaciones modernas y bien equipadas que se adaptan a tus necesidades y presupuesto. Con nosotros, tu nuevo hogar está a solo un clic de distancia.",
+  title = "",
+  description = "Desde 2011 helloflatmate ofrecemos  alojamientos a estudiantes en Valencia, con opciones de habitaciones y estudios gestionados por nosotros (hellorooms) o por propietarios de confianza.(hellolandord). Descubre también nuestro hellocoliving si lo que buscas es mayor privacidad y atención. ¡Bienvenid@s a VLC bienveni@s a hello flat mate!",
   link = "/pages/select-category",
 }) {
   return (
