@@ -91,10 +91,12 @@ export default function HelloRoom() {
             img1={helloroom.family.img1}
             img2={helloroom.family.img2}
           />
+          <InfoSection />
           <PropertySlider data={properties} />
-          <MapSection />
+          
+          {/* <MapSection /> */}
         </div>
-        <InfoSection />
+        
         <Banner />
         <Footer />
       </div>
