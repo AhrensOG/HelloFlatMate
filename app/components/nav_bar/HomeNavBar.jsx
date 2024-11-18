@@ -7,7 +7,7 @@ import ClimaTime from "./ClimaTime";
 
 const HomeNavBar = ({ setActiveSection, activeSection }) => {
   return (
-    <nav className="w-full p-2 sm:p-0">
+    <nav className="w-full p-2 sm:p-0 fixed bg-white z-50 h-[144px]">
       {/* Mobile version */}
       <div className="sm:hidden flex-col w-full divide-y">
         <div className="flex h-20 justify-between items-center w-full gap-2">

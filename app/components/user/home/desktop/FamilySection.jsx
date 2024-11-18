@@ -84,7 +84,7 @@ export default function FamilySection() {
         <div className="absolute inset-0 bg-black/50"></div>
 
         {/* Contenido que se muestra sobre la imagen en ambas versiones */}
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 p-6 sm:max-w-[75%] text-white h-full">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 p-6 text-white h-full">
           {/* Título */}
           <motion.h2
             initial={{ opacity: 0 }} // Agregar animación de escala
@@ -122,11 +122,27 @@ export default function FamilySection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="hidden sm:block w-1/2 h-[500px] bg-[#1FAECC]"
-      ></motion.div>
+        className="hidden w-1/2 h-[500px] bg-[#1FAECC] relative sm:flex justify-center items-center p-4"
+      >
+        <motion.div
+          key={img2} // Cambiar la clave para que el componente se reanime al cambiar la imagen
+          initial={{ opacity: 0 }} // Agregar animación de escala
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <Image
+            src={img2}
+            alt="Imagen superpuesta"
+            width={400}
+            height={400}
+            quality={100}
+            priority
+          />
+        </motion.div>
+      </motion.div>
 
       {/* Imagen superpuesta sobre la división entre la imagen de fondo y el fondo azul */}
-      <div className="absolute z-20 hidden sm:block left-2/3 -translate-x-1/2 top-1/2 -translate-y-1/2">
+      {/* <div className="absolute z-20 hidden sm:block left-2/3 -translate-x-1/2 top-1/2 -translate-y-1/2">
         <motion.div
           key={img2} // Cambiar la clave para que el componente se reanime al cambiar la imagen
           initial={{ opacity: 0, scale: 0.8 }} // Agregar animación de escala
@@ -142,7 +158,7 @@ export default function FamilySection() {
             priority
           />
         </motion.div>
-      </div>
+      </div> */}
 
       {/* Botones del carrusel */}
       <div className="absolute bottom-0 sm:bottom-auto sm:right-10 sm:top-1/2 transform -translate-y-1/2 z-30 flex sm:flex-col flex-row gap-4">

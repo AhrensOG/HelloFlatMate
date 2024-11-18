@@ -4,8 +4,11 @@ import {
   Client,
   LeaseOrderProperty,
   LeaseOrderRoom,
+  Payment,
   Property,
+  RentPayment,
   Room,
+  Supply,
 } from "@/db/init";
 
 export async function getAllLeaseOrders() {
@@ -16,12 +19,17 @@ export async function getAllLeaseOrders() {
         {
           model: Property,
           as: "property",
-          attributes: ["id", "serial", "category"],
+          attributes: ["id", "serial", "category", "ownerId"],
         },
         {
           model: Client,
           as: "client",
           attributes: ["id", "name", "lastName", "email"],
+          include: [
+            { model: Supply, as: "supplies" },
+            { model: Payment, as: "payments" },
+            { model: RentPayment, as: "rentPayments" },
+          ],
         },
       ],
     });
@@ -30,13 +38,18 @@ export async function getAllLeaseOrders() {
         {
           model: Property,
           as: "property",
-          attributes: ["id", "serial", "category"],
+          attributes: ["id", "serial", "category", "ownerId"],
         },
         { model: Room, as: "room", attributes: ["id", "serial"] },
         {
           model: Client,
           as: "client",
           attributes: ["id", "name", "lastName", "email"],
+          include: [
+            { model: Supply, as: "supplies" },
+            { model: Payment, as: "payments" },
+            { model: RentPayment, as: "rentPayments" },
+          ],
         },
       ],
     });
