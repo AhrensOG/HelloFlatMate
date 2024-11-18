@@ -124,7 +124,7 @@ export async function updateStatusLeaseOrder(data) {
                 },
                 {
                     model: Chat,
-                    as: "chat",
+                    as: "chats",
                 },
             ],
             transaction,
@@ -173,12 +173,24 @@ export async function updateStatusLeaseOrder(data) {
             });
 
             //Asignar al chat grupal de la propiedad
-            if (property.chat) {
-                const participantOwnerPriv = await ChatParticipant.create({
-                    participantId: leaseOrderRoom.clientId,
-                    chatId: property.chat.id,
-                    participantType: "CLIENT",
-                });
+            // if (property.chat) {
+            //     const participantOwnerPriv = await ChatParticipant.create({
+            //         participantId: leaseOrderRoom.clientId,
+            //         chatId: property.chat.id,
+            //         participantType: "CLIENT",
+            //     });
+            // }
+
+            if (property.chats && property.chats.length > 0) {
+                const chatGroup = property.chats.find((chat) => chat.type === "GROUP");
+                
+                if (chatGroup) {
+                    await ChatParticipant.create({
+                        participantId: leaseOrderRoom.clientId,
+                        chatId: chatGroup.id,
+                        participantType: "CLIENT",
+                    });
+                }
             }
 
             await transaction.commit();
