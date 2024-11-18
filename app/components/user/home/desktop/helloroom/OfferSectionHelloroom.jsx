@@ -10,7 +10,7 @@ export default function OffersSection({
 }) {
   return (
     <section className="w-full flex justify-center items-center">
-      <div className="relative w-full p-4 pb-16 sm:p-8 flex max-w-screen-xl">
+      <div className="relative w-full p-4 pb-16 sm:p-8 flex max-w-screen-xl z-20">
         {/* Imagen de fondo con posición absoluta */}
         <div className="absolute w-72 h-32 overflow-visible top-24 left-[12px] hidden md:block">
           <Image
@@ -33,15 +33,14 @@ export default function OffersSection({
 
             {/* Descripción */}
             <p className="font-normal text-[18px] leading-[24px] sm:text-xl md:text-2xl">
-              Desde 2011, en helloflatmate ofrecemos alojamiento especializado
-              para estudiantes en Valencia. Contamos con una variedad de
-              opciones adaptadas a tus necesidades:{" "}
-              <span className="font-bold">hellorooms</span>, habitaciones
-              gestionadas directamente por nuestro equipo, y{" "}
-              <span className="font-bold">hellolandlord</span>, habitaciones en
-              colaboración con propietarios de confianza. Además, descubre
-              nuestro <span className="font-bold">hellocoliving</span> para una
-              experiencia de mayor privacidad y atención personalizada.
+              Equipadas y listas para que puedas instalarte desde el primer día,
+              con todos los servicios activos, incluyendo conexión a Internet de
+              alta velocidad. En <span className="font-bold">hellorooms</span>{" "}
+              nos encargamos de todo lo relacionado con la gestión de tu
+              estancia, gestión de mantenimiento, para que sólo tengas que
+              preocuparte de estudiar, explorar la ciudad y disfrutar de tu
+              experiencia en Valencia, compartiendo piso con otros estudiantes
+              de edad igual o similar.
             </p>
 
             {/* Descripción2 */}
@@ -79,7 +78,7 @@ export default function OffersSection({
             quality={100}
             className="absolute bottom-6 right-2 sm:hidden"
           /> */}
-          <div className="absolute w-28 md:w-20 h-40 overflow-visible top-60 lg:top-60 md:top-72 right-12 z-30 xl:block hidden">
+          <div className="absolute w-28 md:w-20 h-40 overflow-visible top-64 right-12 z-30 xl:block hidden">
             <Image
               src="/home/complejo.png"
               alt="Ofertas en habitaciones"

@@ -5,7 +5,7 @@ import { Context } from "../context/GlobalContext";
 import { getAllProperties } from "../context/actions";
 import HomeNavBar from "../components/nav_bar/HomeNavBar";
 import DesktopHero from "../components/user/home/desktop/DesktopHero";
-import OffersSection from "../components/user/home/desktop/OfferSection";
+import OffersSectionHelloroom from "../components/user/home/desktop/helloroom/OfferSectionHelloroom";
 import CommunitySection from "../components/user/home/desktop/CommunitySection";
 import FamilySection from "../components/user/home/desktop/FamilySection";
 import PropertySlider from "../components/user/home/desktop/PropertySlider";
@@ -14,19 +14,20 @@ import Banner from "../components/user/home/desktop/Banner";
 import Footer from "../components/user/home/desktop/Footer";
 import MapSection from "../components/user/home/desktop/auxiliarComponents/MapSection";
 
+
 const helloroom = {
   hero: {
     // img: "/home/hero2.jpeg",
     img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
-    title: "Listo para vivir, listo para estudiar",
+    title: "¡Descubre nuestras habitaciones hellorooms para estudiantes!",
     description:
-      "Ideales para nómadas digitales, incluyen servicios de atención, limpieza, suministros, Internet y convivencia con compañeros similares, fomentando colaboración y comunidad.",
+      "Estas habitaciones son gestionadas por el equipo de helloflatmate para brindar a los estudiantes una estancia cómoda, segura y sin complicaciones. ",
     link: "/pages/select-category?c=HELLO_ROOM",
   },
   offer: {
-    title: "Vive una Experiencia Lista para Habitar desde el Primer Momento",
+    title: "¡Disfruta de una habitación limpia y preparada a tu llegada junto con la mejor atención personalizada!",
     description:
-      "Nuestras acogedoras hellorooms están diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento dado que vienen a Valencia por menos de un año y son gestionadas por los agentes de helloflatmate",
+      "Equipadas y listas para que puedas instalarte desde el primer día, con todos los servicios activos, incluyendo conexión a Internet de alta velocidad. En hellorooms nos encargamos de todo lo relacionado con la gestión de tu estancia, gestión de  mantenimiento, para que sólo tengas que preocuparte de estudiar, explorar la ciudad y disfrutar de tu experiencia en Valencia, compartiendo piso con otros estudiantes de edad igual o similar.",
     link: "/pages/select-category?c=HELLO_ROOM",
   },
   family: {
@@ -77,22 +78,25 @@ export default function HelloRoom() {
             description={helloroom.hero.description}
             link={helloroom.hero.link}
           />
-          <OffersSection
+          <OffersSectionHelloroom
             title={helloroom.offer.title}
             description={helloroom.offer.description}
             link={helloroom.offer.link}
           />
           <CommunitySection />
+          
           <FamilySection
             title={helloroom.family.title}
             description={helloroom.family.description}
             img1={helloroom.family.img1}
             img2={helloroom.family.img2}
           />
+          <InfoSection />
           <PropertySlider data={properties} />
-          <MapSection />
+          
+          {/* <MapSection /> */}
         </div>
-        <InfoSection />
+        
         <Banner />
         <Footer />
       </div>

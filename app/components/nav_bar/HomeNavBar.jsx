@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import Dropdown from "../public/auth/Dropdown";
 import AccountDropdown from "./AccountDropdown";
+import ClimaTime from "./ClimaTime";
 
 const HomeNavBar = ({ setActiveSection, activeSection }) => {
   return (
@@ -24,13 +25,14 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
                 priority
               />
             </Link>
-            <Link
+            {/* <Link
               href={"/pages/select-category"}
               className="px-4 py-2 text-sm font-medium underline underline-offset-2 rounded"
               aria-label="Buscar una habitación"
             >
               Buscar alojamientos
-            </Link>
+            </Link> */}
+            <ClimaTime />
           </div>
           <div className="flex items-center gap-2">
             <AccountDropdown />
@@ -116,13 +118,14 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
               />
             </Link>
             <div className="h-[40px] md:h-[44px] border-l border-black"></div>
-            <Link
+            {/* <Link
               href={"/pages/select-category"}
-              className="px-4 py-2 text-lg font-medium underline underline-offset-2 rounded"
+              className="px-4 py-2 text-lg font-medium rounded"
               aria-label="Buscar una habitación"
             >
-              Buscar alojamientos
-            </Link>
+              
+            </Link> */}
+            <ClimaTime />
           </div>
 
           <div className="flex items-center gap-4 md:gap-6">

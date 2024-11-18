@@ -7,28 +7,31 @@ const data = {
   helloroom: {
     title: "hellorooms",
     description:
-      " Habitaciones de media estancia en Valencia, gestionadas por el equipo de helloflatmate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones. ¡Vive con otros estudiantes como tú!",
+      " Habitaciones de media estancia en Valencia, gestionadas por el equipo de helloflatmate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones.",
+    description2:"¡Vive con otros estudiantes como tú!",
     img1: "/home/family2.svg",
     img2: "/home/subFamily2.svg",
   },
   hellolandlord: {
     title: "hellolandlord",
     description:
-      "Son habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por helloflatmate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes. \n ¡Comparte con estudiantes como tú!",
-    img1: "/home/family1.svg",
+      "Son habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por helloflatmate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.",
+      description2:"¡Comparte con estudiantes como tú!",
+      img1: "/home/family1.svg",
     img2: "/home/subFamily1.svg",
   },
   hellostudio: {
     title: "hellostudios",
     description:
-      "Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables. Ideal para estudiantes y nómadas digitales que buscan comodidad y privacidad.",
+      "Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables.",
+    description2:"Ideal para estudiantes y nómadas digitales que buscan comodidad y privacidad.",
     img1: "/home/family4.svg",
     img2: "/home/subFamily4.svg",
   },
   hellocoliving: {
     title: "hellocoliving",
-    description:
-      "Espacios de coliving para estudiantes en Valencia, con ambiente comunitario, servicio de limpieza y gestión de estancia por helloflatmate para una experiencia cómoda y segura.",
+    description:"Espacios de coliving para estudiantes en Valencia, con ambiente comunitario, servicio de limpieza y gestión de estancia por helloflatmate para una experiencia cómoda y segura.",
+    description2:"",
     img1: "/home/family3.svg",
     img2: "/home/subFamily3.svg",
   },
@@ -56,7 +59,7 @@ export default function FamilySection() {
   }, [sectionKeys]);
 
   // Datos de la sección activa
-  const { title, description, img1, img2 } = data[activeSection];
+  const { title, description,description2, img1, img2 } = data[activeSection];
 
   return (
     <section className="relative w-full flex items-center justify-center overflow-hidden">
@@ -100,6 +103,16 @@ export default function FamilySection() {
             className="font-normal text-[18px] leading-[27px] text-center sm:text-center md:text-2xl"
           >
             {description}
+            {/* {description2} */}
+          </motion.p>
+          {/* Descripción2 */}
+          <motion.p
+            initial={{ opacity: 0 }} // Agregar animación de escala
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }} // Añadir un retraso para que aparezca después del título
+            className="font-normal text-[18px] leading-[27px] text-center sm:text-center md:text-2xl"
+          >
+            {description2}
           </motion.p>
         </div>
       </motion.div>
