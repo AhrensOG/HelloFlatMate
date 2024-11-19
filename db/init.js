@@ -224,6 +224,11 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "participantId",
             constraints: false,
         });
+        ChatParticipant.belongsTo(Worker, {
+            as: "worker",
+            foreignKey: "participantId",
+            constraints: false,
+        });
 
         // Client and Owner
         Client.hasMany(ChatParticipant, {
@@ -244,6 +249,13 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             constraints: false,
             scope: { participantType: "ADMIN" },
         });
+        Worker.hasMany(ChatParticipant, {
+            as: "chats",
+            foreignKey: "participantId",
+            constraints: false,
+            scope: { participantType: "WORKER" },
+        });
+
         //Message Users
         Client.hasMany(Message, {
             as: "messages",

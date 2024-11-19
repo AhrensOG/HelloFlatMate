@@ -64,6 +64,11 @@ export default function Chat() {
                             image="/profile/profile.png"
                             lastMessage={chat.messages[chat.messages.length - 1]}
                             action={() => router.push(`/pages/user/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`)}
+                            notReadCount={
+                                chat.messages.filter(
+                                    (message) => !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                                ).length
+                            }
                         />
                     );
                 })}
@@ -82,14 +87,49 @@ export default function Chat() {
 
                     return (
                         <>
-                            {console.log(chat)}
-                            <ChatsCard
-                                key={chat.id}
-                                name={chat.relatedModel?.serial ? chat.relatedModel?.serial : "Unknown"}
-                                image={"/profile/profile.png"}
-                                lastMessage={chat.messages[chat.messages.length - 1]}
-                                action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
-                            />
+                            {chat.relatedId ? (
+                                <ChatsCard
+                                    key={chat.id}
+                                    name={chat.relatedModel?.serial ? chat.relatedModel?.serial : "Unknown"}
+                                    image={"/profile/profile.png"}
+                                    lastMessage={chat.messages[chat.messages.length - 1]}
+                                    action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
+                                    notReadCount={
+                                        chat.messages.filter(
+                                            (message) =>
+                                                !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                                        ).length
+                                    }
+                                />
+                            ) : (
+                                <ChatsCard
+                                    key={chat.id}
+                                    name={
+                                        chat.participants.find((u) => u.participantId !== user.id)?.client
+                                            ? `${chat.participants.find((u) => u.participantId !== user.id)?.client?.name} ${
+                                                  chat.participants.find((u) => u.participantId !== user.id)?.client?.lastName
+                                              }`
+                                            : chat.participants.find((u) => u.participantId !== user.id)?.admin
+                                            ? `${chat.participants.find((u) => u.participantId !== user.id)?.admin?.name} ${
+                                                  chat.participants.find((u) => u.participantId !== user.id)?.admin?.lastName
+                                              }`
+                                            : chat.participants.find((u) => u.participantId !== user.id)?.owner
+                                            ? `${chat.participants.find((u) => u.participantId !== user.id)?.owner?.name} ${
+                                                  chat.participants.find((u) => u.participantId !== user.id)?.owner?.lastName
+                                              }`
+                                            : "Unknown"
+                                    }
+                                    image={"/profile/profile.png"}
+                                    lastMessage={chat.messages[chat.messages.length - 1]}
+                                    action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
+                                    notReadCount={
+                                        chat.messages.filter(
+                                            (message) =>
+                                                !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                                        ).length
+                                    }
+                                />
+                            )}
                         </>
                     );
                 })}
@@ -100,6 +140,11 @@ export default function Chat() {
                     image={"/chat/soporte.svg"}
                     lastMessage={lastMessage}
                     action={() => router.push(`/pages/user/chats/chat?type=supp&chat=${supportChat.id}&bool=true&userId=${user.id}`)}
+                    notReadCount={
+                        supportChat.messages.filter(
+                            (message) => !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                        ).length
+                    }
                 />
             )}
             {supportChat && supportChat.isActive && (
@@ -108,6 +153,11 @@ export default function Chat() {
                     image={"/chat/soporte.svg"}
                     lastMessage={lastMessage}
                     action={() => router.push(`/pages/user/chats/chat?type=supp&chat=${supportChat.id}&userId=${user.id}`)}
+                    notReadCount={
+                        supportChat.messages.filter(
+                            (message) => !message.read && (message.senderId ? message.senderId !== user.id : message.userId !== user.id)
+                        ).length
+                    }
                 />
             )}
         </div>
