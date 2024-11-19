@@ -13,7 +13,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function MyBedroomDetails({ room }) {
+export default function MyBedroomDetails({ room, rentPayments }) {
   const {
     type,
     location,
@@ -33,8 +33,7 @@ export default function MyBedroomDetails({ room }) {
     function calculateNextDueDate(startDate, endDate) {
       const start = new Date(startDate);
       const end = new Date(endDate);
-      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 1);
-
+      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 25);
       if (nextDue <= end) {
         return nextDue;
       } else {
@@ -172,7 +171,11 @@ export default function MyBedroomDetails({ room }) {
             <span className="h-6 w-5">
               <MapPinIcon />
             </span>
-            <h3 className="text-sm font-medium text-[#000000E5]">{`${location.street}, ${location.postalCode ? location.postalCode : ""} ${location.city}`}</h3>
+            <h3 className="text-sm font-medium text-[#000000E5]">{`${
+              location.street
+            }, ${location.postalCode ? location.postalCode : ""} ${
+              location.city
+            }`}</h3>
           </div>
           <p className="text-xs font-normal text-[#828282] pl-2">
             {amenities.join(" - ")}
@@ -247,6 +250,7 @@ export default function MyBedroomDetails({ room }) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         handlePayment={handlePayment}
+        rentPayments={rentPayments}
       />
     </div>
   );

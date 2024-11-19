@@ -16,6 +16,8 @@ export default function MyBedrooms() {
     const [showDetails, setShowDetails] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [propertiesList, setPropertiesList] = useState([]);
+    const [rentPayments, setRentPayments] = useState([]);
+
     const { state } = useContext(Context);
 
     const handleShowDetails = (info) => {
@@ -35,10 +37,12 @@ export default function MyBedrooms() {
             const user = state?.user;
             const rooms = user?.leaseOrdersRoom || [];
             const properties = user?.leaseOrdersProperty || [];
+            const payments = user?.rentPayments || []
 
             const allProperties = [...rooms, ...properties];
             const filtered = allProperties.filter((property) => property.status === "APPROVED" && property.isSigned);
             setPropertiesList(filtered);
+            setRentPayments(payments)
         }
     }, [state?.user]);
 
@@ -84,7 +88,7 @@ export default function MyBedrooms() {
                             >
                                 {selectedRoom && (
                                     <div className="flex flex-col justify-center items-center gap-6 w-full">
-                                        <MyBedroomDetails room={selectedRoom} />
+                                        <MyBedroomDetails room={selectedRoom} rentPayments={rentPayments} />
                                         <MyBedroomActivitys data={selectedRoom} />
                                     </div>
                                 )}
@@ -139,7 +143,7 @@ export default function MyBedrooms() {
                                             transition={{ duration: 0.25 }}
                                             className="flex flex-col justify-center items-center gap-6 w-full"
                                         >
-                                            <MyBedroomDetails room={selectedRoom} />
+                                            <MyBedroomDetails room={selectedRoom} rentPayments={rentPayments} />
                                             <MyBedroomActivitys data={selectedRoom} />
                                         </motion.div>
                                     ) : (
