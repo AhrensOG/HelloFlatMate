@@ -152,7 +152,13 @@ export default function RoomDetails({ params }) {
         >
           <div className="w-full space-y-2 sticky top-0 min-h-56 bg-white z-10 pt-2 pb-1">
             <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
-            <h4 className="font-light text-[#000000B2]">({roomData.serial})</h4>
+            <h4 className="font-light text-[#000000B2]">
+              ({roomData.serial} -{" "}
+              {data.typology === "ONLY_WOMEN"
+                ? "Piso solo para chicas"
+                : "Piso mixto"}
+              ){" "}
+            </h4>
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>
@@ -183,21 +189,19 @@ export default function RoomDetails({ params }) {
           ) : (
             <DescriptionSection title="Descripción" data={data.description} />
           )}
-          <GuestInfoRoom
+          {/* <GuestInfoRoom
             data={[
               { type: "bed", number: roomData.numberBeds },
               { type: "bathroom", boolean: roomData.bathroom },
               { type: "couple", boolean: roomData.couple },
             ]}
-          />
-          {filteredRooms.length > 0 ? (
-            <RoomSection
-              data={filteredRooms}
-              title="Otras habitaciones en el mismo piso"
-            />
-          ) : null}
-
-          <AmenitiesSection data={data.amenities} />
+          /> */}
+          {data.amenities && data.amenities?.length > 0 ? (
+            <AmenitiesSection data={data.amenities} />
+          ) : (
+            ""
+          )}
+          {/* <AmenitiesSection data={data.amenities} /> */}
           {roomData.linkVideo ? (
             <VideoEmbedSection videoUrl={roomData.linkVideo} />
           ) : (
@@ -231,6 +235,12 @@ export default function RoomDetails({ params }) {
               { title: "Otros servicios", body: data.checkOut },
             ]}
           />
+          {filteredRooms.length > 0 ? (
+            <RoomSection
+              data={filteredRooms}
+              title="Otras habitaciones en el mismo piso"
+            />
+          ) : null}
           {/* {showModal && (
             <ReservationModal
               calendarType={roomData.calendar}
@@ -285,13 +295,6 @@ export default function RoomDetails({ params }) {
                 <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
               )}
             </div>
-            {filteredRooms.length > 0 ? (
-              <RoomSection
-                data={filteredRooms}
-                title="Otras habitaciones en el mismo piso"
-                category={data.category}
-              />
-            ) : null}
             {roomData.linkVideo ? (
               <VideoEmbedSection videoUrl={roomData.linkVideo} />
             ) : null}
@@ -302,6 +305,13 @@ export default function RoomDetails({ params }) {
               city={data?.city}
               country={"España"}
             />
+            {filteredRooms.length > 0 ? (
+              <RoomSection
+                data={filteredRooms}
+                title="Otras habitaciones en el mismo piso"
+                category={data.category}
+              />
+            ) : null}
           </div>
 
           <div className="border" />
@@ -311,7 +321,11 @@ export default function RoomDetails({ params }) {
             <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
               <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
               <h6 className="font-light text-[#000000B2]">
-                ({roomData.serial})
+                ({roomData.serial} -{" "}
+                {data.typology === "ONLY_WOMEN"
+                  ? "Piso solo para chicas"
+                  : "Piso mixto"}
+                )
               </h6>
               <h6 className="text-[#000000B2] text-base">
                 {data.city + ", " + data.street}
@@ -350,14 +364,19 @@ export default function RoomDetails({ params }) {
                   data={data.description}
                 />
               )}
-              <GuestInfoRoom
+              {/* <GuestInfoRoom
                 data={[
                   { type: "bed", number: roomData.numberBeds },
                   { type: "bathroom", boolean: roomData.bathroom },
                   { type: "couple", boolean: roomData.couple },
                 ]}
-              />
-              <AmenitiesSection data={data.amenities} />
+              /> */}
+              {data.amenities && data.amenities?.length > 0 ? (
+                <AmenitiesSection data={data.amenities} />
+              ) : (
+                ""
+              )}
+              {/* <AmenitiesSection data={data.amenities} /> */}
               <MoreInfoSection
                 data={[
                   {
