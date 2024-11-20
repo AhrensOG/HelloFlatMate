@@ -1,12 +1,12 @@
 import TitleAdminPanel from "../shared/TitleAdminPanel";
-import { plus_jakarta } from "@/font";
+ 
 import TableArticle from "../dashboard/TableArticle";
 import Link from "next/link";
 
 export default function PropertiesPanel({ data , role }) {
   return (
     <main
-      className={`${plus_jakarta.className} flex flex-col justify-center items-center p-2 gap-6`}
+      className={`  flex flex-col justify-center items-center p-2 gap-6`}
     >
       <TitleAdminPanel title={"Panel de propiedades"} />
       {data.properties?.length === 0 && role === "ADMIN"&& (

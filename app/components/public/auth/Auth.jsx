@@ -2,7 +2,7 @@
 import { toast } from "sonner";
 import { useContext, useEffect, useState } from "react";
 import AuthModal from "./AuthModal";
-import { plus_jakarta } from "@/font";
+ 
 import Link from "next/link";
 import Image from "next/image";
 import { logInWithGoogle } from "@/app/firebase/logInWithGoogle";
@@ -89,7 +89,7 @@ export default function Auth() {
 
   return (
     <section
-      className={`${plus_jakarta.className} auth-card flex flex-col m-3 gap-10 items-center font-normal text-base self-start pt-9`}
+      className={`  auth-card flex flex-col m-3 gap-10 items-center font-normal text-base self-start pt-9`}
     >
       <Image
         className="logo-auth"

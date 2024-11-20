@@ -1,5 +1,5 @@
 "use client";
-import { plus_jakarta } from "@/font";
+ 
 import Image from "next/image";
 import { motion } from "framer-motion";
 import CategoryCard from "./auxiliarComponents/CategoryCard";
@@ -39,7 +39,7 @@ const CategorySelectSection = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-5 p-4`}
+      className={`  w-full flex flex-col gap-5 p-4`}
     >
       <div className="w-full flex flex-row justify-between items-center gap-2">
         <button onClick={handleBack} type="button" className="self-start m-5">

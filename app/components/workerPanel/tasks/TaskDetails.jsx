@@ -1,6 +1,6 @@
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
-import { plus_jakarta } from "@/font";
+ 
 import { AnimatePresence, motion } from "framer-motion";
 import TitleSection from "../TitleSection";
 import DescriptionSection from "./task_details/DescriptionSection";
@@ -108,7 +108,7 @@ export default function TaskDetails({ section }) {
     return (
         <AnimatePresence>
             <motion.div
-                className={`${plus_jakarta.className} flex flex-col h-screen`}
+                className={`  flex flex-col h-screen`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -124,7 +124,7 @@ export default function TaskDetails({ section }) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.8 }}
-                        className={`${plus_jakarta.className} flex flex-col gap-3 py-4 m-4 lg:gap-8 lg:justify-around `}
+                        className={`  flex flex-col gap-3 py-4 m-4 lg:gap-8 lg:justify-around `}
                     >
                         <TitleSection title={"Historial de tareas"} />
                         <div className="flex flex-col gap-1">

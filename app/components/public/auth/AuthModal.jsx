@@ -51,7 +51,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
               </h1>
               <section
                 id="modal-description"
-                className={`${plus_jakarta.className} mt-2 font-normal text-sm flex flex-col gap-2 items-center`}
+                className={`  mt-2 font-normal text-sm flex flex-col gap-2 items-center`}
               >
                 <p>
                   Al descargar, acceder o utilizar esta aplicación, aceptas los
@@ -113,7 +113,7 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
               </section>
             </div>
             <div
-              className={`${plus_jakarta.className} bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse`}
+              className={`  bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse`}
             >
               <button
                 type="button"

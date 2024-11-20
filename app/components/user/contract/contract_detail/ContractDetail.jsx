@@ -191,7 +191,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+      className={`  w-full flex flex-col gap-7 p-4`}
     >
       <TitleSection
         title={"Contrato de renta"}

@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 

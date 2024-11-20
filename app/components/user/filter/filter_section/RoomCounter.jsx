@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import Image from "next/image";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ export default function RoomCounter({ onChange, initialValue }) {
 
   return (
     <section
-      className={`${plus_jakarta.className} flex gap-1 justify-between w-full h-[5vh] items-center px-4 text-[#1C1C21]`}
+      className={`  flex gap-1 justify-between w-full h-[5vh] items-center px-4 text-[#1C1C21]`}
     >
       <h3 className="text-[1.37rem] font-bold">Número de Habitaciones</h3>
       <div className="flex gap-1">

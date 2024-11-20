@@ -2,7 +2,7 @@
 import MyBedroomDetails from "@/app/components/user/history/bedroom/MyBedroomDetails";
 import MyBedroomActivitys from "@/app/components/user/history/bedroom/MyBedroomActivitys";
 import NavBarHistory from "@/app/components/user/history/NavBarHistory";
-import { plus_jakarta } from "@/font";
+ 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -62,7 +62,7 @@ export default function MyBedrooms() {
                         }
                     />
                 </header>
-                <main className={`${plus_jakarta.className} flex flex-col justify-center items-center w-full px-5 my-8 gap-10`}>
+                <main className={`  flex flex-col justify-center items-center w-full px-5 my-8 gap-10`}>
                     <AnimatePresence mode="wait">
                         {!showDetails ? (
                             propertiesList.length > 0 ? (

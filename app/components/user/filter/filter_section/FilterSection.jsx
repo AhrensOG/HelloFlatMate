@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { plus_jakarta } from "@/font";
+ 
 import FilterCheckBox from "./filter_option/FilterCheckBox";
 
 export default function FilterSection({
@@ -26,7 +26,7 @@ export default function FilterSection({
 
   return (
     <section
-      className={`${plus_jakarta.className} flex flex-col gap-3 px-4 sm:px-0 text-[#1C1C21]`}
+      className={`  flex flex-col gap-3 px-4 sm:px-0 text-[#1C1C21]`}
     >
       <h3 className="text-[1.37rem] font-bold">{title}</h3>
       {entries.map((entry) => (

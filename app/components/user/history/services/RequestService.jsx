@@ -3,7 +3,7 @@ import NavServices from "./NavServices";
 import DescriptionSection from "./DescriptionSection";
 import WhatIncludes from "./WhatIncludes";
 import ButtonServices from "./ButtonServices";
-import { plus_jakarta } from "@/font";
+ 
 import ModalService from "./modal/ModalService";
 import { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -44,7 +44,7 @@ export default function RequestService({ type, id }) {
         <NavServices />
       </header>
       <main
-        className={`${plus_jakarta.className} relative flex flex-col gap-4 m-4 text-[#0D171C]`}
+        className={`  relative flex flex-col gap-4 m-4 text-[#0D171C]`}
       >
         <h1 className="font-bold text-2xl text-[#0D171C]">
           {type === "CLEAN"

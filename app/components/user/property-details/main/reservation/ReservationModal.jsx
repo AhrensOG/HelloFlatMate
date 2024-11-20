@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { plus_jakarta } from "@/font";
+ 
 import SelectContract from "./SelectContract";
 import ReservationButton from "../ReservationButton";
 import { XMarkIcon } from "@heroicons/react/20/solid";
@@ -133,7 +133,7 @@ export default function ReservationModal({
   return (
     <AnimatePresence>
       <motion.aside
-        className={`${plus_jakarta.className} flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem]`}
+        className={`  flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem]`}
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}

@@ -1,12 +1,12 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import SupplieCard from "./SupplieCard";
 import { useRouter } from "next/navigation";
-import { plus_jakarta } from "@/font";
+ 
 
 export default function Supplies({ data, user }) {
   const route = useRouter();
   return (
-    <main className={`${plus_jakarta.className} w-full m-auto`}>
+    <main className={`  w-full m-auto`}>
       <section className="flex items-center justify-between w-full  my-7">
         <button
           onClick={() => route.back()}

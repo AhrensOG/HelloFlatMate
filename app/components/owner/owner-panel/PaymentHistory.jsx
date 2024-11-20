@@ -3,7 +3,7 @@ import TitleOwnerPanel from "./TitleOwnerPanel";
 import PaymentCard from "./payment/PaymentCard";
 import PaymentDetails from "./payment/PaymentDetails";
 import { motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 
 export default function PaymentHistory() {
   const [showDetails, setShowDetails] = useState(false);
@@ -15,7 +15,7 @@ export default function PaymentHistory() {
 
   return (
     <main
-      className={`${plus_jakarta.className} relative flex flex-col justify-center items-center p-2 gap-6 mt-3`}
+      className={`  relative flex flex-col justify-center items-center p-2 gap-6 mt-3`}
     >
       {!showDetails && (
         <motion.div

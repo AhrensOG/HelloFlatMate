@@ -3,7 +3,7 @@ import { ArrowPathIcon, CloudArrowUpIcon } from "@heroicons/react/20/solid";
 import React, { useContext, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import {
   saveUserContractDocuments,
   saveUserContractInformation,
@@ -62,7 +62,7 @@ const SignaturePad = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+      className={`  w-full flex flex-col gap-7 p-4`}
     >
       <div className="fixed w-full h-full z-10 top-0 left-0 backdrop-blur-[2px] bg-black/20 grid place-items-center">
         <div className="bg-white drop-shadow-md rounded-md p-2 px-4">

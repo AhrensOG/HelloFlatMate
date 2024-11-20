@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function ContractListItem({ contract }) {
   return (
     <article
-      className={`${plus_jakarta.className} flex flex-col gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
+      className={`  flex flex-col gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-center h-10 w-10 bg-[#FFD7D1] rounded-lg">

@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import SideModal from "./SideModal";
 import { useContext, useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
@@ -101,7 +101,7 @@ export default function WorkerHome({ section }) {
   return (
     <AnimatePresence>
       <motion.div
-        className={`${plus_jakarta.className} flex flex-col h-screen relative gap-4`}
+        className={`  flex flex-col h-screen relative gap-4`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -112,7 +112,7 @@ export default function WorkerHome({ section }) {
         </header>
         <main className="flex-grow mb-16">
           <section
-            className={`${plus_jakarta.className} relative flex flex-col gap-4 m-3 lg:flex-row lg:justify-around`}
+            className={`  relative flex flex-col gap-4 m-3 lg:flex-row lg:justify-around`}
           >
             <div className="flex flex-col gap-4 lg:w-[45%]">
               <SearchBar data={searchNewTasks} setData={handleSearchNewTasks} />

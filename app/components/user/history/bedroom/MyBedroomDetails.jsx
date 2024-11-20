@@ -97,7 +97,12 @@ export default function MyBedroomDetails({ room, rentPayments }) {
     const data = {
       amount: price,
       type: "MONTHLY",
-      paymentableId: room?.id,
+      paymentableId:
+        room?.type === "HELLO_ROOM" ||
+        room?.type === "HELLO_COLIVING" ||
+        room?.type === "HELLO_LANDLORD"
+          ? room.property?.id
+          : room.id,
       paymentableType:
         room?.type === "HELLO_ROOM" ||
         room?.type === "HELLO_COLIVING" ||

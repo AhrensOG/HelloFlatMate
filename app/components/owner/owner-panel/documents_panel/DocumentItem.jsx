@@ -1,11 +1,11 @@
-import { plus_jakarta } from "@/font";
+ 
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 
 export default function DocumentItem({ type, title, date }) {
   return (
     <article
-      className={`${plus_jakarta.className} flex flex-col w-full gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
+      className={`  flex flex-col w-full gap-3 border border-[#ECECEC] p-3 rounded-2xl`}
     >
       <div className="flex items-center justify-between">
         {type === "pdf" ? (

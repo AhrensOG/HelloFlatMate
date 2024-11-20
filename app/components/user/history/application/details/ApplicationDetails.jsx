@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -16,7 +16,7 @@ export default function ApplicationDetails({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className={`${plus_jakarta.className} flex flex-col gap-4 items-center justify-center px-6 my-5`}
+      className={`  flex flex-col gap-4 items-center justify-center px-6 my-5`}
     >
       <div className="flex justify-center items-center h-[6.63rem] w-[6.63rem] bg-[#0E165C] rounded-full">
         {type == "REPAIR" ? (

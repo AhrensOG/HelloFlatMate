@@ -5,7 +5,7 @@ import GuestInfoSectionTemplate from "./main/GuestInfoSectionTemplate";
 import MoreInfoSectionTemplate from "./main/MoreInfoSectionTemplate";
 import RoomSectionTemplate from "./main/RoomSectionTemplate";
 import SaveButton from "../shared/SaveButton";
-import { plus_jakarta } from "@/font";
+ 
 import { useEffect, useState } from "react";
 import TitleSectionTemplate from "./main/TitleSectionTemplate";
 import DescriptionModal from "./main/description_section/DescriptionModal";
@@ -583,7 +583,7 @@ export default function NewProperty({ category, handleBack }) {
           <NavBarDetails callBack={handleBack} />
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C]`}
+          className={`  flex flex-col gap-[2.5rem] grow text-[#0D171C]`}
         >
           <TitleSectionTemplate
             name={name}
@@ -679,7 +679,7 @@ export default function NewProperty({ category, handleBack }) {
           <NavBarDetails callBack={handleBack} />
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-row gap-10 grow text-[#0D171C]`}
+          className={`  flex flex-row gap-10 grow text-[#0D171C]`}
         >
           {/* LEFT SIDE */}
           <div className="space-y-10 flex-1">

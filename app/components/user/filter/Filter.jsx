@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { useState } from "react";
 import Image from "next/image";
 import FilterSection from "./filter_section/FilterSection";
@@ -56,7 +56,7 @@ export default function Filter({
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 500 }}
           transition={{ duration: 0.8 }}
-          className={`${plus_jakarta.className} flex flex-col gap-3 w-full h-full overflow-hidden self-end fixed bg-white bottom-0 z-50 py-4`}
+          className={`  flex flex-col gap-3 w-full h-full overflow-hidden self-end fixed bg-white bottom-0 z-50 py-4`}
         >
           <div className="h-[5vh] w-full flex items-center px-4">
             <span>
