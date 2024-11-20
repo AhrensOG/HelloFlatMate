@@ -10,6 +10,54 @@ import { useSearchParams } from "next/navigation";
 import DesktopFilter from "./DesktopFilter";
 import BotIcon from "../../public/chat-bot/BotIcon";
 
+const getRentalPeriods = (propiedades) => {
+    const fechasUnicas = new Set();
+
+    propiedades.forEach((propiedad) => {
+      // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
+      if (
+        propiedad.category === "HELLO_ROOM" ||
+        propiedad.category === "HELLO_COLIVING" ||
+        propiedad.category === "HELLO_LANDLORD"
+      ) {
+        // Acceder al array rooms y mapear sobre él
+        propiedad.rooms.forEach((room) => {
+          // Acceder a rentalPeriods y formatear las fechas
+          room.rentalItems?.forEach((periodo) => {
+            const startDate = new Date(periodo.rentalPeriod?.startDate);
+            const endDate = new Date(periodo.rentalPeriod?.endDate);
+
+            // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
+            const formattedStartDate = `${startDate
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${(startDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}/${startDate
+              .getFullYear()
+              .toString()
+              .slice(-2)}`;
+
+            const formattedEndDate = `${endDate
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${(endDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
+
+            const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
+
+            // Añadir la fecha al Set para evitar duplicados
+            fechasUnicas.add(fecha);
+          });
+        });
+      }
+    });
+
+    // Convertir el Set a un array para devolverlo
+    return Array.from(fechasUnicas);
+  };
+
 export default function FilterPage() {
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
@@ -18,6 +66,7 @@ export default function FilterPage() {
     const location = searchParams.get("zone");
     const occupants = searchParams.get("numberOccupants");
     const rentalPeriod = searchParams.get("rentalPeriod");
+    const type = searchParams.get("type");
 
     const { state, dispatch } = useContext(Context);
     const [properties, setProperties] = useState(state?.properties || []);
@@ -30,8 +79,10 @@ export default function FilterPage() {
         location: location || "",
         occupants: occupants || "",
         rentalPeriod: rentalPeriod || "",
+        type: type || ""
     });
     const [filteredProperties, setFilteredProperties] = useState(properties);
+    const [filteredRentalPeriods, setFilteredRentalPeriods] = useState([]);
 
     const hasURLFilters = () => {
         return startDate || endDate || category || location || occupants || rentalPeriod;
@@ -193,8 +244,17 @@ export default function FilterPage() {
     };
 
     const convertRentalPeriodToString = (startDate, endDate) => {
-        const start = new Date(startDate).toLocaleDateString("es-ES");
-        const end = new Date(endDate).toLocaleDateString("es-ES");
+        const formatDate = (date) => {
+            const d = new Date(date);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
+            const year = String(d.getFullYear()).slice(-2); // Tomamos los últimos 2 dígitos del año
+            return `${day}/${month}/${year}`;
+        };
+    
+        const start = formatDate(startDate);
+        const end = formatDate(endDate);
+        
         return `Del ${start} al ${end}`;
     };
 
@@ -204,7 +264,7 @@ export default function FilterPage() {
         return properties.filter((property) => {
             const queryRentalPeriod = filters.rentalPeriod;
 
-            if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING") {
+            if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
                 return property.rooms?.some((room) => {
                     return room.rentalItems?.some((period) => {
                         const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
@@ -224,6 +284,22 @@ export default function FilterPage() {
         });
     };
 
+    const filterByTypology = (properties) => {
+        if (!filters.type) {
+            return properties;
+        }
+        return properties.filter((property) => property.typology === filters.type);
+    };
+
+    const filterByCategoriesAndGetRentalPeriods = (properties) => {
+        const filteredProperties = filters.categorys
+            ? properties.filter((property) => filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase()))
+            : properties;
+    
+        const periodsList = getRentalPeriods(filteredProperties);
+        setFilteredRentalPeriods(periodsList)
+    };
+
     const applyFilters = () => {
         let result = filterBySearch(properties);
         result = filterByCategory(result);
@@ -232,6 +308,9 @@ export default function FilterPage() {
         result = filterByPriceRange(result);
         result = filterByOccupants(result);
         result = filterByRentalPeriod(result);
+        result = filterByTypology(result);
+        
+        filterByCategoriesAndGetRentalPeriods(result)
         setFilteredProperties(result);
     };
 
@@ -328,6 +407,8 @@ export default function FilterPage() {
                         setFilters={setFilters}
                         onApplyFilters={applyFilters}
                         onFilterChange={handleFilterChange}
+                        category = {category}
+                        rentalPeriods={filteredRentalPeriods}
                     />
                     <div className="w-[75%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-wrap justify-center items-start">
                         {filteredProperties?.length === 0 ? (
@@ -409,6 +490,8 @@ export default function FilterPage() {
                 setFilters={setFilters}
                 onApplyFilters={applyFilters}
                 onFilterChange={handleFilterChange}
+                category = {category}
+                rentalPeriods={filteredRentalPeriods}
             />
         </div>
     );

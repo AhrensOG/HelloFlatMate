@@ -44,6 +44,8 @@ const list = [
   },
 ];
 
+const genre = ["ONLY_WOMEN", "MIXED"];
+
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const CategorySelector = ({
@@ -98,6 +100,10 @@ const CategorySelector = ({
       params.append("endDate", date.endDate);
     }
 
+    if (data.type) {
+      params.append("type", data.type);
+    }
+
     if (currentCategory) {
       params.append("category", currentCategory);
     }
@@ -145,7 +151,6 @@ const CategorySelector = ({
               .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
 
             const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
-
             // Añadir la fecha al Set para evitar duplicados
             fechasUnicas.add(fecha);
           });
@@ -185,6 +190,13 @@ const CategorySelector = ({
                 title="Selecciona un periodo"
                 name="rentalPeriod"
               />
+              <Select
+                options={genre}
+                data={data}
+                setData={setData}
+                title="Tipo de alojamiento"
+                name="type"
+              />
               {/* <SelectDate
                 title="Seleccione un rango de fechas"
                 data={date}
@@ -216,6 +228,13 @@ const CategorySelector = ({
                 setData={setData}
                 title="Selecciona un periodo"
                 name="rentalPeriod"
+              />
+              <Select
+                options={genre}
+                data={data}
+                setData={setData}
+                title="Tipo de alojamiento"
+                name="type"
               />
               {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -280,6 +299,13 @@ const CategorySelector = ({
                 title="Selecciona un periodo"
                 name="rentalPeriod"
               />
+              <Select
+                options={genre}
+                data={data}
+                setData={setData}
+                title="Tipo de alojamiento"
+                name="type"
+              />
               {/* <SelectDate
                 title="Seleccione un rango de fechas"
                 data={date}
@@ -299,7 +325,7 @@ const CategorySelector = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-5 p-4`}
+      className={`${plus_jakarta.className} w-full flex flex-col gap-20 p-4`}
     >
       <div className="w-full flex flex-row justify-between items-center gap-2 p-5">
         <div
@@ -372,8 +398,7 @@ const CategorySelector = ({
           </div>
         </div>
       </div>
-
-      <div className="w-full flex justify-center items-center">
+      {/* <div className="w-full flex justify-center items-center">
         <div className="w-full max-w-screen-xl">
           <SelectCategorySlider>
             {allProperties.map((item) => {
@@ -388,12 +413,6 @@ const CategorySelector = ({
                     // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
                     .map((room) => (
                       <div className="mr-4" key={room.id}>
-                        {/* <PropertyCard
-                        roomId={room.id}
-                        propertyId={item.id}
-                        img={room?.images[0]}
-                        title={room.name}
-                      /> */}
                         <CategorySelectorPropertyCard
                           img={room?.images[0]}
                           category={item.category}
@@ -420,7 +439,7 @@ const CategorySelector = ({
             })}
           </SelectCategorySlider>
         </div>
-      </div>
+      </div> */}
     </motion.section>
   );
 };
