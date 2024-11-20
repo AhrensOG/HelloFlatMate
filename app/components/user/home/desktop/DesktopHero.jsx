@@ -61,7 +61,7 @@ export default function DesktopHero({
         </div> */}
         {/* Contenido del Hero */}
         <div className="absolute w-full inset-0 z-20 flex flex-col items-center justify-center text-center text-white">
-          <div className="w-2/3 flex flex-col items-center justify-center gap-20 sm:gap-24 md:gap-44">
+          <div className="w-2/3 flex flex-col items-center justify-center gap-20 sm:gap-24 md:gap-52">
             {/* Título principal */}
             <div className="flex flex-col justify-center items-center">
               <h1 className="font-extrabold text-4xl md:text-7xl leading-none tracking-[-1px]">

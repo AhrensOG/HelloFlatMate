@@ -130,7 +130,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
 
           <div className="flex items-center gap-4 md:gap-6">
             <Link
-              href={"/pages/user/filtered"}
+              href={"/pages/select-category"}
               className="bg-black text-white px-4 py-2 md:px-6 md:py-3 rounded"
               aria-label="Reservar una habitación"
             >
