@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function InfoCard({ img, title, description }) {
   return (
-    <div className="relative hover:scale-105 transition duration-500 w-full max-w-[300px] h-[270px] bg-white border border-gray-200 rounded-lg p-4 shadow-card-action gap-2 flex flex-col sm:mb-4">
+    <div className="relative hover:scale-105 transition duration-500 w-full max-w-[300px] h-[290px] bg-white border border-gray-200 rounded-lg p-4 shadow-card-action gap-2 flex flex-col sm:mb-4">
       {/* Icono Image */}
 
       <Image src={img} width={50} height={50} alt={title} />
