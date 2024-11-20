@@ -49,7 +49,7 @@ export default function RoomInfo({ data, action, category }) {
           !data.numberBeds ? "text-gray-500" : "text-black"
         }`}
       >
-        <div className="flex flex-row justify-center items-center gap-1">
+        {/* <div className="flex flex-row justify-center items-center gap-1">
           {data.bedNumber || ""}
           <Image
             src={"/create-property/bed.png"}
@@ -57,8 +57,8 @@ export default function RoomInfo({ data, action, category }) {
             height={25}
             alt="bed-icon"
           />
-        </div>
-        {data?.couple === false && (
+        </div> */}
+        {/* {data?.couple === false && (
           <div className="flex flex-row justify-center items-center">
             <Image
               src={"/create-property/singleman.png"}
@@ -87,7 +87,7 @@ export default function RoomInfo({ data, action, category }) {
               alt="bed-icon"
             />
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </article>
   );

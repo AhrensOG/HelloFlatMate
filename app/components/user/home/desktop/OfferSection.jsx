@@ -79,12 +79,12 @@ export default function OffersSection({
             quality={100}
             className="absolute bottom-6 right-2 sm:hidden"
           /> */}
-          <div className="absolute w-28 md:w-20 h-40 overflow-visible top-60 lg:top-60 md:top-72 right-12 z-30 xl:block hidden">
+          <div className="absolute w-48 h-40 overflow-visible bottom-0 right-2 z-30 xl:block hidden">
             <Image
               src="/home/complejo.png"
-              alt="Ofertas en habitaciones"
+              alt="Picture"
               fill
-              className="object-cover object-center overflow-visible"
+              className="object-cover object-center"
               quality={100}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
