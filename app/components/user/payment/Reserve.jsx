@@ -1,5 +1,5 @@
 "use client";
-import { plus_jakarta } from "@/font";
+ 
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -10,7 +10,7 @@ export default function Reserve({ handleContinue, handleBack }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+            className={`  w-full flex flex-col gap-7 p-4`}
         >
             <button
                 onClick={handleBack}

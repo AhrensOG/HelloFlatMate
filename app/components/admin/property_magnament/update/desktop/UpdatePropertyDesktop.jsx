@@ -21,7 +21,7 @@ import AmenitiesSection from "@/app/components/user/property-details/main/Amenit
 import AmenitiesModalEdit from "../../create/main/amenities_section/AmenitiesModalEdit";
 import RoomAddModal from "../../create/main/room_section/RoomAddModal";
 import PriceSection from "../../create/main/PriceSection";
-import { plus_jakarta } from "@/font";
+ 
 import EditButton from "../../shared/EditButton";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
 import RentalPeriodTemplate from "../../create/main/RentalPeriodTemplate";
@@ -377,7 +377,7 @@ export default function UpdatePropertyDesktop({
             />
           </header>
           <main
-            className={`${plus_jakarta.className} px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
+            className={`  px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
           >
             <div className="flex flex-col items-center gap-[2.5rem] justify-center">
               <div className="w-full flex justify-center gap-4">

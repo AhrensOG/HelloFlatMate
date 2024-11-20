@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
@@ -71,7 +71,7 @@ export default function TasksSection({ section }) {
   return (
     <AnimatePresence>
       <motion.div
-        className={`${plus_jakarta.className} flex flex-col h-[97vh] relative`}
+        className={`  flex flex-col h-[97vh] relative`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -86,7 +86,7 @@ export default function TasksSection({ section }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8 }}
-            className={`${plus_jakarta.className} flex flex-col gap-2 py-4 m-4`}
+            className={`  flex flex-col gap-2 py-4 m-4`}
           >
             <div className="flex justify-center items-center mb-4 w-full">
               <h2 className="text-[#000000CC] font-bold text-xl mx-auto ml-24 lg:mx-auto">

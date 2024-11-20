@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import TaskCardHistory from "./TaskCardHistory";
@@ -20,7 +20,7 @@ export default function TasksHistory({ redirect }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className={`${plus_jakarta.className} flex flex-col items-center justify-center gap-2 py-4 m-4`}
+      className={`  flex flex-col items-center justify-center gap-2 py-4 m-4`}
     >
       <div className="flex justify-center items-center mb-4 w-full">
         <button

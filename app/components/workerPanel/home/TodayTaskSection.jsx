@@ -3,7 +3,7 @@ import TaskCardSimple from "./TaskCardSimple";
 import { AnimatePresence, motion } from "framer-motion";
 import BottomNavBar from "../bottomNavBar/BottomNavBar";
 import UserSerivceNavBar from "../nav_bar/UserServiceNavBar";
-import { plus_jakarta } from "@/font";
+ 
 
 export default function TodayTaskSection({ data, section }) {
   const route = useRouter();

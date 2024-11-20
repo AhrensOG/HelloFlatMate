@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
@@ -24,7 +24,7 @@ export default function SearchBarFiltered({
   return (
     <div className="w-full">
       <div
-        className={`${plus_jakarta.className} text-[#A0A09F] w-full flex justify-center items-center`}
+        className={`  text-[#A0A09F] w-full flex justify-center items-center`}
         role="search"
       >
         <div className="px-2 flex gap-2 items-center justify-center max-w-screen-sm w-full">

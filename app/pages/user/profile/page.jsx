@@ -3,7 +3,7 @@ import Logout from "@/app/components/user/profile/Logout";
 import NavBarProfile from "@/app/components/user/profile/NavBarProfile";
 import ProfileCard from "@/app/components/user/profile/ProfileCard";
 import ProfileOptions from "@/app/components/user/profile/ProfileOptions";
-import { plus_jakarta } from "@/font";
+ 
 import { useContext, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProfileInfo from "@/app/components/user/profile/ProfileInfo";
@@ -28,7 +28,7 @@ export default function Profile() {
 
     return (
         <AnimatePresence>
-            <div className={`${plus_jakarta.className} relative`}>
+            <div className={`  relative`}>
                 <BotIcon />
                 <header>
                     <NavBar />

@@ -4,7 +4,7 @@ import ContractSecondView from "@/app/components/user/contract/ContractSecondVie
 import NavBar from "@/app/components/nav_bar/NavBar";
 import PaymentComponent from "@/app/components/user/payment/PaymentComponent";
 import GlobalContext from "@/app/context/GlobalContext";
-import { plus_jakarta } from "@/font";
+ 
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
@@ -59,7 +59,7 @@ export default function Contract({ params }) {
         <header>
           <NavBar />
         </header>
-        <main className={`${plus_jakarta.className} p-2 text-[#000000]`}>
+        <main className={`  p-2 text-[#000000]`}>
           <AnimatePresence mode="wait">
             {currentStep === 1 && (
               <ContractForm

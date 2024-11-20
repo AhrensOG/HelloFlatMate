@@ -4,7 +4,7 @@ import ProfileCard from "../../user/profile/ProfileCard";
 import Logout from "../../user/profile/Logout";
 import ProfileWorkerOptions from "./ProfileWorkerOptions";
 import BottomNavBar from "../bottomNavBar/BottomNavBar";
-import { plus_jakarta } from "@/font";
+ 
 import UserSerivceNavBar from "../nav_bar/UserServiceNavBar";
 import { Context } from "@/app/context/GlobalContext";
 import { Suspense, useContext, useEffect, useState } from "react";
@@ -38,7 +38,7 @@ export default function WorkerProfile({ section }) {
   return (
     <AnimatePresence>
       <motion.div
-        className={`${plus_jakarta.className} flex flex-col h-screen`}
+        className={`  flex flex-col h-screen`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

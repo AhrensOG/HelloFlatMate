@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import ContractListItem from "./ContractListItem";
 import { motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
 
@@ -35,7 +35,7 @@ export default function ContractList({ action }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className={`${plus_jakarta.className} mx-4`}
+      className={`  mx-4`}
     >
       <div className="flex items-center justify-between w-full  mt-7">
         <button

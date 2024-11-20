@@ -2,7 +2,7 @@ import Image from "next/image";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ItemInfoAdmin from "./ItemInfoAdmin";
-import { plus_jakarta } from "@/font";
+ 
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 export default function AdminProfile({ image, name, lastName, email }) {
   const [showPencil, setShowPencil] = useState(false);
@@ -14,7 +14,7 @@ export default function AdminProfile({ image, name, lastName, email }) {
   return (
     <>
       <main
-        className={`${plus_jakarta.className} flex flex-col gap-5 p-2 items-center`}
+        className={`  flex flex-col gap-5 p-2 items-center`}
       >
         <TitleAdminPanel title="Configuracion" />
         <section className="p-2 w-full flex flex-col gap-4">

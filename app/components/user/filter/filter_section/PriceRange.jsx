@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import "./range-price.css";
-import { plus_jakarta } from "@/font";
+ 
 import { Context } from "@/app/context/GlobalContext";
 
 export default function PriceRange({ onChange, initialValue }) {
@@ -36,7 +36,7 @@ export default function PriceRange({ onChange, initialValue }) {
   };
 
   return (
-    <div className={`${plus_jakarta.className} p-4`}>
+    <div className={`  p-4`}>
       <h3 className="text-base mb-3 font-medium text-[#1C1C21]">
         Rango de Precio
       </h3>

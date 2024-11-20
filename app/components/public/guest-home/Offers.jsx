@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Offers() {
   return (
-    <section className={`${plus_jakarta.className} w-full`}>
+    <section className={`  w-full`}>
       <div className="grid grid-cols-2 grid-rows-2 place-items-center">
         <div className="h-48 w-full relative ">
           <Image

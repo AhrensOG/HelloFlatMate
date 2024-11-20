@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import React from "react";
 import TitleAdminPanel from "../../../admin/shared/TitleAdminPanel";
 import ReservationPropertyCard from "./ReservationPropertyCard";
@@ -6,7 +6,7 @@ import ReservationPropertyCard from "./ReservationPropertyCard";
 const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
   return (
     <main
-      className={`${plus_jakarta.className} grow w-full flex flex-col justify-center items-center p-2`}
+      className={`  grow w-full flex flex-col justify-center items-center p-2`}
     >
       <div className="h-full w-full max-w-screen-lg flex flex-col justify-center items-center gap-4">
         <TitleAdminPanel title={"Mis Reservas"} />

@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { AnimatePresence, motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import ActionServiceCard from "./ActionServiceCard";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -52,7 +52,7 @@ export default function Services({ id }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.8 }}
-        className={`${plus_jakarta.className} flex flex-col justify-center p-2 gap-8 items-center`}
+        className={`  flex flex-col justify-center p-2 gap-8 items-center`}
       >
         <section className="flex w-full mt-7">
           <button

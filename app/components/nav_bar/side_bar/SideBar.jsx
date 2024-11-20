@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { plus_jakarta } from "@/font";
+ 
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import SideBarButton from "./SideBarButton";
@@ -147,7 +147,7 @@ export default function SideBar({
           animate={{ opacity: 1, x: "0" }}
           exit={{ opacity: 0, x: "-100%" }}
           transition={{ duration: 0.5 }}
-          className={`${plus_jakarta.className} flex flex-col items-start fixed inset-0 z-10 w-full bg-white`}
+          className={`  flex flex-col items-start fixed inset-0 z-10 w-full bg-white`}
         >
           <div className="flex p-3 w-full">
             <button onClick={handleClose} aria-label="Cerrar menú">

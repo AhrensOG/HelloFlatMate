@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { useState } from "react";
 import Image from "next/image";
 import FilterSection from "./filter_section/FilterSection";
@@ -57,7 +57,7 @@ export default function DesktopFilter({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -500 }}
         transition={{ duration: 0.8 }}
-        className={`${plus_jakarta.className} fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
+        className={`  fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
       >
         <div className="h-8 w-full flex items-center px-4">
           <button onClick={() => router.back()}>
