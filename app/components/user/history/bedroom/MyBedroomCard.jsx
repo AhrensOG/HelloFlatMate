@@ -18,7 +18,7 @@ export default function MyBedroomCard({
     function calculateNextDueDate(startDate, endDate) {
       const start = new Date(startDate);
       const end = new Date(endDate);
-      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 1);
+      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 25);
 
       if (nextDue <= end) {
         return nextDue;

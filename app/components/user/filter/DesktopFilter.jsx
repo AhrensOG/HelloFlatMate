@@ -8,6 +8,7 @@ import PriceRange from "./filter_section/PriceRange";
 import DateRangeFilter from "./filter_section/DateRangeFilter";
 import { ArrowLeftIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import FilterSelect from "./FilterSelect";
 
 export default function DesktopFilter({
   isOpen,
@@ -16,6 +17,8 @@ export default function DesktopFilter({
   setFilters,
   onApplyFilters,
   onFilterChange,
+  category,
+  rentalPeriods,
 }) {
   const router = useRouter();
   const handleFilterChange = (filterName, selectedValues) => {
@@ -105,12 +108,23 @@ export default function DesktopFilter({
             </div>
           </section>
 
-          {/* Nuevo componente de rango de fechas */}
-          <DateRangeFilter
-            onChange={handleFilterChange}
-            startDate={filters.startDate}
-            endDate={filters.endDate}
-          />
+          {category === "HELLO_STUDIO" ||
+          (filters.categorys?.length === 1 &&
+            filters.categorys[0] === "hellostudio") ? (
+            <DateRangeFilter
+              onChange={handleFilterChange}
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+            />
+          ) : (
+            <FilterSelect
+              name="rentalPeriod"
+              options={rentalPeriods}
+              data={filters}
+              setData={setFilters}
+              title="Seleccionar un período"
+            />
+          )}
 
           {/* <FilterSection
             onChange={handleFilterChange}
