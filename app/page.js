@@ -15,6 +15,7 @@ import Footer from "./components/user/home/desktop/Footer";
 import MapSection from "./components/user/home/desktop/auxiliarComponents/MapSection";
 import StayWithUs from "./components/user/home/desktop/StayWithUs";
 import BotIcon from "./components/public/chat-bot/BotIcon";
+import CookieModal from "./components/public/cookies/CookieModal";
 
 const helloroom = {
     hero: {
@@ -143,6 +144,7 @@ export default function Home() {
         <div>
             <div className="flex flex-col sm:min-h-screen relative">
                 <BotIcon />
+                <CookieModal />
                 <header>
                     <HomeNavBar setActiveSection={setActiveSection} activeSection={activeSection} />
                 </header>

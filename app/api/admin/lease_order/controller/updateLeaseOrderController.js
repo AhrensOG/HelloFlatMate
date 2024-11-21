@@ -30,14 +30,20 @@ export async function updateStatusLeaseOrder(data) {
             const property = await Property.findByPk(
                 data.propertyId,
                 {
-                    include: {
-                        model: RentalItem,
-                        as: "rentalItems",
-                        include: {
-                            model: RentalPeriod,
-                            as: "rentalPeriod",
+                    include: [
+                        {
+                            model: RentalItem,
+                            as: "rentalItems",
+                            include: {
+                                model: RentalPeriod,
+                                as: "rentalPeriod",
+                            },
                         },
-                    },
+                        {
+                            model: Chat,
+                            as: "chats",
+                        },
+                    ],
                 },
                 { transaction }
             );
@@ -61,6 +67,8 @@ export async function updateStatusLeaseOrder(data) {
                 await leaseOrderProperty.save({ transaction });
                 await property.save({ transaction });
 
+                console.log(property);
+
                 // Crear chat con el dueño
                 const chatPrivate = await createPrivateChat({
                     type: "PRIVATE",
@@ -74,6 +82,12 @@ export async function updateStatusLeaseOrder(data) {
                 const participantCLientPriv = await ChatParticipant.create({
                     participantId: leaseOrderProperty.clientId,
                     chatId: chatPrivate.id,
+                    participantType: "CLIENT",
+                });
+
+                const participantClientGroup = await ChatParticipant.create({
+                    participantId: leaseOrderProperty.clientId,
+                    chatId: property.chats.find((chat) => chat.type === "GROUP").id,
                     participantType: "CLIENT",
                 });
 
@@ -124,7 +138,7 @@ export async function updateStatusLeaseOrder(data) {
                 },
                 {
                     model: Chat,
-                    as: "chat",
+                    as: "chats",
                 },
             ],
             transaction,
@@ -135,14 +149,6 @@ export async function updateStatusLeaseOrder(data) {
             leaseOrderRoom.status = "APPROVED";
             leaseOrderRoom.isActive = true;
             leaseOrderRoom.inReview = false;
-
-            // if (room.rentalPeriods.some(rentalPeriod => {
-            //     return rentalPeriod.status === "FREE";
-            // })) {
-            //     room.status = "FREE";
-            // } else {
-            //     room.status = roomsAvailable.length > 0 ? "FREE" : "OCCUPIED";
-            // }
 
             if (room.calendar === "SIMPLE") {
                 if (
@@ -172,14 +178,24 @@ export async function updateStatusLeaseOrder(data) {
                 relatedId: room.id,
             });
 
-            //Asignar al chat grupal de la propiedad
-            if (property.chat) {
-                const participantOwnerPriv = await ChatParticipant.create({
-                    participantId: leaseOrderRoom.clientId,
-                    chatId: property.chat.id,
-                    participantType: "CLIENT",
-                });
-            }
+            console.log(leaseOrderRoom);
+
+            const createParticipant = await ChatParticipant.create({
+                participantId: leaseOrderRoom.clientId,
+                chatId: chatPrivate.id,
+                participantType: "CLIENT",
+            });
+            const createOwnerParticipant = await ChatParticipant.create({
+                participantId: property.ownerId,
+                chatId: chatPrivate.id,
+                participantType: "OWNER",
+            });
+
+            const createGroupParticipant = await ChatParticipant.create({
+                participantId: leaseOrderRoom.clientId,
+                chatId: property.chats.find((chat) => chat.type === "GROUP").id,
+                participantType: "CLIENT",
+            });
 
             await transaction.commit();
             return NextResponse.json({ message: "Lease order room approved" }, { status: 200 });
