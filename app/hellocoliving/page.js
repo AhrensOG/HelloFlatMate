@@ -20,7 +20,8 @@ const hellocoliving = {
     title: "Listo para vivir, listo para estudiar",
     description:
       "Ideales para nómadas digitales, incluyen servicios de atención, limpieza, suministros, Internet y convivencia con compañeros similares, fomentando colaboración y comunidad.",
-    link: "/pages/select-category?c=HELLO_COLIVING",
+    // link: "/pages/select-category?c=HELLO_COLIVING",
+    link: "/pages/user/filtered?category=HELLO_COLIVING",
   },
   offer: {
     title: "Una Experiencia de Coliving Inigualable",

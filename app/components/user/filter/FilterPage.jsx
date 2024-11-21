@@ -231,9 +231,9 @@ export default function FilterPage() {
         }
 
         return properties.filter((property) => {
-            if (property.category === "HELLO_STUDIO" || property.category === "HELLO_LANDLORD") {
+            if (property.category === "HELLO_STUDIO") {
                 return property.price >= (minPrice || 0) && property.price <= (maxPrice || 1000000);
-            } else if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING") {
+            } else if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
                 return property.rooms.some((room) => {
                     return room.price >= (minPrice || 0) && room.price <= (maxPrice || 1000000);
                 });
@@ -306,7 +306,7 @@ export default function FilterPage() {
         result = filterByLocation(result);
         result = filterByDateRange(result);
         result = filterByPriceRange(result);
-        result = filterByOccupants(result);
+        // result = filterByOccupants(result);
         result = filterByRentalPeriod(result);
         result = filterByTypology(result);
         
