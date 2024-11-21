@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
- 
+import { plus_jakarta } from "@/font";
 import { useState } from "react";
 import Image from "next/image";
 import FilterSection from "./filter_section/FilterSection";
@@ -26,6 +26,7 @@ export default function DesktopFilter({
   };
 
   const handleSeeResults = () => {
+    console.log(filters)
     onApplyFilters();
     setOpen(false);
   };
@@ -108,9 +109,9 @@ export default function DesktopFilter({
             </div>
           </section>
 
-          {category === "HELLO_STUDIO" ||
-          (filters.categorys?.length === 1 &&
-            filters.categorys[0] === "hellostudio") ? (
+          {filters.categorys?.length === 1 &&
+          (filters.categorys[0] === "hellostudio" ||
+            filters.categorys[0] === "HELLO_STUDIO") ? (
             <DateRangeFilter
               onChange={handleFilterChange}
               startDate={filters.startDate}

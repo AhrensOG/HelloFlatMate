@@ -24,8 +24,8 @@ export default function OffersSection({
         </div>
 
         {/* Contenido del Hero */}
-        <div className="relative w-full sm:w-3/4 z-10 flex flex-col items-start justify-center p-6 md:p-12 mt-4 ml-8 md:mt-48 md:ml-48 bg-[#1FAECC] md:text-left md:items-start">
-          <div className="flex flex-col w-full sm:w-2/3 md:w-5/6 text-center">
+        <div className="relative w-full z-10 flex flex-col items-start justify-center p-6 md:p-12 mt-4 md:mt-48 bg-[#1FAECC] md:text-left md:items-start">
+          <div className="flex flex-col w-full xl:w-5/6 text-center">
             {/* Título */}
             <h2 className="font-extrabold text-[26px] leading-[30px] tracking-[-1.5px] mb-4 sm:text-2xl md:text-3xl">
               {title}
@@ -50,16 +50,16 @@ export default function OffersSection({
           </div>
 
           {/* Botón para versión mobile */}
-          <Link
+          {/* <Link
             href={link}
             className="absolute -bottom-6 bg-black text-white font-bold text-[20px] leading-[24px] px-6 py-3 rounded hover:bg-gray-800 transition flex flex-row justify-center items-center gap-2 sm:hidden"
           >
             Ver habitaciones
             <ArrowRightIcon className="h-5 w-5" />
-          </Link>
+          </Link> */}
 
           {/* Botón para versión desktop */}
-          <div className="hidden sm:block absolute z-20 -right-20">
+          {/* <div className="hidden sm:block absolute z-20 -right-20">
             <Link
               href={link}
               className="bg-black text-white font-bold text-[20px] leading-[24px] px-6 py-3 rounded hover:bg-gray-800 transition flex flex-row justify-center items-center gap-2"
@@ -67,7 +67,7 @@ export default function OffersSection({
               Ver habitaciones
               <ArrowRightIcon className="h-5 w-5" />
             </Link>
-          </div>
+          </div> */}
 
           {/* Logo para mobile (abajo a la derecha) */}
           {/* <Image
@@ -78,7 +78,7 @@ export default function OffersSection({
             quality={100}
             className="absolute bottom-6 right-2 sm:hidden"
           /> */}
-          <div className="absolute w-28 md:w-20 h-40 overflow-visible top-64 right-12 z-30 xl:block hidden">
+          <div className="absolute w-52 h-52 overflow-visible bottom-0 right-2 z-30 xl:block hidden">
             <Image
               src="/home/complejo.png"
               alt="Ofertas en habitaciones"

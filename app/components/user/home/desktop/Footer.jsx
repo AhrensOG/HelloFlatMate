@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="flex flex-col justify-center items-center">
       {/* MOBILE DESIGN */}
       <div className="bg-gray-400 p-6 relative w-full flex flex-col items-center justify-center">
-        <div className="w-full sm:hidden flex flex-col items-center justify-center">
+        <div className="w-full lg:hidden flex flex-col items-center justify-center">
           {/* Logo */}
           <div className="mb-6">
             <Image
@@ -113,10 +113,10 @@ export default function Footer() {
         </div>
 
         {/* DESKTOP DESIGN */}
-        <div className="w-full sm:flex flex-col gap-4 hidden bg-gray-400 relative items-center justify-between min-h-72">
+        <div className="w-full lg:flex flex-col gap-4 hidden bg-gray-400 relative items-center justify-between">
           {/* Enlaces principales */}
           <div className="w-full flex justify-around items-start gap-4">
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex flex-col items-start gap-2 min-w-[258px]">
               <h3 className="font-bold text-sm sm:text-lg">
                 ¿En qué podemos ayudarte?
               </h3>
@@ -170,7 +170,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center grow">
               {/* Logo */}
               <div className="">
                 <Image
@@ -180,14 +180,20 @@ export default function Footer() {
                   height={80}
                 />
               </div>
-              <div className="w-full py-6">
+              <div className="w-full py-6 flex justify-center items-center">
                 <p className="font-medium text-lg text-center max-w-[32rem]">
                   Desde 2011 colaborando en la creación de alojamientos dignos
                   para estudiantes y nómadas digitales.
                 </p>
               </div>
+              {/* Derechos reservados */}
+              <div className="w-full text-center font-bold">
+                <p className="text-sm lg:text-lg text-black">
+                  Todos los derechos reservados @helloflatmate 2024
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col items-start space-y-4">
+            <div className="flex flex-col items-start space-y-4 min-w-[258px]">
               <h3 className="font-bold text-sm sm:text-lg">Enlaces</h3>
               <ul className="space-y-2">
                 <li>
@@ -219,13 +225,6 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-          </div>
-
-          {/* Derechos reservados */}
-          <div className="w-full text-center font-bold">
-            <p className="text-sm lg:text-lg text-black">
-              Todos los derechos reservados @helloflatmate 2024
-            </p>
           </div>
         </div>
       </div>

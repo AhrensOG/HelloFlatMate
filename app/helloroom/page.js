@@ -14,7 +14,6 @@ import Banner from "../components/user/home/desktop/Banner";
 import Footer from "../components/user/home/desktop/Footer";
 import MapSection from "../components/user/home/desktop/auxiliarComponents/MapSection";
 
-
 const helloroom = {
   hero: {
     // img: "/home/hero2.jpeg",
@@ -22,10 +21,12 @@ const helloroom = {
     title: "¡Descubre nuestras habitaciones hellorooms para estudiantes!",
     description:
       "Estas habitaciones son gestionadas por el equipo de helloflatmate para brindar a los estudiantes una estancia cómoda, segura y sin complicaciones. ",
-    link: "/pages/select-category?c=HELLO_ROOM",
+    // link: "/pages/select-category?c=HELLO_ROOM",
+    link: "/pages/user/filtered?category=HELLO_ROOM",
   },
   offer: {
-    title: "¡Disfruta de una habitación limpia y preparada a tu llegada junto con la mejor atención personalizada!",
+    title:
+      "¡Disfruta de una habitación limpia y preparada a tu llegada junto con la mejor atención personalizada!",
     description:
       "Equipadas y listas para que puedas instalarte desde el primer día, con todos los servicios activos, incluyendo conexión a Internet de alta velocidad. En hellorooms nos encargamos de todo lo relacionado con la gestión de tu estancia, gestión de  mantenimiento, para que sólo tengas que preocuparte de estudiar, explorar la ciudad y disfrutar de tu experiencia en Valencia, compartiendo piso con otros estudiantes de edad igual o similar.",
     link: "/pages/select-category?c=HELLO_ROOM",
@@ -84,7 +85,7 @@ export default function HelloRoom() {
             link={helloroom.offer.link}
           />
           <CommunitySection />
-          
+
           <FamilySection
             title={helloroom.family.title}
             description={helloroom.family.description}
@@ -93,10 +94,10 @@ export default function HelloRoom() {
           />
           <InfoSection />
           <PropertySlider data={properties} />
-          
+
           {/* <MapSection /> */}
         </div>
-        
+
         <Banner />
         <Footer />
       </div>
