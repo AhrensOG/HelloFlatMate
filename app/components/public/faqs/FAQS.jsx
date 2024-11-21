@@ -40,10 +40,10 @@ export default function FAQS() {
     };
 
     return (
-        <main className="flex flex-col items-center gap-4 my-6">
-            <h1 className="font-bold text-2xl text-resolution-blue w-full ml-[15rem]">Preguntas frecuentes</h1>
-            <div className="flex justify-around gap-4 w-full">
-                <section className="flex flex-col gap-4 w-[35rem]">
+        <main className="flex flex-col items-center gap-4 my-6 mx-2">
+            <h1 className="font-bold text-2xl text-resolution-blue w-full md:ml-[15rem]">Preguntas frecuentes</h1>
+            <div className="flex flex-col md:flex-row md:justify-around gap-4 w-full justify-center">
+                <section className="flex flex-col gap-4 w-[19rem] md:w-[35rem]">
                     {[
                         {
                             question: "¿Qué es un hellorooms?",
@@ -307,7 +307,7 @@ export default function FAQS() {
                         </article>
                     ))}
                 </section>
-                <aside className="flex flex-col gap-4 w-[25rem] h-[48rem] border border-gris-español p-4">
+                <aside className="flex flex-col gap-4 w-[19rem] md:w-[25rem] h-[48rem] border border-gris-español p-4">
                     <h2 className="font-semibold text-lg text-licorice-black">Podría interesarte</h2>
                     {filteredProperties?.length > 0 ? (
                         filteredProperties.map((property, index) => (
