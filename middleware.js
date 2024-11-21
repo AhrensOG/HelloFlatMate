@@ -30,9 +30,7 @@ export async function middleware(request) {
         "/api/property",
         "/pages/select-category",
         "/pages/user/filtered",
-        "/pages/faq",
-        "/pages/privacy-policy",
-        "/pages/cookies",
+        "/faq",
     ];
 
     const dynamicPaths = [

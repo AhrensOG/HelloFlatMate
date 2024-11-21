@@ -125,7 +125,8 @@ export default function Home() {
             try {
                 await getAllProperties(dispatch);
             } catch (error) {
-                toast.error("Error al obtener propiedades");
+              console.log(error)
+                // toast.error("Error al obtener propiedades");
             }
         };
 

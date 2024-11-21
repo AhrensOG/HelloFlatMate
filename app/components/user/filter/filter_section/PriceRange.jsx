@@ -11,9 +11,9 @@ export default function PriceRange({ onChange, initialValue }) {
     initialValue?.minPrice >= 0 ? initialValue.minPrice : 0
   );
   const [maxValue, setMaxValue] = useState(
-    initialValue?.maxPrice >= 0 ? initialValue.maxPrice : 10000
+    initialValue?.maxPrice >= 0 ? initialValue.maxPrice : 2000
   );
-  const priceGap = 1000;
+  const priceGap = 1;
 
   const handleMinChange = (e) => {
     let value = parseInt(e.target.value);
@@ -62,8 +62,8 @@ export default function PriceRange({ onChange, initialValue }) {
         <div
           className="h-1.5 rounded-md bg-[#0E1863] absolute left-0 right-0 top-0 bottom-0 z-[100]"
           style={{
-            left: `${(minValue / 10000) * 100}%`,
-            right: `${100 - (maxValue / 10000) * 100}%`,
+            left: `${(minValue / 2000) * 100}%`,
+            right: `${100 - (maxValue / 2000) * 100}%`,
           }}
         ></div>
       </div>
@@ -71,7 +71,7 @@ export default function PriceRange({ onChange, initialValue }) {
         <input
           type="range"
           min={0}
-          max={10000}
+          max={2000}
           value={minValue}
           onChange={handleMinChange}
           className="absolute w-full h-full top-[10px] pointer-events-auto appearance-none"
@@ -81,7 +81,7 @@ export default function PriceRange({ onChange, initialValue }) {
         <input
           type="range"
           min={0}
-          max={10000}
+          max={2000}
           value={maxValue}
           onChange={handleMaxChange}
           className="absolute w-full h-full top-0 pointer-events-auto appearance-none"

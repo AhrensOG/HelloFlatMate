@@ -20,7 +20,8 @@ const hellolandlord = {
     title: "Inquilinos ideales, gestión en tus manos.",
     description:
       "HelloLandlord conecta propietarios con inquilinos ideales. Nos encargamos del contrato y la publicidad, mientras tú gestionas la propiedad de forma sencilla y segura.",
-    link: "/pages/select-category?c=HELLO_LANDLORD",
+    // link: "/pages/select-category?c=HELLO_LANDLORD",
+    link: "/pages/user/filtered?category=HELLO_LANDLORD",
   },
   offer: {
     title: "Propiedades de Calidad",

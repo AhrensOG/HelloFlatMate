@@ -59,7 +59,7 @@ const CategorySelector = ({
   const searchParams = useSearchParams();
   const categoryQuery = searchParams.get("c");
 
-  const [currentCategory, setCurrentCategory] = useState("HELLO_ROOM");
+  const [currentCategory, setCurrentCategory] = useState(null);
   const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [numberOccupants, setNumberOccupants] = useState();
@@ -373,7 +373,7 @@ const CategorySelector = ({
         ))}
       </div>
       <div className="w-full flex justify-center items-start">
-        <div className="max-w-screen-xl w-full flex flex-col sm:flex-row justify-between items-center sm:items-start p-4">
+        <div className={`max-w-screen-xl w-full flex flex-col sm:flex-row ${currentCategory ? "justify-between" : "justify-end"   } items-center sm:items-start p-4`}>
           {currentCategory && (
             <AnimatePresence mode="wait">
               <motion.div

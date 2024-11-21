@@ -24,12 +24,12 @@ export default function CookieModal() {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100 p-4 shadow-lg">
-            <div className="relative mx-auto p-6 text-center">
+        <div className="fixed flex justify-center items-center bottom-0 left-0 right-0 z-50 bg-gray-100 p-4 shadow-lg">
+            <div className="relative mx-auto p-6 text-center w-full max-w-screen-xl">
                 {/* Botón de cerrar */}
-                <button onClick={() => setIsVisible(false)} className="absolute top-1 right-1 text-gray-400 hover:text-gray-600 transition">
+                {/* <button onClick={() => setIsVisible(false)} className="absolute top-1 right-1 text-gray-400 hover:text-gray-600 transition">
                     ✕
-                </button>
+                </button> */}
 
                 {/* Título */}
                 <h2 className="text-lg font-semibold text-gray-900 mb-3">Usamos cookies</h2>

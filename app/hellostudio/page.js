@@ -21,7 +21,8 @@ const hellostudio = {
     title: "Trabaja, conecta y crece en hellostudio",
     description:
       "Espacios de coworking productivos y colaborativos con tecnología avanzada, internet rápido, salas de reuniones, áreas comunes, y eventos comunitarios, ideales para profesionales y emprendedores en crecimiento.",
-    link: "/pages/select-category?c=HELLO_STUDIO",
+    // link: "/pages/select-category?c=HELLO_STUDIO",
+    link: "/pages/user/filtered?category=HELLO_STUDIO",
   },
   offer: {
     title: "Flexibilidad y comodidad",
