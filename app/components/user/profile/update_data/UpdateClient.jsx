@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { Context } from "@/app/context/GlobalContext";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -171,7 +171,7 @@ export default function UpdateClient() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4 inset-0`}
+      className={`  w-full flex flex-col gap-7 p-4 inset-0`}
     >
       <h1 className="pl-4 font-bold text-xl mt-4">Actualizar Información</h1>
       <div className="w-full grid place-items-center">

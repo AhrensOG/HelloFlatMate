@@ -53,14 +53,13 @@ export default function Chat() {
 
     return (
         <div>
-            {console.log(chats)}
             {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
             {groupChats &&
                 groupChats.map((chat) => {
                     return (
                         <ChatsCard
                             key={chat.id}
-                            name={chat.relatedModel?.serial}
+                            name={`${chat.relatedModel?.serial} - Grupo`}
                             image="/profile/profile.png"
                             lastMessage={chat.messages[chat.messages.length - 1]}
                             action={() => router.push(`/pages/user/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`)}
@@ -90,7 +89,7 @@ export default function Chat() {
                             {chat.relatedId ? (
                                 <ChatsCard
                                     key={chat.id}
-                                    name={chat.relatedModel?.serial ? chat.relatedModel?.serial : "Unknown"}
+                                    name={chat.relatedModel?.serial ? `${chat.relatedModel?.serial} - Privado` : "Unknown"}
                                     image={"/profile/profile.png"}
                                     lastMessage={chat.messages[chat.messages.length - 1]}
                                     action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}

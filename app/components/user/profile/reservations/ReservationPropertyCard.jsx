@@ -1,5 +1,5 @@
 "use client";
-import { plus_jakarta } from "@/font";
+ 
 import Image from "next/image";
 import { useState } from "react";
 import Tooltip from "../../property/tooltip/Tooltip";
@@ -75,7 +75,7 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
 
   return (
     <article
-      className={`${plus_jakarta.className} max-w-[350px] sm:max-w-60 sm:h-[310px] flex flex-col gap-3 w-full cursor-pointer border p-2 rounded-xl shadow-reservation-drop`}
+      className={`  max-w-[350px] sm:max-w-60 sm:h-[310px] flex flex-col gap-3 w-full cursor-pointer border p-2 rounded-xl shadow-reservation-drop`}
     >
       <div
         onClick={handleRedirect}

@@ -1,5 +1,5 @@
 import TitleAdminPanel from "../shared/TitleAdminPanel";
-import { plus_jakarta } from "@/font";
+ 
 import PaymentCard from "./PaymentCard";
 import PaymentDetails from "./PaymentDetails";
 import EyeButton from "../documents_panel/EyeButton";
@@ -16,7 +16,7 @@ export default function PaymentHistoryPanel() {
 
   return (
     <main
-      className={`${plus_jakarta.className} relative flex flex-col justify-center items-center p-2 gap-6 mt-3`}
+      className={`  relative flex flex-col justify-center items-center p-2 gap-6 mt-3`}
     >
       {!showDetails && (
         <motion.div

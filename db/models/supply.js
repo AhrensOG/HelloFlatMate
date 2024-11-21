@@ -37,7 +37,7 @@ const supplyInit = (sequelize, DataTypes) => {
                 allowNull: false
             },
             status: {
-                type: DataTypes.ENUM("PENDING", "PAID", "NOT_PAID"),
+                type: DataTypes.ENUM("PENDING", "PAID", "NOT_PAID", "CANCELED"),
                 allowNull: false
             },
             paymentDate: {
@@ -45,7 +45,7 @@ const supplyInit = (sequelize, DataTypes) => {
                 allowNull: true
             },
             reference: {
-                type: DataTypes.STRING(100),
+                type: DataTypes.STRING,
                 allowNull: true
             },
             discount: {

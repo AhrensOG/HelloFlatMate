@@ -1,4 +1,4 @@
-import { Client } from "@/db/init";
+import { ChatParticipant, Client } from "@/db/init";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getUserById } from "../../user/controllers/getUsersController";

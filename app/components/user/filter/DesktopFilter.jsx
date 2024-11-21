@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { useState } from "react";
 import Image from "next/image";
 import FilterSection from "./filter_section/FilterSection";
@@ -8,6 +8,7 @@ import PriceRange from "./filter_section/PriceRange";
 import DateRangeFilter from "./filter_section/DateRangeFilter";
 import { ArrowLeftIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import FilterSelect from "./FilterSelect";
 
 export default function DesktopFilter({
   isOpen,
@@ -16,6 +17,8 @@ export default function DesktopFilter({
   setFilters,
   onApplyFilters,
   onFilterChange,
+  category,
+  rentalPeriods,
 }) {
   const router = useRouter();
   const handleFilterChange = (filterName, selectedValues) => {
@@ -54,7 +57,7 @@ export default function DesktopFilter({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -500 }}
         transition={{ duration: 0.8 }}
-        className={`${plus_jakarta.className} fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
+        className={`  fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
       >
         <div className="h-8 w-full flex items-center px-4">
           <button onClick={() => router.back()}>
@@ -105,12 +108,23 @@ export default function DesktopFilter({
             </div>
           </section>
 
-          {/* Nuevo componente de rango de fechas */}
-          <DateRangeFilter
-            onChange={handleFilterChange}
-            startDate={filters.startDate}
-            endDate={filters.endDate}
-          />
+          {category === "HELLO_STUDIO" ||
+          (filters.categorys?.length === 1 &&
+            filters.categorys[0] === "hellostudio") ? (
+            <DateRangeFilter
+              onChange={handleFilterChange}
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+            />
+          ) : (
+            <FilterSelect
+              name="rentalPeriod"
+              options={rentalPeriods}
+              data={filters}
+              setData={setFilters}
+              title="Seleccionar un período"
+            />
+          )}
 
           {/* <FilterSection
             onChange={handleFilterChange}

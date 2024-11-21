@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import UserCard from "./UserCard";
 import SetRolModal from "./SetRolModal";
@@ -28,7 +28,7 @@ export default function UsersPanel({ data, reload }) {
 
   return (
     <main
-      className={`${plus_jakarta.className} flex flex-col gap-5 p-2 items-center`}
+      className={`  flex flex-col gap-5 p-2 items-center`}
     >
       <TitleAdminPanel title={"Usuarios"} />
       <div className="w-full flex flex-wrap gap-2 justify-center items-center ">

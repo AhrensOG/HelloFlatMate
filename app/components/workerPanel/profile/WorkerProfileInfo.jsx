@@ -7,7 +7,7 @@ import {
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowLeftIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
-import { plus_jakarta } from "@/font";
+ 
 import ProfileItems from "./ProfileItems";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -48,7 +48,7 @@ export default function WorkerProfileInfo() {
         <UserSerivceNavBar />
       </header>
       <main
-        className={`${plus_jakarta.className} flex flex-col items-center gap-5 w-full p-4`}
+        className={`  flex flex-col items-center gap-5 w-full p-4`}
       >
         <section className="flex items-center mb-4 w-full">
           {/* <button

@@ -139,6 +139,7 @@ export async function updateStatusLeaseOrder(data) {
                 {
                     model: Chat,
                     as: "chats",
+                    as: "chats",
                 },
             ],
             transaction,

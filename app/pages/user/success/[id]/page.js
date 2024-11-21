@@ -45,6 +45,14 @@ const SuccessPage = ({ params }) => {
         "Completa tus datos y sube la documentación necesaria para que podamos confirmar tu reserva."
       );
       setAction("Completar Información");
+    } else if (paymentType === "monthly") {
+      // Mantén los textos predeterminados para las reservas
+      setTitle("¡Felicitaciones!");
+      setSubTitle("Gracias por confiar en helloflamate");
+      setBody(
+        "Verifica tus pagos en tus dormitorios"
+      );
+      setAction("Continuar");
     }
   }, [paymentType]); // Se ejecuta cuando cambia el paymentType
 
@@ -54,6 +62,8 @@ const SuccessPage = ({ params }) => {
       router.push("/pages/user/contract/" + id);
     } else if (paymentType === "supply") {
       router.push("/pages/user/supplies/" + id);
+    } else if (paymentType === "monthly") {
+      router.push("/pages/user/my-bedrooms");
     } else {
       router.push("/");
     }

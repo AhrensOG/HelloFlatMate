@@ -145,7 +145,7 @@ export default function Home() {
             <div className="flex flex-col sm:min-h-screen relative">
                 <BotIcon />
                 <CookieModal />
-                <header>
+                <header className="mb-[144px]">
                     <HomeNavBar setActiveSection={setActiveSection} activeSection={activeSection} />
                 </header>
 
@@ -162,7 +162,7 @@ export default function Home() {
                     </div>
                 )}
 
-                {activeSection === "helloroom" && (
+                {/* {activeSection === "helloroom" && (
                     <div className="w-full flex flex-col">
                         <DesktopHero
                             img={helloroom.hero.img}
@@ -250,7 +250,7 @@ export default function Home() {
                         />
                         <PropertySlider data={properties} />
                     </div>
-                )}
+                )} */}
                 <InfoSection />
                 <PropertySlider data={properties} />
                 <Banner />

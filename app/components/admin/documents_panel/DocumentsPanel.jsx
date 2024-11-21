@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import { useContext, useEffect, useState } from "react";
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import DocumentListItem from "../../user/documents/DocumentListItem";
@@ -55,7 +55,7 @@ export default function DocumentsPanel() {
   return (
     <>
       <main
-        className={`${plus_jakarta.className} flex flex-col gap-5 p-2 items-center`}
+        className={`  flex flex-col gap-5 p-2 items-center`}
       >
         <TitleAdminPanel title={"Documentos"} />
         <section className="w-full flex flex-col gap-4">

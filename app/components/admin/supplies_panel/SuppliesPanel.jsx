@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import SupplieAdminCard from "./SupplieAdminCard";
 import RequestPayment from "./reques_payment/RequestPayment";
 import { useEffect, useState } from "react";
@@ -72,7 +72,7 @@ export default function SuppliesPanel({ propertyId }) {
   return (
     <AnimatePresence mode="wait">
       <main
-        className={`${plus_jakarta.className} relative flex flex-col justify-center items-center p-2`}
+        className={`  relative flex flex-col justify-center items-center p-2`}
       >
         <div onClick={handleShowRequestModal} className="flex justify-end p-4">
           <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">

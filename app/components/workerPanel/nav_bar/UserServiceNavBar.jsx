@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Dropdown from "../../public/auth/Dropdown";
-import { plus_jakarta } from "@/font";
+ 
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 
 export default function UserSerivceNavBar() {
     const router = useRouter();
     return (
-        <nav className={`${plus_jakarta.className} flex w-full items-center justify-between p-3 max-h-[72px]`}>
+        <nav className={`  flex w-full items-center justify-between p-3 max-h-[72px]`}>
             <button onClick={() => router.back()}>
                 <ArrowLeftIcon className="size-8" />
             </button>

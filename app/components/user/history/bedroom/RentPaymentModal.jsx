@@ -7,6 +7,7 @@ export default function RentPaymentModal({
   totalAmount,
   leaseOrder,
   handlePayment,
+  rentPayments,
 }) {
   if (!isOpen) return null;
 
@@ -26,23 +27,41 @@ export default function RentPaymentModal({
         1
       : 1;
 
-  // Determinar cuota actual en base al mes de la fecha de inicio
+  // Determinar la cuota actual basada en los pagos existentes
+  useEffect(() => {
+    if (leaseOrder) {
+      if (rentPayments.length > 0) {
+        // Filtrar pagos que coincidan con el leaseOrderId
+        const relevantPayments = rentPayments.filter(
+          (payment) => payment.leaseOrderId === leaseOrder.id
+        );
+
+        // Encontrar la cuota más alta pagada
+        const maxQuotaPayment = relevantPayments.reduce(
+          (max, payment) =>
+            payment.quotaNumber > max.quotaNumber ? payment : max,
+          { quotaNumber: 0 }
+        );
+
+        // La cuota actual será la siguiente después de la mayor pagada
+        const nextQuota = maxQuotaPayment.quotaNumber + 1;
+        setCurrentInstallment(nextQuota);
+      } else {
+        // Si no hay pagos realizados, la cuota actual es la primera
+        setCurrentInstallment(1);
+      }
+    }
+  }, [leaseOrder, rentPayments]);
+
+  // Ajuste de monto (considerar recargo por retraso si es necesario)
   useEffect(() => {
     if (startDate) {
       const currentDate = new Date();
-      const monthsPassed =
-        (currentDate.getFullYear() - startDate.getFullYear()) * 12 +
-        (currentDate.getMonth() - startDate.getMonth()) +
-        1;
-      const installmentNumber = Math.min(monthsPassed, monthsDuration); // Limita el número de cuotas al máximo de la duración del contrato
-      setCurrentInstallment(installmentNumber);
-
-      // Verifica si es después del día 10 del mes
-      const lateFee =
-        currentDate.getDate() > 10 ? totalAmount * 1.05 : totalAmount;
+      const lateFee = totalAmount;
+      // currentDate.getDate() > 25 ? totalAmount * 1.05 : totalAmount;
       setAdjustedAmount(lateFee);
     }
-  }, [startDate, monthsDuration, totalAmount]);
+  }, [startDate, totalAmount]);
 
   const handleConfirm = async () => {
     await handlePayment(adjustedAmount, currentInstallment);
@@ -65,11 +84,11 @@ export default function RentPaymentModal({
           Total a pagar:{" "}
           <span className="font-semibold">${adjustedAmount.toFixed(2)}</span>
         </p>
-        {new Date().getDate() > 10 && (
+        {/* {new Date().getDate() > 25 && (
           <p className="text-sm text-red-500 mt-1">
             Incluye un recargo del 5% por pago tardío.
           </p>
-        )}
+        )} */}
 
         <div className="flex justify-end mt-6">
           <button

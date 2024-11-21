@@ -69,7 +69,7 @@ export default function HelloStudio() {
   return (
     <div>
       <div className="flex flex-col sm:min-h-screen">
-        <header>
+        <header className="mb-[144px]">
           <HomeNavBar activeSection={"hellostudio"} />
         </header>
         <div className="w-full flex flex-col">
