@@ -3,54 +3,54 @@ const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
 const supplyInit = (sequelize, DataTypes) => {
-    class Supply extends Model { }
+    class Supply extends Model {}
 
     Supply.init(
         {
             id: {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
-                primaryKey: true
+                primaryKey: true,
             },
             paymentId: {
                 type: DataTypes.STRING(200),
-                allowNull: true
+                allowNull: true,
             },
             name: {
                 type: DataTypes.STRING(100),
-                allowNull: false
+                allowNull: false,
             },
             type: {
-                type: DataTypes.ENUM("WATER", "GAS", "ELECTRICITY", "EXPENSES", "INTERNET", "OTHERS"),
-                allowNull: false
+                type: DataTypes.ENUM("WATER", "GAS", "ELECTRICITY", "EXPENSES", "INTERNET", "OTHERS", "MAINTENANCE", "CLEAN"),
+                allowNull: false,
             },
             amount: {
                 type: DataTypes.FLOAT,
-                allowNull: false
+                allowNull: false,
             },
             date: {
                 type: DataTypes.DATE,
-                allowNull: false
+                allowNull: false,
             },
             expirationDate: {
                 type: DataTypes.DATE,
-                allowNull: false
+                allowNull: false,
             },
             status: {
                 type: DataTypes.ENUM("PENDING", "PAID", "NOT_PAID", "CANCELED"),
-                allowNull: false
+                allowNull: false,
             },
             paymentDate: {
                 type: DataTypes.DATE,
-                allowNull: true
+                allowNull: true,
             },
             reference: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: true,
             },
             discount: {
                 type: DataTypes.FLOAT,
-                allowNull: true
+                allowNull: true,
             },
         },
         {
@@ -59,8 +59,8 @@ const supplyInit = (sequelize, DataTypes) => {
             freezeTableName: true,
             timestamps: false,
         }
-    )
-    return Supply
-}
+    );
+    return Supply;
+};
 
-module.exports = supplyInit(connection, DataTypes)
+module.exports = supplyInit(connection, DataTypes);

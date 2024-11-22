@@ -89,3 +89,37 @@ export async function asignToWorker(data) {
         return NextResponse.json({ message: "Bad request" }, { status: 400 });
     }
 }
+
+export async function asingPrice(data) {
+    if (!data) {
+        return NextResponse.json({ message: "Bad request" }, { status: 400 });
+    }
+    if (!data.id || data.id <= 0) {
+        return NextResponse.json({ message: "Bad request" }, { status: 400 });
+    }
+    if (!data.price || data.price <= 0) {
+        return NextResponse.json({ message: "Bad request" }, { status: 400 });
+    }
+
+    try {
+        const transaction = await ToDo.sequelize.transaction();
+        try {
+            const todo = await ToDo.findByPk(data.id);
+            if (!todo) {
+                transaction.rollback();
+                return NextResponse.json({ message: "To do not found" }, { status: 404 });
+            }
+            todo.price = data.price;
+            await todo.save();
+            await transaction.commit();
+            return NextResponse.json({ message: "To do updated successfully" }, { status: 200 });
+        } catch (err) {
+            transaction.rollback();
+            console.log(err);
+
+            return NextResponse.json({ message: err }, { status: 400 });
+        }
+    } catch (error) {
+        return NextResponse.json({ message: "Bad request" }, { status: 400 });
+    }
+}
