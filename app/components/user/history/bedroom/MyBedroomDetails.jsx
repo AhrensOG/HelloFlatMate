@@ -237,13 +237,14 @@ export default function MyBedroomDetails({ room, rentPayments }) {
             Nueva Reserva
           </Link>
         ) : (
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-sm h-11"
-            type="button"
+          <Link
+            href={"/pages/user/history/payments"}
+            // onClick={() => setIsModalOpen(true)}
+            className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-lg py-2"
+            // type="button"
           >
             Pagar
-          </button>
+          </Link>
         )}
       </section>
 
