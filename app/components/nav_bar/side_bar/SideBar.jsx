@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
- 
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import SideBarButton from "./SideBarButton";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 const adminOptions = [
   {
@@ -80,23 +81,28 @@ const ownerOptions = [
 ];
 const clientOptions = [
   {
+    title: "Pagos",
+    icon: "/nav_bar/payment.png",
+    link: "/pages/user/history/payments",
+  },
+  {
     title: "Reservas",
-    icon: "/nav_bar/side_bar/client/payments.svg",
+    icon: "/nav_bar/desktop-my-contracts.svg",
     link: "/pages/user/my-reservations",
   },
   {
     title: "Dormitorios",
-    icon: "/nav_bar/side_bar/client/properties.svg",
+    icon: "/nav_bar/desktop-my-bedrooms.svg",
     link: "/pages/user/my-bedrooms",
   },
-  {
-    title: "Chats",
-    icon: "/nav_bar/side_bar/client/chats.svg",
-    link: "/pages/user/chats",
-  },
+  // {
+  //   title: "Chats",
+  //   icon: "/nav_bar/side_bar/client/chats.svg",
+  //   link: "/pages/user/chats",
+  // },
   {
     title: "Perfil",
-    icon: "/nav_bar/side_bar/client/properties.svg",
+    icon: "/nav_bar/desktop-profile.svg",
     link: "/pages/user/profile",
   },
   // {
@@ -173,7 +179,7 @@ export default function SideBar({
               <button
                 onClick={() => handleRedirect("/")}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex gap-2 items-center px-5 w-full"
               >
                 <div>
                   <Image
@@ -199,20 +205,14 @@ export default function SideBar({
                 );
               })}
               <button
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex items-center justify-start gap-1 px-4"
               >
-                <div className="relative w-6 h-6">
-                  <Image
-                    src={"/nav_bar/side_bar/client/configuration.svg"}
-                    fill
-                    alt="Botón para ir al inicio"
-                  />
+                <div className="relative w-[40px] h-[40px]">
+                  <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
-                <h2 className="text-gris-español font-medium text-xl">
-                  Cerrar Sesión
-                </h2>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
             </nav>
           )}
@@ -221,7 +221,7 @@ export default function SideBar({
               <button
                 onClick={() => handleRedirect("/")}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex gap-2 items-center px-5 w-full"
               >
                 <div>
                   <Image
@@ -247,20 +247,14 @@ export default function SideBar({
                 );
               })}
               <button
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex flex-col items-center justify-between gap-1"
               >
-                <div className="relative w-6 h-6">
-                  <Image
-                    src={"/nav_bar/side_bar/client/configuration.svg"}
-                    fill
-                    alt="Botón para ir al inicio"
-                  />
+                <div className="relative w-[40px] h-[40px]">
+                  <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
-                <h2 className="text-gris-español font-medium text-xl">
-                  Cerrar Sesión
-                </h2>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
             </nav>
           )}
@@ -269,7 +263,7 @@ export default function SideBar({
               <button
                 onClick={() => handleRedirect("/")}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex gap-2 items-center px-5 w-full"
               >
                 <div>
                   <Image
@@ -295,20 +289,14 @@ export default function SideBar({
                 );
               })}
               <button
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex flex-col items-center justify-between gap-1"
               >
-                <div className="relative w-6 h-6">
-                  <Image
-                    src={"/nav_bar/side_bar/client/configuration.svg"}
-                    fill
-                    alt="Botón para ir al inicio"
-                  />
+                <div className="relative w-[40px] h-[40px]">
+                  <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
-                <h2 className="text-gris-español font-medium text-xl">
-                  Cerrar Sesión
-                </h2>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
             </nav>
           )}

@@ -12,6 +12,11 @@ import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 // Opciones para los diferentes roles
 const clientOptions = [
   {
+    title: "Pagos",
+    icon: "/nav_bar/payment.png",
+    link: "/pages/user/history/payments",
+  },
+  {
     title: "Reservas",
     icon: "/nav_bar/desktop-my-contracts.svg",
     link: "/pages/user/my-reservations",
@@ -21,11 +26,11 @@ const clientOptions = [
     icon: "/nav_bar/desktop-my-bedrooms.svg",
     link: "/pages/user/my-bedrooms",
   },
-  {
-    title: "Chats",
-    icon: "/nav_bar/desktop-chats.svg",
-    link: "/pages/user/chats",
-  },
+  // {
+  //   title: "Chats",
+  //   icon: "/nav_bar/desktop-chats.svg",
+  //   link: "/pages/user/chats",
+  // },
   {
     title: "Perfil",
     icon: "/nav_bar/desktop-profile.svg",
