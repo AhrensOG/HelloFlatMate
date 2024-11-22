@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function CookieModal() {
@@ -38,9 +39,9 @@ export default function CookieModal() {
                 <p className="text-sm text-gray-600 mb-4">
                     Utilizamos cookies propias y de terceros para analizar la navegación de los usuarios y mejorar nuestros servicios. Al pulsar{" "}
                     <strong>Aceptar</strong>, consiente el uso de estas cookies. Puede obtener más información pulsando en{" "}
-                    <a href="/politica-cookies" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                    <Link href="/cookies" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
                         Más información
-                    </a>
+                    </Link>
                     .
                 </p>
 

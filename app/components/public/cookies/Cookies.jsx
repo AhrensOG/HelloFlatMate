@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Cookies() {
     return (
         <main className="p-6 max-w-4xl mx-auto">
@@ -63,14 +65,14 @@ export default function Cookies() {
                                 Recoger información sobre la navegación de los usuarios para realizar análisis estadísticos.
                             </td>
                             <td className="border px-4 py-2">
-                                <a
+                                <Link
                                     href="https://policies.google.com/privacy"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-blue-600 hover:underline"
                                 >
                                     Google Analytics Centro de Privacidad
-                                </a>
+                                </Link>
                             </td>
                         </tr>
                     </tbody>
@@ -95,44 +97,44 @@ export default function Cookies() {
                 <p>Puedes gestionar las cookies desde la configuración de tu navegador:</p>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>
-                        <a
+                        <Link
                             href="https://support.google.com/chrome/answer/95647?hl=es"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline"
                         >
                             Google Chrome
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline"
                         >
                             Mozilla Firefox
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href="https://support.microsoft.com/es-es/microsoft-edge"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline"
                         >
                             Microsoft Edge
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href="https://support.apple.com/es-es/guide/safari/sfri11471/mac"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline"
                         >
                             Safari
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </section>
@@ -140,9 +142,9 @@ export default function Cookies() {
                 <h2 className="text-lg font-semibold">Derechos de los interesados</h2>
                 <p>
                     Puedes obtener más información sobre el tratamiento de tus datos y cómo ejercer tus derechos consultando nuestra{" "}
-                    <a href="/politica-privacidad" className="text-blue-600 hover:underline">
+                    <Link href="/privacy-policy" className="text-blue-600 hover:underline">
                         política de privacidad
-                    </a>
+                    </Link>
                     .
                 </p>
                 <p>
