@@ -31,6 +31,8 @@ export async function middleware(request) {
         "/pages/select-category",
         "/pages/user/filtered",
         "/faq",
+        "/cookies",
+        "/privacy-policy",
     ];
 
     const dynamicPaths = [
