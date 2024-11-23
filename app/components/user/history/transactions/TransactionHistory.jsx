@@ -104,7 +104,7 @@ export default function TransactionHistory({ redirect }) {
                 className="p-4 border rounded-lg shadow-sm hover:shadow-md transition"
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="text-md font-medium">Reserva</h3>
+                  <h3 className="text-md font-medium">Reserva/Pago del primer mes</h3>
                   {renderPaymentStatus(payment.status)}
                 </div>
                 <p className="text-sm text-gray-500">
