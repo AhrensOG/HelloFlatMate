@@ -16,9 +16,15 @@ export default function MyBedroomCard({
 
   useEffect(() => {
     function calculateNextDueDate(startDate, endDate) {
+      const today = new Date();
       const start = new Date(startDate);
       const end = new Date(endDate);
-      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 25);
+
+      if (today > end) {
+        return null;
+      }
+
+      const nextDue = new Date(today.getFullYear(), today.getMonth() + 1, 1);
 
       if (nextDue <= end) {
         return nextDue;
@@ -36,10 +42,12 @@ export default function MyBedroomCard({
     }
   }, [dueDate]);
 
-  // Función para formatear la fecha en DD/MM/YY
   function formatDate(date) {
+    if (!date || isNaN(new Date(date).getTime())) {
+      return "-";
+    }
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // +1 porque los meses comienzan en 0
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear()).slice(-2);
     return `${day}/${month}/${year}`;
   }
@@ -64,7 +72,9 @@ export default function MyBedroomCard({
             <MapPinIcon />
           </span>
           <h3 className="text-xs text-[#000000E5] align-text-bottom">
-            {`${location.street}, ${location.postalCode ? location.postalCode : "" } ${location.city}`}
+            {`${location.street}, ${
+              location.postalCode ? location.postalCode : ""
+            } ${location.city}`}
           </h3>
         </div>
         <p className="text-[10px] font-normal text-[#828282]">

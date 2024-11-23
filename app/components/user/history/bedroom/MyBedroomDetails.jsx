@@ -31,9 +31,16 @@ export default function MyBedroomDetails({ room, rentPayments }) {
 
   useEffect(() => {
     function calculateNextDueDate(startDate, endDate) {
+      const today = new Date();
       const start = new Date(startDate);
       const end = new Date(endDate);
-      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 25);
+
+      if (today > end) {
+        return null;
+      }
+
+      const nextDue = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+
       if (nextDue <= end) {
         return nextDue;
       } else {
@@ -87,6 +94,9 @@ export default function MyBedroomDetails({ room, rentPayments }) {
   }, [dueDate]);
 
   function formatDate(date) {
+    if (!date || isNaN(new Date(date).getTime())) {
+      return "-";
+    }
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear()).slice(-2);
