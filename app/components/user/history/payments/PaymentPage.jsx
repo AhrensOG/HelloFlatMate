@@ -114,23 +114,6 @@ const PaymentPage = ({ redirect, user }) => {
 
         const paidQuotas = rentPayments.map((payment) => payment.quotaNumber);
 
-        rentPayments.forEach((payment) => {
-          const paymentMonth = new Date(startDate);
-          paymentMonth.setMonth(startDate.getMonth() + payment.quotaNumber - 1);
-
-          allPayments.push({
-            id: payment.paymentId,
-            month: getMonthName(paymentMonth),
-            amount: payment.amount,
-            status: payment.status,
-            type: payment.type,
-            quotaNumber: payment.quotaNumber,
-            description: payment.description || "Pago realizado",
-            paid: true,
-            orderType: order.hasOwnProperty("roomId") ? "ROOM" : "PROPERTY",
-          });
-        });
-
         for (let i = 1; i <= totalMonths; i++) {
           if (!paidQuotas.includes(i)) {
             const pendingMonth = new Date(startDate);
@@ -155,7 +138,7 @@ const PaymentPage = ({ redirect, user }) => {
       allPayments.sort(
         (a, b) => a.paid - b.paid || a.quotaNumber - b.quotaNumber
       );
-      setPaymentsToShow(allPayments);
+      setPaymentsToShow(allPayments.filter((payment) => !payment.paid)); // Mostrar solo pagos pendientes
     }
   }, [user]);
 
