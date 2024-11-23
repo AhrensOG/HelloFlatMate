@@ -265,7 +265,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
             className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-lg py-2"
             // type="button"
           >
-            Pagos a realizar
+            Pagos por realizar
           </Link>
         )}
       </section>
