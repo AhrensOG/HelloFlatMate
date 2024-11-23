@@ -38,7 +38,7 @@ export default function MyBedroomActivitys({ data }) {
           //   route.push("/pages/user/services/" + data.id);
           // }}
           action={() =>
-            toast.info("¡Muy pronto podrás solicitar diferentes servicios!")
+            toast.info("¡Estamos mejorando para ti! Pronto podrás gestionar todo desde un único lugar. Mientras tanto, recuerda que puedes acceder a tus facturas, contratos y suministros en la carpeta compartida de Google Drive.")
           }
         />
         <ActivityItem
@@ -48,7 +48,7 @@ export default function MyBedroomActivitys({ data }) {
           //   route.push("/pages/user/supplies/" + data.id);
           // }}
           action={() =>
-            toast.info("¡Muy pronto podrás ver el estado de tus aportes!")
+            toast.info("¡Estamos mejorando para ti! Pronto podrás gestionar todo desde un único lugar. Mientras tanto, recuerda que puedes acceder a tus facturas, contratos y suministros en la carpeta compartida de Google Drive.")
           }
         />
         <ActivityItem
@@ -58,7 +58,7 @@ export default function MyBedroomActivitys({ data }) {
           //   route.push("/pages/user/contract/history");
           // }}
           action={() =>
-            toast.info("¡Muy pronto podrás ver tus documentos!")
+            toast.info("¡Estamos mejorando para ti!Pronto podrás gestionar todo desde un único lugar. Mientras tanto, recuerda que puedes acceder a tus facturas, contratos y suministros en la carpeta compartida de Google Drive.")
           }
         />
       </div>
