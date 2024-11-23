@@ -298,7 +298,7 @@ export default function TransactionHistory({ redirect }) {
             >
               <ArrowLeftIcon />
             </button>
-            <h1 className="text-xl font-bold">Transacciones</h1>
+            <h1 className="text-xl font-bold">Mis finanzas</h1>
           </div>
         </div>
         <main className="flex flex-col gap-4 py-4 mx-4">
@@ -321,7 +321,7 @@ export default function TransactionHistory({ redirect }) {
             >
               <ArrowLeftIcon />
             </button>
-            <h1 className="text-xl font-bold">Transacciones</h1>
+            <h1 className="text-xl font-bold">Mis finanzas</h1>
           </div>
         </div>
         <div className="grow flex w-full justify-center items-start">
