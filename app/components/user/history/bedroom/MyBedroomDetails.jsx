@@ -103,6 +103,14 @@ export default function MyBedroomDetails({ room, rentPayments }) {
     return `${day}/${month}/${year}`;
   }
 
+  function getMonthName(date) {
+    if (!date || isNaN(new Date(date).getTime())) {
+      return "-";
+    }
+    const options = { month: "long" }; // Esto da el mes en formato texto largo
+    return new Date(date).toLocaleString("es-ES", options); // Devuelve el mes en español
+  }
+
   const handlePayment = async (price, quota) => {
     const data = {
       amount: price,
@@ -199,7 +207,11 @@ export default function MyBedroomDetails({ room, rentPayments }) {
         <div className="text-sm flex flex-col gap-2">
           <div className="flex justify-between">
             <p className="font-light">
-              {type === "HELLO_STUDIO" ? "Finalización" : "Vencimiento"}
+              {type === "HELLO_STUDIO"
+                ? "Finalización"
+                : `Pago del mes de ${
+                    nextDueDate ? getMonthName(nextDueDate) : "-"
+                  }`}
             </p>
             <p className="font-medium">
               {type === "HELLO_STUDIO"
@@ -253,7 +265,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
             className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-lg py-2"
             // type="button"
           >
-            Pagar
+            Pagos por realizar
           </Link>
         )}
       </section>
