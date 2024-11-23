@@ -51,17 +51,17 @@ export default function Profile() {
                         {!showInfo ? (
                             <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
                                 <ProfileCard
-                                    image={state?.user?.profilePicture || "/profile/profile.jpg"}
+                                    image={state?.user?.profilePicture || "/profile/profile.svg"}
                                     name={state?.user?.name || "Usuario"}
                                     email={state?.user?.email || "Correo@gmail.com"}
                                     action={handlerShowInfo}
                                 />
-                                <ProfileOptions />
+                                {/* <ProfileOptions /> */}
                                 <Logout />
                             </motion.div>
                         ) : (
                             <ProfileInfo
-                                image={state?.user?.profilePicture || "/profile/profile.jpg"}
+                                image={state?.user?.profilePicture || "/profile/profile.svg"}
                                 name={state?.user?.name || "Usuario"}
                                 lastName={state?.user?.lasName || "Usuario"}
                                 email={state?.user?.email || "Correo@gmail.com"}
