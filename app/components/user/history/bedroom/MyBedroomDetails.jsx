@@ -199,7 +199,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
         <div className="text-sm flex flex-col gap-2">
           <div className="flex justify-between">
             <p className="font-light">
-              {type === "HELLO_STUDIO" ? "Finalización" : "Vencimiento"}
+              {type === "HELLO_STUDIO" ? "Finalización" : "Pago del mes de"}
             </p>
             <p className="font-medium">
               {type === "HELLO_STUDIO"
@@ -253,7 +253,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
             className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-lg py-2"
             // type="button"
           >
-            Pagar
+            Pagos por realizar
           </Link>
         )}
       </section>

@@ -23,7 +23,7 @@ export default function Logout() {
         />
       </div>
       <h3 className="font-medium text-sm text-start grow pl-3">
-        Cerrar sesion
+        Car sesion
       </h3>
       <div className="w-8 h-8">
         <ChevronRightIcon />

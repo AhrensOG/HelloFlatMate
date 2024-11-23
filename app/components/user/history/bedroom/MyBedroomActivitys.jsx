@@ -17,7 +17,7 @@ export default function MyBedroomActivitys({ data }) {
           }}
         /> */}
         <ActivityItem
-          title={"Pagos"}
+          title={"Mis finanzas"}
           img={"/my_bedrooms/activitys/dollarsquare.svg"}
           action={() => {
             route.push("/pages/user/history/transactions");
