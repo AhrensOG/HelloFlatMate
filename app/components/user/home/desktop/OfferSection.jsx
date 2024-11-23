@@ -25,7 +25,7 @@ export default function OffersSection({
 
         {/* Contenido del Hero */}
         <div className="relative w-full z-10 flex flex-col items-start justify-center p-6 md:p-12 mt-4 md:mt-48 bg-[#1FAECC] md:text-left md:items-start">
-          <div className="flex flex-col w-full xl:w-5/6 text-center">
+          <div className="flex flex-col w-full text-center">
             {/* Título */}
             <h2 className="font-extrabold text-[26px] leading-[30px] tracking-[-1.5px] mb-4 sm:text-2xl md:text-3xl">
               {title}
@@ -79,7 +79,7 @@ export default function OffersSection({
             quality={100}
             className="absolute bottom-6 right-2 sm:hidden"
           /> */}
-          <div className="absolute w-52 h-52 overflow-visible bottom-0 right-2 z-30 xl:block hidden">
+          {/* <div className="absolute w-52 h-52 overflow-visible bottom-0 right-2 z-30 xl:block hidden">
             <Image
               src="/home/complejo.png"
               alt="Picture"
@@ -88,7 +88,7 @@ export default function OffersSection({
               quality={100}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-          </div>
+          </div> */}
         </div>
         {/* Logo para desktop (arriba a la derecha) */}
         {/* <Image
