@@ -13,22 +13,22 @@ import { ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon } from "@h
 const clientOptions = [
   {
     title: "Pagos",
-    icon: "/nav_bar/payment.png",
+    icon: "/nav_bar/payment.gif",
     link: "/pages/user/history/payments",
   },
   {
     title: "Histórico",
-    icon: "/nav_bar/desktop-my-contracts.svg",
+    icon: "/nav_bar/desktop-my-contracts.gif",
     link: "/pages/user/my-reservations",
   },
   {
     title: "Panel",
-    icon: "/nav_bar/monitor.png",
+    icon: "/nav_bar/monitor.gif",
     link: "/pages/user/my-bedrooms",
   },
   {
     title: "Perfil",
-    icon: "/nav_bar/desktop-profile.svg",
+    icon: "/nav_bar/desktop-profile.gif",
     link: "/pages/user/profile",
   },
 ];
@@ -190,16 +190,20 @@ export default function NavBar({
         {/* Opciones según el rol */}
         <div className="flex items-center gap-2 md:gap-6">
           {user?.role === "CLIENT" && (
-            <>
-              {renderOptions(clientOptions)}
+            <>{renderOptions(clientOptions)}
               {/* Logout visible solo para CLIENT */}
               <button
                 onClick={handleLogOut}
                 type="button"
                 className="flex flex-col items-center justify-between gap-1"
               >
-                <div className="relative w-[40px] h-[40px]">
-                  <ArrowRightStartOnRectangleIcon className="size-10" />
+                <div className="relative w-[40px] h-[40px] ml-2">
+                <Image className="size-10"
+                  src="/nav_bar/cerrar-sesion.gif"
+                  fill
+                  alt="Cerrar Sesion"
+                  priority
+                />
                 </div>
                 <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
