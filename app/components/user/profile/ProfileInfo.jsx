@@ -59,7 +59,13 @@ export default function ProfileInfo({
           />
           <ItemInfo
             title={"Género"}
-            body={data?.genre === "MALE" ? "Masculino" : "Femenino"}
+            body={
+              data?.genre === "MALE"
+                ? "Masculino"
+                : data?.genre === "FEMALE"
+                ? "Femenino"
+                : "No definido"
+            }
           />
           <ItemInfo title={"Número de Identificación"} body={data?.idNum} />
         </div>

@@ -63,7 +63,7 @@ export default function Profile() {
                             <ProfileInfo
                                 image={state?.user?.profilePicture || "/profile/profile.svg"}
                                 name={state?.user?.name || "Usuario"}
-                                lastName={state?.user?.lasName || "Usuario"}
+                                lastName={state?.user?.lastName || "Usuario"}
                                 email={state?.user?.email || "Correo@gmail.com"}
                                 action={handlerShowInfo}
                                 data={state?.user}
