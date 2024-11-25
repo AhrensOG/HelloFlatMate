@@ -392,6 +392,7 @@ export default function UpdateClient() {
                   id="email"
                   name="email"
                   type="email"
+                  disabled
                   onChange={formik.handleChange}
                   value={formik.values.email}
                   className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
