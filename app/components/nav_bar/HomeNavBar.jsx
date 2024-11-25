@@ -4,6 +4,7 @@ import React from "react";
 import Dropdown from "../public/auth/Dropdown";
 import AccountDropdown from "./AccountDropdown";
 import ClimaTime from "./ClimaTime";
+import { toast } from "sonner";
 
 const HomeNavBar = ({ setActiveSection, activeSection }) => {
   return (
@@ -168,9 +169,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
           >
             helloroom
           </Link>
-          <Link
-            href={"/hellostudio"}
+          <button
+            // href={"/hellostudio"}
             // onClick={() => setActiveSection("hellostudio")}
+            onClick={() => toast.info("Proximamente",{description:"Estamos trabajando para que tengas la mejor experiencia en hellostudio"})}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellostudio"
                 ? "font-bold bg-slate-100"
@@ -178,9 +180,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellostudio
-          </Link>
-          <Link
-            href={"/hellocoliving"}
+          </button>
+          <button
+            // href={"/hellocoliving"}
+            onClick={() => toast.info("Proximamente",{description:"Estamos trabajando para que tengas la mejor experiencia en hellocoliving"})}
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
@@ -189,9 +192,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellocoliving
-          </Link>
-          <Link
-            href={"/hellolandlord"}
+          </button>
+          <button
+            // href={"/hellolandlord"}
+            onClick={() => toast.info("Proximamente",{description:"Estamos trabajando para que tengas la mejor experiencia en hellolandlord"})}
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
@@ -200,7 +204,7 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             hellolandlord
-          </Link>
+          </button>
         </div>
       </div>
     </nav>
