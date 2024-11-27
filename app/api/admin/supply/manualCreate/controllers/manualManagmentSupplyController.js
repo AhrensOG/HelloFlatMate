@@ -64,16 +64,6 @@ export async function manualUpdateSupply(data) {
       { error: "Invalid amount provided" },
       { status: 400 }
     );
-  if (
-    data.type &&
-    !["EXPENSES", "WATER", "GAS", "ELECTRICITY", "INTERNET", "OTHERS"].includes(
-      data.type
-    )
-  )
-    return NextResponse.json(
-      { error: "Invalid type provided" },
-      { status: 400 }
-    );
 
   try {
     // Buscar el registro de Supply
@@ -131,7 +121,7 @@ export async function deleteSupply(supplyId) {
     if (!supply) {
       return NextResponse.json({ error: "Supply not found" }, { status: 404 });
     }
-    
+
     await supply.destroy();
 
     return NextResponse.json(
