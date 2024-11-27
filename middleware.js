@@ -13,7 +13,7 @@ function decodeToken(encodedToken) {
 }
 
 export async function middleware(request) {
-    const cookieStore = await cookies(); // Usa cookies() para acceder a las cookies
+    const cookieStore = cookies(); // Usa cookies() para acceder a las cookies
     const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
 
     const allowedPaths = [
@@ -61,14 +61,14 @@ export async function middleware(request) {
     }
 
     if (!token) {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(request.url)}`, request.url);
+        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
         return NextResponse.redirect(redirectUrl);
     }
 
     const decodedToken = decodeToken(token);
 
     if (!decodedToken) {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(request.url)}`, request.url);
+        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
         return NextResponse.redirect(redirectUrl);
     }
 
@@ -85,7 +85,7 @@ export async function middleware(request) {
     const hasAccess = allowedRolesPaths.some((allowedPath) => pathName.startsWith(allowedPath));
 
     if (!hasAccess && pathName !== "/") {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(request.url)}`, request.url);
+        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
         return NextResponse.redirect(redirectUrl);
     }
 
