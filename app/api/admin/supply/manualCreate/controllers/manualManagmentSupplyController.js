@@ -11,19 +11,6 @@ export async function manualCreateSupply(data) {
       { error: "Invalid amount provided" },
       { status: 400 }
     );
-  if (
-    !data.type ||
-    (data.type !== "EXPENSES" &&
-      data.type !== "WATER" &&
-      data.type !== "GAS" &&
-      data.type !== "ELECTRICITY" &&
-      data.type !== "INTERNET" &&
-      data.type !== "OTHERS")
-  )
-    return NextResponse.json(
-      { error: "Invalid type provided" },
-      { status: 400 }
-    );
   if (!data.propertyId)
     return NextResponse.json(
       { error: "No property ID provided" },
@@ -43,7 +30,7 @@ export async function manualCreateSupply(data) {
       status: data.status, // El estado por defecto es 'APPROVED'
       type: data.type,
       reference: data.reference || "",
-      date: new Date(),
+      date: new Date(data.date),
       expirationDate: new Date(data.expirationDate),
       paymentDate:
         !data.paymentDate || data.paymentDate === "" ? null : data.paymentDate,
@@ -127,5 +114,31 @@ export async function manualUpdateSupply(data) {
     return NextResponse.json(supply.toJSON(), { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function deleteSupply(supplyId) {
+  if (!supplyId) {
+    return NextResponse.json(
+      { error: "No supply ID provided" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const supply = await Supply.findByPk(supplyId);
+
+    if (!supply) {
+      return NextResponse.json({ error: "Supply not found" }, { status: 404 });
+    }
+    
+    await supply.destroy();
+
+    return NextResponse.json(
+      { message: "Supply deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
