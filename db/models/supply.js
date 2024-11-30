@@ -21,7 +21,7 @@ const supplyInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             type: {
-                type: DataTypes.ENUM("WATER", "GAS", "ELECTRICITY", "EXPENSES", "INTERNET", "OTHERS", "MAINTENANCE", "CLEAN"),
+                type: DataTypes.ENUM("WATER", "GAS", "ELECTRICITY", "EXPENSES", "INTERNET", "AGENCY_FEES", "CLEANUP", "OTHERS"),
                 allowNull: false,
             },
             amount: {
@@ -34,7 +34,7 @@ const supplyInit = (sequelize, DataTypes) => {
             },
             expirationDate: {
                 type: DataTypes.DATE,
-                allowNull: false,
+                allowNull: true,
             },
             status: {
                 type: DataTypes.ENUM("PENDING", "PAID", "NOT_PAID", "CANCELED"),

@@ -476,7 +476,7 @@ export default function UpdatePropertyDesktop({
                     data={
                       catAndSize || {
                         size: property.size,
-                        category: property.category,
+                        category: property.category.name,
                       }
                     }
                     setData={setCatAndSize}
@@ -571,7 +571,7 @@ export default function UpdatePropertyDesktop({
               setData={setDataRooms}
               showModal={handleAddRoomModal}
               propertyId={property.id}
-              category={catAndSize.category || property.category}
+              category={catAndSize.category || property.category.name}
             />
           )}
         </div>

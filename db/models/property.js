@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
 const propertyInit = (sequelize, DataTypes) => {
-    class Property extends Model { }
+    class Property extends Model {}
 
     Property.init(
         {
@@ -21,7 +21,6 @@ const propertyInit = (sequelize, DataTypes) => {
             name: {
                 type: DataTypes.STRING(100),
                 allowNull: true,
-
             },
             city: {
                 type: DataTypes.STRING(100),
@@ -106,14 +105,10 @@ const propertyInit = (sequelize, DataTypes) => {
             status: {
                 type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED", "DELETED"),
                 defaultValue: "FREE",
-                allowNull: false
-            },
-            category: {
-                type: DataTypes.ENUM('HELLO_STUDIO', 'HELLO_LANDLORD', 'HELLO_ROOM', 'HELLO_COLIVING'),
-                allowNull: true,
+                allowNull: false,
             },
             calendar: {
-                type: DataTypes.ENUM('SIMPLE', 'FULL'),
+                type: DataTypes.ENUM("SIMPLE", "FULL"),
                 defaultValue: "SIMPLE",
                 allowNull: true,
             },
@@ -123,7 +118,7 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             linkVideo: {
                 type: DataTypes.TEXT,
-                allowNull: true
+                allowNull: true,
             },
             amenities: {
                 type: DataTypes.ARRAY(DataTypes.TEXT),
@@ -135,41 +130,40 @@ const propertyInit = (sequelize, DataTypes) => {
             },
             incomeConditionDescription: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             roomDescription: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             feeDescription: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             maintenanceDescription: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             aboutUs: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             houseRules: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             checkIn: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             checkOut: {
                 type: DataTypes.STRING(5500),
-                allowNull: true
+                allowNull: true,
             },
             tags: {
                 type: DataTypes.ARRAY(DataTypes.STRING),
-                allowNull: true
-            }
-
+                allowNull: true,
+            },
         },
         {
             sequelize,
@@ -177,8 +171,8 @@ const propertyInit = (sequelize, DataTypes) => {
             freezeTableName: true,
             timestamps: false,
         }
-    )
-    return Property
-}
+    );
+    return Property;
+};
 
-module.exports = propertyInit(connection, DataTypes)
+module.exports = propertyInit(connection, DataTypes);

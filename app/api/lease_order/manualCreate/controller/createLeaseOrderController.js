@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Chat, ChatParticipant, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room } from "@/db/init";
+import { Category, Chat, ChatParticipant, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room } from "@/db/init";
 import { createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
 
 export async function createLeasePropertyOrder(data) {
@@ -23,6 +23,10 @@ export async function createLeasePropertyOrder(data) {
                 {
                     model: Chat,
                     as: "chats",
+                },
+                {
+                    model: Category,
+                    as: "category",
                 },
             ],
         });
@@ -51,7 +55,7 @@ export async function createLeasePropertyOrder(data) {
             property.leaseOrdersProperty.filter(
                 (order) => order.status === "IN_PROGRESS" || order.status === "APPROVED" || order.status === "PENDING"
             ).length > 0 &&
-            property.category !== "HELLO_STUDIO"
+            property.category.name !== "HELLO_STUDIO"
         ) {
             return NextResponse.json({ message: "Property already has a lease order" }, { status: 400 });
         }
@@ -79,7 +83,7 @@ export async function createLeasePropertyOrder(data) {
         });
         if (property.chats && property.chats.length > 0) {
             const chatGroup = property.chats.find((chat) => chat.type === "GROUP");
-            
+
             if (chatGroup) {
                 await ChatParticipant.create({
                     participantId: data.clientId,
@@ -117,6 +121,10 @@ export async function createLeaseRoomOrder(data) {
                     model: Chat,
                     as: "chats",
                 },
+                {
+                    model: Category,
+                    as: "category",
+                }
             ],
         });
         if (!property) return NextResponse.json({ message: "Propiedad no encontrada" }, { status: 404 });
@@ -158,7 +166,7 @@ export async function createLeaseRoomOrder(data) {
 
         if (property.chats && property.chats.length > 0) {
             const chatGroup = property.chats.find((chat) => chat.type === "GROUP");
-            
+
             if (chatGroup) {
                 await ChatParticipant.create({
                     participantId: data.clientId,

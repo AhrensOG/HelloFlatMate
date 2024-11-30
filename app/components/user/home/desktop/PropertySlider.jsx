@@ -4,68 +4,57 @@ import HomeSlider from "./auxiliarComponents/HomeSlider";
 import SkeletonPropertyCard from "./auxiliarComponents/SkeletonPropertyCard";
 
 const PropertySlider = ({ data }) => {
-  const [properties, setProperties] = useState(null);
-  const skeleton = [1, 2, 3];
+    const [properties, setProperties] = useState(null);
+    const skeleton = [1, 2, 3];
 
-  useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setProperties([...data]);
-    }
-  }, [data]);
+    useEffect(() => {
+        if (data && Array.isArray(data)) {
+            setProperties([...data]);
+        }
+    }, [data]);
 
-  return (
-    <section className="p-4 pt-10 flex justify-center items-center">
-      <div className="flex flex-col justify-center items-center space-y-2 max-w-screen-xl w-full">
-        <h2 className="text-3xl font-medium py-10 text-center">
-          Explora nuestros nuevos alojamientos
-        </h2>
-        {properties && properties.length > 0 ? (
-          <HomeSlider>
-            {properties.map((item) => {
-              // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
-              if (
-                item.category === "HELLO_ROOM" ||
-                item.category === "HELLO_COLIVING" ||
-                item.category === "HELLO_LANDLORD"
-              ) {
-                return (
-                  item.rooms
-                    // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
-                    .map((room) => (
-                      <div className="my-5" key={room.id}>
-                        <PropertyCard
-                          roomId={room.id}
-                          propertyId={item.id}
-                          img={room?.images[0]}
-                          title={room.name}
-                        />
-                      </div>
-                    ))
-                );
-              }
-              return (
-                <div className="my-5" key={item.id}>
-                  <PropertyCard
-                    propertyId={item.id}
-                    img={item?.images[0]}
-                    title={item.name}
-                  />
-                </div>
-              );
-            })}
-          </HomeSlider>
-        ) : (
-          <div className="flex flex-row flex-wrap justify-center items-center overflow-x-scroll scrollbar-none w-full">
-            {skeleton?.map((idx) => (
-              <div className="mr-4" key={idx}>
-                <SkeletonPropertyCard />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
+    return (
+        <section className="p-4 pt-10 flex justify-center items-center">
+            <div className="flex flex-col justify-center items-center space-y-2 max-w-screen-xl w-full">
+                <h2 className="text-3xl font-medium py-10 text-center">Explora nuestros nuevos alojamientos</h2>
+                {properties && properties.length > 0 ? (
+                    <HomeSlider>
+                        {properties.map((item) => {
+                            // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
+                            if (
+                                item.category.name === "HELLO_ROOM" ||
+                                item.category.name === "HELLO_COLIVING" ||
+                                item.category.name === "HELLO_LANDLORD"
+                            ) {
+                                return (
+                                    item.rooms
+                                        // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
+                                        .map((room) => (
+                                            <div className="my-5" key={room.id}>
+                                                <PropertyCard roomId={room.id} propertyId={item.id} img={room?.images[0]} title={room.name} />
+                                            </div>
+                                        ))
+                                );
+                            }
+                            return (
+                                <div className="my-5" key={item.id}>
+                                    <PropertyCard propertyId={item.id} img={item?.images[0]} title={item.name} />
+                                </div>
+                            );
+                        })}
+                    </HomeSlider>
+                ) : (
+                    <div className="flex flex-row flex-wrap justify-center items-center overflow-x-scroll scrollbar-none w-full">
+                        {skeleton?.map((idx) => (
+                            <div className="mr-4" key={idx}>
+                                <SkeletonPropertyCard />
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </section>
+    );
 };
 
 export default PropertySlider;

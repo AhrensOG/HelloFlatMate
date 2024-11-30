@@ -30,9 +30,9 @@ export async function middleware(request) {
         "/api/property",
         "/pages/select-category",
         "/pages/user/filtered",
-        "/faq",
-        "/cookies",
-        "/privacy-policy",
+        "/pages/faq",
+        "/pages/cookies",
+        "/pages/privacy-policy",
     ];
 
     const dynamicPaths = [
@@ -75,10 +75,32 @@ export async function middleware(request) {
     const { role } = decodedToken;
 
     const rolesPaths = {
-        ADMIN: ["/pages/worker-panel", "/pages/admin", "/pages/user", "/pages/owner", "/pages/home", "/pages/select-category", "/api/admin", "/api"],
-        OWNER: ["/pages/worker-panel", "/pages/owner", "/pages/user", "/pages/home", "/pages/select-category", "/api"],
-        WORKER: ["/pages/worker-panel", "/api", "/pages/user"],
-        CLIENT: ["/pages/user", "/pages/home", "/api"],
+        ADMIN: [
+            "/pages/worker-panel",
+            "/pages/admin",
+            "/pages/user",
+            "/pages/owner",
+            "/pages/home",
+            "/pages/select-category",
+            "/api/admin",
+            "/api",
+            "/faq",
+            "/cookies",
+            "/privacy-policy",
+        ],
+        OWNER: [
+            "/pages/worker-panel",
+            "/pages/owner",
+            "/pages/user",
+            "/pages/home",
+            "/pages/select-category",
+            "/api",
+            "/faq",
+            "/cookies",
+            "/privacy-policy",
+        ],
+        WORKER: ["/pages/worker-panel", "/api", "/pages/user", "/faq", "/cookies", "/privacy-policy"],
+        CLIENT: ["/pages/user", "/pages/home", "/api", "/faq", "/cookies", "/privacy-policy"],
     };
 
     const allowedRolesPaths = rolesPaths[role] || [];

@@ -1,4 +1,4 @@
-import { Client, Property, Supply } from "@/db/init";
+import { Category, Client, Property, Supply } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllSupplies() {
@@ -21,7 +21,11 @@ export async function getSupply(id) {
             },
             {
                 model: Property,
-                as: "property"
+                as: "property",
+                include: {
+                    model: Category,
+                    as: "category"
+                }
             }
         ]
     })

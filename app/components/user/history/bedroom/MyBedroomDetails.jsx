@@ -31,9 +31,16 @@ export default function MyBedroomDetails({ room, rentPayments }) {
 
   useEffect(() => {
     function calculateNextDueDate(startDate, endDate) {
+      const today = new Date();
       const start = new Date(startDate);
       const end = new Date(endDate);
-      const nextDue = new Date(start.getFullYear(), start.getMonth() + 2, 25);
+
+      if (today > end) {
+        return null;
+      }
+
+      const nextDue = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+
       if (nextDue <= end) {
         return nextDue;
       } else {
@@ -87,10 +94,21 @@ export default function MyBedroomDetails({ room, rentPayments }) {
   }, [dueDate]);
 
   function formatDate(date) {
+    if (!date || isNaN(new Date(date).getTime())) {
+      return "-";
+    }
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear()).slice(-2);
     return `${day}/${month}/${year}`;
+  }
+
+  function getMonthName(date) {
+    if (!date || isNaN(new Date(date).getTime())) {
+      return "-";
+    }
+    const options = { month: "long" }; // Esto da el mes en formato texto largo
+    return new Date(date).toLocaleString("es-ES", options); // Devuelve el mes en español
   }
 
   const handlePayment = async (price, quota) => {
@@ -189,7 +207,11 @@ export default function MyBedroomDetails({ room, rentPayments }) {
         <div className="text-sm flex flex-col gap-2">
           <div className="flex justify-between">
             <p className="font-light">
-              {type === "HELLO_STUDIO" ? "Finalización" : "Vencimiento"}
+              {type === "HELLO_STUDIO"
+                ? "Finalización"
+                : `Pago del mes de ${
+                    nextDueDate ? getMonthName(nextDueDate) : "-"
+                  }`}
             </p>
             <p className="font-medium">
               {type === "HELLO_STUDIO"
@@ -237,13 +259,14 @@ export default function MyBedroomDetails({ room, rentPayments }) {
             Nueva Reserva
           </Link>
         ) : (
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-sm h-11"
-            type="button"
+          <Link
+            href={"/pages/user/history/payments"}
+            // onClick={() => setIsModalOpen(true)}
+            className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-lg py-2"
+            // type="button"
           >
-            Pagar
-          </button>
+            Pagos por realizar
+          </Link>
         )}
       </section>
 

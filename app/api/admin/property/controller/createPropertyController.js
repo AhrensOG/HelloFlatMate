@@ -1,10 +1,8 @@
-import { Chat, ChatParticipant, Owner, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
+import { Category, Chat, ChatParticipant, Owner, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import rentalPeriod, { sequelize } from "@/db/models/rentalPeriod";
 import { NextResponse } from "next/server";
 
 export async function createProperty(data) {
-    console.log(data);
-
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -55,6 +53,9 @@ export async function createProperty(data) {
     const isComplete = requiredFields.every((field) => field !== undefined && field !== null && field !== "");
 
     try {
+        const category = await Category.findOne({ where: { name: data.category } });
+        if (!category) return NextResponse.json({ error: "Categoría no encontrada" }, { status: 404 });
+
         const property = await Property.create({
             name: data.name || "Sin nombre",
             serial: data.serial || "Sin serial",
@@ -77,7 +78,6 @@ export async function createProperty(data) {
             amountHelloflatmate: amountHelloflatmate, // Monto de Helloflatmate ajustado según la categoría
             isActive: isComplete, // Si los campos requeridos están completos
             isBussy: false,
-            category: data.category,
             images: data.images || [],
             linkVideo: data.linkVideo || "",
             amenities: data.amenities || [],
@@ -94,6 +94,7 @@ export async function createProperty(data) {
             houseRules: data.houseRules || null,
             checkIn: data.checkIn || null,
             checkOut: data.checkOut || null,
+            category: category.id,
         });
 
         // Crear períodos de alquiler si existen

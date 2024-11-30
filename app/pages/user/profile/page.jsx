@@ -49,21 +49,21 @@ export default function Profile() {
                     <div className="px-4 flex flex-col gap-4 w-full max-w-screen-lg">
                         {/* <h1 className="pl-4 font-bold text-xl mt-4"></h1> */}
                         {!showInfo ? (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
+                            <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
                                 <ProfileCard
-                                    image={state?.user?.profilePicture || "/profile/profile.jpg"}
+                                    image={state?.user?.profilePicture || "/profile/profile.svg"}
                                     name={state?.user?.name || "Usuario"}
                                     email={state?.user?.email || "Correo@gmail.com"}
                                     action={handlerShowInfo}
                                 />
-                                <ProfileOptions />
+                                {/* <ProfileOptions /> */}
                                 <Logout />
                             </motion.div>
                         ) : (
                             <ProfileInfo
-                                image={state?.user?.profilePicture || "/profile/profile.jpg"}
+                                image={state?.user?.profilePicture || "/profile/profile.svg"}
                                 name={state?.user?.name || "Usuario"}
-                                lastName={state?.user?.lasName || "Usuario"}
+                                lastName={state?.user?.lastName || "Usuario"}
                                 email={state?.user?.email || "Correo@gmail.com"}
                                 action={handlerShowInfo}
                                 data={state?.user}

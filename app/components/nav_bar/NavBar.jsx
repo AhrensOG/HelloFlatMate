@@ -7,28 +7,28 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
-import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import { ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 // Opciones para los diferentes roles
 const clientOptions = [
   {
-    title: "Reservas",
-    icon: "/nav_bar/desktop-my-contracts.svg",
+    title: "Pagos",
+    icon: "/nav_bar/payment.gif",
+    link: "/pages/user/history/payments",
+  },
+  {
+    title: "Histórico",
+    icon: "/nav_bar/desktop-my-contracts.gif",
     link: "/pages/user/my-reservations",
   },
   {
-    title: "Dormitorios",
-    icon: "/nav_bar/desktop-my-bedrooms.svg",
+    title: "Panel",
+    icon: "/nav_bar/monitor.gif",
     link: "/pages/user/my-bedrooms",
   },
   {
-    title: "Chats",
-    icon: "/nav_bar/desktop-chats.svg",
-    link: "/pages/user/chats",
-  },
-  {
     title: "Perfil",
-    icon: "/nav_bar/desktop-profile.svg",
+    icon: "/nav_bar/desktop-profile.gif",
     link: "/pages/user/profile",
   },
 ];
@@ -54,16 +54,6 @@ const ownerOptions = [
     icon: "/nav_bar/side_bar/owner/chats.svg",
     link: "/pages/user/chats",
   },
-  // {
-  //   title: "Servicios",
-  //   icon: "/nav_bar/side_bar/owner/services.svg",
-  //   link: "/pages/supplies",
-  // },
-  // {
-  //   title: "Soporte",
-  //   icon: "/nav_bar/side_bar/owner/support.svg",
-  //   link: "#",
-  // },
 ];
 
 const adminOptions = [
@@ -159,7 +149,6 @@ export default function NavBar({
         <div className="relative w-[80px] h-[50px] cursor-pointer">
           <Link href="/">
             <Image
-              // src="/nav_bar/nav-bar-logo.svg"
               src="/home/onlyLogo.svg"
               fill
               alt="Logo de FlatMate"
@@ -190,7 +179,6 @@ export default function NavBar({
         <div className="relative w-[80px] h-[50px] cursor-pointer">
           <Link href="/">
             <Image
-              // src="/nav_bar/nav-bar-logo.svg"
               src="/home/onlyLogo.svg"
               fill
               alt="Logo de FlatMate"
@@ -201,54 +189,39 @@ export default function NavBar({
 
         {/* Opciones según el rol */}
         <div className="flex items-center gap-2 md:gap-6">
-          {user?.role === "CLIENT" && renderOptions(clientOptions)}
-          {user?.role === "OWNER" && (
-            <>
-              {renderOptions(ownerOptions)}
-              {/* Logout visible solo para OWNER */}
-              <button
-                onClick={handleLogOut}
-                type="button"
-                className="flex flex-col items-center justify-between gap-1"
-              >
-                <div className="relative w-[40px] h-[40px]">
-                  <ArrowRightStartOnRectangleIcon className="size-10" />
-                </div>
-                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
-              </button>
-            </>
-          )}
-          {user?.role === "ADMIN" && (
-            <>
-              {renderOptions(adminOptions)}
-              {/* Logout visible solo para ADMIN */}
-              <button
-                onClick={handleLogOut}
-                type="button"
-                className="flex flex-col items-center justify-between gap-1"
-              >
-                <div className="relative w-[40px] h-[40px]">
-                  <ArrowRightStartOnRectangleIcon className="size-10" />
-                </div>
-                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
-              </button>
-            </>
-          )}
           {user?.role === "CLIENT" && (
-            <Link
-              href="/pages/user/notification"
-              className="relative w-[34px] h-[34px]"
-            >
-              <Image
-                src="/nav_bar/notification-logo.svg"
-                fill
-                alt="Notificaciones"
-                priority
-              />
-            </Link>
+            <>{renderOptions(clientOptions)}
+              {/* Logout visible solo para CLIENT */}
+              <button
+                onClick={handleLogOut}
+                type="button"
+                className="flex flex-col items-center justify-between gap-1"
+              >
+                <div className="relative w-[40px] h-[40px] ml-2">
+                <Image className="size-10"
+                  src="/nav_bar/cerrar-sesion.gif"
+                  fill
+                  alt="Cerrar Sesion"
+                  priority
+                />
+                </div>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
+              </button>
+              <Link
+                href="/pages/user/notification"
+                className="relative w-[34px] h-[34px]"
+              >
+                <Image
+                  src="/nav_bar/notification-logo.svg"
+                  fill
+                  alt="Notificaciones"
+                  priority
+                />
+              </Link>
+            </>
           )}
-          {/* Notificaciones */}
-
+          {user?.role === "OWNER" && renderOptions(ownerOptions)}
+          {user?.role === "ADMIN" && renderOptions(adminOptions)}
           {/* Dropdown */}
           <Dropdown p={0} />
         </div>
