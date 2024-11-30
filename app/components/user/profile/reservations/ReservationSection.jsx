@@ -10,7 +10,7 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
     >
       <div className="h-full w-full max-w-screen-lg flex flex-col justify-center items-center gap-4">
         <TitleAdminPanel title={"Mis Reservas"} />
-        <div className="flex flex-col justify-center items-start gap-4 grow sm:flex-row w-full sm:justify-start sm:flex-wrap max-w-screen-lg">
+        <div className="flex flex-col justify-start items-center gap-4 grow sm:flex-row w-full sm:justify-start sm:flex-wrap sm:items-start max-w-screen-lg">
           {leaseOrdersList !== false && leaseOrdersList.length > 0 ? (
             leaseOrdersList.map((l) => {
               // Construir una clave única concatenando el tipo y el ID

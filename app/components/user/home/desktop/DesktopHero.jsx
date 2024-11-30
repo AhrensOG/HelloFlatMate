@@ -7,6 +7,7 @@ export default function DesktopHero({
   title = "helloflatmate",
   description = "Alojamientos para estudiantes en Valencia",
   link = "/pages/select-category",
+  startTime = 0, // Nuevo parámetro para el tiempo de inicio
 }) {
   return (
     <section className="w-full">
@@ -20,7 +21,7 @@ export default function DesktopHero({
                 img.split("v=")[1]
               }?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=${
                 img.split("v=")[1]
-              }`}
+              }&start=${startTime}`} // Añadimos el startTime aquí
               title="YouTube Video"
               className="w-full h-full object-cover"
               allow="autoplay; encrypted-media"
@@ -31,7 +32,7 @@ export default function DesktopHero({
             <iframe
               src={`https://player.vimeo.com/video/${img
                 .split("/")
-                .pop()}?autoplay=1&muted=1&loop=1&background=1`}
+                .pop()}?autoplay=1&muted=1&loop=1&background=1#t=${startTime}s`} // Añadimos el startTime aquí
               title="Vimeo Video"
               className="w-full h-full object-cover"
               allow="autoplay; encrypted-media"

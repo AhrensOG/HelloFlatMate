@@ -31,18 +31,18 @@ export default function AuthModal({ isOpen, handleAccept, handleReject }) {
                 <motion.div
                     className="fixed z-50 inset-0 flex items-center justify-center overflow-auto bg-white self-end"
                     variants={modalVariants}
-                    style={{ height: "90vh" }}
+                    style={{ height: "100vh" }}
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
                     transition={{ duration: 1 }}
                 >
-                    <div className="h-[90vh] fixed inset-0 transition-opacity self-end" aria-hidden="true">
-                        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    <div className="h-[100vh] fixed inset-0 transition-opacity self-end" aria-hidden="true">
+                        <div className="absolute inset-0 opacity-75"></div>
                     </div>
 
                     <div
-                        className="h-[90vh] bg-white rounded-lg text-left overflow-auto transform transition-all sm:max-w-lg sm:w-full"
+                        className="h-[100vh] bg-white rounded-lg text-left overflow-auto transform transition-all sm:max-w-lg sm:w-full scrollbar-thin"
                         role="dialog"
                         aria-labelledby="modal-title"
                         aria-describedby="modal-description"

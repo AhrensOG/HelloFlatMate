@@ -21,7 +21,18 @@ const supplyInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             type: {
-                type: DataTypes.ENUM("WATER", "GAS", "ELECTRICITY", "EXPENSES", "INTERNET", "AGENCY_FEES", "CLEANUP", "OTHERS"),
+                type: DataTypes.ENUM(
+                    "WATER",
+                    "GAS",
+                    "ELECTRICITY",
+                    "EXPENSES",
+                    "INTERNET",
+                    "AGENCY_FEES",
+                    "CLEANUP",
+                    "OTHERS",
+                    "DEPOSIT",
+                    "GENERAL_SUPPLIES"
+                ),
                 allowNull: false,
             },
             amount: {

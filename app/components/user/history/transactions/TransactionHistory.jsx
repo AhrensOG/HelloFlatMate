@@ -4,6 +4,7 @@ import { Context } from "@/app/context/GlobalContext";
 import { v4 as uuidv4 } from "uuid"; // Importar uuid para generar identificadores únicos
 import NavBar from "@/app/components/nav_bar/NavBar";
 import { motion } from "framer-motion"; // Importamos framer-motion
+import { toast } from "sonner";
 
 const STATUS_COLORS = {
   PENDING: "bg-yellow-100 text-yellow-800",
@@ -21,6 +22,10 @@ const SUPPLY_TYPES_TRANSLATIONS = {
   EXPENSES: "Gastos Comunes",
   INTERNET: "Internet",
   OTHERS: "Otros",
+  AGENCY_FEES: "Tasa de la agencia",
+  CLEANUP: "Limpieza a fondo",
+  DEPOSIT: "Depósito",
+  GENERAL_SUPPLIES: "Aporte para suministros (agua, luz, gas)",
 };
 
 export default function TransactionHistory({ redirect }) {
@@ -88,11 +93,35 @@ export default function TransactionHistory({ redirect }) {
   const renderRentPayments = () => {
     const rentPayments = allPayments.rentPayments || [];
 
+    // Encontrar el pago con quotaNumber 1 para obtener su fecha como referencia (startDate)
+    const firstPayment = rentPayments.find(
+      (payment) => payment.quotaNumber === 1
+    );
+    const startDate = firstPayment ? new Date(firstPayment.date) : null;
+
+    const getMonthFromQuota = (startDate, quotaNumber) => {
+      if (!startDate) return "Fecha no disponible";
+
+      const date = new Date(startDate);
+      date.setMonth(date.getMonth() + quotaNumber - 1); // Ajustar meses según la cuota
+      return date.toLocaleDateString("es-ES", {
+        month: "long",
+        year: "numeric",
+      });
+    };
+
+    // Función para mostrar el toast con Sonner
+    const showToast = () => {
+      return toast.info("Muy pronto podrá ver la factura.", {
+        description: "Estamos trabajando en la migración de datos.",
+      });
+    };
+
     return (
       <div>
         <h2
           onClick={() => setIsReserveOpen(!isReserveOpen)}
-          className="cursor-pointer text-lg font-semibold flex items-center justify-between gap-2 mt-1 py-3 px-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+          className="cursor-pointer text-lg font-semibold flex items-center justify-between gap-2 mt-2 py-3 px-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
         >
           <span className="text-blue-700">Pagos mensuales</span>
           <ChevronDownIcon
@@ -107,23 +136,32 @@ export default function TransactionHistory({ redirect }) {
           transition={{ duration: 0.3 }}
           className="overflow-hidden mt-1"
         >
-          <div className="grid gap-4">
+          <div className="grid gap-1">
             {rentPayments.length > 0 ? (
               rentPayments.map((payment) => (
                 <motion.div
                   key={`reservation-${payment.uniqueKey}`}
-                  className="p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition"
+                  className="p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition cursor-pointer"
                   initial={{ y: -20, opacity: 0 }}
                   animate={{
                     y: 0,
                     opacity: 1,
                     transition: { duration: 0.2 },
                   }}
+                  onClick={showToast} // Mostrar toast al hacer clic
                 >
                   <div className="flex justify-between items-center">
-                    <h3 className="text-md font-medium">Reserva/Pago del primer mes</h3>
+                    <h3 className="text-md font-medium">
+                      {`Pago - ${getMonthFromQuota(
+                        startDate,
+                        payment.quotaNumber
+                      )}`}
+                    </h3>
                     {renderPaymentStatus(payment.status)}
                   </div>
+                  <p className="text-sm text-gray-500">
+                    ID: {payment.paymentId || "-"}
+                  </p>
                   <p className="text-sm text-gray-500">
                     {new Date(payment.date).toLocaleDateString("es-ES", {
                       day: "2-digit",
@@ -131,8 +169,11 @@ export default function TransactionHistory({ redirect }) {
                       year: "numeric",
                     })}
                   </p>
-                  <p className="text-lg font-semibold text-gray-800">
-                    {payment.amount} €
+                  <p className="text-sm text-gray-500">
+                    Descripción: {payment.description || "-"}
+                  </p>
+                  <p className="text-lg mt-2 bg-blue-100 text-blue-800 max-w-20 rounded-full text-center">
+                    € {payment.amount}
                   </p>
                 </motion.div>
               ))
@@ -150,21 +191,27 @@ export default function TransactionHistory({ redirect }) {
   const renderSupplyPayments = () => {
     // Filtrar los pagos de suministros, excluyendo las tasas de la agencia
     const supplies = (allPayments.supplies || []).filter(
-      (payment) => payment.status !== "AGENCY_FEES"
+      (payment) => payment.type !== "AGENCY_FEES"
     );
 
     // Filtrar las tasas de la agencia por su estado
-    const agencyFees =
-      allPayments.rentPayments?.filter(
-        (payment) => payment.status === "AGENCY_FEES"
-      ) || [];
+    const agencyFees = (allPayments.supplies || []).filter(
+      (payment) => payment.type === "AGENCY_FEES"
+    );
+
+    // Función para mostrar el toast con Sonner
+    const showToast = () => {
+      return toast.info("Muy pronto podrá ver la factura.", {
+        description: "Estamos trabajando en la migración de datos.",
+      });
+    };
 
     return (
       <div>
         {/* Pagos de Suministros */}
         <h2
           onClick={() => setIsSuppliesOpen(!isSuppliesOpen)}
-          className="cursor-pointer text-lg font-semibold flex items-center justify-between gap-2 mt-1 py-3 px-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+          className="cursor-pointer text-lg font-semibold flex items-center justify-between gap-2 mt-2 py-3 px-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
         >
           <span className="text-blue-700">Pagos de Suministros</span>
           <ChevronDownIcon
@@ -179,18 +226,19 @@ export default function TransactionHistory({ redirect }) {
           transition={{ duration: 0.3 }}
           className="overflow-hidden mt-1"
         >
-          <div className="grid gap-4">
+          <div className="grid gap-1">
             {supplies.length > 0 ? (
               supplies.map((payment) => (
                 <motion.div
                   key={`supply-${payment.uniqueKey}`}
-                  className="p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition duration-300"
+                  className="p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition duration-300 cursor-pointer"
                   initial={{ y: -20, opacity: 0 }}
                   animate={{
                     y: 0,
                     opacity: 1,
                     transition: { duration: 0.2 },
                   }}
+                  onClick={showToast}
                 >
                   <div className="flex justify-between items-center">
                     <h3 className="text-md font-medium">
@@ -198,6 +246,9 @@ export default function TransactionHistory({ redirect }) {
                     </h3>
                     {renderPaymentStatus(payment.status)}
                   </div>
+                  <p className="text-xs text-gray-400">
+                    ID: {payment.paymentId ? payment.paymentId : "-"}
+                  </p>
                   <p className="text-sm text-gray-500">
                     {new Date(payment.date).toLocaleDateString("es-ES", {
                       day: "2-digit",
@@ -205,11 +256,8 @@ export default function TransactionHistory({ redirect }) {
                       year: "numeric",
                     })}
                   </p>
-                  <p className="text-lg font-semibold text-gray-800">
-                    {payment.amount} €
-                  </p>
-                  <p className="text-xs text-gray-400 mt-2">
-                    ID: {payment.paymentId ? payment.paymentId : "-"}
+                  <p className="text-lg mt-2 bg-green-100 text-green-800 max-w-20 rounded-full text-center">
+                    € {payment.amount}
                   </p>
                 </motion.div>
               ))
@@ -224,9 +272,9 @@ export default function TransactionHistory({ redirect }) {
         {/* Tasas de la Agencia */}
         <h2
           onClick={() => setIsAgencyFeesOpen(!isAgencyFeesOpen)}
-          className="cursor-pointer text-lg font-semibold flex items-center justify-between gap-2 mt-1 py-3 px-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+          className="cursor-pointer text-lg font-semibold flex items-center justify-between gap-2 mt-2 py-3 px-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
         >
-          <span className="text-blue-700">Tasas de la Agencia</span>
+          <span className="text-blue-700">Tasas de la agencia</span>
           <ChevronDownIcon
             className={`${
               isAgencyFeesOpen ? "rotate-180" : "rotate-0"
@@ -239,23 +287,27 @@ export default function TransactionHistory({ redirect }) {
           transition={{ duration: 0.3 }}
           className="overflow-hidden mt-1"
         >
-          <div className="grid gap-4">
+          <div className="grid gap-1">
             {agencyFees.length > 0 ? (
               agencyFees.map((payment) => (
                 <motion.div
                   key={`agency-fee-${payment.uniqueKey}`}
-                  className="p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition"
+                  className="p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition cursor-pointer"
                   initial={{ y: -20, opacity: 0 }}
                   animate={{
                     y: 0,
                     opacity: 1,
                     transition: { duration: 0.2 },
                   }}
+                  onClick={showToast}
                 >
                   <div className="flex justify-between items-center">
                     <h3 className="text-md font-medium">Tasa de Agencia</h3>
                     {renderPaymentStatus(payment.status)}
                   </div>
+                  <p className="text-xs text-gray-400">
+                    ID: {payment.paymentId ? payment.paymentId : "-"}
+                  </p>
                   <p className="text-sm text-gray-500">
                     {new Date(payment.date).toLocaleDateString("es-ES", {
                       day: "2-digit",
@@ -263,11 +315,8 @@ export default function TransactionHistory({ redirect }) {
                       year: "numeric",
                     })}
                   </p>
-                  <p className="text-lg font-semibold text-gray-800">
-                    {payment.amount} €
-                  </p>
-                  <p className="text-xs text-gray-400 mt-2">
-                    ID: {payment.paymentId ? payment.paymentId : "-"}
+                  <p className="text-lg mt-2 bg-green-100 text-green-800 max-w-20 rounded-full text-center">
+                    € {payment.amount}
                   </p>
                 </motion.div>
               ))

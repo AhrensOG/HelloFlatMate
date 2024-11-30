@@ -17,7 +17,7 @@ import MapSection from "../components/user/home/desktop/auxiliarComponents/MapSe
 const helloroom = {
   hero: {
     // img: "/home/hero2.jpeg",
-    img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
+    img: "https://www.youtube.com/watch?v=ie78B4HShZ0",
     title: "¡Descubre nuestras habitaciones hellorooms para estudiantes!",
     description:
       "Estas habitaciones son gestionadas por el equipo de helloflatmate para brindar a los estudiantes una estancia cómoda, segura y sin complicaciones. ",
@@ -78,6 +78,7 @@ export default function HelloRoom() {
             title={helloroom.hero.title}
             description={helloroom.hero.description}
             link={helloroom.hero.link}
+            startTime={120}
           />
           <OffersSectionHelloroom
             title={helloroom.offer.title}
