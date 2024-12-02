@@ -194,6 +194,40 @@ export default function Home() {
       : user?.role === "OWNER"
       ? "/pages/owner"
       : null;
+
+  // Estado para el tiempo restante
+  const [timeRemaining, setTimeRemaining] = useState("");
+
+  useEffect(() => {
+    // Fecha objetivo (9 de diciembre)
+    const targetDate = new Date("2024-12-09T00:00:00");
+
+    // Función que calcula el tiempo restante
+    const updateTimer = () => {
+      const now = new Date();
+      const difference = targetDate - now;
+
+      // Si el tiempo se ha agotado, dejar el contador en 0
+      if (difference <= 0) {
+        setTimeRemaining("¡Es el día del lanzamiento!");
+        return;
+      }
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((difference / (1000 * 60)) % 60);
+      const seconds = Math.floor((difference / 1000) % 60);
+
+      setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    // Actualizar el contador cada segundo
+    const interval = setInterval(updateTimer, 1000);
+
+    // Limpiar el intervalo cuando el componente se desmonta
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center px-4 py-8">
@@ -212,14 +246,19 @@ export default function Home() {
           En Mantenimiento
         </h1>
 
+        {/* Contador de tiempo restante */}
+        <p className="text-2xl text-gray-600 mb-4 font-bold">{timeRemaining}</p>
+
         {/* Mensaje descriptivo */}
         <p className="text-2xl text-gray-600 mb-6">¡Nos Vemos Pronto!</p>
 
         {/* Botón para regresar a la página principal */}
-        <p className="text-gray-600 font-extralight">
+        <p className="text-gray-600 font-light text-xl">
           Si eres usuario puedes continuar
-          <Link href={ user ? userProfileLink
-           :  "/pages/auth"} className="text-blue-500">
+          <Link
+            href={user ? userProfileLink : "/pages/auth"}
+            className="text-blue-500"
+          >
             {" "}
             aquí
           </Link>
