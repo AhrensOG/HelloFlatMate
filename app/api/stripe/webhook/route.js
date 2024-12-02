@@ -11,6 +11,7 @@ import {
   Supply,
 } from "@/db/init"; // Importa el modelo Supply
 import rentPayment from "@/db/models/rentPayment";
+import { sendMailFunction } from "../../sendGrid/controller/sendMailFunction";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -134,6 +135,11 @@ export async function POST(req) {
             status: "PENDING",
             inReview: true,
           });
+          await sendMailFunction({
+            to: client.email,
+            subject: `Confirmacion de reserva - Alojamiento ${property.serial}`,
+            text: `¡Gracias por confiar en hello flat mate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
+          });
           console.log(
             `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
           );
@@ -214,6 +220,11 @@ export async function POST(req) {
           // });
           await property.update({ isActive: false });
           await successLeaseOrder.update({ status: "PENDING", inReview: true });
+          await sendMailFunction({
+            to: client.email,
+            subject: `Confirmacion de reserva - Alojamiento ${property.serial}`,
+            text: `¡Gracias por confiar en hello flat mate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
+          });
           console.log(
             `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`
           );
