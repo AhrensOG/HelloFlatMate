@@ -7,25 +7,27 @@ import {
 export default function FourthSection() {
   return (
     <section className="flex flex-col gap-3 bg-white items-center justify-around my-10 px-2">
-      <h1 className="text-3xl font-bold">
-        Dicen que nuestro servicio al cliente es el mejor
-      </h1>
-      <div className="flex gap-4 w-[65vh] justify-end">
-        <button className="text-gray-400 cursor-default " disabled>
-          <ArrowLeftCircleIcon className="w-[3rem] h-[3rem]" />
-        </button>
-        <button className="cursor-pointer">
-          <ArrowRightCircleIcon className="w-[3rem] h-[3rem]" />
-        </button>
+      <div className="relative space-y-2">
+        <h1 className="text-3xl font-bold">
+          Dicen que nuestro servicio al cliente es el mejor
+        </h1>
+        <div className="flex gap-4 justify-end w-full">
+          <button className="text-gray-400 cursor-default " disabled>
+            <ArrowLeftCircleIcon className="w-[2rem] h-[2rem]" />
+          </button>
+          <button className="cursor-pointer">
+            <ArrowRightCircleIcon className="w-[2rem] h-[2rem]" />
+          </button>
+        </div>
       </div>
-      <div className="flex gap-6 my-10">
-        <article className="flex flex-col gap-2 w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
+      <div className="flex gap-4 my-10">
+        <article className="flex flex-col gap-2 w-full max-w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
           <div className="flex gap-2 justify-center">
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
           </div>
           <p>
             Fue la primera vez que usé la plataforma y me pareció muy
@@ -42,11 +44,11 @@ export default function FourthSection() {
         </article>
         <article className="flex flex-col gap-2 w-full max-w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
           <div className="flex gap-2 justify-center">
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
-            <StarIcon className="w-10 h-10 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
+            <StarIcon className="w-8 h-8 text-orange-500" />
           </div>
           <p>
             Fue la primera vez que usé la plataforma y me pareció muy
@@ -63,11 +65,11 @@ export default function FourthSection() {
         </article>
         {/* <article className="flex flex-col gap-2 w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
                     <div className="flex gap-2 justify-center">
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
                     </div>
                     <p>
                         Fue la primera vez que usé la plataforma y me pareció muy profesional y fácil. Incluso me contactó alguien del staff para
@@ -83,11 +85,11 @@ export default function FourthSection() {
                 </article>
                 <article className="flex flex-col gap-2 w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
                     <div className="flex gap-2 justify-center">
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
-                        <StarIcon className="w-10 h-10 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
+                        <StarIcon className="w-8 h-8 text-orange-500" />
                     </div>
                     <p>
                         Fue la primera vez que usé la plataforma y me pareció muy profesional y fácil. Incluso me contactó alguien del staff para

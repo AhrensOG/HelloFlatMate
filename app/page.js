@@ -21,6 +21,9 @@ import SecondSection from "./components/public/home/SecondSection";
 import ThirdSection from "./components/public/home/ThirdSection";
 import FourthSection from "./components/public/home/FourthSection";
 import FifthSection from "./components/public/home/FifthSection";
+import SixthSection from "./components/public/home/SixthSection";
+import SeventhSection from "./components/public/home/SeventhSection";
+import EightSection from "./components/public/home/EighthSection";
 
 const helloroom = {
   hero: {
@@ -174,9 +177,12 @@ export default function Home() {
         {/* )} */}
         <TitleSection />
         <SecondSection />
+        <SixthSection />
         <ThirdSection />
         <FourthSection />
         <FifthSection />
+        <SeventhSection />
+        <EightSection />
         {/* <InfoSection /> */}
         {/* <PropertySlider data={properties} />
             <Banner />*/}

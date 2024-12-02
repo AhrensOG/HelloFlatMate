@@ -3,9 +3,9 @@ import Image from "next/image";
 export default function ThirdSection() {
   return (
     <section className="w-full bg-white flex flex-wrap justify-center items-center mt-10 gap-6 px-2 py-10">
-      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-8 px-4 w-full max-w-[500px]">
+      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-4 p-4 w-full max-w-[500px]">
         <h1 className="text-3xl font-bold text-center">
-          Estamos contigo en esto
+          Alojamientos en zonas consolidadas
         </h1>
         <h2 className="text-lg text-center">
           Recibe ayuda de un agente en tu idioma, para resolver dudas, ayudarte
@@ -19,7 +19,7 @@ export default function ThirdSection() {
         />
       </article>
 
-      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-8 px-4 w-full max-w-[500px]">
+      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-4 p-4 w-full max-w-[500px]">
         <h1 className="text-3xl font-bold text-center">
           Estamos contigo en esto
         </h1>
@@ -35,7 +35,7 @@ export default function ThirdSection() {
         />
       </article>
 
-      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-8 px-4 w-full max-w-[500px]">
+      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-4 p-4 w-full max-w-[500px]">
         <h1 className="text-3xl font-bold text-center">
           Estamos contigo en esto
         </h1>
@@ -51,7 +51,7 @@ export default function ThirdSection() {
         />
       </article>
 
-      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-8 px-4 w-full max-w-[500px]">
+      <article className="border-2 rounded-2xl flex flex-col items-center justify-center h-[25rem] gap-4 p-4 w-full max-w-[500px]">
         <h1 className="text-3xl font-bold text-center">
           Estamos contigo en esto
         </h1>

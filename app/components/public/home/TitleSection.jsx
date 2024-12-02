@@ -10,24 +10,24 @@ export default function TitleSection() {
         <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin
         complicaciones!
       </h3>
-      <div className="flex items-center justify-between gap-2 border rounded-full mt-5 w-full max-w-[40rem]">
+      <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem] mb-16">
         <label htmlFor="search" hidden></label>
         <input
           type="text"
           name="search"
           id="search"
-          className="aparance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-600"
+          className="aparance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-800"
           placeholder="¿Donde quieres vivir?"
         />
-        <button className="h-12 w-12 rounded-full bg-resolution-blue flex justify-center items-center m-2">
+        <button className="h-12 w-12 rounded-full bg-[#FB6E44] flex justify-center items-center m-2">
           <MagnifyingGlassIcon className="w-6 h-6 text-white" />
         </button>
       </div>
-      <div className="absolute w-44 h-32 sm:w-64 sm:h-52 bottom-0 left-0">
+      <div className="absolute w-44 h-32 sm:w-[400px] sm:h-52 bottom-0 left-0">
         <Image
-          src={"/home/complejo.png"}
+          src={"/home/new_home/hero2.png"}
           fill
-          className="object-cover object-center"
+          className="object-cover"
         />
       </div>
     </section>
