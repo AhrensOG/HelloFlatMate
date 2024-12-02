@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
-import { ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightEndOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 // Opciones para los diferentes roles
 const clientOptions = [
@@ -146,15 +149,15 @@ export default function NavBar({
             priority
           />
         </button>
-        <div className="relative w-[80px] h-[50px] cursor-pointer">
-          <Link href="/">
+        <div className="relative w-[80px] h-[50px]">
+          {/* <Link href="/"> */}
             <Image
               src="/home/onlyLogo.svg"
               fill
               alt="Logo de FlatMate"
               priority
             />
-          </Link>
+          {/* </Link> */}
         </div>
         <div className="flex items-center gap-2 w-[87px] h-[34px]">
           <button
@@ -176,52 +179,38 @@ export default function NavBar({
       {/* DESKTOP */}
       <div className="w-full min-h-[93px] px-6 py-4 sm:flex justify-between items-center hidden border-b">
         {/* Logo */}
-        <div className="relative w-[80px] h-[50px] cursor-pointer">
-          <Link href="/">
+        <div className="relative w-[80px] h-[50px]">
+          {/* <Link href="/"> */}
             <Image
               src="/home/onlyLogo.svg"
               fill
               alt="Logo de FlatMate"
               priority
             />
-          </Link>
+          {/* </Link> */}
         </div>
 
         {/* Opciones según el rol */}
         <div className="flex items-center gap-2 md:gap-6">
-          {user?.role === "CLIENT" && (
-            <>{renderOptions(clientOptions)}
-              {/* Logout visible solo para CLIENT */}
-              <button
-                onClick={handleLogOut}
-                type="button"
-                className="flex flex-col items-center justify-between gap-1"
-              >
-                <div className="relative w-[40px] h-[40px] ml-2">
-                <Image className="size-10"
-                  src="/nav_bar/cerrar-sesion.gif"
-                  fill
-                  alt="Cerrar Sesion"
-                  priority
-                />
-                </div>
-                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
-              </button>
-              <Link
-                href="/pages/user/notification"
-                className="relative w-[34px] h-[34px]"
-              >
-                <Image
-                  src="/nav_bar/notification-logo.svg"
-                  fill
-                  alt="Notificaciones"
-                  priority
-                />
-              </Link>
-            </>
-          )}
+          {user?.role === "CLIENT" && renderOptions(clientOptions)}
           {user?.role === "OWNER" && renderOptions(ownerOptions)}
           {user?.role === "ADMIN" && renderOptions(adminOptions)}
+          <button
+            onClick={handleLogOut}
+            type="button"
+            className="flex flex-col items-center justify-between gap-1"
+          >
+            <div className="relative w-[40px] h-[40px] ml-2">
+              <Image
+                className="size-10"
+                src="/nav_bar/cerrar-sesion.gif"
+                fill
+                alt="Cerrar Sesion"
+                priority
+              />
+            </div>
+            <h2 className="text-xs text-center text-[#636574]">Salir</h2>
+          </button>
           {/* Dropdown */}
           <Dropdown p={0} />
         </div>

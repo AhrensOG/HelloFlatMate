@@ -185,7 +185,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
               );
             })}
           </SliderDetails>
-          <p className="absolute top-0 right-0 z-50 flex items-center justify-center w-[6.7rem] h-[1.88rem] rounded-bl-3xl rounded-tr-2xl bg-[#0C1660] text-white text-xs text-center">
+          <p className="absolute top-0 right-0 z-20 flex items-center justify-center w-[6.7rem] h-[1.88rem] rounded-bl-3xl rounded-tr-2xl bg-[#0C1660] text-white text-xs text-center">
             {type.replace(/_/g, "").toLowerCase()}
           </p>
         </div>

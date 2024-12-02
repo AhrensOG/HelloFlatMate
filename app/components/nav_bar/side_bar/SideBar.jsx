@@ -82,29 +82,29 @@ const ownerOptions = [
 const clientOptions = [
   {
     title: "Pagos",
-    icon: "/nav_bar/payment.png",
+    icon: "/nav_bar/payment.gif",
     link: "/pages/user/history/payments",
   },
   {
-    title: "Reservas",
-    icon: "/nav_bar/desktop-my-contracts.svg",
+    title: "Histórico",
+    icon: "/nav_bar/desktop-my-contracts.gif",
     link: "/pages/user/my-reservations",
   },
   {
-    title: "Dormitorios",
-    icon: "/nav_bar/desktop-my-bedrooms.svg",
+    title: "Panel",
+    icon: "/nav_bar/monitor.gif",
     link: "/pages/user/my-bedrooms",
+  },
+  {
+    title: "Perfil",
+    icon: "/nav_bar/desktop-profile.gif",
+    link: "/pages/user/profile",
   },
   // {
   //   title: "Chats",
   //   icon: "/nav_bar/side_bar/client/chats.svg",
   //   link: "/pages/user/chats",
   // },
-  {
-    title: "Perfil",
-    icon: "/nav_bar/desktop-profile.svg",
-    link: "/pages/user/profile",
-  },
   // {
   //   title: "Mis Contratos",
   //   icon: "/nav_bar/side_bar/client/documents.svg",
@@ -153,7 +153,7 @@ export default function SideBar({
           animate={{ opacity: 1, x: "0" }}
           exit={{ opacity: 0, x: "-100%" }}
           transition={{ duration: 0.5 }}
-          className={`  flex flex-col items-start fixed inset-0 z-10 w-full bg-white`}
+          className={`  flex flex-col items-start fixed inset-0 z-50 w-full bg-white`}
         >
           <div className="flex p-3 w-full">
             <button onClick={handleClose} aria-label="Cerrar menú">
@@ -207,12 +207,17 @@ export default function SideBar({
               <button
                 onClick={handleLogOut}
                 type="button"
-                className="flex items-center justify-start gap-1 px-4"
+                className="flex items-center gap-3 px-3"
               >
-                <div className="relative w-[40px] h-[40px]">
-                  <ArrowRightStartOnRectangleIcon className="size-10" />
+                <div className="relative w-[40px] h-[40px] ml-2">
+                  <Image
+                    src="/nav_bar/cerrar-sesion.gif"
+                    fill
+                    alt="Cerrar Sesion"
+                    priority
+                  />
                 </div>
-                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
+                <h2 className="text-xl text-center text-gris-español">Salir</h2>
               </button>
             </nav>
           )}

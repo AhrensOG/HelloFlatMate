@@ -10,6 +10,7 @@ import MyBedroomsList from "@/app/components/user/history/bedroom/MyBedroomsList
 import { Context } from "@/app/context/GlobalContext";
 import NavBar from "@/app/components/nav_bar/NavBar";
 import BotIcon from "@/app/components/public/chat-bot/BotIcon";
+import TitleAdminPanel from "@/app/components/admin/shared/TitleAdminPanel";
 
 export default function MyBedrooms() {
   const router = useRouter();
@@ -86,21 +87,23 @@ export default function MyBedrooms() {
       {/* MOBILE DESIGN */}
       <div className="flex flex-col w-full sm:hidden">
         <header className="py-2">
-          <NavBarHistory
-            title={`${!showDetails ? "Mis dormitorios" : "Mi dormitorio"}`}
-            redirect={
-              !showDetails
-                ? () => {
-                    router.back();
-                  }
-                : handleCloseDetails
-            }
-          />
+          <NavBar client={true} admin={false} owner={false} />
         </header>
         <main
           className={`  flex flex-col justify-center items-center w-full px-5 my-8 gap-10`}
         >
           <AnimatePresence>
+            <TitleAdminPanel
+              title={"Mis dormitorios"}
+              action={
+                !showDetails
+                  ? () => {
+                      router.back();
+                    }
+                  : handleCloseDetails
+              }
+            />
+
             {!showDetails ? (
               propertiesList.length > 0 ? (
                 <MyBedroomsList

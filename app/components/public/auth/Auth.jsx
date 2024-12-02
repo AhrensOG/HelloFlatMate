@@ -2,7 +2,7 @@
 import { toast } from "sonner";
 import { useContext, useEffect, useState } from "react";
 import AuthModal from "./AuthModal";
- 
+
 import Link from "next/link";
 import Image from "next/image";
 import { logInWithGoogle } from "@/app/firebase/logInWithGoogle";
@@ -88,111 +88,133 @@ export default function Auth() {
   };
 
   return (
-    <section
-      className={`  auth-card flex flex-col m-3 gap-10 items-center font-normal text-base self-start pt-9`}
-    >
-      <Image
-        className="logo-auth"
-        src="/logo-auth.svg"
-        alt="Logo de Autenticación"
-        layout="responsive"
-        width={100}
-        height={100}
-      />
-      <div className="buttons-auth flex flex-col gap-5 items-center w-full">
-        {!register && (
-          // Formulario de inicio de sesión
-          <form
-            onSubmit={handleLoginWithEmail}
-            className="flex flex-col gap-4 w-full"
-          >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Correo electrónico"
-              className="border p-2 rounded-md"
-              required
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Contraseña"
-              className="border p-2 rounded-md"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-            >
-              Iniciar Sesión
-            </button>
-          </form>
-        )}
-        <span className="flex items-center text-sm font-thin w-full">
-          <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
-          {/* Línea izquierda */}
-          También puedes
-          <span className="flex-1 border-t border-gray-300 ml-2"></span>{" "}
-          {/* Línea derecha */}
-        </span>
-        <button
-          type="button"
-          onClick={register ? () => openModal("facebook") : handleLoginFacebook}
-          className="facebook-auth flex px-0.5 items-center justify-center text-center text-white bg-resolution-blue gap-4 rounded-xl w-[100%] h-[3.25rem] text-base"
-          aria-label={
-            register ? "Regístrate con Facebook" : "Iniciar con Facebook"
-          }
-        >
-          <span className="pl-0.5">
-            <Image
-              src="/face-logo.svg"
-              alt="Logo de Facebook"
-              width={24}
-              height={24}
-            />
-          </span>
-          {register ? "Regístrate con Facebook" : "Iniciar con Facebook"}
-        </button>
-        <button
-          type="button"
-          onClick={register ? () => openModal("google") : handleLoginGoogle}
-          className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
-          aria-label={register ? "Regístrate con Google" : "Iniciar con Google"}
-        >
-          <span>
-            <Image
-              src="/google-logo.svg"
-              alt="Logo de Google"
-              width={24}
-              height={24}
-            />
-          </span>
-          {register ? "Regístrate con Google" : "Iniciar con Google"}
-        </button>
-        <p className="register-or-login-auth text-wrap text-xs">
-          {register ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?"}
-          <Link
-            onClick={handleIsRegister}
-            className="a-auth text-resolution-blue"
-            href="#"
-          >
-            {register ? " Iniciar Sesión" : " Regístrate"}
-          </Link>
-        </p>
+    <section className="flex justify-center items-center w-full sm:bg-blue-500">
+      <div className="relative sm:w-1/2 lg:w-2/3 h-screen sm:block hidden">
+        <Image
+          src={"/auth/desktop.png"}
+          fill
+          alt="Desktop Auth Image"
+          className="object-cover object-bottom"
+        />
       </div>
-      <AuthModal
-        isOpen={isOpen}
-        handleAccept={() =>
-          toast.promise(handleAccept(), {
-            loading: "Cargando...",
-            success: "Iniciando Sesion",
-            error: "Fallo la autenticación. Intente nuevamente.",
-          })
-        }
-        handleReject={handleReject}
-      />
+      <div
+        className={`auth-card flex flex-col mx-3 w-full max-w-xs sm:max-w-none sm:w-1/2 lg:w-1/3 gap-10 items-center font-normal text-base sm:justify-center sm:h-screen`}
+      >
+        <Image
+          className="logo-auth sm:block hidden"
+          src="/auth/whiteLogo.png"
+          alt="Logo de Autenticación"
+          width={200}
+          height={100}
+        />
+        <Image
+          className="logo-auth sm:hidden"
+          src="/logo-auth.svg"
+          alt="Logo de Autenticación"
+          width={200}
+          height={100}
+        />
+        <div className="buttons-auth flex flex-col gap-5 items-center w-full">
+          {!register && (
+            // Formulario de inicio de sesión
+            <form
+              onSubmit={handleLoginWithEmail}
+              className="flex flex-col gap-4 w-full"
+            >
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Correo electrónico"
+                className="border p-2 rounded-md"
+                required
+              />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Contraseña"
+                className="border p-2 rounded-md"
+                required
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 sm:hover:bg-blue-500 sm:border sm:border-white"
+              >
+                Iniciar Sesión
+              </button>
+            </form>
+          )}
+          {!register && (
+            <span className="flex items-center text-sm font-thin w-full sm:text-white">
+              <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
+              {/* Línea izquierda */}
+              También puedes
+              <span className="flex-1 border-t border-gray-300 ml-2"></span>{" "}
+              {/* Línea derecha */}
+            </span>
+          )}
+          {/* <button
+            type="button"
+            onClick={
+              register ? () => openModal("facebook") : handleLoginFacebook
+            }
+            className="facebook-auth flex px-0.5 items-center justify-center text-center text-white bg-resolution-blue gap-4 rounded-xl w-[100%] h-[3.25rem] text-base"
+            aria-label={
+              register ? "Regístrate con Facebook" : "Iniciar con Facebook"
+            }
+          >
+            <span className="pl-0.5">
+              <Image
+                src="/face-logo.svg"
+                alt="Logo de Facebook"
+                width={24}
+                height={24}
+              />
+            </span>
+            {register ? "Regístrate con Facebook" : "Iniciar con Facebook"}
+          </button> */}
+          <button
+            type="button"
+            onClick={register ? () => openModal("google") : handleLoginGoogle}
+            className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
+            aria-label={
+              register ? "Regístrate con Google" : "Iniciar con Google"
+            }
+          >
+            <span>
+              <Image
+                src="/google-logo.svg"
+                alt="Logo de Google"
+                width={24}
+                height={24}
+              />
+            </span>
+            {register ? "Regístrate con Google" : "Iniciar con Google"}
+          </button>
+          {/* <p className="register-or-login-auth text-wrap text-xs sm:text-white">
+            {register ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?"}
+            <button
+              onClick={handleIsRegister}
+              className="a-auth text-resolution-blue pl-1 sm:text-white"
+              href="#"
+            >
+              {register ? " Iniciar Sesión" : " Regístrate"}
+            </button>
+          </p> */}
+        </div>
+        <AuthModal
+          isOpen={isOpen}
+          handleAccept={() =>
+            toast.promise(handleAccept(), {
+              loading: "Cargando...",
+              success: "Iniciando Sesion",
+              error: "Fallo la autenticación. Intente nuevamente.",
+            })
+          }
+          handleReject={handleReject}
+        />
+      </div>
     </section>
   );
 }

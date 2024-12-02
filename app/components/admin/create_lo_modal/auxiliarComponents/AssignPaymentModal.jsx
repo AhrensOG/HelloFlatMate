@@ -18,6 +18,10 @@ const supplyTypeMap = {
   ELECTRICITY: "Electricidad",
   EXPENSES: "Expensas",
   INTERNET: "Internet",
+  AGENCY_FEES: "Tasa de la agencia",
+  CLEANUP: "Limpieza por finalización de contrato",
+  DEPOSIT: "Depósito",
+  GENERAL_SUPPLIES: "Suministros (agua, luz, gas)",
   OTHERS: "Otros",
 };
 
@@ -38,24 +42,39 @@ export default function PaymentModal({ leaseOrder, onClose }) {
   };
 
   // Función para eliminar un pago
-  const handleDeletePayment = async (paymentId, type) => {
-    try {
-      const url =
-        type === "rent" ? "/api/admin/rent_payment" : "/api/admin/supply";
-      // await axios.delete(`${url}/${paymentId}`);
-      // Actualiza los pagos del cliente después de la eliminación
-      setClientPayments((prevState) => ({
-        ...prevState,
-        rentPayments: prevState.rentPayments.filter(
-          (payment) => payment.id !== paymentId
-        ),
-        supplies: prevState.supplies.filter(
-          (supply) => supply.id !== paymentId
-        ),
-      }));
-    } catch (error) {
-      console.error("Error al eliminar el pago:", error);
-    }
+  const handleDeletePayment = (paymentId, type) => {
+    toast("¿Estás seguro de eliminar este pago?", {
+      action: {
+        label: "Eliminar",
+        onClick: async () => {
+          try {
+            const url =
+              type === "rent"
+                ? `/api/admin/rent_payment?id=${paymentId}`
+                : `/api/admin/supply/manualCreate?id=${paymentId}`;
+
+            // Lógica para eliminar el pago (descomentar la línea para ejecución)
+            await axios.delete(`${url}`);
+
+            // Actualiza el estado de los pagos
+            setClientPayments((prevState) => ({
+              ...prevState,
+              rentPayments: prevState.rentPayments.filter(
+                (payment) => payment.id !== paymentId
+              ),
+              supplies: prevState.supplies.filter(
+                (supply) => supply.id !== paymentId
+              ),
+            }));
+
+            toast.success("Pago eliminado exitosamente");
+          } catch (error) {
+            console.error("Error al eliminar el pago:", error);
+            toast.error("Error al eliminar el pago");
+          }
+        },
+      },
+    });
   };
 
   const handleEditPayment = (payment, type) => {
@@ -211,7 +230,7 @@ export default function PaymentModal({ leaseOrder, onClose }) {
                 >
                   <div>
                     <p className="font-semibold text-lg text-gray-700">
-                      Suministro ({supplyTypeMap[supply.type] || supply.type})
+                      {supplyTypeMap[supply.type] || supply.type}
                     </p>
                     <p className="text-gray-500 text-sm">
                       Fecha de Expiración:{" "}
@@ -380,6 +399,7 @@ export default function PaymentModal({ leaseOrder, onClose }) {
                 type: "WATER", // Valor por defecto
                 status: "PENDING", // Valor por defecto
                 reference: "",
+                date: null,
                 expirationDate: null,
                 paymentDate: null,
                 paymentId: null,
@@ -415,6 +435,14 @@ export default function PaymentModal({ leaseOrder, onClose }) {
                     <option value="ELECTRICITY">Electricidad</option>
                     <option value="EXPENSES">Expensas</option>
                     <option value="INTERNET">Internet</option>
+                    <option value="AGENCY_FEES">Tasa de la agencia</option>
+                    <option value="CLEANUP">
+                      Limpieza por finalización de contrato
+                    </option>
+                    <option value="DEPOSIT">Depósito</option>
+                    <option value="GENERAL_SUPPLIES">
+                      Suministros (agua, luz, gas)
+                    </option>
                     <option value="OTHERS">Otros</option>
                   </Field>
                 </div>
@@ -427,6 +455,19 @@ export default function PaymentModal({ leaseOrder, onClose }) {
                   <Field
                     type="number"
                     name="amount"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    required
+                  />
+                </div>
+
+                {/* Campo para Fecha */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fecha
+                  </label>
+                  <Field
+                    type="date"
+                    name="date"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                     required
                   />

@@ -6,6 +6,10 @@ const supplyTypeMap = {
   ELECTRICITY: "Electricidad",
   EXPENSES: "Expensas",
   INTERNET: "Internet",
+  AGENCY_FEES: "Tasa de la agencia",
+  CLEANUP: "Limpieza por finalización de contrato",
+  DEPOSIT: "Depósito",
+  GENERAL_SUPPLIES: "Suministros (agua, luz, gas)",
   OTHERS: "Otros",
 };
 
@@ -28,7 +32,8 @@ const EditPaymentModal = ({
               ? "(Mensual)"
               : "(Reserva)"
             : paymentType === "supply"
-            ? ` (Suministro - ${supplyTypeMap[payment.type]})`
+            ? ` 
+            (${supplyTypeMap[payment.type]})`
             : null}
         </h2>
         {/* <span className="pl-4 text-sm font-light">ID : {payment.paymentId ? payment.paymentId : "-"}</span> */}
