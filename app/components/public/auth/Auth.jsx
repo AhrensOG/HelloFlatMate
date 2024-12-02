@@ -154,7 +154,7 @@ export default function Auth() {
               {/* Línea derecha */}
             </span>
           )}
-          <button
+          {/* <button
             type="button"
             onClick={
               register ? () => openModal("facebook") : handleLoginFacebook
@@ -173,7 +173,7 @@ export default function Auth() {
               />
             </span>
             {register ? "Regístrate con Facebook" : "Iniciar con Facebook"}
-          </button>
+          </button> */}
           <button
             type="button"
             onClick={register ? () => openModal("google") : handleLoginGoogle}
@@ -192,7 +192,7 @@ export default function Auth() {
             </span>
             {register ? "Regístrate con Google" : "Iniciar con Google"}
           </button>
-          <p className="register-or-login-auth text-wrap text-xs sm:text-white">
+          {/* <p className="register-or-login-auth text-wrap text-xs sm:text-white">
             {register ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?"}
             <button
               onClick={handleIsRegister}
@@ -201,7 +201,7 @@ export default function Auth() {
             >
               {register ? " Iniciar Sesión" : " Regístrate"}
             </button>
-          </p>
+          </p> */}
         </div>
         <AuthModal
           isOpen={isOpen}

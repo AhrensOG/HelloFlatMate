@@ -149,15 +149,15 @@ export default function NavBar({
             priority
           />
         </button>
-        <div className="relative w-[80px] h-[50px] cursor-pointer">
-          <Link href="/">
+        <div className="relative w-[80px] h-[50px]">
+          {/* <Link href="/"> */}
             <Image
               src="/home/onlyLogo.svg"
               fill
               alt="Logo de FlatMate"
               priority
             />
-          </Link>
+          {/* </Link> */}
         </div>
         <div className="flex items-center gap-2 w-[87px] h-[34px]">
           <button
@@ -179,15 +179,15 @@ export default function NavBar({
       {/* DESKTOP */}
       <div className="w-full min-h-[93px] px-6 py-4 sm:flex justify-between items-center hidden border-b">
         {/* Logo */}
-        <div className="relative w-[80px] h-[50px] cursor-pointer">
-          <Link href="/">
+        <div className="relative w-[80px] h-[50px]">
+          {/* <Link href="/"> */}
             <Image
               src="/home/onlyLogo.svg"
               fill
               alt="Logo de FlatMate"
               priority
             />
-          </Link>
+          {/* </Link> */}
         </div>
 
         {/* Opciones según el rol */}
