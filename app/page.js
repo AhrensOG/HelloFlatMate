@@ -232,9 +232,9 @@ export default function Home() {
     <div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center px-4 py-8">
         {/* Imagen de error */}
-        <div className="mb-8">
+        <div>
           <Image
-            src={"/_error/maintenance.png"}
+            src={"/newlogohfm.png"}
             alt="Error Image"
             width={400}
             height={300}
