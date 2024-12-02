@@ -4,9 +4,9 @@ import {
   ArrowRightCircleIcon,
 } from "@heroicons/react/24/outline";
 
-export default function FourtSection() {
+export default function FourthSection() {
   return (
-    <section className="flex flex-col gap-3 bg-white items-center justify-around h-[40vh] my-10 mb-40">
+    <section className="flex flex-col gap-3 bg-white items-center justify-around my-10 px-2">
       <h1 className="text-3xl font-bold">
         Dicen que nuestro servicio al cliente es el mejor
       </h1>
@@ -19,7 +19,7 @@ export default function FourtSection() {
         </button>
       </div>
       <div className="flex gap-6 my-10">
-        <article className="flex flex-col gap-2 w-[47vw] h-[15rem] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
+        <article className="flex flex-col gap-2 w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
           <div className="flex gap-2 justify-center">
             <StarIcon className="w-10 h-10 text-orange-500" />
             <StarIcon className="w-10 h-10 text-orange-500" />
@@ -40,7 +40,7 @@ export default function FourtSection() {
             Germany
           </p>
         </article>
-        <article className="flex flex-col gap-2 w-[47vw] h-[15rem] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
+        <article className="flex flex-col gap-2 w-full max-w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
           <div className="flex gap-2 justify-center">
             <StarIcon className="w-10 h-10 text-orange-500" />
             <StarIcon className="w-10 h-10 text-orange-500" />
@@ -61,7 +61,7 @@ export default function FourtSection() {
             Germany
           </p>
         </article>
-        {/* <article className="flex flex-col gap-2 w-[47vw] h-[15rem] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
+        {/* <article className="flex flex-col gap-2 w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
                     <div className="flex gap-2 justify-center">
                         <StarIcon className="w-10 h-10 text-orange-500" />
                         <StarIcon className="w-10 h-10 text-orange-500" />
@@ -81,7 +81,7 @@ export default function FourtSection() {
                         Germany
                     </p>
                 </article>
-                <article className="flex flex-col gap-2 w-[47vw] h-[15rem] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
+                <article className="flex flex-col gap-2 w-[47vw] bg-[#F7F7F7] rounded-2xl p-4 text-center text-gray-600">
                     <div className="flex gap-2 justify-center">
                         <StarIcon className="w-10 h-10 text-orange-500" />
                         <StarIcon className="w-10 h-10 text-orange-500" />

@@ -3,32 +3,33 @@ import Image from "next/image";
 
 export default function TitleSection() {
   return (
-    <section className="relative flex flex-col gap-3 bg-white items-center justify-around py-10 pb-40">
+    <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
       <h1 className="text-3xl font-bold">hello flat mate</h1>
       <h3 className="text-lg text-center">
         Especializados en gestión de alojamientos para estudiantes en Valencia.{" "}
         <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin
         complicaciones!
       </h3>
-      <div className="flex items-center justify-between gap-2 border rounded-full mt-5 w-[40rem]">
+      <div className="flex items-center justify-between gap-2 border rounded-full mt-5 w-full max-w-[40rem]">
         <label htmlFor="search" hidden></label>
         <input
           type="text"
           name="search"
           id="search"
-          className="aparance-none outline-none w-[80%] ml-4 my-3 h-full rounded-full font-bold"
+          className="aparance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-600"
           placeholder="¿Donde quieres vivir?"
         />
         <button className="h-12 w-12 rounded-full bg-resolution-blue flex justify-center items-center m-2">
           <MagnifyingGlassIcon className="w-6 h-6 text-white" />
         </button>
       </div>
-      <Image
-        src={"/home/complejo.png"}
-        width={250}
-        height={200}
-        className="absolute object-cover object-center bottom-0 left-0"
-      />
+      <div className="absolute w-44 h-32 sm:w-64 sm:h-52 bottom-0 left-0">
+        <Image
+          src={"/home/complejo.png"}
+          fill
+          className="object-cover object-center"
+        />
+      </div>
     </section>
   );
 }
