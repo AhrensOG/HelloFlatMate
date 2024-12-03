@@ -9,20 +9,43 @@ import TitleSection from "../components/public/main-pages/TitleSection";
 import PropertyCard from "../components/user/property/PropertyCard";
 import FourthSection from "../components/public/home/FourthSection";
 import SeventhSection from "../components/public/home/SeventhSection";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import TextSection from "../components/public/main-pages/TextSection";
 
 export default function HelloRoom() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(""); // Estado para la búsqueda
   const roomsPerPage = 20; // Número de habitaciones por página
 
   const filterByCategory = (properties) => {
     return properties.filter((property) => property.category === "HELLO_ROOM");
   };
 
-  const paginateRooms = (allRooms) => {
+  const paginateRooms = (rooms) => {
     const startIndex = (currentPage - 1) * roomsPerPage;
-    return allRooms.slice(startIndex, startIndex + roomsPerPage);
+    return rooms.slice(startIndex, startIndex + roomsPerPage);
+  };
+
+  const filterBySearchQuery = (rooms) => {
+    if (!searchQuery) return rooms; // Si no hay búsqueda, devuelve todas las habitaciones
+    const query = searchQuery.toLowerCase();
+
+    return rooms.filter((room) => {
+      const { property, name } = room;
+      const city = property?.city?.toLowerCase() || "";
+      const street = property?.street?.toLowerCase() || "";
+      const streetNumber = property?.streetNumber?.toLowerCase() || "";
+
+      // Coincidencia en nombre o dirección
+      return (
+        name.toLowerCase().includes(query) ||
+        city.includes(query) ||
+        street.includes(query) ||
+        streetNumber.includes(query)
+      );
+    });
   };
 
   useEffect(() => {
@@ -47,9 +70,10 @@ export default function HelloRoom() {
     property.rooms?.map((room) => ({ ...room, property }))
   );
 
-  const displayedRooms = paginateRooms(allRooms);
+  const filteredRooms = filterBySearchQuery(allRooms);
+  const displayedRooms = paginateRooms(filteredRooms);
 
-  const totalPages = Math.ceil(allRooms.length / roomsPerPage);
+  const totalPages = Math.ceil(filteredRooms.length / roomsPerPage);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -80,6 +104,25 @@ export default function HelloRoom() {
         </header>
         <div className="w-full flex flex-col">
           <TitleSection />
+          {/* Barra de búsqueda */}
+          <div className="w-full flex justify-center items-center my-16">
+            <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem]">
+              <label htmlFor="search" hidden></label>
+              <input
+                type="text"
+                name="search"
+                id="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="appearance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-800"
+                placeholder="¿Dónde quieres vivir? (nombre o dirección)"
+              />
+              <button className="h-12 w-12 rounded-full bg-[#FB6E44] flex justify-center items-center m-2">
+                <MagnifyingGlassIcon className="w-6 h-6 text-white" />
+              </button>
+            </div>
+          </div>
+          {/* Lista de habitaciones */}
           <div
             id="carousel-container"
             className="w-full flex justify-center items-start"
@@ -132,6 +175,7 @@ export default function HelloRoom() {
           </div>
           <FourthSection />
           <SeventhSection />
+          <TextSection />
         </div>
         <Footer_1 />
       </div>
@@ -143,26 +187,14 @@ function PropertyCardSkeleton() {
   return (
     <article className="animate-pulse flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-none rounded-sm">
       <div className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full">
-        {/* Imagen */}
         <div className="relative h-28 w-28 sm:w-72 sm:h-60 bg-gray-300 rounded-md"></div>
-
-        {/* Contenido */}
         <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 gap-2">
           <div className="flex flex-col grow sm:gap-2">
-            {/* Categoría */}
             <div className="h-4 bg-gray-300 rounded w-20"></div>
-
-            {/* Nombre */}
             <div className="h-5 bg-gray-300 rounded w-3/4"></div>
-
-            {/* Ubicación */}
             <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-
-            {/* Amenidades */}
             <div className="h-3 bg-gray-300 rounded w-full"></div>
           </div>
-
-          {/* Precio */}
           <div className="flex justify-end items-end gap-2">
             <div className="h-5 bg-gray-300 rounded w-1/4"></div>
           </div>
