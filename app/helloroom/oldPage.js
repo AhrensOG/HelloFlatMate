@@ -40,7 +40,7 @@ const helloroom = {
   },
 };
 
-export default function HelloRoom() {
+export default function OldHelloRoom() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
 

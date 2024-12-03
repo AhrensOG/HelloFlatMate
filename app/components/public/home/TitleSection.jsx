@@ -10,7 +10,7 @@ export default function TitleSection() {
         <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin
         complicaciones!
       </h3>
-      <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem] mb-16">
+      <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem] mb-64">
         <label htmlFor="search" hidden></label>
         <input
           type="text"
@@ -23,9 +23,9 @@ export default function TitleSection() {
           <MagnifyingGlassIcon className="w-6 h-6 text-white" />
         </button>
       </div>
-      <div className="absolute w-44 h-32 sm:w-[400px] sm:h-52 bottom-0 left-0">
+      <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
         <Image
-          src={"/home/new_home/hero2.png"}
+          src={"/home/new_home/hero4.jpeg"}
           fill
           className="object-cover"
         />
