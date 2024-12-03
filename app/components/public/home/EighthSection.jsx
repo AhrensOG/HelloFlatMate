@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 // components/HeroSection.js
 export default function EightSection() {
@@ -6,7 +7,12 @@ export default function EightSection() {
     <section className="bg-white min-h-screen flex flex-col items-center justify-center text-center px-2">
       {/* Ilustración */}
       <div className="relative w-[300px] h-[200px] sm:w-[550px] sm:h-[350px]">
-        <Image src={"/home/new_home/livingroom.svg"} fill alt="livingroom" className="object-cover" />
+        <Image
+          src={"/home/new_home/livingroom.svg"}
+          fill
+          alt="livingroom"
+          className="object-cover"
+        />
       </div>
 
       {/* Texto */}
@@ -15,9 +21,12 @@ export default function EightSection() {
       </h1>
 
       {/* Botón */}
-      <button className="px-6 py-3 sm:text-xl bg-orange-500 text-white font-medium rounded shadow hover:bg-orange-600 transition duration-300">
+      <Link
+        href={"/#search"}
+        className="px-6 py-3 sm:text-xl bg-orange-500 text-white font-medium rounded shadow hover:bg-orange-600 transition duration-300"
+      >
         Empieza a buscar
-      </button>
+      </Link>
     </section>
   );
 }

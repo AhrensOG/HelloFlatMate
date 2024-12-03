@@ -9,7 +9,7 @@ export default function Footer_1() {
             <footer className="bg-[#f2efed] w-full flex flex-col gap-11 md:hidden py-10">
                 <section className="flex flex-col gap-10 p-6">
                     <article className="flex flex-col gap-4">
-                        <h2 className="font-bold uppercase text-lg">Helloflatmate</h2>
+                        <h2 className="font-bold uppercase text-lg">helloflatmate</h2>
                         <Link href="#" target="_blank" className="font-normal text-base">
                             Acerca de nosotros
                         </Link>
@@ -28,13 +28,13 @@ export default function Footer_1() {
                     </article>
                     <article className="flex flex-col gap-4">
                         <h2 className="font-bold uppercase text-lg">Legal</h2>
-                        <Link href="#" target="_blank" className="font-normal text-base">
+                        <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                             Politica de privacidad
                         </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
+                        <Link href="/cookies" target="_blank" className="font-normal text-base">
                             Politica de cookies
                         </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
+                        <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                             Terminos y condiciones
                         </Link>
                     </article>
@@ -178,7 +178,7 @@ export default function Footer_1() {
                 </section>
                 <section>
                     <Image src={"/home/onlyLogo.svg"} width={30} height={30} alt="Logo de FlatMate" className="hidden md:block" />
-                    <p className="text-center text-sm">©2024 Helloflatmate — Todos los derechos reservados</p>
+                    <p className="text-center text-sm">©2024 helloflatmate — Todos los derechos reservados</p>
                 </section>
             </footer>
 
@@ -189,7 +189,7 @@ export default function Footer_1() {
                     <section className="flex gap-16 p-6">
                         <div className="flex flex-col gap-9">
                             <article className="flex flex-col gap-4">
-                                <h2 className="font-bold uppercase text-lg">Helloflatmate</h2>
+                                <h2 className="font-bold uppercase text-lg">helloflatmate</h2>
                                 <Link href="#" target="_blank" className="font-normal text-base">
                                     Acerca de nosotros
                                 </Link>
@@ -209,13 +209,13 @@ export default function Footer_1() {
 
                             <article className="flex flex-col gap-4">
                                 <h2 className="font-bold uppercase text-lg">Legal</h2>
-                                <Link href="#" target="_blank" className="font-normal text-base">
+                                <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                                     Politica de privacidad
                                 </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
+                                <Link href="/cookies" target="_blank" className="font-normal text-base">
                                     Politica de cookies
                                 </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
+                                <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                                     Terminos y condiciones
                                 </Link>
                             </article>
@@ -362,7 +362,7 @@ export default function Footer_1() {
                 <div className="flex justify-center gap-16">
                     <section className="flex gap-2 items-center">
                         <Image src={"/home/onlyLogo.svg"} width={50} height={30} alt="Logo de FlatMate" className="hidden md:block" />
-                        <p className="text-center font-semibold">©2024 Helloflatmate — Todos los derechos reservados</p>
+                        <p className="text-center font-semibold">©2024 helloflatmate — Todos los derechos reservados</p>
                     </section>
 
                     <section className="flex gap-2 items-center p-4 justify-center">
