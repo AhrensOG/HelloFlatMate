@@ -25,6 +25,8 @@ import SixthSection from "./components/public/home/SixthSection";
 import SeventhSection from "./components/public/home/SeventhSection";
 import EightSection from "./components/public/home/EighthSection";
 import FourtSection from "./components/public/home/FourtSection";
+import Footer_1 from "./components/public/home/Footer";
+import NavBar_1 from "./components/public/home/NavBar_1";
 
 const helloroom = {
     hero: {
@@ -157,6 +159,7 @@ export default function Home() {
         <CookieModal /> */}
                 <header className="mb-[144px]">
                     <HomeNavBar setActiveSection={setActiveSection} activeSection={activeSection} />
+                    {/* <NavBar_1 /> */}
                 </header>
 
                 {/* Sección activa controlada por el estado */}
@@ -175,8 +178,8 @@ export default function Home() {
                 <SecondSection />
                 <SixthSection />
                 <ThirdSection />
-                {/* <FourthSection /> */}
-                <FourtSection />
+                <FourthSection />
+                {/* <FourtSection /> */}
                 <FifthSection />
                 <SeventhSection />
                 <EightSection />
@@ -187,6 +190,7 @@ export default function Home() {
           <div className="w-full max-w-screen-xl"></div>
         </div> */}
                 <Footer />
+                {/* <Footer_1 /> */}
             </div>
         </div>
     );
