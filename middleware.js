@@ -33,6 +33,7 @@ export async function middleware(request) {
         "/faq",
         "/cookies",
         "/privacy-policy",
+        "/como-funciona",
     ];
 
     const dynamicPaths = [
