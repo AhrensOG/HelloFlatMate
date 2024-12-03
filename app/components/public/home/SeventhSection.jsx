@@ -66,7 +66,7 @@ const SeventhSection = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center py-16 px-2 bg-[#FFE5F7] space-y-10">
       <h2 className="text-4xl font-bold text-gray-800 text-center">
-        ¿Todavía no lo tienes claro?
+      ¿Alguna duda?
       </h2>
       <div className="max-w-screen-lg w-full space-y-4">
         {items.map((item, index) => (
