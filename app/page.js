@@ -158,8 +158,8 @@ export default function Home() {
                 {/* <BotIcon />
         <CookieModal /> */}
                 <header className="mb-[144px]">
-                    <HomeNavBar setActiveSection={setActiveSection} activeSection={activeSection} />
-                    {/* <NavBar_1 /> */}
+                    {/* <HomeNavBar setActiveSection={setActiveSection} activeSection={activeSection} /> */}
+                    <NavBar_1 />
                 </header>
 
                 {/* Sección activa controlada por el estado */}
@@ -189,8 +189,8 @@ export default function Home() {
                 {/* <div className="w-full flex justify-center items-center">
           <div className="w-full max-w-screen-xl"></div>
         </div> */}
-                <Footer />
-                {/* <Footer_1 /> */}
+                {/* <Footer /> */}
+                <Footer_1 />
             </div>
         </div>
     );

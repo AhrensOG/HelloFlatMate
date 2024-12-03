@@ -3,42 +3,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-const AccordionItem = ({ title, content }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border-b border-gray-300 p-3">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-between items-center w-full p-4 text-left"
-      >
-        <span className="font-semibold text-gray-800 text-xl">{title}</span>
-        <div className="relative w-6 h-6">
-          {/* Línea horizontal */}
-          <motion.div
-            className="absolute inset-3 left-1 w-4 h-[1px] bg-gray-500"
-            animate={{ rotate: isOpen ? 0 : 0 }}
-            transition={{ duration: 0.3 }}
-          />
-          {/* Línea vertical */}
-          <motion.div
-            className="absolute inset-3 left-1 w-4 h-[1px] bg-gray-500"
-            animate={{ rotate: isOpen ? 0 : 90 }}
-            transition={{ duration: 0.3 }}
-          />
-        </div>
-      </button>
-      <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
-        className="overflow-hidden"
-      >
-        <div className="p-4 text-gray-600 text-lg">{content}</div>
-      </motion.div>
-    </div>
-  );
-};
-
 const AccordionItemV2 = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -112,14 +76,7 @@ const SeventhSection = () => {
             content={item.content}
           />
         ))}
-        {items.map((item, index) => (
-          <AccordionItem
-            key={index}
-            title={item.title}
-            content={item.content}
-          />
-        ))}
-      </div>
+        </div>
       <div className="font-bold text-gray-600 text-center">
         ¿Tienes una pregunta diferente?
         <Link href={"/faq"} target="_blank" className="pl-1 text-gray-700 underline">

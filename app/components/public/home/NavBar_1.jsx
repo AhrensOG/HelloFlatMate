@@ -39,52 +39,52 @@ export default function NavBar_1() {
                 </button>
             </div>
 
-            <Image src="/home/onlyLogo.svg" width={60} height={60} alt="logo" />
-            <div className="hidden md:flex items-center gap-4">
-                <button className="border py-3 px-5 font-bold text-lg border-black">Soy un propietario</button>
-                <Link href="#" target="_blank" className="font-bold text-lg">
+            <Image src="/home/new_home/Helloflatmate.png" width={100} height={100} alt="logo" />
+            <div className="hidden md:flex items-center gap-5">
+                {/* <button className="border py-3 px-5 font-bold text-lg border-black">Soy un propietario</button> */}
+                <Link href="#" target="_blank" className="font-bold text-base">
                     Cómo funciona
                 </Link>
-                <Link href="#" target="_blank" className="font-bold text-lg">
-                    Favoritos
+                <Link href="#" target="_blank" className="font-bold text-base">
+                Términos y condiciones
                 </Link>
                 <div className="flex gap-1">
-                    <Link href="#" target="_blank" className="font-bold text-lg">
-                        Registrarse
+                    <Link href="#" target="_blank" className="font-bold text-base">
+                        Registro
                     </Link>
-                    <span className="font-bold text-lg">|</span>
-                    <Link href="#" target="_blank" className="font-bold text-lg">
-                        Iniciar sesión
+                    <span className="font-bold text-base">|</span>
+                    <Link href="#" target="_blank" className="font-bold text-base">
+                        Inicio
                     </Link>
                 </div>
-                <Link href="#" target="_blank" className="font-bold text-lg">
+                {/* <Link href="#" target="_blank" className="font-bold text-lg">
                     Ayuda
-                </Link>
+                </Link> */}
                 <Dropdown p={0} />
             </div>
 
             {/* Menú desplegable solo para móvil (no se abrirá) */}
             {isOpen && (
                 <div className="absolute top-16 left-0 right-0 bg-white shadow-lg rounded-md p-4 md:hidden">
-                    <button className="border py-3 px-5 font-bold text-lg border-black w-full">Soy un propietario</button>
+                    {/* <button className="border py-3 px-5 font-bold text-lg border-black w-full">Soy un propietario</button> */}
                     <Link href="#" target="_blank" className="block font-bold text-lg mt-2">
                         Cómo funciona
                     </Link>
                     <Link href="#" target="_blank" className="block font-bold text-lg mt-2">
-                        Favoritos
+                    Términos y condiciones
                     </Link>
                     <div className="flex flex-col mt-2">
                         <Link href="#" target="_blank" className="block font-bold text-lg">
-                            Registrarse
+                            Registro
                         </Link>
                         <span className="block font-bold text-lg my-1">|</span>
                         <Link href="#" target="_blank" className="block font-bold text-lg">
-                            Iniciar sesión
+                            Inicio
                         </Link>
                     </div>
-                    <Link href="#" target="_blank" className="block font-bold text-lg mt-2">
+                    {/* <Link href="#" target="_blank" className="block font-bold text-lg mt-2">
                         Ayuda
-                    </Link>
+                    </Link> */}
                     <Dropdown p={0} />
                 </div>
             )}
