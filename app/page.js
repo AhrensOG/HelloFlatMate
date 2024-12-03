@@ -157,7 +157,7 @@ export default function Home() {
             <div className="flex flex-col relative">
                 {/* <BotIcon />
         <CookieModal /> */}
-                <header className="mb-[144px]">
+                <header>
                     {/* <HomeNavBar setActiveSection={setActiveSection} activeSection={activeSection} /> */}
                     <NavBar_1 />
                 </header>
