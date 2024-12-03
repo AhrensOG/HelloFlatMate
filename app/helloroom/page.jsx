@@ -36,14 +36,15 @@ export default function HelloRoom() {
       const { property, name } = room;
       const city = property?.city?.toLowerCase() || "";
       const street = property?.street?.toLowerCase() || "";
-      const streetNumber = property?.streetNumber?.toLowerCase() || "";
+      const streetNumber = property?.streetNumber || ""; // No es necesario convertir números a lowercase
+
+      // Formar la dirección completa como un string
+      const fullAddress = `${street} ${streetNumber}, ${city}`;
 
       // Coincidencia en nombre o dirección
       return (
         name.toLowerCase().includes(query) ||
-        city.includes(query) ||
-        street.includes(query) ||
-        streetNumber.includes(query)
+        fullAddress.toLowerCase().includes(query)
       );
     });
   };
@@ -97,88 +98,99 @@ export default function HelloRoom() {
   };
 
   return (
-    <div>
-      <div className="flex flex-col sm:min-h-screen">
-        <header className="mb-16">
-          <NavBar_1 fixed={true} />
-        </header>
-        <div className="w-full flex flex-col">
-          <TitleSection />
+    <div className="flex flex-col sm:min-h-screen">
+      <header className="mb-16">
+        <NavBar_1 fixed={true} />
+      </header>
+
+      <div className="w-full flex flex-col">
+        <TitleSection />
+
+        {/* Contenedor de búsqueda y botones */}
+        <div className="sticky top-10 z-10 w-full flex flex-col justify-center items-center shadow-sm bg-white">
           {/* Barra de búsqueda */}
-          <div className="w-full flex justify-center items-center my-16">
-            <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem]">
+          <div className="w-full flex justify-center items-center my-4">
+            <div className="flex items-center justify-between gap-2 border-2 bg-white border-gray-300 rounded-full mt-5 w-full max-w-[40rem]">
               <label htmlFor="search" hidden></label>
               <input
                 type="text"
                 name="search"
                 id="search"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  scrollToCarousel(); // Lleva al inicio del listado al buscar
+                }}
                 className="appearance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-800"
                 placeholder="¿Dónde quieres vivir? (nombre o dirección)"
               />
-              <button className="h-12 w-12 rounded-full bg-[#FB6E44] flex justify-center items-center m-2">
+              <button
+                className="h-12 w-12 rounded-full bg-[#FB6E44] flex justify-center items-center m-2"
+                onClick={scrollToCarousel} // Asegura que al hacer clic también desplace
+              >
                 <MagnifyingGlassIcon className="w-6 h-6 text-white" />
               </button>
             </div>
           </div>
-          {/* Lista de habitaciones */}
-          <div
-            id="carousel-container"
-            className="w-full flex justify-center items-start"
-          >
-            <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
-              {displayedRooms.length > 0
-                ? displayedRooms.map((room) => (
-                    <PropertyCard
-                      key={room.id + "room"}
-                      property={room.property}
-                      roomId={room.id}
-                      price={room.price}
-                      name={room.name}
-                      images={room.images[0]}
-                      room={room}
-                    />
-                  ))
-                : Array.from({ length: 6 }).map((_, index) => (
-                    <PropertyCardSkeleton key={index} />
-                  ))}
-            </div>
-          </div>
-          {/* Botones de paginación */}
-          <div className="w-full flex justify-center items-center gap-4 my-8">
-            <button
-              onClick={handlePrev}
-              disabled={currentPage === 1}
-              className={`px-4 py-2 bg-gray-200 rounded-lg ${
-                currentPage === 1
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:bg-gray-300"
-              }`}
-            >
-              Prev
-            </button>
-            <span className="text-gray-700 font-semibold">
-              Página {currentPage} de {totalPages}
-            </span>
-            <button
-              onClick={handleNext}
-              disabled={currentPage === totalPages}
-              className={`px-4 py-2 bg-gray-200 rounded-lg ${
-                currentPage === totalPages
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:bg-gray-300"
-              }`}
-            >
-              Next
-            </button>
-          </div>
-          <FourthSection />
-          <SeventhSection />
-          <TextSection />
         </div>
-        <Footer_1 />
+
+        {/* Lista de habitaciones */}
+        <div
+          id="carousel-container"
+          className="w-full flex justify-center items-start"
+        >
+          <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
+            {displayedRooms.length > 0
+              ? displayedRooms.map((room) => (
+                  <PropertyCard
+                    key={room.id + "room"}
+                    property={room.property}
+                    roomId={room.id}
+                    price={room.price}
+                    name={room.name}
+                    images={room.images[0]}
+                    room={room}
+                  />
+                ))
+              : Array.from({ length: 6 }).map((_, index) => (
+                  <PropertyCardSkeleton key={index} />
+                ))}
+          </div>
+        </div>
+        {/* Botones de paginación */}
+        <div className="w-full flex justify-center items-center gap-4 my-4">
+          <button
+            onClick={handlePrev}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 bg-gray-200 rounded-lg ${
+              currentPage === 1
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-300"
+            }`}
+          >
+            Prev
+          </button>
+          <span className="text-gray-700 font-semibold">
+            Página {currentPage} de {totalPages}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 bg-gray-200 rounded-lg ${
+              currentPage === totalPages
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-300"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+        <FourthSection />
+        <SeventhSection />
+        <TextSection />
       </div>
+
+      <Footer_1 />
     </div>
   );
 }
