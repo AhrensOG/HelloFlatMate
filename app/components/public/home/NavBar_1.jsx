@@ -25,7 +25,7 @@ export default function NavBar_1({ fixed = false }) {
           aria-label="Toggle menu"
           className="absolute left-4"
         >
-          <Bars3Icon className="size-6"/>
+          <Bars3Icon className="size-6" />
         </button>
       </div>
       <Link href={"/"}>
@@ -38,18 +38,41 @@ export default function NavBar_1({ fixed = false }) {
       </Link>
       <div className="hidden md:flex items-center gap-5">
         {/* <button className="border py-3 px-5 font-bold text-lg border-black">Soy un propietario</button> */}
-        <Link href="#" target="_blank" className="font-bold text-base">
+        <Link
+          href="/lastrooms"
+          target="_blank"
+          className="font-bold text-base border border-black p-2 px-5"
+        >
+          last rooms
+        </Link>
+        <Link
+          href="/como-funciona"
+          target="_blank"
+          className="font-bold text-base"
+        >
           Cómo funciona
         </Link>
-        <Link href="#" target="_blank" className="font-bold text-base">
+        <Link
+          href="/privacy-policy"
+          target="_blank"
+          className="font-bold text-base"
+        >
           Términos y condiciones
         </Link>
         <div className="flex gap-1">
-          <Link href="#" target="_blank" className="font-bold text-base">
+          <Link
+            href="/pages/auth?register=true"
+            target="_blank"
+            className="font-bold text-base"
+          >
             Registro
           </Link>
           <span className="font-bold text-base">|</span>
-          <Link href="#" target="_blank" className="font-bold text-base">
+          <Link
+            href="/pages/auth"
+            target="_blank"
+            className="font-bold text-base"
+          >
             Inicio
           </Link>
         </div>

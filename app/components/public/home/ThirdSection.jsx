@@ -45,7 +45,7 @@ export default function ThirdSection() {
       {articles.map(({ title, description, image }, index) => (
         <article
           key={index}
-          className="border-2 rounded-2xl flex flex-col items-center justify-stretch gap-4 p-4 w-full max-w-[500px]"
+          className="border-2 rounded-2xl flex flex-col items-center justify-stretch gap-4 p-4 w-full max-w-[500px] hover:scale-[1.025] hover:shadow-reservation-list duration-300 transition"
         >
           <h1 className="text-3xl font-bold text-center">{title}</h1>
           <h2 className="text-lg text-center">{description}</h2>
