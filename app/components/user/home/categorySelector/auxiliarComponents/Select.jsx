@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon, CheckIcon } from "@heroicons/react/24/outline";
 
@@ -8,6 +8,7 @@ const Select = ({
   data,
   setData,
   title = "Seleccionar una opción",
+  resetFilters = false, // Nueva prop para resetear filtros
 }) => {
   const [showInput, setShowInput] = useState(false);
   const [selectedValue, setSelectedValue] = useState(title);
@@ -18,12 +19,17 @@ const Select = ({
 
   const handleValueChange = (option) => {
     if (option) {
-      // Validar que la opción no esté vacía
       setSelectedValue(option);
       setData({ ...data, [name]: option });
     }
-    setShowInput(false); // Cerrar el dropdown después de seleccionar una opción
+    setShowInput(false); // Cierra el dropdown después de seleccionar una opción
   };
+
+  useEffect(() => {
+    if (resetFilters) {
+      setSelectedValue(title); // Resetea al valor del título cuando se reinician los filtros
+    }
+  }, [resetFilters]); // Ejecuta solo cuando `resetFilters` cambia
 
   return (
     <section className="w-[18rem] relative">

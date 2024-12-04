@@ -1,21 +1,36 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 const SimpleSelect = ({ options, title = "Seleccionar una opción" }) => {
   const [showInput, setShowInput] = useState(false);
   const [selectedValue, setSelectedValue] = useState(title);
+  const router = useRouter();
 
   const handleClick = () => {
     setShowInput(!showInput);
   };
 
   const handleValueChange = (option) => {
-    if (option) {
-      // Validar que la opción no esté vacía
-      console.log(options);
+    setShowInput(false);
+    switch (option) {
+      case "helloroom":
+        return router.push("/helloroom");
+      case "hellocoliving":
+        return router.push("/hellocoliving");
+      case "hellostudio":
+        return router.push("/hellostudio");
+      case "hellolandlord":
+        return router.push("/hellolandlord");
+      case "lastrooms":
+        return router.push("/lastrooms");
+      case "todos":
+        return router.push("/pages/user/filtered");
+
+      default:
+        break;
     }
-    setShowInput(false); // Cerrar el dropdown después de seleccionar una opción
   };
 
   return (

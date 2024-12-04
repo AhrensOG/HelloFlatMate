@@ -50,9 +50,9 @@ const CategorySelector = ({
 }) => {
   const router = useRouter();
   const [currentCategory, setCurrentCategory] = useState(category);
-  const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [numberOccupants, setNumberOccupants] = useState();
+  const [resetFilters, setResetFilters] = useState();
 
   useEffect(() => {
     if (category) {
@@ -74,12 +74,12 @@ const CategorySelector = ({
   const buildQueryString = () => {
     const params = new URLSearchParams();
 
-    if (data.zone) {
-      params.append("zone", data.zone);
+    if (filters.zone) {
+      params.append("zone", filters.zone);
     }
 
-    if (data.rentalPeriod) {
-      params.append("rentalPeriod", data.rentalPeriod);
+    if (filters.rentalPeriod) {
+      params.append("rentalPeriod", filters.rentalPeriod);
     }
 
     if (date.startDate) {
@@ -90,8 +90,8 @@ const CategorySelector = ({
       params.append("endDate", date.endDate);
     }
 
-    if (data.type) {
-      params.append("type", data.type);
+    if (filters.type) {
+      params.append("type", filters.type);
     }
 
     if (currentCategory) {
@@ -158,16 +158,34 @@ const CategorySelector = ({
     router.push(`/pages/user/filtered?${queryString}`);
   };
 
+  const cleanFilters = () => {
+    setFilters({
+      category: category,
+      zone: null,
+      rentalPeriod: null,
+      startDate: null,
+      endDate: null,
+      type: null,
+      numberOccupants: null,
+    }); // Restablecer los filtros a un objeto vacío
+    setDate({ startDate: "", endDate: "" }); // Limpiar las fechas
+    setNumberOccupants(null); // Restablecer el número de ocupantes
+    setResetFilters(true); // Indica que los selectores deben reiniciar sus valores
+    setTimeout(() => setResetFilters(false), 0); // Vuelve a desactivar después de un ciclo
+  };
+
   const renderSelectedCategoryContent = () => {
     const typeArray = [
       "HELLO_ROOM",
       "HELLO_STUDIO",
       "HELLO_COLIVING",
       "HELLO_LANDLORD",
+      "lastrooms",
       "todos",
     ]
       .filter((cat) => cat !== category)
       .map((cat) => cat.toLowerCase().replace(/_/g, ""));
+
     switch (currentCategory) {
       case "HELLO_ROOM":
         const helloRoomLocations = extractLocations(helloRoomProperties);
@@ -175,9 +193,10 @@ const CategorySelector = ({
 
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
               <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
+                resetFilters={resetFilters}
                 options={helloRoomLocations}
                 data={filters}
                 setData={setFilters}
@@ -185,6 +204,7 @@ const CategorySelector = ({
                 name="zone"
               />
               <Select
+                resetFilters={resetFilters}
                 options={helloRoomRentalPeriods}
                 data={filters}
                 setData={setFilters}
@@ -192,17 +212,20 @@ const CategorySelector = ({
                 name="rentalPeriod"
               />
               <Select
+                resetFilters={resetFilters}
                 options={genre}
                 data={filters}
                 setData={setFilters}
                 title="Tipo de compañeros"
                 name="type"
               />
-              {/* <SelectDate
-                title="Seleccione un rango de fechas"
-                data={date}
-                setData={setDate}
-              /> */}
+              <button
+                onClick={handleSearch}
+                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+              >
+                Buscar alojamiento
+                <MagnifyingGlassIcon className="size-6 text-black" />
+              </button>
             </div>
           </div>
         );
@@ -215,9 +238,10 @@ const CategorySelector = ({
         );
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
               <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
+                resetFilters={resetFilters}
                 options={helloColivingLocations}
                 data={filters}
                 setData={setFilters}
@@ -225,6 +249,7 @@ const CategorySelector = ({
                 name="zone"
               />
               <Select
+                resetFilters={resetFilters}
                 options={helloColivingRentalPeriods}
                 data={filters}
                 setData={setFilters}
@@ -232,17 +257,20 @@ const CategorySelector = ({
                 name="rentalPeriod"
               />
               <Select
+                resetFilters={resetFilters}
                 options={genre}
                 data={filters}
                 setData={setFilters}
                 title="Tipo de compañeros"
                 name="type"
               />
-              {/* <SelectDate
-                title="Seleccione un rango de fechas"
-                data={date}
-                setData={setDate}
-              /> */}
+              <button
+                onClick={handleSearch}
+                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+              >
+                Buscar alojamiento
+                <MagnifyingGlassIcon className="size-6 text-black" />
+              </button>
             </div>
           </div>
         );
@@ -250,9 +278,10 @@ const CategorySelector = ({
         const helloStudioLocations = extractLocations(helloStudioProperties);
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
               <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
+                resetFilters={resetFilters}
                 options={helloStudioLocations}
                 data={filters}
                 setData={setFilters}
@@ -270,12 +299,20 @@ const CategorySelector = ({
                 type={"end"}
               />
               <Select
+                resetFilters={resetFilters}
                 options={numbers}
                 data={numberOccupants}
                 setData={setNumberOccupants}
                 title="Huespedes"
                 name="numberOccupants"
               />
+              <button
+                onClick={handleSearch}
+                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+              >
+                Buscar alojamiento
+                <MagnifyingGlassIcon className="size-6 text-black" />
+              </button>
             </div>
           </div>
         );
@@ -288,15 +325,17 @@ const CategorySelector = ({
         );
         return (
           <div className="w-full flex justify-center items-center">
-            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
               <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
+                resetFilters={resetFilters}
                 options={helloLandlordLocations}
                 data={filters}
                 setData={setFilters}
                 title="¿En qué zona?"
               />
               <Select
+                resetFilters={resetFilters}
                 options={helloLandlordRentalPeriods}
                 data={filters}
                 setData={setFilters}
@@ -304,17 +343,20 @@ const CategorySelector = ({
                 name="rentalPeriod"
               />
               <Select
+                resetFilters={resetFilters}
                 options={genre}
                 data={filters}
                 setData={setFilters}
                 title="Tipo de compañeros"
                 name="type"
               />
-              {/* <SelectDate
-                title="Seleccione un rango de fechas"
-                data={date}
-                setData={setDate}
-              /> */}
+              <button
+                onClick={handleSearch}
+                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+              >
+                Buscar alojamiento
+                <MagnifyingGlassIcon className="size-6 text-black" />
+              </button>
             </div>
           </div>
         );
@@ -331,7 +373,7 @@ const CategorySelector = ({
       transition={{ duration: 0.5 }}
       className={`  w-full flex flex-col gap-6 p-4 z-20`}
     >
-      <div className="w-full flex justify-center items-start">
+      <div className="w-full flex flex-col justify-center items-center">
         <div
           className={`max-w-screen-xl w-full flex flex-col sm:flex-row ${
             currentCategory ? "justify-between" : "justify-end"
@@ -350,15 +392,12 @@ const CategorySelector = ({
               </motion.div>
             </AnimatePresence>
           )}
-          <div className="flex justify-start items-center">
-            <button
-              onClick={handleSearch}
-              className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
-            >
-              Buscar alojamiento
-              <MagnifyingGlassIcon className="size-6 text-black" />
-            </button>
-          </div>
+          <div className="flex justify-start items-center"></div>
+        </div>
+        <div className="w-full flex justify-center items-center">
+          <button onClick={() => cleanFilters()} className="text-sm underline">
+            Reiniciar filtros
+          </button>
         </div>
       </div>
     </motion.section>

@@ -5,43 +5,44 @@ import { Context } from "../context/GlobalContext";
 import { getAllProperties } from "../context/actions";
 import Footer_1 from "../components/public/home/Footer";
 import NavBar_1 from "../components/public/home/NavBar_1";
-import TitleSection from "../components/public/main-pages/TitleSection";
 import PropertyCard from "../components/user/property/PropertyCard";
 import FourthSection from "../components/public/home/FourthSection";
 import SeventhSection from "../components/public/home/SeventhSection";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import TextSection from "../components/public/main-pages/TextSection";
+import CategorySelector from "../components/public/main-pages/CategorySelector";
+import PropertyCardSekeleton from "../components/public/main-pages/PropertyCardSekeleton";
 
-export default function HelloRoom() {
+export default function HelloColiving() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
+  const [helloRoomProperties, setHelloRoomProperties] = useState([]);
+  const [helloColivingProperties, setHelloColivingProperties] = useState([]);
+  const [helloStudioProperties, setHelloStudioProperties] = useState([]);
+  const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
   const roomsPerPage = 18;
 
+  const [filteredRooms, setFilteredRooms] = useState([]);
+  const [filters, setFilters] = useState({
+    category: "HELLO_COLIVING",
+    zone: null,
+    rentalPeriod: null,
+    startDate: null,
+    endDate: null,
+    type: null,
+    numberOccupants: null,
+  });
+
   const filterByCategory = (properties) => {
-    return properties.filter((property) => property.category === "HELLO_ROOM");
+    return properties.filter(
+      (property) => property.category === "HELLO_COLIVING"
+    );
   };
 
-  const paginateRooms = (allRooms) => {
+  const paginateRooms = (rooms) => {
     const startIndex = (currentPage - 1) * roomsPerPage;
-    return allRooms.slice(startIndex, startIndex + roomsPerPage);
-  };
-
-  const filterBySearchQuery = (allRooms) => {
-    if (!searchQuery) return allRooms;
-    const query = searchQuery.toLowerCase();
-    return allRooms.filter((room) => {
-      const { property, name } = room;
-      const city = property?.city?.toLowerCase() || "";
-      const street = property?.street?.toLowerCase() || "";
-      const streetNumber = property?.streetNumber || "";
-      const fullAddress = `${street} ${streetNumber}, ${city}`;
-      return (
-        name.toLowerCase().includes(query) ||
-        fullAddress.toLowerCase().includes(query)
-      );
-    });
+    return rooms.slice(startIndex, startIndex + roomsPerPage);
   };
 
   useEffect(() => {
@@ -56,18 +57,132 @@ export default function HelloRoom() {
   }, []);
 
   useEffect(() => {
+    if (state.properties && state.properties.length > 0) {
+      // Filtrar propiedades según la categoría
+      const roomProps = state.properties.filter(
+        (property) => property.category === "HELLO_ROOM"
+      );
+      const colivingProps = state.properties.filter(
+        (property) => property.category === "HELLO_COLIVING"
+      );
+      const studioProps = state.properties.filter(
+        (property) => property.category === "HELLO_STUDIO"
+      );
+      const landlordProps = state.properties.filter(
+        (property) => property.category === "HELLO_LANDLORD"
+      );
+
+      // Actualizar los estados locales
+      setProperties(state.properties);
+      setHelloRoomProperties(roomProps);
+      setHelloColivingProperties(colivingProps);
+      setHelloStudioProperties(studioProps);
+      setHelloLandlordProperties(landlordProps);
+    }
+  }, [state.properties]);
+
+  useEffect(() => {
     if (state.properties && state.properties !== properties) {
       setProperties(filterByCategory(state.properties));
     }
   }, [state.properties]);
 
-  const allRooms =
-    properties?.flatMap(
-      (property) => property.rooms?.map((room) => ({ ...room, property })) || []
-    ) || [];
+  const convertRentalPeriodToString = (startDate, endDate) => {
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0"); // Meses empiezan en 0
+      const year = String(d.getFullYear()).slice(-2); // Últimos 2 dígitos del año
+      return `${day}/${month}/${year}`;
+    };
 
-  const displayedRooms = paginateRooms(filterBySearchQuery(allRooms));
-  const totalPages = Math.ceil(allRooms.length / roomsPerPage);
+    const start = formatDate(startDate);
+    const end = formatDate(endDate);
+
+    return `Del ${start} al ${end}`;
+  };
+
+  const filterByRentalPeriod = (properties) => {
+    if (!filters.rentalPeriod) return properties;
+
+    return properties.filter((property) => {
+      const queryRentalPeriod = filters.rentalPeriod;
+
+      if (
+        property.category === "HELLO_ROOM" ||
+        property.category === "HELLO_COLIVING" ||
+        property.category === "HELLO_LANDLORD"
+      ) {
+        return property.rooms?.some((room) => {
+          return room.rentalItems?.some((period) => {
+            const rentalPeriodString = convertRentalPeriodToString(
+              period.rentalPeriod?.startDate,
+              period.rentalPeriod?.endDate
+            );
+            return rentalPeriodString === queryRentalPeriod;
+          });
+        });
+      }
+
+      if (property.category === "HELLO_STUDIO") {
+        return property.rentalItems?.some((period) => {
+          const rentalPeriodString = convertRentalPeriodToString(
+            period.rentalPeriod?.startDate,
+            period.rentalPeriod?.endDate
+          );
+          return rentalPeriodString === queryRentalPeriod;
+        });
+      }
+
+      return true;
+    });
+  };
+
+  // Aplicar filtros a las propiedades y extraer habitaciones
+  useEffect(() => {
+    if (state.properties && state.properties.length > 0) {
+      // Aplicar filtros generales a las propiedades
+      const filteredProperties = state.properties.filter((property) => {
+        const matchesZone = !filters.zone || property.zone === filters.zone;
+        const matchesCategory =
+          !filters.category || property.category === filters.category;
+
+        return matchesZone && matchesCategory;
+      });
+
+      // Aplicar filtro de período de renta
+      const propertiesWithRentalPeriod =
+        filterByRentalPeriod(filteredProperties);
+
+      // Extraer habitaciones filtradas e incluir la propiedad completa en cada habitación
+      const filteredRoomsList = propertiesWithRentalPeriod
+        .flatMap(
+          (property) =>
+            property.rooms?.map((room) => {
+              // Incluir siempre la propiedad completa dentro de cada room
+              const matchesTypology =
+                !filters.type || property.typology === filters.type;
+
+              if (matchesTypology) {
+                // Retornar habitación con la propiedad completa
+                return {
+                  ...room, // Room original
+                  property, // La propiedad completa asociada
+                };
+              }
+              return null; // Si no coincide, no incluir esta habitación
+            }) || []
+        )
+        .filter((room) => room !== null); // Filtrar cualquier valor nulo
+
+      setFilteredRooms(filteredRoomsList); // Actualizar habitaciones filtradas
+      setCurrentPage(1); // Reiniciar a la primera página al cambiar filtros
+    }
+  }, [filters, state.properties]);
+
+  // Calcular las habitaciones paginadas y total de páginas
+  const totalPages = Math.ceil(filteredRooms.length / roomsPerPage);
+  const displayedRooms = paginateRooms(filteredRooms);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -97,7 +212,7 @@ export default function HelloRoom() {
           <NavBar_1 fixed={true} />
         </header>
         <div className="w-full flex flex-col">
-          <div className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
+          <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
             <h1 className="text-3xl font-bold">hello coliving</h1>
             <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
               Donde la comodidad se encuentra con la comunidad En hello flat
@@ -110,29 +225,19 @@ export default function HelloRoom() {
               <br />
               ¡Tu nueva forma de vivir en Valencia te está esperando!
             </h3>
-            <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem]">
-              <label htmlFor="search" hidden></label>
-              <input
-                type="text"
-                name="search"
-                id="search"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  scrollToCarousel(); // Lleva al inicio del listado al buscar
-                }}
-                className="appearance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-800"
-                placeholder="¿Dónde quieres vivir? (nombre o dirección)"
-              />
-              <button
-                className="h-12 w-12 rounded-full bg-[#FB6E44] flex justify-center items-center m-2"
-                onClick={scrollToCarousel} // Asegura que al hacer clic también desplace
-              >
-                <MagnifyingGlassIcon className="w-6 h-6 text-white" />
-              </button>
-            </div>
           </div>
         </div>
+        {/* Contenedor de búsqueda y botones */}
+        <CategorySelector
+          category={"HELLO_COLIVING"}
+          filters={filters}
+          setFilters={setFilters}
+          helloRoomProperties={helloRoomProperties}
+          helloColivingProperties={helloColivingProperties}
+          helloStudioProperties={helloStudioProperties}
+          helloLandlordProperties={helloLandlordProperties}
+          allProperties={properties}
+        />
 
         {/* Lista de habitaciones */}
         <div
@@ -153,7 +258,7 @@ export default function HelloRoom() {
                   />
                 ))
               : Array.from({ length: 6 }).map((_, index) => (
-                  <PropertyCardSkeleton key={index} />
+                  <PropertyCardSekeleton key={index} />
                 ))}
           </div>
         </div>
@@ -192,38 +297,5 @@ export default function HelloRoom() {
 
       <Footer_1 />
     </div>
-  );
-}
-
-function PropertyCardSkeleton() {
-  return (
-    <article className="animate-pulse flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-none rounded-sm">
-      <div className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full">
-        {/* Imagen */}
-        <div className="relative h-28 w-28 sm:w-72 sm:h-60 bg-gray-300 rounded-md"></div>
-
-        {/* Contenido */}
-        <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 gap-2">
-          <div className="flex flex-col grow sm:gap-2">
-            {/* Categoría */}
-            <div className="h-4 bg-gray-300 rounded w-20"></div>
-
-            {/* Nombre */}
-            <div className="h-5 bg-gray-300 rounded w-3/4"></div>
-
-            {/* Ubicación */}
-            <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-
-            {/* Amenidades */}
-            <div className="h-3 bg-gray-300 rounded w-full"></div>
-          </div>
-
-          {/* Precio */}
-          <div className="flex justify-end items-end gap-2">
-            <div className="h-5 bg-gray-300 rounded w-1/4"></div>
-          </div>
-        </div>
-      </div>
-    </article>
   );
 }
