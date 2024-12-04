@@ -25,37 +25,7 @@ export default function NavBar_1({ fixed = false }) {
           aria-label="Toggle menu"
           className="absolute left-4"
         >
-          <svg
-            width="18px"
-            height="18px"
-            viewBox="0 0 18 18"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xlink="http://www.w3.org/1999/xlink"
-            class=""
-          >
-            <title></title>
-            <g
-              id="Page-1"
-              stroke="none"
-              stroke-width="1"
-              fill="none"
-              fill-rule="evenodd"
-            >
-              <g
-                transform="translate(-15.000000, -21.000000)"
-                fill="#666666"
-                fill-rule="nonzero"
-                stroke="#666666"
-                stroke-width="0.75"
-              >
-                <path
-                  d="M32,23.5540267 L16,23.5540267 L16,22 L32,22 L32,23.5540267 Z M32,30.7770134 L16,30.7770134 L16,29.2229866 L32,29.2229866 L32,30.7770134 Z M32,38 L16,38 L16,36.4459733 L32,36.4459733 L32,38 Z"
-                  id=""
-                ></path>
-              </g>
-            </g>
-          </svg>
+          <Bars3Icon className="size-6"/>
         </button>
       </div>
       <Link href={"/"}>
