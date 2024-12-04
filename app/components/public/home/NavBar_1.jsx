@@ -62,7 +62,7 @@ export default function NavBar_1({ fixed = false }) {
         <Image
           src="/home/new_home/Helloflatmate.png"
           width={100}
-          height={100}
+          height={31.25}
           alt="logo"
         />
       </Link>

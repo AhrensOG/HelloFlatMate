@@ -10,6 +10,7 @@ import {
 import CategoryCard from "../../user/home/categorySelector/auxiliarComponents/CategoryCard";
 import Select from "../../user/home/categorySelector/auxiliarComponents/Select";
 import DatePickerCategorySelector from "../../user/home/categorySelector/DatePickerCategoySelector";
+import SimpleSelect from "./SimpleSelect";
 
 const list = [
   {
@@ -40,11 +41,12 @@ const numbers = [1, 2, 3, 4, 5];
 
 const CategorySelector = ({
   category,
+  filters,
+  setFilters,
   helloRoomProperties,
   helloColivingProperties,
   helloStudioProperties,
   helloLandlordProperties,
-  allProperties,
 }) => {
   const router = useRouter();
   const [currentCategory, setCurrentCategory] = useState(category);
@@ -161,28 +163,38 @@ const CategorySelector = ({
       case "HELLO_ROOM":
         const helloRoomLocations = extractLocations(helloRoomProperties);
         const helloRoomRentalPeriods = getRentalPeriods(helloRoomProperties);
+        const typeArray = [
+          "HELLO_ROOM",
+          "HELLO_STUDIO",
+          "HELLO_COLIVING",
+          "HELLO_LANDLORD",
+        ]
+          .filter((cat) => cat !== category)
+          .map((cat) => cat.toLowerCase().replace(/_/g, ""));
+
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+              <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
                 options={helloRoomLocations}
-                data={data}
-                setData={setData}
+                data={filters}
+                setData={setFilters}
                 title="¿En qué zona?"
                 name="zone"
               />
               <Select
                 options={helloRoomRentalPeriods}
-                data={data}
-                setData={setData}
+                data={filters}
+                setData={setFilters}
                 title="Selecciona un periodo"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
-                data={data}
-                setData={setData}
-                title="Tipo de alojamiento"
+                data={filters}
+                setData={setFilters}
+                title="Tipo de compañeros"
                 name="type"
               />
               {/* <SelectDate
@@ -205,23 +217,23 @@ const CategorySelector = ({
             <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
               <Select
                 options={helloColivingLocations}
-                data={data}
-                setData={setData}
+                data={filters}
+                setData={setFilters}
                 title="¿En qué zona?"
                 name="zone"
               />
               <Select
                 options={helloColivingRentalPeriods}
-                data={data}
-                setData={setData}
+                data={filters}
+                setData={setFilters}
                 title="Selecciona un periodo"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
-                data={data}
-                setData={setData}
-                title="Tipo de alojamiento"
+                data={filters}
+                setData={setFilters}
+                title="Tipo de compañeros"
                 name="type"
               />
               {/* <SelectDate
@@ -239,8 +251,8 @@ const CategorySelector = ({
             <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
               <Select
                 options={helloStudioLocations}
-                data={data}
-                setData={setData}
+                data={filters}
+                setData={setFilters}
                 title="¿En qué zona?"
                 name="zone"
               />
@@ -276,22 +288,22 @@ const CategorySelector = ({
             <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
               <Select
                 options={helloLandlordLocations}
-                data={data}
-                setData={setData}
+                data={filters}
+                setData={setFilters}
                 title="¿En qué zona?"
               />
               <Select
                 options={helloLandlordRentalPeriods}
-                data={data}
-                setData={setData}
+                data={filters}
+                setData={setFilters}
                 title="Selecciona un periodo"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
-                data={data}
-                setData={setData}
-                title="Tipo de alojamiento"
+                data={filters}
+                setData={setFilters}
+                title="Tipo de compañeros"
                 name="type"
               />
               {/* <SelectDate
@@ -315,20 +327,6 @@ const CategorySelector = ({
       transition={{ duration: 0.5 }}
       className={`  w-full flex flex-col gap-6 p-4 z-20`}
     >
-      {/* Cards de categorías */}
-      <div className="flex flex-col md:flex-row md:flex-wrap gap-5 items-center justify-center">
-        {list.map((e) => (
-          <CategoryCard
-            key={e.id}
-            title={e.name}
-            image={e.img}
-            currentCategory={currentCategory}
-            setCurrentCategory={setCurrentCategory}
-            categoryId={e.id}
-            onClick={() => setCurrentCategory(e.id)}
-          />
-        ))}
-      </div>
       <div className="w-full flex justify-center items-start">
         <div
           className={`max-w-screen-xl w-full flex flex-col sm:flex-row ${
