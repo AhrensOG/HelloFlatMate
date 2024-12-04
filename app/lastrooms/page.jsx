@@ -61,10 +61,9 @@ export default function HelloRoom() {
     }
   }, [state.properties]);
 
-  const allRooms =
-    properties?.flatMap(
-      (property) => property.rooms?.map((room) => ({ ...room, property })) || []
-    ) || [];
+  const allRooms = properties?.flatMap((property) =>
+    property.rooms?.map((room) => ({ ...room, property })) || []
+  ) || [];
 
   const displayedRooms = paginateRooms(filterBySearchQuery(allRooms));
   const totalPages = Math.ceil(allRooms.length / roomsPerPage);
@@ -98,17 +97,12 @@ export default function HelloRoom() {
         </header>
         <div className="w-full flex flex-col">
           <div className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-            <h1 className="text-3xl font-bold">hello coliving</h1>
+            <h1 className="text-3xl font-bold">last rooms</h1>
             <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-              Donde la comodidad se encuentra con la comunidad En hello flat
-              mate transformamos el concepto de vivienda compartida con hello
-              coliving. Hemos destinado tres modernas viviendas en Valencia
-              exclusivamente al formato coliving, creando espacios diseñados
-              para estudiantes que buscan comodidad, privacidad y comunidad. ¡Tu
-              nueva forma de vivir en Valencia te está esperando!
+            hello rooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos los servicios activos. Nos ocupamos de la gestión y el mantenimiento para que sólo te enfoques en estudiar, disfrutar y explorar Valencia. Comparte piso con otros estudiantes de edad similar y vive una experiencia única en un entorno diseñado para tu estilo de vida. 
               <br />
               <br />
-              ¡Tu nueva forma de vivir en Valencia te está esperando!
+              Contigo desde la reserva hasta tu último día en Valencia.
             </h3>
             <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem]">
               <label htmlFor="search" hidden></label>

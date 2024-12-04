@@ -22,6 +22,7 @@ export async function middleware(request) {
         "/hellostudio",
         "/hellocoliving",
         "/hellolandlord",
+        "/lastrooms",
         "/pages/auth",
         "/pages/guest",
         "/api/auth",
