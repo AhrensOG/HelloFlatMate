@@ -91,7 +91,7 @@ export default function HelloRoom() {
               nueva forma de vivir en Valencia te está esperando!
               <br />
               <br />
-              Contigo desde la reserva hasta tu último día en Valencia.
+              ¡Tu nueva forma de vivir en Valencia te está esperando!
             </h3>
             <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem]">
               <label htmlFor="search" hidden></label>

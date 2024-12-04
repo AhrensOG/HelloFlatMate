@@ -10,42 +10,20 @@ import PropertyCard from "../components/user/property/PropertyCard";
 import FourthSection from "../components/public/home/FourthSection";
 import SeventhSection from "../components/public/home/SeventhSection";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import TextSection from "../components/public/main-pages/TextSection";
 
 export default function HelloRoom() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState(""); // Estado para la búsqueda
   const roomsPerPage = 20; // Número de habitaciones por página
 
   const filterByCategory = (properties) => {
     return properties.filter((property) => property.category === "HELLO_ROOM");
   };
 
-  const paginateRooms = (rooms) => {
+  const paginateRooms = (allRooms) => {
     const startIndex = (currentPage - 1) * roomsPerPage;
-    return rooms.slice(startIndex, startIndex + roomsPerPage);
-  };
-
-  const filterBySearchQuery = (rooms) => {
-    if (!searchQuery) return rooms; // Si no hay búsqueda, devuelve todas las habitaciones
-    const query = searchQuery.toLowerCase();
-
-    return rooms.filter((room) => {
-      const { property, name } = room;
-      const city = property?.city?.toLowerCase() || "";
-      const street = property?.street?.toLowerCase() || "";
-      const streetNumber = property?.streetNumber?.toLowerCase() || "";
-
-      // Coincidencia en nombre o dirección
-      return (
-        name.toLowerCase().includes(query) ||
-        city.includes(query) ||
-        street.includes(query) ||
-        streetNumber.includes(query)
-      );
-    });
+    return allRooms.slice(startIndex, startIndex + roomsPerPage);
   };
 
   useEffect(() => {
@@ -70,10 +48,9 @@ export default function HelloRoom() {
     property.rooms?.map((room) => ({ ...room, property }))
   );
 
-  const filteredRooms = filterBySearchQuery(allRooms);
-  const displayedRooms = paginateRooms(filteredRooms);
+  const displayedRooms = paginateRooms(allRooms);
 
-  const totalPages = Math.ceil(filteredRooms.length / roomsPerPage);
+  const totalPages = Math.ceil(allRooms.length / roomsPerPage);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -103,26 +80,28 @@ export default function HelloRoom() {
           <NavBar_1 fixed={true} />
         </header>
         <div className="w-full flex flex-col">
-          <TitleSection />
-          {/* Barra de búsqueda */}
-          <div className="w-full flex justify-center items-center my-16">
+          <div className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
+            <h1 className="text-3xl font-bold">hello rooms</h1>
+            <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
+            hello rooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos los servicios activos. Nos ocupamos de la gestión y el mantenimiento para que sólo te enfoques en estudiar, disfrutar y explorar Valencia. Comparte piso con otros estudiantes de edad similar y vive una experiencia única en un entorno diseñado para tu estilo de vida. 
+              <br />
+              <br />
+              Contigo desde la reserva hasta tu último día en Valencia.
+            </h3>
             <div className="flex items-center justify-between gap-2 border-2 border-gray-300 rounded-full mt-5 w-full max-w-[40rem]">
               <label htmlFor="search" hidden></label>
               <input
                 type="text"
                 name="search"
                 id="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="appearance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-800"
-                placeholder="¿Dónde quieres vivir? (nombre o dirección)"
+                className="aparance-none outline-none w-[80%] ml-4 my-3 font-bold text-gray-800"
+                placeholder="¿Donde quieres vivir?"
               />
               <button className="h-12 w-12 rounded-full bg-[#FB6E44] flex justify-center items-center m-2">
                 <MagnifyingGlassIcon className="w-6 h-6 text-white" />
               </button>
             </div>
           </div>
-          {/* Lista de habitaciones */}
           <div
             id="carousel-container"
             className="w-full flex justify-center items-start"
@@ -175,7 +154,6 @@ export default function HelloRoom() {
           </div>
           <FourthSection />
           <SeventhSection />
-          <TextSection />
         </div>
         <Footer_1 />
       </div>
@@ -187,14 +165,26 @@ function PropertyCardSkeleton() {
   return (
     <article className="animate-pulse flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-none rounded-sm">
       <div className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full">
+        {/* Imagen */}
         <div className="relative h-28 w-28 sm:w-72 sm:h-60 bg-gray-300 rounded-md"></div>
+
+        {/* Contenido */}
         <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 gap-2">
           <div className="flex flex-col grow sm:gap-2">
+            {/* Categoría */}
             <div className="h-4 bg-gray-300 rounded w-20"></div>
+
+            {/* Nombre */}
             <div className="h-5 bg-gray-300 rounded w-3/4"></div>
+
+            {/* Ubicación */}
             <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+
+            {/* Amenidades */}
             <div className="h-3 bg-gray-300 rounded w-full"></div>
           </div>
+
+          {/* Precio */}
           <div className="flex justify-end items-end gap-2">
             <div className="h-5 bg-gray-300 rounded w-1/4"></div>
           </div>
