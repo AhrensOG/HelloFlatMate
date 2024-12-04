@@ -14,7 +14,7 @@ export default function NavBar_1({ fixed = false }) {
 
   return (
     <nav
-      className={`flex items-center justify-between py-2 px-10 border-b border-[#c7c7c7] bg-white ${
+      className={`flex items-center justify-between py-2 px-10 z-30 border-b border-[#c7c7c7] bg-white ${
         fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
       } `}
     >

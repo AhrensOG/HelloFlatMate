@@ -11,13 +11,19 @@ import FourthSection from "../components/public/home/FourthSection";
 import SeventhSection from "../components/public/home/SeventhSection";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import TextSection from "../components/public/main-pages/TextSection";
+import CategorySelector from "../components/public/main-pages/CategorySelector";
 
 export default function HelloRoom() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
+  const [helloRoomProperties, setHelloRoomProperties] = useState([]);
+  const [helloColivingProperties, setHelloColivingProperties] = useState([]);
+  const [helloStudioProperties, setHelloStudioProperties] = useState([]);
+  const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState(""); // Estado para la búsqueda
-  const roomsPerPage = 20; // Número de habitaciones por página
+  const roomsPerPage = 18; // Número de habitaciones por página
 
   const filterByCategory = (properties) => {
     return properties.filter((property) => property.category === "HELLO_ROOM");
@@ -60,6 +66,31 @@ export default function HelloRoom() {
 
     fetchProperties();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (state.properties && state.properties.length > 0) {
+      // Filtrar propiedades según la categoría
+      const roomProps = state.properties.filter(
+        (property) => property.category === "HELLO_ROOM"
+      );
+      const colivingProps = state.properties.filter(
+        (property) => property.category === "HELLO_COLIVING"
+      );
+      const studioProps = state.properties.filter(
+        (property) => property.category === "HELLO_STUDIO"
+      );
+      const landlordProps = state.properties.filter(
+        (property) => property.category === "HELLO_LANDLORD"
+      );
+
+      // Actualizar los estados locales
+      setProperties(state.properties);
+      setHelloRoomProperties(roomProps);
+      setHelloColivingProperties(colivingProps);
+      setHelloStudioProperties(studioProps);
+      setHelloLandlordProperties(landlordProps);
+    }
+  }, [state.properties]);
 
   useEffect(() => {
     if (state.properties && state.properties !== properties) {
@@ -105,6 +136,14 @@ export default function HelloRoom() {
 
       <div className="w-full flex flex-col">
         <TitleSection />
+        <CategorySelector
+          category={"HELLO_ROOM"}
+          helloRoomProperties={helloRoomProperties}
+          helloColivingProperties={helloColivingProperties}
+          helloStudioProperties={helloStudioProperties}
+          helloLandlordProperties={helloLandlordProperties}
+          allProperties={properties}
+        />
 
         {/* Contenedor de búsqueda y botones */}
         <div className="sticky top-10 z-10 w-full flex flex-col justify-center items-center shadow-sm bg-white">

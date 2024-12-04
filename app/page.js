@@ -26,6 +26,7 @@ import SeventhSection from "./components/public/home/SeventhSection";
 import EightSection from "./components/public/home/EighthSection";
 import Footer_1 from "./components/public/home/Footer";
 import NavBar_1 from "./components/public/home/NavBar_1";
+import CategorySelector from "./components/public/main-pages/CategorySelector";
 
 const helloroom = {
   hero: {
@@ -121,6 +122,11 @@ const hellolandlord = {
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
+  const [helloRoomProperties, setHelloRoomProperties] = useState([]);
+  const [helloColivingProperties, setHelloColivingProperties] = useState([]);
+  const [helloStudioProperties, setHelloStudioProperties] = useState([]);
+  const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
 
   // Estados para controlar las secciones visibles
@@ -144,6 +150,31 @@ export default function Home() {
 
     fetchProperties();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (state.properties && state.properties.length > 0) {
+      // Filtrar propiedades según la categoría
+      const roomProps = state.properties.filter(
+        (property) => property.category === "HELLO_ROOM"
+      );
+      const colivingProps = state.properties.filter(
+        (property) => property.category === "HELLO_COLIVING"
+      );
+      const studioProps = state.properties.filter(
+        (property) => property.category === "HELLO_STUDIO"
+      );
+      const landlordProps = state.properties.filter(
+        (property) => property.category === "HELLO_LANDLORD"
+      );
+
+      // Actualizar los estados locales
+      setProperties(state.properties);
+      setHelloRoomProperties(roomProps);
+      setHelloColivingProperties(colivingProps);
+      setHelloStudioProperties(studioProps);
+      setHelloLandlordProperties(landlordProps);
+    }
+  }, [state.properties]);
 
   useEffect(() => {
     if (state.properties && state.properties !== properties) {
@@ -175,7 +206,13 @@ export default function Home() {
         {/* <MapSection /> */}
         {/* </div> */}
         {/* )} */}
-        <TitleSection />
+        <TitleSection
+          helloRoomProperties={helloRoomProperties}
+          helloColivingProperties={helloColivingProperties}
+          helloStudioProperties={helloStudioProperties}
+          helloLandlordProperties={helloLandlordProperties}
+          allProperties={properties}
+        />
         <SecondSection />
         <SixthSection />
         <ThirdSection />
