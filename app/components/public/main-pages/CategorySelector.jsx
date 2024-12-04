@@ -159,18 +159,19 @@ const CategorySelector = ({
   };
 
   const renderSelectedCategoryContent = () => {
+    const typeArray = [
+      "HELLO_ROOM",
+      "HELLO_STUDIO",
+      "HELLO_COLIVING",
+      "HELLO_LANDLORD",
+      "todos",
+    ]
+      .filter((cat) => cat !== category)
+      .map((cat) => cat.toLowerCase().replace(/_/g, ""));
     switch (currentCategory) {
       case "HELLO_ROOM":
         const helloRoomLocations = extractLocations(helloRoomProperties);
         const helloRoomRentalPeriods = getRentalPeriods(helloRoomProperties);
-        const typeArray = [
-          "HELLO_ROOM",
-          "HELLO_STUDIO",
-          "HELLO_COLIVING",
-          "HELLO_LANDLORD",
-        ]
-          .filter((cat) => cat !== category)
-          .map((cat) => cat.toLowerCase().replace(/_/g, ""));
 
         return (
           <div className="w-full flex justify-center items-center">
@@ -215,6 +216,7 @@ const CategorySelector = ({
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+              <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
                 options={helloColivingLocations}
                 data={filters}
@@ -249,6 +251,7 @@ const CategorySelector = ({
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+              <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
                 options={helloStudioLocations}
                 data={filters}
@@ -286,6 +289,7 @@ const CategorySelector = ({
         return (
           <div className="w-full flex justify-center items-center">
             <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-start sm:items-start gap-4">
+              <SimpleSelect options={typeArray} title="Tipo alojamiento" />
               <Select
                 options={helloLandlordLocations}
                 data={filters}
