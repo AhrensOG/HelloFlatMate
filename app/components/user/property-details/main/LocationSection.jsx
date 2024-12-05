@@ -88,7 +88,7 @@ export default function LocationSection({
     return (
       <section className="flex flex-col gap-3 w-full">
         <h2 className="font-bold text-[1.2rem]">Ubicación</h2>
-        <div className="animate-pulse w-full h-[200px] bg-gray-200 rounded-lg">
+        <div className="animate-pulse w-full h-[350px] bg-gray-200 rounded-lg">
           <div className="w-full h-full bg-gray-300"></div>
         </div>
       </section>

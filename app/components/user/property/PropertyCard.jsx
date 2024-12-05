@@ -1,5 +1,5 @@
 "use client";
- 
+
 import Image from "next/image";
 import { useState } from "react";
 import Tooltip from "./tooltip/Tooltip";
@@ -31,18 +31,21 @@ export default function PropertyCard({
   const route = useRouter();
 
   const handleRedirect = () => {
+    let url;
+
     if (
       (property.category === "HELLO_ROOM" ||
         property.category === "HELLO_COLIVING" ||
         property.category === "HELLO_LANDLORD") &&
       roomId
     ) {
-      route.push(
-        `/pages/property-details/${property.id}/room-details/${roomId}`
-      );
+      url = `/pages/property-details/${property.id}/room-details/${roomId}`;
     } else {
-      route.push("/pages/property-details/" + property?.id);
+      url = `/pages/property-details/${property?.id}`;
     }
+
+    // Abrir en una nueva pestaña
+    window.open(url, "_blank");
   };
 
   const handleOpen = () => {

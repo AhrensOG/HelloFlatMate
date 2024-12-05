@@ -36,6 +36,7 @@ export async function middleware(request) {
         "/privacy-policy",
         "/como-funciona",
         "/sobre-nosotros",
+        "/api/maps/geocoding",
     ];
 
     const dynamicPaths = [

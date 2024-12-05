@@ -10,8 +10,8 @@ export default function Footer_1() {
         <section className="flex flex-col gap-10 p-6">
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">helloflatmate</h2>
-            <Link href="#" target="_blank" className="font-normal text-base">
-              Acerca de nosotros
+            <Link href="/sobre-nosotros" target="_blank" className="font-normal text-base">
+              Sobre nosotros
             </Link>
             <Link href="#" target="_blank" className="font-normal text-base">
               Blog
@@ -52,7 +52,7 @@ export default function Footer_1() {
           </article>
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Inquilinos</h2>
-            <Link href="#" target="_blank" className="font-normal text-base">
+            <Link href="/como-funciona" target="_blank" className="font-normal text-base">
               Como funciona
             </Link>
             <Link href="#" target="_blank" className="font-normal text-base">
@@ -297,11 +297,11 @@ export default function Footer_1() {
               <article className="flex flex-col gap-4">
                 <h2 className="font-bold uppercase text-lg">helloflatmate</h2>
                 <Link
-                  href="#"
+                  href="/sobre-nosotros"
                   target="_blank"
                   className="font-normal text-base"
                 >
-                  Acerca de nosotros
+                  Sobre nosotros
                 </Link>
                 <Link
                   href="#"
@@ -362,7 +362,7 @@ export default function Footer_1() {
               <article className="flex flex-col gap-4">
                 <h2 className="font-bold uppercase text-lg">Inquilinos</h2>
                 <Link
-                  href="#"
+                  href="/como-funciona"
                   target="_blank"
                   className="font-normal text-base"
                 >
