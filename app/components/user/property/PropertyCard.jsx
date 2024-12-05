@@ -54,15 +54,15 @@ export default function PropertyCard({
   };
   return (
     <article
-      className={`  flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-0 rounded-sm shadow-reservation-drop`}
+      className={`  flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-none rounded-sm`}
     >
       <div
         onClick={handleRedirect}
         className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full"
       >
-        <div className="relative h-28 w-28 sm:w-72 sm:h-80 rounded-md">
+        <div className="relative h-28 w-28 sm:w-72 sm:h-60 rounded-md">
           <Image
-            className="h-full rounded-sm"
+            className="rounded-lg"
             src={
               images ||
               property?.property?.images[0] ||
@@ -73,7 +73,7 @@ export default function PropertyCard({
             alt="Imagen de propiedad"
           />
         </div>
-        <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 sm:border sm:border-t-0 gap-2">
+        <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 gap-2">
           <div className="flex flex-col grow sm:gap-2">
             <h4 className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-normal">
               {property?.category === "HELLO_ROOM" ||

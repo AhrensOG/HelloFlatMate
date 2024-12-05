@@ -18,8 +18,7 @@ export default function FifthSection() {
     {
       icon: "/home/new_home/facil.gif",
       title: "Accesible",
-      description:
-        "Contratos de 5 y 10 meses Desde 290€/mes",
+      description: "Contratos de 5 y 10 meses Desde 290€/mes",
     },
     {
       icon: "/home/new_home/compras.gif",
@@ -45,14 +44,14 @@ export default function FifthSection() {
     <section className="py-12 bg-[#E3F0FB] w-full">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-800">
-        ¿Por qué escoger hello flat mate?
+          ¿Por qué escoger hello flat mate?
         </h2>
       </div>
       <div className="flex flex-row flex-wrap justify-center items-stretch gap-6 px-2 w-full ">
         {garantias.map((garantia, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-md p-6 max-w-[500px] w-full flex flex-col justify-start items-center gap-3"
+            className="bg-white rounded-lg shadow-md p-6 max-w-[500px] w-full flex flex-col justify-start items-center gap-3 hover:scale-[1.025] hover:shadow-reservation-list duration-300 transition"
           >
             {/* <div className="flex items-center justify-center mb-4 text-5xl">
               {garantia.icon}

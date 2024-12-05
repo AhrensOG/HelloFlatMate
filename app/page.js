@@ -26,6 +26,8 @@ import SeventhSection from "./components/public/home/SeventhSection";
 import EightSection from "./components/public/home/EighthSection";
 import Footer_1 from "./components/public/home/Footer";
 import NavBar_1 from "./components/public/home/NavBar_1";
+import CategorySelector from "./components/public/main-pages/CategorySelector";
+import Image from "next/image";
 
 const helloroom = {
   hero: {
@@ -121,6 +123,11 @@ const hellolandlord = {
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
+  const [helloRoomProperties, setHelloRoomProperties] = useState([]);
+  const [helloColivingProperties, setHelloColivingProperties] = useState([]);
+  const [helloStudioProperties, setHelloStudioProperties] = useState([]);
+  const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
 
   // Estados para controlar las secciones visibles
@@ -146,6 +153,31 @@ export default function Home() {
   }, [dispatch]);
 
   useEffect(() => {
+    if (state.properties && state.properties.length > 0) {
+      // Filtrar propiedades según la categoría
+      const roomProps = state.properties.filter(
+        (property) => property.category === "HELLO_ROOM"
+      );
+      const colivingProps = state.properties.filter(
+        (property) => property.category === "HELLO_COLIVING"
+      );
+      const studioProps = state.properties.filter(
+        (property) => property.category === "HELLO_STUDIO"
+      );
+      const landlordProps = state.properties.filter(
+        (property) => property.category === "HELLO_LANDLORD"
+      );
+
+      // Actualizar los estados locales
+      setProperties(state.properties);
+      setHelloRoomProperties(roomProps);
+      setHelloColivingProperties(colivingProps);
+      setHelloStudioProperties(studioProps);
+      setHelloLandlordProperties(landlordProps);
+    }
+  }, [state.properties]);
+
+  useEffect(() => {
     if (state.properties && state.properties !== properties) {
       setProperties(state.properties);
       setPropertiesInOffer(filterOffer(state.properties));
@@ -158,24 +190,33 @@ export default function Home() {
       <div className="flex flex-col relative">
         {/* <BotIcon />
         <CookieModal /> */}
-        <header className="mb-[144px]">
-          {/* <HomeNavBar setActiveSection={setActiveSection} activeSection={activeSection} /> */}
+        <header>
           <NavBar_1 />
         </header>
-
-        {/* Sección activa controlada por el estado */}
-        {/* {activeSection === "inicio1" && ( */}
-        {/* <div className="w-full flex flex-col"> */}
-        {/* <DesktopHero img="https://www.youtube.com/watch?v=ie78B4HShZ0" />
-                        <OffersSection />
-                        <CommunitySection />
-                        <FamilySection /> */}
-        {/* <StayWithUs setActiveSection={setActiveSection} /> */}
-        {/* <PropertySlider data={properties} /> */}
-        {/* <MapSection /> */}
-        {/* </div> */}
-        {/* )} */}
-        <TitleSection />
+        <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
+          <h1 className="text-3xl font-bold">hello flat mate</h1>
+          <h3 className="text-lg text-center">
+            Especializados en gestión de alojamientos para estudiantes en
+            Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y
+            sin complicaciones!
+          </h3>
+          <div className="mb-64 w-full">
+            {/* <CategorySelector
+              helloRoomProperties={helloRoomProperties}
+              helloColivingProperties={helloColivingProperties}
+              helloStudioProperties={helloStudioProperties}
+              helloLandlordProperties={helloLandlordProperties}
+              allProperties={properties}
+            /> */}
+          </div>
+          <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
+            <Image
+              src={"/home/new_home/hero4.jpeg"}
+              fill
+              className="object-cover"
+            />
+          </div>
+        </section>
         <SecondSection />
         <SixthSection />
         <ThirdSection />
@@ -183,13 +224,6 @@ export default function Home() {
         <FifthSection />
         <SeventhSection />
         <EightSection />
-        {/* <InfoSection /> */}
-        {/* <PropertySlider data={properties} />
-            <Banner />*/}
-        {/* <div className="w-full flex justify-center items-center">
-          <div className="w-full max-w-screen-xl"></div>
-        </div> */}
-        {/* <Footer /> */}
         <Footer_1 />
       </div>
     </div>

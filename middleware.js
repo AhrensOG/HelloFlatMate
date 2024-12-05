@@ -22,6 +22,7 @@ export async function middleware(request) {
         "/hellostudio",
         "/hellocoliving",
         "/hellolandlord",
+        "/lastrooms",
         "/pages/auth",
         "/pages/guest",
         "/api/auth",
@@ -34,6 +35,7 @@ export async function middleware(request) {
         "/cookies",
         "/privacy-policy",
         "/como-funciona",
+        "/sobre-nosotros",
     ];
 
     const dynamicPaths = [

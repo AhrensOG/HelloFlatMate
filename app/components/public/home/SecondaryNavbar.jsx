@@ -5,7 +5,7 @@ import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
-export default function NavBar_1({ fixed = false }) {
+export default function SecondaryNavbar({ fixed = false }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -14,7 +14,7 @@ export default function NavBar_1({ fixed = false }) {
 
   return (
     <nav
-      className={`flex items-center justify-between py-2 px-10 z-30 border-b border-[#c7c7c7] bg-white ${
+      className={`flex items-center justify-around py-2 px-10 z-30 bg-transparent ${
         fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
       } `}
     >
@@ -30,10 +30,11 @@ export default function NavBar_1({ fixed = false }) {
       </div>
       <Link href={"/"}>
         <Image
-          src="/home/new_home/Helloflatmate.png"
+          src="/home/new_home/newLogo.png"
           width={100}
           height={31.25}
           alt="logo"
+          className="filter brightness grayscale"
         />
       </Link>
       <div className="hidden md:flex items-center gap-5">
@@ -41,21 +42,21 @@ export default function NavBar_1({ fixed = false }) {
         <Link
           href="/lastrooms"
           target="_blank"
-          className="font-bold text-base border border-black p-2 px-5"
+          className="font-bold text-base text-white border border-white p-2 px-5"
         >
           last rooms
         </Link>
         <Link
           href="/como-funciona"
           target="_blank"
-          className="font-bold text-base"
+          className="font-bold text-base text-white"
         >
           Cómo funciona
         </Link>
         <Link
           href="/privacy-policy"
           target="_blank"
-          className="font-bold text-base"
+          className="font-bold text-base text-white"
         >
           Términos y condiciones
         </Link>
@@ -63,15 +64,15 @@ export default function NavBar_1({ fixed = false }) {
           <Link
             href="/pages/auth?register=true"
             target="_blank"
-            className="font-bold text-base"
+            className="font-bold text-base text-white"
           >
             Registro
           </Link>
-          <span className="font-bold text-base">|</span>
+          <span className="font-bold text-base text-white">|</span>
           <Link
             href="/pages/auth"
             target="_blank"
-            className="font-bold text-base"
+            className="font-bold text-base text-white"
           >
             Inicio
           </Link>
@@ -109,9 +110,6 @@ export default function NavBar_1({ fixed = false }) {
               Inicio
             </Link>
           </div>
-          {/* <Link href="#" target="_blank" className="block font-bold text-lg mt-2">
-                        Ayuda
-                    </Link> */}
           <Dropdown p={0} />
         </div>
       )}

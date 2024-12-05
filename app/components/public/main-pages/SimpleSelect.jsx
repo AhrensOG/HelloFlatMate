@@ -1,35 +1,37 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
-const Select = ({
-  name = false,
-  options,
-  data,
-  setData,
-  title = "Seleccionar una opción",
-  resetFilters = false, // Nueva prop para resetear filtros
-}) => {
+const SimpleSelect = ({ options, title = "Seleccionar una opción" }) => {
   const [showInput, setShowInput] = useState(false);
   const [selectedValue, setSelectedValue] = useState(title);
+  const router = useRouter();
 
   const handleClick = () => {
     setShowInput(!showInput);
   };
 
   const handleValueChange = (option) => {
-    if (option) {
-      setSelectedValue(option);
-      setData({ ...data, [name]: option });
-    }
-    setShowInput(false); // Cierra el dropdown después de seleccionar una opción
-  };
+    setShowInput(false);
+    switch (option) {
+      case "helloroom":
+        return router.push("/helloroom");
+      case "hellocoliving":
+        return router.push("/hellocoliving");
+      case "hellostudio":
+        return router.push("/hellostudio");
+      case "hellolandlord":
+        return router.push("/hellolandlord");
+      case "lastrooms":
+        return router.push("/lastrooms");
+      case "todos":
+        return router.push("/pages/user/filtered");
 
-  useEffect(() => {
-    if (resetFilters) {
-      setSelectedValue(title); // Resetea al valor del título cuando se reinician los filtros
+      default:
+        break;
     }
-  }, [resetFilters]); // Ejecuta solo cuando `resetFilters` cambia
+  };
 
   return (
     <section className="w-[18rem] relative">
@@ -93,4 +95,4 @@ const Select = ({
   );
 };
 
-export default Select;
+export default SimpleSelect;
