@@ -1,11 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 
-import Image from "next/image";
+// import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 // import CategoryCard from "./auxiliarComponents/CategoryCard";
 // import Select from "./auxiliarComponents/Select";
-import { useRouter, useSearchParams } from "next/navigation";
+// import { useRouter } from "next/navigation";
 // import DatePickerCategorySelector from "./DatePickerCategoySelector";
 import {
   ArrowDownLeftIcon,
@@ -52,20 +52,20 @@ const SecondaryCategorySelector = ({
   helloLandlordProperties,
   allProperties,
 }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const categoryQuery = searchParams.get("c");
+  // const router = useRouter();
+  // const searchParams = useSearchParams();
+  // const categoryQuery = searchParams.get("c");
 
   const [currentCategory, setCurrentCategory] = useState(null);
   const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [numberOccupants, setNumberOccupants] = useState();
 
-  useEffect(() => {
-    if (categoryQuery) {
-      setCurrentCategory(categoryQuery);
-    }
-  }, [categoryQuery]);
+  // useEffect(() => {
+  //   if (categoryQuery) {
+  //     setCurrentCategory(categoryQuery);
+  //   }
+  // }, [categoryQuery]);
 
   const extractLocations = (properties) => {
     if (properties.length === 0) {
@@ -162,9 +162,11 @@ const SecondaryCategorySelector = ({
   // Función que se llama al hacer clic en el botón "Buscar"
   const handleSearch = () => {
     const queryString = buildQueryString();
-    router.push(`/pages/user/filtered?${queryString}`);
-  };
+    const url = `${window.location.origin}/pages/user/filtered?${queryString}`;
 
+    // Abrir en una nueva pestaña
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
   const renderSelectedCategoryContent = () => {
     switch (currentCategory) {
       case "HELLO_ROOM":
