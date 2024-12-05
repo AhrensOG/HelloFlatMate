@@ -26,7 +26,8 @@ import SeventhSection from "./components/public/home/SeventhSection";
 import EightSection from "./components/public/home/EighthSection";
 import Footer_1 from "./components/public/home/Footer";
 import NavBar_1 from "./components/public/home/NavBar_1";
-import CategorySelector from "./components/public/main-pages/CategorySelector";
+// import CategorySelector from "./components/public/main-pages/CategorySelector";
+import SecondaryCategorySelector from "./components/public/main-pages/SecondaryCategorySelector";
 import Image from "next/image";
 
 const helloroom = {
@@ -201,13 +202,13 @@ export default function Home() {
             sin complicaciones!
           </h3>
           <div className="mb-64 w-full">
-            {/* <CategorySelector
+            <SecondaryCategorySelector
               helloRoomProperties={helloRoomProperties}
               helloColivingProperties={helloColivingProperties}
               helloStudioProperties={helloStudioProperties}
               helloLandlordProperties={helloLandlordProperties}
               allProperties={properties}
-            /> */}
+            />
           </div>
           <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
             <Image

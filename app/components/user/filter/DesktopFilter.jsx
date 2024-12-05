@@ -26,7 +26,7 @@ export default function DesktopFilter({
   };
 
   const handleSeeResults = () => {
-    console.log(filters)
+    console.log(filters);
     onApplyFilters();
     setOpen(false);
   };
@@ -61,10 +61,14 @@ export default function DesktopFilter({
         className={`  fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
       >
         <div className="h-8 w-full flex items-center px-4">
-          <button onClick={() => router.back()}>
+          <button
+            onClick={() => router.back()}
+            className="w-full py-2 bg-[#4C8BF5] text-white text-[0.9rem] font-bold rounded-md flex justify-evenly items-center"
+          >
             <ArrowLeftIcon className="size-6" />
+            Volver a la busqueda
           </button>
-          <h2 className="text-center grow text-lg font-bold">Filtros</h2>
+          {/* <h2 className="text-center grow text-lg font-bold">Filtros</h2> */}
         </div>
         <div className="flex items-center justify-between px-4 mt-4">
           <button
