@@ -194,14 +194,14 @@ export default function Home() {
         <header>
           <NavbarV3 />
         </header>
-        <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
+        <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
           <h1 className="text-3xl font-bold">hello flat mate</h1>
           <h3 className="text-lg text-center">
             Especializados en gestión de alojamientos para estudiantes en
             Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y
             sin complicaciones!
           </h3>
-          <div className="mb-64 w-full">
+          <div className="w-full">
             <SecondaryCategorySelector
               helloRoomProperties={helloRoomProperties}
               helloColivingProperties={helloColivingProperties}
@@ -210,13 +210,13 @@ export default function Home() {
               allProperties={properties}
             />
           </div>
-          <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
+          {/* <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
             <Image
               src={"/home/new_home/hero4.jpeg"}
               fill
               className="object-cover"
             />
-          </div>
+          </div> */}
         </section>
         <SecondSection />
         <SixthSection />

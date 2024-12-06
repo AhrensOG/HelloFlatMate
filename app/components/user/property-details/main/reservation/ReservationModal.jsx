@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
- 
+
 import SelectContract from "./SelectContract";
 import ReservationButton from "../ReservationButton";
 import { XMarkIcon } from "@heroicons/react/20/solid";
@@ -131,34 +131,33 @@ export default function ReservationModal({
   useEffect(() => {}, [calendarType]);
 
   return (
-    <AnimatePresence>
-      <motion.aside
-        className={`  flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem]`}
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 100 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      >
-        <div className="flex">
-          <div className="w-[44%]">
-            <button className="w-8 h-8" onClick={callback}>
-              <XMarkIcon />
-            </button>
-          </div>
-          <div className="self-start w-[50%] pr-3 h-3">
-            <button onClick={callback}>
-              <Image
-                src={"/property_details/reservation/close-line-btn.svg"}
-                width={36}
-                height={5}
-                alt="Boton para cerrar"
-              />
-            </button>
-          </div>
+    <motion.aside
+      className={`  flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem]`}
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 100 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    >
+      <div className="flex">
+        <div className="w-[44%]">
+          <button className="w-8 h-8" onClick={callback}>
+            <XMarkIcon />
+          </button>
         </div>
-        <h2 className="font-medium text-[1.75rem]">Estadía</h2>
-        <div className="flex flex-col justify-center items-center gap-5">
-          {/* {(category === "HELLO_ROOM" ||
+        <div className="self-start w-[50%] pr-3 h-3">
+          <button onClick={callback}>
+            <Image
+              src={"/property_details/reservation/close-line-btn.svg"}
+              width={36}
+              height={5}
+              alt="Boton para cerrar"
+            />
+          </button>
+        </div>
+      </div>
+      <h2 className="font-medium text-[1.75rem]">Estadía</h2>
+      <div className="flex flex-col justify-center items-center gap-5">
+        {/* {(category === "HELLO_ROOM" ||
             category === "HELLO_COLIVING" ||
             category === "HELLO_LANDLORD") && (
             <SelectRentalPeriod
@@ -167,7 +166,7 @@ export default function ReservationModal({
               info={info}
             />
           )} */}
-          {/* {category === "HELLO_STUDIO" && (
+        {/* {category === "HELLO_STUDIO" && (
             <DatePicker
               data={info}
               setData={setInfo}
@@ -175,59 +174,58 @@ export default function ReservationModal({
               rentalPeriods={rentalPeriods}
             />
           )} */}
-          {(() => {
-            if (calendarType === "SIMPLE") {
-              return (
-                <SelectRentalPeriod
-                  data={rentalPeriods.filter((rental) => rental.isFree)}
-                  setData={handleSetDuration}
-                  info={info}
-                />
-              );
-            } else if (calendarType === "FULL") {
-              return (
-                <DatePicker
-                  data={info}
-                  setData={setInfo}
-                  occupedDates={
-                    data?.leaseOrdersProperty || data?.leaseOrdersRoom || []
-                  }
-                  rentalPeriods={rentalPeriods}
-                />
-              );
-            } else {
-              return null; // Si calendarType es undefined u otro valor, no muestra nada
-            }
-          })()}
-
-          <ShowClauses />
-          <div className="self-center w-[90%]">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={clausesAccepted}
-                onChange={() => setClausesAccepted(!clausesAccepted)}
-                className="mr-2"
+        {(() => {
+          if (calendarType === "SIMPLE") {
+            return (
+              <SelectRentalPeriod
+                data={rentalPeriods.filter((rental) => rental.isFree)}
+                setData={handleSetDuration}
+                info={info}
               />
-              He leído y comprendo las cláusulas
-            </label>
-          </div>
-          <div className="self-center w-[90%]">
-            <ReservationButton
-              callback={() => {
-                toast.promise(handleReservationSubmit(), {
-                  loading: "Reservando...",
-                  success: "Reservado!",
-                  error: (err) =>
-                    `Error al reservar: ${
-                      err.response?.data?.message || err.message || err
-                    }`,
-                });
-              }}
+            );
+          } else if (calendarType === "FULL") {
+            return (
+              <DatePicker
+                data={info}
+                setData={setInfo}
+                occupedDates={
+                  data?.leaseOrdersProperty || data?.leaseOrdersRoom || []
+                }
+                rentalPeriods={rentalPeriods}
+              />
+            );
+          } else {
+            return null; // Si calendarType es undefined u otro valor, no muestra nada
+          }
+        })()}
+
+        <ShowClauses />
+        <div className="self-center w-[90%]">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              checked={clausesAccepted}
+              onChange={() => setClausesAccepted(!clausesAccepted)}
+              className="mr-2"
             />
-          </div>
+            He leído y comprendo las cláusulas
+          </label>
         </div>
-      </motion.aside>
-    </AnimatePresence>
+        <div className="self-center w-[90%]">
+          <ReservationButton
+            callback={() => {
+              toast.promise(handleReservationSubmit(), {
+                loading: "Reservando...",
+                success: "Reservado!",
+                error: (err) =>
+                  `Error al reservar: ${
+                    err.response?.data?.message || err.message || err
+                  }`,
+              });
+            }}
+          />
+        </div>
+      </div>
+    </motion.aside>
   );
 }
