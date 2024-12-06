@@ -2,8 +2,6 @@ import { Client, Property, RentPayment, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createRentPayment(data) {
-    console.log(data);
-
     if (!data) {
         return NextResponse.json({ error, message: "No data provided" }, { status: 400 });
     }
