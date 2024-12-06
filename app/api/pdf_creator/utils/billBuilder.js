@@ -3,13 +3,12 @@ import fs from "fs";
 import path from "path";
 
 export async function billBuilder(data) {
-    console.log(data);
     try {
         // Datos estáticos para la factura
         const paymentData = {
             id: data.id,
             location: "Bogota, Colombia",
-            clienteName: "Diego Avila",
+            clienteName: data.clienteName,
             clienteDni: data.clienteDni,
             clienteAddress: data.clienteAddress,
             clienteCity: data.clienteCity,
@@ -69,18 +68,35 @@ export async function billBuilder(data) {
         // Datos del cliente (izquierda)
         const clientInfoYStart = height - margin - 100;
 
-        page.drawText(`Cliente: ${paymentData.clienteName}`, { x: clientInfoX, y: clientInfoYStart, size: 10, font: boldFont });
-        page.drawText(`DNI: ${paymentData.clienteDni}`, { x: clientInfoX, y: clientInfoYStart - 15, size: 10, font });
-        page.drawText(`Dirección: ${paymentData.clienteAddress}`, { x: clientInfoX, y: clientInfoYStart - 30, size: 10, font });
+        let currentYPosition = drawTextWithWrap(
+            page,
+            `Cliente: ${paymentData.clienteName}`,
+            clientInfoX,
+            clientInfoYStart,
+            middleInfoX - clientInfoX - 20,
+            boldFont,
+            10,
+            margin
+        );
 
-        page.drawText(`${paymentData.clienteCity}`, { x: clientInfoX, y: clientInfoYStart - 45, size: 10, font });
-        page.drawText(`Teléfono: ${paymentData.clientePhone}`, { x: clientInfoX, y: clientInfoYStart - 60, size: 10, font });
+        currentYPosition -= 15; // Espacio para DNI
+        page.drawText(`DNI: ${paymentData.clienteDni}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
 
-        page.drawText(`Correo: ${paymentData.clienteEmail}`, { x: clientInfoX, y: clientInfoYStart - 75, size: 10, font });
+        currentYPosition -= 15; // Espacio para dirección
+        page.drawText(`Dirección: ${paymentData.clienteAddress}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
+
+        currentYPosition -= 15; // Espacio para ciudad
+        page.drawText(`${paymentData.clienteCity}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
+
+        currentYPosition -= 15; // Espacio para teléfono
+        page.drawText(`Teléfono: ${paymentData.clientePhone}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
+
+        currentYPosition -= 15; // Espacio para correo
+        page.drawText(`Correo: ${paymentData.clienteEmail}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
 
         // Datos intermedios (en el centro)
 
-        let currentYPosition = drawTextWithWrap(
+        currentYPosition = drawTextWithWrap(
             page,
             `Habitación : ${paymentData.room}`,
             middleInfoX,
@@ -105,7 +121,7 @@ export async function billBuilder(data) {
         page.drawText(`${paymentData.invoicePeriod}`, { x: invoiceInfoX, y: clientInfoYStart - 30, size: 10, font });
 
         // Línea horizontal divisoria
-        const lineY = clientInfoYStart - 90;
+        const lineY = currentYPosition - 80; // Ajustar la posición de la línea horizontal
         page.drawLine({ start: { x: margin, y: lineY }, end: { x: width - margin, y: lineY }, thickness: 1, color: rgb(0.75, 0.75, 0.75) });
 
         // Tabla de detalles

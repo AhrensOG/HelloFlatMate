@@ -23,12 +23,8 @@ export async function createClientBillPDF(data) {
         let property;
         let room;
         if (data.paymentableType === "PROPERTY") {
-            console.log("aqui toy");
-
             property = await Property.findByPk(data.propertyId);
         } else {
-            console.log("nop aqui");
-
             room = await Room.findByPk(data.propertyId, {
                 include: {
                     model: Property,
