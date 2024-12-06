@@ -19,13 +19,14 @@ export default function HelloRoom() {
   const [helloColivingProperties, setHelloColivingProperties] = useState([]);
   const [helloStudioProperties, setHelloStudioProperties] = useState([]);
   const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+  const [lastRooms, setLastRooms] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const roomsPerPage = 18;
 
   const [filteredRooms, setFilteredRooms] = useState([]);
   const [filters, setFilters] = useState({
-    category: "HELLO_ROOM",
+    category: "LASTROOMS",
     zone: null,
     rentalPeriod: null,
     startDate: null,
@@ -35,7 +36,7 @@ export default function HelloRoom() {
   });
 
   const filterByCategory = (properties) => {
-    return properties.filter((property) => property.category === "HELLO_ROOM");
+    return properties.filter((property) => property.category);
   };
 
   const paginateRooms = (rooms) => {
@@ -69,13 +70,16 @@ export default function HelloRoom() {
       const landlordProps = state.properties.filter(
         (property) => property.category === "HELLO_LANDLORD"
       );
+      const last = state.properties.filter((property) => property.status === "FREE");
 
       // Actualizar los estados locales
+
       setProperties(state.properties);
       setHelloRoomProperties(roomProps);
       setHelloColivingProperties(colivingProps);
       setHelloStudioProperties(studioProps);
       setHelloLandlordProperties(landlordProps);
+      setLastRooms(last);
     }
   }, [state.properties]);
 
@@ -140,12 +144,12 @@ export default function HelloRoom() {
   useEffect(() => {
     if (state.properties && state.properties.length > 0) {
       // Aplicar filtros generales a las propiedades
-      const filteredProperties = state.properties.filter((property) => {
+      const filteredProperties = lastRooms?.filter((property) => {
         const matchesZone = !filters.zone || property.zone === filters.zone;
-        const matchesCategory =
-          !filters.category || property.category === filters.category;
+        // const matchesCategory =
+        //   !filters.category || property.category === filters.category;
 
-        return matchesZone && matchesCategory;
+        return matchesZone;
       });
 
       // Aplicar filtro de período de renta
@@ -181,6 +185,7 @@ export default function HelloRoom() {
   // Calcular las habitaciones paginadas y total de páginas
   const totalPages = Math.ceil(filteredRooms.length / roomsPerPage);
   const displayedRooms = paginateRooms(filteredRooms);
+  // console.log(filteredRooms)
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -226,14 +231,16 @@ export default function HelloRoom() {
           </div>
         </div>
         {/* Contenedor de búsqueda y botones */}
+        {console.log(lastRooms)}
         <CategorySelector
-          category={"HELLO_ROOM"}
+          category={"lastrooms"}
           filters={filters}
           setFilters={setFilters}
           helloRoomProperties={helloRoomProperties}
           helloColivingProperties={helloColivingProperties}
           helloStudioProperties={helloStudioProperties}
           helloLandlordProperties={helloLandlordProperties}
+          lastRooms={lastRooms}
           allProperties={properties}
         />
 

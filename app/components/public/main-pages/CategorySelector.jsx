@@ -47,6 +47,8 @@ const CategorySelector = ({
   helloColivingProperties,
   helloStudioProperties,
   helloLandlordProperties,
+  lastRooms,
+  allProperties,
 }) => {
   const router = useRouter();
   const [currentCategory, setCurrentCategory] = useState(category);
@@ -152,11 +154,14 @@ const CategorySelector = ({
     return Array.from(fechasUnicas);
   };
 
-  // Función que se llama al hacer clic en el botón "Buscar"
-  const handleSearch = () => {
-    const queryString = buildQueryString();
-    router.push(`/pages/user/filtered?${queryString}`);
-  };
+    // Función que se llama al hacer clic en el botón "Buscar"
+    const handleSearch = () => {
+      const queryString = buildQueryString();
+      const url = `${window.location.origin}/pages/user/filtered?${queryString}`;
+  
+      // Abrir en una nueva pestaña
+      window.open(url, "_blank", "noopener,noreferrer");
+    };
 
   const cleanFilters = () => {
     setFilters({
@@ -360,6 +365,47 @@ const CategorySelector = ({
             </div>
           </div>
         );
+      case "lastrooms":
+        const lastRoomsLocations = extractLocations(lastRooms);
+        const lastRoomsRentalPeriods = getRentalPeriods(lastRooms);
+        return (
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
+              <SimpleSelect options={typeArray} title="Tipo alojamiento" />
+              <Select
+                resetFilters={resetFilters}
+                options={lastRoomsLocations}
+                data={filters}
+                setData={setFilters}
+                title="¿En qué zona?"
+              />
+              <Select
+                resetFilters={resetFilters}
+                options={lastRoomsRentalPeriods}
+                data={filters}
+                setData={setFilters}
+                title="Selecciona un periodo"
+                name="rentalPeriod"
+              />
+              <Select
+                resetFilters={resetFilters}
+                options={genre}
+                data={filters}
+                setData={setFilters}
+                title="Tipo de compañeros"
+                name="type"
+              />
+              <button
+                onClick={handleSearch}
+                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+              >
+                Buscar alojamiento
+                <MagnifyingGlassIcon className="size-6 text-black" />
+              </button>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
