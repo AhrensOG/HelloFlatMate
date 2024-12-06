@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Context } from "../context/GlobalContext";
 import { getAllProperties } from "../context/actions";
 import Footer_1 from "../components/public/home/Footer";
-import NavBar_1 from "../components/public/home/NavBar_1";
+import NavbarV3 from "../components/nav_bar/NavbarV3";
 import PropertyCard from "../components/user/property/PropertyCard";
 import FourthSection from "../components/public/home/FourthSection";
 import SeventhSection from "../components/public/home/SeventhSection";
@@ -211,7 +211,7 @@ export default function HelloRoom() {
     <div>
       <div className="flex flex-col sm:min-h-screen">
         <header className="mb-16">
-          <NavBar_1 fixed={true} />
+          <NavbarV3 fixed={true} />
         </header>
         <div className="w-full flex flex-col">
           <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">

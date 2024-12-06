@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import NavBar_1 from "../components/public/home/NavBar_1";
+import NavbarV3 from "../components/nav_bar/NavbarV3";
 import Footer_1 from "../components/public/home/Footer";
 
 export default function HowItWorks() {
@@ -92,7 +92,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
   return (
     <section className="bg-white w-full">
       <header>
-        <NavBar_1 />
+        <NavbarV3 />
       </header>
       <div className="w-full flex justify-center items-center">
         <div className="w-full max-w-screen-md flex flex-col justify-center items-center px-2 py-10">
