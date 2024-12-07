@@ -1,10 +1,8 @@
-"use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import SelectContract from "./SelectContract";
-import ReservationButton from "../ReservationButton";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,7 +10,7 @@ import { toast } from "sonner";
 import ShowClauses from "./ShowClauses";
 import SelectRentalPeriod from "./SelectRentalPeriod";
 import DatePicker from "./date_picker/DatePicker";
-import Link from "next/link";
+import ReservationForm from "./ReservationForm";
 
 export default function ReservationModal({
   callback,
@@ -28,61 +26,40 @@ export default function ReservationModal({
   });
   const [dataReservation, setDataReservation] = useState(data);
   const [rentalPeriods, setRentalPeriods] = useState(data.rentalPeriods);
-  const [clausesAccepted, setClausesAccepted] = useState(false); // Estado para el checkbox
+  const [clausesAccepted, setClausesAccepted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const calculatePrice = (price, duration) => {
     const total = price * duration;
     return total;
   };
 
-  // const handleCheckout = async (reservation, user, leaseOrderId) => {
-  //   const propertyId = reservation?.propertyId;
-  //   const userEmail = user?.email;
-  //   const price = parseInt(reservation?.unitPrice);
-  //   const propertyName = reservation?.propertyName;
-
-  //   try {
-  //     const response = await fetch("/api/stripe/create-checkout-session", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         propertyId,
-  //         userEmail,
-  //         price,
-  //         propertyName,
-  //         leaseOrderId,
-  //         roomId: reservation?.roomId || false,
-  //         category,
-  //       }),
-  //     });
-  //     const session = await response.json();
-  //     const stripe = await stripePromise;
-
-  //     const result = await stripe.redirectToCheckout({
-  //       sessionId: session.id,
-  //     });
-
-  //     toast.info("Seras redirigido a la pagina de pago");
-  //   } catch (error) {
-  //     console.log(error);
-  //     throw error;
-  //   }
-  // };
-
   const handleSetDuration = (startDate, endDate, duration, rentalPeriodId) => {
     setInfo({
-      startDate: startDate,
-      endDate: endDate,
-      duration: duration,
-      rentalPeriodId: rentalPeriodId,
+      startDate,
+      endDate,
+      duration,
+      rentalPeriodId,
     });
   };
 
-  const handleReservationSubmit = async () => {
+  const handleReservationSubmit = async (values) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (!clausesAccepted) {
       toast.info("Debes aceptar los términos y condiciones");
+      setIsSubmitting(false);
+      return;
+    }
+    if (
+      info.startDate === "" ||
+      info.endDate === "" ||
+      !info.endDate ||
+      !info.startDate
+    ) {
+      toast.info("Recuerda seleccionar un periodo de alquiler");
+      setIsSubmitting(false);
       return;
     }
 
@@ -92,6 +69,7 @@ export default function ReservationModal({
     const rentalPeriodId = info.rentalPeriodId;
     const reservation = {
       ...dataReservation,
+      ...values,
       date: new Date().toISOString(),
       startDate: startDate,
       endDate: endDate,
@@ -104,19 +82,18 @@ export default function ReservationModal({
     const toastId = toast.loading("Procesando reservación...");
 
     try {
-      const response = await axios.post("/api/lease_order", reservation);
-      if (
-        category === "HELLO_ROOM" ||
-        category === "HELLO_COLIVING" ||
-        category === "HELLO_LANDLORD"
-      ) {
-        await axios.patch("/api/rental_period", {
-          id: rentalPeriodId,
-          status: "RESERVED",
-        });
-      }
+      // const response = await axios.post("/api/lease_order", reservation);
+      // if (
+      //   ["HELLO_ROOM", "HELLO_COLIVING", "HELLO_LANDLORD"].includes(category)
+      // ) {
+      //   await axios.patch("/api/rental_period", {
+      //     id: rentalPeriodId,
+      //     status: "RESERVED",
+      //   });
+      // }
+      console.log(reservation);
       toast.success("Reservación completada con éxito!", { id: toastId });
-      return response.data;
+      setTimeout(() => setIsSubmitting(false), 1000);
     } catch (error) {
       toast.info(
         `Error al procesar la reservación: ${
@@ -124,6 +101,7 @@ export default function ReservationModal({
         }`,
         { id: toastId }
       );
+      setIsSubmitting(false);
       throw error;
     }
   };
@@ -137,90 +115,60 @@ export default function ReservationModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      onClick={callback} // Permite cerrar el modal al hacer clic en el fondo
+      onClick={callback}
     >
       <motion.aside
-        className={`  
-          flex flex-col gap-5 px-4 py-2 fixed
-          bg-[#FCFCFC] shadow-lg z-50
-          sm:relative sm:rounded-lg
-          sm:w-[60vw] sm:min-h-[70vh] sm:max-h-[70vh] scrollbar-none sm:scrollbar-thin sm:overflow-y-auto
-          bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll rounded-t-[1.55rem]
-        `}
+        className="relative w-full sm:w-[80%] md:w-[60%] lg:w-[40%] bg-white sm:rounded-md shadow-lg max-h-screen sm:max-h-[95vh] overflow-y-auto scrollbar-none p-6 py-4"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex">
-          <div className="w-[44%]">
-            <button className="w-8 h-8" onClick={callback}>
-              <XMarkIcon />
-            </button>
-          </div>
-          <div className="self-start w-[50%] pr-3 h-3">
-            <button onClick={callback}>
-              <Image
-                src={"/property_details/reservation/close-line-btn.svg"}
-                width={36}
-                height={5}
-                alt="Boton para cerrar"
-              />
-            </button>
-          </div>
+        <div className="flex justify-center sm:justify-start items-center mb-2">
+          <button
+            className="w-10 h-10 hidden sm:flex items-center justify-center "
+            onClick={callback}
+          >
+            <XMarkIcon className="w-6 h-6 text-gray-600" />
+          </button>
+          <Image
+            src="/property_details/reservation/close-line-btn.svg"
+            width={36}
+            height={5}
+            alt="Cerrar"
+            onClick={callback}
+            className="sm:hidden block"
+          />
         </div>
-        <h2 className="font-medium text-[1.75rem]">Estadía</h2>
-        <div className="flex flex-col justify-center items-center gap-5">
-          {(() => {
-            if (calendarType === "SIMPLE") {
-              return (
-                <SelectRentalPeriod
-                  data={rentalPeriods.filter((rental) => rental.isFree)}
-                  setData={handleSetDuration}
-                  info={info}
-                />
-              );
-            } else if (calendarType === "FULL") {
-              return (
-                <DatePicker
-                  data={info}
-                  setData={setInfo}
-                  occupedDates={
-                    data?.leaseOrdersProperty || data?.leaseOrdersRoom || []
-                  }
-                  rentalPeriods={rentalPeriods}
-                />
-              );
-            } else {
-              return null; // Si calendarType es undefined u otro valor, no muestra nada
-            }
-          })()}
-
+        <h2 className="text-xl font-semibold mb-4 w-full text-center">
+          Datos de reserva
+        </h2>
+        <div className="space-y-5">
+          {calendarType === "SIMPLE" ? (
+            <SelectRentalPeriod
+              data={rentalPeriods.filter((rental) => rental.isFree)}
+              setData={handleSetDuration}
+              info={info}
+            />
+          ) : calendarType === "FULL" ? (
+            <DatePicker
+              data={info}
+              setData={setInfo}
+              occupedDates={
+                data?.leaseOrdersProperty || data?.leaseOrdersRoom || []
+              }
+              rentalPeriods={rentalPeriods}
+            />
+          ) : null}
           <ShowClauses />
-          <div className="self-center w-[90%]">
-            <label className="flex items-center text-xs lg:text-sm">
-              <input
-                type="checkbox"
-                checked={clausesAccepted}
-                onChange={() => setClausesAccepted(!clausesAccepted)}
-                className="mr-2"
-              />
-              <p className="">
-                He leído, comprendo y acepto los{" "}
-                <Link
-                  href="/privacy-policy"
-                  target="_blank"
-                  className="text-blue-500 underline ml-1"
-                >
-                  términos y condiciones
-                </Link>
-              </p>
-            </label>
-          </div>
-          <div className="self-center w-[90%]">
-            <ReservationButton callback={() => handleReservationSubmit()} />
-          </div>
+          <ReservationForm
+            data={data}
+            handleReservationSubmit={handleReservationSubmit}
+            clausesAccepted={clausesAccepted}
+            setClausesAccepted={setClausesAccepted}
+            isSubmitting={isSubmitting}
+          />
         </div>
       </motion.aside>
     </motion.div>

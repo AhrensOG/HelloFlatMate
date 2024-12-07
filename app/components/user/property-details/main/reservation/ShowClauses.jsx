@@ -11,7 +11,7 @@ const ShowClauses = () => {
   };
 
   return (
-    <section className="w-[19.4rem]">
+    <section className="w-full">
       <div
         className="rounded-lg flex justify-between p-2 items-center shadow-reservation-drop my-2 cursor-pointer bg-white"
         onClick={handleClick}
