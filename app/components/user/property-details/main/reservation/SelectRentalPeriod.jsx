@@ -78,11 +78,11 @@ export default function SelectRentalPeriod({ data, setData }) {
       <AnimatePresence>
         {showOptions && (
           <motion.div
-            className="flex flex-col shadow-reservation-list mt-2 bg-white rounded-lg max-h-44 overflow-y-auto"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="flex flex-col shadow-reservation-list mt-2 bg-white rounded-lg max-h-44 overflow-y-auto scrollbar-thin"
+            initial={{ opacity: 0, height: 0  }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.5}}
           >
             {data.map((period) => (
               <div

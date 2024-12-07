@@ -410,7 +410,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                   className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                 />
               </div>
-              <h2 className="form-title">Contacto de urgencia</h2>
+              <h2 className="form-title">Contacto de emergencia</h2>
               <div className="flex flex-row justify-center items-center gap-3 w-full">
                 <div className="w-full flex flex-col justify-center ">
                   <label

@@ -1,5 +1,5 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -9,14 +9,10 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { loadStripe } from "@stripe/stripe-js";
 import ShowClauses from "./ShowClauses";
 import SelectRentalPeriod from "./SelectRentalPeriod";
 import DatePicker from "./date_picker/DatePicker";
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
+import Link from "next/link";
 
 export default function ReservationModal({
   callback,
@@ -33,50 +29,47 @@ export default function ReservationModal({
   const [dataReservation, setDataReservation] = useState(data);
   const [rentalPeriods, setRentalPeriods] = useState(data.rentalPeriods);
   const [clausesAccepted, setClausesAccepted] = useState(false); // Estado para el checkbox
-  const handleRedirect = () => {
-    router.push("/pages/contract");
-  };
 
   const calculatePrice = (price, duration) => {
     const total = price * duration;
     return total;
   };
 
-  const handleCheckout = async (reservation, user, leaseOrderId) => {
-    const propertyId = reservation?.propertyId;
-    const userEmail = user?.email;
-    const price = parseInt(reservation?.unitPrice);
-    const propertyName = reservation?.propertyName;
+  // const handleCheckout = async (reservation, user, leaseOrderId) => {
+  //   const propertyId = reservation?.propertyId;
+  //   const userEmail = user?.email;
+  //   const price = parseInt(reservation?.unitPrice);
+  //   const propertyName = reservation?.propertyName;
 
-    try {
-      const response = await fetch("/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          propertyId,
-          userEmail,
-          price,
-          propertyName,
-          leaseOrderId,
-          roomId: reservation?.roomId || false,
-          category,
-        }),
-      });
-      const session = await response.json();
-      const stripe = await stripePromise;
+  //   try {
+  //     const response = await fetch("/api/stripe/create-checkout-session", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         propertyId,
+  //         userEmail,
+  //         price,
+  //         propertyName,
+  //         leaseOrderId,
+  //         roomId: reservation?.roomId || false,
+  //         category,
+  //       }),
+  //     });
+  //     const session = await response.json();
+  //     const stripe = await stripePromise;
 
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
+  //     const result = await stripe.redirectToCheckout({
+  //       sessionId: session.id,
+  //     });
 
-      toast.info("Seras redirigido a la pagina de pago");
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
+  //     toast.info("Seras redirigido a la pagina de pago");
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw error;
+  //   }
+  // };
 
   const handleSetDuration = (startDate, endDate, duration, rentalPeriodId) => {
     setInfo({
@@ -89,7 +82,8 @@ export default function ReservationModal({
 
   const handleReservationSubmit = async () => {
     if (!clausesAccepted) {
-      throw new Error("Debes aceptar los términos y condiciones");
+      toast.info("Debes aceptar los términos y condiciones");
+      return;
     }
 
     const price = calculatePrice(data.price, info.duration);
@@ -107,6 +101,8 @@ export default function ReservationModal({
 
     setDataReservation(reservation);
 
+    const toastId = toast.loading("Procesando reservación...");
+
     try {
       const response = await axios.post("/api/lease_order", reservation);
       if (
@@ -119,11 +115,15 @@ export default function ReservationModal({
           status: "RESERVED",
         });
       }
-      reservation.unitPrice = data.price;
-      await handleCheckout(reservation, data?.user, response.data.id);
+      toast.success("Reservación completada con éxito!", { id: toastId });
       return response.data;
     } catch (error) {
-      console.log(error);
+      toast.info(
+        `Error al procesar la reservación: ${
+          error.response?.data?.message || error.message || error
+        }`,
+        { id: toastId }
+      );
       throw error;
     }
   };
@@ -131,101 +131,98 @@ export default function ReservationModal({
   useEffect(() => {}, [calendarType]);
 
   return (
-    <motion.aside
-      className={`  flex flex-col gap-5 px-4 py-2 fixed bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll z-50 bg-[#FCFCFC] shadow-lg rounded-t-[1.55rem]`}
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 100 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
+    <motion.div
+      className="fixed inset-0 z-40 bg-black bg-opacity-70 flex items-end sm:items-center sm:justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      onClick={callback} // Permite cerrar el modal al hacer clic en el fondo
     >
-      <div className="flex">
-        <div className="w-[44%]">
-          <button className="w-8 h-8" onClick={callback}>
-            <XMarkIcon />
-          </button>
-        </div>
-        <div className="self-start w-[50%] pr-3 h-3">
-          <button onClick={callback}>
-            <Image
-              src={"/property_details/reservation/close-line-btn.svg"}
-              width={36}
-              height={5}
-              alt="Boton para cerrar"
-            />
-          </button>
-        </div>
-      </div>
-      <h2 className="font-medium text-[1.75rem]">Estadía</h2>
-      <div className="flex flex-col justify-center items-center gap-5">
-        {/* {(category === "HELLO_ROOM" ||
-            category === "HELLO_COLIVING" ||
-            category === "HELLO_LANDLORD") && (
-            <SelectRentalPeriod
-              data={rentalPeriods.filter((rental) => rental.status === "FREE")}
-              setData={handleSetDuration}
-              info={info}
-            />
-          )} */}
-        {/* {category === "HELLO_STUDIO" && (
-            <DatePicker
-              data={info}
-              setData={setInfo}
-              occupedDates={data?.leaseOrdersProperty}
-              rentalPeriods={rentalPeriods}
-            />
-          )} */}
-        {(() => {
-          if (calendarType === "SIMPLE") {
-            return (
-              <SelectRentalPeriod
-                data={rentalPeriods.filter((rental) => rental.isFree)}
-                setData={handleSetDuration}
-                info={info}
+      <motion.aside
+        className={`  
+          flex flex-col gap-5 px-4 py-2 fixed
+          bg-[#FCFCFC] shadow-lg z-50
+          sm:relative sm:rounded-lg
+          sm:w-[60vw] sm:min-h-[70vh] sm:max-h-[70vh] scrollbar-none sm:scrollbar-thin sm:overflow-y-auto
+          bottom-0 inset-x-0 min-h-[30vh] max-h-screen overflow-y-scroll rounded-t-[1.55rem]
+        `}
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 100 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex">
+          <div className="w-[44%]">
+            <button className="w-8 h-8" onClick={callback}>
+              <XMarkIcon />
+            </button>
+          </div>
+          <div className="self-start w-[50%] pr-3 h-3">
+            <button onClick={callback}>
+              <Image
+                src={"/property_details/reservation/close-line-btn.svg"}
+                width={36}
+                height={5}
+                alt="Boton para cerrar"
               />
-            );
-          } else if (calendarType === "FULL") {
-            return (
-              <DatePicker
-                data={info}
-                setData={setInfo}
-                occupedDates={
-                  data?.leaseOrdersProperty || data?.leaseOrdersRoom || []
-                }
-                rentalPeriods={rentalPeriods}
-              />
-            );
-          } else {
-            return null; // Si calendarType es undefined u otro valor, no muestra nada
-          }
-        })()}
+            </button>
+          </div>
+        </div>
+        <h2 className="font-medium text-[1.75rem]">Estadía</h2>
+        <div className="flex flex-col justify-center items-center gap-5">
+          {(() => {
+            if (calendarType === "SIMPLE") {
+              return (
+                <SelectRentalPeriod
+                  data={rentalPeriods.filter((rental) => rental.isFree)}
+                  setData={handleSetDuration}
+                  info={info}
+                />
+              );
+            } else if (calendarType === "FULL") {
+              return (
+                <DatePicker
+                  data={info}
+                  setData={setInfo}
+                  occupedDates={
+                    data?.leaseOrdersProperty || data?.leaseOrdersRoom || []
+                  }
+                  rentalPeriods={rentalPeriods}
+                />
+              );
+            } else {
+              return null; // Si calendarType es undefined u otro valor, no muestra nada
+            }
+          })()}
 
-        <ShowClauses />
-        <div className="self-center w-[90%]">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={clausesAccepted}
-              onChange={() => setClausesAccepted(!clausesAccepted)}
-              className="mr-2"
-            />
-            He leído y comprendo las cláusulas
-          </label>
+          <ShowClauses />
+          <div className="self-center w-[90%]">
+            <label className="flex items-center text-xs lg:text-sm">
+              <input
+                type="checkbox"
+                checked={clausesAccepted}
+                onChange={() => setClausesAccepted(!clausesAccepted)}
+                className="mr-2"
+              />
+              <p className="">
+                He leído, comprendo y acepto los{" "}
+                <Link
+                  href="/privacy-policy"
+                  target="_blank"
+                  className="text-blue-500 underline ml-1"
+                >
+                  términos y condiciones
+                </Link>
+              </p>
+            </label>
+          </div>
+          <div className="self-center w-[90%]">
+            <ReservationButton callback={() => handleReservationSubmit()} />
+          </div>
         </div>
-        <div className="self-center w-[90%]">
-          <ReservationButton
-            callback={() => {
-              toast.promise(handleReservationSubmit(), {
-                loading: "Reservando...",
-                success: "Reservado!",
-                error: (err) =>
-                  `Error al reservar: ${
-                    err.response?.data?.message || err.message || err
-                  }`,
-              });
-            }}
-          />
-        </div>
-      </div>
-    </motion.aside>
+      </motion.aside>
+    </motion.div>
   );
 }

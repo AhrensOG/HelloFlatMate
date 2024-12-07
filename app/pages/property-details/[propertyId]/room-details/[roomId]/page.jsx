@@ -15,8 +15,9 @@ import RoomSection from "@/app/components/user/property-details/main/RoomSection
 import VideoEmbedSection from "@/app/components/user/property-details/main/VideoEmbedSection";
 import GuestInfoRoom from "@/app/components/user/room-details/GuestInfoRoom";
 import { Context } from "@/app/context/GlobalContext";
- 
+
 import axios from "axios";
+import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -399,27 +400,29 @@ export default function RoomDetails({ params }) {
           </div>
         </main>
       </div>
-      {showModal && (
-        <ReservationModal
-          calendarType={roomData.calendar}
-          callback={handleShowModal}
-          category={data.category}
-          data={{
-            date: null,
-            startDate: null,
-            endDate: null,
-            price: roomData.price,
-            propertyId: data.id,
-            clientId: state?.user?.id,
-            ownerId: data.ownerId,
-            roomId: roomData.id,
-            propertyName: roomData?.name,
-            user: state?.user,
-            rentalPeriods: roomData.rentalItems,
-            leaseOrdersProperty: roomData.leaseOrdersRoom || null,
-          }}
-        />
-      )}
+      <AnimatePresence>
+        {showModal && (
+          <ReservationModal
+            calendarType={roomData.calendar}
+            callback={handleShowModal}
+            category={data.category}
+            data={{
+              date: null,
+              startDate: null,
+              endDate: null,
+              price: roomData.price,
+              propertyId: data.id,
+              clientId: state?.user?.id,
+              ownerId: data.ownerId,
+              roomId: roomData.id,
+              propertyName: roomData?.name,
+              user: state?.user,
+              rentalPeriods: roomData.rentalItems,
+              leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

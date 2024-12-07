@@ -9,7 +9,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 export default function SliderDetails({ children, rounded = "" }) {
   const plugins = [
     // new Pagination({ type: "bullet" }),
-    new Arrow(),
+    new Arrow({ disabledClass: true }),
     new AutoPlay({
       duration: 2000,
       direction: "NEXT",
