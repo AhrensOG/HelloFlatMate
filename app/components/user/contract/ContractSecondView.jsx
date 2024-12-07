@@ -3,7 +3,6 @@ import ButtonReadAndSingContract from "./ButtonReadAndSingContract";
 import DocumentsSection from "./contract_second_view/DocumentsSection";
 import TitleSection from "./TitleSection";
 import { motion } from "framer-motion";
- 
 
 export default function ContractSecondView({ handleContinue, handleBack }) {
   return (
@@ -35,7 +34,9 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
           <DocumentsSection
             id="nomina"
             img={"/contract/second_view/file-icon.svg"}
-            description={"Nómina o certificado de matrícula universitaria."}
+            description={
+              "Nómina si eres nómada digital o matrícula universitaria si eres estudiante"
+            }
             width={135}
             height={135}
           />
