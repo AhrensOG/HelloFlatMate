@@ -65,6 +65,10 @@ const clientInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: true,
             },
+            reasonForValenciaOther: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
             personalReview: {
                 type: DataTypes.STRING,
                 allowNull: true,

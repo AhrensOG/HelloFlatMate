@@ -57,7 +57,7 @@ export default function SelectRentalPeriod({ data, setData }) {
   return (
     <section className="w-full">
       <div
-        className="rounded-lg flex justify-between p-2 items-center shadow-reservation-drop my-2 cursor-pointer bg-white"
+        className="rounded-lg flex justify-between p-2 border items-center shadow-reservation-drop my-2 mb-0 cursor-pointer bg-white"
         onClick={() => setShowOptions(!showOptions)}
       >
         {selectedValue
@@ -78,7 +78,7 @@ export default function SelectRentalPeriod({ data, setData }) {
       <AnimatePresence>
         {showOptions && (
           <motion.div
-            className="flex flex-col shadow-reservation-list mt-2 bg-white rounded-lg max-h-44 overflow-y-auto scrollbar-thin"
+            className="flex flex-col shadow-reservation-list mt-1 bg-white border rounded-lg max-h-44 overflow-y-auto scrollbar-thin"
             initial={{ opacity: 0, height: 0  }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

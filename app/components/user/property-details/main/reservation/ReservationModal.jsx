@@ -79,28 +79,30 @@ export default function ReservationModal({
 
     setDataReservation(reservation);
 
-    const toastId = toast.loading("Procesando reservación...");
+    const toastId = toast.loading("Procesando reserva...");
 
     try {
-      // const response = await axios.post("/api/lease_order", reservation);
-      // if (
-      //   ["HELLO_ROOM", "HELLO_COLIVING", "HELLO_LANDLORD"].includes(category)
-      // ) {
-      //   await axios.patch("/api/rental_period", {
-      //     id: rentalPeriodId,
-      //     status: "RESERVED",
-      //   });
-      // }
-      console.log(reservation);
-      toast.success("Reservación completada con éxito!", { id: toastId });
+      await axios.put("/api/user/reservation", reservation);
+      const response = await axios.post("/api/lease_order", reservation);
+      if (
+        ["HELLO_ROOM", "HELLO_COLIVING", "HELLO_LANDLORD"].includes(category)
+      ) {
+        await axios.patch("/api/rental_period", {
+          id: rentalPeriodId,
+          status: "RESERVED",
+        });
+      }
+      toast.success("Reserva completada con éxito!", {
+        id: toastId,
+        description: "Seras redirigido.",
+      });
       setTimeout(() => setIsSubmitting(false), 1000);
-    } catch (error) {
-      toast.info(
-        `Error al procesar la reservación: ${
-          error.response?.data?.message || error.message || error
-        }`,
-        { id: toastId }
+      setTimeout(
+        () => router.push("/pages/user/my-reservations"),
+        1000
       );
+    } catch (error) {
+      toast.info(`Error al procesar la reserva`, { id: toastId, description: "Intenta nuevamente o contacta al soporte" });
       setIsSubmitting(false);
       throw error;
     }
@@ -115,7 +117,7 @@ export default function ReservationModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      onClick={callback}
+      // onClick={callback}
     >
       <motion.aside
         className="relative w-full sm:w-[80%] md:w-[60%] lg:w-[40%] bg-white sm:rounded-md shadow-lg max-h-screen sm:max-h-[95vh] overflow-y-auto scrollbar-none p-6 py-4"
