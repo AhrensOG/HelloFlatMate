@@ -64,6 +64,9 @@ export default function TransactionHistory({ redirect }) {
                     userId: payment.clientId,
                     propertyId: payment.paymentableId,
                     paymentableType: payment.paymentableType,
+                    rentPaymentId: payment.id,
+                    leaseOrderId: payment.leaseOrderId,
+                    quotaNumber: payment.quotaNumber,
                 },
                 {
                     responseType: "blob", // Esto es importante para manejar archivos

@@ -1,4 +1,4 @@
-import { Client, Property, RentPayment, Room } from "@/db/init";
+import { Client, LeaseOrderProperty, LeaseOrderRoom, Property, RentPayment, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 import { billBuilder } from "../../pdf_creator/utils/billBuilder";
 
@@ -11,19 +11,26 @@ const formatDate = (date) => {
 };
 
 export async function createClientBillPDF(data) {
+    console.log(data);
+
     if (!data) return NextResponse.json({ error: "No data provided" }, { status: 400 });
     if (!data.userId || data.userId.trim() === "") return NextResponse.json({ error: "No user id provided" }, { status: 400 });
     if (!data.propertyId || data.propertyId <= 0) return NextResponse.json({ error: "No property id provided" }, { status: 400 });
     if (!data.paymentableType || data.paymentableType.trim() === "" || (data.paymentableType !== "PROPERTY" && data.paymentableType !== "ROOM"))
         return NextResponse.json({ error: "No paymentable type provided" }, { status: 400 });
+    if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ error: "No lease order id provided" }, { status: 400 });
+    if (!data.rentPaymentId || data.rentPaymentId <= 0) return NextResponse.json({ error: "No rent payment id provided" }, { status: 400 });
+    if (!data.quotaNumber || data.quotaNumber <= 0) return NextResponse.json({ error: "No quota number provided" }, { status: 400 });
 
     try {
         const client = await Client.findByPk(data.userId);
         if (!client) return NextResponse.json({ error: "Client not found" }, { status: 404 });
+        let leaseOrder;
         let property;
         let room;
         if (data.paymentableType === "PROPERTY") {
             property = await Property.findByPk(data.propertyId);
+            leaseOrder = await LeaseOrderProperty.findByPk(data.leaseOrderId);
         } else {
             room = await Room.findByPk(data.propertyId, {
                 include: {
@@ -31,8 +38,9 @@ export async function createClientBillPDF(data) {
                     as: "property",
                 },
             });
+            leaseOrder = await LeaseOrderRoom.findByPk(data.leaseOrderId);
         }
-        if (!property && !room) return NextResponse.json({ error: "Property not found" }, { status: 404 });
+        if (!property && !room && !leaseOrder) return NextResponse.json({ error: "Property or Lease order not found" }, { status: 404 });
 
         const rentPayments = await RentPayment.findAll({
             where: { paymentableId: data.roomId || data.propertyId, paymentableType: data.paymentableType.toUpperCase(), clientId: data.userId },
@@ -41,13 +49,15 @@ export async function createClientBillPDF(data) {
 
         const detailsPayments = rentPayments
             .map((payment) => {
-                return { amount: payment.amount, date: payment.date, status: payment.status, id: payment.id };
+                return { amount: payment.amount, date: payment.date, status: payment.status, id: payment.id, quotaNumber: payment.quotaNumber };
             })
             .sort((a, b) => {
-                return new Date(b.date) - new Date(a.date);
-            });
+                return b.quotaNumber - a.quotaNumber;
+            })
+            .filter((payment) => payment.quotaNumber <= data.quotaNumber);
+
         pdfData = {
-            id: detailsPayments[detailsPayments.length - 1].id,
+            id: data.rentPaymentId,
             clienteName: client.name + " " + client.lastName || "N/A",
             clienteDni: client.dni || "N/A",
             clienteAddress: client.street + " " + client.streetNumber || "N/A",
@@ -59,19 +69,8 @@ export async function createClientBillPDF(data) {
                 : property.street + " " + property.streetNumber,
             roomCode: room ? room.serial : property.serial,
             gender: `Alquier ${room ? room.typology : property.typology}`,
-            invoiceNumber: detailsPayments[detailsPayments.length - 1].id,
-            invoicePeriod:
-                detailsPayments.length > 2
-                    ? formatDate(new Date(detailsPayments[detailsPayments.length - 2].date)) +
-                      "/" +
-                      formatDate(new Date(detailsPayments[detailsPayments.length - 1].date))
-                    : formatDate(
-                          new Date(detailsPayments[detailsPayments.length - 1].date).setMonth(
-                              new Date(detailsPayments[detailsPayments.length - 1].date).getMonth() - 1
-                          )
-                      ) +
-                      "/" +
-                      formatDate(new Date(detailsPayments[detailsPayments.length - 1].date)),
+            invoiceNumber: data.rentPaymentId,
+            invoicePeriod: formatDate(leaseOrder.startDate) + " / " + formatDate(leaseOrder.endDate),
             details: detailsPayments,
             totalAmount: detailsPayments.reduce((total, payment) => total + payment.amount, 0),
         };
@@ -83,6 +82,8 @@ export async function createClientBillPDF(data) {
             },
         });
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
