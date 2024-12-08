@@ -42,8 +42,8 @@ export default function ReservationPropertyCard({
       category === "HELLO_ROOM" ||
       category === "HELLO_COLIVING" ||
       category === "HELLO_LANDLORD"
-        ? `/pages/user/contract/sign-contract/${property?.propertyId}?r=${property.id}&lo=${leaseOrder.id}`
-        : `/pages/user/contract/sign-contract/${property?.id}?lo=${leaseOrder.id}`;
+        ? `/pages/user/contract/${property?.propertyId}?r=${property.id}&lo=${leaseOrder.id}`
+        : `/pages/user/contract/${property?.id}?lo=${leaseOrder.id}`;
     route.push(path);
   };
 
@@ -124,7 +124,7 @@ export default function ReservationPropertyCard({
         setIsTooltipOpen((prev) => ({ ...prev, [tooltipKey]: false }))
       }
     >
-      <p className={`text-center text-${color} font-bold`}>{label}</p>
+      <p className={`text-center text-${color} tex-yello font-bold`}>{label}</p>
       <QuestionMarkCircleIcon className={`w-5 h-5 text-${color}`} />
       <Tooltip
         isOpen={isTooltipOpen[tooltipKey]}
@@ -144,11 +144,15 @@ export default function ReservationPropertyCard({
       );
     }
     if (!leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
-      return renderStatus(
-        "¡Recuerda firmar tu contrato!",
-        "green-600",
-        "signed",
-        "¡Tu solicitud fue aprobada y el contrato está firmado!"
+      return (
+        <>
+          <button
+            onClick={() => handleRedirectToContract()}
+            className="w-full py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition duration-200"
+          >
+            Continuar con el proceso
+          </button>
+        </>
       );
     }
 
