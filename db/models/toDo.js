@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
 const toDoInit = (sequelize, DataTypes) => {
-    class ToDo extends Model { }
+    class ToDo extends Model {}
 
     ToDo.init(
         {
@@ -49,10 +49,19 @@ const toDoInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(1000),
                 allowNull: true,
             },
+            images: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                defaultValue: [],
+                allowNull: true,
+            },
+            price: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
             isPresent: {
                 type: DataTypes.BOOLEAN,
                 allowNull: true,
-                defaultValue: false
+                defaultValue: false,
             },
             userId: {
                 type: DataTypes.STRING(300),
@@ -61,7 +70,7 @@ const toDoInit = (sequelize, DataTypes) => {
             typeUser: {
                 type: DataTypes.ENUM("CLIENT", "OWNER"),
                 allowNull: false,
-            }
+            },
         },
         {
             sequelize,
@@ -71,7 +80,7 @@ const toDoInit = (sequelize, DataTypes) => {
         }
     );
 
-    return ToDo
-}
+    return ToDo;
+};
 
-module.exports = toDoInit(connection, DataTypes)
+module.exports = toDoInit(connection, DataTypes);
