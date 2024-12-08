@@ -1,237 +1,288 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
-export async function billBuilder() {
+export async function billBuilder(data) {
     try {
-        // Datos estáticos para prueba
+        // Datos estáticos para la factura
         const paymentData = {
-            id: "12345",
-            location: "Madrid, España",
-            clienteName: "Juan Pérez",
-            clienteAddress: "Calle Falsa 123",
-            clientePhone: "+34 123 456 789",
-            companyName: "Mi Empresa S.L.",
+            id: data.id,
+            location: "Bogota, Colombia",
+            clienteName: data.clienteName,
+            clienteDni: data.clienteDni,
+            clienteAddress: data.clienteAddress,
+            clienteCity: data.clienteCity,
+            clientePhone: data.clientePhone,
+            clienteEmail: data.clienteEmail,
+            room: data.room,
+            roomCode: data.roomCode,
+            gender: data.gender,
+            invoiceNumber: data.invoiceNumber,
+            invoicePeriod: data.invoicePeriod,
+            companyName: "Biils",
             companyAddress: "Avenida Real 456",
             companyPhone: "+34 987 654 321",
-            details: [
-                { description: "Servicio de limpieza", amount: 50.0 },
-                { description: "Reparación eléctrica", amount: 100.0 },
-                { description: "Mantenimiento general", amount: 75.0 },
-            ],
-            totalAmount: 225.0,
+            details: data.details,
+            totalAmount: data.totalAmount,
             taxPercentage: 21, // IVA en porcentaje
         };
 
         const subtotal = paymentData.totalAmount / (1 + paymentData.taxPercentage / 100);
         const taxAmount = paymentData.totalAmount - subtotal;
 
+        // Calcular el total de pagos efectuados
+        const totalPagos = paymentData.details.reduce((sum, detail) => sum + detail.amount, 0);
+
         // Crear documento PDF
         const pdfDoc = await PDFDocument.create();
         const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-        const page = pdfDoc.addPage([595, 842]); // Tamaño A4 (ancho x alto)
+        let page = pdfDoc.addPage([595, 842]); // Tamaño A4 (ancho x alto)
 
         // Ajustes básicos
         const { width, height } = page.getSize();
-        const margin = 50;
-
-        // Header
+        const margin = 50; // Espacio para el logo a la izquierda
         const logoX = margin;
         const logoY = height - margin - 50;
+
+        // Cargar y embebir el logo
+        const logoPath = path.resolve(process.cwd(), "public/documents/logo_pdf.png");
+        const logoBytes = fs.readFileSync(logoPath);
+        const logoImage = await pdfDoc.embedPng(logoBytes);
+        const logoWidth = 100; // Ajustar ancho
+        const logoHeight = (logoImage.height / logoImage.width) * logoWidth; // Mantener proporción
+
+        // Dibujar logo
+        page.drawImage(logoImage, { x: logoX, y: logoY, width: logoWidth, height: logoHeight });
+
+        // Fecha arriba a la derecha
         const headerInfoX = width - margin;
+        const todayDate = new Date().toLocaleDateString("es-ES"); // dd/mm/aaaa
+        page.drawText(`Fecha: ${todayDate}`, { x: headerInfoX - 150, y: logoY + 30, size: 10, font });
 
-        // Información del encabezado (derecha)
-        page.drawText(`Factura N°: ${paymentData.id}`, {
-            x: headerInfoX - 150,
-            y: logoY + 30,
-            size: 10,
-            font: boldFont,
-            color: rgb(0, 0, 0),
-            align: "right",
-        });
-        page.drawText(`Fecha: ${new Date().toLocaleDateString()}`, {
-            x: headerInfoX - 150,
-            y: logoY + 15,
-            size: 10,
-            font: font,
-            color: rgb(0, 0, 0),
-            align: "right",
-        });
-        page.drawText(`Lugar: ${paymentData.location}`, {
-            x: headerInfoX - 150,
-            y: logoY,
-            size: 10,
-            font: font,
-            color: rgb(0, 0, 0),
-            align: "right",
-        });
+        // Definir posiciones X para las tres columnas
+        const clientInfoX = margin;
+        const middleInfoX = width / 2 - 60;
+        const invoiceInfoX = width - margin - 110;
 
-        // Información del cliente (izquierda)
-        const clientInfoY = height - margin - 100;
-        page.drawText(`Cliente: ${paymentData.clienteName}`, {
-            x: logoX,
-            y: clientInfoY,
-            size: 10,
-            font: boldFont,
-        });
-        page.drawText(`Dirección: ${paymentData.clienteAddress}`, {
-            x: logoX,
-            y: clientInfoY - 15,
-            size: 10,
-            font: font,
-        });
-        page.drawText(`Teléfono: ${paymentData.clientePhone}`, {
-            x: logoX,
-            y: clientInfoY - 30,
-            size: 10,
-            font: font,
-        });
+        // Datos del cliente (izquierda)
+        const clientInfoYStart = height - margin - 100;
 
-        // Información de la empresa (derecha)
-        const companyInfoX = headerInfoX - 150;
-        page.drawText(`Empresa: ${paymentData.companyName}`, {
-            x: companyInfoX,
-            y: clientInfoY,
-            size: 10,
-            font: boldFont,
-            align: "right",
-        });
-        page.drawText(`Dirección: ${paymentData.companyAddress}`, {
-            x: companyInfoX,
-            y: clientInfoY - 15,
-            size: 10,
-            font: font,
-            align: "right",
-        });
-        page.drawText(`Teléfono: ${paymentData.companyPhone}`, {
-            x: companyInfoX,
-            y: clientInfoY - 30,
-            size: 10,
-            font: font,
-            align: "right",
-        });
+        let currentYPosition = drawTextWithWrap(
+            page,
+            `Cliente: ${paymentData.clienteName}`,
+            clientInfoX,
+            clientInfoYStart,
+            middleInfoX - clientInfoX - 20,
+            boldFont,
+            10,
+            margin
+        );
 
-        // Línea horizontal
-        page.drawLine({
-            start: { x: margin, y: clientInfoY - 50 },
-            end: { x: width - margin, y: clientInfoY - 50 },
-            thickness: 1,
-            color: rgb(0.75, 0.75, 0.75),
-        });
+        currentYPosition -= 15; // Espacio para DNI
+        page.drawText(`DNI: ${paymentData.clienteDni}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
 
-        // Tabla de detalles de la factura
-        const tableStartY = clientInfoY - 100;
-        const column1X = margin;
-        const column2X = width - margin;
+        currentYPosition -= 15; // Espacio para dirección
+        page.drawText(`Dirección: ${paymentData.clienteAddress}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
 
-        page.drawText("Detalles", {
-            x: column1X,
-            y: tableStartY,
-            size: 12,
-            font: boldFont,
-        });
-        page.drawText("Monto", {
-            x: column2X - 100,
-            y: tableStartY,
-            size: 12,
-            font: boldFont,
-            align: "right",
+        currentYPosition -= 15; // Espacio para ciudad
+        page.drawText(`${paymentData.clienteCity}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
+
+        currentYPosition -= 15; // Espacio para teléfono
+        page.drawText(`Teléfono: ${paymentData.clientePhone}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
+
+        currentYPosition -= 15; // Espacio para correo
+        page.drawText(`Correo: ${paymentData.clienteEmail}`, { x: clientInfoX, y: currentYPosition, size: 10, font });
+
+        // Datos intermedios (en el centro)
+
+        currentYPosition = drawTextWithWrap(
+            page,
+            `Habitación : ${paymentData.room}`,
+            middleInfoX,
+            clientInfoYStart,
+            invoiceInfoX - middleInfoX - 20,
+            boldFont,
+            10,
+            margin
+        );
+
+        currentYPosition -= 15; // Espacio para el código de habitación
+        page.drawText(`Código : ${paymentData.roomCode}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
+
+        currentYPosition -= 15; // Espacio para el sexo
+        page.drawText(`Sexo : ${paymentData.gender}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
+
+        // Datos de la factura (derecha)
+        page.drawText(`Factura : ${paymentData.invoiceNumber}`, { x: invoiceInfoX, y: clientInfoYStart, size: 10, font: boldFont });
+
+        // Ajuste para la fecha en dos líneas
+        page.drawText(`Fecha :`, { x: invoiceInfoX, y: clientInfoYStart - 15, size: 10, font });
+        page.drawText(`${paymentData.invoicePeriod}`, { x: invoiceInfoX, y: clientInfoYStart - 30, size: 10, font });
+
+        // Línea horizontal divisoria
+        const lineY = currentYPosition - 80; // Ajustar la posición de la línea horizontal
+        page.drawLine({ start: { x: margin, y: lineY }, end: { x: width - margin, y: lineY }, thickness: 1, color: rgb(0.75, 0.75, 0.75) });
+
+        // Tabla de detalles
+        const detailsStartY = lineY - 40;
+        const rowHeight = 35;
+        const paddingVertical = 8;
+
+        // Encabezados de la tabla
+        const headers = ["Código", "Fecha", "Confirmado", "Subtotal"];
+        const headerWidths = [130, 160, 140, 125];
+        let currentRowY = detailsStartY;
+
+        headers.forEach((header, index) => {
+            page.drawText(header, {
+                x: margin + headerWidths.slice(0, index).reduce((a, b) => a + b, 0) + 6,
+                y: currentRowY + paddingVertical + 2,
+                size: 10,
+                font: boldFont,
+                color: rgb(0, 0, 0),
+                align: "center",
+            });
         });
 
-        let currentY = tableStartY - 20;
+        currentRowY -= rowHeight;
+
+        let isWhiteBackground = true;
 
         paymentData.details.forEach((detail) => {
-            page.drawText(detail.description, {
-                x: column1X,
-                y: currentY,
-                size: 10,
-                font: font,
+            let color = isWhiteBackground ? rgb(1, 1, 1) : rgb(0xf2 / 255, 0xf2 / 255, 0xf2 / 255);
+
+            if (currentRowY < margin + rowHeight) {
+                page = pdfDoc.addPage([595, 842]);
+                currentRowY = height - margin - 30;
+            }
+
+            page.drawRectangle({ x: margin, y: currentRowY, width: width - margin * 2, height: rowHeight, color, opacity: 1 });
+
+            page.drawLine({
+                start: { x: margin, y: currentRowY },
+                end: { x: width - margin, y: currentRowY },
+                thickness: 1,
+                color: rgb(0.75, 0.75, 0.75),
             });
-            page.drawText(`$${detail.amount.toFixed(2)}`, {
-                x: column2X - 100,
-                y: currentY,
-                size: 10,
-                font: font,
-                align: "right",
+
+            page.drawText(detail.id.toString(), {
+                x: margin + paddingVertical,
+                y: currentRowY + rowHeight / 2 - 6,
+                size: 12,
+                font,
+                color: rgb(0, 0, 0),
+                align: "center",
             });
-            currentY -= 15;
+            page.drawText(new Date(detail.date).toLocaleDateString("es-ES"), {
+                x: margin + headerWidths[0] + paddingVertical,
+                y: currentRowY + rowHeight / 2 - 6,
+                size: 12,
+                font,
+                color: rgb(0, 0, 0),
+                align: "center",
+            });
+            page.drawText(detail.status, {
+                x: margin + headerWidths[0] + headerWidths[1] + paddingVertical,
+                y: currentRowY + rowHeight / 2 - 6,
+                size: 12,
+                font,
+                color: rgb(0, 0, 0),
+                align: "center",
+            });
+            page.drawText(detail.amount.toFixed(2).toString(), {
+                x: margin + headerWidths[0] + headerWidths[1] + headerWidths[2] + paddingVertical,
+                y: currentRowY + rowHeight / 2 - 6,
+                size: 12,
+                font,
+                color: rgb(0, 0, 0),
+                align: "center",
+            });
+
+            currentRowY -= rowHeight;
+            isWhiteBackground = !isWhiteBackground;
         });
 
-        // Línea horizontal antes del total
+        currentRowY -= rowHeight;
+
+        page.drawText("Total de pagos efectuados:", {
+            x: width - margin - 170,
+            y: currentRowY + 40,
+            size: 10,
+            font: boldFont,
+            color: rgb(0, 0, 0),
+            align: "right",
+        });
+        currentRowY -= paddingVertical;
+
+        const estimatedCharWidth = 5;
+        const totalLabelWidth = "Total de pagos efectuados:".length * estimatedCharWidth;
+        const totalValueWidth = totalPagos.toFixed(2).toString().length * estimatedCharWidth;
+        const totalLineWidth = Math.max(totalLabelWidth, totalValueWidth);
+
         page.drawLine({
-            start: { x: margin, y: currentY - 10 },
-            end: { x: width - margin, y: currentY - 10 },
+            start: { x: width - margin - totalLineWidth * 1.4, y: currentRowY + 35 },
+            end: { x: width - margin, y: currentRowY + 35 },
             thickness: 1,
             color: rgb(0.75, 0.75, 0.75),
         });
 
-        // Subtotal e IVA
-        currentY -= 25;
-        page.drawText("Subtotal:", {
-            x: column2X - 150,
-            y: currentY,
+        currentRowY -= paddingVertical;
+
+        page.drawText("Total:" + totalPagos.toFixed(2).toString(), {
+            x: width - margin - 170,
+            y: currentRowY + 25,
             size: 10,
             font: boldFont,
-            align: "right",
-        });
-        page.drawText(`$${subtotal.toFixed(2)}`, {
-            x: column2X - 50,
-            y: currentY,
-            size: 10,
-            font: font,
+            color: rgb(0, 0, 0),
             align: "right",
         });
 
-        currentY -= 15;
-        page.drawText(`IVA (${paymentData.taxPercentage}%):`, {
-            x: column2X - 150,
-            y: currentY,
-            size: 10,
-            font: boldFont,
-            align: "right",
-        });
-        page.drawText(`$${taxAmount.toFixed(2)}`, {
-            x: column2X - 50,
-            y: currentY,
-            size: 10,
-            font: font,
-            align: "right",
+        currentRowY -= paddingVertical;
+
+        page.drawLine({
+            start: { x: width - margin - totalLineWidth * 1.4, y: currentRowY + 20 },
+            end: { x: width - margin, y: currentRowY + 20 },
+            thickness: 1,
+            color: rgb(0.75, 0.75, 0.75),
         });
 
-        // Total resaltado
-        currentY -= 25;
-        page.drawText("Total:", {
-            x: column2X - 150,
-            y: currentY,
-            size: 12,
-            font: boldFont,
-            color: rgb(0, 0, 1), // Azul oscuro
-            align: "right",
-        });
-        page.drawText(`$${paymentData.totalAmount.toFixed(2)}`, {
-            x: column2X - 50,
-            y: currentY,
-            size: 12,
-            font: boldFont,
-            color: rgb(0.1, 0.6, 1), // Celeste claro
-            align: "right",
-        });
+        currentRowY -= paddingVertical;
 
-        // Guardar el archivo PDF
         const pdfBytes = await pdfDoc.save();
         const pdfStream = Buffer.from(pdfBytes);
 
-        // Retornar el PDF como respuesta
-        return new NextResponse(pdfStream, {
-            status: 200,
-            headers: {
-                "Content-Type": "application/pdf",
-                "Content-Disposition": `attachment; filename=factura_${paymentData.id}.pdf`,
-            },
-        });
+        return pdfStream;
     } catch (error) {
         console.log(error);
-
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return new Error("Error al generar el PDF");
     }
+}
+
+// Función para dibujar texto con ajuste de línea
+function drawTextWithWrap(page, text, x, y, maxWidth, font, size, margin) {
+    if (!text || typeof text !== "string") return y; // Verificar si el texto es válido
+
+    const words = text.split(" ");
+    let line = "";
+    let lineHeight = size * 1.2; // Ajustar altura de línea según sea necesario
+
+    for (const word of words) {
+        const testLine = line + word + " ";
+        const testWidth = font.widthOfTextAtSize(testLine.trim(), size);
+
+        if (testWidth > maxWidth && line) {
+            page.drawText(line.trim(), { x, y, size, font });
+            line = word + " "; // Comienza una nueva línea con la palabra actual
+            y -= lineHeight; // Mueve hacia abajo para la siguiente línea
+
+            if (y < margin) break; // Evitar que se dibuje fuera del margen inferior
+        } else {
+            line = testLine; // Continúa agregando palabras a la línea actual
+        }
+    }
+    if (line) {
+        page.drawText(line.trim(), { x, y, size, font });
+    }
+    return y; // Retornar nueva posición Y después de dibujar el texto
 }
