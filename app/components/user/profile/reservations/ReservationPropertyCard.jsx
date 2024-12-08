@@ -7,12 +7,17 @@ import Tooltip from "@/app/components/public/AuxiliarComponents/ToolTip";
 import { AnimatePresence, motion } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function ReservationPropertyCard({ property, leaseOrder }) {
+export default function ReservationPropertyCard({
+  property,
+  leaseOrder,
+  user = false,
+}) {
   const [isTooltipOpen, setIsTooltipOpen] = useState({
     signed: false,
     pending: false,
@@ -55,7 +60,7 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
       category === "HELLO_LANDLORD"
         ? property.id
         : false;
-    const userEmail = leaseOrder?.userEmail || ""; // Ajusta según tus datos de usuario
+    const userEmail = user?.email || ""; // Ajusta según tus datos de usuario
     const price = parseInt(property?.price);
     const propertyName = property?.serial;
     const leaseOrderId = leaseOrder?.id;
@@ -90,11 +95,11 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
       if (result.error) {
         console.error(result.error.message);
       } else {
-        console.info("Redirigiendo al checkout de Stripe...");
+        toast.info("Redirigiendo al checkout de Stripe...");
       }
     } catch (error) {
       console.error("Error al iniciar el checkout de Stripe:", error.message);
-      alert(
+      toast.info(
         "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente."
       );
     }
@@ -138,6 +143,14 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
         "¡Tu solicitud fue aprobada y el contrato está firmado!"
       );
     }
+    if (!leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
+      return renderStatus(
+        "¡Recuerda firmar tu contrato!",
+        "green-600",
+        "signed",
+        "¡Tu solicitud fue aprobada y el contrato está firmado!"
+      );
+    }
 
     if (
       !leaseOrder.isSigned &&
@@ -176,7 +189,10 @@ export default function ReservationPropertyCard({ property, leaseOrder }) {
     <>
       <article className="max-w-md bg-white border border-gray-200 rounded-xl drop-shadow-md hover:drop-shadow-xl duration-300 overflow-hidden">
         {/* Imagen */}
-        <div onClick={handleRedirect} className="relative h-36 w-36 sm:w-[302.55px] sm:h-48 rounded-xl">
+        <div
+          onClick={handleRedirect}
+          className="relative h-36 w-36 sm:w-[302.55px] sm:h-48 rounded-xl"
+        >
           <Image
             className="h-full rounded-t-xl"
             src={property?.images[0] || ""}

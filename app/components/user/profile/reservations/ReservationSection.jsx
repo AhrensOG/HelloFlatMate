@@ -1,4 +1,3 @@
- 
 import React from "react";
 import TitleAdminPanel from "../../../admin/shared/TitleAdminPanel";
 import ReservationPropertyCard from "./ReservationPropertyCard";
@@ -17,6 +16,7 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
               const uniqueKey = `${l.property ? "property" : "room"}-${l.id}`;
               return (
                 <ReservationPropertyCard
+                  user={data}
                   key={uniqueKey}
                   property={l.property || l.room}
                   leaseOrder={l}

@@ -22,7 +22,7 @@ export async function POST(req) {
           price_data: {
             currency: "eur",
             product_data: {
-              name: `Reserva de Habitación ${propertyName}`,
+              name: `Reserva de alojamiento ${propertyName}`,
             },
             unit_amount: price * 100, // El precio debe ser en centavos (5000 = $50.00)
           },

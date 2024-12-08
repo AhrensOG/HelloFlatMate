@@ -42,7 +42,7 @@ const SuccessPage = ({ params }) => {
       setTitle("¡Felicitaciones!");
       setSubTitle("Gracias por confiar en helloflamate");
       setBody(
-        "Completa tus datos y sube la documentación necesaria para que podamos confirmar tu reserva."
+        "Completa tus datos, sube la documentación requerida y firma tu contrato digital para poder acceder a tu alojamiento en tu panel de usuario."
       );
       setAction("Completar Información");
     } else if (paymentType === "monthly") {
