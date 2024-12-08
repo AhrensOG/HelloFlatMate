@@ -208,7 +208,7 @@ const CategorySelector = ({
                 options={helloRoomRentalPeriods}
                 data={filters}
                 setData={setFilters}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
@@ -253,7 +253,7 @@ const CategorySelector = ({
                 options={helloColivingRentalPeriods}
                 data={filters}
                 setData={setFilters}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
@@ -339,7 +339,7 @@ const CategorySelector = ({
                 options={helloLandlordRentalPeriods}
                 data={filters}
                 setData={setFilters}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select

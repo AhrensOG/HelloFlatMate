@@ -65,7 +65,7 @@ export default function FourthSection() {
     <section className="flex flex-col gap-6 bg-white items-center justify-around my-10 px-4">
       <div className="relative space-y-2 w-full max-w-screen-xl">
         <h1 className="text-3xl font-bold text-center">
-          Dicen que nuestro servicio al cliente es el mejor
+          Lo que dicen nuestros flatmates
         </h1>
         <div className="flex gap-4 justify-end w-full">
           <button

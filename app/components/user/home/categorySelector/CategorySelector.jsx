@@ -187,14 +187,14 @@ const CategorySelector = ({
                 options={helloRoomRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               {/* <SelectDate
@@ -226,14 +226,14 @@ const CategorySelector = ({
                 options={helloColivingRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               {/* <SelectDate
@@ -296,14 +296,14 @@ const CategorySelector = ({
                 options={helloLandlordRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               {/* <SelectDate

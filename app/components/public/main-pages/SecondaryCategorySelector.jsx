@@ -186,14 +186,14 @@ const SecondaryCategorySelector = ({
                 options={helloRoomRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               <button
@@ -232,14 +232,14 @@ const SecondaryCategorySelector = ({
                 options={helloColivingRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               <button
@@ -316,14 +316,14 @@ const SecondaryCategorySelector = ({
                 options={helloLandlordRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               <button

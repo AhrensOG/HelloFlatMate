@@ -195,11 +195,20 @@ export default function Home() {
           <NavBar_1 />
         </header>
         <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
-          <h1 className="text-3xl font-bold">hello flat mate</h1>
+          <h1 className="text-3xl font-bold">helloflatmate</h1>
+          <h2 className="text-2xl font-bold">
+            Alojamientos para estudiantes en Valencia
+          </h2>
           <h3 className="text-lg text-center">
-            Especializados en gestión de alojamientos para estudiantes en
-            Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y
-            sin complicaciones!
+            ¡Bienvenid@s a Valencia, bienvenid@s a helloflatmate!
+            <br />
+            Desde 2011, en helloflatmate ofrecemos alojamiento especializado
+            para estudiantes en Valencia. Contamos con una variedad de opciones
+            adaptadas a tus necesidades: hellorooms, habitaciones gestionadas
+            directamente por nuestro equipo, y hellolandlord, habitaciones en
+            colaboración con propietarios de confianza. Además, descubre nuestro
+            hellocoliving para una experiencia de mayor privacidad y atención
+            personalizada.
           </h3>
           <div className="mb-64 w-full">
             <SecondaryCategorySelector
