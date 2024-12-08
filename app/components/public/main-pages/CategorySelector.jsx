@@ -43,6 +43,7 @@ const CategorySelector = ({
     helloColivingProperties,
     helloStudioProperties,
     helloLandlordProperties,
+    allProperties,
 }) => {
     const router = useRouter();
     const [currentCategory, setCurrentCategory] = useState(category);
@@ -136,7 +137,7 @@ const CategorySelector = ({
     // Función que se llama al hacer clic en el botón "Buscar"
     const handleSearch = () => {
         const queryString = buildQueryString();
-        router.push(`/pages/user/filtered?${queryString}`);
+        window.open(`/pages/user/filtered?${queryString}`, "_blank");
     };
 
     const cleanFilters = () => {
@@ -168,12 +169,7 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect
-                                options={typeArray}
-                                title="Tipo alojamiento"
-                                initValue={"helloroom"}
-                                queryString={buildQueryString("HELLO_ROOM")}
-                            />
+                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"helloroom"} categoryy={"HELLO_ROOM"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloRoomLocations}
@@ -214,12 +210,7 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect
-                                options={typeArray}
-                                title="Tipo alojamiento"
-                                initValue={"hellocoliving"}
-                                queryString={buildQueryString("HELLO_COLIVING")}
-                            />
+                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellocoliving"} categoryy={"HELLO_COLIVING"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloColivingLocations}
@@ -259,12 +250,7 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect
-                                options={typeArray}
-                                title="Tipo alojamiento"
-                                initValue={"hellostudio"}
-                                queryString={buildQueryString("HELLO_STUDIO")}
-                            />
+                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellostudio"} categoryy={"HELLO_STUDIO"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloStudioLocations}
@@ -299,12 +285,7 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect
-                                options={typeArray}
-                                title="Tipo alojamiento"
-                                initValue={"hellolandlord"}
-                                queryString={buildQueryString("HELLO_LANDLORD")}
-                            />
+                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellolandlord"} categoryy={"HELLO_LANDLORD"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloLandlordLocations}
@@ -338,6 +319,47 @@ const CategorySelector = ({
                         </div>
                     </div>
                 );
+            case "lastroom":
+                const lastroomLocations = extractLocations(allProperties);
+                const lastroomRentalPeriods = getRentalPeriods(allProperties);
+                return (
+                    <div className="w-full flex justify-center items-center">
+                        <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
+                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"lastroom"} categoryy={"lastroom"} />
+                            <Select
+                                resetFilters={resetFilters}
+                                options={lastroomLocations}
+                                data={filters}
+                                setData={setFilters}
+                                title="¿En qué zona?"
+                            />
+                            <Select
+                                resetFilters={resetFilters}
+                                options={lastroomRentalPeriods}
+                                data={filters}
+                                setData={setFilters}
+                                title="Selecciona un periodo"
+                                name="rentalPeriod"
+                            />
+                            <Select
+                                resetFilters={resetFilters}
+                                options={genre}
+                                data={filters}
+                                setData={setFilters}
+                                title="Tipo de compañeros"
+                                name="type"
+                            />
+                            <button
+                                onClick={handleSearch}
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                            >
+                                Buscar alojamiento
+                                <MagnifyingGlassIcon className="size-6 text-black" />
+                            </button>
+                        </div>
+                    </div>
+                );
+
             default:
                 return null;
         }

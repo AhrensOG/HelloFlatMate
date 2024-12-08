@@ -1,12 +1,17 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronUpIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { CheckIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { AnimatePresence, motion } from "framer-motion";
 
-const SimpleSelect = ({ options, title = "Seleccionar una opción", initValue, queryString }) => {
+const SimpleSelect = ({ options, title = "Seleccionar una opción", initValue, categoryy }) => {
     const [showInput, setShowInput] = useState(false);
     const [selectedValue, setSelectedValue] = useState(initValue || title);
     const router = useRouter();
+
+    // Efecto para actualizar el selectedValue cuando cambie initValue
+    useEffect(() => {
+        setSelectedValue(initValue || title);
+    }, [initValue, title]);
 
     const handleClick = () => {
         setShowInput(!showInput);
@@ -14,20 +19,28 @@ const SimpleSelect = ({ options, title = "Seleccionar una opción", initValue, q
 
     const handleValueChange = (option) => {
         setShowInput(false);
+        setSelectedValue(option); // Actualiza el valor seleccionado
+
+        // Redirige según la opción seleccionada
         switch (option) {
             case "helloroom":
-                return router.push("/helloroom?" + queryString);
+                router.push(`/helloroom?category=HELLO_ROOM`);
+                break;
             case "hellocoliving":
-                return router.push("/hellocoliving?" + queryString);
+                router.push(`/hellocoliving?category=HELLO_COLIVING`);
+                break;
             case "hellostudio":
-                return router.push("/hellostudio?" + queryString);
+                router.push(`/hellostudio?category=HELLO_STUDIO`);
+                break;
             case "hellolandlord":
-                return router.push("/hellolandlord?" + queryString);
+                router.push(`/hellolandlord?category=HELLO_LANDLORD`);
+                break;
             case "lastrooms":
-                return router.push("/lastrooms");
+                router.push("/lastrooms");
+                break;
             case "todos":
-                return router.push("/pages/user/filtered?" + queryString);
-
+                router.push(`/pages/user/filtered`);
+                break;
             default:
                 break;
         }
@@ -58,14 +71,13 @@ const SimpleSelect = ({ options, title = "Seleccionar una opción", initValue, q
                         transition={{ duration: 0.8, ease: "easeInOut" }}
                     >
                         {options
-                            .filter((option) => option) // Filtrar las opciones vacías
+                            .filter((option) => option)
                             .map((option, index) => (
                                 <div
                                     key={index}
                                     className="p-2 cursor-pointer hover:bg-gray-200 flex items-center"
                                     onClick={() => handleValueChange(option)}
                                 >
-                                    {/* Checkbox Visual */}
                                     <div
                                         className={`w-4 h-4 mr-2 border rounded-sm flex items-center justify-center ${
                                             selectedValue === option ? "bg-blue-500 border-blue-500" : "border-gray-400"
