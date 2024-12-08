@@ -144,7 +144,7 @@ export default function ReservationModal({
           />
         </div>
         <h2 className="text-xl font-semibold mb-4 w-full text-center">
-          Datos de reserva
+          Datos de solicitud para reserva
         </h2>
         <div className="space-y-5">
           {calendarType === "SIMPLE" ? (

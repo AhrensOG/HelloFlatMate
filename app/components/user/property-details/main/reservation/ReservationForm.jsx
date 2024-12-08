@@ -107,7 +107,7 @@ const ReservationForm = ({
           {/* Dirección */}
           <div>
             <label className="block text-sm font-medium text-gray-500 mb-2">
-              Dirección
+              Nacionalidad
             </label>
             <div className="">
               <div>
@@ -128,7 +128,7 @@ const ReservationForm = ({
           {/* Razón para Valencia */}
           <div>
             <label className="block text-sm font-medium text-gray-500 mb-2">
-              ¿Por qué quieres estar en Valencia?
+              ¿Por qué vienes a Valencia?
             </label>
             <Field
               as="select"
@@ -169,12 +169,12 @@ const ReservationForm = ({
                 className=""
               >
                 <label className="block text-sm font-medium text-gray-500 mb-2">
-                  Indícanos
+                  Cuéntanos sobre tí
                 </label>
                 <Field
                   as="textarea"
                   name="reasonForValenciaOther"
-                  placeholder="Por favor, especifica la razón"
+                  placeholder="Comparte con nosotros tus intereses, pasatiempos y qué tipo de inquilino eres."
                   className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition h-24"
                 />
                 <ErrorMessage
@@ -188,12 +188,12 @@ const ReservationForm = ({
           {/* Reseña personal */}
           <div>
             <label className="block text-sm font-medium text-gray-500 mb-2">
-              Reseña personal
+              Información adicional
             </label>
             <Field
               name="personalReview"
               as="textarea"
-              placeholder="Describe tus gustos, costumbres, etc."
+              placeholder="Dinos en que empresa trabajarás o a que universidad irás."
               className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition h-24"
             />
             <ErrorMessage
@@ -275,39 +275,3 @@ const ReservationForm = ({
 };
 
 export default ReservationForm;
-
-// const handleCheckout = async (reservation, user, leaseOrderId) => {
-//   const propertyId = reservation?.propertyId;
-//   const userEmail = user?.email;
-//   const price = parseInt(reservation?.unitPrice);
-//   const propertyName = reservation?.propertyName;
-
-//   try {
-//     const response = await fetch("/api/stripe/create-checkout-session", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         propertyId,
-//         userEmail,
-//         price,
-//         propertyName,
-//         leaseOrderId,
-//         roomId: reservation?.roomId || false,
-//         category,
-//       }),
-//     });
-//     const session = await response.json();
-//     const stripe = await stripePromise;
-
-//     const result = await stripe.redirectToCheckout({
-//       sessionId: session.id,
-//     });
-
-//     toast.info("Seras redirigido a la pagina de pago");
-//   } catch (error) {
-//     console.log(error);
-//     throw error;
-//   }
-// };
