@@ -30,7 +30,7 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/success/${propertyId}?type=reserve`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/success/${propertyId}?type=reserve&r=${roomId}&lo=${leaseOrderId}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/cancel`,
       customer_email: userEmail,
       metadata: {
