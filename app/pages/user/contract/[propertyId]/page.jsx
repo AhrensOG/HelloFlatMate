@@ -4,17 +4,20 @@ import ContractSecondView from "@/app/components/user/contract/ContractSecondVie
 import NavBar from "@/app/components/nav_bar/NavBar";
 import PaymentComponent from "@/app/components/user/payment/PaymentComponent";
 import GlobalContext from "@/app/context/GlobalContext";
- 
+
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import ThankYou from "@/app/components/user/thank_you/ThankYou";
 import axios from "axios";
+import ContractDetail from "@/app/components/user/contract/contract_detail/ContractDetail";
 
 export default function Contract({ params }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [owner, setOwner] = useState();
+  const [property, setProperty] = useState();
+  const [room, setRoom] = useState(false);
   const propertyId = params.propertyId;
   const router = useRouter();
 
@@ -30,14 +33,16 @@ export default function Contract({ params }) {
   };
 
   const handleRedirect = () => {
-    router.push("/pages/user/my-reservations");
+    router.push("/pages/user/my-bedrooms");
   };
 
   useEffect(() => {
     const fetchOwner = async () => {
       try {
-        const data = await axios.get("/api/user?propertyId=" + propertyId);
-        setOwner(data.data || null);
+        const ownerData = await axios.get("/api/user?propertyId=" + propertyId);
+        const propertyData = await axios.get(`/api/property?id=${propertyId}`);
+        setOwner(ownerData.data || null);
+        setProperty(propertyData?.data?.property || null);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -74,11 +79,33 @@ export default function Contract({ params }) {
               />
             )}
             {currentStep === 3 && (
-              <PaymentComponent
+              <ContractDetail
+                owner={owner}
+                property={property}
+                room={room}
                 handleContinue={handleContinue}
                 handleBack={handleBack}
               />
             )}
+            {currentStep === 4 && (
+              <ThankYou
+                title={"¡Felicidades!"}
+                subTitle={
+                  "Tu firma digital y contrato fueron generados con éxito."
+                }
+                body={
+                  "Recuerda abonar los suministros antes de la fecha de ingreso a la propiedad."
+                }
+                action={"Regresar "}
+                callback={handleRedirect}
+              />
+            )}
+            {/* {currentStep === 3 && (
+              <PaymentComponent
+                handleContinue={handleContinue}
+                handleBack={handleBack}
+              />
+            )} */}
             {/* {currentStep === 3 && (
               <ContractDetail
                 owner={owner}
@@ -86,7 +113,7 @@ export default function Contract({ params }) {
                 handleBack={handleBack}
               />
             )} */}
-            {currentStep === 4 && (
+            {/* {currentStep === 4 && (
               <ThankYou
                 title={"¡Felicidades!"}
                 subTitle={"Hemos recibido la información correctamente."}
@@ -96,7 +123,7 @@ export default function Contract({ params }) {
                 action={"Regresar "}
                 callback={handleRedirect}
               />
-            )}
+            )} */}
           </AnimatePresence>
         </main>
       </div>

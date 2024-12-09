@@ -1,38 +1,39 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function SixthSection() {
+export default function 
+SixthSection() {
   const router = useRouter();
   const alojamientos = [
-    {
-      title: "hello landlord",
-      description: `Habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por hello flat mate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.
-
-      ¡Comparte con estudiantes como tú!`,
-      imageUrl: "/home/new_home/apartments.jpg", // Ruta de ejemplo para la imagen
-      link: "/hellolandlord",
-    },
     {
       title: "hello rooms",
       description: `Habitaciones de media estancia en Valencia, gestionadas por el equipo de hello flat mate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones. 
       
       ¡Vive con otros estudiantes como tú!`,
-      imageUrl: "/home/new_home/privateRoom.jpg",
+      imageUrl: "/home/new_home/hellorooms.png",
       link: "/helloroom",
-    },
-    {
-      title: "hello studios",
-      description:
-        "Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables.  Ideal para estudiantes y nómadas digitales que buscan comodidad y privacidad.",
-      imageUrl: "/home/new_home/studio.jpg",
-      link: "/hellostudio",
     },
     {
       title: "hello coliving",
       description:
         "Espacios de coliving para estudiantes en Valencia, con ambiente comunitario, servicio de limpieza y gestión de estancia por helloflatmate para una experiencia cómoda y seguro.",
-      imageUrl: "/home/new_home/sharedRoom.jpg",
+      imageUrl: "/home/new_home/hellocoliving.png",
       link: "/hellocoliving",
+    },
+    {
+      title: "hello landlord",
+      description: `Habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por hello flat mate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.
+
+      ¡Comparte con estudiantes como tú!`,
+      imageUrl: "/home/new_home/landlord.png", // Ruta de ejemplo para la imagen
+      link: "/hellolandlord",
+    },
+    {
+      title: "hello studios",
+      description:
+        "Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables.  Ideal para estudiantes y nómadas digitales que buscan comodidad y privacidad.",
+      imageUrl: "/home/new_home/hellostudio.png",
+      link: "/hellostudio",
     },
   ];
 
@@ -40,8 +41,7 @@ export default function SixthSection() {
     <section className="py-12 w-full">
       <div className="max-w-screen-xl mx-auto px-4">
         <h2 className="text-3xl text-center mb-12">
-          <strong>4</strong> tipos de alojamiento con toda la seguridad para
-          estudiantes
+          Cuatro tipos de alojamiento diseñados para estudiantes
         </h2>
         <div className="flex flex-wrap justify-center items-stretch gap-8">
           {alojamientos.map((alojamiento, index) => (

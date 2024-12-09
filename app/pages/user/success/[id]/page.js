@@ -1,83 +1,41 @@
 "use client";
 import ThankYou from "@/app/components/user/thank_you/ThankYou";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense } from "react";
 
 const SkeletonLoader = () => {
   return (
-    <div className="animate-pulse p-2">
-      <div className="h-10 bg-gray-300 rounded mb-4 w-full"></div>
-      <div className="h-6 bg-gray-300 rounded mb-2 w-full"></div>
-      <div className="h-6 bg-gray-300 rounded mb-2 w-full"></div>
-      <div className="h-6 bg-gray-300 rounded mb-4 w-full"></div>
-      <div className="h-12 bg-gray-400 rounded w-full"></div>
+    <div className="w-full flex justify-center h-[70vh] animate-pulse">
+      <div className="flex flex-col items-center justify-center w-full max-w-screen-sm">
+        <div className="grow flex flex-col items-center justify-center gap-8">
+          {/* Placeholder for Image */}
+          <div className="w-[130px] h-[130px] bg-gray-300 rounded-full"></div>
+
+          {/* Placeholder for Title and Subtitle */}
+          <div className="text-center">
+            <div className="h-6 bg-gray-300 rounded mb-2 w-48 mx-auto"></div>
+            <div className="h-4 bg-gray-300 rounded w-32 mx-auto"></div>
+          </div>
+
+          {/* Placeholder for Body */}
+          <div>
+            <div className="h-4 bg-gray-300 rounded w-64 mx-auto"></div>
+            <div className="h-4 bg-gray-300 rounded w-48 mx-auto mt-2"></div>
+          </div>
+        </div>
+
+        {/* Placeholder for Button */}
+        <div className="flex items-end w-full p-2">
+          <div className="h-[3rem] bg-gray-400 rounded-lg w-full"></div>
+        </div>
+      </div>
     </div>
   );
 };
 
 const SuccessPage = ({ params }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = params.id;
-
-  const [title, setTitle] = useState("");
-  const [subTitle, setSubTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [action, setAction] = useState("");
-
-  // Obtener el tipo de pago desde el query
-  const paymentType = searchParams.get("type");
-
-  // useEffect para actualizar los textos según el tipo de pago
-  useEffect(() => {
-    if (paymentType === "supply") {
-      setTitle("¡Pago de Suministro Completado!");
-      setSubTitle("Gracias por realizar tu pago de servicios.");
-      setBody(
-        "Tu pago ha sido procesado exitosamente. No olvides revisar los detalles del suministro y gestionar futuros pagos."
-      );
-      setAction("Ver Detalles del Suministro");
-    } else if (paymentType === "reserve") {
-      // Mantén los textos predeterminados para las reservas
-      setTitle("¡Felicitaciones!");
-      setSubTitle("Gracias por confiar en helloflamate");
-      setBody(
-        "Completa tus datos y sube la documentación necesaria para que podamos confirmar tu reserva."
-      );
-      setAction("Completar Información");
-    } else if (paymentType === "monthly") {
-      // Mantén los textos predeterminados para las reservas
-      setTitle("¡Felicitaciones!");
-      setSubTitle("Gracias por confiar en helloflamate");
-      setBody(
-        "Verifica tus pagos en tus dormitorios"
-      );
-      setAction("Continuar");
-    }
-  }, [paymentType]); // Se ejecuta cuando cambia el paymentType
-
-  // Función de redirección basada en el tipo de pago
-  const handleCallback = () => {
-    if (paymentType === "reserve") {
-      router.push("/pages/user/contract/" + id);
-    } else if (paymentType === "supply") {
-      router.push("/pages/user/supplies/" + id);
-    } else if (paymentType === "monthly") {
-      router.push("/pages/user/my-bedrooms");
-    } else {
-      router.push("/");
-    }
-  };
-
   return (
     <Suspense fallback={<SkeletonLoader />}>
-      <ThankYou
-        title={title}
-        subTitle={subTitle}
-        body={body}
-        action={action}
-        callback={handleCallback}
-      />
+      <ThankYou id={params.id} />
     </Suspense>
   );
 };

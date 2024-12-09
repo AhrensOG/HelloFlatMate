@@ -9,7 +9,7 @@ import axios from "axios";
 import BotIcon from "@/app/components/public/chat-bot/BotIcon";
 import BotModal from "@/app/components/public/chat-bot/BotModal";
 
-export default function MyBedrooms() {
+export default function MyReservations() {
     const { state } = useContext(Context);
     const [user, setUser] = useState(false);
     const [leaseOrdersList, setLeaseOrdersList] = useState([]);
