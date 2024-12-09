@@ -81,13 +81,13 @@ export default function NavbarV3({ fixed = false }) {
                 Perfil
               </Link>
               <Link
-                href="/pages/user/profile/mi-bedrooms"
+                href="/pages/user/my-bedrooms"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Panel
               </Link>
               <Link
-                href="/pages/user/profile/mi-reservations"
+                href="/pages/user/my-reservations"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Historico
@@ -164,19 +164,19 @@ export default function NavbarV3({ fixed = false }) {
                     Perfil
                   </Link>
                   <Link
-                    href="/pages/user/profile/mi-bedrooms"
+                    href="/pages/user/my-bedrooms"
                     className="block font-bold text-lg"
                   >
                     Panel
                   </Link>
                   <Link
-                    href="/pages/user/profile/mi-reservations"
+                    href="/pages/user/my-reservations"
                     className="block font-bold text-lg"
                   >
                     Reservas
                   </Link>
                   <Link
-                    href="/pages/user/history"
+                    href="/pages/user/history/payments"
                     className="block font-bold text-lg"
                   >
                     Pagos

@@ -52,7 +52,6 @@ const CategorySelector = ({
     const [resetFilters, setResetFilters] = useState();
     
     useEffect(() => {
-        console.log(filters)
         if (category) {
             setCurrentCategory(category);
         }
@@ -200,10 +199,10 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
                     </div>
@@ -241,10 +240,10 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
                     </div>
@@ -275,10 +274,10 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
                     </div>
@@ -315,10 +314,10 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
                     </div>
@@ -355,10 +354,10 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
                     </div>
