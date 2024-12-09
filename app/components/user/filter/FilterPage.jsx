@@ -14,49 +14,36 @@ const getRentalPeriods = (propiedades) => {
     const fechasUnicas = new Set();
 
     propiedades.forEach((propiedad) => {
-      // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
-      if (
-        propiedad.category === "HELLO_ROOM" ||
-        propiedad.category === "HELLO_COLIVING" ||
-        propiedad.category === "HELLO_LANDLORD"
-      ) {
-        // Acceder al array rooms y mapear sobre él
-        propiedad.rooms.forEach((room) => {
-          // Acceder a rentalPeriods y formatear las fechas
-          room.rentalItems?.forEach((periodo) => {
-            const startDate = new Date(periodo.rentalPeriod?.startDate);
-            const endDate = new Date(periodo.rentalPeriod?.endDate);
+        // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
+        if (propiedad.category === "HELLO_ROOM" || propiedad.category === "HELLO_COLIVING" || propiedad.category === "HELLO_LANDLORD") {
+            // Acceder al array rooms y mapear sobre él
+            propiedad.rooms.forEach((room) => {
+                // Acceder a rentalPeriods y formatear las fechas
+                room.rentalItems?.forEach((periodo) => {
+                    const startDate = new Date(periodo.rentalPeriod?.startDate);
+                    const endDate = new Date(periodo.rentalPeriod?.endDate);
 
-            // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
-            const formattedStartDate = `${startDate
-              .getDate()
-              .toString()
-              .padStart(2, "0")}/${(startDate.getMonth() + 1)
-              .toString()
-              .padStart(2, "0")}/${startDate
-              .getFullYear()
-              .toString()
-              .slice(-2)}`;
+                    // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
+                    const formattedStartDate = `${startDate.getDate().toString().padStart(2, "0")}/${(startDate.getMonth() + 1)
+                        .toString()
+                        .padStart(2, "0")}/${startDate.getFullYear().toString().slice(-2)}`;
 
-            const formattedEndDate = `${endDate
-              .getDate()
-              .toString()
-              .padStart(2, "0")}/${(endDate.getMonth() + 1)
-              .toString()
-              .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
+                    const formattedEndDate = `${endDate.getDate().toString().padStart(2, "0")}/${(endDate.getMonth() + 1)
+                        .toString()
+                        .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
 
-            const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
+                    const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
 
-            // Añadir la fecha al Set para evitar duplicados
-            fechasUnicas.add(fecha);
-          });
-        });
-      }
+                    // Añadir la fecha al Set para evitar duplicados
+                    fechasUnicas.add(fecha);
+                });
+            });
+        }
     });
 
     // Convertir el Set a un array para devolverlo
     return Array.from(fechasUnicas);
-  };
+};
 
 export default function FilterPage() {
     const searchParams = useSearchParams();
@@ -79,7 +66,7 @@ export default function FilterPage() {
         location: location || "",
         occupants: occupants || "",
         rentalPeriod: rentalPeriod || "",
-        type: type || ""
+        type: type || "",
     });
     const [filteredProperties, setFilteredProperties] = useState(properties);
     const [filteredRentalPeriods, setFilteredRentalPeriods] = useState([]);
@@ -192,6 +179,15 @@ export default function FilterPage() {
         if (!filters.categorys || filters.categorys.length === 0) {
             return properties;
         }
+        if (category === "lastroom") {
+            return properties.filter((property) => {
+                if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
+                    return property.rooms.some((room) => room.status === "FREE");
+                } else {
+                    return property.status === "FREE";
+                }
+            });
+        }
         return properties.filter((property) => {
             return filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase());
         });
@@ -246,15 +242,15 @@ export default function FilterPage() {
     const convertRentalPeriodToString = (startDate, endDate) => {
         const formatDate = (date) => {
             const d = new Date(date);
-            const day = String(d.getDate()).padStart(2, '0');
-            const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
+            const day = String(d.getDate()).padStart(2, "0");
+            const month = String(d.getMonth() + 1).padStart(2, "0"); // Los meses empiezan en 0
             const year = String(d.getFullYear()).slice(-2); // Tomamos los últimos 2 dígitos del año
             return `${day}/${month}/${year}`;
         };
-    
+
         const start = formatDate(startDate);
         const end = formatDate(endDate);
-        
+
         return `Del ${start} al ${end}`;
     };
 
@@ -293,11 +289,14 @@ export default function FilterPage() {
 
     const filterByCategoriesAndGetRentalPeriods = (properties) => {
         const filteredProperties = filters.categorys
-            ? properties.filter((property) => filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase()))
+            ? properties.filter(
+                  (property) =>
+                      filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase())
+              )
             : properties;
-    
+
         const periodsList = getRentalPeriods(filteredProperties);
-        setFilteredRentalPeriods(periodsList)
+        setFilteredRentalPeriods(periodsList);
     };
 
     const applyFilters = () => {
@@ -309,8 +308,8 @@ export default function FilterPage() {
         // result = filterByOccupants(result);
         result = filterByRentalPeriod(result);
         result = filterByTypology(result);
-        
-        filterByCategoriesAndGetRentalPeriods(result)
+
+        filterByCategoriesAndGetRentalPeriods(result);
         setFilteredProperties(result);
     };
 
@@ -407,7 +406,7 @@ export default function FilterPage() {
                         setFilters={setFilters}
                         onApplyFilters={applyFilters}
                         onFilterChange={handleFilterChange}
-                        category = {category}
+                        category={category}
                         rentalPeriods={filteredRentalPeriods}
                     />
                     <div className="w-[75%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-wrap justify-center items-start">
@@ -490,7 +489,7 @@ export default function FilterPage() {
                 setFilters={setFilters}
                 onApplyFilters={applyFilters}
                 onFilterChange={handleFilterChange}
-                category = {category}
+                category={category}
                 rentalPeriods={filteredRentalPeriods}
             />
         </div>
