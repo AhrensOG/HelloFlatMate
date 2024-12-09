@@ -178,7 +178,7 @@ const CategorySelector = ({
                                 options={helloRoomLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="¿En qué zona?"
+                                title="Zona"
                                 name="zone"
                             />
                             <Select
@@ -186,7 +186,7 @@ const CategorySelector = ({
                                 options={helloRoomRentalPeriods}
                                 data={filters}
                                 setData={setFilters}
-                                title="Selecciona un periodo"
+                                title="Fechas"
                                 name="rentalPeriod"
                             />
                             <Select
@@ -219,7 +219,7 @@ const CategorySelector = ({
                                 options={helloColivingLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="¿En qué zona?"
+                                title="Zona"
                                 name="zone"
                             />
                             <Select
@@ -227,7 +227,7 @@ const CategorySelector = ({
                                 options={helloColivingRentalPeriods}
                                 data={filters}
                                 setData={setFilters}
-                                title="Selecciona un periodo"
+                                title="Fechas"
                                 name="rentalPeriod"
                             />
                             <Select
@@ -259,7 +259,7 @@ const CategorySelector = ({
                                 options={helloStudioLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="¿En qué zona?"
+                                title="Zona"
                                 name="zone"
                             />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"start"} />
@@ -294,14 +294,14 @@ const CategorySelector = ({
                                 options={helloLandlordLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="¿En qué zona?"
+                                title="Zona"
                             />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloLandlordRentalPeriods}
                                 data={filters}
                                 setData={setFilters}
-                                title="Selecciona un periodo"
+                                title="Fechas"
                                 name="rentalPeriod"
                             />
                             <Select

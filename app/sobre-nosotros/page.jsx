@@ -10,7 +10,7 @@ const AboutUs = () => {
   return (
     <section className="bg-white w-full">
       {/* Header con imagen de fondo */}
-      <header className="bg-[url('/home/new_home/bg.jpg')] bg-cover bg-no-repeat bg-bottom">
+      <header className="bg-[url('/home/new_home/bg1.png')] bg-cover bg-no-repeat bg-center">
         <SecondaryNavbar />
         <div className="w-full flex justify-center items-center py-40">
           <h1 className="text-2xl font-bold max-w-screen-lg text-center text-white">
@@ -109,7 +109,7 @@ const AboutUs = () => {
         </div>
       </div>
 
-      <div className="max-w-screen-lg mx-auto py-16 px-4">
+      <div id="medios" className="max-w-screen-lg mx-auto py-16 px-4">
         <h2 className="text-center text-4xl font-bold mb-14">
           hello flat mate en los medios
         </h2>

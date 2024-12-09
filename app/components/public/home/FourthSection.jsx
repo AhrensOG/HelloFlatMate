@@ -7,26 +7,26 @@ import FourthSectionCard from "./FourthSectionCard";
 
 const testimonials = [
   {
-    text: "Fue la primera vez que usé la plataforma y me pareció muy profesional y fácil. Incluso me contactó alguien del staff para ayudarme a completar los pasos requeridos. Totalmente recomendable.",
-    name: "Luise Aymar",
-    location: "Germany",
+    text: "Excellent.  After a long search for housing, Hello Flatmate was a blessing.  Amazing customer service, easy processing and great housing offers.  With all the scams that we encountered on the way, Hello Flatmate was as a very positive experience!  Highly recommended.",
+    name: "Elena",
+    location: "España",
     stars: 5,
   },
   {
-    text: "El servicio fue excepcional y me ayudaron en todo momento. Definitivamente volveré a usarlo.",
-    name: "John Doe",
+    text: "Recomiendo Helloflatemate a cualquiera, he estado con ellos durante 5 años, sin problemas, son muy amables, dan muy buen servicio y casas bien mantenidas. Mónica y Alberto siempre dispuestos a ayudar si necesitaba algo que era muy agradable.Disfruté mucho de mi estancia con ellos.",
+    name: "Nancy Kabamba",
     location: "USA",
     stars: 5,
   },
   {
-    text: "Una experiencia increíble, el equipo fue muy atento y resolvieron todas mis dudas rápidamente.",
-    name: "Jane Smith",
+    text: "¡Chicos agradables y serviciales que trabajan en HelloFlatmates! Realmente aprecio la respuesta rápida y solidaria del equipo en situaciones de emergencia. 1 estrella menos, solo intenta ser mejor... :)",
+    name: "Shashwat Tripathi",
     location: "UK",
-    stars: 5,
+    stars: 4,
   },
   {
-    text: "Recomiendo este servicio a todos mis amigos. Muy satisfecho con la atención recibida.",
-    name: "Carlos Pérez",
+    text: "Después de una larga búsqueda de apartamento en Valencia finalmente encontré un apartamento cómodo en una ubicación fantástica con HelloFlatMate. Su servicio al cliente fue excepcional, siempre respondieron los correos electrónicos",
+    name: "Daniel Zanatta",
     location: "Spain",
     stars: 5,
   },
@@ -65,7 +65,7 @@ export default function FourthSection() {
     <section className="flex flex-col gap-6 bg-white items-center justify-around my-10 px-4">
       <div className="relative space-y-2 w-full max-w-screen-xl">
         <h1 className="text-3xl font-bold text-center">
-          Dicen que nuestro servicio al cliente es el mejor
+          Lo que dicen nuestros flatmates
         </h1>
         <div className="flex gap-4 justify-end w-full">
           <button

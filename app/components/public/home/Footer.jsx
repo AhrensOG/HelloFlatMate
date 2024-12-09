@@ -10,10 +10,14 @@ export default function Footer_1() {
         <section className="flex flex-col gap-10 p-6">
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">helloflatmate</h2>
-            <Link href="/sobre-nosotros" target="_blank" className="font-normal text-base">
+            <Link
+              href="/sobre-nosotros"
+              target="_blank"
+              className="font-normal text-base"
+            >
               Sobre nosotros
             </Link>
-            <Link href="#" target="_blank" className="font-normal text-base">
+            {/* <Link href="#" target="_blank" className="font-normal text-base">
               Blog
             </Link>
             <Link href="#" target="_blank" className="font-normal text-base">
@@ -24,7 +28,7 @@ export default function Footer_1() {
             </Link>
             <Link href="#" target="_blank" className="font-normal text-base">
               Mapa del sitio
-            </Link>
+            </Link> */}
           </article>
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Legal</h2>
@@ -43,7 +47,7 @@ export default function Footer_1() {
               Politica de cookies
             </Link>
             <Link
-              href="/privacy-policy"
+              href="/terminos-condiciones"
               target="_blank"
               className="font-normal text-base"
             >
@@ -52,40 +56,47 @@ export default function Footer_1() {
           </article>
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Inquilinos</h2>
-            <Link href="/como-funciona" target="_blank" className="font-normal text-base">
+            <Link
+              href="/como-funciona"
+              target="_blank"
+              className="font-normal text-base"
+            >
               Como funciona
             </Link>
-            <Link href="#" target="_blank" className="font-normal text-base">
-              Promociones
+            <Link href="/clausulas" target="_blank" className="font-normal text-base">
+              Clausulas del contrato
             </Link>
           </article>
-          <article className="flex flex-col gap-4">
+          {/* <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Propietarios</h2>
             <Link href="#" target="_blank" className="font-normal text-base">
               Anuncia tu propiedad
             </Link>
-          </article>
+          </article> */}
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Unete a nosotros</h2>
-            <Link href="#" target="_blank" className="font-normal text-base">
+            <Link
+              href="/sobre-nosotros#medios"
+              className="font-normal text-base"
+            >
               Colaboradores
             </Link>
-            <Link href="#" target="_blank" className="font-normal text-base">
+            {/* <Link href="#" target="_blank" className="font-normal text-base">
               Hazte Partner
             </Link>
             <Link href="#" target="_blank" className="font-normal text-base">
               Trabaja con nosotros
-            </Link>
+            </Link> */}
           </article>
         </section>
         <section className="flex flex-col gap-7 p-6">
           <h2 className="font-bold uppercase text-lg">Soporte</h2>
-          <button className="p-5 border border-[#676767] font-bold">
+          <Link href="/faq" className="p-5 border border-[#676767] font-bold">
             Visita el centro de ayuda
-          </button>
-          <Link href="#" target="_blank" className="font-normal text-base">
-            Contacta con Soporte
           </Link>
+          {/* <Link href="#" target="_blank" className="font-normal text-base">
+            Contacta con Soporte
+          </Link> */}
         </section>
 
         <div className="flex items-center gap-4 p-6">
@@ -136,23 +147,29 @@ export default function Footer_1() {
 
         <section className="flex flex-col gap-7 p-6">
           <article className="flex flex-wrap justify-center gap-4">
-            <h2 className="font-bold uppercase text-lg w-full">
-              DESCARGA LA APP
-            </h2>
+            <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
             <button>
               <Image
-                src={"https://static.spotahome.com/login_image/app-store.png"}
+                src="/home/new_home/lasprovincias.svg"
+                alt="El Confidencial"
                 width={150}
                 height={150}
-                alt="app store"
               />
             </button>
             <button>
               <Image
-                src={"https://static.spotahome.com/login_image/google-play.png"}
+                src="/home/new_home/elperiodic.svg"
+                alt="El Confidencial"
                 width={150}
                 height={150}
-                alt="google play"
+              />
+            </button>
+            <button>
+              <Image
+                src="/home/new_home/madridlogo.png"
+                alt="El Confidencial"
+                width={250}
+                height={250}
               />
             </button>
           </article>
@@ -185,7 +202,7 @@ export default function Footer_1() {
                 </defs>
               </svg>
             </Link>
-            <Link href="#" target="_blank" className="">
+            {/* <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -229,7 +246,7 @@ export default function Footer_1() {
                   fill="#666666"
                 ></path>
               </svg>
-            </Link>
+            </Link> */}
             <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -257,7 +274,7 @@ export default function Footer_1() {
                 </defs>
               </svg>
             </Link>
-            <Link href="#" target="_blank" className="">
+            {/* <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -271,7 +288,7 @@ export default function Footer_1() {
                   fill="#666666"
                 ></path>
               </svg>
-            </Link>
+            </Link> */}
           </article>
         </section>
         <section>
@@ -303,7 +320,7 @@ export default function Footer_1() {
                 >
                   Sobre nosotros
                 </Link>
-                <Link
+                {/* <Link
                   href="#"
                   target="_blank"
                   className="font-normal text-base"
@@ -330,7 +347,7 @@ export default function Footer_1() {
                   className="font-normal text-base"
                 >
                   Mapa del sitio
-                </Link>
+                </Link> */}
               </article>
 
               <article className="flex flex-col gap-4">
@@ -350,7 +367,7 @@ export default function Footer_1() {
                   Politica de cookies
                 </Link>
                 <Link
-                  href="/privacy-policy"
+                  href="/terminos-y-condiciones"
                   target="_blank"
                   className="font-normal text-base"
                 >
@@ -369,14 +386,14 @@ export default function Footer_1() {
                   Como funciona
                 </Link>
                 <Link
-                  href="#"
+                  href="/clausulas"
                   target="_blank"
                   className="font-normal text-base"
                 >
-                  Promociones
+                  Clausulas del contrato
                 </Link>
               </article>
-              <article className="flex flex-col gap-4">
+              {/* <article className="flex flex-col gap-4">
                 <h2 className="font-bold uppercase text-lg">Propietarios</h2>
                 <Link
                   href="#"
@@ -385,19 +402,18 @@ export default function Footer_1() {
                 >
                   Anuncia tu propiedad
                 </Link>
-              </article>
+              </article> */}
               <article className="flex flex-col gap-4">
                 <h2 className="font-bold uppercase text-lg">
                   Unete a nosotros
                 </h2>
                 <Link
-                  href="#"
-                  target="_blank"
+                  href="/sobre-nosotros#medios"
                   className="font-normal text-base"
                 >
                   Colaboradores
                 </Link>
-                <Link
+                {/* <Link
                   href="#"
                   target="_blank"
                   className="font-normal text-base"
@@ -410,41 +426,48 @@ export default function Footer_1() {
                   className="font-normal text-base"
                 >
                   Trabaja con nosotros
-                </Link>
+                </Link> */}
               </article>
             </div>
           </section>
           <section className="flex flex-col gap-7 p-6">
             <h2 className="font-bold uppercase text-lg">Soporte</h2>
-            <button className="p-5 border border-[#676767] font-bold text-xl w-[15rem]">
+            <Link
+              href="/faq"
+              className="p-5 border border-[#676767] font-bold text-xl w-[15rem]"
+            >
               Visita el centro de ayuda
-            </button>
-            <Link href="#" target="_blank" className="font-normal text-base">
-              Contacta con Soporte
             </Link>
+            {/* <Link href="#" target="_blank" className="font-normal text-base">
+              Contacta con Soporte
+            </Link> */}
           </section>
 
           <section className="flex flex-col gap-7 p-6 w-[25rem]">
             <article className="flex flex-wrap gap-4">
-              <h2 className="font-bold uppercase text-lg w-full">
-                DESCARGA LA APP
-              </h2>
+              <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
               <button>
                 <Image
-                  src={"https://static.spotahome.com/login_image/app-store.png"}
+                  src="/home/new_home/lasprovincias.svg"
+                  alt="El Confidencial"
                   width={150}
                   height={150}
-                  alt="app store"
                 />
               </button>
               <button>
                 <Image
-                  src={
-                    "https://static.spotahome.com/login_image/google-play.png"
-                  }
+                  src="/home/new_home/elperiodic.svg"
+                  alt="El Confidencial"
                   width={150}
                   height={150}
-                  alt="google play"
+                />
+              </button>
+              <button>
+                <Image
+                  src="/home/new_home/madridlogo.png"
+                  alt="El Confidencial"
+                  width={250}
+                  height={250}
                 />
               </button>
             </article>
@@ -477,7 +500,7 @@ export default function Footer_1() {
                   </defs>
                 </svg>
               </Link>
-              <Link href="#" target="_blank" className="">
+              {/* <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -521,7 +544,7 @@ export default function Footer_1() {
                     fill="#666666"
                   ></path>
                 </svg>
-              </Link>
+              </Link> */}
               <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -549,7 +572,7 @@ export default function Footer_1() {
                   </defs>
                 </svg>
               </Link>
-              <Link href="#" target="_blank" className="">
+              {/* <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -563,7 +586,7 @@ export default function Footer_1() {
                     fill="#666666"
                   ></path>
                 </svg>
-              </Link>
+              </Link> */}
             </article>
           </section>
         </div>

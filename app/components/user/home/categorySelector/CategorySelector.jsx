@@ -180,21 +180,21 @@ const CategorySelector = ({
                 options={helloRoomLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
                 name="zone"
               />
               <Select
                 options={helloRoomRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               {/* <SelectDate
@@ -219,21 +219,21 @@ const CategorySelector = ({
                 options={helloColivingLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
                 name="zone"
               />
               <Select
                 options={helloColivingRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               {/* <SelectDate
@@ -253,7 +253,7 @@ const CategorySelector = ({
                 options={helloStudioLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
                 name="zone"
               />
               <DatePickerCategorySelector
@@ -290,20 +290,20 @@ const CategorySelector = ({
                 options={helloLandlordLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
               />
               <Select
                 options={helloLandlordRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
               />
               <Select
                 options={genre}
                 data={data}
                 setData={setData}
-                title="Tipo de alojamiento"
+                title="Comparte con"
                 name="type"
               />
               {/* <SelectDate
