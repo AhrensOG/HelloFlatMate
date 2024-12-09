@@ -61,7 +61,7 @@ export default function NavbarV3({ fixed = false }) {
           Cómo funciona
         </Link>
         <Link
-          href="/privacy-policy"
+          href="/terminos-y-condiciones"
           target="_blank"
           className="font-bold text-base"
         >

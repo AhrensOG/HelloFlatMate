@@ -5,7 +5,7 @@ import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
-export default function NavBar_1({ fixed = false }) {
+export default function NavbarV3({ fixed = false }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
