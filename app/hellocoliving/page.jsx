@@ -219,8 +219,7 @@ export default function HelloColiving() {
               mate transformamos el concepto de vivienda compartida con hello
               coliving. Hemos destinado tres modernas viviendas en Valencia
               exclusivamente al formato coliving, creando espacios diseñados
-              para estudiantes que buscan comodidad, privacidad y comunidad. ¡Tu
-              nueva forma de vivir en Valencia te está esperando!
+              para estudiantes que buscan comodidad, privacidad y comunidad.
               <br />
               <br />
               ¡Tu nueva forma de vivir en Valencia te está esperando!

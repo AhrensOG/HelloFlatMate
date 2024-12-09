@@ -1,7 +1,7 @@
 "use client";
 
 import NavBar_1 from "@/app/components/public/home/NavBar_1";
-import PrivacyPolicy from "@/app/components/public/privacy-policy/PrivacyPolicy";
+import Clausulas from "@/app/components/public/clausulas/Clausulas";
 import Footer_1 from "@/app/components/public/home/Footer";
 
 export default function PrivacyPolicyPage() {
@@ -10,7 +10,7 @@ export default function PrivacyPolicyPage() {
             <header>
             <NavBar_1 />
             </header>
-            <PrivacyPolicy />
+            <Clausulas/>
             <Footer_1 />
         </>
     );

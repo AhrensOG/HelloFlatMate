@@ -153,15 +153,15 @@ const SecondaryCategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloRoomLocations} data={data} setData={setData} title="¿En qué zona?" name="zone" />
+                            <Select options={helloRoomLocations} data={data} setData={setData} title="Zona" name="zone" />
                             <Select
                                 options={helloRoomRentalPeriods}
                                 data={data}
                                 setData={setData}
-                                title="Selecciona un periodo"
+                                title="Fechas"
                                 name="rentalPeriod"
                             />
-                            <Select options={genre} data={data} setData={setData} title="Tipo de alojamiento" name="type" />
+                            <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
@@ -183,15 +183,15 @@ const SecondaryCategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloColivingLocations} data={data} setData={setData} title="¿En qué zona?" name="zone" />
+                            <Select options={helloColivingLocations} data={data} setData={setData} title="Zona" name="zone" />
                             <Select
                                 options={helloColivingRentalPeriods}
                                 data={data}
                                 setData={setData}
-                                title="Selecciona un periodo"
+                                title="Fechas"
                                 name="rentalPeriod"
                             />
-                            <Select options={genre} data={data} setData={setData} title="Tipo de alojamiento" name="type" />
+                            <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
@@ -212,7 +212,7 @@ const SecondaryCategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloStudioLocations} data={data} setData={setData} title="¿En qué zona?" name="zone" />
+                            <Select options={helloStudioLocations} data={data} setData={setData} title="Zona" name="zone" />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"start"} />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"end"} />
                             <Select options={numbers} data={numberOccupants} setData={setNumberOccupants} title="Huespedes" name="numberOccupants" />
@@ -232,15 +232,15 @@ const SecondaryCategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloLandlordLocations} data={data} setData={setData} title="¿En qué zona?" />
+                            <Select options={helloLandlordLocations} data={data} setData={setData} title="Zona" />
                             <Select
                                 options={helloLandlordRentalPeriods}
                                 data={data}
                                 setData={setData}
-                                title="Selecciona un periodo"
+                                title="Fechas"
                                 name="rentalPeriod"
                             />
-                            <Select options={genre} data={data} setData={setData} title="Tipo de alojamiento" name="type" />
+                            <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"

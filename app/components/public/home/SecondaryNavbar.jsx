@@ -54,7 +54,7 @@ export default function SecondaryNavbar({ fixed = false }) {
           Cómo funciona
         </Link>
         <Link
-          href="/privacy-policy"
+          href="/terminos-y-condiciones"
           target="_blank"
           className="font-bold text-base text-white"
         >

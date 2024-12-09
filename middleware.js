@@ -34,6 +34,8 @@ export async function middleware(request) {
         "/faq",
         "/cookies",
         "/privacy-policy",
+        "/clausulas",
+        "/terminos-y-condiciones",
         "/como-funciona",
         "/sobre-nosotros",
         "/api/maps/geocoding",
