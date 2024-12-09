@@ -200,7 +200,7 @@ export default function Home() {
 
   useEffect(() => {
     // Fecha objetivo (9 de diciembre)
-    const targetDate = new Date("2024-12-09T00:00:00");
+    const targetDate = new Date("2024-12-10T00:00:00");
 
     // Función que calcula el tiempo restante
     const updateTimer = () => {
