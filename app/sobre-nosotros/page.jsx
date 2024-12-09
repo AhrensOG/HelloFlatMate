@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import NavBar_1 from "../components/public/home/NavBar_1";
+import NavbarV3 from "../components/nav_bar/NavbarV3";
 import Footer_1 from "../components/public/home/Footer";
 import SecondaryNavbar from "../components/public/home/SecondaryNavbar";
 import Image from "next/image";

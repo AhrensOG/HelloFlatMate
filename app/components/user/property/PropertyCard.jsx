@@ -21,7 +21,7 @@ function formatDate(dateString) {
 
 export default function PropertyCard({
   name,
-  images,
+  images = "/not-image.png",
   property,
   price,
   roomId = false,
@@ -73,6 +73,7 @@ export default function PropertyCard({
               ""
             }
             fill
+            sizes="(max-width: 640px) 112px, (max-width: 1024px) 288px, 100vw"
             alt="Imagen de propiedad"
           />
         </div>

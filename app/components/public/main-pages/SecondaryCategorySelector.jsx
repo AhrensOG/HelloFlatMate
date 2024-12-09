@@ -38,7 +38,7 @@ const list = [
 
 const genre = ["ONLY_WOMEN", "MIXED"];
 
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const numbers = [1, 2, 3, 4, 5];
 
 const SecondaryCategorySelector = ({
     helloRoomProperties,
@@ -54,7 +54,6 @@ const SecondaryCategorySelector = ({
     const [currentCategory, setCurrentCategory] = useState(null);
     const [data, setData] = useState({});
     const [date, setDate] = useState({ startDate: "", endDate: "" });
-    const [numberOccupants, setNumberOccupants] = useState();
 
     // useEffect(() => {
     //   if (categoryQuery) {
@@ -98,8 +97,8 @@ const SecondaryCategorySelector = ({
             params.append("category", currentCategory);
         }
 
-        if (numberOccupants) {
-            params.append("numberOccupants", numberOccupants.numberOccupants);
+        if (data.numberOccupants) {
+            params.append("numberOccupants", data.numberOccupants);
         }
 
         return params.toString();
@@ -164,10 +163,10 @@ const SecondaryCategorySelector = ({
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                             {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -194,10 +193,10 @@ const SecondaryCategorySelector = ({
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                             {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -215,13 +214,13 @@ const SecondaryCategorySelector = ({
                             <Select options={helloStudioLocations} data={data} setData={setData} title="Zona" name="zone" />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"start"} />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"end"} />
-                            <Select options={numbers} data={numberOccupants} setData={setNumberOccupants} title="Huespedes" name="numberOccupants" />
+                            <Select options={numbers} data={data} setData={setData} title="Huespedes" name="numberOccupants" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
                     </div>
@@ -243,10 +242,10 @@ const SecondaryCategorySelector = ({
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-black" />
+                                <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                             {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -267,10 +266,10 @@ const SecondaryCategorySelector = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className={`  w-full flex flex-col gap-20 p-4`}
+            className={`  w-full flex flex-col gap-6 p-4`}
         >
-            <div className="w-full flex flex-row justify-between items-center gap-2 p-5">
-                {/* <div
+            {/* <div className="w-full flex flex-row justify-between items-center gap-2 p-5">
+                <div
           onClick={() => router.push("/")}
           type="button"
           className="self-start flex justify-between min-w-20 items-center gap-2 cursor-pointer"
@@ -287,16 +286,16 @@ const SecondaryCategorySelector = ({
           <span className="text-sm underline underline-offset-2 font-bold">
             Volver
           </span>
-        </div> */}
+        </div>
                 <h1 className="w-full text-center font-bold sm:text-lg">¿Qué deseas reservar?</h1>
-                {/* <button
+                <button
           onClick={() => router.push("/")}
           type="button"
           className="self-start flex justify-center min-w-20 items-center gap-2"
         >
           <XMarkIcon className="size-8" />
-        </button> */}
-            </div>
+        </button>
+            </div> */}
 
             {/* Cards de categorías */}
             <div className="flex flex-col md:flex-row md:flex-wrap gap-5 items-center justify-center">
@@ -321,9 +320,9 @@ const SecondaryCategorySelector = ({
                     {currentCategory && (
                         <AnimatePresence mode="wait">
                             <motion.div
-                                initial={{ x: "-100%" }}
-                                animate={{ x: 0 }}
-                                exit={{ x: "-100%" }}
+                                initial={{ x: "-100%", height: 0 }}
+                                animate={{ x: 0, height: "auto" }}
+                                exit={{ x: "-100%", height: 0 }}
                                 transition={{ duration: 0.25 }}
                                 className="w-full text-center"
                             >

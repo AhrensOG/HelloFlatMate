@@ -59,7 +59,7 @@ export async function createClientBillPDF(data) {
         pdfData = {
             id: data.rentPaymentId,
             clienteName: client.name + " " + client.lastName || "N/A",
-            clienteDni: client.dni || "N/A",
+            clienteDni: client.idNum || "N/A",
             clienteAddress: client.street + " " + client.streetNumber || "N/A",
             clienteCity: client.city + " " + "CD: " + client.postalCode || "N/A",
             clientePhone: client.phone || "N/A",

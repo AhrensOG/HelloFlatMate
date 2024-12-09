@@ -150,14 +150,6 @@ export default function Footer_1() {
             <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
             <button>
               <Image
-                src="/home/new_home/diarioCritico.jpg"
-                alt="El Confidencial"
-                width={300}
-                height={300}
-              />
-            </button>
-            <button>
-              <Image
                 src="/home/new_home/lasprovincias.svg"
                 alt="El Confidencial"
                 width={150}
@@ -454,14 +446,6 @@ export default function Footer_1() {
           <section className="flex flex-col gap-7 p-6 w-[25rem]">
             <article className="flex flex-wrap gap-4">
               <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
-              <button>
-                <Image
-                  src="/home/new_home/diarioCritico.jpg"
-                  alt="El Confidencial"
-                  width={300}
-                  height={300}
-                />
-              </button>
               <button>
                 <Image
                   src="/home/new_home/lasprovincias.svg"

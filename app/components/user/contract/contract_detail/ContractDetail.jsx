@@ -29,7 +29,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
         const leaseOrderId = searchParams.get("lo");
 
         if (property && leaseOrderId) {
-          if (roomId) {
+          if (roomId && roomId !== "false") {
             // Buscar la room si `roomId` está presente
             const rooms = property.rooms || [];
             const foundRoom = rooms.find(

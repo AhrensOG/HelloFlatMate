@@ -1,12 +1,12 @@
 "use client";
 
 import { Suspense } from "react";
-import HelloColivingPage from "./HelloColivingPage";
+import HelloStudioPage from "./HelloStudioPage";
 
-export default function HelloColiving() {
+export default function HelloStudio() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <HelloColivingPage />
+      <HelloStudioPage />
     </Suspense>
   );
 }

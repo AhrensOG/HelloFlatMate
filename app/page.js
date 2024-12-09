@@ -25,7 +25,7 @@ import SixthSection from "./components/public/home/SixthSection";
 import SeventhSection from "./components/public/home/SeventhSection";
 import EightSection from "./components/public/home/EighthSection";
 import Footer_1 from "./components/public/home/Footer";
-import NavBar_1 from "./components/public/home/NavBar_1";
+import NavbarV3 from "./components/nav_bar/NavbarV3";
 // import CategorySelector from "./components/public/main-pages/CategorySelector";
 import SecondaryCategorySelector from "./components/public/main-pages/SecondaryCategorySelector";
 import Image from "next/image";
@@ -218,31 +218,30 @@ export default function Home() {
         {/* <BotIcon />
         <CookieModal /> */}
         <header>
-          <NavBar_1 />
+          <NavbarV3 />
         </header>
-        <section className="relative flex flex-col gap-3 bg-white items-center justify-around py-10 pb-40 px-2">
+        <section className="relative flex flex-col gap-8 bg-white items-center justify-around pb-0 py-10 px-4">
           <h1 className="text-3xl font-bold">hello flat mate</h1>
-          <h3 className="text-lg text-center w-2/4">
+          <h3 className="text-lg text-center">
             Especializados en gestión de alojamientos para estudiantes en
-            Valencia. ¡Reservas y trámites 100% online, rápido, fácil y sin
-            complicaciones!
+            Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y
+            sin complicaciones!
           </h3>
-          <div className="mb-64 w-full">
-            <Suspense fallback={<Loader />}>
-              <SecondaryCategorySelector
-                helloRoomProperties={helloRoomProperties}
-                helloColivingProperties={helloColivingProperties}
-                helloStudioProperties={helloStudioProperties}
-                helloLandlordProperties={helloLandlordProperties}
-                allProperties={properties}
-              />
-            </Suspense>
+          <div className="w-full">
+            <SecondaryCategorySelector
+              helloRoomProperties={helloRoomProperties}
+              helloColivingProperties={helloColivingProperties}
+              helloStudioProperties={helloStudioProperties}
+              helloLandlordProperties={helloLandlordProperties}
+              allProperties={properties}
+            />
           </div>
-          <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
+
+          <div className="relative max-w-screen-lg w-full h-[150px] sm:h-[300px] ">
             <Image
-              src={"/home/new_home/hero4.jpeg"}
+              src={"/home/new_home/valencia.png"}
               fill
-              className="object-cover"
+              className="object-contain object-bottom"
             />
           </div>
         </section>
