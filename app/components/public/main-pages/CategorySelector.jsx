@@ -50,8 +50,9 @@ const CategorySelector = ({
     const [date, setDate] = useState({ startDate: "", endDate: "" });
     const [numberOccupants, setNumberOccupants] = useState();
     const [resetFilters, setResetFilters] = useState();
-
+    
     useEffect(() => {
+        console.log(filters)
         if (category) {
             setCurrentCategory(category);
         }
@@ -267,8 +268,8 @@ const CategorySelector = ({
                             <Select
                                 resetFilters={resetFilters}
                                 options={numbers}
-                                data={numberOccupants}
-                                setData={setNumberOccupants}
+                                data={filters}
+                                setData={setFilters}
                                 title="Huespedes"
                                 name="numberOccupants"
                             />

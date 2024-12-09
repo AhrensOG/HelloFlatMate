@@ -38,7 +38,7 @@ const list = [
 
 const genre = ["ONLY_WOMEN", "MIXED"];
 
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const numbers = [1, 2, 3, 4, 5];
 
 const SecondaryCategorySelector = ({
     helloRoomProperties,
@@ -54,7 +54,6 @@ const SecondaryCategorySelector = ({
     const [currentCategory, setCurrentCategory] = useState(null);
     const [data, setData] = useState({});
     const [date, setDate] = useState({ startDate: "", endDate: "" });
-    const [numberOccupants, setNumberOccupants] = useState();
 
     // useEffect(() => {
     //   if (categoryQuery) {
@@ -98,8 +97,8 @@ const SecondaryCategorySelector = ({
             params.append("category", currentCategory);
         }
 
-        if (numberOccupants) {
-            params.append("numberOccupants", numberOccupants.numberOccupants);
+        if (data.numberOccupants) {
+            params.append("numberOccupants", data.numberOccupants);
         }
 
         return params.toString();
@@ -215,7 +214,7 @@ const SecondaryCategorySelector = ({
                             <Select options={helloStudioLocations} data={data} setData={setData} title="¿En qué zona?" name="zone" />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"start"} />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"end"} />
-                            <Select options={numbers} data={numberOccupants} setData={setNumberOccupants} title="Huespedes" name="numberOccupants" />
+                            <Select options={numbers} data={data} setData={setData} title="Huespedes" name="numberOccupants" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
