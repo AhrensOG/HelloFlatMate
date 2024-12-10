@@ -28,6 +28,7 @@ export default function LastRoomsPage() {
     const [helloColivingProperties, setHelloColivingProperties] = useState([]);
     const [helloStudioProperties, setHelloStudioProperties] = useState([]);
     const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+    const [lastRooms, setLastRooms] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const roomsPerPage = 18;
@@ -44,7 +45,7 @@ export default function LastRoomsPage() {
     });
 
     const filterByCategory = (properties) => {
-        return properties.filter((property) => property.category === "HELLO_ROOM");
+        return properties.filter((property) => property);
     };
 
     const paginateRooms = (rooms) => {
@@ -70,9 +71,11 @@ export default function LastRoomsPage() {
             const colivingProps = state.properties.filter((property) => property.category === "HELLO_COLIVING");
             const studioProps = state.properties.filter((property) => property.category === "HELLO_STUDIO");
             const landlordProps = state.properties.filter((property) => property.category === "HELLO_LANDLORD");
+            const last = state.properties.filter((property) => property.status === "FREE")
 
             // Actualizar los estados locales
             setProperties(state.properties);
+            setLastRooms(last)
             setHelloRoomProperties(roomProps);
             setHelloColivingProperties(colivingProps);
             setHelloStudioProperties(studioProps);
@@ -133,7 +136,7 @@ export default function LastRoomsPage() {
             // Aplicar filtros generales a las propiedades
             const filteredProperties = state.properties.filter((property) => {
                 const matchesZone = !filters.zone || property.zone === filters.zone;
-                const matchesCategory = !filters.category || property.category === filters.category;
+                const matchesCategory = property.status === "FREE" ;
 
                 return matchesZone && matchesCategory;
             });
@@ -219,7 +222,7 @@ export default function LastRoomsPage() {
                     helloColivingProperties={helloColivingProperties}
                     helloStudioProperties={helloStudioProperties}
                     helloLandlordProperties={helloLandlordProperties}
-                    allProperties={properties}
+                    allProperties={lastRooms}
                 />
 
                 {/* Lista de habitaciones */}

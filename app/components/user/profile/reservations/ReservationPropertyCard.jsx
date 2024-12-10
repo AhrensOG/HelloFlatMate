@@ -3,11 +3,11 @@
 import Image from "next/image";
 import { useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import Tooltip from "@/app/components/public/AuxiliarComponents/ToolTip";
 import { AnimatePresence, motion } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Tooltip from "@/app/components/public/AuxiliarComponents/Tooltip";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY

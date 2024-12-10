@@ -215,8 +215,8 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col relative">
-        {/* <BotIcon />
-        <CookieModal /> */}
+        {/* <BotIcon /> */}
+        <CookieModal />
         <header>
           <NavbarV3 />
         </header>
