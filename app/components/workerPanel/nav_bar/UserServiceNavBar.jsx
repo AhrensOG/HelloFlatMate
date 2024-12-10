@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Dropdown from "../../public/auth/Dropdown";
- 
+
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 

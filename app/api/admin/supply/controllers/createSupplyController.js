@@ -1,4 +1,4 @@
-import { Client, LeaseOrderProperty, LeaseOrderRoom, Property, Room, Supply } from "@/db/init";
+import { Category, Client, LeaseOrderProperty, LeaseOrderRoom, Property, Room, Supply } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createSupply(data) {
@@ -31,6 +31,9 @@ export async function createSupply(data) {
                         model: Client,
                         as: "client"
                     }
+                },{
+                    model: Category,
+                    as: "category"
                 }
             ]
         });

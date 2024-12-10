@@ -19,7 +19,9 @@ const RentalPeriod = require("./models/rentalPeriod");
 const Worker = require("./models/worker");
 const RentalItem = require("./models/rentalItem");
 const RentPayment = require("./models/rentPayment");
+const Category = require("./models/category");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
+const migration = require("./migration");
 
 (async () => {
     try {
@@ -40,6 +42,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
         Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
+        Property.belongsTo(Category, { as: "category", foreignKey: "categoryId" });
 
         //Room
         Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
@@ -101,6 +104,9 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //RentPayment
         RentPayment.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         RentPayment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //Category
+        Category.hasMany(Property, { as: "properties", foreignKey: "categoryId" });
 
         //Relaciones polimorficas
         //Client
@@ -420,7 +426,9 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         // await Owner.bulkCreate(testOwnerData);
         // await Room.bulkCreate(testRoom);
 
-        // console.log("Data inserted");
+        // await Category.bulkCreate([{ name: "HELLO_ROOM" }, { name: "HELLO_COLIVING" }, { name: "HELLO_STUDIO" }, { name: "HELLO_LANDLORD" }]);
+        // migration();
+        console.log("Data inserted");
     } catch (error) {
         console.log(error);
     }
@@ -447,4 +455,5 @@ module.exports = {
     RentalItem,
     Worker,
     RentPayment,
+    Category,
 };
