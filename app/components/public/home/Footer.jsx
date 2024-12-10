@@ -63,7 +63,11 @@ export default function Footer_1() {
             >
               Como funciona
             </Link>
-            <Link href="/clausulas" target="_blank" className="font-normal text-base">
+            <Link
+              href="/clausulas"
+              target="_blank"
+              className="font-normal text-base"
+            >
               Clausulas del contrato
             </Link>
           </article>
@@ -148,30 +152,42 @@ export default function Footer_1() {
         <section className="flex flex-col gap-7 p-6">
           <article className="flex flex-wrap justify-center gap-4">
             <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
-            <button>
+            <Link
+              href="https://www.lasprovincias.es/v/20140506/economia/valenciano-revoluciona-servicio-atencion-20140506.html?ref=https%3A%2F%2Fwww.lasprovincias.es%2Fv%2F20140506%2Feconomia%2Fvalenciano-revoluciona-servicio-atencion-20140506.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/home/new_home/lasprovincias.svg"
                 alt="El Confidencial"
                 width={150}
                 height={150}
               />
-            </button>
-            <button>
+            </Link>
+            <Link
+              href="https://www.elperiodic.com/valencia/estudiantes-internacionales-dispondran-facilidades-para-alojamiento-apartamentos_210855"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/home/new_home/elperiodic.svg"
                 alt="El Confidencial"
                 width={150}
                 height={150}
               />
-            </button>
-            <button>
+            </Link>
+            <Link
+              href="https://madridpress.com/archive/292601/la-importancia-de-alquilar-un-buen-piso-para-estudiantes-en-valencia"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/home/new_home/madridlogo.png"
                 alt="El Confidencial"
                 width={250}
                 height={250}
               />
-            </button>
+            </Link>
           </article>
           <article className="flex flex-wrap gap-4">
             <h2 className="font-bold uppercase text-lg w-full">SIGUENOS</h2>
@@ -446,30 +462,42 @@ export default function Footer_1() {
           <section className="flex flex-col gap-7 p-6 w-[25rem]">
             <article className="flex flex-wrap gap-4">
               <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
-              <button>
+              <Link
+                href="https://www.lasprovincias.es/v/20140506/economia/valenciano-revoluciona-servicio-atencion-20140506.html?ref=https%3A%2F%2Fwww.lasprovincias.es%2Fv%2F20140506%2Feconomia%2Fvalenciano-revoluciona-servicio-atencion-20140506.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
                   src="/home/new_home/lasprovincias.svg"
                   alt="El Confidencial"
                   width={150}
                   height={150}
                 />
-              </button>
-              <button>
+              </Link>
+              <Link
+                href="https://www.elperiodic.com/valencia/estudiantes-internacionales-dispondran-facilidades-para-alojamiento-apartamentos_210855"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
                   src="/home/new_home/elperiodic.svg"
                   alt="El Confidencial"
                   width={150}
                   height={150}
                 />
-              </button>
-              <button>
+              </Link>
+              <Link
+                href="https://madridpress.com/archive/292601/la-importancia-de-alquilar-un-buen-piso-para-estudiantes-en-valencia"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
                   src="/home/new_home/madridlogo.png"
                   alt="El Confidencial"
                   width={250}
                   height={250}
                 />
-              </button>
+              </Link>
             </article>
             <article className="flex flex-wrap gap-4">
               <h2 className="font-bold uppercase text-lg w-full">SIGUENOS</h2>

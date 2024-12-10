@@ -2,40 +2,40 @@ import Image from "next/image";
 
 const articles = [
   {
-    title: "Alojamientos consolidados",
+    title: "Alojamientos consolidadas",
     description:
       "Nuestros agentes, residentes en Valencia, seleccionan entornos seguros y bien conectados, ideales para tu día a día. Te ayudamos a enfocarte en tus estudios, construir tu futuro y crear nuevas amistades.",
-    image: "/home/new_home/dormir.gif",
+    image: "/home/new_home/dormir.png",
   },
   {
     title: "Contratos",
     description:
       "En hello flat mate garantizamos contratos de alquiler legales y seguros, basados en el Código Civil, que aseguran un equilibrio justo entre arrendadores e inquilinos. Leer aquí",
-    image: "/home/new_home/documento.gif",
+    image: "/home/new_home/documento.png",
   },
   {
     title: "Soporte",
     description:
       "Nuestra atención al cliente está disponible de lunes a viernes, de 9:00 a 17:00, para resolver cualquier duda o gestión. Además, ofrecemos un servicio de emergencias 24/7, perfecto para situaciones como olvidar las llaves fuera de horario.",
-    image: "/home/new_home/robot-de-chat.gif",
+    image: "/home/new_home/robot-de-chat.png",
   },
   {
     title: "Alojamientos preparados",
     description:
       "Nos encargamos de que cada alojamiento esté limpio y revisado antes de tu llegada, para que disfrutes de una bienvenida cómoda y sin preocupaciones desde el primer día.",
-    image: "/home/new_home/escritorio.gif",
+    image: "/home/new_home/escritorio.png",
   },
   {
     title: "Mantenimiento propio",
     description:
       "Cuidamos los alojamientos que gestionamos para que siempre estén en buen estado, además siempre revisamos y limpiamos antes de la llegada de nuestros flatmates.",
-    image: "/home/new_home/mecanico.gif",
+    image: "/home/new_home/mecanico.png",
   },
   {
     title: "Alta de suministros",
     description:
       "Todos nuestros alojamientos, excepto hello Studios, cuentan con luz, agua e Internet WiFi dados de alta antes de tu llegada, para que no tengas que preocuparte por nada.",
-    image: "/home/new_home/lampara-de-escritorio.gif",
+    image: "/home/new_home/lampara-de-escritorio.png",
   },
 ];
 
@@ -57,7 +57,7 @@ export default function ThirdSection() {
               <h1 className="text-3xl font-bold text-center">{title}</h1>
               <h2 className="text-lg text-center">{description}</h2>
             </div>
-            <Image src={image} width={150} height={150} alt={title} unoptimized />
+            <Image src={image} width={150} height={150} alt={title}/>
           </article>
         ))}
       </section>
