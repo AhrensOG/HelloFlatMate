@@ -42,21 +42,21 @@ export default function SecondaryNavbar({ fixed = false }) {
         <Link
           href="/lastrooms"
           target="_blank"
-          className="font-bold text-base text-white border border-white p-2 px-5"
+          className="font-bold text-base text-black border border-black p-2 px-5"
         >
           last rooms
         </Link>
         <Link
           href="/como-funciona"
           target="_blank"
-          className="font-bold text-base text-white"
+          className="font-bold text-base text-black"
         >
           Cómo funciona
         </Link>
         <Link
           href="/terminos-y-condiciones"
           target="_blank"
-          className="font-bold text-base text-white"
+          className="font-bold text-base text-black"
         >
           Términos y condiciones
         </Link>
@@ -64,15 +64,15 @@ export default function SecondaryNavbar({ fixed = false }) {
           <Link
             href="/pages/auth?register=true"
             target="_blank"
-            className="font-bold text-base text-white"
+            className="font-bold text-base text-black"
           >
             Registro
           </Link>
-          <span className="font-bold text-base text-white">|</span>
+          <span className="font-bold text-base text-black">|</span>
           <Link
             href="/pages/auth"
             target="_blank"
-            className="font-bold text-base text-white"
+            className="font-bold text-base text-black"
           >
             Inicio
           </Link>
@@ -85,7 +85,7 @@ export default function SecondaryNavbar({ fixed = false }) {
 
       {/* Menú desplegable solo para móvil (no se abrirá) */}
       {isOpen && (
-        <div className="absolute top-16 left-0 right-0 bg-white shadow-lg rounded-md p-4 md:hidden">
+        <div className="absolute top-16 left-0 right-0 bg-transparent shadow-lg rounded-md p-4 md:hidden">
           {/* <button className="border py-3 px-5 font-bold text-lg border-black w-full">Soy un propietario</button> */}
           <Link
             href="#"

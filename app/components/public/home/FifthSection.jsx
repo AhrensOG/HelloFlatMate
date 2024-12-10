@@ -18,7 +18,7 @@ export default function FifthSection() {
     {
       icon: "/home/new_home/facil.png",
       title: "Accesible",
-      description: "Contratos de 5 y 10 meses Desde 290€/mes",
+      description: "En helloflatmate, entendemos tus necesidades. Por eso, nuestros alojamientos se ajustan a la duración del curso universitario, evitando que tengas que comprometerte o pagar durante los meses estivales. Disfruta de contratos flexibles de 5, 10, o 11 meses, y si optas por nuestro formato",
     },
     {
       icon: "/home/new_home/compras.png",
@@ -66,7 +66,7 @@ export default function FifthSection() {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
               {garantia.title}
             </h3>
-            <p className="text-gray-600">{garantia.description}</p>
+            <p className="text-gray-600 text-center">{garantia.description}</p>
           </div>
         ))}
       </div>
