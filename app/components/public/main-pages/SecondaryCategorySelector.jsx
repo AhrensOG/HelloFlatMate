@@ -106,9 +106,10 @@ const SecondaryCategorySelector = ({
 
     const getRentalPeriods = (propiedades) => {
         const fechasUnicas = new Set();
+        const fechaActual = new Date(); // Obtener la fecha actual
 
         propiedades.forEach((propiedad) => {
-            // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
+            // Verificar si la propiedad es de tipo HELLO_ROOM, HELLO_COLIVING o HELLO_LANDLORD
             if (propiedad.category === "HELLO_ROOM" || propiedad.category === "HELLO_COLIVING" || propiedad.category === "HELLO_LANDLORD") {
                 // Acceder al array rooms y mapear sobre él
                 propiedad.rooms.forEach((room) => {
@@ -117,18 +118,20 @@ const SecondaryCategorySelector = ({
                         const startDate = new Date(periodo.rentalPeriod?.startDate);
                         const endDate = new Date(periodo.rentalPeriod?.endDate);
 
-                        // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
-                        const formattedStartDate = `${startDate.getDate().toString().padStart(2, "0")}/${(startDate.getMonth() + 1)
-                            .toString()
-                            .padStart(2, "0")}/${startDate.getFullYear().toString().slice(-2)}`;
+                        // Verificar si la startDate es superior a la fecha actual
+                        if (startDate > fechaActual) {
+                            // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
+                            const formattedStartDate = `${startDate.getDate().toString().padStart(2, "0")}/${(startDate.getMonth() + 1)
+                                .toString()
+                                .padStart(2, "0")}/${startDate.getFullYear().toString().slice(-2)}`;
+                            const formattedEndDate = `${endDate.getDate().toString().padStart(2, "0")}/${(endDate.getMonth() + 1)
+                                .toString()
+                                .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
 
-                        const formattedEndDate = `${endDate.getDate().toString().padStart(2, "0")}/${(endDate.getMonth() + 1)
-                            .toString()
-                            .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
-
-                        const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
-                        // Añadir la fecha al Set para evitar duplicados
-                        fechasUnicas.add(fecha);
+                            const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
+                            // Añadir la fecha al Set para evitar duplicados
+                            fechasUnicas.add(fecha);
+                        }
                     });
                 });
             }
@@ -151,15 +154,10 @@ const SecondaryCategorySelector = ({
                 const helloRoomRentalPeriods = getRentalPeriods(helloRoomProperties);
                 return (
                     <div className="w-full flex justify-center items-center">
+                        {console.log(helloRoomProperties)}
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
                             <Select options={helloRoomLocations} data={data} setData={setData} title="Zona" name="zone" />
-                            <Select
-                                options={helloRoomRentalPeriods}
-                                data={data}
-                                setData={setData}
-                                title="Fechas"
-                                name="rentalPeriod"
-                            />
+                            <Select options={helloRoomRentalPeriods} data={data} setData={setData} title="Fechas" name="rentalPeriod" />
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
@@ -183,13 +181,7 @@ const SecondaryCategorySelector = ({
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
                             <Select options={helloColivingLocations} data={data} setData={setData} title="Zona" name="zone" />
-                            <Select
-                                options={helloColivingRentalPeriods}
-                                data={data}
-                                setData={setData}
-                                title="Fechas"
-                                name="rentalPeriod"
-                            />
+                            <Select options={helloColivingRentalPeriods} data={data} setData={setData} title="Fechas" name="rentalPeriod" />
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
@@ -232,13 +224,7 @@ const SecondaryCategorySelector = ({
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
                             <Select options={helloLandlordLocations} data={data} setData={setData} title="Zona" />
-                            <Select
-                                options={helloLandlordRentalPeriods}
-                                data={data}
-                                setData={setData}
-                                title="Fechas"
-                                name="rentalPeriod"
-                            />
+                            <Select options={helloLandlordRentalPeriods} data={data} setData={setData} title="Fechas" name="rentalPeriod" />
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}

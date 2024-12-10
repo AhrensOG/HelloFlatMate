@@ -50,7 +50,7 @@ const CategorySelector = ({
     const [date, setDate] = useState({ startDate: "", endDate: "" });
     const [numberOccupants, setNumberOccupants] = useState();
     const [resetFilters, setResetFilters] = useState();
-    
+
     useEffect(() => {
         if (category) {
             setCurrentCategory(category);
@@ -102,9 +102,10 @@ const CategorySelector = ({
 
     const getRentalPeriods = (propiedades) => {
         const fechasUnicas = new Set();
+        const fechaActual = new Date(); // Obtener la fecha actual
 
         propiedades.forEach((propiedad) => {
-            // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
+            // Verificar si la propiedad es de tipo HELLO_ROOM, HELLO_COLIVING o HELLO_LANDLORD
             if (propiedad.category === "HELLO_ROOM" || propiedad.category === "HELLO_COLIVING" || propiedad.category === "HELLO_LANDLORD") {
                 // Acceder al array rooms y mapear sobre él
                 propiedad.rooms.forEach((room) => {
@@ -113,18 +114,20 @@ const CategorySelector = ({
                         const startDate = new Date(periodo.rentalPeriod?.startDate);
                         const endDate = new Date(periodo.rentalPeriod?.endDate);
 
-                        // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
-                        const formattedStartDate = `${startDate.getDate().toString().padStart(2, "0")}/${(startDate.getMonth() + 1)
-                            .toString()
-                            .padStart(2, "0")}/${startDate.getFullYear().toString().slice(-2)}`;
+                        // Verificar si la startDate es superior a la fecha actual
+                        if (startDate > fechaActual) {
+                            // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
+                            const formattedStartDate = `${startDate.getDate().toString().padStart(2, "0")}/${(startDate.getMonth() + 1)
+                                .toString()
+                                .padStart(2, "0")}/${startDate.getFullYear().toString().slice(-2)}`;
+                            const formattedEndDate = `${endDate.getDate().toString().padStart(2, "0")}/${(endDate.getMonth() + 1)
+                                .toString()
+                                .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
 
-                        const formattedEndDate = `${endDate.getDate().toString().padStart(2, "0")}/${(endDate.getMonth() + 1)
-                            .toString()
-                            .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
-
-                        const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
-                        // Añadir la fecha al Set para evitar duplicados
-                        fechasUnicas.add(fecha);
+                            const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
+                            // Añadir la fecha al Set para evitar duplicados
+                            fechasUnicas.add(fecha);
+                        }
                     });
                 });
             }
@@ -136,11 +139,11 @@ const CategorySelector = ({
 
     // Función que se llama al hacer clic en el botón "Buscar"
     const handleSearch = () => {
-      const queryString = buildQueryString();
-      const url = `${window.location.origin}/pages/user/filtered?${queryString}`;
-  
-      // Abrir en una nueva pestaña
-      window.open(url, "_blank", "noopener,noreferrer");
+        const queryString = buildQueryString();
+        const url = `${window.location.origin}/pages/user/filtered?${queryString}`;
+
+        // Abrir en una nueva pestaña
+        window.open(url, "_blank", "noopener,noreferrer");
     };
 
     const cleanFilters = () => {
@@ -289,13 +292,7 @@ const CategorySelector = ({
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
                             <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellolandlord"} categoryy={"HELLO_LANDLORD"} />
-                            <Select
-                                resetFilters={resetFilters}
-                                options={helloLandlordLocations}
-                                data={filters}
-                                setData={setFilters}
-                                title="Zona"
-                            />
+                            <Select resetFilters={resetFilters} options={helloLandlordLocations} data={filters} setData={setFilters} title="Zona" />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloLandlordRentalPeriods}

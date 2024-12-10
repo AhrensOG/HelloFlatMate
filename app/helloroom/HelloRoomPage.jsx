@@ -97,10 +97,22 @@ export default function HelloRoomPage() {
             return `${day}/${month}/${year}`;
         };
 
-        const start = formatDate(startDate);
-        const end = formatDate(endDate);
+        const currentDate = new Date(); // Obtener la fecha actual
 
-        return `Del ${start} al ${end}`;
+        // Convertir las fechas de entrada a objetos Date
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        // Verificar si la startDate es superior a la fecha actual
+        if (start > currentDate) {
+            return "No hay periodos disponibles"; // O cualquier mensaje que desees mostrar
+        }
+
+        // Formatear las fechas si son válidas
+        const formattedStart = formatDate(start);
+        const formattedEnd = formatDate(end);
+
+        return `Del ${formattedStart} al ${formattedEnd}`;
     };
 
     const filterByRentalPeriod = (properties) => {
@@ -161,7 +173,33 @@ export default function HelloRoomPage() {
                             return null; // Si no coincide, no incluir esta habitación
                         }) || []
                 )
-                .filter((room) => room !== null); // Filtrar cualquier valor nulo
+                .filter((room) => room !== null) // Filtrar cualquier valor nulo
+                .sort((a, b) => {
+                    const currentDate = new Date(); // Obtener la fecha actual
+
+                    // Obtener el startDate del primer rentalItem de cada room
+                    const startDateA = new Date(a.rentalItems[0]?.rentalPeriod?.startDate);
+                    const startDateB = new Date(b.rentalItems[0]?.rentalPeriod?.startDate);
+
+                    // Verificar si el startDate es mayor que la fecha actual
+                    const isFutureA = startDateA > currentDate;
+                    const isFutureB = startDateB > currentDate;
+
+                    // Si ambos son futuros, ordenar por fecha más cercana
+                    if (isFutureA && isFutureB) {
+                        return startDateA - startDateB; // Ordenar por fecha ascendente
+                    }
+
+                    // Si solo A es futuro, A va primero
+                    if (isFutureA && !isFutureB) return -1;
+
+                    // Si solo B es futuro, B va primero
+                    if (!isFutureA && isFutureB) return 1;
+
+                    // Si ambos son pasados, se puede decidir cómo manejarlos,
+                    // aquí simplemente los dejamos en el orden original.
+                    return 0;
+                });
 
             setFilteredRooms(filteredRoomsList); // Actualizar habitaciones filtradas
             setCurrentPage(1); // Reiniciar a la primera página al cambiar filtros
@@ -194,6 +232,7 @@ export default function HelloRoomPage() {
     };
     return (
         <div>
+            {console.log(filteredRooms)}
             <div className="flex flex-col sm:min-h-screen">
                 <header className="mb-16">
                     <NavbarV3 fixed={true} />

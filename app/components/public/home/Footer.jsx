@@ -87,7 +87,7 @@ export default function Footer_1() {
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Unete a nosotros</h2>
             <Link
-              href="/sobre-nosotros#medios"
+              href="/colaboradores"
               className="font-normal text-base"
             >
               Colaboradores
@@ -431,7 +431,7 @@ export default function Footer_1() {
                   Únete a nosotros
                 </h2>
                 <Link
-                  href="/sobre-nosotros#medios"
+                  href="/colaboradores"
                   className="font-normal text-base"
                 >
                   Colaboradores
