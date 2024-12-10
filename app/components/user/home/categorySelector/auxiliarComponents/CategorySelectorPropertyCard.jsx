@@ -54,7 +54,7 @@ const CategorySelectorPropertyCard = ({
         </div>
         <Link
           href={href}
-          className="bg-transparent text-[#1FAECC] font-semibold py-2 px-4 border border-[#1FAECC] rounded hover:bg-[#1FAECC] hover:text-white transition duration-500"
+          className="bg-transparent text-[#5ce0e5] font-semibold py-2 px-4 border border-[#5ce0e5] rounded hover:bg-[#5ce0e5] hover:text-white transition duration-500"
         >
           Más info...
         </Link>

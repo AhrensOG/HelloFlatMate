@@ -5,15 +5,15 @@ export default function FifthSection() {
   const garantias = [
     {
       icon: "/home/new_home/mesa-de-ayuda.png",
-      title: "Nuestros agentes locales, siempre a tu lado",
+      title: "Agentes especializados",
       description:
         "Con un equipo de agentes residentes en Valencia, te ayudamos a encontrar la habitación perfecta dentro de nuestra oferta de alojamientos. Además, estaremos contigo durante toda tu estancia, asegurándonos de que todo funcione como debe para que vivas con tranquilidad.",
     },
     {
       icon: "/home/new_home/blindaje.png",
-      title: "Seguridad ante todo",
+      title: "Atención personalizada",
       description:
-        "hello flat mate es una agencia que gestiona únicamente 160 habitaciones dado que nos gusta dar una buena atención y gestión de la estancia de nuestros flatmates.",
+        "helloflatmate es una agencia que gestiona únicamente 160 habitaciones dado que nos gusta dar una buena atención y gestión de la estancia de nuestros flatmates.",
     },
     {
       icon: "/home/new_home/facil.png",
@@ -22,7 +22,7 @@ export default function FifthSection() {
     },
     {
       icon: "/home/new_home/compras.png",
-      title: "Reserva 100% online y check-in fácil en 3 pasos",
+      title: "Reserva 100% online",
       description:
         "Con nuestro sistema online, realiza tu reserva y organiza tu check-in de forma rápida. Como gestionamos directamente los alojamientos, garantizamos fotos actualizadas y viviendas en perfecto estado para una llegada cómoda y sin complicaciones.",
     },
@@ -41,10 +41,10 @@ export default function FifthSection() {
   ];
 
   return (
-    <section className="py-12 bg-[#E3F0FB] w-full">
+    <section className="py-12 bg-violet-100 w-full">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-800">
-          ¿Por qué escoger hello flat mate?
+          ¿Por qué escoger helloflatmate?
         </h2>
       </div>
       <div className="flex flex-row flex-wrap justify-center items-stretch gap-6 px-2 w-full ">

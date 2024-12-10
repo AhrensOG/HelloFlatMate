@@ -7,7 +7,7 @@ SixthSection() {
   const alojamientos = [
     {
       title: "hello rooms",
-      description: `Habitaciones de media estancia en Valencia, gestionadas por el equipo de hello flat mate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones. 
+      description: `Habitaciones de media estancia en Valencia, gestionadas por el equipo de helloflatmate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones. 
       
       ¡Vive con otros estudiantes como tú!`,
       imageUrl: "/home/new_home/hellorooms.png",
@@ -22,7 +22,7 @@ SixthSection() {
     },
     {
       title: "hello landlord",
-      description: `Habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por hello flat mate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.
+      description: `Habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por helloflatmate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.
 
       ¡Comparte con estudiantes como tú!`,
       imageUrl: "/home/new_home/landlord.png", // Ruta de ejemplo para la imagen
@@ -59,7 +59,7 @@ SixthSection() {
                 />
               </div>
               <div className="">
-                <span className="bg-violet-300 px-3 py-2 rounded-full text-xs text-white font-semibold">
+                <span className="bg-violet-300 px-3 py-2 rounded-full text-sm text-white font-semibold">
                   {alojamiento.title}
                 </span>
                 <p className="mt-2 text-gray-600 text-sm">

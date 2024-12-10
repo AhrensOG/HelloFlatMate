@@ -199,7 +199,7 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
@@ -240,7 +240,7 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
@@ -274,7 +274,7 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
@@ -314,7 +314,7 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
@@ -354,7 +354,7 @@ const CategorySelector = ({
                             />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />

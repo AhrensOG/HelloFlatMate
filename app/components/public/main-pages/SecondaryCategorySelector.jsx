@@ -163,7 +163,7 @@ const SecondaryCategorySelector = ({
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
@@ -193,7 +193,7 @@ const SecondaryCategorySelector = ({
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
@@ -217,7 +217,7 @@ const SecondaryCategorySelector = ({
                             <Select options={numbers} data={data} setData={setData} title="Huespedes" name="numberOccupants" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
@@ -242,7 +242,7 @@ const SecondaryCategorySelector = ({
                             <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
                             <button
                                 onClick={handleSearch}
-                                className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
+                                className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 Buscar alojamiento
                                 <MagnifyingGlassIcon className="size-6 text-white" />
