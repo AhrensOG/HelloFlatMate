@@ -4,7 +4,7 @@ import InfoCard from "./auxiliarComponents/InfoCard";
 const list = [
   {
     img: "/home/objetivo.gif",
-    title: "Alojamientos en zonas consolidadas",
+    title: "Alojamientos consolidados",
     description:
       "Un lugar seguro y sin complicaciones, con todo lo que necesitas para estudiar, labrarte un futuro y forjar amistades para toda la vida.",
   },
