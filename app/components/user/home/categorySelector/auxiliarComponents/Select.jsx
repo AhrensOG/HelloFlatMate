@@ -6,8 +6,6 @@ const Select = ({ name = false, options, data, setData, title = "Seleccionar una
     const [showInput, setShowInput] = useState(false);
     const [selectedValue, setSelectedValue] = useState(title);
 
-    console.log(data);
-
     if (name === "numberOccupants") {
         const optionNumberValue = options.map((option) => {
             return {
@@ -38,7 +36,6 @@ const Select = ({ name = false, options, data, setData, title = "Seleccionar una
             setData({ ...data, [name]: option?.value || option });
         }
         setShowInput(false); // Cierra el dropdown después de seleccionar una opción
-        console.log(data);
     };
 
     useEffect(() => {
@@ -91,7 +88,6 @@ const Select = ({ name = false, options, data, setData, title = "Seleccionar una
                                                 : "border-gray-400"
                                         }`}
                                     >
-                                        {console.log(selectedValue)}
                                         {name === "numberOccupants"
                                             ? selectedValue?.label === option.label && <CheckIcon className="w-3 h-3 text-white" />
                                             : selectedValue === option && <CheckIcon className="w-3 h-3 text-white" />}
