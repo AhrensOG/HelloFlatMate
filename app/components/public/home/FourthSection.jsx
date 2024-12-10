@@ -7,26 +7,26 @@ import FourthSectionCard from "./FourthSectionCard";
 
 const testimonials = [
   {
-    text: "Excellent.  After a long search for housing, Hello Flatmate was a blessing.  Amazing customer service, easy processing and great housing offers.  With all the scams that we encountered on the way, Hello Flatmate was as a very positive experience!  Highly recommended.",
-    name: "Elena",
+    text: "Una gran agencia, 100% recomendada! Alquilé una habitación por 5 meses durante mi semestre en Valencia y tuve una estancia estupenda. El apartamento fue renovado recientemente, tenía todas las comodidades necesarias y cuando necesitaba algo, el equipo de Helloflatmate actuó de inmediato. ¡Gracias por todo!",
+    name: "Lidia",
     location: "España",
     stars: 5,
   },
   {
     text: "Recomiendo Helloflatemate a cualquiera, he estado con ellos durante 5 años, sin problemas, son muy amables, dan muy buen servicio y casas bien mantenidas. Mónica y Alberto siempre dispuestos a ayudar si necesitaba algo que era muy agradable.Disfruté mucho de mi estancia con ellos.",
-    name: "Nancy Kabamba",
+    name: "Nancy",
     location: "USA",
     stars: 5,
   },
   {
     text: "¡Chicos agradables y serviciales que trabajan en HelloFlatmates! Realmente aprecio la respuesta rápida y solidaria del equipo en situaciones de emergencia. 1 estrella menos, solo intenta ser mejor... :)",
-    name: "Shashwat Tripathi",
+    name: "Shashwat",
     location: "UK",
     stars: 4,
   },
   {
     text: "Después de una larga búsqueda de apartamento en Valencia finalmente encontré un apartamento cómodo en una ubicación fantástica con HelloFlatMate. Su servicio al cliente fue excepcional, siempre respondieron los correos electrónicos",
-    name: "Daniel Zanatta",
+    name: "Daniel",
     location: "Spain",
     stars: 5,
   },
