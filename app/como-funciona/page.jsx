@@ -3,6 +3,7 @@ import Image from "next/image";
 import NavbarV3 from "../components/nav_bar/NavbarV3";
 import Footer_1 from "../components/public/home/Footer";
 import FAQ2 from "@/app/components/public/faqs/FAQ2";
+import SeventhSection from "../components/public/home/SeventhSection";
 
 export default function HowItWorks() {
   const steps = [
@@ -233,12 +234,12 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
 
           <h2 className="text-center text-2xl mb-10 w-full">
           ¡Bienvenido a Valencia, bienvenidos a {" "}
-            <strong>hello flat mate</strong>! Tu nueva experiencia comienza aquí.
+            <strong>hello flat mate</strong>!
           </h2>
           {/* <OurWarranties /> */}
         </div>
       </div>
-      <FAQ2 />
+      <SeventhSection />
       <Footer_1 />
     </section>
   );
