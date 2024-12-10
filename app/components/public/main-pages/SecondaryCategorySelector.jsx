@@ -38,7 +38,7 @@ const list = [
 
 const genre = ["ONLY_WOMEN", "MIXED"];
 
-const numbers = [1, 2, 3, 4, 5];
+const numbers = ["1 huésped", "1 huésped + 1 niño", "2 huéspedes", "2 huéspedes + 1 niño"];
 
 const SecondaryCategorySelector = ({
     helloRoomProperties,

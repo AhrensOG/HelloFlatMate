@@ -14,7 +14,7 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
       className={`  w-full flex flex-col gap-7 p-4 `}
     >
       <TitleSection
-        title={"Contrato de renta"}
+        title={"Documentación necesaria"}
         action={() => {
           handleBack();
         }}

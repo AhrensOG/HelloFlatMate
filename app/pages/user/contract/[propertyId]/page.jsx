@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import ThankYou from "@/app/components/user/thank_you/ThankYou";
 import axios from "axios";
 import ContractDetail from "@/app/components/user/contract/contract_detail/ContractDetail";
+import ContractCheckIn from "@/app/components/user/contract/ContractCheckIn";
 
 export default function Contract({ params }) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -78,6 +79,12 @@ export default function Contract({ params }) {
                 handleBack={handleBack}
               />
             )}
+            {/* {currentStep === 3 && (
+              <ContractCheckIn
+                handleContinue={handleContinue}
+                handleBack={handleBack}
+              />
+            )} */}
             {currentStep === 3 && (
               <ContractDetail
                 owner={owner}
