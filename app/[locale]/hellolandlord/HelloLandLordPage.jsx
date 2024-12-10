@@ -1,19 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Context } from "../context/GlobalContext";
-import { getAllProperties } from "../context/actions";
-import Footer_1 from "../components/public/home/Footer";
-import NavBar_1 from "../components/public/home/NavBar_1";
-import TitleSection from "../components/public/main-pages/TitleSection";
-import PropertyCard from "../components/user/property/PropertyCard";
-import FourthSection from "../components/public/home/FourthSection";
-import SeventhSection from "../components/public/home/SeventhSection";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import TextSection from "../components/public/main-pages/TextSection";
-import CategorySelector from "../components/public/main-pages/CategorySelector";
-import PropertyCardSekeleton from "../components/public/main-pages/PropertyCardSekeleton";
+import { Context } from "../../context/GlobalContext";
+import { getAllProperties } from "../../context/actions";
+import Footer_1 from "../../components/public/home/Footer";
+import NavBar_1 from "../../components/public/home/NavBar_1";
+import PropertyCard from "../../components/user/property/PropertyCard";
+import FourthSection from "../../components/public/home/FourthSection";
+import SeventhSection from "../../components/public/home/SeventhSection";
+import TextSection from "../../components/public/main-pages/TextSection";
+import CategorySelector from "../../components/public/main-pages/CategorySelector";
+import PropertyCardSekeleton from "../../components/public/main-pages/PropertyCardSekeleton";
 import { useSearchParams } from "next/navigation";
-export default function HelloRoomPage() {
+
+export default function HelloLandlordPage() {
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
@@ -35,7 +34,7 @@ export default function HelloRoomPage() {
 
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [filters, setFilters] = useState({
-        category: "HELLO_ROOM",
+        category: "HELLO_LANDLORD",
         zone: location === "Sin opciones disponibles" ? null : location || null,
         rentalPeriod: rentalPeriod || null,
         startDate: startDate || null,
@@ -44,9 +43,8 @@ export default function HelloRoomPage() {
         numberOccupants: occupants || null,
     });
 
-    //filtros
     const filterByCategory = (properties) => {
-        return properties.filter((property) => property.category === "HELLO_ROOM");
+        return properties.filter((property) => property.category === "HELLO_LANDLORD");
     };
 
     const paginateRooms = (rooms) => {
@@ -200,21 +198,25 @@ export default function HelloRoomPage() {
                 </header>
                 <div className="w-full flex flex-col">
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-                        <h1 className="text-3xl font-bold">hello rooms</h1>
+                        <h1 className="text-3xl font-bold">hello landlord</h1>
+                        <h2 className="text-lg">
+                            Habitaciones en pisos compartidos con la calidad <strong>hello flat mate</strong>
+                        </h2>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            hello rooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos
-                            los servicios activos. Nos ocupamos de la gestión y el mantenimiento para que sólo te enfoques en estudiar, disfrutar y
-                            explorar Valencia. Comparte piso con otros estudiantes de edad similar y vive una experiencia única en un entorno diseñado
-                            para tu estilo de vida.
+                            <strong>hello landlord</strong> es la solución perfecta para estudiantes que buscan habitaciones en pisos compartidos
+                            gestionadas directamente por propietarios de confianza. Cada propietario ha sido cuidadosamente seleccionado por{" "}
+                            <strong>hello flat mate</strong>, siguiendo nuestro modelo de contrato y estándares de gestión. Esto garantiza un entorno
+                            seguro, cómodo y adaptado a tus necesidades.
                             <br />
                             <br />
-                            Contigo desde la reserva hasta tu último día en Valencia.
+                            Además, siempre contarás con el respaldo de nuestro equipo para asegurarnos de que tengas una experiencia tranquila y sin
+                            sobresaltos.
                         </h3>
                     </div>
                 </div>
                 {/* Contenedor de búsqueda y botones */}
                 <CategorySelector
-                    category={"HELLO_ROOM"}
+                    category={"HELLO_LANDLORD"}
                     filters={filters}
                     setFilters={setFilters}
                     helloRoomProperties={helloRoomProperties}

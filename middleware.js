@@ -46,6 +46,15 @@ export async function middleware(request) {
 
     const pathName = new URL(request.url).pathname;
 
+    // Captura el locale desde la URL
+    const locale = pathName.split("/")[1]; // Suponiendo que el locale es la primera parte de la ruta
+    const supportedLocales = ["es", "en"]; // Lista de locales soportados
+
+    // Redirige a un locale por defecto si no se encuentra uno válido
+    if (!supportedLocales.includes(locale)) {
+        return NextResponse.redirect(new URL(`/es${pathName}`, request.url)); // Redirigir a la versión en español por defecto
+    }
+
     if (allowedPaths.includes(pathName)) {
         return NextResponse.next();
     }
@@ -88,7 +97,7 @@ export async function middleware(request) {
     const allowedRolesPaths = rolesPaths[role] || [];
     const hasAccess = allowedRolesPaths.some((allowedPath) => pathName.startsWith(allowedPath));
 
-    if (!hasAccess && pathName !== "/") {
+    if (!hasAccess && pathName !== "/" && !pathName.startsWith(`/${locale}`)) {
         const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
         return NextResponse.redirect(redirectUrl);
     }

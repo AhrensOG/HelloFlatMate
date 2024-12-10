@@ -1,34 +1,35 @@
 "use client";
 import { Suspense, useContext, useEffect, useState } from "react";
-import { Context } from "./context/GlobalContext";
+import { Context } from "../context/GlobalContext";
 import { toast } from "sonner";
-import { getAllProperties } from "./context/actions";
-import DesktopHero from "./components/user/home/desktop/DesktopHero";
-import HomeNavBar from "./components/nav_bar/HomeNavBar";
-import OffersSection from "./components/user/home/desktop/OfferSection";
-import CommunitySection from "./components/user/home/desktop/CommunitySection";
-import FamilySection from "./components/user/home/desktop/FamilySection";
-import PropertySlider from "./components/user/home/desktop/PropertySlider";
-import InfoSection from "./components/user/home/desktop/InfoSection";
-import Banner from "./components/user/home/desktop/Banner";
-import Footer from "./components/user/home/desktop/Footer";
-import MapSection from "./components/user/home/desktop/auxiliarComponents/MapSection";
-import StayWithUs from "./components/user/home/desktop/StayWithUs";
-import BotIcon from "./components/public/chat-bot/BotIcon";
-import CookieModal from "./components/public/cookies/CookieModal";
-import TitleSection from "./components/public/home/TitleSection";
-import SecondSection from "./components/public/home/SecondSection";
-import ThirdSection from "./components/public/home/ThirdSection";
-import FourthSection from "./components/public/home/FourthSection";
-import FifthSection from "./components/public/home/FifthSection";
-import SixthSection from "./components/public/home/SixthSection";
-import SeventhSection from "./components/public/home/SeventhSection";
-import EightSection from "./components/public/home/EighthSection";
-import Footer_1 from "./components/public/home/Footer";
-import NavBar_1 from "./components/public/home/NavBar_1";
+import { getAllProperties } from "../context/actions";
+import DesktopHero from "../components/user/home/desktop/DesktopHero";
+import HomeNavBar from "../components/nav_bar/HomeNavBar";
+import OffersSection from "../components/user/home/desktop/OfferSection";
+import CommunitySection from "../components/user/home/desktop/CommunitySection";
+import FamilySection from "../components/user/home/desktop/FamilySection";
+import PropertySlider from "../components/user/home/desktop/PropertySlider";
+import InfoSection from "../components/user/home/desktop/InfoSection";
+import Banner from "../components/user/home/desktop/Banner";
+import Footer from "../components/user/home/desktop/Footer";
+import MapSection from "../components/user/home/desktop/auxiliarComponents/MapSection";
+import StayWithUs from "../components/user/home/desktop/StayWithUs";
+import BotIcon from "../components/public/chat-bot/BotIcon";
+import CookieModal from "../components/public/cookies/CookieModal";
+import TitleSection from "../components/public/home/TitleSection";
+import SecondSection from "../components/public/home/SecondSection";
+import ThirdSection from "../components/public/home/ThirdSection";
+import FourthSection from "../components/public/home/FourthSection";
+import FifthSection from "../components/public/home/FifthSection";
+import SixthSection from "../components/public/home/SixthSection";
+import SeventhSection from "../components/public/home/SeventhSection";
+import EightSection from "../components/public/home/EighthSection";
+import Footer_1 from "../components/public/home/Footer";
+import NavBar_1 from "../components/public/home/NavBar_1";
 // import CategorySelector from "./components/public/main-pages/CategorySelector";
-import SecondaryCategorySelector from "./components/public/main-pages/SecondaryCategorySelector";
+import SecondaryCategorySelector from "../components/public/main-pages/SecondaryCategorySelector";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const helloroom = {
     hero: {
@@ -134,6 +135,10 @@ export default function Home() {
     // Estados para controlar las secciones visibles
     const [activeSection, setActiveSection] = useState("inicio");
 
+    //const traduccion
+    const t = useTranslations("home");
+    console.log(t("home_h3"));
+
     const filterOffer = (properties) => {
         return properties.filter((property) => property.offer !== null && property.status === "FREE");
     };
@@ -211,10 +216,7 @@ export default function Home() {
                 </header>
                 <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
                     <h1 className="text-3xl font-bold">hello flat mate</h1>
-                    <h3 className="text-lg text-center">
-                        Especializados en gestión de alojamientos para estudiantes en Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil
-                        y sin complicaciones!
-                    </h3>
+                    <h3 className="text-lg text-center" dangerouslySetInnerHTML={{ __html: t("home_h3") }}></h3>
                     <div className="mb-64 w-full">
                         <Suspense fallback={<Loader />}>
                             <SecondaryCategorySelector
