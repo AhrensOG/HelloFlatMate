@@ -242,6 +242,7 @@ export default function Home() {
               src={"/home/new_home/valencia.png"}
               fill
               className="object-contain object-bottom"
+              alt="Valencia"
             />
           </div>
         </section>

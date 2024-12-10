@@ -61,7 +61,7 @@ export async function middleware(request) {
         pathName.startsWith("/_next/") ||
         pathName.startsWith("/static/") ||
         pathName.startsWith("/public/") ||
-        pathName.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map)$/)
+        pathName.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map|mp4)$/)
     ) {
         return NextResponse.next();
     }
