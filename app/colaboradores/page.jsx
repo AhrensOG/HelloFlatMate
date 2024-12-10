@@ -58,6 +58,7 @@ const Universities = () => {
   return (
     <section className="bg-white w-full">
       {/* Header */}
+
       <header className="bg-[url('/home/new_home/colaboradores.png')] bg-cover bg-no-repeat bg-center">
         <SecondaryNavbar />
         <div className="w-full flex justify-center items-center py-40">
