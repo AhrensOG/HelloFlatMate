@@ -390,7 +390,7 @@ const CategorySelector = ({
           <div className="flex justify-start items-center">
             <button
               onClick={handleSearch}
-              className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+              className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
             >
               Buscar alojamiento
               <MagnifyingGlassIcon className="size-6 text-black" />

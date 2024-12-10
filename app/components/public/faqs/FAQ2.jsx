@@ -39,6 +39,16 @@ const AccordionItemV2 = ({ title, content }) => {
 const FAQ2 = () => {
   const items = [
     {
+      title: "Costes del servicio en hellostudio",
+      content:
+        "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
+    },
+    {
+      title: "Costes de servicio en hellorooms, hellolandlord y hellocoliving",
+      content:
+        "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
+    },
+    {
       title: "¿Con qué tipo de público trabaja helloflatmate?",
       content:
         "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
@@ -140,7 +150,7 @@ const FAQ2 = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col justify-center items-center py-16 px-2 bg-[#FFE5F7] space-y-10">
+    <div className="w-full flex flex-col justify-center items-center py-16 px-2 bg-[#efd3f7] space-y-10">
       <h2 className="text-4xl font-bold text-gray-800 text-center">
         ¿Alguna duda?
       </h2>

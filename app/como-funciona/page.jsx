@@ -98,7 +98,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
       </header>
       <div className="w-full flex justify-center items-center">
         <div className="w-full max-w-screen-md flex flex-col justify-center items-center px-2 py-10">
-          <h1 className="text-center text-4xl font-extrabold mb-10 max-w-96">
+          <h1 className="text-center text-4xl font-extrabold mb-10 ml-24 max-w-96">
             3 simples pasos y listo
           </h1>
           <div className="space-y-10">
@@ -114,20 +114,19 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
 
               {/* Contenido */}
               <div className="flex-1">
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold mb-4 text-center">
                   1. Solicita tu reserva
                 </h2>
-                <p className="text-gray-700 mb-6">
+                <p className="text-gray-700 mb-6 text-center">
                   Explora nuestras opciones de alojamiento y encuentra la casa
-                  perfecta para ti. Con nuestras visitas guiadas virtuales y
-                  descripciones detalladas de cada propiedad y su entorno,
-                  obtendrás toda la información necesaria para tomar la mejor
-                  decisión. Envía tu solicitud de reserva completando el
-                  formulario de la habitación que te interesa. y en menos de 2
-                  horas (dentro de horario laboral), recibirás la confirmación
-                  del propietario. ¿Tienes dudas? ¡Escríbenos! Nuestros agentes
-                  en Valencia están listos para ayudarte a encontrar tu nuevo
-                  hogar.
+                  perfecta para ti. Con nuestros videos y descripciones
+                  detalladas de cada propiedad y su entorno, obtendrás toda la
+                  información necesaria para tomar la mejor decisión. Envía tu
+                  solicitud de reserva completando el formulario de la
+                  habitación que te interesa. y en menos de 2 horas (dentro de
+                  horario laboral), recibirás la confirmación del propietario.
+                  ¿Tienes dudas? ¡Escríbenos! Nuestros agentes en Valencia están
+                  listos para ayudarte a encontrar tu nuevo hogar.
                 </p>
 
                 {/* <div className="grid grid-cols-2 gap-4">
@@ -155,20 +154,20 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
 
               {/* Contenido */}
               <div className="flex-1">
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold mb-4 text-center">
                   2. Confirmada tu solicitud
                 </h2>
-                <p className="text-gray-700 mb-6">
+                <p className="text-gray-700 mb-6 text-center" >
                   Una vez revisada y confirmada tu solicitud se te activará en
                   tu área de usuario varios formularios y la pasarela de pagos,
                   en este paso estarás abonando por adelantado tu primer mes de
                   alquiler según el periodo que has seleccionado previamente.
-                  Las mensualidades se gestiona a través de hello flat mate a
-                  excepción de <strong>hello landlord</strong> para garantizar
-                  las políticas de cancelación y asegurar una entrega óptima del
-                  inmueble. Este importe será transferido al propietario 48
-                  horas después de tu llegada, a menos que nos informes de algún
-                  inconveniente antes de ese plazo y que haya que subsanar.
+                  Las mensualidades se gestiona a través de <strong>helloflatmate</strong> a
+                  excepción de <strong>hellolandlord</strong> para garantizar las políticas de
+                  cancelación y asegurar una entrega óptima del inmueble. Este
+                  importe será transferido al propietario 48 horas después de tu
+                  llegada, a menos que nos informes de algún inconveniente antes
+                  de ese plazo y que haya que subsanar.
                 </p>
 
                 {/* <div className="grid grid-cols-2 gap-4">
@@ -196,25 +195,24 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
 
               {/* Contenido */}
               <div className="flex-1">
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold mb-4 text-center">
                   3. Organiza tu llegada a Valencia.
                 </h2>
-                <h2 className="text-xl font-bold mb-4 jus">2 Formas</h2>
-                <p className="text-gray-700 mb-6">
-                  <strong>Fast Pass:</strong> formaliza toda la documentación
+                <h2 className="text-xl text-center font-bold mb-4 jus ">2 Formas</h2>
+                <p className="text-gray-700 mb-6 text-center">
+                  <strong>Fast Pass:</strong> Formaliza toda la documentación
                   desde tu área de usuario y realiza los pagos de suministros,
                   Wi-Fi, fianza y tasa 15 días antes del inicio del contrato.
                   Con tu pasaporte en mano, recoge las llaves en nuestras
                   oficinas y ¡todo listo!
                   <br />
                   <br />
-                  <strong>Standard pass:</strong>Una vez abonada la primera
-                  mensualidad -Agenda tu cita de check-in a través de nuestro
+                  <strong>Standard pass:</strong> Una vez abonada la primera
+                  mensualidad, agenda tu cita de check-in a través de nuestro
                   calendario para recoger las llaves en nuestras oficinas,
                   realizar los pagos de suministros, Wi-Fi, fianza y tasa para
                   formalizar el contrato. Este proceso llevará unos 30 minutos
-                  por estudiante ¡Bienvenido a Valencia y a hello flat mate! Tu
-                  nueva experiencia comienza aquí.
+                  por estudiante.
                 </p>
 
                 {/* <div className="grid grid-cols-2 gap-4">
@@ -232,8 +230,8 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
             </div>
           </div>
 
-          <h2 className="text-center text-2xl mb-10 w-full">
-          ¡Bienvenido a Valencia, bienvenidos a {" "}
+          <h2 className="text-center text-2xl mb-10 w-full ml-24">
+            ¡Bienvenido a Valencia, bienvenidos a{" "}
             <strong>hello flat mate</strong>!
           </h2>
           {/* <OurWarranties /> */}
