@@ -257,11 +257,19 @@ const ReservationForm = ({
             <p className="text-sm text-gray-500">
               Acepto los{" "}
               <Link
+                href="/terminos-y-condiciones"
+                target="_blank"
+                className="text-blue-500 underline"
+              >
+                términos, condiciones{" "}
+              </Link>
+              y
+              <Link
                 href="/privacy-policy"
                 target="_blank"
                 className="text-blue-500 underline"
               >
-                términos y condiciones
+                {" "}politicas de privacidad
               </Link>
             </p>
           </div>

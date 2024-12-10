@@ -11,7 +11,7 @@ export default function EightSection() {
           src={"/home/new_home/demasiado.gif"}
           fill
           alt="livingroom"
-          className="object-cover"
+          className="object-cover overflow-visible"
         />
       </div>
 

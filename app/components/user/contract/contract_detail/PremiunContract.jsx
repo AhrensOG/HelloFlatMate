@@ -422,18 +422,18 @@ export default function PremiumContract({
           {/* En prueba de conformidad, y para que así conste, firman el presente
             contrato por duplicado en el lugar y fecha al principio indicados. */}
         </p>
-        <div className="mt-8 text-center w-full flex flex-wrap items-start justify-around">
+        <div className="my-8 text-center w-full flex flex-wrap items-start justify-around">
           <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
             Firma ARRENDATARIA:{" "}
           </p>
           <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
             Firma ARRENDADORA:{" "}
-            <Image
+            {/* <Image
               src={"/contract/signature.png"}
               width={200}
               height={100}
               alt="Owner Signature"
-            />
+            /> */}
           </p>
         </div>
 

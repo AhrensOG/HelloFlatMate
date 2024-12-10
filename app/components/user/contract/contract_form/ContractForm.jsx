@@ -64,37 +64,30 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     initialValues,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (
-        values.name === "" ||
-        values.name.trim() === "" ||
-        values.lastName === "" ||
-        values.lastName.trim() === "" ||
-        values.dni === "" ||
-        values.dni.trim() === "" ||
-        values.phone === "" ||
-        values.city === "" ||
-        values.city.trim() === "" ||
-        values.street === "" ||
-        values.street.trim() === "" ||
-        values.streetNumber === "" ||
-        values.streetNumber.trim() === "" ||
-        values.postalCode === "" ||
-        values.postalCode.trim() === "" ||
-        values.country === "" ||
-        values.country.trim() === "" ||
-        // values.age === "" ||
-        values.genre === "" ||
-        values.birthDate === "" ||
-        values.birthDate.trim() === "" ||
-        values.emergencyName === null ||
-        values.emergencyName === "" ||
-        values.emergencyName.trim() === "" ||
-        values.emergencyPhone === null ||
-        values.emergencyPhone === "" ||
-        values.emergencyEmail === null ||
-        values.emergencyEmail === "" ||
-        values.emergencyEmail.trim() === ""
-      ) {
+      // Lista de campos requeridos
+      const requiredFields = [
+        "name",
+        "lastName",
+        "dni",
+        "phone",
+        "city",
+        "street",
+        "streetNumber",
+        "postalCode",
+        "country",
+        "genre",
+        "birthDate",
+        "emergencyName",
+        "emergencyPhone",
+        "emergencyEmail",
+      ];
+
+      // Validar campos requeridos
+      const hasEmptyFields = requiredFields.some(
+        (field) => !values[field] || values[field].trim() === ""
+      );
+
+      if (hasEmptyFields) {
         return toast.info("¡Recuerda completar todos los campos!");
       }
       if (calculateAge(values.birthDate) < 18) {
