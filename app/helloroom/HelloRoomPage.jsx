@@ -13,6 +13,7 @@ import CategorySelector from "../components/public/main-pages/CategorySelector";
 import PropertyCardSekeleton from "../components/public/main-pages/PropertyCardSekeleton";
 import { useSearchParams } from "next/navigation";
 import NavbarV3 from "../components/nav_bar/NavbarV3";
+import SearchNotFound from "../components/public/main-pages/SearchNotFound";
 export default function HelloRoomPage() {
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
@@ -43,6 +44,7 @@ export default function HelloRoomPage() {
         type: type || null,
         numberOccupants: occupants || null,
     });
+    const [showSkeleton, setShowSkeleton] = useState(true);
 
     //filtros
     const filterByCategory = (properties) => {
@@ -226,6 +228,21 @@ export default function HelloRoomPage() {
             carousel.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
+
+    useEffect(() => {
+        if (displayedRooms.length === 0) {
+            // Establece un temporizador de 1 segundo para ocultar el skeleton
+            const timer = setTimeout(() => {
+                setShowSkeleton(false);
+            }, 1000);
+
+            // Limpia el temporizador al desmontar el componente
+            return () => clearTimeout(timer);
+        } else {
+            // Reinicia el estado si hay habitaciones
+            setShowSkeleton(true);
+        }
+    }, [displayedRooms]);
     return (
         <div>
             <div className="flex flex-col sm:min-h-screen">
@@ -261,19 +278,31 @@ export default function HelloRoomPage() {
                 {/* Lista de habitaciones */}
                 <div id="carousel-container" className="w-full flex justify-center items-start">
                     <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
-                        {displayedRooms.length > 0
-                            ? displayedRooms.map((room) => (
-                                  <PropertyCard
-                                      key={room.id + "room"}
-                                      property={room.property}
-                                      roomId={room.id}
-                                      price={room.price}
-                                      name={room.name}
-                                      images={room.images[0]}
-                                      room={room}
-                                  />
-                              ))
-                            : Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)}
+                        {!state.properties || state.properties?.length === 0 ? (
+                            // Mostrar skeletons cuando no hay propiedades
+                            Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)
+                        ) : displayedRooms.length === 0 ? (
+                            showSkeleton ? (
+                                // Mostrar skeletons por 1 segundo
+                                Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)
+                            ) : (
+                                // Mostrar componente SearchNotFound después del tiempo
+                                <SearchNotFound />
+                            )
+                        ) : (
+                            // Mostrar habitaciones cuando hay resultados
+                            displayedRooms.map((room) => (
+                                <PropertyCard
+                                    key={room.id + "room"}
+                                    property={room.property}
+                                    roomId={room.id}
+                                    price={room.price}
+                                    name={room.name}
+                                    images={room.images[0]}
+                                    room={room}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
                 {/* Botones de paginación */}

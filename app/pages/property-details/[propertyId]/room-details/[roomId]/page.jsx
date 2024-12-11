@@ -244,7 +244,6 @@ export default function RoomDetails({ params }) {
               title="Otras habitaciones en el mismo piso"
             />
           ) : null}
-          <SeventhSection bgColor="bg-white" dropdownColor="bg-violet-300" />
           {/* {showModal && (
             <ReservationModal
               calendarType={roomData.calendar}
@@ -268,6 +267,7 @@ export default function RoomDetails({ params }) {
             />
           )} */}
         </main>
+        <SeventhSection />
         <Footer_1 />
       </div>
       {/* DESKTOP */}
@@ -317,7 +317,6 @@ export default function RoomDetails({ params }) {
                 category={data.category}
               />
             ) : null}
-            <SeventhSection />
           </div>
 
           <div className="border" />
@@ -404,6 +403,7 @@ export default function RoomDetails({ params }) {
             </div>
           </div>
         </main>
+        <SeventhSection />
         <Footer_1 />
       </div>
       <AnimatePresence>
