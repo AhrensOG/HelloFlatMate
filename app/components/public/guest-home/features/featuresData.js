@@ -26,7 +26,7 @@ const featureData = [
     },
     {
         title: "Alta de suministros",
-        body: `Todos nuestros alojamientos a excepción de hello studios, vienen con altas de luz, agua e internet wifi.`,
+        body: `Todos nuestros alojamientos a excepción de hellostudios, vienen con altas de luz, agua e internet wifi.`,
         icon: "/guest_home/features/sixth-icon.svg",
     }
 ]

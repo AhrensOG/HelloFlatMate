@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function TitleSection() {
   return (
     <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-      <h1 className="text-3xl font-bold">hello rooms</h1>
+      <h1 className="text-3xl font-bold">hellorooms</h1>
       <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
         son habitaciones equipadas y listas para mudarse desde el primer día,
         con Internet de alta velocidad y todos los servicios activos. Nos

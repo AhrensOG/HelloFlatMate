@@ -6,14 +6,14 @@ export default function TerminosCondiciones() {
       </h1>
       <section className="mb-6">
         <h2 className="text-lg font-semibold">
-          Las habitaciones hello rooms, hello landlord y hello coliving están
+          Las habitaciones hellorooms, hellolandlord y hellocoliving están
           diseñadas para estudiantes internacionales y nacionales que buscan
           comodidad y facilidad desde el primer día. <br />
         </h2>
         <p>
           Están pensadas para estudiantes que llegan a Valencia por menos de un
           año y necesitan un espacio listo para habitar desde el primer momento.
-          Estas habitaciones, gestionadas profesionalmente por hello flat mate,
+          Estas habitaciones, gestionadas profesionalmente por helloflatmate,
           te permiten centrarte en lo importante mientras nosotros nos ocupamos
           de todo lo demás.
           <br />
@@ -37,7 +37,7 @@ export default function TerminosCondiciones() {
           </li>
           <li>Atención personalizada durante toda tu estancia.</li>
           <li>
-            Contrato de alquiler revisado por hello flat mate, pudiendo leerlo
+            Contrato de alquiler revisado por helloflatmate, pudiendo leerlo
             antes de reservar.
           </li>
           <li>Informe de consumos de suministros y consejos de ahorro</li>

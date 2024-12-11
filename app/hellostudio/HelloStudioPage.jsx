@@ -221,7 +221,7 @@ export default function HelloStudioPage() {
                 </header>
                 <div className="w-full flex flex-col">
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-                        <h1 className="text-3xl font-bold">hello studios</h1>
+                        <h1 className="text-3xl font-bold">hellostudios</h1>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
                             Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables.
                             <br />

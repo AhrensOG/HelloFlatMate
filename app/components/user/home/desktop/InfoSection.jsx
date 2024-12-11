@@ -36,7 +36,7 @@ const list = [
     img: "/home/idea.gif",
     title: "Alta de suministros",
     description:
-      "Todos nuestros alojamientos a excepción de hello studios, vienen con altas de luz, agua e internet wifi.",
+      "Todos nuestros alojamientos a excepción de hellostudios, vienen con altas de luz, agua e internet wifi.",
   },
 ];
 

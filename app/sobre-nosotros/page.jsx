@@ -14,7 +14,7 @@ const AboutUs = () => {
         <SecondaryNavbar />
         <div className="w-full flex justify-center items-center py-40">
           <h1 className="text-2xl font-bold max-w-screen-lg text-center text-white">
-            hello flat mate es la plataforma online de alquiler de pisos y
+            helloflatmate es la plataforma online de alquiler de pisos y
             habitaciones de media y larga estancia
           </h1>
         </div>
@@ -23,21 +23,21 @@ const AboutUs = () => {
       {/* Nueva sección con el contenido */}
       <div className="max-w-screen-lg mx-auto py-16 px-4">
         <h2 className="text-center text-2xl font-bold mb-8">
-          ¿Por qué es diferente hello flat mate?
+          ¿Por qué es diferente helloflatmate?
         </h2>
         <div className="space-y-8 text-lg text-center">
           <p>
             Tu aliado desde Valencia para encontrar alojamiento de manera
             sencilla y segura. <br />
             <br />
-            En <strong>hello flat mate</strong>, nos especializamos en ofrecer
+            En <strong>helloflatmate</strong>, nos especializamos en ofrecer
             alojamiento para estudiantes y nómadas digitales que buscan una
             experiencia única en Valencia. Nuestra plataforma combina una
             gestión profesional con un trato cercano, ayudando a jóvenes
             internacionales y nacionales a encontrar su hogar ideal.
             <br />
             <br />A diferencia de otras opciones, en{" "}
-            <strong>hello flat mate</strong> garantizamos un proceso de reserva
+            <strong>helloflatmate</strong> garantizamos un proceso de reserva
             claro y eficiente, eliminando complicaciones desde el primer día.
             <br />
             <br />
@@ -57,7 +57,7 @@ const AboutUs = () => {
 
       <div className="max-w-screen-lg mx-auto py-16 px-4">
         <h2 className="text-center text-2xl font-bold mb-8">
-          Así comenzó hello flat mate: una idea que nació en movimiento
+          Así comenzó helloflatmate: una idea que nació en movimiento
         </h2>
         <div className="space-y-8 text-lg text-center">
           <p>
@@ -68,7 +68,7 @@ const AboutUs = () => {
             necesidades.
             <br />
             <br />
-            La inspiración para <strong>hello flat mate</strong> surgió mientras
+            La inspiración para <strong>helloflatmate</strong> surgió mientras
             Alberto vivía en Bristol (Inglaterra), concretamente cuando se
             mudaba a Londres.
             <br />
@@ -93,7 +93,7 @@ const AboutUs = () => {
             <br />
             Aunque Alberto insiste en que no fue el primero en ofrecer
             habitaciones para estudiantes en el mundo, sí tiene claro que{" "}
-            <strong>hello flat mate</strong> fue pionera en priorizar la
+            <strong>helloflatmate</strong> fue pionera en priorizar la
             adaptación de los jóvenes y su tranquilidad, ofreciendo mucho más
             que un simple alojamiento. La clave está en los pequeños detalles:
             apoyo en gestiones administrativas, recomendaciones locales y un
@@ -111,7 +111,7 @@ const AboutUs = () => {
 
       <div id="medios" className="max-w-screen-lg mx-auto py-16 px-4">
         <h2 className="text-center text-4xl font-bold mb-14">
-          hello flat mate en los medios
+          helloflatmate en los medios
         </h2>
         <div className="flex flex-col md:flex-row justify-around items-center space-y-8 md:space-y-0 md:space-x-4">
           {/* Primer artículo */}
@@ -127,7 +127,7 @@ const AboutUs = () => {
               target="_blank"
               className="text-blue-600 underline mt-4"
             >
-              hello flat mate, para que en tu llegada a Valencia te sientas como en casa
+              helloflatmate, para que en tu llegada a Valencia te sientas como en casa
             </Link>
           </div>
           <div className="flex flex-col items-center text-center">

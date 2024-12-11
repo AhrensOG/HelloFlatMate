@@ -10,7 +10,7 @@ const articles = [
   {
     title: "Contratos",
     description:
-      "En hello flat mate garantizamos contratos de alquiler legales y seguros, basados en el Código Civil, que aseguran un equilibrio justo entre arrendadores e inquilinos. Leer aquí",
+      "En helloflatmate garantizamos contratos de alquiler legales y seguros, basados en el Código Civil, que aseguran un equilibrio justo entre arrendadores e inquilinos. Leer aquí",
     image: "/home/new_home/documento.png",
   },
   {
@@ -34,7 +34,7 @@ const articles = [
   {
     title: "Alta de suministros",
     description:
-      "Todos nuestros alojamientos, excepto hello Studios, cuentan con luz, agua e Internet WiFi dados de alta antes de tu llegada, para que no tengas que preocuparte por nada.",
+      "Todos nuestros alojamientos, excepto helloStudios, cuentan con luz, agua e Internet WiFi dados de alta antes de tu llegada, para que no tengas que preocuparte por nada.",
     image: "/home/new_home/lampara-de-escritorio.png",
   },
 ];
