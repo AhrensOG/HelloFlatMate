@@ -2,22 +2,26 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const AccordionItemV2 = ({ title, content }) => {
+const AccordionItemV2 = ({ title, content, bgColor, titleColor, contentColor }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-300 bg-white rounded-xl p-3">
+    <div className={`border-b border-gray-300 ${bgColor} rounded-xl p-3`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex justify-between items-center w-full p-4 text-left"
       >
-        <span className="font-semibold text-gray-800 text-xl">{title}</span>
+        <span className={`font-semibold ${titleColor} text-xl text-center w-full`}>
+          {title}
+        </span>
         <div className="relative w-6 h-6">
+          {/* Línea horizontal */}
           <motion.div
             className="absolute inset-3 left-1 w-4 h-[1px] bg-gray-500"
             animate={{ rotate: isOpen ? 0 : 0 }}
             transition={{ duration: 0.3 }}
           />
+          {/* Línea vertical */}
           <motion.div
             className="absolute inset-3 left-1 w-4 h-[1px] bg-gray-500"
             animate={{ rotate: isOpen ? 0 : 90 }}
@@ -30,13 +34,18 @@ const AccordionItemV2 = ({ title, content }) => {
         animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
         className="overflow-hidden"
       >
-        <div className="p-4 text-gray-600 text-lg">{content}</div>
+        <div className={`p-4 ${contentColor} text-lg text-center`}>{content}</div>
       </motion.div>
     </div>
   );
 };
 
-const FAQ2 = () => {
+const FAQ2 = ({
+  dropdownColor = "bg-white",
+  bgColor = "bg-violet-300",
+  titleDropdownColor = "text-gray-800",
+  contentDropdownColor = "text-gray-600",
+}) => {
   const items = [
     {
       title: "Costes del servicio en hellostudio",
@@ -64,7 +73,7 @@ const FAQ2 = () => {
         "La cartera incluye apartamentos semi-amueblados o sin amueblar, algunos con alta de suministros requerida (luz, agua, gas).",
     },
     {
-      title: "¿Cuánto cuesta el servicio de gestión de hello rooms y hello landlord?",
+      title: "¿Cuánto cuesta el servicio de gestión de hellorooms y hellolandlord?",
       content:
         "El coste de honorarios de gestión es de 459,80 euros, IVA incluido, pagadero el día del check-in mediante tarjeta bancaria.",
     },
@@ -96,7 +105,7 @@ const FAQ2 = () => {
     {
       title: "¿Las facturas están incluidas?",
       content:
-        "No, excepto en hello coliving, donde están incluidas con un tope máximo de 50€ al mes por persona.",
+        "No, excepto en hellocoliving, donde están incluidas con un tope máximo de 50€ al mes por persona.",
     },
     {
       title: "¿Las facturas de mantenimiento del edificio están incluidas?",
@@ -106,12 +115,12 @@ const FAQ2 = () => {
     {
       title: "¿Hay internet? ¿Cómo se realizan los pagos de internet?",
       content:
-        "Sí, hay internet con una cuota fija de 16 €/mes, pagadera cada 5 meses por adelantado (80 €/habitación), excepto en hello studios.",
+        "Sí, hay internet con una cuota fija de 16 €/mes, pagadera cada 5 meses por adelantado (80 €/habitación), excepto en hellostudios.",
     },
     {
       title: "¿Cómo se pagan las facturas de agua, luz y gas?",
       content:
-        "En hello rooms y hello studios, los pagos se hacen al inicio del contrato y a mitad del mismo. Este importe se entrega al propietario y se regulariza con las facturas reales.",
+        "En hellorooms y hellostudios, los pagos se hacen al inicio del contrato y a mitad del mismo. Este importe se entrega al propietario y se regulariza con las facturas reales.",
     },
     {
       title: "¿Cómo estaré enterado/a del gasto de electricidad y agua?",
@@ -136,7 +145,7 @@ const FAQ2 = () => {
     {
       title: "¿Qué fianza tengo que entregar? ¿Cuándo y cómo lo hago?",
       content:
-        "hello rooms y hello landlord requieren una fianza de 300€. hello coliving requiere 550€, y hello studios, una mensualidad. Se devuelve entre 30-45 días tras finalizar el contrato.",
+        "hellorooms y hellolandlord requieren una fianza de 300€. hellocoliving requiere 550€, y hellostudios, una mensualidad. Se devuelve entre 30-45 días tras finalizar el contrato.",
     },
     {
       title: "¿Puede venir familia y amigos a visitarme y dormir en el piso?",
@@ -150,16 +159,19 @@ const FAQ2 = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col justify-center items-center py-16 px-2 bg-[#efd3f7] space-y-10">
-      <h2 className="text-4xl font-bold text-gray-800 text-center">
-        ¿Alguna duda?
-      </h2>
+    <div
+      className={`w-full flex flex-col justify-center items-center py-16 px-2 ${bgColor} space-y-10`}
+    >
+      <h2 className="text-4xl font-bold text-gray-800 text-center">¿Alguna duda?</h2>
       <div className="max-w-screen-lg w-full space-y-4">
         {items.map((item, index) => (
           <AccordionItemV2
             key={index}
             title={item.title}
             content={item.content}
+            bgColor={dropdownColor}
+            titleColor={titleDropdownColor}
+            contentColor={contentDropdownColor}
           />
         ))}
       </div>

@@ -115,7 +115,7 @@ const hellolandlord = {
   family: {
     title: "Habitaciones Gestionadas para tu Comodidad",
     description:
-      "Hello Landlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año",
+      "hellolandlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año",
     img1: "/home/family1.svg",
     img2: "/home/subFamily1.svg",
   },

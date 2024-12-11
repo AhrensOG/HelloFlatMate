@@ -30,13 +30,13 @@ export default function FifthSection() {
       icon: "/home/new_home/reiniciar.png",
       title: "Flexibilidad que se adapta a ti",
       description:
-        "Sabemos que los planes pueden cambiar, por eso ofrecemos una política de cancelaciones flexible. Y si cancelas a pocos días de tu check-in, no te preocupes: te ayudamos a encontrar otro estudiante que sustituya tu contrato, para que puedas recuperar tu reserva total o parcial. En hello flat mate, siempre buscamos soluciones para ti.",
+        "Sabemos que los planes pueden cambiar, por eso ofrecemos una política de cancelaciones flexible. Y si cancelas a pocos días de tu check-in, no te preocupes: te ayudamos a encontrar otro estudiante que sustituya tu contrato, para que puedas recuperar tu reserva total o parcial. En helloflatmate, siempre buscamos soluciones para ti.",
     },
     {
       icon: "/home/new_home/confianza.png",
-      title: "Seguridad y confianza en cada paso",
+      title: "Mediación entre inquilinos",
       description:
-        "En hello flat mate, priorizamos la atención personalizada y la calidad en la gestión. Por eso, gestionamos únicamente 160 habitaciones, asegurándonos de brindar un servicio cercano, seguro y adaptado a las necesidades de cada flatmate durante toda su estancia. Tu tranquilidad es nuestra prioridad.",
+        "En helloflatmate, nos comprometemos a apoyar una convivencia armoniosa. Por eso, ofrecemos, un servicio, de mediacion entre nquilinos para resolver cualquier conflicto o malentendido que pueda surgir, promoviendo un ambiente cómodo y respetuoso para todos.",
     },
   ];
 

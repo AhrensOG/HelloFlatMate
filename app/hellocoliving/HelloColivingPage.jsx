@@ -217,10 +217,10 @@ export default function HelloColivingPage() {
                 </header>
                 <div className="w-full flex flex-col">
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-                        <h1 className="text-3xl font-bold">hello coliving</h1>
+                        <h1 className="text-3xl font-bold">hellocoliving</h1>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            Donde la comodidad se encuentra con la comunidad En hello flat mate transformamos el concepto de vivienda compartida con
-                            hello coliving. Hemos destinado tres modernas viviendas en Valencia exclusivamente al formato coliving, creando espacios
+                            Donde la comodidad se encuentra con la comunidad En helloflatmate transformamos el concepto de vivienda compartida con
+                            hellocoliving. Hemos destinado tres modernas viviendas en Valencia exclusivamente al formato coliving, creando espacios
                             diseñados para estudiantes que buscan comodidad, privacidad y comunidad. ¡Tu nueva forma de vivir en Valencia te está
                             esperando!
                             <br />

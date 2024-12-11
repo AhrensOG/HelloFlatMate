@@ -7,12 +7,14 @@ const AccordionItemV2 = ({ title, content, bgColor, titleColor, contentColor }) 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`border-b border-gray-300 ${bgColor}  rounded-xl p-3`}>
+    <div className={`border-b border-gray-300 ${bgColor} rounded-xl p-3`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex justify-between items-center w-full p-4 text-left"
       >
-        <span className={`font-semibold ${titleColor} text-xl`}>{title}</span>
+        <span className={`font-semibold ${titleColor} text-xl text-center w-full`}>
+          {title}
+        </span>
         <div className="relative w-6 h-6">
           {/* Línea horizontal */}
           <motion.div
@@ -33,13 +35,18 @@ const AccordionItemV2 = ({ title, content, bgColor, titleColor, contentColor }) 
         animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
         className="overflow-hidden"
       >
-        <div className={`p-4 ${contentColor} text-lg`}>{content}</div>
+        <div className={`p-4 ${contentColor} text-lg text-center`}>{content}</div>
       </motion.div>
     </div>
   );
 };
 
-const SeventhSection = ({dropdownColor = "bg-white", bgColor = "bg-violet-300", titleDropdownColor = "text-gray-800", contentDropdownColor = "text-gray-600"}) => {
+const SeventhSection = ({
+  dropdownColor = "bg-white",
+  bgColor = "bg-violet-300",
+  titleDropdownColor = "text-gray-800",
+  contentDropdownColor = "text-gray-600",
+}) => {
   const items = [
     {
       title: "Costes del servicio en hellostudio",
@@ -64,10 +71,10 @@ const SeventhSection = ({dropdownColor = "bg-white", bgColor = "bg-violet-300", 
   ];
 
   return (
-    <div className={`w-full flex flex-col justify-center items-center py-16 px-2 ${bgColor} space-y-10`}>
-      <h2 className="text-4xl font-bold text-gray-800 text-center">
-      ¿Alguna duda?
-      </h2>
+    <div
+      className={`w-full flex flex-col justify-center items-center py-16 px-2 ${bgColor} space-y-10`}
+    >
+      <h2 className="text-4xl font-bold text-gray-800 text-center">¿Alguna duda?</h2>
       <div className="max-w-screen-lg w-full space-y-4">
         {items.map((item, index) => (
           <AccordionItemV2
@@ -79,7 +86,7 @@ const SeventhSection = ({dropdownColor = "bg-white", bgColor = "bg-violet-300", 
             contentColor={contentDropdownColor}
           />
         ))}
-        </div>
+      </div>
       <div className="font-bold text-gray-600 text-center">
         ¿Tienes una pregunta diferente?
         <Link href={"/faq"} target="_blank" className="pl-1 text-gray-700 underline">
