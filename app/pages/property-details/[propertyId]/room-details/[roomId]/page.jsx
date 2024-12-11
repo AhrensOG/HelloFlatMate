@@ -286,7 +286,7 @@ export default function RoomDetails({ params }) {
           className={`  flex flex-row gap-10 grow text-[#0D171C] w-full max-w-screen-2xl px-2`}
         >
           {/* LEFT SIDE */}
-          <div className="w-full space-y-16">
+          <div className="w-full space-y-16 max-w-[50%]">
             <div className="w-full">
               {allImages.length > 0 ? (
                 <SliderDetails>
@@ -322,7 +322,7 @@ export default function RoomDetails({ params }) {
           <div className="border" />
 
           {/* RIGHT SIDE */}
-          <div className="relative w-full">
+          <div className="relative w-full max-w-[50%]">
             <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
               <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
               <h6 className="font-light text-[#000000B2]">
@@ -350,7 +350,7 @@ export default function RoomDetails({ params }) {
                   roomData.price && (
                     <ReservationButton
                       callback={handleShowModal}
-                      disabled={isLeaseOrderActive || false}
+                      // disabled={isLeaseOrderActive || false}
                     />
                   )}
               </div>

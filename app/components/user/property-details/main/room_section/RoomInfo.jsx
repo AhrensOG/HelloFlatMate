@@ -19,9 +19,9 @@ export default function RoomInfo({ data, action, category }) {
           ? handleRedirect
           : () => action(data)
       }
-      className={`cursor-pointer flex flex-col gap-2 min-w-[8.7rem] max-w-[12rem] items-center justify-between relative w-full`}
+      className={`cursor-pointer flex flex-col gap-2 w-48 items-center justify-between relative`}
     >
-      <div className="relative h-32 rounded-sm w-full">
+      <div className="relative h-32 rounded-sm w-48">
         {data.images[0] ? (
           <Image
             src={data.images[0]}
