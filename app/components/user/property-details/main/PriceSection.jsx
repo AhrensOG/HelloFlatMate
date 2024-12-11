@@ -8,7 +8,7 @@ export default function PriceSection({ data }) {
         <span className="h-6 w-6 flex items-center">
           <CurrencyEuroIcon />
         </span>
-        {data}
+        {data} /mes
       </h4>
     </section>
   );

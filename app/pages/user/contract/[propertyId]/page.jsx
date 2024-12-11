@@ -79,12 +79,12 @@ export default function Contract({ params }) {
                 handleBack={handleBack}
               />
             )}
-            {/* {currentStep === 3 && (
+            {currentStep === 3 && (
               <ContractCheckIn
                 handleContinue={handleContinue}
                 handleBack={handleBack}
               />
-            )} */}
+            )}
             {currentStep === 3 && (
               <ContractDetail
                 owner={owner}

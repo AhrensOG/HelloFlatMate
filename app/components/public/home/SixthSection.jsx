@@ -58,11 +58,11 @@ SixthSection() {
                   className="rounded-lg object-cover"
                 />
               </div>
-              <div className="">
-                <span className="bg-violet-300 px-3 py-2 rounded-full text-xs text-white font-semibold">
+              <div className="flex flex-col justify-start items-center">
+                <span className="bg-violet-300 px-3 py-2 rounded-full text-xs text-white text-center font-semibold">
                   {alojamiento.title}
                 </span>
-                <p className="mt-2 text-gray-600 text-sm">
+                <p className="mt-2 text-gray-600 text-sm text-center">
                   {alojamiento.description}
                 </p>
               </div>
