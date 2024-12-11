@@ -5,7 +5,7 @@ import { ChevronUpIcon } from "@heroicons/react/20/solid";
 export default function SelectRentalPeriod({ data, setData }) {
   const [selectedValue, setSelectedValue] = useState(""); // Valor inicial vacío
   const [showOptions, setShowOptions] = useState(false); // Para mostrar u ocultar las opciones
-
+console.log(data)
   const calculateDurationInMonths = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
