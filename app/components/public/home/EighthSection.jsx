@@ -17,7 +17,7 @@ export default function EightSection() {
 
       {/* Texto */}
       <h1 className="text-2xl sm:text-4xl font-semibold text-gray-800 my-10 mt-20">
-        Encuentra tu casa ideal con hello flat mate
+        Encuentra tu casa ideal con helloflatmate
       </h1>
 
       {/* Botón */}

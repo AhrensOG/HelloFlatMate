@@ -12,7 +12,7 @@ export default function HowItWorks() {
       bgColor: "bg-white",
       title: "Solicita tu reserva",
       description:
-        "Explora nuestras opciones de alojamiento y encuentra la casa perfecta para ti. Gracias a nuestras visitas guiadas y descripciones detalladas de cada propiedad y su barrio, realizadas por el equipo de hello flat mate, tendrás toda la información necesaria para tomar una buena decisión. Si tienes dudas, ¡escríbenos! Nuestros agentes en Valencia están aquí para ayudarte a encontrar el mejor alojamiento para tí.",
+        "Explora nuestras opciones de alojamiento y encuentra la casa perfecta para ti. Gracias a nuestras visitas guiadas y descripciones detalladas de cada propiedad y su barrio, realizadas por el equipo de helloflatmate, tendrás toda la información necesaria para tomar una buena decisión. Si tienes dudas, ¡escríbenos! Nuestros agentes en Valencia están aquí para ayudarte a encontrar el mejor alojamiento para tí.",
       subpoints: [
         {
           title: "Verificamos las propiedades",
@@ -32,12 +32,12 @@ export default function HowItWorks() {
       bgColor: "bg-white",
       title: "Reserva tu alojamiento",
       description:
-        "Confirma tu elección leyendo previamente nuestras condiciones de reserva y las condiciones del alojamiento, si las cumples, ¡Adelante!, es tuya. La reserva corresponderá a la primera mensualidad del contrato de alquiler y se gestiona a través de hello flat mate para garantizar las políticas de cancelación y una óptima entrega del inmueble. Siendo transferida la primera mensualidad del alquiler al propietario 48 horas después de tu llegada, salvo que nos informes de algún inconveniente antes de ese plazo.",
+        "Confirma tu elección leyendo previamente nuestras condiciones de reserva y las condiciones del alojamiento, si las cumples, ¡Adelante!, es tuya. La reserva corresponderá a la primera mensualidad del contrato de alquiler y se gestiona a través de helloflatmate para garantizar las políticas de cancelación y una óptima entrega del inmueble. Siendo transferida la primera mensualidad del alquiler al propietario 48 horas después de tu llegada, salvo que nos informes de algún inconveniente antes de ese plazo.",
       subpoints: [
         {
           title: "¿Qué estoy pagando?",
           description:
-            "Pago inicial: Cubre parte de la estancia y las tasas de reserva de hello flat mate. El importe se transferirá al propietario 48 horas después de tu fecha de entrada si no se documenta ningún problema.",
+            "Pago inicial: Cubre parte de la estancia y las tasas de reserva de helloflatmate. El importe se transferirá al propietario 48 horas después de tu fecha de entrada si no se documenta ningún problema.",
         },
         {
           title: "Confirmación de reserva",
@@ -232,7 +232,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
 
           <h2 className="text-center text-2xl mb-10 w-full ml-24">
             ¡Bienvenido a Valencia, bienvenidos a{" "}
-            <strong>hello flat mate</strong>!
+            <strong>helloflatmate</strong>!
           </h2>
           {/* <OurWarranties /> */}
         </div>
@@ -253,7 +253,7 @@ const OurWarranties = () => {
     },
     {
       icon: "/howitworks/verificado.gif",
-      title: "Verificada por hello flat mate",
+      title: "Verificada por helloflatmate",
       description:
         "Ofrecemos fotografías y vídeo reales de cada propiedad en lugar de usar materiales de terceros.",
     },

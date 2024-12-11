@@ -217,14 +217,14 @@ export default function HelloLandlordPage() {
                 </header>
                 <div className="w-full flex flex-col">
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-                        <h1 className="text-3xl font-bold">hello landlord</h1>
+                        <h1 className="text-3xl font-bold">hellolandlord</h1>
                         <h2 className="text-lg">
-                            Habitaciones en pisos compartidos con la calidad <strong>hello flat mate</strong>
+                            Habitaciones en pisos compartidos con la calidad <strong>helloflatmate</strong>
                         </h2>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            <strong>hello landlord</strong> es la solución perfecta para estudiantes que buscan habitaciones en pisos compartidos
+                            <strong>hellolandlord</strong> es la solución perfecta para estudiantes que buscan habitaciones en pisos compartidos
                             gestionadas directamente por propietarios de confianza. Cada propietario ha sido cuidadosamente seleccionado por{" "}
-                            <strong>hello flat mate</strong>, siguiendo nuestro modelo de contrato y estándares de gestión. Esto garantiza un entorno
+                            <strong>helloflatmate</strong>, siguiendo nuestro modelo de contrato y estándares de gestión. Esto garantiza un entorno
                             seguro, cómodo y adaptado a tus necesidades.
                             <br />
                             <br />
