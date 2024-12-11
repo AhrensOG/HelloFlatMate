@@ -3,16 +3,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-const AccordionItemV2 = ({ title, content }) => {
+const AccordionItemV2 = ({ title, content, bgColor, titleColor, contentColor }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-300 bg-white rounded-xl p-3">
+    <div className={`border-b border-gray-300 ${bgColor}  rounded-xl p-3`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex justify-between items-center w-full p-4 text-left"
       >
-        <span className="font-semibold text-gray-800 text-xl">{title}</span>
+        <span className={`font-semibold ${titleColor} text-xl`}>{title}</span>
         <div className="relative w-6 h-6">
           {/* Línea horizontal */}
           <motion.div
@@ -33,13 +33,13 @@ const AccordionItemV2 = ({ title, content }) => {
         animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
         className="overflow-hidden"
       >
-        <div className="p-4 text-gray-600 text-lg">{content}</div>
+        <div className={`p-4 ${contentColor} text-lg`}>{content}</div>
       </motion.div>
     </div>
   );
 };
 
-const SeventhSection = () => {
+const SeventhSection = ({dropdownColor = "bg-white", bgColor = "bg-violet-300", titleDropdownColor = "text-gray-800", contentDropdownColor = "text-gray-600"}) => {
   const items = [
     {
       title: "Costes del servicio en hellostudio",
@@ -64,7 +64,7 @@ const SeventhSection = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col justify-center items-center py-16 px-2 bg-violet-300 space-y-10">
+    <div className={`w-full flex flex-col justify-center items-center py-16 px-2 ${bgColor} space-y-10`}>
       <h2 className="text-4xl font-bold text-gray-800 text-center">
       ¿Alguna duda?
       </h2>
@@ -74,6 +74,9 @@ const SeventhSection = () => {
             key={index}
             title={item.title}
             content={item.content}
+            bgColor={dropdownColor}
+            titleColor={titleDropdownColor}
+            contentColor={contentDropdownColor}
           />
         ))}
         </div>

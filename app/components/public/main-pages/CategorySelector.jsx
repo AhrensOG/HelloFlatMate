@@ -143,7 +143,7 @@ const CategorySelector = ({
         const url = `${window.location.origin}/pages/user/filtered?${queryString}`;
 
         // Abrir en una nueva pestaña
-        window.open(url, "_blank", "noopener,noreferrer");
+        // window.open(url, "_blank", "noopener,noreferrer");
     };
 
     const cleanFilters = () => {
@@ -197,7 +197,7 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Tipo de compañeros"
+                                title="Comparte con"
                                 name="type"
                             />
                             <button
@@ -238,7 +238,7 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Tipo de compañeros"
+                                title="Comparte con"
                                 name="type"
                             />
                             <button
@@ -306,7 +306,7 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Tipo de compañeros"
+                                title="Comparte con"
                                 name="type"
                             />
                             <button
@@ -332,6 +332,7 @@ const CategorySelector = ({
                                 data={filters}
                                 setData={setFilters}
                                 title="¿En qué zona?"
+                                name="zone"
                             />
                             <Select
                                 resetFilters={resetFilters}
@@ -346,7 +347,7 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Tipo de compañeros"
+                                title="Comparte con"
                                 name="type"
                             />
                             <button
