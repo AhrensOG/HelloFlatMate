@@ -97,12 +97,12 @@ export default function ReservationModal({
         description: "Seras redirigido.",
       });
       setTimeout(() => setIsSubmitting(false), 1000);
-      setTimeout(
-        () => router.push("/pages/user/my-reservations"),
-        1000
-      );
+      setTimeout(() => router.push("/pages/user/my-reservations"), 1000);
     } catch (error) {
-      toast.info(`Error al procesar la reserva`, { id: toastId, description: "Intenta nuevamente o contacta al soporte" });
+      toast.info(`Error al procesar la reserva`, {
+        id: toastId,
+        description: "Intenta nuevamente o contacta al soporte",
+      });
       setIsSubmitting(false);
       throw error;
     }
@@ -149,7 +149,11 @@ export default function ReservationModal({
         <div className="space-y-5">
           {calendarType === "SIMPLE" ? (
             <SelectRentalPeriod
-              data={rentalPeriods.filter((rental) => rental.isFree)}
+              data={rentalPeriods.filter(
+                (rental) =>
+                  rental.isFree &&
+                  new Date(rental?.rentalPeriod?.startDate) > new Date()
+              )}
               setData={handleSetDuration}
               info={info}
             />

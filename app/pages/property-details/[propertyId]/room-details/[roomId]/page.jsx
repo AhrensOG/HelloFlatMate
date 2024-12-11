@@ -179,7 +179,7 @@ export default function RoomDetails({ params }) {
               roomData.price && (
                 <ReservationButton
                   callback={handleShowModal}
-                  disabled={isLeaseOrderActive || false}
+                  // disabled={isLeaseOrderActive || false}
                 />
               )}
           </div>

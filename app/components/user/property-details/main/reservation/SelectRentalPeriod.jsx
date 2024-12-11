@@ -66,7 +66,7 @@ export default function SelectRentalPeriod({ data, setData }) {
             )} al ${formatedDate(
               data.find((period) => period.id === parseInt(selectedValue)).rentalPeriod?.endDate
             )}`
-          : "Selecciona un contrato"}
+          : "Fechas disponibles"}
         <span
           className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
             showOptions ? "bg-[#1C8CD65E] rotate-180" : ""
