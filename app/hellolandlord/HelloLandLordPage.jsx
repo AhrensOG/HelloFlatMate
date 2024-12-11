@@ -148,8 +148,9 @@ export default function HelloLandlordPage() {
                         property.rooms?.map((room) => {
                             // Incluir siempre la propiedad completa dentro de cada room
                             const matchesTypology = !filters.type || property.typology === filters.type;
-
-                            if (matchesTypology) {
+                            const matchesStatus = room.isActive === true;
+            
+                            if (matchesTypology && matchesStatus) {
                                 // Retornar habitación con la propiedad completa
                                 return {
                                     ...room, // Room original

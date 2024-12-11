@@ -6,7 +6,7 @@ export default function Footer_1() {
   return (
     <>
       {/* //Mobile */}
-      <footer className="bg-[#f2efed] w-full flex flex-col gap-11 md:hidden py-10">
+      <footer className="bg-[#f5f2f1] w-full flex flex-col gap-11 md:hidden py-10">
         <section className="flex flex-col gap-10 p-6">
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">helloflatmate</h2>
@@ -37,21 +37,28 @@ export default function Footer_1() {
               target="_blank"
               className="font-normal text-base"
             >
-              Politica de privacidad
+              Política de privacidad
             </Link>
+            {/* <Link
+              href="/privacy-policy"
+              target="_blank"
+              className="font-normal text-base"
+            >
+              Politica de cancelacion
+            </Link> */}
             <Link
               href="/cookies"
               target="_blank"
               className="font-normal text-base"
             >
-              Politica de cookies
+              Política de cookies
             </Link>
             <Link
               href="/terminos-condiciones"
               target="_blank"
               className="font-normal text-base"
             >
-              Terminos y condiciones
+              Términos y condiciones
             </Link>
           </article>
           <article className="flex flex-col gap-4">
@@ -61,10 +68,14 @@ export default function Footer_1() {
               target="_blank"
               className="font-normal text-base"
             >
-              Como funciona
+              Cómo funciona
             </Link>
-            <Link href="/clausulas" target="_blank" className="font-normal text-base">
-              Clausulas del contrato
+            <Link
+              href="/clausulas"
+              target="_blank"
+              className="font-normal text-base"
+            >
+              Cláusulas del contrato
             </Link>
           </article>
           {/* <article className="flex flex-col gap-4">
@@ -76,7 +87,7 @@ export default function Footer_1() {
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Unete a nosotros</h2>
             <Link
-              href="/sobre-nosotros#medios"
+              href="/colaboradores"
               className="font-normal text-base"
             >
               Colaboradores
@@ -148,33 +159,45 @@ export default function Footer_1() {
         <section className="flex flex-col gap-7 p-6">
           <article className="flex flex-wrap justify-center gap-4">
             <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
-            <button>
+            <Link
+              href="https://www.lasprovincias.es/v/20140506/economia/valenciano-revoluciona-servicio-atencion-20140506.html?ref=https%3A%2F%2Fwww.lasprovincias.es%2Fv%2F20140506%2Feconomia%2Fvalenciano-revoluciona-servicio-atencion-20140506.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/home/new_home/lasprovincias.svg"
                 alt="El Confidencial"
                 width={150}
                 height={150}
               />
-            </button>
-            <button>
+            </Link>
+            <Link
+              href="https://www.elperiodic.com/valencia/estudiantes-internacionales-dispondran-facilidades-para-alojamiento-apartamentos_210855"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/home/new_home/elperiodic.svg"
                 alt="El Confidencial"
                 width={150}
                 height={150}
               />
-            </button>
-            <button>
+            </Link>
+            <Link
+              href="https://madridpress.com/archive/292601/la-importancia-de-alquilar-un-buen-piso-para-estudiantes-en-valencia"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/home/new_home/madridlogo.png"
                 alt="El Confidencial"
                 width={250}
                 height={250}
               />
-            </button>
+            </Link>
           </article>
           <article className="flex flex-wrap gap-4">
-            <h2 className="font-bold uppercase text-lg w-full">SIGUENOS</h2>
+            <h2 className="font-bold uppercase text-lg w-full">SÍGUENOS</h2>
             <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -357,21 +380,21 @@ export default function Footer_1() {
                   target="_blank"
                   className="font-normal text-base"
                 >
-                  Politica de privacidad
+                  Política de privacidad
                 </Link>
                 <Link
                   href="/cookies"
                   target="_blank"
                   className="font-normal text-base"
                 >
-                  Politica de cookies
+                  Política de cookies
                 </Link>
                 <Link
                   href="/terminos-y-condiciones"
                   target="_blank"
                   className="font-normal text-base"
                 >
-                  Terminos y condiciones
+                  Términos y condiciones
                 </Link>
               </article>
             </div>
@@ -383,14 +406,14 @@ export default function Footer_1() {
                   target="_blank"
                   className="font-normal text-base"
                 >
-                  Como funciona
+                  Cómo funciona
                 </Link>
                 <Link
                   href="/clausulas"
                   target="_blank"
                   className="font-normal text-base"
                 >
-                  Clausulas del contrato
+                  Cláusulas del contrato
                 </Link>
               </article>
               {/* <article className="flex flex-col gap-4">
@@ -405,10 +428,10 @@ export default function Footer_1() {
               </article> */}
               <article className="flex flex-col gap-4">
                 <h2 className="font-bold uppercase text-lg">
-                  Unete a nosotros
+                  Únete a nosotros
                 </h2>
                 <Link
-                  href="/sobre-nosotros#medios"
+                  href="/colaboradores"
                   className="font-normal text-base"
                 >
                   Colaboradores
@@ -436,7 +459,7 @@ export default function Footer_1() {
               href="/faq"
               className="p-5 border border-[#676767] font-bold text-xl w-[15rem]"
             >
-              Visita el centro de ayuda
+              Preguntas frecuentes
             </Link>
             {/* <Link href="#" target="_blank" className="font-normal text-base">
               Contacta con Soporte
@@ -446,33 +469,45 @@ export default function Footer_1() {
           <section className="flex flex-col gap-7 p-6 w-[25rem]">
             <article className="flex flex-wrap gap-4">
               <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
-              <button>
+              <Link
+                href="https://www.lasprovincias.es/v/20140506/economia/valenciano-revoluciona-servicio-atencion-20140506.html?ref=https%3A%2F%2Fwww.lasprovincias.es%2Fv%2F20140506%2Feconomia%2Fvalenciano-revoluciona-servicio-atencion-20140506.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
                   src="/home/new_home/lasprovincias.svg"
                   alt="El Confidencial"
                   width={150}
                   height={150}
                 />
-              </button>
-              <button>
+              </Link>
+              <Link
+                href="https://www.elperiodic.com/valencia/estudiantes-internacionales-dispondran-facilidades-para-alojamiento-apartamentos_210855"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
                   src="/home/new_home/elperiodic.svg"
                   alt="El Confidencial"
                   width={150}
                   height={150}
                 />
-              </button>
-              <button>
+              </Link>
+              <Link
+                href="https://madridpress.com/archive/292601/la-importancia-de-alquilar-un-buen-piso-para-estudiantes-en-valencia"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
                   src="/home/new_home/madridlogo.png"
                   alt="El Confidencial"
                   width={250}
                   height={250}
                 />
-              </button>
+              </Link>
             </article>
             <article className="flex flex-wrap gap-4">
-              <h2 className="font-bold uppercase text-lg w-full">SIGUENOS</h2>
+              <h2 className="font-bold uppercase text-lg w-full">SíGUENOS</h2>
               <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -609,7 +644,7 @@ export default function Footer_1() {
 
           <section className="flex gap-2 items-center p-4 justify-center">
             <h2 className="font-bold uppercase text-lg w-full">
-              Metodos de pago
+              Métodos de pago
             </h2>
             <Image
               src={"https://static.spotahome.com/images/paypal-logo.svg"}

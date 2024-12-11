@@ -1,5 +1,7 @@
 "use client";
 import NavBar from "@/app/components/nav_bar/NavBar";
+import Footer_1 from "@/app/components/public/home/Footer";
+import SeventhSection from "@/app/components/public/home/SeventhSection";
 import DesktopNavBarDetails from "@/app/components/user/property-details/header/DesktopNavBarDetails";
 import NavBarDetails from "@/app/components/user/property-details/header/NavBarDetails";
 import SliderItem from "@/app/components/user/property-details/header/slider/SliderItem";
@@ -242,6 +244,7 @@ export default function RoomDetails({ params }) {
               title="Otras habitaciones en el mismo piso"
             />
           ) : null}
+          <SeventhSection bgColor="bg-white" dropdownColor="bg-violet-300" />
           {/* {showModal && (
             <ReservationModal
               calendarType={roomData.calendar}
@@ -265,6 +268,7 @@ export default function RoomDetails({ params }) {
             />
           )} */}
         </main>
+        <Footer_1 />
       </div>
       {/* DESKTOP */}
       <div className="hidden sm:flex flex-col items-center w-full">
@@ -279,10 +283,10 @@ export default function RoomDetails({ params }) {
           </div>
         </header>
         <main
-          className={`  flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}
+          className={`  flex flex-row gap-10 grow text-[#0D171C] w-full max-w-screen-2xl px-2`}
         >
           {/* LEFT SIDE */}
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-16">
             <div className="w-full">
               {allImages.length > 0 ? (
                 <SliderDetails>
@@ -313,6 +317,7 @@ export default function RoomDetails({ params }) {
                 category={data.category}
               />
             ) : null}
+            <SeventhSection />
           </div>
 
           <div className="border" />
@@ -399,6 +404,7 @@ export default function RoomDetails({ params }) {
             </div>
           </div>
         </main>
+        <Footer_1 />
       </div>
       <AnimatePresence>
         {showModal && (

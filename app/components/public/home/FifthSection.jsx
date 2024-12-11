@@ -4,36 +4,36 @@ import Image from "next/image";
 export default function FifthSection() {
   const garantias = [
     {
-      icon: "/home/new_home/mesa-de-ayuda.gif",
-      title: "Nuestros agentes locales, siempre a tu lado",
+      icon: "/home/new_home/mesa-de-ayuda.png",
+      title: "Agentes especializados",
       description:
         "Con un equipo de agentes residentes en Valencia, te ayudamos a encontrar la habitación perfecta dentro de nuestra oferta de alojamientos. Además, estaremos contigo durante toda tu estancia, asegurándonos de que todo funcione como debe para que vivas con tranquilidad.",
     },
     {
-      icon: "/home/new_home/blindaje.gif",
-      title: "Seguridad ante todo",
+      icon: "/home/new_home/blindaje.png",
+      title: "Atención personalizada",
       description:
-        "hello flat mate es una agencia que gestiona únicamente 160 habitaciones dado que nos gusta dar una buena atención y gestión de la estancia de nuestros flatmates.",
+        "helloflatmate es una agencia que gestiona únicamente 160 habitaciones dado que nos gusta dar una buena atención y gestión de la estancia de nuestros flatmates.",
     },
     {
-      icon: "/home/new_home/facil.gif",
+      icon: "/home/new_home/facil.png",
       title: "Accesible",
-      description: "Contratos de 5 y 10 meses Desde 290€/mes",
+      description: "En helloflatmate, entendemos tus necesidades. Por eso, nuestros alojamientos se ajustan a la duración del curso universitario, evitando que tengas que comprometerte o pagar durante los meses estivales. Disfruta de contratos flexibles de 5, 10, o 11 meses, y si optas por nuestro formato",
     },
     {
-      icon: "/home/new_home/compras.gif",
-      title: "Reserva 100% online y check-in fácil en 3 pasos",
+      icon: "/home/new_home/compras.png",
+      title: "Reserva 100% online",
       description:
         "Con nuestro sistema online, realiza tu reserva y organiza tu check-in de forma rápida. Como gestionamos directamente los alojamientos, garantizamos fotos actualizadas y viviendas en perfecto estado para una llegada cómoda y sin complicaciones.",
     },
     {
-      icon: "/home/new_home/reiniciar.gif",
+      icon: "/home/new_home/reiniciar.png",
       title: "Flexibilidad que se adapta a ti",
       description:
         "Sabemos que los planes pueden cambiar, por eso ofrecemos una política de cancelaciones flexible. Y si cancelas a pocos días de tu check-in, no te preocupes: te ayudamos a encontrar otro estudiante que sustituya tu contrato, para que puedas recuperar tu reserva total o parcial. En hello flat mate, siempre buscamos soluciones para ti.",
     },
     {
-      icon: "/home/new_home/confianza.gif",
+      icon: "/home/new_home/confianza.png",
       title: "Seguridad y confianza en cada paso",
       description:
         "En hello flat mate, priorizamos la atención personalizada y la calidad en la gestión. Por eso, gestionamos únicamente 160 habitaciones, asegurándonos de brindar un servicio cercano, seguro y adaptado a las necesidades de cada flatmate durante toda su estancia. Tu tranquilidad es nuestra prioridad.",
@@ -41,10 +41,10 @@ export default function FifthSection() {
   ];
 
   return (
-    <section className="py-12 bg-[#E3F0FB] w-full">
+    <section className="py-12 bg-violet-100 w-full">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-800">
-          ¿Por qué escoger hello flat mate?
+          ¿Por qué escoger helloflatmate?
         </h2>
       </div>
       <div className="flex flex-row flex-wrap justify-center items-stretch gap-6 px-2 w-full ">
@@ -66,7 +66,7 @@ export default function FifthSection() {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
               {garantia.title}
             </h3>
-            <p className="text-gray-600">{garantia.description}</p>
+            <p className="text-gray-600 text-center">{garantia.description}</p>
           </div>
         ))}
       </div>

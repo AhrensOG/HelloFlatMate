@@ -38,10 +38,11 @@ export default function RoomInfo({ data, action, category }) {
       <section className="flex gap-2 w-full">
         <h3 className="font-bold">Precio:</h3>
         <h4 className="text-[#000000B2] font-semibold flex gap-1 items-center">
+          {data.price}
           <span className="h-4 w-4 flex items-center">
             <CurrencyEuroIcon />
           </span>
-          {data.price}
+          <span className="text-sm">/ mes</span>
         </h4>
       </section>
       <div

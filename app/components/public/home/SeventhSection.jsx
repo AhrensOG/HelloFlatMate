@@ -3,16 +3,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-const AccordionItemV2 = ({ title, content }) => {
+const AccordionItemV2 = ({ title, content, bgColor, titleColor, contentColor }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-300 bg-white rounded-xl p-3">
+    <div className={`border-b border-gray-300 ${bgColor}  rounded-xl p-3`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex justify-between items-center w-full p-4 text-left"
       >
-        <span className="font-semibold text-gray-800 text-xl">{title}</span>
+        <span className={`font-semibold ${titleColor} text-xl`}>{title}</span>
         <div className="relative w-6 h-6">
           {/* Línea horizontal */}
           <motion.div
@@ -33,38 +33,38 @@ const AccordionItemV2 = ({ title, content }) => {
         animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
         className="overflow-hidden"
       >
-        <div className="p-4 text-gray-600 text-lg">{content}</div>
+        <div className={`p-4 ${contentColor} text-lg`}>{content}</div>
       </motion.div>
     </div>
   );
 };
 
-const SeventhSection = () => {
+const SeventhSection = ({dropdownColor = "bg-white", bgColor = "bg-violet-300", titleDropdownColor = "text-gray-800", contentDropdownColor = "text-gray-600"}) => {
   const items = [
     {
-      title: "¿Puedo cancelar una reserva?",
+      title: "Costes del servicio en hellostudio",
       content:
-        "Puedes cancelar tu reserva cuando quieras. Así es como funciona: No se te cobrará por la cancelación de la reserva si aún no ha sido aceptada por el propietario. Pero si cancelas tras ser aceptado, la cuota de Spotahome no será reembolsada, y puedes perder la parte de la renta que pagaste por adelantado.",
+        "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
     },
     {
-      title: "¿Puedo visitar la propiedad antes de reservar?",
+      title: "Costes de servicio en hellorooms, hellolandlord y hellocoliving",
       content:
-        "Por ahora, no es posible visitar la propiedad antes de reservar.",
+        "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
     },
     {
-      title: "¿Con quién viviré?",
+      title: "¿Con qué tipo de público trabaja helloflatmate?",
       content:
-        "Toda la información sobre tus compañeros de piso estará en el anuncio.",
+        "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
     },
     {
-      title: "¿Qué es un Homechecker?",
+      title: "¿Qué condiciones se aplican a contratos de larga estancia?",
       content:
-        "Un Homechecker es un experto que verifica propiedades para garantizar la exactitud del anuncio.",
+        "En contratos de alquiler de larga estancia (mínimo 5 años), regulados por la Ley de Arrendamientos Urbanos (LAU) y la Ley de Vivienda 12/23, el arrendatario está exento de pagar comisión por los servicios de intermediación.",
     },
   ];
 
   return (
-    <div className="w-full flex flex-col justify-center items-center py-16 px-2 bg-[#FFE5F7] space-y-10">
+    <div className={`w-full flex flex-col justify-center items-center py-16 px-2 ${bgColor} space-y-10`}>
       <h2 className="text-4xl font-bold text-gray-800 text-center">
       ¿Alguna duda?
       </h2>
@@ -74,6 +74,9 @@ const SeventhSection = () => {
             key={index}
             title={item.title}
             content={item.content}
+            bgColor={dropdownColor}
+            titleColor={titleDropdownColor}
+            contentColor={contentDropdownColor}
           />
         ))}
         </div>
