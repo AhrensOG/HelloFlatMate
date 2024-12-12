@@ -1,5 +1,6 @@
 "use client";
 import NavBar from "@/app/components/nav_bar/NavBar";
+import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
 import Footer_1 from "@/app/components/public/home/Footer";
 import SeventhSection from "@/app/components/public/home/SeventhSection";
 import DesktopNavBarDetails from "@/app/components/user/property-details/header/DesktopNavBarDetails";
@@ -110,7 +111,8 @@ export default function RoomDetails({ params }) {
           {/* DESKTOP */}
           <div className="hidden sm:flex flex-col items-center w-full h-screen">
             <header className="w-full space-y-4">
-              <NavBar />
+              {/* <NavBar /> */}
+              <NavbarV3 />
             </header>
             <div className="w-full grow grid place-items-center">
               <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -273,7 +275,8 @@ export default function RoomDetails({ params }) {
       {/* DESKTOP */}
       <div className="hidden sm:flex flex-col items-center w-full">
         <header className="w-full space-y-4">
-          <NavBar />
+          {/* <NavBar /> */}
+          <NavbarV3 />
           <div className="px-3">
             <DesktopNavBarDetails
               callBack={() =>
