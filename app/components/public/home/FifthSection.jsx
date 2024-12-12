@@ -1,15 +1,7 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 // components/Garantias.js
 export default function FifthSection() {
-  let router;
-  try {
-    router = useRouter();
-  } catch (error) {
-    console.warn("El enrutador no está montado.");
-  }
-
   const garantias = [
     {
       icon: "/home/new_home/mesa-de-ayuda.png",
