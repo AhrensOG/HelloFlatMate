@@ -103,7 +103,7 @@ export default function Footer_1() {
         <section className="flex flex-col gap-7 p-6">
           <h2 className="font-bold uppercase text-lg">Soporte</h2>
           <Link href="/faq" className="p-5 border border-[#676767] font-bold">
-            Visita el centro de ayuda
+            Preguntas frecuentes
           </Link>
           {/* <Link href="#" target="_blank" className="font-normal text-base">
             Contacta con Soporte
@@ -457,7 +457,7 @@ export default function Footer_1() {
             <h2 className="font-bold uppercase text-lg">Soporte</h2>
             <Link
               href="/faq"
-              className="p-5 border border-[#676767] font-bold text-xl w-[15rem]"
+              className="p-5 border border-[#676767] font-bold text-lg  text-center w-[15rem]"
             >
               Preguntas frecuentes
             </Link>
