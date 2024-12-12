@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import Dropdown from "../public/auth/Dropdown";
 import Image from "next/image";
@@ -16,6 +16,81 @@ export default function NavbarV3({ fixed = false }) {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const renderMenuOptions = () => {
+    switch (user?.role) {
+      case "ADMIN":
+        return (
+          <>
+            <Link
+              href="/pages/admin/properties"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Administración
+            </Link>
+          </>
+        );
+      case "OWNER":
+        return (
+          <>
+            <Link
+              href="/owner/properties"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Mis Propiedades
+            </Link>
+            <Link
+              href="/owner/earnings"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Ganancias
+            </Link>
+          </>
+        );
+      case "CLIENT":
+        return (
+          <>
+            <Link
+              href="/pages/user/profile"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Perfil
+            </Link>
+            <Link
+              href="/pages/user/my-bedrooms"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Panel
+            </Link>
+            <Link
+              href="/pages/user/my-reservations"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Histórico
+            </Link>
+            <Link
+              href="/pages/user/history/payments"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Pagos
+            </Link>
+          </>
+        );
+      case "WORKER":
+        return (
+          <>
+            <Link
+              href="/worker/tasks"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Tareas
+            </Link>
+          </>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -39,8 +114,8 @@ export default function NavbarV3({ fixed = false }) {
       <Link href={"/"}>
         <Image
           src="/home/new_home/Helloflatmate.png"
-          width={130}
-          height={41.13}
+          width={150}
+          height={47.45}
           alt="logo"
         />
       </Link>
@@ -75,33 +150,10 @@ export default function NavbarV3({ fixed = false }) {
               {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
             </button>
             <div className="absolute right-0 w-48 bg-white shadow-lg rounded-md hidden group-hover:block shadow-reservation-list">
-              <Link
-                href="/pages/user/profile"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Perfil
-              </Link>
-              <Link
-                href="/pages/user/my-bedrooms"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Panel
-              </Link>
-              <Link
-                href="/pages/user/my-reservations"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Historico
-              </Link>
-              <Link
-                href="/pages/user/history/payments"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Pagos
-              </Link>
+              {renderMenuOptions()}
               <button
                 onClick={() => logOut()}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500 w-full text-start"
               >
                 Cerrar sesión
               </button>
@@ -128,76 +180,56 @@ export default function NavbarV3({ fixed = false }) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="absolute top-16 left-0 right-0 bg-white shadow-lg rounded-md p-4 md:hidden"
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="absolute top-16 left-0 w-full bg-white rounded-md p-4 md:hidden overflow-hidden"
           >
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
               <Link
                 href="/lastrooms"
                 target="_blank"
-                className="block font-bold text-lg"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
               >
                 Last rooms
               </Link>
               <Link
                 href="/como-funciona"
                 target="_blank"
-                className="block font-bold text-lg"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
               >
                 Cómo funciona
               </Link>
               <Link
                 href="/privacy-policy"
                 target="_blank"
-                className="block font-bold text-lg"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
               >
                 Términos y condiciones
               </Link>
               {user ? (
                 <>
-                  <Link
-                    href="/pages/user/profile"
-                    className="block font-bold text-lg"
-                  >
-                    Perfil
-                  </Link>
-                  <Link
-                    href="/pages/user/my-bedrooms"
-                    className="block font-bold text-lg"
-                  >
-                    Panel
-                  </Link>
-                  <Link
-                    href="/pages/user/my-reservations"
-                    className="block font-bold text-lg"
-                  >
-                    Reservas
-                  </Link>
-                  <Link
-                    href="/pages/user/history/payments"
-                    className="block font-bold text-lg"
-                  >
-                    Pagos
-                  </Link>
+                  {renderMenuOptions()}
                   <button
                     onClick={() => logOut()}
-                    className="block font-bold text-lg"
+                    className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                   >
                     Cerrar sesión
                   </button>
                 </>
               ) : (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                   <Link
                     href="/pages/auth?register=true"
-                    className="block font-bold text-lg"
+                    className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                   >
                     Registro
                   </Link>
-                  <Link href="/pages/auth" className="block font-bold text-lg">
+                  <Link
+                    href="/pages/auth"
+                    className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                  >
                     Inicio
                   </Link>
                 </div>

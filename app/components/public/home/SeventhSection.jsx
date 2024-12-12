@@ -51,12 +51,12 @@ const SeventhSection = ({
     {
       title: "Costes del servicio en hellostudio",
       content:
-        "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
+        "En hellostudio, el arrendatario está exento de pagar comisión por los servicios de intermediación, según la Ley de Arrendamientos Urbanos (LAU) y la Ley de Vivienda 12/23. Los costes incluyen dos mensualidades de fianza (precio equivalente al alquiler mensual) y, en algunos casos, el alta de suministros como luz, agua y gas. Los apartamentos pueden ser semi-amueblados o sin amueblar.",
     },
     {
       title: "Costes de servicio en hellorooms, hellolandlord y hellocoliving",
       content:
-        "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
+        "En hellorooms y hellolandlord, el coste del servicio incluye un pago único de 459,80€ (IVA incluido) abonado el día del check-in mediante tarjeta bancaria. Las habitaciones cuentan con todos los suministros activados, incluyendo internet, y ofrecen contratos flexibles de 5, 10 o 11 meses. La fianza es de 300€. En hellocoliving, las facturas de suministros están incluidas hasta un máximo de 50€/mes por persona. El coste del servicio incluye una fianza de 550€ y el pago de 1 mensualidad completa de alquiler.",
     },
     {
       title: "¿Con qué tipo de público trabaja helloflatmate?",
