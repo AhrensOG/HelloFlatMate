@@ -25,7 +25,7 @@ export default function HowItWorks() {
             "Encuentra toda la información que necesitas antes de reservar.",
         },
       ],
-      icon: "/howitworks/buscar.gif", // Usa emojis o un ícono SVG como placeholder
+      icon: "/howitworks/buscar.png", // Usa emojis o un ícono SVG como placeholder
     },
     {
       id: 2,
@@ -45,7 +45,7 @@ export default function HowItWorks() {
             "Una vez realizada la reserva, recibirás confirmación inmediata.",
         },
       ],
-      icon: "/howitworks/reserva.gif",
+      icon: "/howitworks/reserva.png",
     },
     {
       id: 3,
@@ -87,7 +87,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
             "No olvides que el momento de la firma del contrato es esencial para garantizar tus derechos como inquilino. Sigue las instrucciones y confirma las condiciones con el propietario.",
         },
       ],
-      icon: "/howitworks/llave.gif",
+      icon: "/howitworks/llave.png",
     },
   ];
 
@@ -106,7 +106,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
               className={`flex gap-6 items-start bg-white p-6 rounded-lg shadow-sm`}
             >
               <Image
-                src={"/howitworks/buscar.gif"}
+                src={"/howitworks/buscar.png"}
                 width={100}
                 height={100}
                 alt={"Busca y elige tu hogar ideal"}
@@ -146,7 +146,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
               className={`flex gap-6 items-start bg-white p-6 rounded-lg shadow-sm`}
             >
               <Image
-                src={"/howitworks/reserva.gif"}
+                src={"/howitworks/reserva.png"}
                 width={100}
                 height={100}
                 alt={"Reserva tu alojamiento"}
@@ -187,7 +187,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
               className={`flex gap-6 items-start bg-white p-6 rounded-lg shadow-sm`}
             >
               <Image
-                src={"/howitworks/evento.gif"}
+                src={"/howitworks/evento.png"}
                 width={100}
                 height={100}
                 alt={"Organiza tu llegada a Valencia"}
