@@ -167,13 +167,11 @@ export default function RoomDetails({ params }) {
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>
-            {/* <h4 className="text-base font-bold text-resolution-blue">
-              {isLeaseOrderActive
-                ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
-                    isLeaseOrderActive.endDate
-                  )}`
+            <h4 className="text-base font-bold text-resolution-blue">
+              {!roomData.isActive
+                ? `¡Este alojamiento ya esta reservado!`
                 : ""}
-            </h4> */}
+            </h4>
             {roomData.price && <PriceSection data={roomData.price} />}
             {(data.category === "HELLO_ROOM" ||
               data.category === "HELLO_COLIVING" ||
@@ -181,7 +179,7 @@ export default function RoomDetails({ params }) {
               roomData.price && (
                 <ReservationButton
                   callback={handleShowModal}
-                  // disabled={isLeaseOrderActive || false}
+                  disabled={!roomData.isActive}
                 />
               )}
           </div>
@@ -338,13 +336,11 @@ export default function RoomDetails({ params }) {
               <h6 className="text-[#000000B2] text-base">
                 {data.city + ", " + data.street}
               </h6>
-              {/* <h6 className="text-base font-bold text-resolution-blue">
-                {isLeaseOrderActive
-                  ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
-                      isLeaseOrderActive.endDate
-                    )}`
+              <h6 className="text-base font-bold text-resolution-blue">
+                {!roomData.isActive
+                  ? `¡Este alojamiento ya esta reservado!`
                   : ""}
-              </h6> */}
+              </h6>
               {roomData.price && <PriceSection data={roomData.price} />}
               <div className="flex flex-col gap-6">
                 {(data.category === "HELLO_ROOM" ||
@@ -353,7 +349,7 @@ export default function RoomDetails({ params }) {
                   roomData.price && (
                     <ReservationButton
                       callback={handleShowModal}
-                      // disabled={isLeaseOrderActive || false}
+                      disabled={!roomData.isActive}
                     />
                   )}
               </div>

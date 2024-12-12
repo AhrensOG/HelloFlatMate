@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
- 
+
 import { useState } from "react";
 import Image from "next/image";
 import FilterSection from "./filter_section/FilterSection";
@@ -18,6 +18,7 @@ export default function Filter({
   onFilterChange,
   category,
   rentalPeriods,
+  zones,
 }) {
   const handleFilterChange = (filterName, selectedValues) => {
     onFilterChange(filterName, selectedValues);
@@ -37,6 +38,8 @@ export default function Filter({
     "hellocoliving",
     "hellostudio",
     "hellolandlord",
+    "lastrooms",
+    "todos los alojamientos",
   ];
 
   const comoditis = [
@@ -86,11 +89,16 @@ export default function Filter({
             </button>
           </div>
           <div className="overflow-auto space-y-4">
+            <PriceRange
+              onChange={handleFilterChange}
+              minValue={filters.minPrice || 0}
+              maxValue={filters.maxPrice || 1000000}
+            />
             <section className="flex flex-col gap-3 px-4 justify-between">
-              <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
-                Ubicacion
+              <h2 className="text-base font-bold text-[#1C1C21]">
+                Ubicación y fechas disponibles
               </h2>
-              <div className="flex justify-between items-center h-[5vh] bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
+              {/* <div className="flex justify-between items-center h-[5vh] bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
                 <label hidden htmlFor="location">
                   location
                 </label>
@@ -108,32 +116,32 @@ export default function Filter({
                 <span className="h-8 w-8">
                   <MapPinIcon />
                 </span>
-              </div>
-            </section>
-
-            <PriceRange
-              onChange={handleFilterChange}
-              minValue={filters.minPrice || 0}
-              maxValue={filters.maxPrice || 1000000}
-            />
-
-            {category === "HELLO_STUDIO" ||
-            (filters.categorys?.length === 1 &&
-              filters.categorys[0] === "hellostudio") ? (
-              <DateRangeFilter
-                onChange={handleFilterChange}
-                startDate={filters.startDate}
-                endDate={filters.endDate}
-              />
-            ) : (
+              </div> */}
               <FilterSelect
-                name="rentalPeriod"
-                options={rentalPeriods}
+                name="location"
+                options={zones}
                 data={filters}
                 setData={setFilters}
-                title="Seleccionar un período"
+                title="Zonas"
               />
-            )}
+              {category === "HELLO_STUDIO" ||
+              (filters.categorys?.length === 1 &&
+                filters.categorys[0] === "hellostudio") ? (
+                <DateRangeFilter
+                  onChange={handleFilterChange}
+                  startDate={filters.startDate}
+                  endDate={filters.endDate}
+                />
+              ) : (
+                <FilterSelect
+                  name="rentalPeriod"
+                  options={rentalPeriods}
+                  data={filters}
+                  setData={setFilters}
+                  title="Seleccionar un período"
+                />
+              )}
+            </section>
 
             {/* <FilterSection
               onChange={handleFilterChange}
