@@ -83,7 +83,7 @@ export default function PropertyCard({
               {property?.category === "HELLO_ROOM" ||
               property?.category === "HELLO_COLIVING" ||
               property?.category === "HELLO_LANDLORD"
-                ? "HABTITACION"
+                ? "HABITACION"
                 : property?.category.toLowerCase().split("_").join("")}
               {/* <button
                 type="button"
