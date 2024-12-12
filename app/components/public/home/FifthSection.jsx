@@ -1,15 +1,7 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 // components/Garantias.js
 export default function FifthSection() {
-  let router;
-  try {
-    router = useRouter();
-  } catch (error) {
-    console.warn("El enrutador no está montado.");
-  }
-
   const garantias = [
     {
       icon: "/home/new_home/mesa-de-ayuda.png",
@@ -45,7 +37,6 @@ export default function FifthSection() {
       title: "Mediación entre inquilinos",
       description:
         "En helloflatmate, nos comprometemos a apoyar una convivencia armoniosa. Por eso, ofrecemos un servicio de mediación entre inquilinos para resolver cualquier conflicto o malentendido que pueda surgir, promoviendo un ambiente cómodo y respetuoso para todos.",
-      onClick: () => window.open("/clausulas", "_blank"),
     },
   ];
 
@@ -61,7 +52,6 @@ export default function FifthSection() {
           <div
             key={index}
             className="bg-white rounded-lg shadow-md p-6 max-w-[500px] w-full flex flex-col justify-start items-center gap-3 hover:scale-[1.025] hover:shadow-reservation-list duration-300 transition"
-            onClick={garantia.onClick ? garantia.onClick : undefined}
           >
             <Image
               src={garantia.icon}

@@ -12,6 +12,7 @@ const articles = [
     description:
       "En helloflatmate garantizamos contratos de alquiler legales y seguros, basados en el Código Civil, que aseguran un equilibrio justo entre arrendadores e inquilinos. Leer aquí",
     image: "/home/new_home/documento.png",
+    onClick: () => window.open("/clausulas", "_blank"),
   },
   {
     title: "Soporte",
@@ -48,16 +49,19 @@ export default function ThirdSection() {
         </h2>
       </div>
       <section className="w-full bg-white flex flex-wrap justify-center items-stretch mt-2 gap-6 px-2 py-10">
-        {articles.map(({ title, description, image }, index) => (
+        {articles.map(({ title, description, image, onClick }, index) => (
           <article
             key={index}
-            className="border-2 rounded-2xl flex flex-col items-center justify-between gap-4 p-4 w-full max-w-[500px] hover:scale-[1.025] hover:shadow-reservation-list duration-300 transition"
+            className={`border-2 rounded-2xl flex flex-col items-center justify-between gap-4 p-4 w-full max-w-[500px] hover:scale-[1.025] hover:shadow-reservation-list duration-300 transition ${
+              onClick && "cursor-pointer"
+            }`}
+            onClick={onClick ? onClick : () => ""}
           >
             <div className="w-full space-y-4">
               <h1 className="text-3xl font-bold text-center">{title}</h1>
               <h2 className="text-lg text-center">{description}</h2>
             </div>
-            <Image src={image} width={150} height={150} alt={title}/>
+            <Image src={image} width={150} height={150} alt={title} />
           </article>
         ))}
       </section>
