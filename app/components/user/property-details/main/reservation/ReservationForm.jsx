@@ -145,6 +145,8 @@ const ReservationForm = ({
             >
               <option value="">Selecciona una opción</option>
               <option value="Por estudios">Por estudios</option>
+              <option value="Por trabajo">Por trabajo</option>
+              <option value="Soy nomada digital">Soy nomada digital</option>
               <option value="Por turismo">Por turismo</option>
               <option value="Aprender el idioma">Aprender el idioma</option>
               <option value="A vivir">A vivir</option>
