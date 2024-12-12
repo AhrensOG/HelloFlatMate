@@ -36,7 +36,7 @@ export default function FifthSection() {
       icon: "/home/new_home/confianza.png",
       title: "Mediación entre inquilinos",
       description:
-        "En helloflatmate, nos comprometemos a apoyar una convivencia armoniosa. Por eso, ofrecemos, un servicio, de mediacion entre nquilinos para resolver cualquier conflicto o malentendido que pueda surgir, promoviendo un ambiente cómodo y respetuoso para todos.",
+        "En helloflatmate, nos comprometemos a apoyar una convivencia armoniosa. Por eso, ofrecemos un servicio de mediación entre inquilinos para resolver cualquier conflicto o malentendido que pueda surgir, promoviendo un ambiente cómodo y respetuoso para todos.",
     },
   ];
 
