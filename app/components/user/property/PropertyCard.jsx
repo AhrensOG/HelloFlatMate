@@ -185,7 +185,7 @@ export default function PropertyCard({
                 ""
               )} */}
               <h3 className="text-base text-[#000000B2]">
-                € {price} <span className="text-xs text-[#B2B2B2]">/mes</span>
+                {price} € <span className="text-xs text-[#B2B2B2]">/mes</span>
               </h3>
             </div>
           </div>
