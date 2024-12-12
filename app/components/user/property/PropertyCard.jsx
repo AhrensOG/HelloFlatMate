@@ -104,9 +104,17 @@ export default function PropertyCard({
                 {room?.leaseOrdersRoom?.some((order) => order.isActive === true)
                   ? // Si hay una leaseOrder activa, mostrar la fecha de disponibilidad
                     `Disponible ${formatDate(
-                      room?.leaseOrdersRoom.find(
-                        (order) => order.isActive === true
-                      )?.endDate
+                      (() => {
+                        const activeOrder = room?.leaseOrdersRoom.find(
+                          (order) => order.isActive === true
+                        );
+                        if (activeOrder?.endDate) {
+                          const nextDay = new Date(activeOrder.endDate);
+                          nextDay.setDate(nextDay.getDate() + 1);
+                          return nextDay;
+                        }
+                        return null;
+                      })()
                     )}`
                   : // Si no hay leaseOrder activa, mostrar "Disponible ahora!"
                     "Disponible ahora!"}
