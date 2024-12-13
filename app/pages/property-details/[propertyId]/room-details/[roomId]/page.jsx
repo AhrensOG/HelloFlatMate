@@ -1,5 +1,6 @@
 "use client";
 import NavBar from "@/app/components/nav_bar/NavBar";
+import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
 import Footer_1 from "@/app/components/public/home/Footer";
 import SeventhSection from "@/app/components/public/home/SeventhSection";
 import DesktopNavBarDetails from "@/app/components/user/property-details/header/DesktopNavBarDetails";
@@ -110,7 +111,8 @@ export default function RoomDetails({ params }) {
           {/* DESKTOP */}
           <div className="hidden sm:flex flex-col items-center w-full h-screen">
             <header className="w-full space-y-4">
-              <NavBar />
+              {/* <NavBar /> */}
+              <NavbarV3 />
             </header>
             <div className="w-full grow grid place-items-center">
               <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -165,13 +167,11 @@ export default function RoomDetails({ params }) {
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>
-            {/* <h4 className="text-base font-bold text-resolution-blue">
-              {isLeaseOrderActive
-                ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
-                    isLeaseOrderActive.endDate
-                  )}`
+            <h4 className="text-base font-bold text-resolution-blue">
+              {!roomData.isActive
+                ? `¡Este alojamiento ya esta reservado!`
                 : ""}
-            </h4> */}
+            </h4>
             {roomData.price && <PriceSection data={roomData.price} />}
             {(data.category === "HELLO_ROOM" ||
               data.category === "HELLO_COLIVING" ||
@@ -179,7 +179,7 @@ export default function RoomDetails({ params }) {
               roomData.price && (
                 <ReservationButton
                   callback={handleShowModal}
-                  // disabled={isLeaseOrderActive || false}
+                  disabled={!roomData.isActive}
                 />
               )}
           </div>
@@ -273,7 +273,8 @@ export default function RoomDetails({ params }) {
       {/* DESKTOP */}
       <div className="hidden sm:flex flex-col items-center w-full">
         <header className="w-full space-y-4">
-          <NavBar />
+          {/* <NavBar /> */}
+          <NavbarV3 />
           <div className="px-3">
             <DesktopNavBarDetails
               callBack={() =>
@@ -335,13 +336,11 @@ export default function RoomDetails({ params }) {
               <h6 className="text-[#000000B2] text-base">
                 {data.city + ", " + data.street}
               </h6>
-              {/* <h6 className="text-base font-bold text-resolution-blue">
-                {isLeaseOrderActive
-                  ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
-                      isLeaseOrderActive.endDate
-                    )}`
+              <h6 className="text-base font-bold text-resolution-blue">
+                {!roomData.isActive
+                  ? `¡Este alojamiento ya esta reservado!`
                   : ""}
-              </h6> */}
+              </h6>
               {roomData.price && <PriceSection data={roomData.price} />}
               <div className="flex flex-col gap-6">
                 {(data.category === "HELLO_ROOM" ||
@@ -350,7 +349,7 @@ export default function RoomDetails({ params }) {
                   roomData.price && (
                     <ReservationButton
                       callback={handleShowModal}
-                      // disabled={isLeaseOrderActive || false}
+                      disabled={!roomData.isActive}
                     />
                   )}
               </div>

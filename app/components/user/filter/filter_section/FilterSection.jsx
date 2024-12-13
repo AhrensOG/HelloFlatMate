@@ -28,7 +28,7 @@ export default function FilterSection({
     <section
       className={`  flex flex-col gap-3 px-4 sm:px-0 text-[#1C1C21]`}
     >
-      <h3 className="text-[1.37rem] font-bold">{title}</h3>
+      <h3 className="text-base font-bold">{title}</h3>
       {entries.map((entry) => (
         <FilterCheckBox
           key={entry}

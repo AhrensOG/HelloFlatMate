@@ -83,7 +83,7 @@ export default function PropertyCard({
               {property?.category === "HELLO_ROOM" ||
               property?.category === "HELLO_COLIVING" ||
               property?.category === "HELLO_LANDLORD"
-                ? "HABTITACION"
+                ? "HABITACION"
                 : property?.category.toLowerCase().split("_").join("")}
               {/* <button
                 type="button"
@@ -104,9 +104,17 @@ export default function PropertyCard({
                 {room?.leaseOrdersRoom?.some((order) => order.isActive === true)
                   ? // Si hay una leaseOrder activa, mostrar la fecha de disponibilidad
                     `Disponible ${formatDate(
-                      room?.leaseOrdersRoom.find(
-                        (order) => order.isActive === true
-                      )?.endDate
+                      (() => {
+                        const activeOrder = room?.leaseOrdersRoom.find(
+                          (order) => order.isActive === true
+                        );
+                        if (activeOrder?.endDate) {
+                          const nextDay = new Date(activeOrder.endDate);
+                          nextDay.setDate(nextDay.getDate() + 1);
+                          return nextDay;
+                        }
+                        return null;
+                      })()
                     )}`
                   : // Si no hay leaseOrder activa, mostrar "Disponible ahora!"
                     "Disponible ahora!"}
@@ -177,7 +185,7 @@ export default function PropertyCard({
                 ""
               )} */}
               <h3 className="text-base text-[#000000B2]">
-                € {price} <span className="text-xs text-[#B2B2B2]">/mes</span>
+                {price} € <span className="text-xs text-[#B2B2B2]">/mes</span>
               </h3>
             </div>
           </div>

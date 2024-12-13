@@ -19,6 +19,7 @@ export default function DesktopFilter({
   onFilterChange,
   category,
   rentalPeriods,
+  zones,
 }) {
   const router = useRouter();
   const handleFilterChange = (filterName, selectedValues) => {
@@ -26,7 +27,6 @@ export default function DesktopFilter({
   };
 
   const handleSeeResults = () => {
-    console.log(filters);
     onApplyFilters();
     setOpen(false);
   };
@@ -40,6 +40,8 @@ export default function DesktopFilter({
     "hellocoliving",
     "hellostudio",
     "hellolandlord",
+    "lastrooms",
+    "todos los alojamientos"
   ];
 
   const comoditis = [
@@ -91,10 +93,10 @@ export default function DesktopFilter({
         />
         <div className="space-y-6 px-4">
           <section className="flex flex-col gap-3">
-            <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
-              Ubicacion
+            <h2 className="text-base font-bold text-[#1C1C21]">
+              Ubicación y fechas disponibles
             </h2>
-            <div className="flex justify-between items-center h-[5vh] bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
+            {/* <div className="flex justify-between items-center h-[5vh] bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
               <label hidden htmlFor="location">
                 location
               </label>
@@ -110,7 +112,14 @@ export default function DesktopFilter({
               <span className="h-8 w-8">
                 <MapPinIcon />
               </span>
-            </div>
+            </div> */}
+            <FilterSelect
+              name="location"
+              options={zones}
+              data={filters}
+              setData={setFilters}
+              title="Zonas"
+            />
           </section>
 
           {filters.categorys?.length === 1 &&
@@ -127,7 +136,7 @@ export default function DesktopFilter({
               options={rentalPeriods}
               data={filters}
               setData={setFilters}
-              title="Seleccionar un período"
+              title="Fechas disponibles"
             />
           )}
 
@@ -143,7 +152,7 @@ export default function DesktopFilter({
           /> */}
           <FilterSection
             onChange={handleFilterChange}
-            title={"Tipo de Propiedad"}
+            title={"Tipo de alojamiento"}
             entries={typeProperty}
             initialValues={filters.categorys || []}
           />

@@ -127,24 +127,44 @@ export async function createLeaseRoomOrder(data) {
                 as: "leaseOrdersRoom",
             },
         });
-        if (!room) return NextResponse.json({ message: "Habitacion no encontrada" }, { status: 404 });
-        if (room.leaseOrdersRoom.length > 0) return NextResponse.json({ message: "La habitacion ya tiene una orden de arriendo" }, { status: 400 });
-        //Verificar que la habitacion corresponda al la propiedad
-        if (property.id !== room.propertyId) return NextResponse.json({ message: "La habitacion no corresponde a la propiedad" }, { status: 404 });
-        //Buscar y verificar que el dueño exista
+        if (!room) return NextResponse.json({ message: "Habitación no encontrada" }, { status: 404 });
+
+        // Verificar si hay conflictos de fechas
+        const hasDateConflict = room.leaseOrdersRoom.some((order) => {
+            const existingStartDate = new Date(order.startDate);
+            const existingEndDate = new Date(order.endDate);
+            const newStartDate = new Date(data.startDate);
+            const newEndDate = new Date(data.endDate);
+
+            return !(newStartDate > existingEndDate || newEndDate < existingStartDate);
+        });
+
+        if (hasDateConflict) {
+            return NextResponse.json({ message: "La habitación ya está reservada en el período especificado" }, { status: 400 });
+        }
+
+        // Verificar que la habitación corresponda a la propiedad
+        if (property.id !== room.propertyId) return NextResponse.json({ message: "La habitación no corresponde a la propiedad" }, { status: 404 });
+
+        // Buscar y verificar que el dueño exista
         const owner = await Owner.findByPk(data.ownerId);
         if (!owner) return NextResponse.json({ message: "Dueño no encontrado" }, { status: 404 });
-        //Verificar que la propiedad corresponda al dueño
+
+        // Verificar que la propiedad corresponda al dueño
         if (owner.id !== property.ownerId) return NextResponse.json({ message: "La propiedad no corresponde al dueño" }, { status: 404 });
-        //Buscar y verificar que el cliente exista
+
+        // Buscar y verificar que el cliente exista
         const client = await Client.findByPk(data.clientId);
         if (!client) return NextResponse.json({ message: "Cliente no encontrado" }, { status: 404 });
 
+        // Crear la nueva orden de alquiler
         const leaseOrder = await LeaseOrderRoom.create({ ...data, status: data?.status || "IN_PROGRESS" });
         room.status = "RESERVED";
         await room.save();
-        const roomsAvaibles = property.rooms.filter((room) => room.status === "FREE");
-        if (roomsAvaibles.length === 1) {
+
+        // Actualizar el estado de la propiedad si es necesario
+        const roomsAvailable = property.rooms.filter((room) => room.status === "FREE");
+        if (roomsAvailable.length === 1) {
             property.status = "RESERVED";
             await property.save();
         }
@@ -167,8 +187,9 @@ export async function createLeaseRoomOrder(data) {
                 });
             }
         }
-        return NextResponse.json(leaseOrder, { message: "Orden creada con exito" }, { status: 201 });
+        return NextResponse.json(leaseOrder, { message: "Orden creada con éxito" }, { status: 201 });
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
+
