@@ -11,18 +11,21 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
         <TitleAdminPanel title={"Mis Reservas"} />
         <div className="flex flex-col justify-start items-center gap-4 sm:flex-row w-full sm:justify-start sm:flex-wrap sm:items-stretch max-w-screen-lg">
           {leaseOrdersList !== false && leaseOrdersList.length > 0 ? (
-            leaseOrdersList.map((l) => {
-              // Construir una clave única concatenando el tipo y el ID
-              const uniqueKey = `${l.property ? "property" : "room"}-${l.id}`;
-              return (
-                <ReservationPropertyCard
-                  user={data}
-                  key={uniqueKey}
-                  property={l.property || l.room}
-                  leaseOrder={l}
-                />
-              );
-            })
+            leaseOrdersList
+              .filter((l) => l.status !== "REJECTED") // Filtrar las órdenes con estado "REJECTED"
+              .map((l) => {
+                console.log(l);
+                // Construir una clave única concatenando el tipo y el ID
+                const uniqueKey = `${l.property ? "property" : "room"}-${l.id}`;
+                return (
+                  <ReservationPropertyCard
+                    user={data}
+                    key={uniqueKey}
+                    property={l.property || l.room}
+                    leaseOrder={l}
+                  />
+                );
+              })
           ) : (
             <div className="grid place-items-center w-full h-full">
               <span className="text-lg font-bold text-slate-300 py-10">
