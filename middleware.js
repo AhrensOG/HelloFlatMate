@@ -47,35 +47,43 @@ export async function middleware(request) {
         /^\/pages\/property-details\/\w+\/room-details\/\w+$/, // Coincide con /pages/property-details/[propertyId]/room-details/[roomId]
     ];
 
-    const pathName = new URL(request.url).pathname;
+    const { pathname, search } = new URL(request.url);
 
-    if (allowedPaths.includes(pathName)) {
+    if (allowedPaths.includes(pathname)) {
         return NextResponse.next();
     }
 
-    const isDynamicAllowed = dynamicPaths.some((regex) => regex.test(pathName));
+    const isDynamicAllowed = dynamicPaths.some((regex) => regex.test(pathname));
     if (isDynamicAllowed) {
         return NextResponse.next();
     }
 
     if (
-        pathName.startsWith("/_next/") ||
-        pathName.startsWith("/static/") ||
-        pathName.startsWith("/public/") ||
-        pathName.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map|mp4)$/)
+        pathname.startsWith("/_next/") ||
+        pathname.startsWith("/static/") ||
+        pathname.startsWith("/public/") ||
+        pathname.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map|mp4)$/)
     ) {
         return NextResponse.next();
     }
 
     if (!token) {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
+        const redirectPath = `${pathname}${search}`;
+        const redirectUrl = new URL(
+            `/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + redirectPath)}`,
+            request.url
+        );
         return NextResponse.redirect(redirectUrl);
     }
 
     const decodedToken = decodeToken(token);
 
     if (!decodedToken) {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
+        const redirectPath = `${pathname}${search}`;
+        const redirectUrl = new URL(
+            `/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + redirectPath)}`,
+            request.url
+        );
         return NextResponse.redirect(redirectUrl);
     }
 
@@ -89,10 +97,14 @@ export async function middleware(request) {
     };
 
     const allowedRolesPaths = rolesPaths[role] || [];
-    const hasAccess = allowedRolesPaths.some((allowedPath) => pathName.startsWith(allowedPath));
+    const hasAccess = allowedRolesPaths.some((allowedPath) => pathname.startsWith(allowedPath));
 
-    if (!hasAccess && pathName !== "/") {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
+    if (!hasAccess && pathname !== "/") {
+        const redirectPath = `${pathname}${search}`;
+        const redirectUrl = new URL(
+            `/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + redirectPath)}`,
+            request.url
+        );
         return NextResponse.redirect(redirectUrl);
     }
 

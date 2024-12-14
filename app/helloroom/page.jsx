@@ -5,7 +5,7 @@ import HelloRoomPage from "./HelloRoomPage";
 
 export default function HelloRoom() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div></div>}>
       <HelloRoomPage />
     </Suspense>
   );

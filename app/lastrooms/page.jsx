@@ -5,7 +5,7 @@ import LastRoomsPage from "./LastRoomPage";
 
 export default function LastRooms() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div></div>}>
       <LastRoomsPage />
     </Suspense>
   );

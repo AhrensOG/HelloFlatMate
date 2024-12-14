@@ -5,7 +5,7 @@ import HelloStudioPage from "./HelloStudioPage";
 
 export default function HelloStudio() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div></div>}>
       <HelloStudioPage />
     </Suspense>
   );
