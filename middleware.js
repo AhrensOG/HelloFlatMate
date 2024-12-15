@@ -13,9 +13,15 @@ function decodeToken(encodedToken) {
 }
 
 export async function middleware(request) {
-    const cookieStore = cookies(); // Usa cookies() para acceder a las cookies
-    const token = cookieStore.get("auth_token")?.value; // Obtén el valor de la cookie
+    const cookieStore = cookies();
+    const token = cookieStore.get("auth_token")?.value;
 
+    // Configuración de locales
+    const supportedLocales = ["es", "en"];
+    const url = new URL(request.url);
+    const pathName = url.pathname;
+
+    // Rutas públicas
     const allowedPaths = [
         "/",
         "/helloroom",
@@ -23,88 +29,110 @@ export async function middleware(request) {
         "/hellocoliving",
         "/hellolandlord",
         "/lastrooms",
-        "/pages/auth",
         "/pages/guest",
-        "/api/auth",
-        "/api/stripe/webhook",
-        "/api/payment",
-        "/api/property",
-        "/pages/select-category",
-        "/pages/user/filtered",
         "/faq",
         "/cookies",
         "/privacy-policy",
+        "/clausulas",
+        "/terminos-y-condiciones",
         "/como-funciona",
+        "/colaboradores",
         "/sobre-nosotros",
-        "/api/maps/geocoding",
     ];
 
-    const dynamicPaths = [
-        /^\/pages\/property-details\/\w+$/, // Coincide con /pages/property-details/[propertyId]
-        /^\/pages\/property-details\/\w+\/room-details\/\w+$/, // Coincide con /pages/property-details/[propertyId]/room-details/[roomId]
-    ];
+    // Rutas públicas de la API
+    const publicApiPaths = ["/api/auth", "/api/stripe/webhook", "/api/payment", "/api/property"];
 
-    const pathName = new URL(request.url).pathname;
-
-    // Captura el locale desde la URL
-    const locale = pathName.split("/")[1]; // Suponiendo que el locale es la primera parte de la ruta
-    const supportedLocales = ["es", "en"]; // Lista de locales soportados
-
-    // Redirige a un locale por defecto si no se encuentra uno válido
-    if (!supportedLocales.includes(locale)) {
-        return NextResponse.redirect(new URL(`/es${pathName}`, request.url)); // Redirigir a la versión en español por defecto
-    }
-
-    if (allowedPaths.includes(pathName)) {
-        return NextResponse.next();
-    }
-
-    const isDynamicAllowed = dynamicPaths.some((regex) => regex.test(pathName));
-    if (isDynamicAllowed) {
-        return NextResponse.next();
-    }
-
+    // Ignorar rutas de API públicas y estáticas
     if (
+        publicApiPaths.includes(pathName) ||
         pathName.startsWith("/_next/") ||
         pathName.startsWith("/static/") ||
         pathName.startsWith("/public/") ||
-        pathName.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map)$/)
+        pathName.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|map|mp4|woff|woff2|ttf|otf|eot|txt)$/)
     ) {
         return NextResponse.next();
     }
 
+    // Capturar el locale desde la URL
+    const segments = pathName.split("/");
+    let locale = segments[1]; // Detectar el primer segmento como `locale`
+
+    // Validar y redirigir si el `locale` no es válido
+    if (!supportedLocales.includes(locale)) {
+        const isAllowedPath = allowedPaths.some((allowedPath) => pathName.startsWith(allowedPath));
+        if (isAllowedPath) {
+            const redirectUrl = new URL(`/es${pathName}`, request.url);
+            console.log(`Redirigiendo a: ${redirectUrl.href}`);
+            return NextResponse.redirect(redirectUrl);
+        }
+        // Establecer el locale predeterminado si no es una ruta pública
+        locale = "es";
+    }
+
+    // Configurar el locale en las cabeceras para que `getRequestConfig` lo reciba
+    const response = NextResponse.next();
+    response.headers.set("x-next-intl-locale", locale); // Asegúrate de usar el nombre correcto del encabezado
+
+    // Verificar si estamos en una ruta pública (con locale)
+    if (supportedLocales.includes(locale)) {
+        const pathWithoutLocale = `/${segments.slice(2).join("/")}`; // Eliminar el `locale` del path
+        const isAllowedPath = allowedPaths.some((allowedPath) => pathWithoutLocale.startsWith(allowedPath));
+
+        if (isAllowedPath) {
+            console.log(`Ruta pública permitida: ${pathName}`);
+            return response; // Permitir acceso sin token a rutas públicas
+        }
+    }
+
+    // Redirigir al login si no hay token y la ruta no es pública
     if (!token) {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
+        const redirectUrl = new URL(`/${locale}/pages/auth`, request.url);
+        if (!url.searchParams.has("redirect")) {
+            redirectUrl.searchParams.set("redirect", request.url);
+        }
+        console.log(`Redirigiendo al login: ${redirectUrl.href}`);
         return NextResponse.redirect(redirectUrl);
     }
 
+    // Verificar el token y los permisos para rutas protegidas
     const decodedToken = decodeToken(token);
 
     if (!decodedToken) {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
+        const redirectUrl = new URL(`/${locale}/pages/auth`, request.url);
+        if (!url.searchParams.has("redirect")) {
+            redirectUrl.searchParams.set("redirect", request.url);
+        }
+        console.log(`Token inválido. Redirigiendo al login: ${redirectUrl.href}`);
         return NextResponse.redirect(redirectUrl);
     }
 
     const { role } = decodedToken;
 
     const rolesPaths = {
-        ADMIN: ["/pages/worker-panel", "/pages/admin", "/pages/user", "/pages/owner", "/pages/home", "/pages/select-category", "/api/admin", "/api"],
-        OWNER: ["/pages/worker-panel", "/pages/owner", "/pages/user", "/pages/home", "/pages/select-category", "/api"],
-        WORKER: ["/pages/worker-panel", "/api", "/pages/user"],
-        CLIENT: ["/pages/user", "/pages/home", "/api"],
+        ADMIN: [
+            `/${locale}/pages/worker-panel`,
+            `/${locale}/pages/admin`,
+            `/${locale}/pages/user`,
+            `/${locale}/pages/owner`,
+            `/${locale}/pages/home`,
+        ],
+        OWNER: [`/${locale}/pages/worker-panel`, `/${locale}/pages/owner`, `/${locale}/pages/user`, `/${locale}/pages/home`],
+        WORKER: [`/${locale}/pages/worker-panel`, `/${locale}/pages/user`],
+        CLIENT: [`/${locale}/pages/user`, `/${locale}/pages/home`],
     };
 
     const allowedRolesPaths = rolesPaths[role] || [];
     const hasAccess = allowedRolesPaths.some((allowedPath) => pathName.startsWith(allowedPath));
 
-    if (!hasAccess && pathName !== "/" && !pathName.startsWith(`/${locale}`)) {
-        const redirectUrl = new URL(`/pages/auth?redirect=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL + "/" + pathName)}`, request.url);
+    if (!hasAccess && pathName !== `/${locale}/`) {
+        const redirectUrl = new URL(`/${locale}/pages/auth`, request.url);
+        if (!url.searchParams.has("redirect")) {
+            redirectUrl.searchParams.set("redirect", request.url);
+        }
+        console.log(`Acceso denegado. Redirigiendo al login: ${redirectUrl.href}`);
         return NextResponse.redirect(redirectUrl);
     }
 
-    if (!role) {
-        return NextResponse.redirect(new URL("/", request.url));
-    }
-
-    return NextResponse.next();
+    return response;
 }

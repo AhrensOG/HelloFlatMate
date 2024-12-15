@@ -1,5 +1,100 @@
 {
+    "nav_bar": {
+        "link_how_it_works": "Cómo funciona",
+        "link_terms_and_conditions": "Términos y condiciones",
+        "link_register": "Registro",
+        "link_login": "Inicio"
+    },
     "home": {
-        "home_h3": "Especializados en gestión de alojamientos para estudiantes en Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin complicaciones!"
+        "home_title": "Especializados en gestión de alojamientos para estudiantes en Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin complicaciones!",
+
+        "home_second_sect_1": "14 <br/> Años",
+        "home_second_sect_2": " +6300 <br /> Contratos de 10 meses",
+        "home_second_sect_3": "100% <br /> Especializados en Valencia",
+
+        "home_third_sect_1_title": "Alojamientos en zonas consolidadas",
+        "home_third_sect_1_desc": "Nuestros agentes, residentes en Valencia, seleccionan entornos seguros y bien conectados, ideales para tu día a día. Te ayudamos a enfocarte en tus estudios, construir tu futuro y crear nuevas amistades.",
+        "home_third_sect_2_title": "Contratos",
+        "home_third_sect_2_desc": "En hello flat mate garantizamos contratos de alquiler legales y seguros, basados en el Código Civil, que aseguran un equilibrio justo entre arrendadores e inquilinos.",
+        "home_third_sect_3_title": "Soporte",
+        "home_third_sect_3_desc": "Nuestra atención al cliente está disponible de lunes a viernes, de 9:00 a 17:00, para resolver cualquier duda o gestión. Además, ofrecemos un servicio de emergencias 24/7, perfecto para situaciones como olvidar las llaves fuera de horario.",
+        "home_third_sect_4_title": "Alojamientos preparados",
+        "home_third_sect_4_desc": "Nos encargamos de que cada alojamiento esté limpio y revisado antes de tu llegada, para que disfrutes de una bienvenida cómoda y sin preocupaciones desde el primer día.",
+        "home_third_sect_5_title": "Mantenimiento propio ",
+        "home_third_sect_5_desc": "Cuidamos los alojamientos que gestionamos para que siempre estén en buen estado, además siempre revisamos y limpiamos antes de la llegada de nuestros flatmates.",
+        "home_third_sect_6_title": "Alta de suministros",
+        "home_third_sect_6_desc": "Todos nuestros alojamientos, excepto hello Studios, cuentan con luz, agua e Internet WiFi dados de alta antes de tu llegada, para que no tengas que preocuparte por nada.",
+
+        "home_fourth_sect_1_title": "  Dicen que nuestro servicio al cliente es el mejor",
+
+        "home_fifth_sect_h2": "¿Por qué escoger hello flat mate?",
+        "home_fifth_sect_1_title": "Nuestros agentes locales, siempre a tu lado",
+        "home_fifth_sect_1_desc": "Con un equipo de agentes residentes en Valencia, te ayudamos a encontrar la habitación perfecta dentro de nuestra oferta de alojamientos. Además, estaremos contigo durante toda tu estancia, asegurándonos de que todo funcione como debe para que vivas con tranquilidad.",
+        "home_fifth_sect_2_title": "Seguridad ante todo",
+        "home_fifth_sect_2_desc": "hello flat mate es una agencia que gestiona únicamente 160 habitaciones dado que nos gusta dar una buena atención y gestión de la estancia de nuestros flatmates.",
+        "home_fifth_sect_3_title": "Accesible",
+        "home_fifth_sect_3_desc": "Contratos de 5 y 10 meses Desde 290€/mes",
+        "home_fifth_sect_4_title": "Reserva 100% online y check-in fácil en 3 pasos",
+        "home_fifth_sect_4_desc": "Con nuestro sistema online, realiza tu reserva y organiza tu check-in de forma rápida. Como gestionamos directamente los alojamientos, garantizamos fotos actualizadas y viviendas en perfecto estado para una llegada cómoda y sin complicaciones.",
+        "home_fifth_sect_5_title": "Flexibilidad que se adapta a ti",
+        "home_fifth_sect_5_desc": "Sabemos que los planes pueden cambiar, por eso ofrecemos una política de cancelaciones flexible. Y si cancelas a pocos días de tu check-in, no te preocupes: te ayudamos a encontrar otro estudiante que sustituya tu contrato, para que puedas recuperar tu reserva total o parcial. En hello flat mate, siempre buscamos soluciones para ti.",
+        "home_fifth_sect_6_title": "Seguridad y confianza en cada paso",
+        "home_fifth_sect_6_desc": "En hello flat mate, priorizamos la atención personalizada y la calidad en la gestión. Por eso, gestionamos únicamente 160 habitaciones, asegurándonos de brindar un servicio cercano, seguro y adaptado a las necesidades de cada flatmate durante toda su estancia. Tu tranquilidad es nuestra prioridad.",
+
+        "home_sixth_sect_h2": "<strong>4</strong> tipos de alojamiento con toda la seguridad para estudiantes",
+        "home_sixth_sect_1_title": "hello landlord",
+        "home_sixth_sect_1_desc": "Habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por hello flat mate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.\n\n¡Comparte con estudiantes como tú!",
+        "home_sixth_sect_2_title": "hello rooms",
+        "home_sixth_sect_2_desc": "Habitaciones de media estancia en Valencia, gestionadas por el equipo de hello flat mate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones.\n\n¡Vive con otros estudiantes como tú!",
+        "home_sixth_sect_3_title": "hello studios",
+        "home_sixth_sect_3_desc": "Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables. Ideal para estudiantes y nómadas digitales que buscan comodidad y privacidad.",
+        "home_sixth_sect_4_title": "hello coliving",
+        "home_sixth_sect_4_desc": "Espacios de coliving para estudiantes en Valencia, con ambiente comunitario, servicio de limpieza y gestión de estancia por helloflatmate para una experiencia cómoda y segura.",
+
+        "home_seventh_sect_h2": "¿Alguna duda?",
+        "home_seventh_sect_div": "¿Tienes una pregunta diferente?",
+        "home_seventh_sect_link": "Descubre más",
+        "home_seventh_sect_1_title": "¿Puedo cancelar una reserva?",
+        "home_seventh_sect_1_desc": "Puedes cancelar tu reserva cuando quieras. Así es como funciona: No se te cobrará por la cancelación de la reserva si aún no ha sido aceptada por el propietario. Pero si cancelas tras ser aceptado, la cuota de Spotahome no será reembolsada, y puedes perder la parte de la renta que pagaste por adelantado.",
+        "home_seventh_sect_2_title": "¿Puedo visitar la propiedad antes de reservar?",
+        "home_seventh_sect_2_desc": "Por ahora, no es posible visitar la propiedad antes de reservar.",
+        "home_seventh_sect_3_title": "¿Con quién viviré?",
+        "home_seventh_sect_3_desc": "Toda la información sobre tus compañeros de piso estará en el anuncio.",
+        "home_seventh_sect_4_title": "¿Qué es un Homechecker?",
+        "home_seventh_sect_4_desc": "Un Homechecker es un experto que verifica propiedades para garantizar la exactitud del anuncio.",
+
+        "home_eight_sect_1_title": "Encuentra tu casa ideal con hello flat mate",
+        "home_eight_sect_1_link": "Empieza a buscar"
+    },
+    "footer": {
+        "link_about_us": "Sobre nosotros",
+        "link_blog": "Blog",
+        "link_institutions": "Instituciones",
+        "link_company_data": "Datos de la empresa",
+        "link_site_map": "Mapa del sitio",
+        "title_legal": "Legal",
+        "link_privacy_policy": "Política de privacidad",
+        "link_cookies_policy": "Política de cookies",
+        "link_terms_and_conditions": "Términos y condiciones",
+        "title_tenants": "Inquilinos",
+        "link_how_it_works": "Cómo funciona",
+        "link_offers": "Promociones",
+        "title_owners": "Propietarios",
+        "link_advertise": "Anuncia tu propiedad",
+        "title_colaborators": "Únete a nosotros",
+        "link_colaborators": "Colaboradores",
+        "link_become_partner": "Hazte Partner",
+        "link_work_with_us": "Trabaja con nosotros",
+        "title_supp": "Soporte",
+        "button_supp": "Visita el centro de ayuda",
+        "link_supp": "Contacta con Soporte",
+        "title_download": "DESCARGA LA APP",
+        "title_follow_us": "Síguenos",
+        "title_payment_methods": "Métodos de pago",
+        "legal_rights": "Todos los derechos reservados"
+    },
+    "secondary_category_selector": {
+        "search_btn": "Buscar alojamiento",
+        "title_h1": "¿Qué deseas reservar?"
     }
 }

@@ -12,11 +12,13 @@ export default async function RootLayout({ children, params: { locale } }) {
     }
 
     // Obtener mensajes de traducción
-    const messages = await getMessages();
+    const messages = await getMessages(locale);
 
     return (
         <html lang={locale}>
             <body className={`${montserrat.className}`}>
+                {console.log(locale)}
+
                 <ClientWrapper locale={locale} messages={messages}>
                     {children}
                 </ClientWrapper>

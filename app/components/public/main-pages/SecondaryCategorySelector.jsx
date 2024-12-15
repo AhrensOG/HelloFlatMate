@@ -12,6 +12,7 @@ import Select from "../../user/home/categorySelector/auxiliarComponents/Select";
 import DatePickerCategorySelector from "../../user/home/categorySelector/DatePickerCategoySelector";
 import CategoryCard from "../../user/home/categorySelector/auxiliarComponents/CategoryCard";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const list = [
     {
@@ -47,6 +48,7 @@ const SecondaryCategorySelector = ({
     helloLandlordProperties,
     allProperties,
 }) => {
+    const t = useTranslations("secondary_category_selector");
     const router = useRouter();
     // const searchParams = useSearchParams();
     // const categoryQuery = searchParams.get("c");
@@ -166,7 +168,7 @@ const SecondaryCategorySelector = ({
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                             {/* <SelectDate
@@ -196,7 +198,7 @@ const SecondaryCategorySelector = ({
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                             {/* <SelectDate
@@ -220,7 +222,7 @@ const SecondaryCategorySelector = ({
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                         </div>
@@ -245,7 +247,7 @@ const SecondaryCategorySelector = ({
                                 onClick={handleSearch}
                                 className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                             {/* <SelectDate
@@ -288,7 +290,7 @@ const SecondaryCategorySelector = ({
             Volver
           </span>
         </div> */}
-                <h1 className="w-full text-center font-bold sm:text-lg">¿Qué deseas reservar?</h1>
+                <h1 className="w-full text-center font-bold sm:text-lg">{t("title_h1")}</h1>
                 {/* <button
           onClick={() => router.push("/")}
           type="button"

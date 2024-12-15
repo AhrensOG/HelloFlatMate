@@ -137,7 +137,6 @@ export default function Home() {
 
     //const traduccion
     const t = useTranslations("home");
-    console.log(t("home_h3"));
 
     const filterOffer = (properties) => {
         return properties.filter((property) => property.offer !== null && property.status === "FREE");
@@ -216,7 +215,7 @@ export default function Home() {
                 </header>
                 <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
                     <h1 className="text-3xl font-bold">hello flat mate</h1>
-                    <h3 className="text-lg text-center" dangerouslySetInnerHTML={{ __html: t("home_h3") }}></h3>
+                    <h3 className="text-lg text-center" dangerouslySetInnerHTML={{ __html: t("home_title") }}></h3>
                     <div className="mb-64 w-full">
                         <Suspense fallback={<Loader />}>
                             <SecondaryCategorySelector
