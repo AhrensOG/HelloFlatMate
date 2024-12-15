@@ -63,7 +63,7 @@ export default function PropertyCard({
         onClick={handleRedirect}
         className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full"
       >
-        <div className="relative h-28 w-28 sm:w-72 sm:h-60 rounded-md">
+        <div className="relative h-28 w-28 sm:w-72 sm:min-h-60 sm:h-60 rounded-md">
           <Image
             className="rounded-lg"
             src={

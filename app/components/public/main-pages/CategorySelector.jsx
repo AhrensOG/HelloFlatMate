@@ -292,7 +292,7 @@ const CategorySelector = ({
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
                             <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellolandlord"} categoryy={"HELLO_LANDLORD"} />
-                            <Select resetFilters={resetFilters} options={helloLandlordLocations} data={filters} setData={setFilters} title="Zona" />
+                            <Select resetFilters={resetFilters} options={helloLandlordLocations} data={filters} setData={setFilters} title="Zona" name="zone" />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloLandlordRentalPeriods}

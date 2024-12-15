@@ -218,6 +218,12 @@ export default function ReservationPropertyCard({
             </span>
           </div>
 
+          <div>
+            <span className="text-sm font-medium text-gray-600">
+              Código: {property.serial|| ""}
+            </span>
+          </div>
+
           <h2 className="text-xs text-gray-500 flex items-center gap-2">
             <Image
               src="/property-card/location-icon.svg"

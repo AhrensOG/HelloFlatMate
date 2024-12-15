@@ -4,19 +4,33 @@ import { NextResponse } from "next/server";
 export async function updateClient(data) {
     if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
     if (!data.clientId) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
-    if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    if (!data.idNum || data.idNum.trim().length < 1) return NextResponse.json({ error: "Se requiere el DNI" }, { status: 400 });
-    if (!data.phone) return NextResponse.json({ error: "Se requiere el teléfono" }, { status: 400 });
-    if (!data.country || data.country.trim().length < 1) return NextResponse.json({ error: "Se requiere la ciudad" }, { status: 400 });
-    if (!data.reasonForValencia || data.reasonForValencia.trim().length < 1) return NextResponse.json({ error: "Se requiere razon para vivir en valencia" }, { status: 400 });
-    if (!data.personalReview || data.personalReview.trim().length < 1) return NextResponse.json({ error: "Se requiere una reseña personal" }, { status: 400 });
 
+    const requiredFields = [
+        { key: "name", message: "Se requiere el nombre" },
+        { key: "lastName", message: "Se requiere el apellido" },
+        { key: "idNum", message: "Se requiere el DNI" },
+        { key: "phone", message: "Se requiere el teléfono" },
+        { key: "country", message: "Se requiere la ciudad" },
+        { key: "reasonForValencia", message: "Se requiere razón para vivir en Valencia" },
+        { key: "personalReview", message: "Se requiere una reseña personal" },
+    ];
+
+    for (const field of requiredFields) {
+        if (!data[field.key] || data[field.key].trim().length < 1) {
+            return NextResponse.json({ error: field.message }, { status: 400 });
+        }
+    }
+
+    // Validar formato de fecha de nacimiento
+    if (data.birthDate && isNaN(Date.parse(data.birthDate))) {
+        return NextResponse.json({ error: "Formato de fecha de nacimiento inválido" }, { status: 400 });
+    }
 
     // Iniciar transacción
     const transaction = await Client.sequelize.transaction();
 
     try {
+        // Buscar cliente por ID
         const user = await Client.findByPk(data.clientId);
         if (!user) {
             await transaction.rollback();
@@ -24,15 +38,24 @@ export async function updateClient(data) {
         }
 
         // Actualizar campos existentes
-        user.name = data.name || user.name;
-        user.lastName = data.lastName || user.lastName;
-        user.idNum = data.idNum || user.idNum;
-        user.phone = data.phone || user.phone;
-        user.country = data.country || user.country;
-        user.reasonForValencia = data.reasonForValencia || user.reasonForValencia;
-        user.reasonForValenciaOther = data.reasonForValenciaOther || user.reasonForValenciaOther;
-        user.personalReview = data.personalReview || user.personalReview;
-      
+        const fieldsToUpdate = [
+            "name",
+            "lastName",
+            "idNum",
+            "phone",
+            "country",
+            "reasonForValencia",
+            "reasonForValenciaOther",
+            "personalReview",
+            "birthDate",
+        ];
+
+        for (const field of fieldsToUpdate) {
+            if (data[field] !== undefined) {
+                user[field] = data[field];
+            }
+        }
+
         await user.save({ transaction });
 
         // Confirmar transacción

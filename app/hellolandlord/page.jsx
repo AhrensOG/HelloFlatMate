@@ -5,7 +5,7 @@ import HelloLandlordPage from "./HelloLandLordPage";
 
 export default function HelloLandlord() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
             <HelloLandlordPage />
         </Suspense>
     );

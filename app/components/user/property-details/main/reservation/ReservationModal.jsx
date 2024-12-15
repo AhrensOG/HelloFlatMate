@@ -84,14 +84,14 @@ export default function ReservationModal({
     try {
       await axios.put("/api/user/reservation", reservation);
       const response = await axios.post("/api/lease_order", reservation);
-      if (
-        ["HELLO_ROOM", "HELLO_COLIVING", "HELLO_LANDLORD"].includes(category)
-      ) {
-        await axios.patch("/api/rental_period", {
-          id: rentalPeriodId,
-          status: "RESERVED",
-        });
-      }
+      // if (
+      //   ["HELLO_ROOM", "HELLO_COLIVING", "HELLO_LANDLORD"].includes(category)
+      // ) {
+      //   await axios.patch("/api/rental_period", {
+      //     id: rentalPeriodId,
+      //     status: "RESERVED",
+      //   });
+      // }
       toast.success("Reserva completada con éxito!", {
         id: toastId,
         description: "Seras redirigido.",
@@ -120,7 +120,7 @@ export default function ReservationModal({
       // onClick={callback}
     >
       <motion.aside
-        className="relative w-full sm:w-[80%] md:w-[60%] lg:w-[40%] bg-white sm:rounded-md shadow-lg max-h-screen sm:max-h-[95vh] overflow-y-auto scrollbar-none p-6 py-4"
+        className="relative w-full sm:w-[80%] md:w-[60%] lg:w-[40%] bg-white sm:rounded-md shadow-lg max-h-screen sm:max-h-[95vh] overflow-y-auto scrollbar-none p-6 py-4 flex flex-col"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
@@ -146,7 +146,7 @@ export default function ReservationModal({
         <h2 className="text-xl font-semibold mb-4 w-full text-center">
           Datos de solicitud para reserva
         </h2>
-        <div className="space-y-5">
+        <div className="space-y-5 flex flex-col justify-start items-center grow overflow-y-auto scrollbar-none">
           {calendarType === "SIMPLE" ? (
             <SelectRentalPeriod
               data={rentalPeriods.filter(
