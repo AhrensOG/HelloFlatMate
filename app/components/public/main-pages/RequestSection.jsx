@@ -70,7 +70,7 @@ const RequestSection = ({
 
       {/* Modal */}
       <AnimatePresence>
-        {isModalOpen && <RequestForm toggleModal={toggleModal} data={state.user} />}
+        {isModalOpen && <RequestForm toggleModal={toggleModal} data={state.user} filters={filters} />}
       </AnimatePresence>
     </div>
   );

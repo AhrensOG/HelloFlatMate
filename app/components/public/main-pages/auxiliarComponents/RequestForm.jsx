@@ -11,10 +11,9 @@ import axios from "axios";
 const validationSchema = yup.object({
   name: yup.string().required("El nombre es requerido"),
   lastName: yup.string().required("El apellido es requerido"),
-  idNum: yup.string().required("El ID/Pasaporte es requerido"),
   country: yup.string().required("El país es requerido"),
   reasonForValencia: yup.string().required("Selecciona una razón"),
-  personalReview: yup.string().required("La reseña personal es requerida"),
+  preferences: yup.string().required("Indícanos tus preferencias"),
   phone: yup.string().required("El teléfono es requerido"),
   email: yup.string().required("El correo es requerido"),
   birthDate: yup
@@ -24,7 +23,7 @@ const validationSchema = yup.object({
     .max(new Date(), "La fecha de nacimiento no puede ser en el futuro"),
 });
 
-const RequestForm = ({ toggleModal, data }) => {
+const RequestForm = ({ toggleModal, data, filters }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -61,11 +60,10 @@ const RequestForm = ({ toggleModal, data }) => {
           initialValues={{
             name: data?.name || "",
             lastName: data?.lastName || "",
-            idNum: data?.idNum || "",
             country: data?.country || "",
             reasonForValencia: data?.reasonForValencia || "",
             reasonForValenciaOther: data?.reasonForValenciaOther || "",
-            personalReview: data?.personalReview || "",
+            preferences: "",
             phone: data?.phone || "",
             email: data?.email || "",
             birthDate: data?.birthDate
@@ -87,11 +85,13 @@ const RequestForm = ({ toggleModal, data }) => {
             const toastId = toast.loading("Enviando datos...");
             try {
               values.clientId = data.id;
-              await axios.put("/api/user/reservation", values);
+              const allInfo = { ...values, ...filters };
+              await axios.post("/api/user/searchRequest", allInfo);
               toast.success("Datos enviados con éxito", {
                 id: toastId,
                 description: "¡Estaremos en contacto!",
               });
+              toggleModal();
             } catch (error) {
               console.error(error);
               toast.info(
@@ -107,7 +107,7 @@ const RequestForm = ({ toggleModal, data }) => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.3 }}
-                className="flex flex-col justify-center items-center sm:flex-row gap-2"
+                className="flex flex-col justify-center items-start sm:flex-row gap-2 text-start"
               >
                 {[
                   { label: "Nombre", name: "name", placeholder: "Tu nombre" },
@@ -145,73 +145,61 @@ const RequestForm = ({ toggleModal, data }) => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.3 }}
-                className="flex flex-col justify-center items-center sm:flex-row gap-2"
+                className="flex flex-col justify-center items-start sm:flex-row gap-2 text-start"
               >
-                {[
-                  {
-                    label: "ID/Pasaporte",
-                    name: "idNum",
-                    placeholder: "Introduce tu ID o pasaporte",
-                  },
-                  {
-                    label: "Fecha de nacimiento",
-                    name: "birthDate",
-                    type: "date",
-                    placeholder: "Tu fecha de nacimiento",
-                  },
-                ].map((field, index) => (
-                  <motion.div
-                    key={field.name}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 * index, duration: 0.3 }}
-                    className="w-full"
-                  >
-                    <label className="text-start block text-xs text-gray-700 mb-0.5">
-                      {field.label}
-                    </label>
-                    <Field
-                      name={field.name}
-                      type={field.type || "text"}
-                      placeholder={field.placeholder}
-                      className="w-full border rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-300 outline-none"
-                    />
-                    <ErrorMessage
-                      name={field.name}
-                      component="p"
-                      className="text-red-500 text-xs mt-1"
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.3 }}
-              >
-                <label className="text-start block text-xs text-gray-700 mb-0.5">
-                  Nacionalidad
-                </label>
-                <Field name="country">
-                  {({ field, form }) => (
-                    <CountrySelect
-                      value={field.value}
-                      onChange={(value) => form.setFieldValue("country", value)}
-                    />
-                  )}
-                </Field>
-                <ErrorMessage
-                  name="country"
-                  component="p"
-                  className="text-red-500 text-xs mt-1"
-                />
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
+                  className="w-full"
+                >
+                  <label className="text-start block text-xs text-gray-700 mb-0.5">
+                    Fecha de nacimiento
+                  </label>
+                  <Field
+                    name="birthDate"
+                    type="date"
+                    placeholder="Tu fecha de nacimiento"
+                    className="w-full border rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-300 outline-none"
+                  />
+                  <ErrorMessage
+                    name="birthDate"
+                    component="p"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.3 }}
+                  className="w-full"
+                >
+                  <label className="text-start block text-xs text-gray-700 mb-0.5">
+                    Nacionalidad
+                  </label>
+                  <Field name="country">
+                    {({ field, form }) => (
+                      <CountrySelect
+                        value={field.value}
+                        onChange={(value) =>
+                          form.setFieldValue("country", value)
+                        }
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage
+                    name="country"
+                    component="p"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </motion.div>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.3 }}
+                className="text-start"
               >
                 <label className="text-start block text-xs text-gray-700 mb-0.5">
                   ¿Por qué vienes a Valencia?
@@ -246,7 +234,7 @@ const RequestForm = ({ toggleModal, data }) => {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.25 }}
-                    className="mt-2"
+                    className="mt-2 text-start"
                   >
                     <label className="text-start block text-xs text-gray-700 mb-0.5">
                       Cuéntanos más
@@ -270,20 +258,21 @@ const RequestForm = ({ toggleModal, data }) => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.3 }}
+                className="text-start"
               >
                 <label className="text-start block text-xs text-gray-700 mb-0.5">
-                  Reseña personal
+                  Indícanos tus preferencias
                 </label>
                 <Field
                   as="textarea"
-                  name="personalReview"
-                  placeholder="Comparte más sobre ti"
+                  name="preferences"
+                  placeholder="Cuéntanos lo que buscas"
                   className="w-full border rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-300 outline-none h-12"
                 />
                 <ErrorMessage
-                  name="personalReview"
+                  name="preferences"
                   component="p"
-                  className="text-red-500 text-xs mt-1"
+                  className="text-red-500 text-xs"
                 />
               </motion.div>
 
@@ -291,6 +280,7 @@ const RequestForm = ({ toggleModal, data }) => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.3 }}
+                className="text-start"
               >
                 <label className="text-start block text-xs text-gray-700 mb-0.5">
                   Teléfono
