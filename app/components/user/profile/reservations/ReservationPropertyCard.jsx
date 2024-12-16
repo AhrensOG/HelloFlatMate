@@ -219,25 +219,24 @@ export default function ReservationPropertyCard({
           </div>
 
           <div>
-            <span className="text-sm font-medium text-gray-600">
-              Código: {property.serial|| ""}
+            <h2 className="text-sm text-gray-500 flex items-center gap-2">
+              <Image
+                src="/property-card/location-icon.svg"
+                width={14}
+                height={14}
+                alt="Ubicación"
+              />
+              {category === "HELLO_ROOM" ||
+              category === "HELLO_COLIVING" ||
+              category === "HELLO_LANDLORD"
+                ? `${property?.property?.city}, ${property?.property?.street} ${property?.property?.streetNumber}`
+                : `${property?.city}, ${property?.street} ${property?.streetNumber}` ||
+                  ""}
+            </h2>
+            <span className="text-xs font-medium text-gray-600">
+              Código: {property.serial || ""}
             </span>
           </div>
-
-          <h2 className="text-xs text-gray-500 flex items-center gap-2">
-            <Image
-              src="/property-card/location-icon.svg"
-              width={18}
-              height={18}
-              alt="Ubicación"
-            />
-            {category === "HELLO_ROOM" ||
-            category === "HELLO_COLIVING" ||
-            category === "HELLO_LANDLORD"
-              ? `${property?.property?.city}, ${property?.property?.street} ${property?.property?.streetNumber}`
-              : `${property?.city}, ${property?.street} ${property?.streetNumber}` ||
-                ""}
-          </h2>
 
           {/* Información de contrato */}
           <div className="flex justify-between items-center">
