@@ -129,88 +129,6 @@ export default function Home() {
   const [helloStudioProperties, setHelloStudioProperties] = useState([]);
   const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
 
-<<<<<<< HEAD
-  // Definir las rutas según el rol del usuario
-  const userProfileLink =
-    user?.role === "CLIENT"
-      ? "/pages/user/my-bedrooms"
-      : user?.role === "ADMIN"
-      ? "/pages/admin"
-      : user?.role === "WORKER"
-      ? "/pages/worker-panel/home"
-      : user?.role === "OWNER"
-      ? "/pages/owner"
-      : null;
-
-  // Estado para el tiempo restante
-  const [timeRemaining, setTimeRemaining] = useState("");
-
-  useEffect(() => {
-    // Fecha objetivo (9 de diciembre)
-    const targetDate = new Date("2024-12-10T00:00:00");
-
-    // Función que calcula el tiempo restante
-    const updateTimer = () => {
-      const now = new Date();
-      const difference = targetDate - now;
-
-      // Si el tiempo se ha agotado, dejar el contador en 0
-      if (difference <= 0) {
-        setTimeRemaining("¡Es el día del lanzamiento!");
-        return;
-      }
-
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((difference / (1000 * 60)) % 60);
-      const seconds = Math.floor((difference / 1000) % 60);
-
-      setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-    };
-
-    // Actualizar el contador cada segundo
-    const interval = setInterval(updateTimer, 1000);
-
-    // Limpiar el intervalo cuando el componente se desmonta
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center px-4 py-8">
-        {/* Imagen de error */}
-        <div>
-          <Image
-            src={"/newlogohfm.png"}
-            alt="Error Image"
-            width={400}
-            height={300}
-          />
-        </div>
-
-        {/* Título del error */}
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          En Mantenimiento
-        </h1>
-
-        {/* Contador de tiempo restante */}
-        <p className="text-2xl text-gray-600 mb-4 font-bold">{timeRemaining}</p>
-
-        {/* Mensaje descriptivo */}
-        <p className="text-2xl text-gray-600 mb-6">¡Nos Vemos Pronto!</p>
-
-        {/* Botón para regresar a la página principal */}
-        <p className="text-gray-600 font-light text-xl">
-          Si eres usuario puedes continuar
-          <Link
-            href={user ? userProfileLink : "/pages/auth"}
-            className="text-blue-500"
-          >
-            {" "}
-            aquí
-          </Link>
-        </p>
-=======
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
 
   // Estados para controlar las secciones visibles
@@ -336,7 +254,6 @@ export default function Home() {
         <SeventhSection />
         <EightSection />
         <Footer_1 />
->>>>>>> 2e42c106ff5f0058a9ea03048cbcaa391cc3a980
       </div>
     </div>
   );
