@@ -72,7 +72,7 @@ const roomInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             linkVideo: {
-                type: DataTypes.STRING(100),
+                type: DataTypes.STRING(500),
                 allowNull: true,
             },
             status: {
