@@ -13,7 +13,8 @@ import CategorySelector from "../../components/public/main-pages/CategorySelecto
 import PropertyCardSekeleton from "../../components/public/main-pages/PropertyCardSekeleton";
 import { useSearchParams } from "next/navigation";
 import NavbarV3 from "../components/nav_bar/NavbarV3";
-import SearchNotFound from "../components/public/main-pages/SearchNotFound";
+import RequestSection from "../components/public/main-pages/RequestSection";
+
 export default function HelloRoomPage() {
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
@@ -23,6 +24,8 @@ export default function HelloRoomPage() {
     const occupants = searchParams.get("numberOccupants");
     const rentalPeriod = searchParams.get("rentalPeriod");
     const type = searchParams.get("type");
+    const requestForm = searchParams.get("requestForm");
+    const scrollToForm = searchParams.get("scrollToForm");
 
     const { state, dispatch } = useContext(Context);
     const [properties, setProperties] = useState([]);
@@ -243,6 +246,27 @@ export default function HelloRoomPage() {
             setShowSkeleton(true);
         }
     }, [displayedRooms]);
+
+    useEffect(() => {
+        const tryScrollToContactUs = () => {
+            const contactUsElement = document.getElementById("contactUs");
+            if (contactUsElement) {
+                const offset = 200; // Ajusta según sea necesario
+                const topPosition = contactUsElement.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({
+                    top: topPosition,
+                    behavior: "smooth",
+                });
+            }
+        };
+
+        if (scrollToForm && displayedRooms && displayedRooms.length === 0 && state?.user) {
+            // Intentar el desplazamiento una vez que los displayedRooms estén listos
+            const timeout = setTimeout(tryScrollToContactUs, 100); // Pequeño retraso para asegurar el montaje
+            return () => clearTimeout(timeout); // Limpiar timeout si el componente se desmonta
+        }
+    }, [scrollToForm, displayedRooms, state?.user]);
+
     return (
         <div>
             <div className="flex flex-col sm:min-h-screen">
@@ -286,22 +310,60 @@ export default function HelloRoomPage() {
                                 // Mostrar skeletons por 1 segundo
                                 Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)
                             ) : (
-                                // Mostrar componente SearchNotFound después del tiempo
-                                <SearchNotFound />
+                                <>
+                                    <div className="text-center py-6">
+                                        <span className="text-lg font-semibold text-gray-600">
+                                            No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras
+                                            opciones que podrían interesarte:
+                                        </span>
+                                    </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                                        {state.properties
+                                            ?.filter(
+                                                (property) =>
+                                                    property.category === "HELLO_ROOM" ||
+                                                    property.category === "HELLO_LANDLORD" ||
+                                                    property.category === "HELLO_COLIVING"
+                                            )
+                                            .flatMap((property) =>
+                                                property.rooms
+                                                    ?.filter((room) => room.isActive === true)
+                                                    .map((room) => ({
+                                                        ...room,
+                                                        property, // Adjuntar la propiedad completa para pasarla al componente
+                                                    }))
+                                            )
+                                            .map((room) => (
+                                                <PropertyCard
+                                                    key={`${room.id}-room`}
+                                                    property={room.property}
+                                                    roomId={room.id}
+                                                    price={room.price}
+                                                    name={room.name}
+                                                    images={room.images?.[0]} // Verificar si hay imágenes disponibles
+                                                    room={room}
+                                                />
+                                            ))}
+                                    </div>
+                                    <RequestSection filters={filters} requestForm={requestForm} />
+                                </>
                             )
                         ) : (
                             // Mostrar habitaciones cuando hay resultados
-                            displayedRooms.map((room) => (
-                                <PropertyCard
-                                    key={room.id + "room"}
-                                    property={room.property}
-                                    roomId={room.id}
-                                    price={room.price}
-                                    name={room.name}
-                                    images={room.images[0]}
-                                    room={room}
-                                />
-                            ))
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                                {displayedRooms.map((room) => (
+                                    <div key={`${room.id}-room`} className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden h-full">
+                                        <PropertyCard
+                                            property={room.property}
+                                            roomId={room.id}
+                                            price={room.price}
+                                            name={room.name}
+                                            images={room.images[0]}
+                                            room={room}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
                         )}
                     </div>
                 </div>

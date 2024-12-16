@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
-import NavbarV3 from "../components/nav_bar/NavbarV3";
-import Footer_1 from "../components/public/home/Footer";
+import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
+import Footer_1 from "@/app/components/public/home/Footer";
 import FAQ2 from "@/app/components/public/faqs/FAQ2";
-import SeventhSection from "../components/public/home/SeventhSection";
+import SeventhSection from "@/app/components/public/home/SeventhSection";
+import HTMLReactParser from "html-react-parser";
+import { useTranslations } from "next-intl";
 
 export default function HowItWorks() {
     const steps = [
@@ -88,6 +90,12 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
         },
     ];
 
+    const t = useTranslations("how_it_works");
+
+    const formatedStrong = (text) => {
+        return text.replace(/\(strong\)/g, "<strong>").replace(/\(\/strong\)/g, "</strong>");
+    };
+
     return (
         <section className="bg-white w-full">
             <header>
@@ -95,21 +103,15 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
             </header>
             <div className="w-full flex justify-center items-center">
                 <div className="w-full max-w-screen-md flex flex-col justify-center items-center px-2 py-10">
-                    <h1 className="text-center text-4xl font-extrabold mb-10 ml-24 max-w-96">3 simples pasos y listo</h1>
+                    <h1 className="text-center text-4xl font-extrabold mb-10 ml-24 max-w-96">{t("title")}</h1>
                     <div className="space-y-10">
                         <div className={`flex gap-6 items-start bg-white p-6 rounded-lg shadow-sm`}>
                             <Image src={"/howitworks/buscar.png"} width={100} height={100} alt={"Busca y elige tu hogar ideal"} />
 
                             {/* Contenido */}
                             <div className="flex-1">
-                                <h2 className="text-2xl font-bold mb-4 text-center">1. Solicita tu reserva</h2>
-                                <p className="text-gray-700 mb-6 text-center">
-                                    Explora nuestras opciones de alojamiento y encuentra la casa perfecta para ti. Con nuestros videos y descripciones
-                                    detalladas de cada propiedad y su entorno, obtendrás toda la información necesaria para tomar la mejor decisión.
-                                    Envía tu solicitud de reserva completando el formulario de la habitación que te interesa. y en menos de 2 horas
-                                    (dentro de horario laboral), recibirás la confirmación del propietario. ¿Tienes dudas? ¡Escríbenos! Nuestros
-                                    agentes en Valencia están listos para ayudarte a encontrar tu nuevo hogar.
-                                </p>
+                                <h2 className="text-2xl font-bold mb-4 text-center">{t("step_1_title")}</h2>
+                                <p className="text-gray-700 mb-6 text-center">{t("step_1_text")}</p>
 
                                 {/* <div className="grid grid-cols-2 gap-4">
                   {step.subpoints.map((point, index) => (
@@ -129,15 +131,8 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
 
                             {/* Contenido */}
                             <div className="flex-1">
-                                <h2 className="text-2xl font-bold mb-4 text-center">2. Confirmada tu solicitud</h2>
-                                <p className="text-gray-700 mb-6 text-center">
-                                    Una vez revisada y confirmada tu solicitud se te activará en tu área de usuario varios formularios y la pasarela
-                                    de pagos, en este paso estarás abonando por adelantado tu primer mes de alquiler según el periodo que has
-                                    seleccionado previamente. Las mensualidades se gestiona a través de <strong>helloflatmate</strong> a excepción de{" "}
-                                    <strong>hellolandlord</strong> para garantizar las políticas de cancelación y asegurar una entrega óptima del
-                                    inmueble. Este importe será transferido al propietario 48 horas después de tu llegada, a menos que nos informes de
-                                    algún inconveniente antes de ese plazo y que haya que subsanar.
-                                </p>
+                                <h2 className="text-2xl font-bold mb-4 text-center">{t("step_2_title")}</h2>
+                                <p className="text-gray-700 mb-6 text-center">{HTMLReactParser(formatedStrong(t("step_2_text")))}</p>
 
                                 {/* <div className="grid grid-cols-2 gap-4">
                   {step.subpoints.map((point, index) => (
@@ -157,18 +152,9 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
 
                             {/* Contenido */}
                             <div className="flex-1">
-                                <h2 className="text-2xl font-bold mb-4 text-center">3. Organiza tu llegada a Valencia.</h2>
-                                <h2 className="text-xl text-center font-bold mb-4 jus ">2 Formas</h2>
-                                <p className="text-gray-700 mb-6 text-center">
-                                    <strong>Fast Pass:</strong> Formaliza toda la documentación desde tu área de usuario y realiza los pagos de
-                                    suministros, Wi-Fi, fianza y tasa 15 días antes del inicio del contrato. Con tu pasaporte en mano, recoge las
-                                    llaves en nuestras oficinas y ¡todo listo!
-                                    <br />
-                                    <br />
-                                    <strong>Standard pass:</strong> Una vez abonada la primera mensualidad, agenda tu cita de check-in a través de
-                                    nuestro calendario para recoger las llaves en nuestras oficinas, realizar los pagos de suministros, Wi-Fi, fianza
-                                    y tasa para formalizar el contrato. Este proceso llevará unos 30 minutos por estudiante.
-                                </p>
+                                <h2 className="text-2xl font-bold mb-4 text-center">{t("step_3_title")}</h2>
+                                <h2 className="text-xl text-center font-bold mb-4 jus ">{t("step_3_title_2")}</h2>
+                                <p className="text-gray-700 mb-6 text-center">{HTMLReactParser(formatedStrong(t("step_3_text")))}</p>
 
                                 {/* <div className="grid grid-cols-2 gap-4">
                   {step.subpoints.map((point, index) => (
@@ -185,9 +171,7 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
                         </div>
                     </div>
 
-                    <h2 className="text-center text-2xl mb-10 w-full ml-24">
-                        ¡Bienvenido a Valencia, bienvenidos a <strong>helloflatmate</strong>!
-                    </h2>
+                    <h2 className="text-center text-2xl mb-10 w-full ml-24">{HTMLReactParser(formatedStrong(t("title_final")))}</h2>
                     {/* <OurWarranties /> */}
                 </div>
             </div>

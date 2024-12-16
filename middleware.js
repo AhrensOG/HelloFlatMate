@@ -126,7 +126,7 @@ export async function middleware(request) {
     };
 
     const allowedRolesPaths = rolesPaths[role] || [];
-    const hasAccess = allowedRolesPaths.some((allowedPath) => pathName.startsWith(allowedPath));
+    const hasAccess = allowedRolesPaths.some((allowedPath) => pathname.startsWith(allowedPath));
 
     if (!hasAccess && pathName !== `/${locale}/`) {
         const redirectUrl = new URL(`/${locale}/pages/auth`, request.url);

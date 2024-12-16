@@ -3,7 +3,16 @@
         "link_how_it_works": "Cómo funciona",
         "link_terms_and_conditions": "Términos y condiciones",
         "link_register": "Registro",
-        "link_login": "Inicio"
+        "link_login": "Inicio",
+        "admin_link_1": "Administración",
+        "owner_link_1": "Mis Propiedades",
+        "owner_link_2": "Ganancias",
+        "user_link_1": "Perfil",
+        "user_link_2": "Panel",
+        "user_link_3": "Histórico",
+        "user_link_4": "Pagos",
+        "worker_link_1": "Tareas",
+        "logout": "Cerrar sesión"
     },
     "home": {
         "home_title": "Especializados en gestión de alojamientos para estudiantes en Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin complicaciones!",
@@ -116,13 +125,13 @@
     },
     "how_it_works": {
         "title": "3 simples pasos y listo",
-        "steap_1_title": "1. Solicita tu reserva",
-        "steap_1_text": "Explora nuestras opciones de alojamiento y encuentra la casa perfecta para ti. Con nuestros videos y descripciones detalladas de cada propiedad y su entorno, obtendrás toda la información necesaria para tomar la mejor decisión. Envía tu solicitud de reserva completando el formulario de la habitación que te interesa. y en menos de 2 horas (dentro de horario laboral), recibirás la confirmación del propietario. ¿Tienes dudas? ¡Escríbenos! Nuestros agentes en Valencia están listos para ayudarte a encontrar tu nuevo hogar.",
-        "steap_2_title": "2. Confirmada tu solicitud",
-        "steap_2_text": "Una vez revisada y confirmada tu solicitud se te activará en tu área de usuario varios formularios y la pasarela de pagos, en este paso estarás abonando por adelantado tu primer mes de alquiler según el periodo que has seleccionado previamente. Las mensualidades se gestiona a través de (strong)helloflatmate(/strong) a excepción de (strong)hellolandlord(/strong) para garantizar las políticas de cancelación y asegurar una entrega óptima del inmueble. Este importe será transferido al propietario 48 horas después de tu llegada, a menos que nos informes de algún inconveniente antes de ese plazo y que haya que subsanar.",
-        "steap_3_title": "3. Organiza tu llegada a Valencia.",
-        "steap_3_title_2": "2 Formas",
-        "steap_3_text": "(strong)Fast Pass:(/strong) Formaliza toda la documentación desde tu área de usuario y realiza los pagos de suministros, Wi-Fi, fianza y tasa 15 días antes del inicio del contrato. Con tu pasaporte en mano, recoge las llaves en nuestras oficinas y ¡todo listo! <br /> <br /> (strong)Standard pass:(/strong) Una vez abonada la primera mensualidad, agenda tu cita de check-in a través de nuestro calendario para recoger las llaves en nuestras oficinas, realizar los pagos de suministros, Wi-Fi, fianza y tasa para formalizar el contrato. Este proceso llevará unos 30 minutos por estudiante.",
+        "step_1_title": "1. Solicita tu reserva",
+        "step_1_text": "Explora nuestras opciones de alojamiento y encuentra la casa perfecta para ti. Con nuestros videos y descripciones detalladas de cada propiedad y su entorno, obtendrás toda la información necesaria para tomar la mejor decisión. Envía tu solicitud de reserva completando el formulario de la habitación que te interesa. y en menos de 2 horas (dentro de horario laboral), recibirás la confirmación del propietario. ¿Tienes dudas? ¡Escríbenos! Nuestros agentes en Valencia están listos para ayudarte a encontrar tu nuevo hogar.",
+        "step_2_title": "2. Confirmada tu solicitud",
+        "step_2_text": "Una vez revisada y confirmada tu solicitud se te activará en tu área de usuario varios formularios y la pasarela de pagos, en este paso estarás abonando por adelantado tu primer mes de alquiler según el periodo que has seleccionado previamente. Las mensualidades se gestiona a través de (strong)helloflatmate(/strong) a excepción de (strong)hellolandlord(/strong) para garantizar las políticas de cancelación y asegurar una entrega óptima del inmueble. Este importe será transferido al propietario 48 horas después de tu llegada, a menos que nos informes de algún inconveniente antes de ese plazo y que haya que subsanar.",
+        "step_3_title": "3. Organiza tu llegada a Valencia.",
+        "step_3_title_2": "2 Formas",
+        "step_3_text": "(strong)Fast Pass:(/strong) Formaliza toda la documentación desde tu área de usuario y realiza los pagos de suministros, Wi-Fi, fianza y tasa 15 días antes del inicio del contrato. Con tu pasaporte en mano, recoge las llaves en nuestras oficinas y ¡todo listo! <br /> <br /> (strong)Standard pass:(/strong) Una vez abonada la primera mensualidad, agenda tu cita de check-in a través de nuestro calendario para recoger las llaves en nuestras oficinas, realizar los pagos de suministros, Wi-Fi, fianza y tasa para formalizar el contrato. Este proceso llevará unos 30 minutos por estudiante.",
         "title_final": " ¡Bienvenido a Valencia, bienvenidos a (strong)helloflatmate(/strong)!"
     }
 }

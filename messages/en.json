@@ -3,7 +3,16 @@
         "link_how_it_works": "How it works",
         "link_terms_and_conditions": "Terms and conditions",
         "link_register": "Register",
-        "link_login": "Login"
+        "link_login": "Login",
+        "admin_link_1": "Administration",
+        "owner_link_1": "My Properties",
+        "owner_link_2": "Earnings",
+        "user_link_1": "Profile",
+        "user_link_2": "Dashboard",
+        "user_link_3": "History",
+        "user_link_4": "Payments",
+        "worker_link_1": "Tasks",
+        "logout": "Log Out"
     },
     "home": {
         "home_title": "Specialized in student accommodation management in Valencia. <br /> 100% online reservations and procedures, fast, easy and hassle-free!",
@@ -112,5 +121,16 @@
         "link_2": "A Valencian revolutionizes student service",
         "link_3": "International students at UCV will have facilities for accommodation in apartments",
         "link_4": "The importance of renting a good apartment for students in Valencia"
+    },
+    "how_it_works": {
+        "title": "3 easy steps and you're done",
+        "step_1_title": "1. Submit your booking request",
+        "step_1_text": "Explore our accommodation options and find the perfect home for you. With our virtual tours and detailed descriptions of each property and its surroundings, you’ll have all the information you need to make the best decision. Submit your booking request by completing the form for your chosen room. Within 2 hours (during business hours), you’ll receive confirmation from the landlord. Have any questions? Contact us! Our agents in Valencia are ready to help you find your new home.",
+        "step_2_title": "2. Request confirmed",
+        "step_2_text": "Once your booking request has been reviewed and approved, several forms and the payment gateway will be activated in your user area. At this stage, you’ll pay the first month’s rent in advance based on the period you’ve previously selected. Monthly payments are managed through (strong)helloflatmate(/strong) (except for (strong)hellolandlord(/strong)) to ensure cancellation policies are upheld and guarantee a smooth handover of the property. This amount will be transferred to the landlord 48 hours after your arrival unless you notify us of any issues that need to be resolved within that time frame.",
+        "step_3_title": "3. Plan your arrival in Valencia",
+        "step_3_title_2": "Two options:",
+        "step_3_text": "(strong)Fast Pass:(/strong) Complete all the paperwork through your user area and make payments for utilities, Wi-Fi, deposit, and fees at least 15 days before the start of your contract. With your passport in hand, collect your keys at our office, and you’re ready to go! <br /> <br /> (strong)Standard pass:(/strong) Once the first month’s rent is paid: Schedule your check-in appointment via our calendar to collect your keys at our office. Finalise the contract by making payments for utilities, Wi-Fi, deposit, and fees. This process takes approximately 30 minutes per student.",
+        "title_final": " Welcome to Valencia and (strong)helloflatmate(/strong)!"
     }
 }

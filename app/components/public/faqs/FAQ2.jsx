@@ -55,7 +55,7 @@ const FAQ2 = ({
     {
       title: "Costes de servicio en hellorooms, hellolandlord y hellocoliving",
       content:
-        "En hellorooms y hellolandlord, el coste del servicio incluye un pago único de 459,80€ (IVA incluido) abonado el día del check-in mediante tarjeta bancaria. Las habitaciones cuentan con todos los suministros activados, incluyendo internet, y ofrecen contratos flexibles de 5, 10 o 11 meses. La fianza es de 300€. En hellocoliving, las facturas de suministros están incluidas hasta un máximo de 50€/mes por persona. El coste del servicio incluye una fianza de 550€ y el pago de 1 mensualidad completa de alquiler.",
+        "En hellorooms y hellolandlord, el coste del servicio incluye un pago único de 459,80€ (IVA incluido) abonado el día del check-in mediante tarjeta bancaria. Las habitaciones cuentan con todos los suministros activados, incluyendo internet, y ofrecen contratos flexibles de 5, 10 o 11 meses. La fianza es de 300€. En hellocoliving, las facturas de suministros están incluidas hasta un máximo de 50€/mes por persona. El coste del servicio incluye una fianza de 500€ y el pago de 1 mensualidad completa de alquiler.",
     },
     {
       title: "¿Con qué tipo de público trabaja helloflatmate?",
@@ -145,7 +145,7 @@ const FAQ2 = ({
     {
       title: "¿Qué fianza tengo que entregar? ¿Cuándo y cómo lo hago?",
       content:
-        "hellorooms y hellolandlord requieren una fianza de 300€. hellocoliving requiere 550€, y hellostudios, una mensualidad. Se devuelve entre 30-45 días tras finalizar el contrato.",
+        "hellorooms y hellolandlord requieren una fianza de 300€. hellocoliving requiere 500€, y hellostudios, una mensualidad. Se devuelve entre 30-45 días tras finalizar el contrato.",
     },
     {
       title: "¿Puede venir familia y amigos a visitarme y dormir en el piso?",

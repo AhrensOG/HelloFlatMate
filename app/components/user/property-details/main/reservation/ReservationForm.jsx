@@ -6,6 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import * as yup from "yup";
 import ReservationButton from "../ReservationButton";
 import { AnimatePresence, motion } from "framer-motion";
+import CountrySelect from "@/app/components/public/main-pages/auxiliarComponents/CountrySelect";
 
 const validationSchema = yup.object({
   name: yup.string().required("El nombre es requerido"),
@@ -16,6 +17,11 @@ const validationSchema = yup.object({
   personalReview: yup.string().required("La reseña personal es requerida"),
   phone: yup.string().required("El teléfono es requerido"),
   email: yup.string().required("El correo electrónico es requerido"),
+  birthDate: yup
+    .date()
+    .nullable()
+    .required("La fecha de nacimiento es requerida")
+    .max(new Date(), "La fecha de nacimiento no puede ser en el futuro"),
 });
 
 const ReservationForm = ({
@@ -24,7 +30,7 @@ const ReservationForm = ({
   clausesAccepted,
   setClausesAccepted,
   isSubmitting,
-}) => {
+}) => { 
   return (
     <Formik
       initialValues={{
@@ -37,6 +43,9 @@ const ReservationForm = ({
         personalReview: data?.user?.personalReview || "",
         phone: data?.user?.phone || "",
         email: data?.user?.email || "",
+        birthDate: data?.user?.birthDate
+          ? new Date(data?.user?.birthDate).toISOString().split("T")[0]
+          : "",
       }}
       validationSchema={validationSchema}
       validate={(values) => {
@@ -52,7 +61,7 @@ const ReservationForm = ({
       onSubmit={(values) => handleReservationSubmit(values)}
     >
       {({ handleSubmit, setFieldValue, values }) => (
-        <Form className="space-y-6">
+        <Form className="space-y-6 w-full px-1">
           {/* Nombre y Apellido */}
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
@@ -62,7 +71,7 @@ const ReservationForm = ({
               <Field
                 name="name"
                 placeholder="Escribe tu nombre"
-                className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition"
+                className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition"
               />
               <ErrorMessage
                 name="name"
@@ -77,7 +86,7 @@ const ReservationForm = ({
               <Field
                 name="lastName"
                 placeholder="Escribe tu apellido"
-                className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition"
+                className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition"
               />
               <ErrorMessage
                 name="lastName"
@@ -88,20 +97,38 @@ const ReservationForm = ({
           </div>
 
           {/* ID/PASSPORT */}
-          <div>
-            <label className="block text-sm font-medium text-gray-500 mb-2">
-              ID/Pasaporte
-            </label>
-            <Field
-              name="idNum"
-              placeholder="Introduce tu ID o pasaporte"
-              className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition"
-            />
-            <ErrorMessage
-              name="idNum"
-              component="p"
-              className="text-red-500 text-xs mt-1"
-            />
+          <div className="w-full flex flex-col justify-center items-center sm:flex-row gap-2">
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-500 mb-2">
+                ID/Pasaporte
+              </label>
+              <Field
+                name="idNum"
+                placeholder="Introduce tu ID o pasaporte"
+                className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition"
+              />
+              <ErrorMessage
+                name="idNum"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-500 mb-2">
+                Fecha de nacimiento
+              </label>
+              <Field
+                name="birthDate"
+                type="date"
+                placeholder="Tu fecha de nacimiento"
+                className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition"
+              />
+              <ErrorMessage
+                name="birthDate"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
           </div>
 
           {/* Dirección */}
@@ -111,11 +138,14 @@ const ReservationForm = ({
             </label>
             <div className="">
               <div>
-                <Field
-                  name="country"
-                  placeholder="País"
-                  className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition"
-                />
+                <Field name="country">
+                  {({ field, form }) => (
+                    <CountrySelect
+                      value={field.value}
+                      onChange={(value) => form.setFieldValue("country", value)}
+                    />
+                  )}
+                </Field>
                 <ErrorMessage
                   name="country"
                   component="p"
@@ -133,7 +163,7 @@ const ReservationForm = ({
             <Field
               as="select"
               name="reasonForValencia"
-              className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition"
+              className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition"
               onChange={(e) => {
                 const value = e.target.value;
                 setFieldValue("reasonForValencia", value);
@@ -177,7 +207,7 @@ const ReservationForm = ({
                   as="textarea"
                   name="reasonForValenciaOther"
                   placeholder="Comparte con nosotros tus intereses, pasatiempos y qué tipo de inquilino eres."
-                  className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition h-24"
+                  className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition h-24"
                 />
                 <ErrorMessage
                   name="reasonForValenciaOther"
@@ -196,7 +226,7 @@ const ReservationForm = ({
               name="personalReview"
               as="textarea"
               placeholder="Dinos en que empresa trabajarás o a que universidad irás."
-              className="w-full p-3 rounded-lg outline-none bg-slate-50 border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-500 transition h-24"
+              className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition h-12"
             />
             <ErrorMessage
               name="personalReview"
@@ -219,13 +249,20 @@ const ReservationForm = ({
               value={values.phone}
               onChange={(value) => setFieldValue("phone", value)}
               className="w-full rounded-lg"
-              containerStyle={{ maxWidth: "100%" }}
+              containerStyle={{
+                maxWidth: "100%",
+                position: "relative",
+              }}
               inputStyle={{
-                backgroundColor: "#f3f4f6",
+                backgroundColor: "#ffffff",
                 width: "100%",
               }}
-              searchStyle={{
-                borderColor: "#d1d5db",
+              dropdownStyle={{
+                backgroundColor: "#ffffff",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                maxHeight: "100px",
+                overflowY: "auto",
+                textAlign: "start",
               }}
             />
             <ErrorMessage
@@ -254,7 +291,7 @@ const ReservationForm = ({
               type="checkbox"
               checked={clausesAccepted}
               onChange={() => setClausesAccepted(!clausesAccepted)}
-              className="mr-2 focus:ring-1 focus:ring-blue-500"
+              className="mr-2 focus:ring-1 focus:ring-blue-300"
             />
             <p className="text-sm text-gray-500">
               Acepto los{" "}
@@ -271,7 +308,8 @@ const ReservationForm = ({
                 target="_blank"
                 className="text-blue-500 underline"
               >
-                {" "}politicas de privacidad
+                {" "}
+                politicas de privacidad
               </Link>
             </p>
           </div>
