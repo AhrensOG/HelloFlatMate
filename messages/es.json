@@ -41,7 +41,8 @@
         "home_fifth_sect_6_title": "Seguridad y confianza en cada paso",
         "home_fifth_sect_6_desc": "En hello flat mate, priorizamos la atención personalizada y la calidad en la gestión. Por eso, gestionamos únicamente 160 habitaciones, asegurándonos de brindar un servicio cercano, seguro y adaptado a las necesidades de cada flatmate durante toda su estancia. Tu tranquilidad es nuestra prioridad.",
 
-        "home_sixth_sect_h2": "<strong>4</strong> tipos de alojamiento con toda la seguridad para estudiantes",
+        "home_sixth_sect_h2_strong": "4",
+        "home_sixth_sect_h2": "tipos de alojamiento con toda la seguridad para estudiantes",
         "home_sixth_sect_1_title": "hello landlord",
         "home_sixth_sect_1_desc": "Habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por hello flat mate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.\n\n¡Comparte con estudiantes como tú!",
         "home_sixth_sect_2_title": "hello rooms",
@@ -95,6 +96,33 @@
     },
     "secondary_category_selector": {
         "search_btn": "Buscar alojamiento",
-        "title_h1": "¿Qué deseas reservar?"
+        "title_h1": "¿Qué deseas reservar?",
+        "zone": "Zona",
+        "dates": "Fechas",
+        "share_with": "Comparte con",
+        "guests": "Huespedes"
+    },
+    "about_us": {
+        "title": "helloflatmate es la plataforma online de alquiler de pisos y habitaciones de media y larga estancia",
+        "title_2": "¿Por qué es diferente hello flat mate?",
+        "title_3": "Así comenzó hello flat mate: una idea que nació en movimiento",
+        "title_4": "hello flat mate en los medios",
+        "first_text": "Tu aliado desde Valencia para encontrar alojamiento de manera sencilla y segura. <br /> <br /> En (strong)helloflatmate(/strong), nos especializamos en ofrecer alojamiento para estudiantes y nómadas digitales que buscan una experiencia única en Valencia. Nuestra plataforma combina una gestión profesional con un trato cercano, ayudando a jóvenes internacionales y nacionales a encontrar su hogar ideal. <br /> <br /> A diferencia de otras opciones, en (strong)helloflatmate(/strong) garantizamos un proceso de reserva claro y eficiente, eliminando complicaciones desde el primer día. <br /> <br /> Nos ocupamos de gestionar todos los aspectos de tu estancia, desde que llegas hasta que finalices tu contrato. <br /> <br /> Ofrecemos una selección de habitaciones en pisos compartidos, exclusivamente diseñadas para estudiantes y nómadas digitales de hasta 30 años, creando un ambiente de convivencia adaptado a tu estilo de vida. Además, operamos en las mejores zonas de la ciudad, como Blasco Ibáñez, el Centro y Moncada, para que siempre estés cerca de tu universidad o lugar de trabajo.",
+        "second_text": "Fundada por Alberto Borrás, es más que una agencia de servicios para estudiantes. Es un proyecto pensado para garantizar una atención personalizada y exclusiva a jóvenes recién llegados a Valencia, asegurando que su experiencia sea fluida, segura y adaptada a sus necesidades. <br /> <br /> La inspiración para (strong)helloflatmate(/strong) surgió mientras Alberto vivía en Bristol (Inglaterra), concretamente cuando se mudaba a Londres. <br /> <br /> Cargado con más equipaje del que podía manejar, sin alojamiento reservado porque no se fiaba, comenzó a soñar con un servicio que hiciera más fácil la llegada a un lugar desconocido. <br /> <br /> ¿Te imaginas que alguien nos esperara al llegar a Londres, nos ayudara con las maletas, los papeles y guiara en esos primeros días?, recuerda Alberto haber pensado. <br /> <br /> Esa idea evolucionó hasta convertirse en una solución integral para estudiantes internacionales y nacionales que buscan alojamiento en Valencia. <br /> <br /> El objetivo no era sólo encontrar un espacio donde vivir, sino proporcionar un acompañamiento real en cada paso del proceso, desde la llegada hasta la integración. <br /> <br /> Aunque Alberto insiste en que no fue el primero en ofrecer habitaciones para estudiantes en el mundo, sí tiene claro que  (strong)helloflatmate(/strong) fue pionera en priorizar la adaptación de los jóvenes y su tranquilidad, ofreciendo mucho más que un simple alojamiento. La clave está en los pequeños detalles: apoyo en gestiones administrativas, recomendaciones locales y un servicio cercano que crea un impacto positivo en las vidas de los estudiantes. <br /> <br /> Respecto al futuro, Alberto y su equipo se muestran optimistas, aunque prefieren centrarse en el presente y seguir ofreciendo un servicio de calidad. 'El día a día está lleno de retos, pero los agradecimientos de las familias y los estudiantes son lo que nos impulsa a seguir adelante', afirma. ",
+        "link_1": "hello flat mate, para que en tu llegada a Valencia te sientas como en casa",
+        "link_2": "Un valenciano revoluciona el servicio de atención a estudiantes",
+        "link_3": "Estudiantes internacionales de la UCV dispondrán de facilidades para el alojamiento en apartamentos",
+        "link_4": "La importancia de alquilar un buen piso para estudiantes en Valencia"
+    },
+    "how_it_works": {
+        "title": "3 simples pasos y listo",
+        "steap_1_title": "1. Solicita tu reserva",
+        "steap_1_text": "Explora nuestras opciones de alojamiento y encuentra la casa perfecta para ti. Con nuestros videos y descripciones detalladas de cada propiedad y su entorno, obtendrás toda la información necesaria para tomar la mejor decisión. Envía tu solicitud de reserva completando el formulario de la habitación que te interesa. y en menos de 2 horas (dentro de horario laboral), recibirás la confirmación del propietario. ¿Tienes dudas? ¡Escríbenos! Nuestros agentes en Valencia están listos para ayudarte a encontrar tu nuevo hogar.",
+        "steap_2_title": "2. Confirmada tu solicitud",
+        "steap_2_text": "Una vez revisada y confirmada tu solicitud se te activará en tu área de usuario varios formularios y la pasarela de pagos, en este paso estarás abonando por adelantado tu primer mes de alquiler según el periodo que has seleccionado previamente. Las mensualidades se gestiona a través de (strong)helloflatmate(/strong) a excepción de (strong)hellolandlord(/strong) para garantizar las políticas de cancelación y asegurar una entrega óptima del inmueble. Este importe será transferido al propietario 48 horas después de tu llegada, a menos que nos informes de algún inconveniente antes de ese plazo y que haya que subsanar.",
+        "steap_3_title": "3. Organiza tu llegada a Valencia.",
+        "steap_3_title_2": "2 Formas",
+        "steap_3_text": "(strong)Fast Pass:(/strong) Formaliza toda la documentación desde tu área de usuario y realiza los pagos de suministros, Wi-Fi, fianza y tasa 15 días antes del inicio del contrato. Con tu pasaporte en mano, recoge las llaves en nuestras oficinas y ¡todo listo! <br /> <br /> (strong)Standard pass:(/strong) Una vez abonada la primera mensualidad, agenda tu cita de check-in a través de nuestro calendario para recoger las llaves en nuestras oficinas, realizar los pagos de suministros, Wi-Fi, fianza y tasa para formalizar el contrato. Este proceso llevará unos 30 minutos por estudiante.",
+        "title_final": " ¡Bienvenido a Valencia, bienvenidos a (strong)helloflatmate(/strong)!"
     }
 }

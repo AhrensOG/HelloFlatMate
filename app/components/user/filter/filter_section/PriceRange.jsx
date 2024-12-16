@@ -37,7 +37,7 @@ export default function PriceRange({ onChange, initialValue }) {
 
   return (
     <div className={`  p-4`}>
-      <h3 className="text-base mb-3 font-medium text-[#1C1C21]">
+      <h3 className="text-base mb-3 font-bold">
         Rango de Precio
       </h3>
       <div className="h-full flex justify-between mb-2">

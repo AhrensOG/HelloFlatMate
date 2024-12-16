@@ -34,7 +34,6 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
     setEmail(value);
     const filtered = filterUsers(value);
     setFilteredUsers(filtered);
-    setUser(filtered[0]);
   };
 
   const filterUsers = (value) => {
@@ -139,7 +138,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
       if (selectedProperty.category !== "HELLO_STUDIO" && selectedRoom) {
         leaseOrderData.roomId = selectedRoom;
       }
-
+      console.log(leaseOrderData)
       const res = await axios.post("/api/lease_order/manualCreate", leaseOrderData);
     } catch (error) {
       console.log(error);
@@ -306,6 +305,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
                   className="px-3 py-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => {
                     setEmail(user.email);
+                    setUser(user)
                     setFilteredUsers([]);
                   }}
                 >

@@ -14,6 +14,7 @@ export async function updateClient(data) {
     if (!data.streetNumber || data.streetNumber.trim().length < 1) return NextResponse.json({ error: "Se requiere el número" }, { status: 400 });
     if (!data.postalCode || data.postalCode.trim().length < 1) return NextResponse.json({ error: "Se requiere el Código Postal" }, { status: 400 });
     if (!data.birthDate || data.birthDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de nacimiento" }, { status: 400 });
+    if (!data.country || data.country.trim().length < 1) return NextResponse.json({ error: "Se requiere el nacionalidad" }, { status: 400 });
 
     // Validar nuevos campos
     if (!data.emergencyName && data.emergencyName.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre de emergencia" }, { status: 400 });
@@ -48,6 +49,7 @@ export async function updateClient(data) {
         user.streetNumber = data.streetNumber || user.streetNumber;
         user.postalCode = data.postalCode || user.postalCode;
         user.birthDate = formatedDate(data.birthDate) || user.birthDate;
+        user.country = data.country || user.country;
 
         // Actualizar nuevos campos
         user.emergencyName = data.emergencyName || user.emergencyName;

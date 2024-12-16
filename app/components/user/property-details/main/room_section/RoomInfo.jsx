@@ -19,9 +19,9 @@ export default function RoomInfo({ data, action, category }) {
           ? handleRedirect
           : () => action(data)
       }
-      className={`cursor-pointer flex flex-col gap-2 min-w-[8.7rem] max-w-[12rem] items-center justify-between relative w-full`}
+      className={`cursor-pointer flex flex-col gap-2 w-48 items-center justify-between relative`}
     >
-      <div className="relative h-32 rounded-sm w-full">
+      <div className="relative h-32 rounded-sm w-48">
         {data.images[0] ? (
           <Image
             src={data.images[0]}
@@ -38,10 +38,11 @@ export default function RoomInfo({ data, action, category }) {
       <section className="flex gap-2 w-full">
         <h3 className="font-bold">Precio:</h3>
         <h4 className="text-[#000000B2] font-semibold flex gap-1 items-center">
-          <span className="h-4 w-4 flex items-center">
-            <CurrencyEuroIcon />
-          </span>
           {data.price}
+          {/* <span className="h-4 w-4 flex items-center">
+            <CurrencyEuroIcon />
+          </span> */}
+          <span className="text-sm">€ / mes</span>
         </h4>
       </section>
       <div

@@ -1,10 +1,12 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import HTMLReactParser from "html-react-parser";
 
 export default function SixthSection() {
     const router = useRouter();
     const t = useTranslations("home");
+
     const alojamientos = [
         {
             title: t("home_sixth_sect_1_title"),
@@ -35,7 +37,11 @@ export default function SixthSection() {
     return (
         <section className="py-12 w-full">
             <div className="max-w-screen-xl mx-auto px-4">
-                <h2 className="text-3xl text-center mb-12">{t("home_sixth_sect_title")}</h2>
+                {console.log(t("home_sixth_sect_h2"))}
+
+                <h2 className="text-3xl text-center mb-12">
+                    <strong>{t("home_sixth_sect_h2_strong")}</strong> {HTMLReactParser(t("home_sixth_sect_h2"))}
+                </h2>
                 <div className="flex flex-wrap justify-center items-stretch gap-8">
                     {alojamientos.map((alojamiento, index) => (
                         <div

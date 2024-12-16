@@ -16,7 +16,7 @@ export default function RoomSection({ data, title = "Habitaciones", category }) 
         <h2 className="font-bold text-[1.37rem] w-full text-start">
           {title}
         </h2>
-        <div className="flex justify-evenly gap-1 w-full overflow-x-auto">
+        <div className="flex justify-evenly gap-6 w-full overflow-x-auto scrollbar-thin">
           {data
             // .filter((item) => item.status === "FREE")
             .map((item, index) => (

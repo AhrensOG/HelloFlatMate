@@ -11,7 +11,7 @@ export default function TitleSection({
 }) {
   return (
     <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
-      <h1 className="text-3xl font-bold">hello flat mate</h1>
+      <h1 className="text-3xl font-bold">helloflatmate</h1>
       <h3 className="text-lg text-center">
         Especializados en gestión de alojamientos para estudiantes en Valencia.{" "}
         <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin

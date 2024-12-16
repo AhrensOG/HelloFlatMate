@@ -4,9 +4,9 @@ import { Suspense } from "react";
 import LastRoomsPage from "./LastRoomPage";
 
 export default function LastRooms() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <LastRoomsPage />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LastRoomsPage />
+    </Suspense>
+  );
 }

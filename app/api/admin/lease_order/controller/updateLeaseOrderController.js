@@ -5,7 +5,7 @@ import { sequelize } from "@/db/models/comment";
 
 export async function updateStatusLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 });
-    if (!data.action || (data.action !== "REJECTED" && data.action !== "APPROVED"))
+    if (!data.action || (data.action !== "REJECTED" && data.action !== "PENDING"))
         return NextResponse.json({ message: "No status provided" }, { status: 400 });
     if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 });
     if (!data.adminId || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 });
@@ -20,7 +20,7 @@ export async function updateStatusLeaseOrder(data) {
         const admin = (await Admin.findByPk(data.adminId, { transaction })) || (await Client.findByPk(data.adminId, { transaction }));
         if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 });
 
-        if (data.type === "PROPERTY") {
+        if (data.type === "PROPERTY") {PENDING
             // Buscar y verificar que la orden exista
             const leaseOrderProperty = await LeaseOrderProperty.findByPk(data.leaseOrderId, { transaction });
             if (!leaseOrderProperty) {
@@ -146,8 +146,8 @@ export async function updateStatusLeaseOrder(data) {
         });
         const roomsAvailable = property.rooms.filter((room) => room.status === "FREE");
 
-        if (data.action === "APPROVED") {
-            leaseOrderRoom.status = "APPROVED";
+        if (data.action === "PENDING") {
+            leaseOrderRoom.status = "PENDING";
             leaseOrderRoom.isActive = true;
             leaseOrderRoom.inReview = false;
 
@@ -199,7 +199,7 @@ export async function updateStatusLeaseOrder(data) {
             });
 
             await transaction.commit();
-            return NextResponse.json({ message: "Lease order room approved" }, { status: 200 });
+            return NextResponse.json({ message: "Lease order room PENDING" }, { status: 200 });
         } else if (data.action === "REJECTED") {
             leaseOrderRoom.status = "REJECTED";
             leaseOrderRoom.isActive = false;

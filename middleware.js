@@ -35,7 +35,10 @@ export async function middleware(request) {
         "/privacy-policy",
         "/clausulas",
         "/terminos-y-condiciones",
+        "/clausulas",
+        "/terminos-y-condiciones",
         "/como-funciona",
+        "/colaboradores",
         "/colaboradores",
         "/sobre-nosotros",
     ];

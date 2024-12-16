@@ -1,16 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Context } from "../../context/GlobalContext";
-import { getAllProperties } from "../../context/actions";
-import Footer_1 from "../../components/public/home/Footer";
-import NavBar_1 from "../../components/public/home/NavBar_1";
-import PropertyCard from "../../components/user/property/PropertyCard";
-import FourthSection from "../../components/public/home/FourthSection";
-import SeventhSection from "../../components/public/home/SeventhSection";
-import TextSection from "../../components/public/main-pages/TextSection";
-import CategorySelector from "../../components/public/main-pages/CategorySelector";
-import PropertyCardSekeleton from "../../components/public/main-pages/PropertyCardSekeleton";
+import { Context } from "../context/GlobalContext";
+import { getAllProperties } from "../context/actions";
+import Footer_1 from "../components/public/home/Footer";
+import PropertyCard from "../components/user/property/PropertyCard";
+import FourthSection from "../components/public/home/FourthSection";
+import SeventhSection from "../components/public/home/SeventhSection";
+import TextSection from "../components/public/main-pages/TextSection";
+import CategorySelector from "../components/public/main-pages/CategorySelector";
+import PropertyCardSekeleton from "../components/public/main-pages/PropertyCardSekeleton";
 import { useSearchParams } from "next/navigation";
+import NavbarV3 from "../components/nav_bar/NavbarV3";
+import SearchNotFound from "../components/public/main-pages/SearchNotFound";
 
 export default function HelloColivingPage() {
     const searchParams = useSearchParams();
@@ -42,6 +43,7 @@ export default function HelloColivingPage() {
         type: type || null,
         numberOccupants: occupants || null,
     });
+    const [showSkeleton, setShowSkeleton] = useState(true);
 
     const filterByCategory = (properties) => {
         return properties.filter((property) => property.category === "HELLO_COLIVING");
@@ -148,8 +150,9 @@ export default function HelloColivingPage() {
                         property.rooms?.map((room) => {
                             // Incluir siempre la propiedad completa dentro de cada room
                             const matchesTypology = !filters.type || property.typology === filters.type;
+                            const matchesStatus = room.isActive === true;
 
-                            if (matchesTypology) {
+                            if (matchesTypology && matchesStatus) {
                                 // Retornar habitación con la propiedad completa
                                 return {
                                     ...room, // Room original
@@ -191,18 +194,33 @@ export default function HelloColivingPage() {
         }
     };
 
+    useEffect(() => {
+        if (displayedRooms.length === 0) {
+            // Establece un temporizador de 1 segundo para ocultar el skeleton
+            const timer = setTimeout(() => {
+                setShowSkeleton(false);
+            }, 1000);
+
+            // Limpia el temporizador al desmontar el componente
+            return () => clearTimeout(timer);
+        } else {
+            // Reinicia el estado si hay habitaciones
+            setShowSkeleton(true);
+        }
+    }, [displayedRooms]);
+
     return (
         <div>
             <div className="flex flex-col sm:min-h-screen">
                 <header className="mb-16">
-                    <NavBar_1 fixed={true} />
+                    <NavbarV3 fixed={true} />
                 </header>
                 <div className="w-full flex flex-col">
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-                        <h1 className="text-3xl font-bold">hello coliving</h1>
+                        <h1 className="text-3xl font-bold">hellocoliving</h1>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            Donde la comodidad se encuentra con la comunidad En hello flat mate transformamos el concepto de vivienda compartida con
-                            hello coliving. Hemos destinado tres modernas viviendas en Valencia exclusivamente al formato coliving, creando espacios
+                            Donde la comodidad se encuentra con la comunidad En helloflatmate transformamos el concepto de vivienda compartida con
+                            hellocoliving. Hemos destinado tres modernas viviendas en Valencia exclusivamente al formato coliving, creando espacios
                             diseñados para estudiantes que buscan comodidad, privacidad y comunidad. ¡Tu nueva forma de vivir en Valencia te está
                             esperando!
                             <br />
@@ -225,7 +243,7 @@ export default function HelloColivingPage() {
 
                 {/* Lista de habitaciones */}
                 <div id="carousel-container" className="w-full flex justify-center items-start">
-                    <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
+                    {/* <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
                         {displayedRooms.length > 0
                             ? displayedRooms.map((room) => (
                                   <PropertyCard
@@ -239,6 +257,33 @@ export default function HelloColivingPage() {
                                   />
                               ))
                             : Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)}
+                    </div> */}
+                    <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
+                        {!state.properties || state.properties?.length === 0 ? (
+                            // Mostrar skeletons cuando no hay propiedades
+                            Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)
+                        ) : displayedRooms.length === 0 ? (
+                            showSkeleton ? (
+                                // Mostrar skeletons por 1 segundo
+                                Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)
+                            ) : (
+                                // Mostrar componente SearchNotFound después del tiempo
+                                <SearchNotFound />
+                            )
+                        ) : (
+                            // Mostrar habitaciones cuando hay resultados
+                            displayedRooms.map((room) => (
+                                <PropertyCard
+                                    key={room.id + "room"}
+                                    property={room.property}
+                                    roomId={room.id}
+                                    price={room.price}
+                                    name={room.name}
+                                    images={room.images[0]}
+                                    room={room}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
                 {/* Botones de paginación */}

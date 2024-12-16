@@ -30,6 +30,7 @@ import NavBar_1 from "../components/public/home/NavBar_1";
 import SecondaryCategorySelector from "../components/public/main-pages/SecondaryCategorySelector";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import HTMLReactParser from "html-react-parser";
 
 const helloroom = {
     hero: {
@@ -116,7 +117,7 @@ const hellolandlord = {
     family: {
         title: "Habitaciones Gestionadas para tu Comodidad",
         description:
-            "Hello Landlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año",
+            "hellolandlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año",
         img1: "/home/family1.svg",
         img2: "/home/subFamily1.svg",
     },
@@ -215,7 +216,7 @@ export default function Home() {
                 </header>
                 <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
                     <h1 className="text-3xl font-bold">hello flat mate</h1>
-                    <h3 className="text-lg text-center" dangerouslySetInnerHTML={{ __html: t("home_title") }}></h3>
+                    <h3 className="text-lg text-center">{HTMLReactParser(t("home_title"))}</h3>
                     <div className="mb-64 w-full">
                         <Suspense fallback={<Loader />}>
                             <SecondaryCategorySelector

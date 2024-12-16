@@ -1,0 +1,243 @@
+"use client";
+import Link from "next/link";
+import Dropdown from "../public/auth/Dropdown";
+import Image from "next/image";
+import { useState, useContext } from "react";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { motion, AnimatePresence } from "framer-motion";
+import { Context } from "@/app/context/GlobalContext";
+import { logOut } from "@/app/firebase/logOut";
+
+export default function NavbarV3({ fixed = false }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { state } = useContext(Context);
+  const user = state?.user;
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const renderMenuOptions = () => {
+    switch (user?.role) {
+      case "ADMIN":
+        return (
+          <>
+            <Link
+              href="/pages/admin/properties"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Administración
+            </Link>
+          </>
+        );
+      case "OWNER":
+        return (
+          <>
+            <Link
+              href="/owner/properties"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Mis Propiedades
+            </Link>
+            <Link
+              href="/owner/earnings"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Ganancias
+            </Link>
+          </>
+        );
+      case "CLIENT":
+        return (
+          <>
+            <Link
+              href="/pages/user/profile"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Perfil
+            </Link>
+            <Link
+              href="/pages/user/my-bedrooms"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Panel
+            </Link>
+            <Link
+              href="/pages/user/my-reservations"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Histórico
+            </Link>
+            <Link
+              href="/pages/user/history/payments"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Pagos
+            </Link>
+          </>
+        );
+      case "WORKER":
+        return (
+          <>
+            <Link
+              href="/worker/tasks"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+            >
+              Tareas
+            </Link>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <nav
+      className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-b border-[#c7c7c7] bg-white ${
+        fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
+      } `}
+    >
+      {/* Icono de menú hamburguesa a la izquierda */}
+      <div className="md:hidden flex justify-center items-center">
+        <button onClick={toggleMenu} aria-label="Toggle menu">
+          {isOpen ? (
+            <XMarkIcon className="h-6 w-6" />
+          ) : (
+            <Bars3Icon className="h-6 w-6" />
+          )}
+        </button>
+      </div>
+
+      {/* Logo */}
+      <Link href={"/"}>
+        <Image
+          src="/home/new_home/Helloflatmate.png"
+          width={150}
+          height={47.45}
+          alt="logo"
+        />
+      </Link>
+
+      {/* Menú de escritorio */}
+      <div className="hidden md:flex items-center gap-5">
+        <Link
+          href="/lastrooms"
+          target="_blank"
+          className="font-bold text-base border border-black py-1 p-2 px-5"
+        >
+          Last rooms
+        </Link>
+        <Link
+          href="/como-funciona"
+          target="_blank"
+          className="font-bold text-base"
+        >
+          Cómo funciona
+        </Link>
+        <Link
+          href="/terminos-y-condiciones"
+          target="_blank"
+          className="font-bold text-base"
+        >
+          Términos y condiciones
+        </Link>
+
+        {user ? (
+          <div className="relative group">
+            <button className="flex items-center gap-2 font-bold text-base">
+              {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
+            </button>
+            <div className="absolute right-0 w-48 bg-white shadow-lg rounded-md hidden group-hover:block shadow-reservation-list">
+              {renderMenuOptions()}
+              <button
+                onClick={() => logOut()}
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500 w-full text-start"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex gap-1">
+            <Link
+              href="/pages/auth?register=true"
+              className="font-bold text-base"
+            >
+              Registro
+            </Link>
+            <span className="font-bold text-base">|</span>
+            <Link href="/pages/auth" className="font-bold text-base">
+              Inicio
+            </Link>
+          </div>
+        )}
+        <Dropdown p={0} />
+      </div>
+
+      {/* Menú móvil con animación */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="absolute top-16 left-0 w-full bg-white rounded-md p-4 md:hidden overflow-hidden"
+          >
+            <div className="flex flex-col">
+              <Link
+                href="/lastrooms"
+                target="_blank"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+              >
+                Last rooms
+              </Link>
+              <Link
+                href="/como-funciona"
+                target="_blank"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+              >
+                Cómo funciona
+              </Link>
+              <Link
+                href="/privacy-policy"
+                target="_blank"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+              >
+                Términos y condiciones
+              </Link>
+              {user ? (
+                <>
+                  {renderMenuOptions()}
+                  <button
+                    onClick={() => logOut()}
+                    className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                  >
+                    Cerrar sesión
+                  </button>
+                </>
+              ) : (
+                <div className="flex flex-col gap-1">
+                  <Link
+                    href="/pages/auth?register=true"
+                    className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                  >
+                    Registro
+                  </Link>
+                  <Link
+                    href="/pages/auth"
+                    className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                  >
+                    Inicio
+                  </Link>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+}

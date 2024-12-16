@@ -53,7 +53,7 @@ export default function RentalPeriodTemplate({
               onChange={(e) => handlePeriodChange(index, e.target.value)}
               className="appearance-none outline-none w-full p-2 border border-gray-300 rounded lg:w-[15rem]"
             >
-              <option value="">Selecciona un periodo</option>
+              <option value="">Fechas</option>
               {predefineRental?.length > 0 &&
                 predefineRental
                   .filter(

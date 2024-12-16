@@ -22,7 +22,7 @@ export async function POST(req) {
           price_data: {
             currency: "eur",
             product_data: {
-              name: `Reserva de Habitación ${propertyName}`,
+              name: `Reserva de alojamiento ${propertyName}`,
             },
             unit_amount: price * 100, // El precio debe ser en centavos (5000 = $50.00)
           },
@@ -30,7 +30,7 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/success/${propertyId}?type=reserve`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/success/${propertyId}?type=reserve&r=${roomId}&lo=${leaseOrderId}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pages/user/cancel`,
       customer_email: userEmail,
       metadata: {

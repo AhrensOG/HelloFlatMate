@@ -3,7 +3,7 @@ import { ArrowPathIcon, CloudArrowUpIcon } from "@heroicons/react/20/solid";
 import React, { useContext, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { motion } from "framer-motion";
- 
+
 import {
   saveUserContractDocuments,
   saveUserContractInformation,
@@ -17,7 +17,6 @@ const SignaturePad = ({
   handleContinue,
   order,
 }) => {
-
   const sigCanvas = useRef(null);
   const [loader, setLoader] = useState(false);
   const { state, dispatch } = useContext(Context);
@@ -77,15 +76,28 @@ const SignaturePad = ({
               Reintentar
             </button>
           </div>
-          <SignatureCanvas
-            ref={sigCanvas}
-            penColor="black"
-            canvasProps={{
-              width: 250,
-              height: 125,
-              className: "border-2 border-gray-300 rounded-md",
-            }}
-          />
+          <div className="block sm:hidden">
+            <SignatureCanvas
+              ref={sigCanvas}
+              penColor="black"
+              canvasProps={{
+                width: 250,
+                height: 125,
+                className: "border-2 border-gray-300 rounded-md",
+              }}
+            />
+          </div>
+          <div className="hidden sm:block">
+            <SignatureCanvas
+              ref={sigCanvas}
+              penColor="black"
+              canvasProps={{
+                width: 400,
+                height: 250,
+                className: "border-2 border-gray-300 rounded-md",
+              }}
+            />
+          </div>
           <div className="w-full flex justify-between items-center gap-1">
             <button
               onClick={() => setModal(false)}

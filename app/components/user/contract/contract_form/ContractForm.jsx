@@ -29,6 +29,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
         street: user.street,
         streetNumber: user.streetNumber,
         postalCode: user.postalCode,
+        country: user.country,
         // age: user.age,
         genre: user.genre || "MALE",
         birthDate: readableDate, // Usar el formato "YYYY-MM-DD"
@@ -50,6 +51,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     street: "",
     streetNumber: "",
     postalCode: "",
+    country: "",
     // age: "",
     genre: "MALE",
     birthDate: "",
@@ -62,35 +64,30 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     initialValues,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (
-        values.name === "" ||
-        values.name.trim() === "" ||
-        values.lastName === "" ||
-        values.lastName.trim() === "" ||
-        values.dni === "" ||
-        values.dni.trim() === "" ||
-        values.phone === "" ||
-        values.city === "" ||
-        values.city.trim() === "" ||
-        values.street === "" ||
-        values.street.trim() === "" ||
-        values.streetNumber === "" ||
-        values.streetNumber.trim() === "" ||
-        values.postalCode === "" ||
-        values.postalCode.trim() === "" ||
-        // values.age === "" ||
-        values.genre === "" ||
-        values.birthDate === "" ||
-        values.birthDate.trim() === "" ||
-        values.emergencyName === null ||
-        values.emergencyName === "" ||
-        values.emergencyName.trim() === "" ||
-        values.emergencyPhone === null ||
-        values.emergencyPhone === "" ||
-        values.emergencyEmail === null ||
-        values.emergencyEmail === "" ||
-        values.emergencyEmail.trim() === ""
-      ) {
+      // Lista de campos requeridos
+      const requiredFields = [
+        "name",
+        "lastName",
+        "dni",
+        "phone",
+        "city",
+        "street",
+        "streetNumber",
+        "postalCode",
+        "country",
+        "genre",
+        "birthDate",
+        "emergencyName",
+        "emergencyPhone",
+        "emergencyEmail",
+      ];
+
+      // Validar campos requeridos
+      const hasEmptyFields = requiredFields.some(
+        (field) => !values[field] || values[field].trim() === ""
+      );
+
+      if (hasEmptyFields) {
         return toast.info("¡Recuerda completar todos los campos!");
       }
       if (calculateAge(values.birthDate) < 18) {
@@ -140,6 +137,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
       street: data.street,
       streetNumber: data.streetNumber,
       postalCode: data.postalCode,
+      country: data.country,
       // age: data.age,
       genre: data.genre,
       birthDate: data.birthDate,
@@ -392,6 +390,22 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                     className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                   />
                 </div>
+                <div className="w-full flex flex-col justify-center ">
+                  <label
+                    htmlFor="postalCode"
+                    className="text-xs text-resolution-blue drop-shadow-sm"
+                  >
+                    Nacionalidad
+                  </label>
+                  <input
+                    id="country"
+                    name="country"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.country}
+                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  />
+                </div>
               </div>
 
               <div className="w-full flex flex-col justify-center ">
@@ -410,7 +424,7 @@ const ContractForm = ({ handleContinue, handleBack }) => {
                   className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
                 />
               </div>
-              <h2 className="form-title">Contacto de urgencia</h2>
+              <h2 className="form-title">Contacto de emergencia</h2>
               <div className="flex flex-row justify-center items-center gap-3 w-full">
                 <div className="w-full flex flex-col justify-center ">
                   <label

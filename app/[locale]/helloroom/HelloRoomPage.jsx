@@ -1,18 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Context } from "../../context/GlobalContext";
-import { getAllProperties } from "../../context/actions";
-import Footer_1 from "../../components/public/home/Footer";
-import NavBar_1 from "../../components/public/home/NavBar_1";
-import TitleSection from "../../components/public/main-pages/TitleSection";
-import PropertyCard from "../../components/user/property/PropertyCard";
-import FourthSection from "../../components/public/home/FourthSection";
-import SeventhSection from "../../components/public/home/SeventhSection";
+import { Context } from "../context/GlobalContext";
+import { getAllProperties } from "../context/actions";
+import Footer_1 from "../components/public/home/Footer";
+import TitleSection from "../components/public/main-pages/TitleSection";
+import PropertyCard from "../components/user/property/PropertyCard";
+import FourthSection from "../components/public/home/FourthSection";
+import SeventhSection from "../components/public/home/SeventhSection";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import TextSection from "../../components/public/main-pages/TextSection";
 import CategorySelector from "../../components/public/main-pages/CategorySelector";
 import PropertyCardSekeleton from "../../components/public/main-pages/PropertyCardSekeleton";
 import { useSearchParams } from "next/navigation";
+import NavbarV3 from "../components/nav_bar/NavbarV3";
+import SearchNotFound from "../components/public/main-pages/SearchNotFound";
 export default function HelloRoomPage() {
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
@@ -43,6 +44,7 @@ export default function HelloRoomPage() {
         type: type || null,
         numberOccupants: occupants || null,
     });
+    const [showSkeleton, setShowSkeleton] = useState(true);
 
     //filtros
     const filterByCategory = (properties) => {
@@ -97,10 +99,17 @@ export default function HelloRoomPage() {
             return `${day}/${month}/${year}`;
         };
 
-        const start = formatDate(startDate);
-        const end = formatDate(endDate);
+        const currentDate = new Date(); // Obtener la fecha actual
 
-        return `Del ${start} al ${end}`;
+        // Convertir las fechas de entrada a objetos Date
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        // Formatear las fechas si son válidas
+        const formattedStart = formatDate(start);
+        const formattedEnd = formatDate(end);
+
+        return `Del ${formattedStart} al ${formattedEnd}`;
     };
 
     const filterByRentalPeriod = (properties) => {
@@ -150,8 +159,9 @@ export default function HelloRoomPage() {
                         property.rooms?.map((room) => {
                             // Incluir siempre la propiedad completa dentro de cada room
                             const matchesTypology = !filters.type || property.typology === filters.type;
+                            const matchesStatus = room.isActive === true;
 
-                            if (matchesTypology) {
+                            if (matchesTypology && matchesStatus) {
                                 // Retornar habitación con la propiedad completa
                                 return {
                                     ...room, // Room original
@@ -161,7 +171,33 @@ export default function HelloRoomPage() {
                             return null; // Si no coincide, no incluir esta habitación
                         }) || []
                 )
-                .filter((room) => room !== null); // Filtrar cualquier valor nulo
+                .filter(Boolean)
+                .sort((a, b) => {
+                    const currentDate = new Date(); // Obtener la fecha actual
+
+                    // Obtener el startDate del primer rentalItem de cada room
+                    const startDateA = new Date(a.rentalItems[0]?.rentalPeriod?.startDate);
+                    const startDateB = new Date(b.rentalItems[0]?.rentalPeriod?.startDate);
+
+                    // Verificar si el startDate es mayor que la fecha actual
+                    const isFutureA = startDateA > currentDate;
+                    const isFutureB = startDateB > currentDate;
+
+                    // Si ambos son futuros, ordenar por fecha más cercana
+                    if (isFutureA && isFutureB) {
+                        return startDateA - startDateB; // Ordenar por fecha ascendente
+                    }
+
+                    // Si solo A es futuro, A va primero
+                    if (isFutureA && !isFutureB) return -1;
+
+                    // Si solo B es futuro, B va primero
+                    if (!isFutureA && isFutureB) return 1;
+
+                    // Si ambos son pasados, se puede decidir cómo manejarlos,
+                    // aquí simplemente los dejamos en el orden original.
+                    return 0;
+                });
 
             setFilteredRooms(filteredRoomsList); // Actualizar habitaciones filtradas
             setCurrentPage(1); // Reiniciar a la primera página al cambiar filtros
@@ -192,17 +228,32 @@ export default function HelloRoomPage() {
             carousel.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
+
+    useEffect(() => {
+        if (displayedRooms.length === 0) {
+            // Establece un temporizador de 1 segundo para ocultar el skeleton
+            const timer = setTimeout(() => {
+                setShowSkeleton(false);
+            }, 1000);
+
+            // Limpia el temporizador al desmontar el componente
+            return () => clearTimeout(timer);
+        } else {
+            // Reinicia el estado si hay habitaciones
+            setShowSkeleton(true);
+        }
+    }, [displayedRooms]);
     return (
         <div>
             <div className="flex flex-col sm:min-h-screen">
                 <header className="mb-16">
-                    <NavBar_1 fixed={true} />
+                    <NavbarV3 fixed={true} />
                 </header>
                 <div className="w-full flex flex-col">
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-                        <h1 className="text-3xl font-bold">hello rooms</h1>
+                        <h1 className="text-3xl font-bold">hellorooms</h1>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            hello rooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos
+                            hellorooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos
                             los servicios activos. Nos ocupamos de la gestión y el mantenimiento para que sólo te enfoques en estudiar, disfrutar y
                             explorar Valencia. Comparte piso con otros estudiantes de edad similar y vive una experiencia única en un entorno diseñado
                             para tu estilo de vida.
@@ -227,19 +278,31 @@ export default function HelloRoomPage() {
                 {/* Lista de habitaciones */}
                 <div id="carousel-container" className="w-full flex justify-center items-start">
                     <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
-                        {displayedRooms.length > 0
-                            ? displayedRooms.map((room) => (
-                                  <PropertyCard
-                                      key={room.id + "room"}
-                                      property={room.property}
-                                      roomId={room.id}
-                                      price={room.price}
-                                      name={room.name}
-                                      images={room.images[0]}
-                                      room={room}
-                                  />
-                              ))
-                            : Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)}
+                        {!state.properties || state.properties?.length === 0 ? (
+                            // Mostrar skeletons cuando no hay propiedades
+                            Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)
+                        ) : displayedRooms.length === 0 ? (
+                            showSkeleton ? (
+                                // Mostrar skeletons por 1 segundo
+                                Array.from({ length: 6 }).map((_, index) => <PropertyCardSekeleton key={index} />)
+                            ) : (
+                                // Mostrar componente SearchNotFound después del tiempo
+                                <SearchNotFound />
+                            )
+                        ) : (
+                            // Mostrar habitaciones cuando hay resultados
+                            displayedRooms.map((room) => (
+                                <PropertyCard
+                                    key={room.id + "room"}
+                                    property={room.property}
+                                    roomId={room.id}
+                                    price={room.price}
+                                    name={room.name}
+                                    images={room.images[0]}
+                                    room={room}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
                 {/* Botones de paginación */}

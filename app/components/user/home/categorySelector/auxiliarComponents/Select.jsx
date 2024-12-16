@@ -6,6 +6,17 @@ const Select = ({ name = false, options, data, setData, title = "Seleccionar una
     const [showInput, setShowInput] = useState(false);
     const [selectedValue, setSelectedValue] = useState(title);
 
+    if (name === "numberOccupants") {
+        const optionNumberValue = options.map((option) => {
+            return {
+                label: option,
+                value: option.split("+").reduce((acc, num) => acc + parseInt(num), 0),
+            };
+        });
+
+        options = optionNumberValue;
+    }
+
     // Efecto para establecer el valor seleccionado inicial basado en data
     useEffect(() => {
         if (data[name] !== null && data[name] !== undefined) {
@@ -13,7 +24,7 @@ const Select = ({ name = false, options, data, setData, title = "Seleccionar una
         } else {
             setSelectedValue(title); // Si no hay valor en data, usa el título por defecto
         }
-    }, [data, name]); // Ejecutar cuando data o name cambian
+    }, [name]); // Ejecutar cuando data o name cambian
 
     const handleClick = () => {
         setShowInput(!showInput);
@@ -21,8 +32,8 @@ const Select = ({ name = false, options, data, setData, title = "Seleccionar una
 
     const handleValueChange = (option) => {
         if (option) {
-            setSelectedValue(option);
-            setData({ ...data, [name]: option });
+            setSelectedValue(option?.label || option);
+            setData({ ...data, [name]: option?.value || option });
         }
         setShowInput(false); // Cierra el dropdown después de seleccionar una opción
     };
@@ -68,12 +79,26 @@ const Select = ({ name = false, options, data, setData, title = "Seleccionar una
                                     {/* Checkbox Visual */}
                                     <div
                                         className={`w-4 h-4 mr-2 border rounded-sm flex items-center justify-center ${
-                                            selectedValue === option ? "bg-blue-500 border-blue-500" : "border-gray-400"
+                                            name === "numberOccupants"
+                                                ? selectedValue === option.value
+                                                    ? "bg-blue-500 border-blue-500"
+                                                    : "border-gray-400"
+                                                : selectedValue === option
+                                                ? "bg-blue-500 border-blue-500"
+                                                : "border-gray-400"
                                         }`}
                                     >
-                                        {selectedValue === option && <CheckIcon className="w-3 h-3 text-white" />}
+                                        {name === "numberOccupants"
+                                            ? selectedValue?.label === option.label && <CheckIcon className="w-3 h-3 text-white" />
+                                            : selectedValue === option && <CheckIcon className="w-3 h-3 text-white" />}
                                     </div>
-                                    {option === "ONLY_WOMEN" ? "Solo chicas" : option === "MIXED" ? "Mixto" : option}
+                                    {option === "ONLY_WOMEN"
+                                        ? "Solo chicas"
+                                        : option === "MIXED"
+                                        ? "Mixto"
+                                        : name === "numberOccupants"
+                                        ? option.label
+                                        : option}
                                 </div>
                             ))}
                     </motion.div>

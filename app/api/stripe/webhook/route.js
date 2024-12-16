@@ -132,16 +132,15 @@ export async function POST(req) {
           // });
 
           await successLeaseOrderRoom.update({
-            status: "PENDING",
-            inReview: true,
+            status: "APPROVED",
           });
           await sendMailFunction({
             to: client.email,
             subject: `Confirmacion de reserva - Alojamiento ${property.serial}`,
-            text: `¡Gracias por confiar en hello flat mate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
+            text: `¡Gracias por confiar en helloflatmate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
           });
           console.log(
-            `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
+            `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to APPROVED`
           );
           console.log(
             `✅ Reservation Payment with ID ${rentPayment.id} updated to APPROVED`
@@ -223,7 +222,7 @@ export async function POST(req) {
           await sendMailFunction({
             to: client.email,
             subject: `Confirmacion de reserva - Alojamiento ${property.serial}`,
-            text: `¡Gracias por confiar en hello flat mate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
+            text: `¡Gracias por confiar en helloflatmate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
           });
           console.log(
             `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`

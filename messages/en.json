@@ -40,7 +40,8 @@
         "home_fifth_sect_6_title": "Security and trust every step of the way",
         "home_fifth_sect_6_desc": "At hello flat mate, we prioritise personalised attention and quality management. By managing only 160 rooms, we ensure close, safe, and tailored service for each flatmate throughout their stay. Your peace of mind is our priority.",
 
-        "home_sixth_sect_h2": "<strong>4</strong> types of fully secure accommodation for students",
+        "home_sixth_sect_h2_strong": "4",
+        "home_sixth_sect_h2": "types of fully secure accommodation for students",
         "home_sixth_sect_1_title": "hello landlord",
         "home_sixth_sect_1_desc": "Rooms in shared apartments directly managed by landlords selected by hello flat mate. Each landlord follows our contract and management model, providing security and peace of mind to students. Share with students like you!",
         "home_sixth_sect_2_title": "hello rooms",
@@ -94,6 +95,22 @@
     },
     "secondary_category_selector": {
         "search_btn": "Search accommodation",
-        "title_h1": "What do you want to book?"
+        "title_h1": "What do you want to book?",
+        "zone": "Zone",
+        "dates": "Dates",
+        "share_with": "Share with",
+        "guests": "Guests"
+    },
+    "about_us": {
+        "title": "helloflatmate is the online platform for renting apartments and rooms for medium and long stays",
+        "title_2": "Why is hello flat mate different?",
+        "title_3": "This is how hello flat mate began: an idea that was born in motion",
+        "title_4": "hello flat mate in the media",
+        "first_text": "Your ally from Valencia to find accommodation easily and safely. <br /> <br /> At (strong)helloflatmate(/strong), we specialize in offering accommodation for students and digital nomads seeking a unique experience in Valencia. Our platform combines professional management with a personal touch, helping international and national youth find their ideal home. <br /> <br /> Unlike other options, at (strong)helloflatmate(/strong) we guarantee a clear and efficient booking process, eliminating complications from day one. <br /> <br /> We take care of managing all aspects of your stay, from your arrival until you finish your contract. <br /> <br /> We offer a selection of rooms in shared apartments, exclusively designed for students and digital nomads up to 30 years old, creating a living environment adapted to your lifestyle. Additionally, we operate in the best areas of the city, such as Blasco Ibáñez, the Center, and Moncada, so you are always close to your university or workplace.",
+        "second_text": "Founded by Alberto Borrás, it is more than just a student service agency. It is a project designed to ensure personalized and exclusive attention for young newcomers to Valencia, ensuring that their experience is smooth, safe, and tailored to their needs. <br /> <br /> The inspiration for (strong)helloflatmate(/strong) arose while Alberto was living in Bristol (England), specifically when he was moving to London. <br /> <br /> Loaded with more luggage than he could handle, without accommodation booked because he didn't trust it, he began to dream of a service that would make arriving in an unfamiliar place easier. <br /> <br /> Can you imagine someone waiting for us upon arrival in London, helping us with our bags, paperwork, and guiding us in those first days? Alberto recalls thinking. <br /> <br /> That idea evolved into a comprehensive solution for international and national students looking for accommodation in Valencia. <br /> <br /> The goal was not only to find a place to live but to provide real support at every step of the process, from arrival to integration. <br /> <br /> Although Alberto insists he was not the first to offer rooms for students in the world, he is clear that (strong)helloflatmate(/strong) was a pioneer in prioritizing the adaptation of young people and their peace of mind, offering much more than just accommodation. The key lies in the small details: support with administrative tasks, local recommendations, and a close service that creates a positive impact on students' lives. <br /> <br /> Regarding the future, Alberto and his team are optimistic, although they prefer to focus on the present and continue providing quality service. 'Every day is full of challenges, but the gratitude from families and students is what drives us to keep going,' he states.",
+        "link_1": "hello flat mate, so that when you arrive in Valencia you feel at home",
+        "link_2": "A Valencian revolutionizes student service",
+        "link_3": "International students at UCV will have facilities for accommodation in apartments",
+        "link_4": "The importance of renting a good apartment for students in Valencia"
     }
 }

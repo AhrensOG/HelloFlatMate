@@ -13,7 +13,7 @@ export default function LeaseOrderPage(params) {
     if (!data) {
       const fetchData = async () => {
         try {
-          const data = await axios.get(`/api/admin/property?id=${id}`);
+          const data = await axios.get(`/api/admin/property/lease_order_request?id=${id}`);
           setData(data.data.property);
         } catch (error) {
           console.error("Error fetching property data:", error);

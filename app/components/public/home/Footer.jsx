@@ -34,7 +34,7 @@ export default function Footer_1() {
                             {t("link_privacy_policy")}
                         </Link>
                         <Link href="/cookies" target="_blank" className="font-normal text-base">
-                            {t("link_cookies")}
+                            {t("link_cookies_policy")}
                         </Link>
                         <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                             {t("link_terms_and_conditions")}
@@ -69,7 +69,7 @@ export default function Footer_1() {
                     </article>
                 </section>
                 <section className="flex flex-col gap-7 p-6">
-                    <h2 className="font-bold uppercase text-lg">{t("title_support")}</h2>
+                    <h2 className="font-bold uppercase text-lg">{t("title_supp")}</h2>
                     <button className="p-5 border border-[#676767] font-bold">{t("button_supp")}</button>
                     <Link href="#" target="_blank" className="font-normal text-base">
                         {t("link_supp")}
@@ -97,7 +97,7 @@ export default function Footer_1() {
 
                 <section className="flex flex-col gap-7 p-6">
                     <article className="flex flex-wrap justify-center gap-4">
-                        <h2 className="font-bold uppercase text-lg w-full">{t("title_dowload")}</h2>
+                        <h2 className="font-bold uppercase text-lg w-full">{t("title_download")}</h2>
                         <button>
                             <Image src={"https://static.spotahome.com/login_image/app-store.png"} width={150} height={150} alt="app store" />
                         </button>
@@ -229,7 +229,7 @@ export default function Footer_1() {
                                     {t("link_privacy_policy")}
                                 </Link>
                                 <Link href="/cookies" target="_blank" className="font-normal text-base">
-                                    {t("link_cookies")}
+                                    {t("link_cookies_policy")}
                                 </Link>
                                 <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                                     {t("link_terms_and_conditions")}
