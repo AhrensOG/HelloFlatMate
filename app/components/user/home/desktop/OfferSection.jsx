@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function OffersSection({
-  title = "¡Bienvenid@s a VLC bienveni@s a hello flat mate!",
+  title = "¡Bienvenid@s a VLC bienveni@s a helloflatmate!",
   description = "Desde 2011 helloflatmate ofrecemos  alojamientos a estudiantes en Valencia, con opciones de habitaciones y estudios gestionados por nosotros (hellorooms) o por propietarios de confianza.(hellolandord).",
   description2 = "Descubre también nuestro hellocoliving si lo que buscas es mayor privacidad y atención.",
   link = "/pages/select-category",

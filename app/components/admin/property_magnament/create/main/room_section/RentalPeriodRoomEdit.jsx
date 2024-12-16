@@ -104,7 +104,7 @@ export default function RentalPeriodRoomEdit({
               onChange={(e) => handlePeriodChange(index, e.target.value)}
               className="appearance-none outline-none w-full p-2 border border-gray-300 rounded lg:w-[15rem]"
             >
-              <option value="none">Selecciona un periodo</option>
+              <option value="none">Fechas</option>
               {predefineRental
                 .filter(
                   (dateOption) =>

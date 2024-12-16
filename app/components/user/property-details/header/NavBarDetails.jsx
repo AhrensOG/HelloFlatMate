@@ -13,8 +13,8 @@ export default function NavBarDetails({
     route.push(link);
   };
   return (
-    <nav className="flex justify-between items-center py-3 px-4">
-      <button onClick={() => handleBack(link)}>
+    <nav className="relative flex justify-center items-center py-3 px-4">
+      <button className="absolute left-2" onClick={() => handleBack(link)}>
         <Image
           src={"/property_details/nav_bar_details/back-icon.svg"}
           width={24}
@@ -24,20 +24,20 @@ export default function NavBarDetails({
       </button>
       <div>
         <Image
-          src={"/nav_bar/nav-bar-logo.svg"}
+          src={"/home/new_home/newLogo.png"}
           width={125}
-          height={41}
+          height={39.06}
           alt="Logo de FlatMate"
         />
       </div>
-      <Link href={detailLink} target="_blank">
+      {/* <Link href={detailLink} target="_blank">
         <Image
           src={"/property_details/nav_bar_details/icon-share.svg"}
           width={24}
           height={24}
           alt="Boton para compartir"
         />
-      </Link>
+      </Link> */}
     </nav>
   );
 }

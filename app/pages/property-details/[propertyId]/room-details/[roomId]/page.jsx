@@ -1,5 +1,8 @@
 "use client";
 import NavBar from "@/app/components/nav_bar/NavBar";
+import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
+import Footer_1 from "@/app/components/public/home/Footer";
+import SeventhSection from "@/app/components/public/home/SeventhSection";
 import DesktopNavBarDetails from "@/app/components/user/property-details/header/DesktopNavBarDetails";
 import NavBarDetails from "@/app/components/user/property-details/header/NavBarDetails";
 import SliderItem from "@/app/components/user/property-details/header/slider/SliderItem";
@@ -15,8 +18,9 @@ import RoomSection from "@/app/components/user/property-details/main/RoomSection
 import VideoEmbedSection from "@/app/components/user/property-details/main/VideoEmbedSection";
 import GuestInfoRoom from "@/app/components/user/room-details/GuestInfoRoom";
 import { Context } from "@/app/context/GlobalContext";
- 
+
 import axios from "axios";
+import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -107,7 +111,8 @@ export default function RoomDetails({ params }) {
           {/* DESKTOP */}
           <div className="hidden sm:flex flex-col items-center w-full h-screen">
             <header className="w-full space-y-4">
-              <NavBar />
+              {/* <NavBar /> */}
+              <NavbarV3 />
             </header>
             <div className="w-full grow grid place-items-center">
               <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
@@ -163,10 +168,8 @@ export default function RoomDetails({ params }) {
               {data.city + ", " + data.street}
             </h4>
             <h4 className="text-base font-bold text-resolution-blue">
-              {isLeaseOrderActive
-                ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
-                    isLeaseOrderActive.endDate
-                  )}`
+              {!roomData.isActive
+                ? `¡Este alojamiento ya esta reservado!`
                 : ""}
             </h4>
             {roomData.price && <PriceSection data={roomData.price} />}
@@ -176,7 +179,7 @@ export default function RoomDetails({ params }) {
               roomData.price && (
                 <ReservationButton
                   callback={handleShowModal}
-                  disabled={isLeaseOrderActive || false}
+                  disabled={!roomData.isActive}
                 />
               )}
           </div>
@@ -264,11 +267,14 @@ export default function RoomDetails({ params }) {
             />
           )} */}
         </main>
+        <SeventhSection />
+        <Footer_1 />
       </div>
       {/* DESKTOP */}
       <div className="hidden sm:flex flex-col items-center w-full">
         <header className="w-full space-y-4">
-          <NavBar />
+          {/* <NavBar /> */}
+          <NavbarV3 />
           <div className="px-3">
             <DesktopNavBarDetails
               callBack={() =>
@@ -278,10 +284,10 @@ export default function RoomDetails({ params }) {
           </div>
         </header>
         <main
-          className={`  flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}
+          className={`  flex flex-row gap-10 grow text-[#0D171C] w-full max-w-screen-2xl px-2`}
         >
           {/* LEFT SIDE */}
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-16 max-w-[50%]">
             <div className="w-full">
               {allImages.length > 0 ? (
                 <SliderDetails>
@@ -317,7 +323,7 @@ export default function RoomDetails({ params }) {
           <div className="border" />
 
           {/* RIGHT SIDE */}
-          <div className="relative w-full">
+          <div className="relative w-full max-w-[50%]">
             <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
               <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
               <h6 className="font-light text-[#000000B2]">
@@ -331,10 +337,8 @@ export default function RoomDetails({ params }) {
                 {data.city + ", " + data.street}
               </h6>
               <h6 className="text-base font-bold text-resolution-blue">
-                {isLeaseOrderActive
-                  ? `Habitacion libre a partir de ${formatDateToDDMMYYYY(
-                      isLeaseOrderActive.endDate
-                    )}`
+                {!roomData.isActive
+                  ? `¡Este alojamiento ya esta reservado!`
                   : ""}
               </h6>
               {roomData.price && <PriceSection data={roomData.price} />}
@@ -345,7 +349,7 @@ export default function RoomDetails({ params }) {
                   roomData.price && (
                     <ReservationButton
                       callback={handleShowModal}
-                      disabled={isLeaseOrderActive || false}
+                      disabled={!roomData.isActive}
                     />
                   )}
               </div>
@@ -398,28 +402,32 @@ export default function RoomDetails({ params }) {
             </div>
           </div>
         </main>
+        <SeventhSection />
+        <Footer_1 />
       </div>
-      {showModal && (
-        <ReservationModal
-          calendarType={roomData.calendar}
-          callback={handleShowModal}
-          category={data.category}
-          data={{
-            date: null,
-            startDate: null,
-            endDate: null,
-            price: roomData.price,
-            propertyId: data.id,
-            clientId: state?.user?.id,
-            ownerId: data.ownerId,
-            roomId: roomData.id,
-            propertyName: roomData?.name,
-            user: state?.user,
-            rentalPeriods: roomData.rentalItems,
-            leaseOrdersProperty: roomData.leaseOrdersRoom || null,
-          }}
-        />
-      )}
+      <AnimatePresence>
+        {showModal && (
+          <ReservationModal
+            calendarType={roomData.calendar}
+            callback={handleShowModal}
+            category={data.category}
+            data={{
+              date: null,
+              startDate: null,
+              endDate: null,
+              price: roomData.price,
+              propertyId: data.id,
+              clientId: state?.user?.id,
+              ownerId: data.ownerId,
+              roomId: roomData.id,
+              propertyName: roomData?.name,
+              user: state?.user,
+              rentalPeriods: roomData.rentalItems,
+              leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

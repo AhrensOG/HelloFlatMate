@@ -1,6 +1,6 @@
 const featureData = [
     {
-        title: "Alojamientos en zonas consolidadas.",
+        title: "Alojamientos consolidados.",
         body: `En helloflatmate hacemos de filtro previa a su búsqueda, por ello todas las viviendas que gestionamos se encuentran en zonas consolidadas y seguras en Valencia y Moncada.`,
         icon: "/guest_home/features/first-icon.svg",
     },
@@ -26,7 +26,7 @@ const featureData = [
     },
     {
         title: "Alta de suministros",
-        body: `Todos nuestros alojamientos a excepción de hello studios, vienen con altas de luz, agua e internet wifi.`,
+        body: `Todos nuestros alojamientos a excepción de hellostudios, vienen con altas de luz, agua e internet wifi.`,
         icon: "/guest_home/features/sixth-icon.svg",
     }
 ]

@@ -1,5 +1,5 @@
 "use client";
- 
+
 import Image from "next/image";
 import { useState } from "react";
 import Tooltip from "./tooltip/Tooltip";
@@ -21,7 +21,7 @@ function formatDate(dateString) {
 
 export default function PropertyCard({
   name,
-  images,
+  images = "/not-image.png",
   property,
   price,
   roomId = false,
@@ -31,18 +31,21 @@ export default function PropertyCard({
   const route = useRouter();
 
   const handleRedirect = () => {
+    let url;
+
     if (
       (property.category === "HELLO_ROOM" ||
         property.category === "HELLO_COLIVING" ||
         property.category === "HELLO_LANDLORD") &&
       roomId
     ) {
-      route.push(
-        `/pages/property-details/${property.id}/room-details/${roomId}`
-      );
+      url = `/pages/property-details/${property.id}/room-details/${roomId}`;
     } else {
-      route.push("/pages/property-details/" + property?.id);
+      url = `/pages/property-details/${property?.id}`;
     }
+
+    // Abrir en una nueva pestaña
+    window.open(url, "_blank");
   };
 
   const handleOpen = () => {
@@ -54,15 +57,15 @@ export default function PropertyCard({
   };
   return (
     <article
-      className={`  flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-0 rounded-sm shadow-reservation-drop`}
+      className={`  flex flex-col max-h-96 h-full gap-3 w-full sm:max-w-72 cursor-pointer border sm:border-none rounded-sm`}
     >
       <div
         onClick={handleRedirect}
         className="flex sm:flex-col gap-3 sm:gap-0 w-full h-full"
       >
-        <div className="relative h-28 w-28 sm:w-72 sm:h-80 rounded-md">
+        <div className="relative h-28 w-28 sm:w-72 sm:min-h-60 sm:h-60 rounded-md">
           <Image
-            className="h-full rounded-sm"
+            className="rounded-lg"
             src={
               images ||
               property?.property?.images[0] ||
@@ -70,16 +73,17 @@ export default function PropertyCard({
               ""
             }
             fill
+            sizes="(max-width: 640px) 112px, (max-width: 1024px) 288px, 100vw"
             alt="Imagen de propiedad"
           />
         </div>
-        <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 sm:border sm:border-t-0 gap-2">
+        <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 gap-2">
           <div className="flex flex-col grow sm:gap-2">
             <h4 className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-normal">
               {property?.category === "HELLO_ROOM" ||
               property?.category === "HELLO_COLIVING" ||
               property?.category === "HELLO_LANDLORD"
-                ? "HABTITACION"
+                ? "HABITACION"
                 : property?.category.toLowerCase().split("_").join("")}
               {/* <button
                 type="button"
@@ -100,9 +104,17 @@ export default function PropertyCard({
                 {room?.leaseOrdersRoom?.some((order) => order.isActive === true)
                   ? // Si hay una leaseOrder activa, mostrar la fecha de disponibilidad
                     `Disponible ${formatDate(
-                      room?.leaseOrdersRoom.find(
-                        (order) => order.isActive === true
-                      )?.endDate
+                      (() => {
+                        const activeOrder = room?.leaseOrdersRoom.find(
+                          (order) => order.isActive === true
+                        );
+                        if (activeOrder?.endDate) {
+                          const nextDay = new Date(activeOrder.endDate);
+                          nextDay.setDate(nextDay.getDate() + 1);
+                          return nextDay;
+                        }
+                        return null;
+                      })()
                     )}`
                   : // Si no hay leaseOrder activa, mostrar "Disponible ahora!"
                     "Disponible ahora!"}
@@ -173,7 +185,7 @@ export default function PropertyCard({
                 ""
               )} */}
               <h3 className="text-base text-[#000000B2]">
-                € {price} <span className="text-xs text-[#B2B2B2]">/mes</span>
+                {price} € <span className="text-xs text-[#B2B2B2]">/mes</span>
               </h3>
             </div>
           </div>

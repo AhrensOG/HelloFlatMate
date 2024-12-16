@@ -13,50 +13,58 @@ import BotIcon from "../../public/chat-bot/BotIcon";
 const getRentalPeriods = (propiedades) => {
     const fechasUnicas = new Set();
 
+    const today = new Date(); // Fecha actual
+
     propiedades.forEach((propiedad) => {
-      // Verificar si la propiedad es de tipo HELLO_ROOM o HELLO_COLIVING
-      if (
-        propiedad.category === "HELLO_ROOM" ||
-        propiedad.category === "HELLO_COLIVING" ||
-        propiedad.category === "HELLO_LANDLORD"
-      ) {
-        // Acceder al array rooms y mapear sobre él
-        propiedad.rooms.forEach((room) => {
-          // Acceder a rentalPeriods y formatear las fechas
-          room.rentalItems?.forEach((periodo) => {
-            const startDate = new Date(periodo.rentalPeriod?.startDate);
-            const endDate = new Date(periodo.rentalPeriod?.endDate);
+        // Verificar si la propiedad es de tipo HELLO_ROOM, HELLO_COLIVING o HELLO_LANDLORD
+        if (
+            propiedad.category === "HELLO_ROOM" || 
+            propiedad.category === "HELLO_COLIVING" || 
+            propiedad.category === "HELLO_LANDLORD"
+        ) {
+            // Acceder al array rooms y mapear sobre él
+            propiedad.rooms.forEach((room) => {
+                // Acceder a rentalPeriods y filtrar los periodos válidos
+                room.rentalItems?.forEach((periodo) => {
+                    const startDate = new Date(periodo.rentalPeriod?.startDate);
+                    const endDate = new Date(periodo.rentalPeriod?.endDate);
 
-            // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
-            const formattedStartDate = `${startDate
-              .getDate()
-              .toString()
-              .padStart(2, "0")}/${(startDate.getMonth() + 1)
-              .toString()
-              .padStart(2, "0")}/${startDate
-              .getFullYear()
-              .toString()
-              .slice(-2)}`;
+                    // Solo procesar si el startDate es superior a la fecha actual
+                    if (startDate > today) {
+                        // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
+                        const formattedStartDate = `${startDate
+                            .getDate()
+                            .toString()
+                            .padStart(2, "0")}/${(startDate.getMonth() + 1)
+                            .toString()
+                            .padStart(2, "0")}/${startDate
+                            .getFullYear()
+                            .toString()
+                            .slice(-2)}`;
 
-            const formattedEndDate = `${endDate
-              .getDate()
-              .toString()
-              .padStart(2, "0")}/${(endDate.getMonth() + 1)
-              .toString()
-              .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
+                        const formattedEndDate = `${endDate
+                            .getDate()
+                            .toString()
+                            .padStart(2, "0")}/${(endDate.getMonth() + 1)
+                            .toString()
+                            .padStart(2, "0")}/${endDate
+                            .getFullYear()
+                            .toString()
+                            .slice(-2)}`;
 
-            const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
+                        const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
 
-            // Añadir la fecha al Set para evitar duplicados
-            fechasUnicas.add(fecha);
-          });
-        });
-      }
+                        // Añadir la fecha al Set para evitar duplicados
+                        fechasUnicas.add(fecha);
+                    }
+                });
+            });
+        }
     });
 
     // Convertir el Set a un array para devolverlo
     return Array.from(fechasUnicas);
-  };
+};
 
 export default function FilterPage() {
     const searchParams = useSearchParams();
@@ -75,14 +83,15 @@ export default function FilterPage() {
         word: "",
         startDate: startDate || "",
         endDate: endDate || "",
-        categorys: category ? [category] : [],
+        categorys: category ? [category] : ["todos los alojamientos"],
         location: location || "",
         occupants: occupants || "",
         rentalPeriod: rentalPeriod || "",
-        type: type || ""
+        type: type || "",
     });
     const [filteredProperties, setFilteredProperties] = useState(properties);
     const [filteredRentalPeriods, setFilteredRentalPeriods] = useState([]);
+    const [zones, setZones] = useState([])
 
     const hasURLFilters = () => {
         return startDate || endDate || category || location || occupants || rentalPeriod;
@@ -94,8 +103,13 @@ export default function FilterPage() {
                 await getAllProperties(dispatch);
                 const activeProperties = (state.properties || []).filter((property) => property.isActive && property.status !== "DELETED");
                 setProperties(activeProperties);
-                setFilteredProperties(activeProperties);
+                const sorted = sortPropertiesByRooms(activeProperties)
+                setFilteredProperties(sorted);
 
+                // Extraer zonas únicas
+                const uniqueZones = [...new Set(activeProperties.map((property) => property.zone))];
+                setZones(uniqueZones);
+    
                 // Aplica los filtros solo si hay parámetros en la URL
                 if (hasURLFilters() && activeProperties.length > 0) {
                     applyFilters();
@@ -110,7 +124,13 @@ export default function FilterPage() {
         } else {
             const activeProperties = state.properties.filter((property) => property.isActive && property.status !== "DELETED");
             setProperties(activeProperties);
-            setFilteredProperties(activeProperties);
+            const sorted = sortPropertiesByRooms(activeProperties)
+            setFilteredProperties(sorted);
+
+            // Extraer zonas únicas
+            const uniqueZones = [...new Set(activeProperties.map((property) => property.zone))];
+            setZones(uniqueZones);
+
 
             // Aplica los filtros solo si hay parámetros en la URL
             if (hasURLFilters() && activeProperties.length > 0) {
@@ -192,10 +212,65 @@ export default function FilterPage() {
         if (!filters.categorys || filters.categorys.length === 0) {
             return properties;
         }
-        return properties.filter((property) => {
-            return filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase());
+    
+        const hasAllProperties = filters.categorys.includes("todos los alojamientos");
+        const hasLastRooms = filters.categorys.includes("lastrooms");
+    
+        // Caso especial: si solo está "lastrooms" en los filtros
+        if (hasLastRooms && filters.categorys.length === 1) {
+            return properties
+                .map((property) => {
+                    // Filtrar las habitaciones activas
+                    const activeRooms = property.rooms.filter((room) => room.isActive === true);
+    
+                    // Si no hay habitaciones activas, excluir la propiedad
+                    if (activeRooms.length === 0) return null;
+    
+                    // Retornar la propiedad con solo las habitaciones activas
+                    return {
+                        ...property,
+                        rooms: activeRooms,
+                    };
+                })
+                .filter((property) => property !== null); // Eliminar propiedades sin habitaciones activas
+        }
+    
+        // Filtrar propiedades según las categorías seleccionadas (excluyendo "todos los alojamientos" y "lastrooms")
+        const filteredByCategory = properties.filter((property) => {
+            if (hasAllProperties) {
+                // Si "todos los alojamientos" está presente, incluir todas las categorías seleccionadas
+                return true;
+            }
+    
+            // Validar otras categorías
+            return (
+                filters.categorys.includes(property.category) ||
+                filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase())
+            );
         });
-    };
+    
+        if (hasLastRooms) {
+            // Filtrar las propiedades que cumplen con la lógica de "lastrooms"
+            return filteredByCategory
+                .map((property) => {
+                    // Filtrar las habitaciones activas
+                    const activeRooms = property.rooms.filter((room) => room.isActive === true);
+    
+                    // Si no hay habitaciones activas, excluir la propiedad
+                    if (activeRooms.length === 0) return null;
+    
+                    // Retornar la propiedad con solo las habitaciones activas
+                    return {
+                        ...property,
+                        rooms: activeRooms,
+                    };
+                })
+                .filter((property) => property !== null); // Eliminar propiedades sin habitaciones activas
+        }
+    
+        // Retornar las propiedades filtradas por categoría
+        return filteredByCategory;
+    };    
 
     const filterByLocation = (properties) => {
         if (!filters.location) {
@@ -246,15 +321,15 @@ export default function FilterPage() {
     const convertRentalPeriodToString = (startDate, endDate) => {
         const formatDate = (date) => {
             const d = new Date(date);
-            const day = String(d.getDate()).padStart(2, '0');
-            const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
+            const day = String(d.getDate()).padStart(2, "0");
+            const month = String(d.getMonth() + 1).padStart(2, "0"); // Los meses empiezan en 0
             const year = String(d.getFullYear()).slice(-2); // Tomamos los últimos 2 dígitos del año
             return `${day}/${month}/${year}`;
         };
-    
+
         const start = formatDate(startDate);
         const end = formatDate(endDate);
-        
+
         return `Del ${start} al ${end}`;
     };
 
@@ -293,11 +368,78 @@ export default function FilterPage() {
 
     const filterByCategoriesAndGetRentalPeriods = (properties) => {
         const filteredProperties = filters.categorys
-            ? properties.filter((property) => filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase()))
+            ? properties.filter(
+                  (property) =>
+                      filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase())
+              )
             : properties;
-    
+
         const periodsList = getRentalPeriods(filteredProperties);
-        setFilteredRentalPeriods(periodsList)
+        setFilteredRentalPeriods(periodsList);
+    };
+
+    const sortPropertiesByRooms = (properties) => {
+        if (!Array.isArray(properties)) {
+            throw new Error("El parámetro debe ser un array de propiedades.");
+        }
+    
+        // Ordenar las propiedades y sus habitaciones
+        return [...properties]
+            .map((property) => {
+                // Ordenar las habitaciones de cada propiedad
+                const sortedRooms = [...property.rooms].sort((a, b) => {
+                    // Priorizar habitaciones sin leaseOrdersRoom
+                    if (a.leaseOrdersRoom.length === 0 && b.leaseOrdersRoom.length > 0) {
+                        return -1;
+                    }
+                    if (a.leaseOrdersRoom.length > 0 && b.leaseOrdersRoom.length === 0) {
+                        return 1;
+                    }
+    
+                    // Priorizar habitaciones con isActive en true
+                    if (a.isActive && !b.isActive) {
+                        return -1;
+                    }
+                    if (!a.isActive && b.isActive) {
+                        return 1;
+                    }
+    
+                    // Si ambos criterios son iguales, mantener el orden actual
+                    return 0;
+                });
+    
+                return {
+                    ...property,
+                    rooms: sortedRooms,
+                };
+            })
+            .sort((a, b) => {
+                // Ordenar propiedades en función del estado de las habitaciones
+                const aHasAvailableRoom = a.rooms.some((room) => room.leaseOrdersRoom.length === 0);
+                const bHasAvailableRoom = b.rooms.some((room) => room.leaseOrdersRoom.length === 0);
+    
+                // Priorizar propiedades con habitaciones disponibles
+                if (aHasAvailableRoom && !bHasAvailableRoom) {
+                    return -1;
+                }
+                if (!aHasAvailableRoom && bHasAvailableRoom) {
+                    return 1;
+                }
+    
+                // Priorizar propiedades con habitaciones activas (isActive: true)
+                const aHasActiveRoom = a.rooms.some((room) => room.isActive);
+                const bHasActiveRoom = b.rooms.some((room) => room.isActive);
+    
+                if (aHasActiveRoom && !bHasActiveRoom) {
+                    return -1;
+                }
+                if (!aHasActiveRoom && bHasActiveRoom) {
+                    return 1;
+                }
+    
+                // Si ambos tienen el mismo estado, mantener el orden actual
+                return 0;
+            });
     };
 
     const applyFilters = () => {
@@ -309,8 +451,9 @@ export default function FilterPage() {
         // result = filterByOccupants(result);
         result = filterByRentalPeriod(result);
         result = filterByTypology(result);
-        
-        filterByCategoriesAndGetRentalPeriods(result)
+        result = sortPropertiesByRooms(result)
+
+        filterByCategoriesAndGetRentalPeriods(result);
         setFilteredProperties(result);
     };
 
@@ -407,8 +550,9 @@ export default function FilterPage() {
                         setFilters={setFilters}
                         onApplyFilters={applyFilters}
                         onFilterChange={handleFilterChange}
-                        category = {category}
+                        category={category}
                         rentalPeriods={filteredRentalPeriods}
+                        zones={zones}
                     />
                     <div className="w-[75%] overflow-y-auto gap-7 h-[calc(100vh-93px)] fixed right-0 scrollbar-none p-4 flex flex-wrap justify-center items-start">
                         {filteredProperties?.length === 0 ? (
@@ -490,8 +634,9 @@ export default function FilterPage() {
                 setFilters={setFilters}
                 onApplyFilters={applyFilters}
                 onFilterChange={handleFilterChange}
-                category = {category}
+                category={category}
                 rentalPeriods={filteredRentalPeriods}
+                zones={zones}
             />
         </div>
     );
