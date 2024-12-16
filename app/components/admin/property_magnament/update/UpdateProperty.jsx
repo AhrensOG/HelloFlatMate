@@ -88,7 +88,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       );
       setSelectedEmail(ownerEmail?.email);
       setOwners(res.data);
-      console.log(res.data);
     };
     if (property) {
       setName(property?.name || "");
@@ -558,7 +557,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             className={`  flex flex-row gap-10 grow text-[#0D171C]`}
           >
             {/* LEFT SIDE */}
-            <div className="space-y-10 flex-1">
+            <div className="space-y-10 w-full max-w-[50%]">
               <div className="w-full">
                 <SliderUpdateTemplate
                   data={sliderImage}
@@ -610,7 +609,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             <div className="border" />
 
             {/* RIGTH SIDE */}
-            <div className="space-y-10 flex-1">
+            <div className="space-y-10 w-full max-w-[50%]">
               <TitleSectionTemplate
                 name={name || ""}
                 setName={setName}

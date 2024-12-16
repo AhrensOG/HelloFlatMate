@@ -10,7 +10,7 @@ export default function RoomSectionTemplate({
   deleteRooms,
   setDeleteRooms,
   category,
-  predefineRental
+  predefineRental,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -44,13 +44,15 @@ export default function RoomSectionTemplate({
         </h2>
         <EditButton action={handleAddRoom} />{" "}
       </article>
-      <article className="flex justify-evenly gap-1 w-full overflow-x-scroll">
+      <article className="flex justify-evenly gap-2 w-full overflow-x-scroll scrollbar-thin">
         {data && data.length > 0 ? (
           data.map((item, index) => (
             <RoomInfoTemplate
               info={item}
               key={index}
-              img={item?.images[0] || "/property-details/stock-1.svg"}
+              img={
+                item.images ? item.images[0] : "/property-details/stock-1.svg"
+              }
               name={item?.name}
               bedNumber={item.numberBeds}
               showModal={() => handleEditRoom(item)} // Pasa la habitación a editar al modal

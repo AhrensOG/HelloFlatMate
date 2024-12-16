@@ -7,7 +7,7 @@ export default function DescriptionSectionTemplate({ data, action }) {
         <h2 className="font-bold text-[1.2rem]">Descripción</h2>
         <EditButton action={action} />
       </div>
-      {data.length > 0 ? (
+      {data?.length > 0 ? (
         <ul className="list-disc p-3 pl-[1.6rem]">
           {data.map((item, index) => (
             <li key={index} className="font-normal text-base py-1">
