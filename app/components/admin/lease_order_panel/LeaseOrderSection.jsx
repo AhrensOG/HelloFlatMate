@@ -1,4 +1,4 @@
-export default function LeaseOrderSection({ data, formatDate, isAll = false }) {
+export default function LeaseOrderSection({ data, formatDate, room, isAll = false }) {
   const statusLabels = {
     PENDING: "Pendiente (El usuario debe pagar y firmar el contrato)",
     READY_TO_SIGN: "Listo para firmar",
@@ -22,16 +22,19 @@ export default function LeaseOrderSection({ data, formatDate, isAll = false }) {
   return (
     <section className="bg-gray-100 p-6 rounded-lg mb-8 shadow-md">
       <h2 className="text-xl font-bold text-gray-800">
-        Número de Orden: {data?.id || "No definido"}
+        Código: {room.serial || "No definido"}
+      </h2>
+      <h2 className="text-gray-800">
+        Número de Orden: {data?.id || "No definido"} 
       </h2>
       <p className="text-gray-600">
         Fecha de creación: {formatDate(data?.date) || "No definido"}
       </p>
-      <p className="text-gray-600">
+      <p className="text-gray-600 font-bold">
         Fecha de inicio de la ocupación:{" "}
         {formatDate(data?.startDate) || "No definido"}
       </p>
-      <p className="text-gray-600">
+      <p className="text-gray-600 font-bold">
         Fecha de fin de la ocupación:{" "}
         {formatDate(data?.endDate) || "No definido"}
       </p>

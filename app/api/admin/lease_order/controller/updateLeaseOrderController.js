@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat, ChatParticipant, RentalPeriod, RentalItem } from "@/db/init";
 import { createGroupChat, createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
 import { sequelize } from "@/db/models/comment";
+import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
 
 export async function updateStatusLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 });
@@ -112,6 +113,13 @@ export async function updateStatusLeaseOrder(data) {
             await transaction.rollback();
             return NextResponse.json({ message: "Lease order room not found" }, { status: 404 });
         }
+        const userId = leaseOrderRoom.clientId
+        const client = await Client.findByPk(userId)
+        if (!client) {
+            await transaction.rollback();
+            return NextResponse.json({ message: "Client not found" }, { status: 404 });
+        }
+
         const room = await Room.findByPk(
             data.roomId,
             {
@@ -198,6 +206,11 @@ export async function updateStatusLeaseOrder(data) {
                 participantType: "CLIENT",
             });
 
+            const mailInfo = {
+                to: client.email, subject: "¡Aprobamos tu pre-reserva!", text: `Te informamos que hemos aceptado la pre-reserva del alojamiento ${room.serial}. Por favor verifica tu perfil y desde la seccion "Historico" podras continuar con el proceso.` 
+            };
+
+            await sendMailFunction(mailInfo);
             await transaction.commit();
             return NextResponse.json({ message: "Lease order room PENDING" }, { status: 200 });
         } else if (data.action === "REJECTED") {

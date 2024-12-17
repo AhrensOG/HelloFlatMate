@@ -12,7 +12,7 @@ export default function LeaseOrderClientSection({
       <h2 className="text-xl font-bold text-gray-800">Datos del Cliente</h2>
       <article className="mb-4">
         <p className="text-gray-600">ID: {data?.id || "No definido"}</p>
-        <p className="text-gray-600">
+        <p className="text-gray-600 font-bold">
           Nombre y apellido:{" "}
           {data?.name + " " + data?.lastName || "No definido"}
         </p>
