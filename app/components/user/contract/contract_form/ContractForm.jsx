@@ -1,39 +1,40 @@
-import { useFormik } from "formik";
+"use client";
+
 import React, { useContext, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 import { motion } from "framer-motion";
-import { plus_jakarta, poppins } from "@/font";
-import TitleSection from "../TitleSection";
+import { toast } from "sonner";
 import { Context } from "@/app/context/GlobalContext";
 import { saveUserContractInformation } from "@/app/context/actions";
 import axios from "axios";
+import CountrySelect from "@/app/components/public/main-pages/auxiliarComponents/CountrySelect";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
-const ContractForm = ({ handleContinue, handleBack }) => {
+const ContractForm = ({ handleContinue }) => {
   const { state, dispatch } = useContext(Context);
-  const [prevData, setPrevData] = useState(false);
+  const [initialValues, setInitialValues] = useState(null);
 
   useEffect(() => {
-    if (state?.user?.id) {
-      const user = state?.user;
-      const date = new Date(user?.birthDate);
-      // Formatear la fecha en "YYYY-MM-DD"
-      const readableDate = date.toISOString().split("T")[0];
-
-      setPrevData({
-        name: user.name,
-        lastName: user.lastName,
-        dni: user.idNum,
-        phone: user.phone,
-        city: user.city,
-        email: user.email,
-        street: user.street,
-        streetNumber: user.streetNumber,
-        postalCode: user.postalCode,
-        country: user.country,
-        // age: user.age,
+    const user = state?.user;
+    if (user?.id) {
+      const readableDate = new Date(user?.birthDate)
+        .toISOString()
+        .split("T")[0];
+      setInitialValues({
+        name: user.name || "",
+        lastName: user.lastName || "",
+        idNum: user.idNum || "",
+        phone: user.phone || "",
+        city: user.city || "",
+        email: user.email || "",
+        street: user.street || "",
+        streetNumber: user.streetNumber || "",
+        postalCode: user.postalCode || "",
+        country: user.country || "",
         genre: user.genre || "MALE",
-        birthDate: readableDate, // Usar el formato "YYYY-MM-DD"
-        id: user.id,
+        birthDate: readableDate,
         emergencyName: user.emergencyName || "",
         emergencyPhone: user.emergencyPhone || "",
         emergencyEmail: user.emergencyEmail || "",
@@ -41,454 +42,239 @@ const ContractForm = ({ handleContinue, handleBack }) => {
     }
   }, [state]);
 
-  const initialValues = prevData || {
-    name: "",
-    lastName: "",
-    dni: "",
-    phone: "",
-    city: "",
-    email: "",
-    street: "",
-    streetNumber: "",
-    postalCode: "",
-    country: "",
-    // age: "",
-    genre: "MALE",
-    birthDate: "",
-    emergencyName: "",
-    emergencyPhone: "",
-    emergencyEmail: "",
-  };
-
-  const formik = useFormik({
-    initialValues,
-    enableReinitialize: true,
-    onSubmit: async (values) => {
-      // Lista de campos requeridos
-      const requiredFields = [
-        "name",
-        "lastName",
-        "dni",
-        "phone",
-        "city",
-        "street",
-        "streetNumber",
-        "postalCode",
-        "country",
-        "genre",
-        "birthDate",
-        "emergencyName",
-        "emergencyPhone",
-        "emergencyEmail",
-      ];
-
-      // Validar campos requeridos
-      const hasEmptyFields = requiredFields.some(
-        (field) => !values[field] || values[field].trim() === ""
-      );
-
-      if (hasEmptyFields) {
-        return toast.info("¡Recuerda completar todos los campos!");
-      }
-      if (calculateAge(values.birthDate) < 18) {
-        return toast.info("Debes ser mayor de 18");
-      }
-      try {
-        await updateUser(values);
-      } catch (error) {
-        toast.error("Error al guardar información");
-      }
-    },
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Nombre es requerido"),
+    lastName: Yup.string().required("Apellido es requerido"),
+    idNum: Yup.string().required("ID/Passport es requerido"),
+    phone: Yup.string().required("Teléfono es requerido"),
+    birthDate: Yup.date()
+      .required("Fecha de nacimiento es requerida")
+      .test("age", "Debes ser mayor de 18", (value) => {
+        const age = new Date().getFullYear() - new Date(value).getFullYear();
+        return age >= 18;
+      }),
+    country: Yup.string().required("Nacionalidad es requerida"),
+    email: Yup.string().email("Email inválido").required("Email es requerido"),
+    emergencyName: Yup.string().required("Nombre de emergencia es requerido"),
+    emergencyPhone: Yup.string().required(
+      "Teléfono de emergencia es requerido"
+    ),
+    emergencyEmail: Yup.string()
+      .email("Email inválido")
+      .required("Email de emergencia es requerido"),
   });
 
-  const calculateAge = (birthDate) => {
-    const [year, month, day] = birthDate.split("-").map(Number);
+  const fields = [
+    { name: "name", label: "Nombre", type: "text" },
+    { name: "lastName", label: "Apellido", type: "text" },
+    { name: "idNum", label: "ID / Passport", type: "text" },
+    { name: "birthDate", label: "Fecha de Nacimiento", type: "date" },
+    { name: "city", label: "Ciudad", type: "text" },
+    { name: "street", label: "Calle", type: "text" },
+    { name: "streetNumber", label: "Número", type: "text" },
+    { name: "postalCode", label: "Código Postal", type: "text" },
+    { name: "email", label: "Email", type: "email" },
+  ];
 
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth() + 1;
-    const currentDay = today.getDate();
+  const emergencyFields = [
+    { name: "emergencyName", label: "Nombre de emergencia", type: "text" },
+    { name: "emergencyEmail", label: "Email de emergencia", type: "email" },
+  ];
 
-    //calculamos edad
-    let calculatedAge = currentYear - year;
-
-    // Ajustamos la edad si aún no ha cumplido años este año
-    if (currentMonth < month || (currentMonth === month && currentDay < day)) {
-      calculatedAge--;
-    }
-
-    return calculatedAge;
-  };
-
-  const handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    formik.setFieldValue("genre", selectedValue); // Actualiza el valor del campo 'genre' en formik
-  };
-
-  const updateUser = async (data) => {
-    const userData = {
-      id: prevData.id,
-      name: data.name,
-      lastName: data.lastName,
-      idNum: data.dni,
-      phone: data.phone,
-      city: data.city,
-      email: data.email,
-      street: data.street,
-      streetNumber: data.streetNumber,
-      postalCode: data.postalCode,
-      country: data.country,
-      // age: data.age,
-      genre: data.genre,
-      birthDate: data.birthDate,
-      emergencyName: data.emergencyName,
-      emergencyPhone: data.emergencyPhone,
-      emergencyEmail: data.emergencyEmail,
-    };
+  const handleSubmit = async (values) => {
+    const toastId = toast.loading("Guardando informacion...");
     try {
-      toast.promise(axios.put("/api/user", userData), {
-        loading: "Guardando información...",
-        success: () => {
-          saveUserContractInformation(dispatch, userData);
-          toast.success("Información guardada");
-          handleContinue();
-        },
-        error: "Error al guardar la información",
-      });
+      const updatedData = { ...values, id: state?.user?.id };
+      console.log(updatedData);
+      await axios.put("/api/user", updatedData);
+      saveUserContractInformation(dispatch, updatedData);
+      toast.success("Información guardada", { id: toastId });
+      handleContinue();
     } catch (error) {
-      toast.error("Error al guardar la información");
+      toast.info("Error al guardar información", { id: toastId });
     }
   };
 
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`  w-full flex flex-col gap-7 p-4`}
-    >
-      {/* <TitleSection
-        title={"Contrato de renta"}
-        action={() => {
-          handleBack();
-        }}
-      /> */}
-      <div className="w-full grid place-items-center">
-        <div className="w-full p-2 space-y-8 max-w-screen-sm">
-          <section className="w-full">
-            <h1
-              className={`${poppins.className} w-full text-center text-[#191B23] font-semibold text-xl pb-5`}
-            >
-              Contrato de alojamiento
-            </h1>
-            <div className="w-full text-center">
-              <span className="font-medium">
-                Necesitaremos que complete el siguiente formulario
-              </span>
-            </div>
-          </section>
-          <section className="w-full">
-            <form
-              onSubmit={formik.handleSubmit}
-              className="w-full flex flex-col justify-center items-center gap-4"
-              aria-labelledby="form-title"
-            >
-              <h1 id="form-title" className="sr-only">
-                Formulario de Contrato
-              </h1>
-              <h2>Datos personales</h2>
-              <div className="flex flex-row justify-center items-center gap-3 w-full">
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="name"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Nombre
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.name}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="lastName"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Apellido
-                  </label>
-                  <input
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.lastName}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-              </div>
+    initialValues && (
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg space-y-8"
+      >
+        <h1 className="text-center font-bold text-3xl text-gray-800">
+          Contrato de Alojamiento
+        </h1>
 
-              <div className="flex flex-row items-center gap-3 w-full">
-                <div className="flex flex-col justify-center w-full">
-                  <label
-                    htmlFor="phone"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Telefono
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="number"
-                    onChange={formik.handleChange}
-                    value={formik.values.phone}
-                    className="w-full number-input-no-appearance drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-                <div className="flex flex-col justify-center w-full">
-                  <label
-                    htmlFor="dni"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    ID / Passport
-                  </label>
-                  <input
-                    id="dni"
-                    name="dni"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.dni}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-row items-center gap-3 w-full">
-                <div className="flex flex-col justify-center w-full">
-                  <label
-                    htmlFor="birthDate"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Fecha de Nacimiento
-                  </label>
-                  <input
-                    id="birthDate"
-                    name="birthDate"
-                    type="date"
-                    placeholder="DD/MM/AAAA"
-                    onChange={formik.handleChange}
-                    value={formik.values.birthDate}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-                {/* <div className="flex flex-col justify-center w-full">
-                  <label
-                    htmlFor="age"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Edad
-                  </label>
-                  <input
-                    id="age"
-                    name="age"
-                    type="number"
-                    onChange={formik.handleChange}
-                    value={formik.values.age}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue number-input-no-appearance"
-                  />
-                </div> */}
-                <div className="flex flex-col justify-center w-full">
-                  <label
-                    htmlFor="genre"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Género
-                  </label>
-                  <select
-                    id="genre"
-                    name="genre"
-                    value={formik.values.genre}
-                    onChange={handleSelectChange}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  >
-                    <option value="MALE">Masculino</option>
-                    <option value="FEMALE">Femenino</option>
-                    <option value="OTHER">Otro</option>
-                  </select>
-                </div>
-              </div>
-              <h2 className="form-title">Direccion</h2>
-              <div className="flex flex-row justify-center items-center gap-3 w-full">
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="street"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Calle
-                  </label>
-                  <input
-                    id="street"
-                    name="street"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.street}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="streetNumber"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Numero
-                  </label>
-                  <input
-                    id="streetNumber"
-                    name="streetNumber"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.streetNumber}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-              </div>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+          enableReinitialize
+        >
+          {({ errors, touched, setFieldValue, values }) => (
+            <Form>
+              {/* Información Personal */}
+              <h2 className="w-full text-center text-xl pb-2">
+                Información personal
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {fields.map((field) => (
+                  <div key={field.name} className="flex flex-col">
+                    <label
+                      htmlFor={field.name}
+                      className="text-sm font-medium text-gray-600"
+                    >
+                      {field.label}
+                    </label>
+                    <Field
+                      id={field.name}
+                      name={field.name}
+                      type={field.type}
+                      className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                    />
+                    {errors[field.name] && touched[field.name] && (
+                      <span className="text-red-500 text-sm mt-1">
+                        {errors[field.name]}
+                      </span>
+                    )}
+                  </div>
+                ))}
 
-              <div className="flex flex-row justify-center items-center gap-3 w-full">
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="city"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Ciudad
+                {/* Campo PhoneInput */}
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Teléfono
                   </label>
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.city}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
+                  <PhoneInput
+                    international
+                    country="ES"
+                    value={values.phone}
+                    onChange={(value) => setFieldValue("phone", value)}
+                    className="w-full rounded-lg"
+                    containerStyle={{
+                      maxWidth: "100%",
+                      position: "relative",
+                    }}
+                    inputStyle={{
+                      backgroundColor: "#ffffff",
+                      width: "100%",
+                    }}
+                    dropdownStyle={{
+                      backgroundColor: "#ffffff",
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                      maxHeight: "100px",
+                      overflowY: "auto",
+                      textAlign: "start",
+                    }}
                   />
+                  {errors.phone && touched.phone && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.phone}
+                    </span>
+                  )}
                 </div>
-                <div className="w-full flex flex-col justify-center ">
+
+                <div className="flex flex-col">
                   <label
-                    htmlFor="postalCode"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Codigo postal
-                  </label>
-                  <input
-                    id="postalCode"
-                    name="postalCode"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.postalCode}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="postalCode"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
+                    htmlFor="country"
+                    className="text-sm font-medium text-gray-600"
                   >
                     Nacionalidad
                   </label>
-                  <input
-                    id="country"
-                    name="country"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.country}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
+                  <Field name="country">
+                    {({ field, form }) => (
+                      <CountrySelect
+                        value={field.value}
+                        onChange={(value) =>
+                          form.setFieldValue("country", value)
+                        }
+                      />
+                    )}
+                  </Field>
+                  {errors.country && touched.country && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.country}
+                    </span>
+                  )}
                 </div>
               </div>
 
-              <div className="w-full flex flex-col justify-center ">
-                <label
-                  htmlFor="email"
-                  className="text-xs text-resolution-blue drop-shadow-sm"
+              {/* Contacto de Emergencia */}
+              <h2 className="w-full text-center text-xl pb-2 py-10">
+                Contacto de emergencia
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {emergencyFields.map((field) => (
+                  <div key={field.name} className="flex flex-col">
+                    <label
+                      htmlFor={field.name}
+                      className="text-sm font-medium text-gray-600"
+                    >
+                      {field.label}
+                    </label>
+                    <Field
+                      id={field.name}
+                      name={field.name}
+                      type={field.type}
+                      className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                    />
+                    {errors[field.name] && touched[field.name] && (
+                      <span className="text-red-500 text-sm mt-1">
+                        {errors[field.name]}
+                      </span>
+                    )}
+                  </div>
+                ))}
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Teléfono de emergencia
+                  </label>
+                  <PhoneInput
+                    international
+                    country="ES"
+                    value={values.emergencyPhone}
+                    onChange={(value) => setFieldValue("emergencyPhone", value)}
+                    className="w-full rounded-lg"
+                    containerStyle={{
+                      maxWidth: "100%",
+                      position: "relative",
+                    }}
+                    inputStyle={{
+                      backgroundColor: "#ffffff",
+                      width: "100%",
+                    }}
+                    dropdownStyle={{
+                      backgroundColor: "#ffffff",
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                      maxHeight: "100px",
+                      overflowY: "auto",
+                      textAlign: "start",
+                    }}
+                  />
+                  {errors.emergencyPhone && touched.emergencyPhone && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.emergencyPhone}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-span-1 md:col-span-2 flex justify-center mt-6">
+                <button
+                  type="submit"
+                  className="bg-resolution-blue text-white py-2 px-10 rounded-lg transition-shadow shadow-md hover:shadow-lg"
                 >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
-                  className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                />
+                  Continuar
+                </button>
               </div>
-              <h2 className="form-title">Contacto de emergencia</h2>
-              <div className="flex flex-row justify-center items-center gap-3 w-full">
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="emergencyName"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Nombre
-                  </label>
-                  <input
-                    id="emergencyName"
-                    name="emergencyName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.emergencyName}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="emergencyPhone"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Teléfono
-                  </label>
-                  <input
-                    id="emergencyPhone"
-                    name="emergencyPhone"
-                    type="number"
-                    onChange={formik.handleChange}
-                    value={formik.values.emergencyPhone}
-                    className="w-full drop-shadow-md border number-input-no-appearance border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-row justify-center items-center gap-3 w-full">
-                <div className="w-full flex flex-col justify-center ">
-                  <label
-                    htmlFor="emergencyEmail"
-                    className="text-xs text-resolution-blue drop-shadow-sm"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="emergencyEmail"
-                    name="emergencyEmail"
-                    type="email"
-                    onChange={formik.handleChange}
-                    value={formik.values.emergencyEmail}
-                    className="w-full drop-shadow-md border border-slate-300 rounded-md outline-none px-2 py-1 text-resolution-blue"
-                  />
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-[#0C1660] rounded-lg px-4 py-2"
-              >
-                Continuar
-              </button>
-            </form>
-          </section>
-        </div>
-      </div>
-    </motion.section>
+            </Form>
+          )}
+        </Formik>
+      </motion.section>
+    )
   );
 };
 

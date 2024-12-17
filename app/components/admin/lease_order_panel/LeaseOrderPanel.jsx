@@ -56,10 +56,14 @@ export default function LeaseOrderPanel({ data }) {
     }
   };
 
-  const renderLeaseOrders = (orders, isCurrent) =>
+  const renderLeaseOrders = (orders, roomdata, isCurrent) =>
     orders.map((leaseOrder) => (
       <div key={leaseOrder.id} className="my-4">
-        <LeaseOrderSection data={leaseOrder} formatDate={formatDate} />
+        <LeaseOrderSection
+          data={leaseOrder}
+          formatDate={formatDate}
+          room={roomdata}
+        />
         <LeaseOrderClientSection
           data={leaseOrder.client}
           formatDate={formatDate}
@@ -126,7 +130,7 @@ export default function LeaseOrderPanel({ data }) {
                             order.status === "IN_PROGRESS" ||
                             order.status === "APPROVED"
                         ),
-                        true
+                        room
                       )}
                     </div>
                   ))

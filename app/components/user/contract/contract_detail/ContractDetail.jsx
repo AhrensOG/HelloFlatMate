@@ -112,7 +112,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   // Property DATA
   const contractDate = setDate();
   const landlordName = owner?.name + " " + owner?.lastName || "Javier García";
-  const landlordNIF = "12345678Z";
+  const landlordNIF = "B98358963";
   const landlordStreet = property.street || "Gran Vía";
   const landlordStreetNumber = property.streetNumber || "45";
   const landlordDoorNumber = room ? room.serial : "-";
