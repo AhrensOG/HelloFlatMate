@@ -99,11 +99,7 @@ const helloroomContractTemplate = ({
     En todo lo no previsto en el presente contrato, éste se regirá por lo dispuesto tanto en la Ley 29/1994, de 24 de noviembre, de Arrendamientos Urbanos, y supletoriamente por el Código Civil.
   
     DÉCIMOSEXTA. - SUMISIÓN.
-    Los contratantes se someten expresamente a los Juzgados y Tribunales de la ciudad de Valencia para todas aquellas cuestiones litigiosas que pudieran derivarse del presente contrato.
-  
-    Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.
-  
-    Firma ARRENDADORA                                                      Firma ARRENDATARIA\n
+    Los contratantes se someten expresamente a los Juzgados y Tribunales de la ciudad de Valencia para todas aquellas cuestiones litigiosas que pudieran derivarse del presente contrato.\n
 
     ANEXO I – NORMAS DE CONVIVENCIA
 
