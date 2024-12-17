@@ -102,10 +102,6 @@ const hellolandlordContractTemplate = ({
 
     DECIMOSEXTA. - SUMISIÓN.\n
     Los contratantes se someten expresamente a los Juzgados y Tribunales de la ciudad de Valencia para todas aquellas cuestiones litigiosas que pudieran derivarse del presente contrato.\n
-
-    Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados.\n
-
-    Firma ARRENDADORA                                                      Firma ARRENDATARIA\n
     
     ANEXO I – NORMAS DE CONVIVENCIA\n
 
