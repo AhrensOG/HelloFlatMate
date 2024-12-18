@@ -1,18 +1,18 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Context } from "../../context/GlobalContext";
-import { getAllProperties } from "../../context/actions";
-import HomeNavBar from "../../components/nav_bar/HomeNavBar";
-import DesktopHero from "../../components/user/home/desktop/DesktopHero";
-import OffersSection from "../../components/user/home/desktop/OfferSection";
-import CommunitySection from "../../components/user/home/desktop/CommunitySection";
-import FamilySection from "../../components/user/home/desktop/FamilySection";
-import PropertySlider from "../../components/user/home/desktop/PropertySlider";
-import InfoSection from "../../components/user/home/desktop/InfoSection";
-import Banner from "../../components/user/home/desktop/Banner";
-import Footer from "../../components/user/home/desktop/Footer";
-import MapSection from "../../components/user/home/desktop/auxiliarComponents/MapSection";
+import { Context } from "@/app/context/GlobalContext";
+import { getAllProperties } from "@/app/context/actions";
+import HomeNavBar from "@/app/components/nav_bar/HomeNavBar";
+import DesktopHero from "@/app/components/user/home/desktop/DesktopHero";
+import OffersSection from "@/app/components/user/home/desktop/OfferSection";
+import CommunitySection from "@/app/components/user/home/desktop/CommunitySection";
+import FamilySection from "@/app/components/user/home/desktop/FamilySection";
+import PropertySlider from "@/app/components/user/home/desktop/PropertySlider";
+import InfoSection from "@/app/components/user/home/desktop/InfoSection";
+import Banner from "@/app/components/user/home/desktop/Banner";
+import Footer from "@/app/components/user/home/desktop/Footer";
+import MapSection from "@/app/components/user/home/desktop/auxiliarComponents/MapSection";
 
 const hellostudio = {
     hero: {

@@ -17,8 +17,6 @@ export default async function RootLayout({ children, params: { locale } }) {
     return (
         <html lang={locale}>
             <body className={`${montserrat.className}`}>
-                {console.log(locale)}
-
                 <ClientWrapper locale={locale} messages={messages}>
                     {children}
                 </ClientWrapper>

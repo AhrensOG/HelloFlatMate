@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Dropdown from "../public/auth/Dropdown";
 import Image from "next/image";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,9 +17,17 @@ export default function NavbarV3({ fixed = false }) {
 
     const t = useTranslations("nav_bar");
 
+    const [locale, setLocale] = useState("es");
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        const savedLocale = localStorage.getItem("preferredLanguage");
+        if (savedLocale) {
+            setLocale(savedLocale);
+        }
+    }, []);
 
     const renderMenuOptions = () => {
         switch (user?.role) {
@@ -27,7 +35,7 @@ export default function NavbarV3({ fixed = false }) {
                 return (
                     <>
                         <Link
-                            href="/pages/admin/properties"
+                            href={`${locale?.toLowerCase()}/pages/admin/properties`}
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("admin_link_1")}
@@ -110,13 +118,13 @@ export default function NavbarV3({ fixed = false }) {
             </div>
 
             {/* Logo */}
-            <Link href={"/"}>
+            <Link href={`/${locale?.toLowerCase()}`}>
                 <Image src="/home/new_home/Helloflatmate.png" width={150} height={47.45} alt="logo" />
             </Link>
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
-                <Link href="/lastrooms" target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
+                <Link href={"/lastrooms"} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
                     Last rooms
                 </Link>
                 <Link href="/como-funciona" target="_blank" className="font-bold text-base">

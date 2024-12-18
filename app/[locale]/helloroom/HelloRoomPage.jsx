@@ -1,21 +1,24 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Context } from "../context/GlobalContext";
-import { getAllProperties } from "../context/actions";
-import Footer_1 from "../components/public/home/Footer";
-import TitleSection from "../components/public/main-pages/TitleSection";
-import PropertyCard from "../components/user/property/PropertyCard";
-import FourthSection from "../components/public/home/FourthSection";
-import SeventhSection from "../components/public/home/SeventhSection";
+import { Context } from "@/app/context/GlobalContext";
+import { getAllProperties } from "@/app/context/actions";
+import Footer_1 from "@/app/components/public/home/Footer";
+import TitleSection from "@/app/components/public/main-pages/TitleSection";
+import PropertyCard from "@/app/components/user/property/PropertyCard";
+import FourthSection from "@/app/components/public/home/FourthSection";
+import SeventhSection from "@/app/components/public/home/SeventhSection";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import TextSection from "../../components/public/main-pages/TextSection";
-import CategorySelector from "../../components/public/main-pages/CategorySelector";
-import PropertyCardSekeleton from "../../components/public/main-pages/PropertyCardSekeleton";
+import TextSection from "@/app/components/public/main-pages/TextSection";
+import CategorySelector from "@/app/components/public/main-pages/CategorySelector";
+import PropertyCardSekeleton from "@/app/components/public/main-pages/PropertyCardSekeleton";
 import { useSearchParams } from "next/navigation";
-import NavbarV3 from "../components/nav_bar/NavbarV3";
-import RequestSection from "../components/public/main-pages/RequestSection";
+import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
+import RequestSection from "@/app/components/public/main-pages/RequestSection";
+import { useTranslations } from "next-intl";
+import HTMLReactParser from "html-react-parser";
 
 export default function HelloRoomPage() {
+    const t = useTranslations("helloroom_page");
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
@@ -277,13 +280,7 @@ export default function HelloRoomPage() {
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
                         <h1 className="text-3xl font-bold">hellorooms</h1>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            hellorooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos
-                            los servicios activos. Nos ocupamos de la gestión y el mantenimiento para que sólo te enfoques en estudiar, disfrutar y
-                            explorar Valencia. Comparte piso con otros estudiantes de edad similar y vive una experiencia única en un entorno diseñado
-                            para tu estilo de vida.
-                            <br />
-                            <br />
-                            Contigo desde la reserva hasta tu último día en Valencia.
+                            {HTMLReactParser(t("h3"))}
                         </h3>
                     </div>
                 </div>
@@ -312,10 +309,7 @@ export default function HelloRoomPage() {
                             ) : (
                                 <>
                                     <div className="text-center py-6">
-                                        <span className="text-lg font-semibold text-gray-600">
-                                            No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras
-                                            opciones que podrían interesarte:
-                                        </span>
+                                        <span className="text-lg font-semibold text-gray-600">{t("span")}</span>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
                                         {state.properties
@@ -377,7 +371,7 @@ export default function HelloRoomPage() {
                         Prev
                     </button>
                     <span className="text-gray-700 font-semibold">
-                        Página {currentPage} de {totalPages}
+                        {t("span_2_1")} {currentPage} {t("span_2_2")} {totalPages}
                     </span>
                     <button
                         onClick={handleNext}

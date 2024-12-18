@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import NavBar_1 from "../../components/public/home/NavBar_1";
-import Footer_1 from "../../components/public/home/Footer";
-import SecondaryNavbar from "../../components/public/home/SecondaryNavbar";
+import NavBar_1 from "@/app/components/public/home/NavBar_1";
+import Footer_1 from "@/app/components/public/home/Footer";
+import SecondaryNavbar from "@/app/components/public/home/SecondaryNavbar";
 import Image from "next/image";
 import Link from "next/link";
 import HTMLReactParser from "html-react-parser";

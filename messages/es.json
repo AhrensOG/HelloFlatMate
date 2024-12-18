@@ -109,7 +109,9 @@
         "zone": "Zona",
         "dates": "Fechas",
         "share_with": "Comparte con",
-        "guests": "Huespedes"
+        "guests": "Huespedes",
+        "type_text": "Tipo de alojamiento",
+        "clean_btn": "Limpiar filtros"
     },
     "about_us": {
         "title": "helloflatmate es la plataforma online de alquiler de pisos y habitaciones de media y larga estancia",
@@ -180,5 +182,100 @@
         "21_desc": "Sí, con al menos 2 días de antelación y la aprobación de los flatmates. Para estancias superiores a dos días, se pueden pedir 5€ por día para cubrir gastos.",
         "22_title": "¿Se admiten mascotas?",
         "22_desc": "No, aunque nos encantan."
+    },
+
+    "pryvacy": {
+        "title": "Política de Privacidad",
+        "p_1": " En HELLO FLAT MATE, S.L., nos tomamos muy en serio la privacidad y la protección de los datos personales. Esta política describe cómo recopilamos, usamos, almacenamos y compartimos su información de acuerdo con el Reglamento (UE) 2016/679 (Reglamento General de Protección de Datos, RGPD) y la Ley Orgánica 3/2018 (LOPDGDD). Al utilizar nuestros servicios, confirma que ha leído y entendido esta política.",
+
+        "sect_1_h2": "1. Responsable del Tratamiento",
+        "sect_1_ul_li_1": "(strong)Denominación social:(/strong) HELLO FLAT MATE, S.L.",
+        "sect_1_ul_li_2": "(strong)CIF:(/strong) B98358963",
+        "sect_1_ul_li_3": "(strong)Domicilio social:(/strong) C/ Campoamor 8, 1º, 46021 - Valencia (Valencia)",
+        "sect_1_ul_li_4": "(strong)Teléfono:(/strong) 601 158 261",
+        "sect_1_ul_li_5": "(strong)Correo electrónico:(/strong)",
+        "sect_1_ul_li_5_a": "rooms@helloflatmate.com",
+
+        "sect_2_h2": "2. ¿Qué datos recopilamos y cómo los obtenemos?",
+        "sect_2_h3_1": "2.1. Información proporcionada directamente por usted",
+        "sect_2_p_1": " (strong)a)(/strong) Registro de usuario: Para crear una cuenta de usuario como inquilino o propietario, solicitamos información básica como nombre, apellidos y correo electrónico. Si utiliza opciones de registro mediante terceros (Facebook o Google), también se recopilan datos adicionales como fecha de nacimiento y género.",
+        "sect_2_p_2": "(strong)b)(/strong) Solicitudes de reserva: Es posible que le solicitemos datos como:",
+        "sect_2_ul_1_li_1": "Fecha de nacimiento",
+        "sect_2_ul_1_li_2": "Nacionalidad",
+        "sect_2_ul_1_li_3": "Genero",
+        "sect_2_ul_1_li_4": "DNI/Pasaporte",
+        "sect_2_ul_1_li_5": "Información académica o profesional",
+        "sect_2_ul_1_li_6": "Descripción personal (estilo de vida, preferencias de convivencia, etc.)",
+        "sect_2_p_3": "En caso de aprobación, será redirigido a Stripe.com para el pago, garantizando que HELLO FLAT MATE no tiene acceso a sus datos financieros.",
+        "sect_2_p_4": "(strong)c)(/strong) Registro de propietarios: Recopilamos los siguientes datos:",
+        "sect_2_ul_2_li_1": "Nombre, apellidos, correo electrónico y teléfono",
+        "sect_2_ul_2_li_2": "Dirección de la propiedad que desea anunciar",
+        "sect_2_ul_2_li_3": "Información bancaria para realizar pagos relacionados con las reservas",
+        "sect_2_ul_2_li_4": "Fotografías o vídeos de la propiedad para su anuncio",
+        "sect_2_p_5": "(strong)e)(/strong) Acciones promocionales: Participación en promociones, concursos o sorteos puede requerir datos como nombre y correo electrónico.",
+        "sect_2_p_6": "(strong)f)(/strong) Encuestas de satisfacción: Recopilamos nombre, edad, nacionalidad y nivel de satisfacción tras su estancia.",
+        "sect_2_h3_2": "2.2. Datos recopilados automáticamente",
+        "sect_2_p_7": "(strong)a)(/strong) Datos de registro mediante terceros: Si opta por  registrarse con Facebook o Google, obtenemos datos como nombre, correo electrónico, fecha de nacimiento y género.",
+        "sect_2_p_8": " (strong)b)(/strong) Datos técnicos: A través de herramientas como Google Analytics, recopilamos información técnica sobre su interacción, incluyendo:",
+        "sect_2_ul_3_li_1": "Dirección IP",
+        "sect_2_ul_3_li_2": "Tipo de navegador y sistema operativo",
+        "sect_2_ul_3_li_3": "Ubicación aproximada",
+        "sect_2_ul_3_li_4": "Páginas visitadas, duración de la sesión y otros datos relacionados con la navegación",
+
+        "sect_3_h2": "3. Finalidad del tratamiento",
+        "sect_3_p_1": "HELLO FLAT MATE utiliza sus datos personales para los siguientes propósitos:",
+        "sect_3_ul_li_1": "Gestionar la creación y uso de su cuenta como inquilino o propietario",
+        "sect_3_ul_li_2": "Permitirle realizar y gestionar reservas",
+        "sect_3_ul_li_3": "Facilitar pagos a través de plataformas seguras como Stripe",
+        "sect_3_ul_li_4": "Formalizar contratos de arrendamiento mediante firma digital",
+        "sect_3_ul_li_5": "Comunicarnos con usted en relación con solicitudes de reserva",
+
+        "sect_4_h2": "4. Base legal del tratamiento de datos",
+        "sect_4_p": "HELLO FLAT MATE trata sus datos bajo las siguientes bases legales: ejecución del contrato, interés legítimo y consentimiento explícito.",
+
+        "sect_5_h2": "5. Plazo de conservación de los datos",
+        "sect_5_p": " Los datos serán conservados mientras sean necesarios para la prestación del servicio o hasta que solicite su eliminación, respetando las obligaciones legales.",
+
+        "sect_6_h2": "6. ¿Con quién compartimos sus datos?",
+        "sect_6_ul_li_1": "Propietarios e inquilinos: Información básica necesaria para reservas y estancias.",
+        "sect_6_ul_li_2": "Proveedores de servicios: Terceros autorizados para procesar pagos y alojar datos.",
+        "sect_6_ul_li_3": "Autoridades competentes: Según lo requiera la ley.",
+
+        "sect_7_h2": "7. Ejercicio de sus derechos",
+        "sect_7_p": " Puede ejercer sus derechos de acceso, rectificación, supresión, limitación, portabilidad y oposición escribiendo a",
+        "sect_7_p_a": "rooms@helloflatmate.com",
+
+        "sect_8_h2": "8. Seguridad de los datos",
+        "sect_8_p": "HELLO FLAT MATE implementa medidas avanzadas para proteger sus datos personales.",
+
+        "sect_9_h2": "9. Cambios en esta política",
+        "sect_9_p": "Nos reservamos el derecho de modificar esta Política de Privacidad. En caso de cambios sustanciales, le notificaremos por correo electrónico o mediante un aviso en nuestra plataforma.",
+
+        "legal": "© 2024 HELLO FLAT MATE, S.L. Todos los derechos reservados."
+    },
+    "terms": {
+        "title": "Términos y condiciones",
+        "sect_1_h2": " Las habitaciones hellorooms, hellolandlord y hellocoliving están diseñadas para estudiantes internacionales y nacionales que buscan comodidad y facilidad desde el primer día. <br />",
+        "sect_1_p": "Están pensadas para estudiantes que llegan a Valencia por menos de un año y necesitan un espacio listo para habitar desde el primer momento. Estas habitaciones, gestionadas profesionalmente por helloflatmate, te permiten centrarte en lo importante mientras nosotros nos ocupamos de todo lo demás. <br /> <br /> Sabemos que los propietarios no están legalmente obligados a entregar las viviendas limpias y revisadas, por eso ofrecemos un completo servicio de preparación. Esto incluye: <br />",
+
+        "sect_2_ul_li_1": "Viviendas limpias y listas para tu llegada.",
+        "sect_2_ul_li_2": "Todos los suministros activos, incluyendo Internet de alta velocidad.",
+        "sect_2_ul_li_3": "La oportunidad de compartir piso con compañeros de tu misma edad y estilo de vida.",
+        "sect_2_ul_li_4": "Atención personalizada durante toda tu estancia.",
+        "sect_2_ul_li_5": "Contrato de alquiler revisado por helloflatmate, pudiendo leerlo antes de reservar.",
+        "sect_2_ul_li_6": "Informe de consumos de suministros y consejos de ahorro",
+        "sect_2_ul_li_7": "Mediación en caso de problemas entre compañeros.",
+
+        "sect_3_p": " Este servicio, diseñado específicamente para satisfacer las necesidades de estudiantes como tú, tiene un coste de honorarios de gestión de 459,80€ Impuestos incluidos. <br /> <br /> Además, ofrecemos ventajas tanto para los estudiantes como para los propietarios, incluyendo:",
+
+        "sect_4_ul_li_1": "Suministros a nombre del propietario para mayor tranquilidad.",
+        "sect_4_ul_li_2": "Contratos flexibles de 5, 10 o 11 meses según la vivienda.",
+        "sect_4_ul_li_3": "Una fianza asequible de tan solo 300€."
+    },
+    "helloroom_page": {
+        "h3": "hellorooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos los servicios activos. Nos ocupamos de la gestión y el mantenimiento para que sólo te enfoques en estudiar, disfrutar y explorar Valencia. Comparte piso con otros estudiantes de edad similar y vive una experiencia única en un entorno diseñado para tu estilo de vida. <br /> <br /> Contigo desde la reserva hasta tu último día en Valencia.",
+        "span": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",
+        "span_2_1": "Página",
+        "span_2_2": "de"
     }
 }

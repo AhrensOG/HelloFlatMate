@@ -108,7 +108,9 @@
         "zone": "Zone",
         "dates": "Dates",
         "share_with": "Share with",
-        "guests": "Guests"
+        "guests": "Guests",
+        "type_text": "Accommodation type",
+        "clean_btn": "Clear filters"
     },
     "about_us": {
         "title": "helloflatmate is the online platform for renting apartments and rooms for medium and long stays",
@@ -179,5 +181,99 @@
         "21_desc": "Yes, with at least 2 days' notice and approval from flatmates. For stays longer than two days, they may ask for €5 per day to cover expenses.",
         "22_title": "Are pets allowed?",
         "22_desc": "No, although we love them."
+    },
+    "pryvacy": {
+        "title": "Privacy Policy",
+        "p_1": "At HELLO FLAT MATE, S.L., we take privacy and the protection of personal data very seriously. This policy describes how we collect, use, store, and share your information in accordance with Regulation (EU) 2016/679 (General Data Protection Regulation, GDPR) and Organic Law 3/2018 (LOPDGDD). By using our services, you confirm that you have read and understood this policy.",
+
+        "sect_1_h2": "1. Data Controller",
+        "sect_1_ul_li_1": "(strong)Company Name:(/strong) HELLO FLAT MATE, S.L.",
+        "sect_1_ul_li_2": "(strong)Tax ID:(/strong) B98358963",
+        "sect_1_ul_li_3": "(strong)Registered Address:(/strong) C/ Campoamor 8, 1º, 46021 - Valencia (Valencia)",
+        "sect_1_ul_li_4": "(strong)Phone Number:(/strong) 601 158 261",
+        "sect_1_ul_li_5": "(strong)Email Address:(/strong)",
+        "sect_1_ul_li_5_a": "rooms@helloflatmate.com",
+
+        "sect_2_h2": "2. What data do we collect and how do we obtain it?",
+        "sect_2_h3_1": "2.1. Information provided directly by you",
+        "sect_2_p_1": "(strong)a)(/strong) User Registration: To create a user account as a tenant or owner, we request basic information such as name, surname, and email address. If you use third-party registration options (Facebook or Google), additional data such as date of birth and gender will also be collected.",
+        "sect_2_p_2": "(strong)b)(/strong) Booking Requests: We may ask you for data such as:",
+        "sect_2_ul_1_li_1": "Date of birth",
+        "sect_2_ul_1_li_2": "Nationality",
+        "sect_2_ul_1_li_3": "Gender",
+        "sect_2_ul_1_li_4": "ID/Passport",
+        "sect_2_ul_1_li_5": "Academic or professional information",
+        "sect_2_ul_1_li_6": "Personal description (lifestyle, living preferences, etc.)",
+        "sect_2_p_3": "If approved, you will be redirected to Stripe.com for payment, ensuring that HELLO FLAT MATE does not have access to your financial data.",
+        "sect_2_p_4": "(strong)c)(/strong) Owner Registration: We collect the following data:",
+        "sect_2_ul_2_li_1": "Name, surname, email address, and phone number",
+        "sect_2_ul_2_li_2": "Address of the property you wish to advertise",
+        "sect_2_ul_2_li_3": "Bank information for making payments related to bookings",
+        "sect_2_ul_2_li_4": "Photographs or videos of the property for your advertisement",
+        "sect_2_p_5": "(strong)e)(/strong) Promotional Actions: Participation in promotions, contests, or sweepstakes may require data such as name and email address.",
+        "sect_2_p_6": "(strong)f)(/strong) Satisfaction Surveys: We collect name, age, nationality, and satisfaction level after your stay.",
+        "sect_2_h3_2": "2.2. Data collected automatically",
+        "sect_2_p_7": "(strong)a)(/strong) Data from third-party registration: If you choose to register with Facebook or Google, we obtain data such as name, email address, date of birth, and gender.",
+        "sect_2_p_8": "(strong)b)(/strong) Technical Data: Through tools like Google Analytics, we collect technical information about your interaction, including:",
+        "sect_2_ul_3_li_1": "IP Address",
+        "sect_2_ul_3_li_2": "Browser type and operating system",
+        "sect_2_ul_3_li_3": "Approximate location",
+        "sect_2_ul_3_li_4": "Pages visited, session duration, and other browsing-related data",
+
+        "sect_3_h2": "3. Purpose of data processing",
+        "sect_3_p_1": "HELLO FLAT MATE uses your personal data for the following purposes:",
+        "sect_3_ul_li_1": "Manage the creation and use of your account as a tenant or owner",
+        "sect_3_ul_li_2": "Allow you to make and manage bookings",
+        "sect_3_ul_li_3": "Facilitate payments through secure platforms like Stripe",
+        "sect_3_ul_li_4": "Formalize lease agreements via digital signature",
+        "sect_3_ul_li_5": "Communicate with you regarding booking requests",
+
+        "sect_4_h2": "4. Legal basis for data processing",
+        "sect_4_p": "HELLO FLAT MATE processes your data under the following legal bases: contract execution, legitimate interest, and explicit consent.",
+
+        "sect_5_h2": "5. Data retention period",
+        "sect_5_p": "Data will be retained as long as necessary for the provision of the service or until you request its deletion, respecting legal obligations.",
+
+        "sect_6_h2": "6. Who do we share your data with?",
+        "sect_6_ul_li_1": "Owners and tenants: Basic information necessary for bookings and stays.",
+        "sect_6_ul_li_2": "Service providers: Authorized third parties to process payments and host data.",
+        "sect_6_ul_li_3": "Competent authorities: As required by law.",
+
+        "sect_7_h2": "7. Exercise of your rights",
+        "sect_7_p": "You can exercise your rights of access, rectification, deletion, limitation, portability, and opposition by writing to",
+        "sect_7_a": "rooms@helloflatmate.com",
+
+        "sect_8_h2": "8. Data security",
+        "sect_8_p": "HELLO FLAT MATE implements advanced measures to protect your personal data.",
+
+        "sect_9_h2": "9. Changes to this policy",
+        "sect_9_p": "We reserve the right to modify this Privacy Policy. In case of substantial changes, we will notify you by email or through a notice on our platform.",
+
+        "legal": "© 2024 HELLO FLAT MATE, S.L. All rights reserved."
+    },
+    "terms": {
+        "title": "Terms and Conditions",
+        "sect_1_h2": "The hellorooms, hellolandlord, and hellocoliving rooms are designed for international and national students seeking comfort and convenience from day one. <br />",
+        "sect_1_p": "They are intended for students arriving in Valencia for less than a year who need a space ready to live in from the very start. These rooms, professionally managed by helloflatmate, allow you to focus on what matters while we take care of everything else. <br /> <br /> We know that landlords are not legally obligated to deliver clean and inspected homes, which is why we offer a comprehensive preparation service. This includes: <br />",
+
+        "sect_2_ul_li_1": "Clean homes ready for your arrival.",
+        "sect_2_ul_li_2": "All utilities active, including high-speed internet.",
+        "sect_2_ul_li_3": "The opportunity to share an apartment with peers of your same age and lifestyle.",
+        "sect_2_ul_li_4": "Personalized attention throughout your stay.",
+        "sect_2_ul_li_5": "Lease agreement reviewed by helloflatmate, allowing you to read it before booking.",
+        "sect_2_ul_li_6": "Utility consumption report and savings tips.",
+        "sect_2_ul_li_7": "Mediation in case of issues between roommates.",
+
+        "sect_3_p": "This service, specifically designed to meet the needs of students like you, has a management fee of €459.80, including taxes. <br /> <br /> Additionally, we offer benefits for both students and landlords, including:",
+
+        "sect_4_ul_li_1": "Utilities in the landlord's name for greater peace of mind.",
+        "sect_4_ul_li_2": "Flexible contracts of 5, 10, or 11 months depending on the property.",
+        "sect_4_ul_li_3": "An affordable deposit of only €300."
+    },
+    "helloroom_page": {
+        "h3": "hellorooms are furnished rooms ready for you to move in from day one, with high-speed Internet and all services active. We take care of management and maintenance so you can focus on studying, enjoying, and exploring Valencia. Share an apartment with other students of similar age and experience a unique lifestyle designed for you. <br /> <br /> With you from booking to your last day in Valencia.",
+        "span": "No properties matching your preferences were found. But don't worry! Here are some other options that might interest you:",
+        "span_2_1": "Page",
+        "span_2_2": "of"
     }
 }

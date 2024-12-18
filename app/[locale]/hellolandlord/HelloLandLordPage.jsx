@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Context } from "../context/GlobalContext";
-import { getAllProperties } from "../context/actions";
-import Footer_1 from "../components/public/home/Footer";
-import PropertyCard from "../components/user/property/PropertyCard";
-import FourthSection from "../components/public/home/FourthSection";
-import SeventhSection from "../components/public/home/SeventhSection";
-import TextSection from "../components/public/main-pages/TextSection";
-import CategorySelector from "../components/public/main-pages/CategorySelector";
-import PropertyCardSekeleton from "../components/public/main-pages/PropertyCardSekeleton";
+import { Context } from "@/app/context/GlobalContext";
+import { getAllProperties } from "@/app/context/actions";
+import Footer_1 from "@/app/components/public/home/Footer";
+import PropertyCard from "@/app/components/user/property/PropertyCard";
+import FourthSection from "@/app/components/public/home/FourthSection";
+import SeventhSection from "@/app/components/public/home/SeventhSection";
+import TextSection from "@/app/components/public/main-pages/TextSection";
+import CategorySelector from "@/app/components/public/main-pages/CategorySelector";
+import PropertyCardSekeleton from "@/app/components/public/main-pages/PropertyCardSekeleton";
 import { useSearchParams } from "next/navigation";
-import NavbarV3 from "../components/nav_bar/NavbarV3";
-import RequestSection from "../components/public/main-pages/RequestSection";
+import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
+import RequestSection from "@/app/components/public/main-pages/RequestSection";
 
 export default function HelloLandlordPage() {
     const searchParams = useSearchParams();

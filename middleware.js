@@ -16,7 +16,10 @@ export async function middleware(request) {
     const cookieStore = cookies();
     const token = cookieStore.get("auth_token")?.value;
 
-    // Configuración de locales
+    //tomar el lenguage de las cookies
+    const preferredLocale = request.cookies.get("preferred_locale")?.value || "es"; // Valor por defecto: 'es'
+
+    //Configuración de locales
     const supportedLocales = ["es", "en"];
     const url = new URL(request.url);
     const pathName = url.pathname;
@@ -63,14 +66,10 @@ export async function middleware(request) {
 
     // Validar y redirigir si el `locale` no es válido
     if (!supportedLocales.includes(locale)) {
-        const isAllowedPath = allowedPaths.some((allowedPath) => pathName.startsWith(allowedPath));
-        if (isAllowedPath) {
-            const redirectUrl = new URL(`/es${pathName}`, request.url);
-            console.log(`Redirigiendo a: ${redirectUrl.href}`);
-            return NextResponse.redirect(redirectUrl);
-        }
-        // Establecer el locale predeterminado si no es una ruta pública
-        locale = "es";
+        // Redirigir a la ruta con el locale preferido
+        const redirectUrl = new URL(`/${preferredLocale}${pathName}`, request.url);
+        console.log(`Redirigiendo a: ${redirectUrl.href}`);
+        return NextResponse.redirect(redirectUrl);
     }
 
     // Configurar el locale en las cabeceras para que `getRequestConfig` lo reciba
