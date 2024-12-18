@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const articles = [
   {
-    title: "Alojamientos consolidadas",
+    title: "Alojamientos consolidados",
     description:
       "Nuestros agentes, residentes en Valencia, seleccionan entornos seguros y bien conectados, ideales para tu día a día. Te ayudamos a enfocarte en tus estudios, construir tu futuro y crear nuevas amistades.",
     image: "/home/new_home/dormir.png",
