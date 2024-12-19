@@ -4,88 +4,129 @@ export default function TextSection() {
   return (
     <section className="p-4 max-w-screen-lg mx-auto py-10">
       <h2 className="text-2xl font-bold mb-4">
-        Alquileres en Valencia: Encuentra la vivienda ideal en la ciudad del
-        Mediterráneo
+        ¿Qué es el coliving en Valencia y por qué elegirlo?
       </h2>
       <p className="mb-4">
-        ¿Buscas un piso de alquiler en Valencia? Esta ciudad mediterránea
-        combina historia, modernidad y calidad de vida. Valencia es una de las
-        ciudades más deseadas para vivir en España, gracias a su clima
-        agradable, sus playas, su riqueza cultural y su oferta gastronómica.
-        Descubre todas las opciones de alquiler en Valencia y encuentra el lugar
-        perfecto para ti.
+        El coliving es la solución perfecta para quienes buscan algo más que un simple alojamiento. Se trata de un estilo de vida que combina el alquiler de habitaciones privadas con zonas comunes compartidas, fomentando la convivencia, la colaboración y el ahorro.
       </p>
+      <p className="mb-4">En helloflatmate, ofrecemos:</p>
+      <ul className="list-disc list-inside mb-4">
+        <li>Habitaciones privadas completamente amuebladas.</li>
+        <li>Zonas comunes: Salones, cocinas y espacios de trabajo compartidos.</li>
+        <li>Servicios incluidos: Internet, limpieza y mantenimiento.</li>
+        <li>Ambiente multicultural: Ideal para estudiantes, Erasmus y jóvenes profesionales.</li>
+      </ul>
       <p className="mb-4">
-        Aprovecha su clima privilegiado para pasear por la ciudad y disfrutar de
-        sus numerosos atractivos. Desde la impresionante Ciudad de las Artes y
-        las Ciencias hasta el encanto histórico del Barrio del Carmen, Valencia
-        está llena de lugares que te sorprenderán. No te olvides de visitar su
-        catedral, el famoso Miguelete, y el Mercado Central, uno de los mayores
-        mercados de productos frescos de Europa. Si decides mudarte a Valencia,
-        estarás rodeado de cultura, historia y diseño innovador.
-      </p>
-      <p className="mb-4">
-        Aunque la ciudad tiene una energía dinámica, siempre encontrarás
-        espacios para desconectar del bullicio. Recorre los Jardines del Turia,
-        un enorme parque que cruza la ciudad en el antiguo cauce del río Turia,
-        o relájate en sus playas de arena dorada como la Malvarrosa o El Saler.
-        Valencia es una ciudad donde puedes disfrutar tanto del mar como de la
-        naturaleza, con el Parque Natural de la Albufera a pocos kilómetros,
-        ideal para escapadas al aire libre.
+        ¡Vive, estudia y trabaja en un entorno dinámico y lleno de oportunidades!
       </p>
 
-      <h3 className="text-xl font-semibold mt-8 mb-4">
-        ¿Cuáles son las áreas más atractivas de Valencia?
-      </h3>
+      <h2 className="text-2xl font-bold mb-4">
+        Ventajas del coliving en Valencia para estudiantes y profesionales
+      </h2>
       <p className="mb-4">
-        Si buscas tranquilidad, los barrios residenciales como Campanar o
-        Benimaclet son ideales para familias o estudiantes. Por otro lado, si
-        disfrutas de la vida nocturna y el ambiente moderno, Ruzafa es la opción
-        perfecta con su gran variedad de bares, restaurantes y eventos
-        culturales. Si prefieres vivir en el corazón histórico, el Ciutat Vella
-        te encantará con su arquitectura medieval y sus pintorescas calles. Sea
-        cual sea tu estilo, Valencia tiene un barrio que se adapta a tus
-        necesidades.
+        Elegir coliving en Valencia con helloflatmate tiene muchos beneficios:
+      </p>
+      <h3 className="text-xl font-semibold mt-8 mb-4">1. Comunidad y networking</h3>
+      <p className="mb-4">
+        Convive con personas de todo el mundo, comparte experiencias y amplía tu red de contactos profesionales y personales.
+      </p>
+      <h3 className="text-xl font-semibold mt-8 mb-4">2. Servicios todo incluido</h3>
+      <p className="mb-4">
+        Olvídate de gastos adicionales. Nuestros pisos coliving incluyen:
+      </p>
+      <ul className="list-disc list-inside mb-4">
+        <li>Internet de alta velocidad.</li>
+        <li>Gastos de agua, luz y gas.</li>
+        <li>Limpieza periódica de zonas comunes.</li>
+      </ul>
+      <h3 className="text-xl font-semibold mt-8 mb-4">3. Flexibilidad y comodidad</h3>
+      <p className="mb-4">
+        Adaptamos la duración de tu estancia a tus necesidades. Ya sea un mes, un semestre o todo el año, tenemos opciones para ti.
+      </p>
+      <h3 className="text-xl font-semibold mt-8 mb-4">4. Ubicación estratégica en Valencia</h3>
+      <p className="mb-4">
+        Nuestros espacios de coliving están situados en zonas clave:
+      </p>
+      <ul className="list-disc list-inside mb-4">
+        <li>Cerca de universidades como la UV y la UPV.</li>
+        <li>Bien conectados con transporte público.</li>
+        <li>Próximos a servicios, tiendas, ocio y zonas verdes.</li>
+      </ul>
+
+      <h2 className="text-2xl font-bold mb-4">
+        Coliving en Valencia: Ideal para estudiantes y nómadas digitales
+      </h2>
+      <p className="mb-4">
+        Tanto si vienes a estudiar, trabajar o teletrabajar, el coliving en Valencia te permite disfrutar de un entorno adaptado a tu estilo de vida:
+      </p>
+      <ul className="list-disc list-inside mb-4">
+        <li>
+          <strong>Estudiantes:</strong> Espacios tranquilos para estudiar, conocer nuevos amigos y vivir una experiencia internacional.
+        </li>
+        <li>
+          <strong>Nómadas digitales:</strong> Ambientes con internet rápido y zonas comunes donde podrás trabajar con comodidad.
+        </li>
+        <li>
+          <strong>Profesionales jóvenes:</strong> Comparte vivienda con personas afines, ahorra en alquiler y crea oportunidades de networking.
+        </li>
+      </ul>
+      <p className="mb-4">¡Haz que tu estancia en Valencia sea productiva y memorable!</p>
+
+      <h2 className="text-2xl font-bold mb-4">
+        ¿Por qué elegir helloflatmate para tu coliving en Valencia?
+      </h2>
+      <p className="mb-4">
+        En helloflatmate, nos especializamos en ofrecer alojamientos de calidad que se adaptan a tu estilo de vida. Esto es lo que nos diferencia:
+      </p>
+      <ul className="list-disc list-inside mb-4">
+        <li>Pisos modernos y funcionales: Espacios recién reformados con diseño actual.</li>
+        <li>Atención personalizada: Te acompañamos en todo el proceso de búsqueda y estancia.</li>
+        <li>Contrato transparente: Con todas las garantías y sin letra pequeña.</li>
+        <li>Ambiente internacional: Ideal para conectar con personas de distintas culturas.</li>
+      </ul>
+
+      <h2 className="text-2xl font-bold mb-4">
+        ¿Cómo reservar tu espacio de coliving en Valencia?
+      </h2>
+      <p className="mb-4">
+        Encontrar tu espacio ideal en coliving con helloflatmate es fácil y rápido:
+      </p>
+      <ol className="list-decimal list-inside mb-4">
+        <li>Explora nuestras opciones: Usa nuestros filtros para elegir ubicación, presupuesto y duración de estancia.</li>
+        <li>Reserva tu habitación: Asegura tu espacio online con total tranquilidad y transparencia.</li>
+        <li>Vive la experiencia: Disfruta de tu estancia con todos los servicios incluidos.</li>
+      </ol>
+      <p className="mb-4">
+        Si necesitas ayuda, nuestros agentes estarán disponibles para resolver tus dudas y garantizar que encuentres el espacio perfecto para ti.
       </p>
 
-      <h3 className="text-xl font-semibold mt-8 mb-4">
-        ¿Es difícil encontrar pisos en alquiler en Valencia?
-      </h3>
+      <h2 className="text-2xl font-bold mb-4">
+        Vive el coliving en Valencia y aprovecha al máximo la ciudad
+      </h2>
       <p className="mb-4">
-        Es cierto que el mercado de alquiler en Valencia puede ser competitivo,
-        especialmente en las zonas más céntricas o cercanas al mar. Sin embargo,
-        con algo de paciencia y dedicación, es posible encontrar opciones
-        interesantes. Valencia también ofrece una buena variedad de estudios y
-        pisos compartidos, ideales para ahorrar dinero y disfrutar de la ciudad
-        en compañía.
+        Valencia es la ciudad perfecta para estudiantes y jóvenes profesionales que buscan calidad de vida, oportunidades y una gran oferta cultural:
+      </p>
+      <ul className="list-disc list-inside mb-4">
+        <li>Clima mediterráneo: Más de 300 días de sol al año.</li>
+        <li>Cultura y gastronomía: Descubre las Fallas, la paella y los encantos del casco histórico.</li>
+        <li>Playas y naturaleza: Relájate en la playa de la Malvarrosa o visita la Albufera.</li>
+        <li>Coste de vida asequible: Alojamiento y servicios a precios razonables comparados con otras ciudades europeas.</li>
+      </ul>
+      <p className="mb-4">
+        El coliving en Valencia te permite disfrutar de todo esto con comodidad, ahorro y una experiencia enriquecedora.
       </p>
 
-      <h3 className="text-xl font-semibold mt-8 mb-4">
-        ¿Cuál es el precio medio del alquiler en Valencia?
-      </h3>
+      <h2 className="text-2xl font-bold mb-4">
+        Reserva tu espacio de coliving en Valencia hoy mismo
+      </h2>
       <p className="mb-4">
-        Los precios de los alquileres en Valencia son más accesibles que en
-        otras grandes ciudades de España. En el centro, el alquiler de un piso
-        puede oscilar entre 700 y 1000 euros, mientras que en barrios más
-        alejados del núcleo urbano, como Patraix o Quatre Carreres, los precios
-        varían entre 500 y 800 euros. Si tu presupuesto es más ajustado,
-        compartir piso es una excelente alternativa para disfrutar de la ciudad
-        sin gastar demasiado.
+        En helloflatmate, llevamos años ayudando a estudiantes y jóvenes a encontrar el alojamiento perfecto en Valencia. Nuestra oferta de coliving combina comodidad, comunidad y servicios incluidos para que tu estancia sea inmejorable.
       </p>
-
-      <h3 className="text-xl font-semibold mt-8 mb-4">
-        ¿Es Valencia un buen sitio para vivir?
-      </h3>
-      <p>
-        ¡Por supuesto! Valencia es una ciudad acogedora, con un equilibrio
-        perfecto entre tranquilidad y dinamismo. Es conocida por su gastronomía
-        de fama mundial, desde la auténtica paella valenciana hasta las
-        horchatas artesanales y los fartons. Además, su amplia oferta cultural,
-        su cercanía al Mediterráneo y su gente amable hacen de Valencia un lugar
-        excepcional para vivir. Aquí encontrarás una ciudad que combina lo mejor
-        de la tradición española con un estilo de vida moderno y relajado.
-        ¿Listo para empezar una nueva etapa en Valencia? ¡Aquí siempre hay un
-        lugar para ti!
+      <p className="mb-4">
+        ¿Listo para empezar? Explora nuestras opciones, contacta con nuestro equipo y asegura tu habitación ideal en Valencia.
+      </p>
+      <p className="mb-4">
+        ¡Vive la experiencia coliving con helloflatmate y haz de Valencia tu nuevo hogar!
       </p>
     </section>
   );
