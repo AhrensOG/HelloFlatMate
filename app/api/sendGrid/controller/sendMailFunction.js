@@ -3,7 +3,7 @@ import sendgrid from "@sendgrid/mail";
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 export async function sendMailFunction(data) {
-  const { to, subject, text } = data;
+  const { to, subject, text, attachments } = data; // Añadimos `attachments` al destructuring
   if (!to || !subject || !text) {
     console.error("Missing data (to / subject / text): ", data);
     return;
@@ -13,6 +13,7 @@ export async function sendMailFunction(data) {
     to: to,
     subject: subject,
     text: text,
+    attachments: attachments || [], // Adjunta los archivos si se proporcionan
   };
 
   try {

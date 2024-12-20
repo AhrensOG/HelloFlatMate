@@ -13,6 +13,14 @@ import {
 import rentPayment from "@/db/models/rentPayment";
 import { sendMailFunction } from "../../sendGrid/controller/sendMailFunction";
 
+const formatDate = (date) => {
+  const newDate = new Date(date);
+  const year = newDate.getFullYear();
+  const month = String(newDate.getMonth() + 1).padStart(2, "0");
+  const day = String(newDate.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 export const revalidate = 0;
@@ -69,7 +77,7 @@ export async function POST(req) {
             include: {
               model: Property,
               as: "property",
-              attributes: ["ownerId"],
+              attributes: ["ownerId", "street", "streetNumber", "floor"],
             },
           });
           if (!property) {
@@ -123,16 +131,79 @@ export async function POST(req) {
           await successLeaseOrderRoom.update({
             status: "APPROVED",
           });
+
+          const detailsPayments = [
+            {
+              amount: rentPayment.amount,
+              date: rentPayment.date,
+              status: rentPayment.status,
+              id: rentPayment.id,
+              quotaNumber: rentPayment.quotaNumber,
+            },
+          ];
+
+          const pdfData = {
+            id: rentPayment.id,
+            clienteName: client.name + " " + client.lastName || "N/A",
+            clienteDni: client.idNum || "N/A",
+            clienteAddress: client.street + " " + client.streetNumber || "N/A",
+            clienteCity:
+              client.city + " " + "CP: " + client.postalCode || "N/A",
+            clientePhone: client.phone || "N/A",
+            clienteEmail: client.email || "N/A",
+            room: `${property.property?.street} ${property.property?.streetNumber} ${property.property?.floor}`,
+            roomCode: property.serial,
+            gender: property?.property?.typology
+              ? property.property.typology === "MIXED"
+                ? "mixto"
+                : property.property.typology === "ONLY_WOMEN"
+                ? "solo mujeres"
+                : property.property.typology === "ONLY_MEN"
+                ? "solo hombres"
+                : "desconocido"
+              : "desconocido",
+            invoiceNumber: rentPayment.id,
+            invoicePeriod:
+              formatDate(successLeaseOrderRoom.startDate) +
+              " / " +
+              formatDate(successLeaseOrderRoom.endDate),
+            details: detailsPayments,
+            totalAmount: detailsPayments.reduce(
+              (total, payment) => total + payment.amount,
+              0
+            ),
+            returnBytes: true,
+          };
+
+          const pdfBytes = await billBuilder(pdfData);
+          const pdfBase64 = pdfBytes.toString("base64");
+
           await sendMailFunction({
             to: client.email,
             subject: `Confirmacion de reserva - Alojamiento ${property.serial}`,
             text: `¡Gracias por confiar en helloflatmate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
+            attachments: [
+              {
+                content: pdfBase64,
+                filename: `factura_${rentPayment.id}.pdf`,
+                type: "application/pdf",
+                disposition: "attachment",
+              },
+            ],
           });
 
           await sendMailFunction({
             to: hfm_email,
             subject: `Pago de reserva - ${property.serial}`,
             text: `El usuario ${client.name} ${client.lastName} realizó el pago de reserva por el alojamiento ${property.serial}.`,
+            attachments: [
+              {
+                content: pdfBase64,
+                filename: `factura_${rentPayment.id}.pdf`,
+                type: "application/pdf",
+                disposition: "attachment",
+              },
+            ],
           });
 
           console.log(

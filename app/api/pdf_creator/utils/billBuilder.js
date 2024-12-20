@@ -130,7 +130,7 @@ export async function billBuilder(data) {
         const paddingVertical = 8;
 
         // Encabezados de la tabla
-        const headers = ["Código", "Fecha", "Confirmado", "Subtotal"];
+        const headers = ["Código", "Fecha", "Pagos", "Subtotal"];
         const headerWidths = [130, 160, 140, 125];
         let currentRowY = detailsStartY;
 
@@ -182,7 +182,7 @@ export async function billBuilder(data) {
                 color: rgb(0, 0, 0),
                 align: "center",
             });
-            page.drawText(detail.status, {
+            page.drawText(detail.status === "APPROVED" ? "Confirmado" : "N/A", {
                 x: margin + headerWidths[0] + headerWidths[1] + paddingVertical,
                 y: currentRowY + rowHeight / 2 - 6,
                 size: 12,
@@ -251,7 +251,9 @@ export async function billBuilder(data) {
 
         const pdfBytes = await pdfDoc.save();
         const pdfStream = Buffer.from(pdfBytes);
-
+        if (data.returnBytes) {
+            return pdfBytes
+        }
         return pdfStream;
     } catch (error) {
         console.log(error);
