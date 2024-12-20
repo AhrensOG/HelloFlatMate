@@ -12,6 +12,7 @@ import PropertyCardSekeleton from "../components/public/main-pages/PropertyCardS
 import { useSearchParams } from "next/navigation";
 import NavbarV3 from "../components/nav_bar/NavbarV3";
 import RequestSection from "../components/public/main-pages/RequestSection";
+import Head from "next/head";
 
 export default function HelloColivingPage() {
   const searchParams = useSearchParams();
@@ -263,148 +264,164 @@ export default function HelloColivingPage() {
   }, [scrollToForm, displayedRooms, state?.user]);
 
   return (
-    <div>
-      <div className="flex flex-col sm:min-h-screen">
-        <header className="mb-16">
-          <NavbarV3 fixed={true} />
-        </header>
-        <div className="w-full flex flex-col">
-          <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
-            <h1 className="text-3xl font-bold">hellocoliving</h1>
-            <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-              Donde la comodidad se encuentra con la comunidad En helloflatmate
-              transformamos el concepto de vivienda compartida con
-              hellocoliving. Hemos destinado tres modernas viviendas en Valencia
-              exclusivamente al formato coliving, creando espacios diseñados
-              para estudiantes que buscan comodidad, privacidad y comunidad. ¡Tu
-              nueva forma de vivir en Valencia te está esperando!
-              <br />
-              <br />
-              ¡Tu nueva forma de vivir en Valencia te está esperando!
-            </h3>
-          </div>
-        </div>
-        {/* Contenedor de búsqueda y botones */}
-        <CategorySelector
-          category={"HELLO_COLIVING"}
-          filters={filters}
-          setFilters={setFilters}
-          helloRoomProperties={helloRoomProperties}
-          helloColivingProperties={helloColivingProperties}
-          helloStudioProperties={helloStudioProperties}
-          helloLandlordProperties={helloLandlordProperties}
-          allProperties={properties}
+    <>
+      <Head>
+        <title>
+          Alquiler de habitaciones en Valencia para estudiantes | helloflatmate
+        </title>
+        <meta
+          name="description"
+          content="Encuentra el mejor alquiler de habitaciones en Valencia para estudiantes. Pisos compartidos, atención personalizada y ubicaciones ideales. ¡Reserva ya!"
         />
+      </Head>
+      <div>
+        <div className="flex flex-col sm:min-h-screen">
+          <header className="mb-16">
+            <NavbarV3 fixed={true} />
+          </header>
+          <div className="w-full flex flex-col">
+            <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
+              <h1 className="text-3xl font-bold">
+                Coliving en Valencia: La mejor experiencia para estudiantes
+              </h1>
+              <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
+                Descubre el coliving en Valencia con helloflatmate, una opción
+                moderna y flexible para estudiantes, profesionales jóvenes y
+                nómadas digitales. Vive en pisos compartidos completamente
+                equipados, con servicios incluidos y espacios pensados para tu
+                comodidad y productividad.
+                <br />
+                <br />
+                Conecta con otros residentes, disfruta de una experiencia única
+                y vive en las mejores zonas de Valencia.
+              </h3>
+            </div>
+          </div>
+          {/* Contenedor de búsqueda y botones */}
+          <CategorySelector
+            category={"HELLO_COLIVING"}
+            filters={filters}
+            setFilters={setFilters}
+            helloRoomProperties={helloRoomProperties}
+            helloColivingProperties={helloColivingProperties}
+            helloStudioProperties={helloStudioProperties}
+            helloLandlordProperties={helloLandlordProperties}
+            allProperties={properties}
+          />
 
-        {/* Lista de habitaciones */}
-        <div
-          id="carousel-container"
-          className="w-full flex justify-center items-start"
-        >
-          <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
-            {!state.properties || state.properties?.length === 0 ? (
-              // Mostrar skeletons cuando no hay propiedades
-              Array.from({ length: 6 }).map((_, index) => (
-                <PropertyCardSekeleton key={index} />
-              ))
-            ) : displayedRooms.length === 0 ? (
-              showSkeleton ? (
-                // Mostrar skeletons por 1 segundo
+          {/* Lista de habitaciones */}
+          <div
+            id="carousel-container"
+            className="w-full flex justify-center items-start"
+          >
+            <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
+              {!state.properties || state.properties?.length === 0 ? (
+                // Mostrar skeletons cuando no hay propiedades
                 Array.from({ length: 6 }).map((_, index) => (
                   <PropertyCardSekeleton key={index} />
                 ))
+              ) : displayedRooms.length === 0 ? (
+                showSkeleton ? (
+                  // Mostrar skeletons por 1 segundo
+                  Array.from({ length: 6 }).map((_, index) => (
+                    <PropertyCardSekeleton key={index} />
+                  ))
+                ) : (
+                  <>
+                    <div className="text-center py-6">
+                      <span className="text-lg font-semibold text-gray-600">
+                        No se encontraron propiedades que coincidan con tus
+                        preferencias. ¡Pero no te preocupes! Aquí tienes otras
+                        opciones que podrían interesarte:
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {state.properties
+                        ?.filter(
+                          (property) =>
+                            property.category === "HELLO_ROOM" ||
+                            property.category === "HELLO_LANDLORD" ||
+                            property.category === "HELLO_COLIVING"
+                        )
+                        .flatMap((property) =>
+                          property.rooms
+                            ?.filter((room) => room.isActive === true)
+                            .map((room) => ({
+                              ...room,
+                              property, // Adjuntar la propiedad completa para pasarla al componente
+                            }))
+                        )
+                        .map((room) => (
+                          <PropertyCard
+                            key={`${room.id}-room`}
+                            property={room.property}
+                            roomId={room.id}
+                            price={room.price}
+                            name={room.name}
+                            images={room.images?.[0]} // Verificar si hay imágenes disponibles
+                            room={room}
+                          />
+                        ))}
+                    </div>
+                    <RequestSection
+                      filters={filters}
+                      requestForm={requestForm}
+                    />
+                  </>
+                )
               ) : (
-                <>
-                  <div className="text-center py-6">
-                    <span className="text-lg font-semibold text-gray-600">
-                      No se encontraron propiedades que coincidan con tus
-                      preferencias. ¡Pero no te preocupes! Aquí tienes otras
-                      opciones que podrían interesarte:
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {state.properties
-                      ?.filter(
-                        (property) =>
-                          property.category === "HELLO_ROOM" ||
-                          property.category === "HELLO_LANDLORD" ||
-                          property.category === "HELLO_COLIVING"
-                      )
-                      .flatMap((property) =>
-                        property.rooms
-                          ?.filter((room) => room.isActive === true)
-                          .map((room) => ({
-                            ...room,
-                            property, // Adjuntar la propiedad completa para pasarla al componente
-                          }))
-                      )
-                      .map((room) => (
-                        <PropertyCard
-                          key={`${room.id}-room`}
-                          property={room.property}
-                          roomId={room.id}
-                          price={room.price}
-                          name={room.name}
-                          images={room.images?.[0]} // Verificar si hay imágenes disponibles
-                          room={room}
-                        />
-                      ))}
-                  </div>
-                  <RequestSection filters={filters} requestForm={requestForm} />
-                </>
-              )
-            ) : (
-              // Mostrar habitaciones cuando hay resultados
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {displayedRooms.map((room) => (
-                  <PropertyCard
-                    key={room.id + "room"}
-                    property={room.property}
-                    roomId={room.id}
-                    price={room.price}
-                    name={room.name}
-                    images={room.images[0]}
-                    room={room}
-                  />
-                ))}
-              </div>
-            )}
+                // Mostrar habitaciones cuando hay resultados
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {displayedRooms.map((room) => (
+                    <PropertyCard
+                      key={room.id + "room"}
+                      property={room.property}
+                      roomId={room.id}
+                      price={room.price}
+                      name={room.name}
+                      images={room.images[0]}
+                      room={room}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
+          {/* Botones de paginación */}
+          <div className="w-full flex justify-center items-center gap-4 my-4">
+            <button
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 bg-gray-200 rounded-lg ${
+                currentPage === 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-300"
+              }`}
+            >
+              Prev
+            </button>
+            <span className="text-gray-700 font-semibold">
+              Página {currentPage} de {totalPages}
+            </span>
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 bg-gray-200 rounded-lg ${
+                currentPage === totalPages
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-300"
+              }`}
+            >
+              Next
+            </button>
+          </div>
+          <FourthSection />
+          <SeventhSection />
+          <TextSection />
         </div>
-        {/* Botones de paginación */}
-        <div className="w-full flex justify-center items-center gap-4 my-4">
-          <button
-            onClick={handlePrev}
-            disabled={currentPage === 1}
-            className={`px-4 py-2 bg-gray-200 rounded-lg ${
-              currentPage === 1
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-gray-300"
-            }`}
-          >
-            Prev
-          </button>
-          <span className="text-gray-700 font-semibold">
-            Página {currentPage} de {totalPages}
-          </span>
-          <button
-            onClick={handleNext}
-            disabled={currentPage === totalPages}
-            className={`px-4 py-2 bg-gray-200 rounded-lg ${
-              currentPage === totalPages
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-gray-300"
-            }`}
-          >
-            Next
-          </button>
-        </div>
-        <FourthSection />
-        <SeventhSection />
-        <TextSection />
-      </div>
 
-      <Footer_1 />
-    </div>
+        <Footer_1 />
+      </div>
+    </>
   );
 }
