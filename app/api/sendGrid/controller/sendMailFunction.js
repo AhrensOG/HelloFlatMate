@@ -19,6 +19,6 @@ export async function sendMailFunction(data) {
   try {
     await sendgrid.send(mailOptions);
   } catch (error) {
-    console.error("Error al enviar correo:", error);
+    console.error("Error al enviar correo:", error.response.body.errors);
   }
 }

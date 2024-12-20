@@ -12,6 +12,7 @@ import {
 } from "@/db/init"; // Importa el modelo Supply
 import rentPayment from "@/db/models/rentPayment";
 import { sendMailFunction } from "../../sendGrid/controller/sendMailFunction";
+import { billBuilder } from "../../pdf_creator/utils/billBuilder";
 
 const formatDate = (date) => {
   const newDate = new Date(date);
@@ -77,7 +78,7 @@ export async function POST(req) {
             include: {
               model: Property,
               as: "property",
-              attributes: ["ownerId", "street", "streetNumber", "floor"],
+              attributes: ["ownerId", "street", "streetNumber", "floor", "typology"],
             },
           });
           if (!property) {
@@ -176,7 +177,7 @@ export async function POST(req) {
           };
 
           const pdfBytes = await billBuilder(pdfData);
-          const pdfBase64 = pdfBytes.toString("base64");
+          const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
 
           await sendMailFunction({
             to: client.email,

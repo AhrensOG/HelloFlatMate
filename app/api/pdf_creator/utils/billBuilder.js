@@ -111,7 +111,7 @@ export async function billBuilder(data) {
         page.drawText(`Código : ${paymentData.roomCode}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
 
         currentYPosition -= 15; // Espacio para el sexo
-        page.drawText(`Sexo : ${paymentData.gender}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
+        page.drawText(`Sexo : Alquiler ${paymentData.gender}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
 
         // Datos de la factura (derecha)
         page.drawText(`Factura : ${paymentData.invoiceNumber}`, { x: invoiceInfoX, y: clientInfoYStart, size: 10, font: boldFont });
