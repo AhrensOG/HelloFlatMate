@@ -14,7 +14,6 @@ export default function NavbarV3({ fixed = false }) {
     const [isOpen, setIsOpen] = useState(false);
     const { state } = useContext(Context);
     const user = state?.user;
-
     const t = useTranslations("nav_bar");
 
     const [locale, setLocale] = useState("es");
@@ -118,19 +117,19 @@ export default function NavbarV3({ fixed = false }) {
             </div>
 
             {/* Logo */}
-            <Link href={`/${locale?.toLowerCase()}`}>
+            <Link href={`/${locale}`}>
                 <Image src="/home/new_home/Helloflatmate.png" width={150} height={47.45} alt="logo" />
             </Link>
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
-                <Link href={"/lastrooms"} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
+                <Link href={`/${locale?.toLowerCase()}/lastrooms`} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
                     Last rooms
                 </Link>
-                <Link href="/como-funciona" target="_blank" className="font-bold text-base">
+                <Link href={`/${locale?.toLowerCase()}/como-funciona`} target="_blank" className="font-bold text-base">
                     {t("link_how_it_works")}
                 </Link>
-                <Link href="/terminos-y-condiciones" target="_blank" className="font-bold text-base">
+                <Link href={`/${locale?.toLowerCase()}/terminos-y-condiciones`} target="_blank" className="font-bold text-base">
                     {t("link_terms_and_conditions")}
                 </Link>
 
@@ -151,11 +150,11 @@ export default function NavbarV3({ fixed = false }) {
                     </div>
                 ) : (
                     <div className="flex gap-1">
-                        <Link href="/pages/auth?register=true" className="font-bold text-base">
+                        <Link href={`/${locale?.toLowerCase()}/pages/auth?register=true`} className="font-bold text-base">
                             {t("link_register")}
                         </Link>
                         <span className="font-bold text-base">|</span>
-                        <Link href="/pages/auth" className="font-bold text-base">
+                        <Link href={`/${locale?.toLowerCase()}/pages/auth`} className="font-bold text-base">
                             {t("link_login")}
                         </Link>
                     </div>
@@ -182,7 +181,7 @@ export default function NavbarV3({ fixed = false }) {
                                 Last rooms
                             </Link>
                             <Link
-                                href="/como-funciona"
+                                href={`/${locale?.toLowerCase()}/como-funciona`}
                                 target="_blank"
                                 className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                             >

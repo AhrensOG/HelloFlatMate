@@ -3,7 +3,7 @@ import Logout from "@/app/components/user/profile/Logout";
 import NavBarProfile from "@/app/components/user/profile/NavBarProfile";
 import ProfileCard from "@/app/components/user/profile/ProfileCard";
 import ProfileOptions from "@/app/components/user/profile/ProfileOptions";
- 
+
 import { useContext, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProfileInfo from "@/app/components/user/profile/ProfileInfo";
@@ -12,11 +12,13 @@ import { Context } from "@/app/context/GlobalContext";
 import NavBar from "@/app/components/nav_bar/NavBar";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import BotIcon from "@/app/components/public/chat-bot/BotIcon";
+import { useTranslations } from "next-intl";
 
 export default function Profile() {
     const { state } = useContext(Context);
     const [showInfo, setShowInfo] = useState(false);
     const route = useRouter();
+    const t = useTranslations("user_profile");
 
     const handleRedirect = (url) => {
         route.push(url);
@@ -42,14 +44,20 @@ export default function Profile() {
                         >
                             <ArrowLeftIcon />
                         </button>
-                        <h1 className="text-xl font-bold">Mi perfil</h1>
+                        <h1 className="text-xl font-bold">{t("title")}</h1>
                     </div>
                 </div>
                 <main className="w-full flex justify-center items-start">
                     <div className="px-4 flex flex-col gap-4 w-full max-w-screen-lg">
                         {/* <h1 className="pl-4 font-bold text-xl mt-4"></h1> */}
                         {!showInfo ? (
-                            <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
+                            <motion.div
+                                className="space-y-4"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.8 }}
+                            >
                                 <ProfileCard
                                     image={state?.user?.profilePicture || "/profile/profile.svg"}
                                     name={state?.user?.name || "Usuario"}

@@ -12,7 +12,30 @@
         "user_link_3": "Histórico",
         "user_link_4": "Pagos",
         "worker_link_1": "Tareas",
-        "logout": "Cerrar sesión"
+        "logout": "Cerrar sesión",
+        "items_nav_1": {
+            "client": {
+                "payments": "Pagos",
+                "history": "Histórico",
+                "dashboard": "Panel",
+                "chats": "Chats",
+                "profile": "Perfil"
+            },
+            "owner": {
+                "dashboard": "Dashboard",
+                "properties": "Propiedades",
+                "tenants": "Mis Inquilinos",
+                "chats": "Chats"
+            },
+            "admin": {
+                "dashboard": "Dashboard",
+                "properties": "Propiedades",
+                "users": "Usuarios",
+                "documents": "Documentos",
+                "chats": "Mensajes"
+            },
+            "logout": "Salir"
+        }
     },
     "home": {
         "home_title": "Especializados en gestión de alojamientos para estudiantes en Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y sin complicaciones!",
@@ -277,5 +300,443 @@
         "span": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",
         "span_2_1": "Página",
         "span_2_2": "de"
+    },
+    "text_section": {
+        "title": " Alquileres en Valencia: Encuentra la vivienda ideal en la ciudad del Mediterráneo",
+        "p_1": " ¿Buscas un piso de alquiler en Valencia? Esta ciudad mediterránea combina historia, modernidad y calidad de vida. Valencia es una de las ciudades más deseadas para vivir en España, gracias a su clima agradable, sus playas, su riqueza cultural y su oferta gastronómica. Descubre todas las opciones de alquiler en Valencia y encuentra el lugar perfecto para ti.",
+        "p_2": " Aprovecha su clima privilegiado para pasear por la ciudad y disfrutar de sus numerosos atractivos. Desde la impresionante Ciudad de las Artes y las Ciencias hasta el encanto histórico del Barrio del Carmen, Valencia está llena de lugares que te sorprenderán. No te olvides de visitar su catedral, el famoso Miguelete, y el Mercado Central, uno de los mayores mercados de productos frescos de Europa. Si decides mudarte a Valencia, estarás rodeado de cultura, historia y diseño innovador.",
+        "p_3": "Aunque la ciudad tiene una energía dinámica, siempre encontrarás espacios para desconectar del bullicio. Recorre los Jardines del Turia, un enorme parque que cruza la ciudad en el antiguo cauce del río Turia, o relájate en sus playas de arena dorada como la Malvarrosa o El Saler. Valencia es una ciudad donde puedes disfrutar tanto del mar como de la naturaleza, con el Parque Natural de la Albufera a pocos kilómetros, ideal para escapadas al aire libre.",
+        "h3": "¿Cuáles son las áreas más atractivas de Valencia?",
+        "p_4": " Si buscas tranquilidad, los barrios residenciales como Campanar o Benimaclet son ideales para familias o estudiantes. Por otro lado, si disfrutas de la vida nocturna y el ambiente moderno, Ruzafa es la opción perfecta con su gran variedad de bares, restaurantes y eventos culturales. Si prefieres vivir en el corazón histórico, el Ciutat Vella te encantará con su arquitectura medieval y sus pintorescas calles. Sea cual sea tu estilo, Valencia tiene un barrio que se adapta a tus necesidades.",
+        "h3_2": "¿Es difícil encontrar pisos en alquiler en Valencia?",
+        "p_5": " Es cierto que el mercado de alquiler en Valencia puede ser competitivo, especialmente en las zonas más céntricas o cercanas al mar. Sin embargo, con algo de paciencia y dedicación, es posible encontrar opciones interesantes. Valencia también ofrece una buena variedad de estudios y pisos compartidos, ideales para ahorrar dinero y disfrutar de la ciudad en compañía.",
+        "h3_3": "¿Cuál es el precio medio del alquiler en Valencia?",
+        "p_6": "Los precios de los alquileres en Valencia son más accesibles que en otras grandes ciudades de España. En el centro, el alquiler de un piso puede oscilar entre 700 y 1000 euros, mientras que en barrios más alejados del núcleo urbano, como Patraix o Quatre Carreres, los precios varían entre 500 y 800 euros. Si tu presupuesto es más ajustado, compartir piso es una excelente alternativa para disfrutar de la ciudad sin gastar demasiado.",
+        "h3_4": "¿Es Valencia un buen sitio para vivir?",
+        "p_7": "¡Por supuesto! Valencia es una ciudad acogedora, con un equilibrio perfecto entre tranquilidad y dinamismo. Es conocida por su gastronomía de fama mundial, desde la auténtica paella valenciana hasta las horchatas artesanales y los fartons. Además, su amplia oferta cultural, su cercanía al Mediterráneo y su gente amable hacen de Valencia un lugar excepcional para vivir. Aquí encontrarás una ciudad que combina lo mejor de la tradición española con un estilo de vida moderno y relajado. ¿Listo para empezar una nueva etapa en Valencia? ¡Aquí siempre hay un lugar para ti!"
+    },
+    "hellocoliving_page": {
+        "h3": " Donde la comodidad se encuentra con la comunidad En helloflatmate transformamos el concepto de vivienda compartida con hellocoliving. Hemos destinado tres modernas viviendas en Valencia exclusivamente al formato coliving, creando espacios diseñados para estudiantes que buscan comodidad, privacidad y comunidad. ¡Tu nueva forma de vivir en Valencia te está esperando! <br /> <br /> ¡Tu nueva forma de vivir en Valencia te está esperando!",
+        "span": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",
+        "span_2_1": "Página",
+        "span_2_2": "de"
+    },
+    "hellolandlord_page": {
+        "h2": " Habitaciones en pisos compartidos con la calidad (strong)helloflatmate(/strong)",
+        "h3": "(strong)hellolandlord(/strong) es la solución perfecta para estudiantes que buscan habitaciones en pisos compartidos gestionadas directamente por propietarios de confianza. Cada propietario ha sido cuidadosamente seleccionado por (strong)helloflatmate(/strong), siguiendo nuestro modelo de contrato y estándares de gestión. Esto garantiza un entorno seguro, cómodo y adaptado a tus necesidades. <br /> <br /> Además, siempre contarás con el respaldo de nuestro equipo para asegurarnos de que tengas una experiencia tranquila y sin sobresaltos.",
+        "span": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",
+        "span_2_1": "Página",
+        "span_2_2": "de"
+    },
+    "hellostudio_page": {
+        "hero": {
+            "title": "Trabaja, conecta y crece en hellostudio",
+            "desc": "Espacios de coworking productivos y colaborativos con tecnología avanzada, internet rápido, salas de reuniones, áreas comunes, y eventos comunitarios, ideales para profesionales y emprendedores en crecimiento.",
+            "btn": "Reservar ahora"
+        },
+        "offer": {
+            "title": "Flexibilidad y comodidad",
+            "desc": "Nuestros espacios están diseñados para adaptarse a tus horarios y necesidades. Ya sea que necesites trabajar temprano en la mañana o tarde en la noche, hellostudio está siempre disponible para ti.",
+            "desc_1": "Desde 2011 helloflatmate ofrecemos  alojamientos a estudiantes en Valencia, con opciones de habitaciones y estudios gestionados por nosotros (hellorooms) o por propietarios de confianza.(hellolandord).",
+            "desc_2": "Descubre también nuestro hellocoliving si lo que buscas es mayor privacidad y atención.",
+            "p": "Desde 2011, en helloflatmate ofrecemos alojamiento especializado para estudiantes en Valencia. Contamos con una variedad de opciones adaptadas a tus necesidades: (strong)hellorooms(/strong), habitaciones gestionadas directamente por nuestro equipo, y (strong)hellolandlord(/strong), habitaciones en colaboración con propietarios de confianza. Además, descubre nuestro (strong)hellocoliving(/strong) para una experiencia de mayor privacidad y atención personalizada."
+        },
+        "family": {
+            "title": "Perfecto para estudiar toda tu carrera en Valencia",
+            "desc": "hellostudio ofrece un ambiente productivo y colaborativo diseñado para profesionales y emprendedores. Disfruta de espacios modernos y funcionales que fomentan la creatividad y la eficiencia.En HelloStudio, encontrarás alta tecnología, internet rápido, salas de reuniones equipadas, áreas comunes cómodas y eventos comunitarios que fomentan el networking y la colaboración",
+            "helloroom_desc_1": " Habitaciones de media estancia en Valencia, gestionadas por el equipo de helloflatmate para ofrecer a estudiantes una experiencia cómoda y sin complicaciones.",
+            "helloroom_desc_2": "¡Vive con otros estudiantes como tú!",
+            "hellolandlord_desc_1": "Son habitaciones en piso compartido gestionadas directamente por propietarios seleccionados por helloflatmate. Cada propietario sigue nuestro modelo de contrato y gestión, brindando seguridad y tranquilidad a los estudiantes.",
+            "hellolandlord_desc_2": "¡Comparte con estudiantes como tú!",
+            "hellostudio_desc_1": "Alojamiento de larga estancia en estudios equipados, gestionados tanto por helloflatmate como por landlords confiables.",
+            "hellostudio_desc_2": "Ideal para estudiantes y nómadas digitales que buscan comodidad y privacidad.",
+            "hellocoliving_desc_1": "Espacios de coliving para estudiantes en Valencia, con ambiente comunitario, servicio de limpieza y gestión de estancia por helloflatmate para una experiencia cómoda y segura."
+        },
+        "community_section": {
+            "h2": "Vive, Comparte y Disfruta",
+            "p": "En helloflatmate, no solo alquilas una habitación, te unes a una comunidad. Vive con personas afines y crea recuerdos inolvidables. ¡Te estamos esperando!"
+        },
+        "slider": "Explora nuestros nuevos alojamientos",
+        "map_section": {
+            "h1": "La mejor ubicación",
+            "h2": "Únete a la comunidad",
+            "p": " Los miembros de la comunidad de helloflatmate no son los únicos con ansias de viajes... Echa un vistazo a algunas de las nuevas ciudades donde pronto podrás encontrar a la comunidad. Algunos lugares están en construcción, otras en fase de planificación y desarrollo, y otras están en fase de investigación.",
+            "btn_1": "¡Open now!",
+            "btn_2": "¡Coming soon!",
+            "p_2": "Here’s what’s"
+        },
+        "info_section": {
+            "h2": "¿Por qué elegir helloflatmate?",
+            "title_1": "Alojamientos consolidados",
+            "desc_1": "Un lugar seguro y sin complicaciones, con todo lo que necesitas para estudiar, labrarte un futuro y forjar amistades para toda la vida.",
+            "title_2": "Contratos",
+            "desc_2": "Es crucial contar con un contrato de alquiler para una residencia legal. Todos nuestros alojamientos siguen un modelo contractual basado en el Código Civil, equiparando derechos y responsabilidades para arrendadores y arrendatarios.",
+            "title_3": "Soporte",
+            "desc_3": "La atención a flatmates es de 9 a 17 horas de lunes a viernes. Emergencias 24/7: Perfecto para cuando se te han olvidado las llaves en casa fuera de horario.",
+            "title_4": "Alojamientos preparados",
+            "desc_4": "Nos encargamos de que los alojamientos estén limpios y revisados para el día de inicio de contrato y así disfrutes de una bienvenida cómoda.",
+            "title_5": "Mantenimiento propio",
+            "desc_5": "Los alojamientos con contratos de 5 meses se pintan y revisan dos veces al año. En contratos de 10 y 11 meses, esta revisión es anual. Para asistencia técnica durante tu estancia, contáctanos por WhatsApp en horario laboral.",
+            "title_6": "Alta de suministros",
+            "desc_6": "Todos nuestros alojamientos a excepción de hellostudios, vienen con altas de luz, agua e internet wifi."
+        },
+        "banner": {
+            "h2": "Regístrate hoy y disfrúta de nuestros increíbles servicios",
+            "span": "Regístrate"
+        }
+    },
+    "request_section": {
+        "title": "¿No encuentras lo que buscas?",
+        "desc": "¡No te preocupes! Estamos aquí para ayudarte a encontrar el alojamiento perfecto para ti. Cuéntanos tus necesidades y lo haremos realidad.",
+        "btn": "Contáctanos"
+    },
+    "cookies": {
+        "title": "Política de Cookies",
+        "sec_1": {
+            "p_1": " En (strong)HELLO FLAT MATE, S.L.(/strong) utilizamos las cookies u otros archivos de funcionalidad similar (en adelante, “cookies”) que almacenan y recuperan información cuando navegas. Estas tecnologías sirven para reconocerte como usuario, obtener información sobre tus hábitos de navegación o personalizar la forma en que se muestra el contenido.",
+            "p_2": "El objetivo de esta política es informarte de manera clara y detallada sobre qué es una cookie, cuál es su finalidad, qué tipo de cookies utilizamos y cómo configurarlas o deshabilitarlas."
+        },
+        "sec_2": {
+            "h2": "¿Qué son las cookies?",
+            "p": "Una cookie es un pequeño archivo de texto que se almacena en tu navegador cuando visitas nuestra página web y que guarda información sobre la navegación que realizas para hacer más eficiente la experiencia de usuario. Algunas cookies son esenciales para el funcionamiento adecuado de las páginas web, como las cookies técnicas o de personalización de la interfaz, mientras que otras, como las cookies de análisis o de publicidad comportamental, requieren tu consentimiento para su uso."
+        },
+        "sec_3": {
+            "h2": "Tipos de Cookies",
+            "ul_li_1": " (strong)Cookies técnicas:(/strong) Permiten la navegación y el funcionamiento básico de la web, como identificar sesiones, gestionar pedidos o habilitar funciones esenciales.",
+            "ul_li_2": "(strong)Cookies de preferencias o personalización:(/strong) Guardan información sobre las preferencias del usuario, como el idioma o la región, para ofrecer una experiencia personalizada.",
+            "ul_li_3": " (strong)Cookies de análisis o medición:(/strong) Ayudan a medir y analizar cómo los usuarios interactúan con la web, permitiendo mejorar productos o servicios.",
+            "ul_li_4": "(strong)Cookies de marketing o publicidad comportamental:(/strong) Recopilan información sobre los hábitos de navegación para mostrar anuncios relevantes basados en tus intereses."
+        },
+        "sec_4": {
+            "h2": "¿Para qué utiliza cookies esta página web y cuáles son?",
+            "p": "A continuación, detallamos las cookies utilizadas en este sitio:",
+            "th_1": "Cookie",
+            "th_2": "Tipo",
+            "th_3": "Proposito",
+            "th_4": "Más información",
+            "tr_td_1": "Google Analytics",
+            "tr_td_2": "De terceros",
+            "tr_td_3": "Recoger información sobre la navegación de los usuarios para realizar análisis estadísticos.",
+            "tr_td_4": "Google Analytics Centro de Privacidad"
+        },
+        "sec_5": {
+            "h2": "Elaboración de perfiles",
+            "p": "No se elaborará ningún tipo de “perfil” en base a la información facilitada ni se tomarán decisiones automatizadas en base a perfiles. En caso de elaborar perfiles en el futuro, detallaremos su uso de manera transparente."
+        },
+        "sec_6": {
+            "h2": "Periodo de conservación de los datos",
+            "p": "Los datos obtenidos a través de las cookies se conservarán por un periodo máximo de 24 meses. Tras dicho periodo, volveremos a recabar tu consentimiento."
+        },
+        "sec_7": {
+            "h2": "¿Cómo puedo desactivar o eliminar las cookies?",
+            "p": "Puedes gestionar las cookies desde la configuración de tu navegador:"
+        },
+        "sec_8": {
+            "h2": "Derechos de los interesados",
+            "p": "Puedes obtener más información sobre el tratamiento de tus datos y cómo ejercer tus derechos consultando nuestra",
+            "p_link": "política de privacidad",
+            "p_2": "La Agencia recomienda la renovación del consentimiento a intervalos apropiados, como máximo cada 24 meses, conservando la selección de preferencias realizada por el usuario."
+        }
+    },
+    "room_details": {
+        "other_rooms_title": "Otras habitaciones en el mismo piso",
+        "desc_sec_title": "Descripción",
+        "location_sec_title": "Ubicación",
+        "more_info": {
+            "title": "Más sobre este lugar",
+            "title_1": "Características del piso",
+            "title_2": "Condiciones del alquiler",
+            "title_3": "Facturas",
+            "title_4": "Mantenimiento",
+            "title_5": "Check in / Check out",
+            "title_6": "Opinion del agente",
+            "title_7": "Normas de convivencia",
+            "title_8": "Otros servicios"
+        }
+    },
+    "reservation_btn": {
+        "btn": "Reservar"
+    },
+    "clauses": {
+        "title": "Cláusulas del Contrato",
+        "sec_1": {
+            "h2": "PRIMERA. DESTINO Y OBJETO DEL CONTRATO",
+            "p": "Que el ARRENDADOR, arrienda al ARRENDATARIO, la habitación descrita en este contrato.",
+            "p_2": "El destino pactado para la edificación es de (strong)uso distinto al de vivienda(/strong) y concretamente la residencia temporal del ARRENDATARIO por motivos laborales o educativos, sin que los arrendatarios puedan cambiar el destino pactado para el mismo."
+        },
+        "sec_2": {
+            "h2": "SEGUNDA. ESTADO",
+            "p": "Dado que el ARRENDATARIO es posible que firme el contrato sin haber previamente visitado la vivienda in situ, tendrá (strong)3 días(/strong) para reportar cualquier desperfecto que se encuentren en zonas comunes como en la habitación alquilada.",
+            "p_2": "Una vez transcurrido este período sin que el ARRENDATARIO haya notificado desperfecto alguno en la vivienda o en la habitación arrendada, se entenderá que la vivienda se encontraba en perfecto estado para su uso y habitabilidad, debiendo devolverla el arrendatario a la finalización del contrato en ese mismo estado."
+        },
+        "sec_3": {
+            "h2": "TERCERA. DURACIÓN DEL CONTRATO",
+            "p": "El presente contrato se acuerda que se extenderá por el período comprendido del (strong)…./…/202… al …./.…/202…(/strong). Transcurrido dicho período, el contrato quedará resuelto sin necesidad de requerimiento alguno y se dejará libre la habitación a las (strong)9 a.m.(/strong).",
+            "p_2": "Para el caso de que el ARRENDATARIO estuviera interesado en añadir una noche extra a su estancia, ésta tendrá un coste de (strong)35 €(/strong), y siempre estará condicionada a la disponibilidad de la habitación y a la autorización del ARRENDADOR."
+        },
+        "sec_4": {
+            "h2": "CUARTA. RENTA",
+            "p": "El arrendatario abonará al arrendador, en concepto de renta, la cantidad de (strong)…… € mensuales(/strong), siempre por adelantado y dentro del período comprendido entre los días (strong)20 y 25 de cada mes(/strong).",
+            "p_2_1": " En dicho precio no se incluyen los gastos relativos a los suministros de agua, luz e internet. Dicha renta se abonará a través del área de usuario del ARRENDATARIO en la página web",
+            "p_2_2": "a través de la pasarela de pago, mediante tarjeta de crédito o débito.",
+            "p_3": "El incumplimiento reiterado de la obligación de pago o notificación del justificante del pago en el periodo fijado será motivo de resolución del contrato, dando derecho al arrendador a solicitar el desahucio.",
+            "p_4": " Para el caso de que el arrendatario incumpla el plazo de pago de la renta, el ARRENDADOR podrá sancionar al ARRENDATARIO con (strong)10 € por cada día de retraso en el pago(/strong).",
+            "p_5": " El ARRENDATARIO estará obligado a abonar junto a la renta del último mes de contrato, (strong)50 €(/strong) para la limpieza profunda de la vivienda."
+        },
+        "sec_5": {
+            "h2": "QUINTA. PRIMERA ENTREGA DE LLAVES",
+            "p": "Antes de la entrega de llaves, el inquilino deberá abonar las siguientes cantidades:",
+            "ul_li_1": "(strong)300 €(/strong) en concepto de fianza. Este importe será devuelto entre (strong)30 y 45 días(/strong) tras la finalización del contrato.",
+            "ul_li_2": "(strong)200 €(/strong) en concepto de suministros de agua y luz por cada período de cinco meses de contrato.",
+            "ul_li_3": "(strong)80 €(/strong) en concepto de tarifa plana de internet por los primeros cinco meses de contrato."
+        },
+        "sec_6": {
+            "h2": "SEXTA. DERECHO DE ACCESO A LA VIVIENDA DEL ARRENDADOR",
+            "p": "Las partes acuerdan expresamente la renuncia del ARRENDATARIO a impedir que el ARRENDADOR pueda acceder a las zonas comunes de la vivienda y a las habitaciones que circunstancialmente no se encuentren arrendadas en el momento del acceso a la vivienda.",
+            "p_2": "En caso de que se vaya a efectuar una visita, ésta será comunicada con al menos (strong)una hora de antelación(/strong) al arrendatario."
+        },
+        "sec_7": {
+            "h2": "SÉPTIMA. DESISTIMIENTO DEL CONTRATO POR PARTE DEL ARRENDATARIO",
+            "p": "En caso de desistimiento por parte del ARRENDATARIO, éste estará obligado al pago íntegro de todas las mensualidades convenidas hasta la finalización del contrato, salvo que presente un nuevo inquilino que sea aceptado por el arrendador."
+        },
+        "sec_8": {
+            "h2": "OCTAVA. FUERZA MAYOR",
+            "p": "En caso de fuerza mayor, el ARRENDATARIO no podrá exigir la resolución, suspensión o modificación del contrato, ni la reducción de la renta pactada.",
+            "p_2": "Se entiende por fuerza mayor toda circunstancia imprevisible e inevitable que afecte el cumplimiento de las obligaciones contractuales, tales como inundaciones, terremotos, pandemias, entre otros.",
+            "p_3": "El ARRENDADOR queda exento de cualquier responsabilidad derivada de medidas adoptadas por la autoridad competente fuera de su control."
+        },
+        "sec_9": {
+            "h2": "NOVENA. CESIÓN Y SUBARRIENDO",
+            "p": "Con expresa renuncia a lo dispuesto en el artículo 32 de la LAU, el ARRENDATARIO se obliga a no subarrendar ni ceder la habitación sin consentimiento expreso del ARRENDADOR. El incumplimiento de esta cláusula será causa de resolución del contrato."
+        },
+        "sec_10": {
+            "h2": "DÉCIMA. DEVOLUCIÓN DE LAS LLAVES POR PARTE DEL ARRENDATARIO",
+            "p": "El ARRENDATARIO deberá entregar las llaves de la vivienda y habitación al finalizar el contrato en el mismo formato de entrega.",
+            "p_2": "En caso de retraso en la entrega de llaves sin autorización, se abonará (strong)35 €(/strong) por cada día de retraso más los gastos ocasionados."
+        },
+        "sec_11": {
+            "h2": "DECIMOPRIMERA. EMPADRONAMIENTO",
+            "p": "El ARRENDATARIO tendrá derecho a empadronarse siempre que cumpla con los requisitos locales. Contratos menores a 6 meses no permiten empadronamiento.",
+            "p_2": "Si HELLO FLAT MATE gestiona el empadronamiento, el coste será de (strong)150 €(/strong). Al finalizar el contrato, el ARRENDATARIO deberá solicitar la baja en el padrón municipal, en caso contrario se descontarán (strong)50 €(/strong) del depósito."
+        },
+        "sec_12": {
+            "h2": "DECIMOSEGUNDA. NORMAS DE CONVIVENCIA",
+            "p": "El ARRENDATARIO se someterá a las normas de convivencia establecidas por la comunidad de propietarios y las incluidas en el Anexo I del contrato."
+        },
+        "sec_13": {
+            "h2": "DECIMOTERCERA. OBLIGACIONES DEL ARRENDADOR Y ARRENDATARIO CON RESPECTO AL MANTENIMIENTO Y REPARACIONES",
+            "p": "El ARRENDADOR realizará las reparaciones necesarias para conservar la vivienda en condiciones habitables, salvo deterioros imputables al ARRENDATARIO.",
+            "p_2": "Las pequeñas reparaciones por desgaste correrán a cargo del ARRENDATARIO, incluyendo bombillas, atascos y similares. No se permitirá hacer agujeros o usar adhesivos que dañen paredes o puertas."
+        },
+        "sec_14": {
+            "h2": "DECIMOCUARTA. CONDICIONES DE EFECTIVIDAD DEL CONTRATO",
+            "p": "El contrato será válido únicamente si se cumplen simultáneamente: pago de fianza y suministros, firma electrónica del contrato y cumplimiento del perfil del ARRENDATARIO.",
+            "p_2": "Si no se cumplen estos requisitos, el contrato será considerado nulo."
+        },
+        "sec_15": {
+            "h2": "DECIMOQUINTA. INCUMPLIMIENTO DE OBLIGACIONES",
+            "p": "El incumplimiento de obligaciones por cualquiera de las partes permitirá exigir el cumplimiento o resolver el contrato según el artículo 1.124 del Código Civil.",
+            "p_2": "El ARRENDADOR podrá resolver el contrato por falta de pago de renta, fianza, daños dolosos, actividades ilícitas o incumplimiento de normas de convivencia."
+        },
+        "sec_16": {
+            "h2": "DÉCIMOSEXTA. LEGISLACIÓN APLICABLE",
+            "p": "Este contrato se regirá por la Ley 29/1994 de Arrendamientos Urbanos y supletoriamente por el Código Civil."
+        },
+        "sec_17": {
+            "h2": "DÉCIMOSÉPTIMA. SUMISIÓN",
+            "p": "Los contratantes se someten expresamente a los Juzgados y Tribunales de la ciudad de Valencia para todas aquellas cuestiones litigiosas que pudieran derivarse del presente contrato, por ser el lugar donde se encuentra la habitación arrendada. Y con el carácter expresado en la intervención, firman el presente contrato, en el lugar y fecha indicados."
+        },
+        "p": "Todos los derechos reservados."
+    },
+    "user_profile": {
+        "title": "Mi perfil",
+        "profile_info": {
+            "h4_1": "Tu información de perfil",
+            "btn_change_pass": "Cambiar contraseña",
+            "targ_1": {
+                "h2": "Información Personal",
+                "name": "Nombre",
+                "last_name": "Apellidos",
+                "email": "Correo"
+            },
+            "targ_2": {
+                "h2": "Datos Personales",
+                "birthday": "Fecha de Nacimiento",
+                "gender": "Genero",
+                "dni": "Número de Identificación",
+                "male": "Masculino",
+                "female": "Femenino",
+                "not_defined": "No definido"
+            },
+            "targ_3": {
+                "h2": "Contacto",
+                "phone": "Número de Teléfono"
+            },
+            "targ_4": {
+                "h2": "Dirección",
+                "city": "Ciudad",
+                "street": "Calle",
+                "number": "Número",
+                "zip": "Código Postal"
+            },
+            "targ_5": {
+                "h2": "Información de Emergencia",
+                "name": "Nombre de Emergencia",
+                "phone": "Teléfono de Emergencia",
+                "email": "Correo de Emergencia"
+            },
+            "modal_change_pass": {
+                "title": "Cambiar Contraseña",
+                "label_old_pass": "Contraseña Actual",
+                "label_new_pass": "Contraseña Nueva",
+                "show_off": "Ocultar",
+                "show_on": "Mostrar",
+                "conf_pass": "Confirmar Contraseña",
+                "cancel": "Cancelar",
+                "ok": "Cambiar"
+            },
+            "error": {
+                "pass_not_match": "Las contraseñas no coinciden",
+                "incorrect_pass": "La contraseña actual es incorrecta",
+                "error_change_pass": "Ocurrio un error al cambiar la contraseña"
+            },
+            "success": {
+                "pass_changed": "Contraseña cambiada con exito"
+            },
+            "loading": {
+                "loading": "Cambiando contraseña..."
+            }
+        }
+    },
+    "logout": {
+        "logout": "Cerrar sesión"
+    },
+    "user_panel": {
+        "mobile": {
+            "title": "Mis dormitorios",
+            "dont_have_rooms": "¡Aun no tienes alojamientos!"
+        },
+        "desktop": {
+            "dont_have_rooms": "¡Aun no tienes alojamientos!",
+            "p": "Selecciona un alojamiento para ver los detalles"
+        },
+        "bedrooms_details": {
+            "pay": "Pago del mes de",
+            "not_expired": "Sin vencimiento",
+            "finish": "Finalización",
+            "total_pay": "Total pagado",
+            "total_price": "Cantidad a pagar",
+            "lease_duration": "Duración del contrato",
+            "months": "meses",
+            "start_date": "Fecha de ingreso",
+            "end_date": "Fecha de salida",
+            "new_reserv": "Nueva Reserva",
+            "next_payments": "Pagos por realizar",
+            "modal_rent": {
+                "quota_pay": "Pago de cuota",
+                "current_quota": "Cuota actual:",
+                "current_quota_of": "de",
+                "total_pay": "Total a pagar:",
+                "cancel": "Cancelar",
+                "confirm": "Confirmar"
+            }
+        },
+        "bedrooms_activity": {
+            "title": "Actividades de mi alojamiento",
+            "toast_info": "¡Estamos mejorando para ti! Pronto podrás gestionar todo desde un único lugar. Mientras tanto, recuerda que puedes acceder a tus facturas, contratos y suministros en la carpeta compartida de Google Drive.",
+            "my_finances": "Mis Finanzas",
+            "services": "Servicios",
+            "supplies": "Suministros",
+            "documents": "Documentos"
+        },
+        "bedrooms_list": {
+            "hi": "Hola",
+            "ours_rooms": "Tus alojamientos",
+            "card": {
+                "finish": "Finalización",
+                "expiration": "Vencimiento",
+                "not_expired": "Sin vencimiento"
+            }
+        }
+    },
+    "user_history": {
+        "title": "Mis reservas",
+        "dont_have_rooms": "Aun no tienes reservas",
+        "card": {
+            "info": {
+                "loading": "Redirigiendo al checkout de Stripe..."
+            },
+            "error": {
+                "info": "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente.",
+                "error": "Error al iniciar el checkout de Stripe:"
+            },
+            "contract": {
+                "signed": "Contrato firmado",
+                "signed_info": "¡Tu solicitud fue aprobada y el contrato está firmado!",
+                "in_revision": "En Revisión",
+                "in_revision_info": "¡Tu solicitud está bajo revisión. Te notificaremos al finalizar!"
+            },
+            "continue": {
+                "btn": "Continuar con el proceso",
+                "btn_2": "Continuar"
+            },
+            "code": "Codigo",
+            "income": "Ingreso:",
+            "out": "Salida:",
+            "month": "/mes",
+            "detail_payment": {
+                "title": "Detalles de tu pago",
+                "total_pay": "El monto total a pagar es de",
+                "after_pay": "Después de realizar el pago, serás redirigido automáticamente para firmar tu contrato digital.",
+                "make_pay": "Realizar Pago"
+            }
+        }
+    },
+    "user_payment_history": {
+        "desc": "Pago",
+        "desc_res": "Pago (Reserva)",
+        "months": {
+            "1": "Enero",
+            "2": "Febrero",
+            "3": "Marzo",
+            "4": "Abril",
+            "5": "Mayo",
+            "6": "Junio",
+            "7": "Julio",
+            "8": "Agosto",
+            "9": "Septiembre",
+            "10": "Octubre",
+            "11": "Noviembre",
+            "12": "Diciembre"
+        },
+        "status": {
+            "pending": "Pendiente de pago",
+            "success": "Pago aprobado",
+            "rejected": "Pago rechazado",
+            "other": "Desconocido"
+        },
+        "toast": {
+            "info": "¡Muy pronto podrás ver tu factura!"
+        },
+        "pays": "Pagos",
+        "pay_id": "ID de Pago:",
+        "desc_pay": "Descripción:",
+        "paid": "Pagado",
+        "not_pend_pay": "No hay pagos pendientes",
+        "pay_modal": {
+            "toast": {
+                "loading": "Procesando el pago...",
+                "succes": "Redirigiendo al sistema de pagos",
+                "error": "Ocurrió un error al intentar el pago",
+                "retry": "Intenta nuevamente más tarde o reporta el error por nuestro canal de soporte."
+            },
+            "title": "Detalles del Pago",
+            "month": "Mes:",
+            "amount": "Monto:",
+            "desc_1": "Descripción:",
+            "room_code": "Codigo de alojamiento:",
+            "close": "Cerrar",
+            "pay_now": "Pagar ahora"
+        }
     }
 }

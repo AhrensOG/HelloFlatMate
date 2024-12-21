@@ -12,8 +12,11 @@ import PropertyCardSekeleton from "@/app/components/public/main-pages/PropertyCa
 import { useSearchParams } from "next/navigation";
 import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
 import RequestSection from "@/app/components/public/main-pages/RequestSection";
+import { useTranslations } from "next-intl";
+import HTMLReactParser from "html-react-parser";
 
 export default function HelloColivingPage() {
+    const t = useTranslations("hellocoliving_page");
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
@@ -241,13 +244,7 @@ export default function HelloColivingPage() {
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
                         <h1 className="text-3xl font-bold">hellocoliving</h1>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            Donde la comodidad se encuentra con la comunidad En helloflatmate transformamos el concepto de vivienda compartida con
-                            hellocoliving. Hemos destinado tres modernas viviendas en Valencia exclusivamente al formato coliving, creando espacios
-                            diseñados para estudiantes que buscan comodidad, privacidad y comunidad. ¡Tu nueva forma de vivir en Valencia te está
-                            esperando!
-                            <br />
-                            <br />
-                            ¡Tu nueva forma de vivir en Valencia te está esperando!
+                            {HTMLReactParser(t("h3"))}
                         </h3>
                     </div>
                 </div>
@@ -276,10 +273,7 @@ export default function HelloColivingPage() {
                             ) : (
                                 <>
                                     <div className="text-center py-6">
-                                        <span className="text-lg font-semibold text-gray-600">
-                                            No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras
-                                            opciones que podrían interesarte:
-                                        </span>
+                                        <span className="text-lg font-semibold text-gray-600">{t("span")}</span>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                         {state.properties
@@ -340,7 +334,7 @@ export default function HelloColivingPage() {
                         Prev
                     </button>
                     <span className="text-gray-700 font-semibold">
-                        Página {currentPage} de {totalPages}
+                        {t("span_2_1")} {currentPage} {t("span_2_2")} {totalPages}
                     </span>
                     <button
                         onClick={handleNext}

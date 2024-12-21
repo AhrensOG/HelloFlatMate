@@ -1,67 +1,54 @@
 import React from "react";
 import InfoCard from "./auxiliarComponents/InfoCard";
-
-const list = [
-  {
-    img: "/home/objetivo.gif",
-    title: "Alojamientos consolidados",
-    description:
-      "Un lugar seguro y sin complicaciones, con todo lo que necesitas para estudiar, labrarte un futuro y forjar amistades para toda la vida.",
-  },
-  {
-    img: "/home/seguro.gif",
-    title: "Contratos",
-    description:
-      "Es crucial contar con un contrato de alquiler para una residencia legal. Todos nuestros alojamientos siguen un modelo contractual basado en el Código Civil, equiparando derechos y responsabilidades para arrendadores y arrendatarios.",
-  },
-  {
-    img: "/home/robot-de-chat.gif",
-    title: "Soporte",
-    description:
-      "La atención a flatmates es de 9 a 17 horas de lunes a viernes. Emergencias 24/7: Perfecto para cuando se te han olvidado las llaves en casa fuera de horario.",
-  },
-  {
-    img: "/home/lugar-de-trabajo.gif",
-    title: "Alojamientos preparados",
-    description:
-      "Nos encargamos de que los alojamientos estén limpios y revisados para el día de inicio de contrato y así disfrutes de una bienvenida cómoda.",
-  },
-  {
-    img: "/home/mantenimiento.gif",
-    title: "Mantenimiento propio",
-    description:
-      "Los alojamientos con contratos de 5 meses se pintan y revisan dos veces al año. En contratos de 10 y 11 meses, esta revisión es anual. Para asistencia técnica durante tu estancia, contáctanos por WhatsApp en horario laboral.",
-  },
-  {
-    img: "/home/idea.gif",
-    title: "Alta de suministros",
-    description:
-      "Todos nuestros alojamientos a excepción de hellostudios, vienen con altas de luz, agua e internet wifi.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 const InfoSection = () => {
-  return (
-    <div className="p-2 flex flex-col justify-center items-center gap-4 py-20 pt-10">
-      <div className="flex flex-col justify-center items-start gap-10 max-w-screen-lg w-full">
-        <h2 className="text-2xl sm:text-3xl font-medium">
-          ¿Por qué elegir helloflatmate?
-        </h2>
-        <div className="flex flex-row flex-wrap justify-around items-center gap-4">
-          {list.map((item) => {
-            return (
-              <InfoCard
-                img={item.img}
-                title={item.title}
-                description={item.description}
-                key={item.title}
-              />
-            );
-          })}
+    const t = useTranslations("hellostudio_page.info_section");
+    const list = [
+        {
+            img: "/home/objetivo.gif",
+            title: t("title_1"),
+            description: t("desc_1"),
+        },
+        {
+            img: "/home/seguro.gif",
+            title: t("title_2"),
+            description: t("desc_2"),
+        },
+        {
+            img: "/home/robot-de-chat.gif",
+            title: t("title_3"),
+            description: t("desc_3"),
+        },
+        {
+            img: "/home/lugar-de-trabajo.gif",
+            title: t("title_4"),
+            description: t("desc_4"),
+        },
+        {
+            img: "/home/mantenimiento.gif",
+            title: t("title_5"),
+            description: t("desc_5"),
+        },
+        {
+            img: "/home/idea.gif",
+            title: t("title_6"),
+            description: t("desc_6"),
+        },
+    ];
+
+    return (
+        <div className="p-2 flex flex-col justify-center items-center gap-4 py-20 pt-10">
+            <div className="flex flex-col justify-center items-start gap-10 max-w-screen-lg w-full">
+                <h2 className="text-2xl sm:text-3xl font-medium">{t("h2")}</h2>
+                <div className="flex flex-row flex-wrap justify-around items-center gap-4">
+                    {list.map((item) => {
+                        return <InfoCard img={item.img} title={item.title} description={item.description} key={item.title} />;
+                    })}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default InfoSection;

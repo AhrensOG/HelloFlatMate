@@ -13,33 +13,31 @@ import InfoSection from "@/app/components/user/home/desktop/InfoSection";
 import Banner from "@/app/components/user/home/desktop/Banner";
 import Footer from "@/app/components/user/home/desktop/Footer";
 import MapSection from "@/app/components/user/home/desktop/auxiliarComponents/MapSection";
-
-const hellostudio = {
-    hero: {
-        // img: "/home/hero4.",
-        img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
-        title: "Trabaja, conecta y crece en hellostudio",
-        description:
-            "Espacios de coworking productivos y colaborativos con tecnología avanzada, internet rápido, salas de reuniones, áreas comunes, y eventos comunitarios, ideales para profesionales y emprendedores en crecimiento.",
-        // link: "/pages/select-category?c=HELLO_STUDIO",
-        link: "/pages/user/filtered?category=HELLO_STUDIO",
-    },
-    offer: {
-        title: "Flexibilidad y comodidad",
-        description:
-            "Nuestros espacios están diseñados para adaptarse a tus horarios y necesidades. Ya sea que necesites trabajar temprano en la mañana o tarde en la noche, hellostudio está siempre disponible para ti.",
-        link: "/pages/select-category?c=HELLO_STUDIO",
-    },
-    family: {
-        title: "Perfecto para estudiar toda tu carrera en Valencia",
-        description:
-            "hellostudio ofrece un ambiente productivo y colaborativo diseñado para profesionales y emprendedores. Disfruta de espacios modernos y funcionales que fomentan la creatividad y la eficiencia.En HelloStudio, encontrarás alta tecnología, internet rápido, salas de reuniones equipadas, áreas comunes cómodas y eventos comunitarios que fomentan el networking y la colaboración",
-        img1: "/home/family4.svg",
-        img2: "/home/subFamily4.svg",
-    },
-};
+import { useTranslations } from "next-intl";
 
 export default function HelloStudio() {
+    const t = useTranslations("hellostudio_page");
+    const hellostudio = {
+        hero: {
+            // img: "/home/hero4.",
+            img: "https://www.youtube.com/watch?v=TbgLp9EpTyI",
+            title: t("hero.title"),
+            description: t("hero.desc"),
+            // link: "/pages/select-category?c=HELLO_STUDIO",
+            link: "/pages/user/filtered?category=HELLO_STUDIO",
+        },
+        offer: {
+            title: t("offer.title"),
+            description: t("offer.desc"),
+            link: "/pages/select-category?c=HELLO_STUDIO",
+        },
+        family: {
+            title: t("family.title"),
+            description: t("family.desc"),
+            img1: "/home/family4.svg",
+            img2: "/home/subFamily4.svg",
+        },
+    };
     const { state, dispatch } = useContext(Context);
     const [properties, setProperties] = useState([]);
 

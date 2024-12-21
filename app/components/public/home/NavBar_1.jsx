@@ -1,7 +1,8 @@
+"use client";
 import Link from "next/link";
 import Dropdown from "../auth/Dropdown";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
@@ -10,6 +11,16 @@ export default function NavBar_1({ fixed = false }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const t = useTranslations("nav_bar");
+
+    const [locale, setLocale] = useState("es"); // Valor por defecto
+
+    // Asegurarse de que localStorage se accede solo en el cliente
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const preferredLanguage = localStorage.getItem("preferredLanguage")?.toLocaleLowerCase() || "es";
+            setLocale(preferredLanguage);
+        }
+    }, []);
 
     const toggleMenu = () => {
         setIsOpen(false);
@@ -27,26 +38,26 @@ export default function NavBar_1({ fixed = false }) {
                     <Bars3Icon className="size-6" />
                 </button>
             </div>
-            <Link href={"/"}>
+            <Link href={`/${locale}`}>
                 <Image src="/home/new_home/Helloflatmate.png" width={100} height={31.25} alt="logo" />
             </Link>
             <div className="hidden md:flex items-center gap-5">
                 {/* <button className="border py-3 px-5 font-bold text-lg border-black">Soy un propietario</button> */}
-                <Link href="/lastrooms" target="_blank" className="font-bold text-base border border-black p-2 px-5">
+                <Link href={`/${locale}/lastrooms`} target="_blank" className="font-bold text-base border border-black p-2 px-5">
                     last rooms
                 </Link>
-                <Link href="/como-funciona" target="_blank" className="font-bold text-base">
+                <Link href={`/${locale}/como-funciona`} target="_blank" className="font-bold text-base">
                     {t("link_how_it_works")}
                 </Link>
-                <Link href="/privacy-policy" target="_blank" className="font-bold text-base">
+                <Link href={`/${locale}/terminos-y-condiciones`} target="_blank" className="font-bold text-base">
                     {t("link_terms_and_conditions")}
                 </Link>
                 <div className="flex gap-1">
-                    <Link href="/pages/auth?register=true" target="_blank" className="font-bold text-base">
+                    <Link href={`/${locale}/pages/auth?register=true`} target="_blank" className="font-bold text-base">
                         {t("link_register")}
                     </Link>
                     <span className="font-bold text-base">|</span>
-                    <Link href="/pages/auth" target="_blank" className="font-bold text-base">
+                    <Link href={`/${locale}/pages/auth`} target="_blank" className="font-bold text-base">
                         {t("link_login")}
                     </Link>
                 </div>

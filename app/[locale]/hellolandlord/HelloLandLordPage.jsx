@@ -12,8 +12,14 @@ import PropertyCardSekeleton from "@/app/components/public/main-pages/PropertyCa
 import { useSearchParams } from "next/navigation";
 import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
 import RequestSection from "@/app/components/public/main-pages/RequestSection";
+import { useTranslations } from "next-intl";
+import HTMLReactParser from "html-react-parser";
 
 export default function HelloLandlordPage() {
+    const t = useTranslations("hellolandlord_page");
+    const formatedStrongText = (str) => {
+        return str.replace(/\(strong\)/g, "<strong>").replace(/\(\/strong\)/g, "</strong>");
+    };
     const searchParams = useSearchParams();
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
@@ -240,18 +246,9 @@ export default function HelloLandlordPage() {
                 <div className="w-full flex flex-col">
                     <div className="flex flex-col gap-8 bg-white items-center justify-around py-10 px-2">
                         <h1 className="text-3xl font-bold">hellolandlord</h1>
-                        <h2 className="text-lg">
-                            Habitaciones en pisos compartidos con la calidad <strong>helloflatmate</strong>
-                        </h2>
+                        <h2 className="text-lg">{HTMLReactParser(formatedStrongText(t("h2")))}</h2>
                         <h3 id="subtitle" className="text-lg text-center max-w-screen-md">
-                            <strong>hellolandlord</strong> es la solución perfecta para estudiantes que buscan habitaciones en pisos compartidos
-                            gestionadas directamente por propietarios de confianza. Cada propietario ha sido cuidadosamente seleccionado por{" "}
-                            <strong>helloflatmate</strong>, siguiendo nuestro modelo de contrato y estándares de gestión. Esto garantiza un entorno
-                            seguro, cómodo y adaptado a tus necesidades.
-                            <br />
-                            <br />
-                            Además, siempre contarás con el respaldo de nuestro equipo para asegurarnos de que tengas una experiencia tranquila y sin
-                            sobresaltos.
+                            {HTMLReactParser(formatedStrongText(t("h3")))}
                         </h3>
                     </div>
                 </div>
@@ -280,10 +277,7 @@ export default function HelloLandlordPage() {
                             ) : (
                                 <>
                                     <div className="text-center py-6">
-                                        <span className="text-lg font-semibold text-gray-600">
-                                            No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras
-                                            opciones que podrían interesarte:
-                                        </span>
+                                        <span className="text-lg font-semibold text-gray-600">{t("span")}</span>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                         {state.properties
@@ -344,7 +338,7 @@ export default function HelloLandlordPage() {
                         Prev
                     </button>
                     <span className="text-gray-700 font-semibold">
-                        Página {currentPage} de {totalPages}
+                        {t("span_2_1")} {currentPage} {t("span_2_2")} {totalPages}
                     </span>
                     <button
                         onClick={handleNext}

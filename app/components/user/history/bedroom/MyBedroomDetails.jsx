@@ -8,11 +8,12 @@ import { toast } from "sonner";
 import RentPaymentModal from "./RentPaymentModal";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
+import { useTranslations } from "next-intl";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function MyBedroomDetails({ room, rentPayments }) {
-    console.log(room);
+    const t = useTranslations("user_panel.bedrooms_details");
 
     const { type, location, dueDate, price, amenities, images, property, leaseOrder } = room;
     const [nextDueDate, setNextDueDate] = useState(null);
@@ -154,30 +155,30 @@ export default function MyBedroomDetails({ room, rentPayments }) {
                 <div className="text-sm flex flex-col gap-2">
                     <div className="flex justify-between">
                         <p className="font-light">
-                            {type === "HELLO_STUDIO" ? "Finalización" : `Pago del mes de ${nextDueDate ? getMonthName(nextDueDate) : "-"}`}
+                            {type === "HELLO_STUDIO" ? t("finish") : `${t("pay")} ${nextDueDate ? getMonthName(nextDueDate) : "-"}`}
                         </p>
                         <p className="font-medium">
                             {type === "HELLO_STUDIO"
                                 ? formatDate(new Date(dueDate.endDate))
                                 : nextDueDate
                                 ? formatDate(nextDueDate)
-                                : "Sin vencimiento"}
+                                : t("not_expired")}
                         </p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="font-light">{type === "HELLO_STUDIO" ? "Total pagado" : "Cantidad a pagar"}</p>
+                        <p className="font-light">{type === "HELLO_STUDIO" ? t("total_pay") : t("total_price")}</p>
                         <p className="font-medium">{type === "HELLO_STUDIO" ? `$${leaseOrder.price || 0}` : `$${price}`}</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="font-light">Duración del contrato</p>
-                        <p className="font-medium">{`${leaseDurationMonths} meses`}</p>
+                        <p className="font-light">{t("lease_duration")}</p>
+                        <p className="font-medium">{`${leaseDurationMonths} ${t("months")}`}</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="font-light">Fecha de ingreso</p>
+                        <p className="font-light">{t("start_date")}</p>
                         <p className="font-medium">{dueDate.startDate ? formatDate(new Date(dueDate.startDate)) : "-"}</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="font-light">Fecha de salida</p>
+                        <p className="font-light">{t("end_date")}</p>
                         <p className="font-medium">{dueDate.endDate ? formatDate(new Date(dueDate.endDate)) : "-"}</p>
                     </div>
                 </div>
@@ -187,7 +188,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
                         className="bg-[#0C1660] rounded-xl text-center flex items-center justify-center text-white font-medium text-sm h-11"
                         type="button"
                     >
-                        Nueva Reserva
+                        {t("new_reserv")}
                     </Link>
                 ) : (
                     <Link
@@ -196,7 +197,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
                         className="bg-[#0C1660] rounded-xl text-center text-white font-medium text-lg py-2"
                         // type="button"
                     >
-                        Pagos por realizar
+                        {t("next_payments")}
                     </Link>
                 )}
             </section>
