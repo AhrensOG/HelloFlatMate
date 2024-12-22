@@ -111,7 +111,7 @@ export async function billBuilder(data) {
         page.drawText(`Código : ${paymentData.roomCode}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
 
         currentYPosition -= 15; // Espacio para el sexo
-        page.drawText(`Sexo : ${paymentData.gender}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
+        page.drawText(`Sexo : Alquiler ${paymentData.gender}`, { x: middleInfoX, y: currentYPosition, size: 10, font });
 
         // Datos de la factura (derecha)
         page.drawText(`Factura : ${paymentData.invoiceNumber}`, { x: invoiceInfoX, y: clientInfoYStart, size: 10, font: boldFont });
@@ -130,7 +130,7 @@ export async function billBuilder(data) {
         const paddingVertical = 8;
 
         // Encabezados de la tabla
-        const headers = ["Código", "Fecha", "Confirmado", "Subtotal"];
+        const headers = ["Código", "Fecha", "Pagos", "Subtotal"];
         const headerWidths = [130, 160, 140, 125];
         let currentRowY = detailsStartY;
 
@@ -182,7 +182,7 @@ export async function billBuilder(data) {
                 color: rgb(0, 0, 0),
                 align: "center",
             });
-            page.drawText(detail.status, {
+            page.drawText(detail.status === "APPROVED" ? "Confirmado" : "N/A", {
                 x: margin + headerWidths[0] + headerWidths[1] + paddingVertical,
                 y: currentRowY + rowHeight / 2 - 6,
                 size: 12,
@@ -205,7 +205,7 @@ export async function billBuilder(data) {
 
         currentRowY -= rowHeight;
 
-        page.drawText("Total de pagos efectuados:", {
+        page.drawText("Total de pagos efectuados", {
             x: width - margin - 170,
             y: currentRowY + 40,
             size: 10,
@@ -216,7 +216,7 @@ export async function billBuilder(data) {
         currentRowY -= paddingVertical;
 
         const estimatedCharWidth = 5;
-        const totalLabelWidth = "Total de pagos efectuados:".length * estimatedCharWidth;
+        const totalLabelWidth = "Total de pagos efectuados".length * estimatedCharWidth;
         const totalValueWidth = totalPagos.toFixed(2).toString().length * estimatedCharWidth;
         const totalLineWidth = Math.max(totalLabelWidth, totalValueWidth);
 
@@ -251,7 +251,9 @@ export async function billBuilder(data) {
 
         const pdfBytes = await pdfDoc.save();
         const pdfStream = Buffer.from(pdfBytes);
-
+        if (data.returnBytes) {
+            return pdfBytes
+        }
         return pdfStream;
     } catch (error) {
         console.log(error);

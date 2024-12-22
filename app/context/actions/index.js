@@ -109,10 +109,6 @@ export const sendEmail = async (emailData) => {
     });
   } catch (error) {
     console.error("Error al enviar el correo:", error);
-    throw new Error({
-      message: "Internal Server Error: SEND_EMAIL",
-      error: error,
-    });
   }
 };
 

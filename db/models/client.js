@@ -73,12 +73,12 @@ const clientInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            arrybalDate: {
+            arrivalDate: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-            arrybalTime: {
-                type: DataTypes.DATE,
+            arrivalTime: {
+                type: DataTypes.TIME,
                 allowNull: true,
             },
         },

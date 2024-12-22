@@ -76,7 +76,7 @@ export default function MyBedroomCard({
                 <p className="font-light text-sm flex justify-between">
                     {type === "HELLO_STUDIO" ? t("finish") : t("expiration")}
                     <span className="font-medium text-sm">
-                        {type === "HELLO_STUDIO" ? formatDate(new Date(dueDate.endDate)) : nextDueDate ? formatDate(nextDueDate) : t("no_expired")}
+                        {type === "HELLO_STUDIO" ? formatDate(new Date(dueDate.endDate)) : nextDueDate ? formatDate(nextDueDate) : t("not_expired")}
                     </span>
                 </p>
                 <p className="font-light text-sm flex justify-between">

@@ -1,3 +1,4 @@
+import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
 import { SearchRequest, Client } from "@/db/init";
 import { NextResponse } from "next/server";
 
@@ -83,6 +84,29 @@ export async function createSearchRequest(data) {
 
     // Confirmar la transacción
     await transaction.commit();
+
+    await sendMailFunction({
+      to: process.env.HFM_MAIL,
+      subject: `Solicitud de ayuda (búsqueda de alojamiento)`,
+      html: `
+        <p>El usuario <strong>${client.name} ${
+        client.lastName
+      }</strong> ha solicitado ayuda para encontrar un alojamiento.</p>
+        <p><strong>Detalles de la solicitud:</strong></p>
+        <ul>
+        <li><strong>Tipo de alojamiento:</strong> ${category || "No ingresado"}</li>
+          <li><strong>Preferencias:</strong> ${preferences || "No ingresado"}</li>
+          <li><strong>Fecha de alquiler:</strong> ${rentalPeriod || "No ingresado"}</li>
+          <li><strong>Tipo de alquiler:</strong> ${type || "No ingresado"}</li>
+          <li><strong>Zona:</strong> ${zone || "No ingresado"}</li>
+          <li><strong>Fecha de ingreso:</strong> ${startDate || "No ingresado"}</li>
+          <li><strong>Fecha de salida:</strong> ${endDate || "No ingresado"}</li>
+          <li><strong>Numero de ocupantes:</strong> ${
+            numberOccupants || "No ingresado"
+          }</li>
+        </ul>
+      `,
+    });
 
     return NextResponse.json(
       {

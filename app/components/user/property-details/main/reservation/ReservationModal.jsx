@@ -11,6 +11,7 @@ import ShowClauses from "./ShowClauses";
 import SelectRentalPeriod from "./SelectRentalPeriod";
 import DatePicker from "./date_picker/DatePicker";
 import ReservationForm from "./ReservationForm";
+import { sendEmail } from "@/app/context/actions";
 
 export default function ReservationModal({
   callback,
@@ -41,6 +42,18 @@ export default function ReservationModal({
       duration,
       rentalPeriodId,
     });
+  };
+
+  const formatedDate = (date) => {
+    if (date) {
+      const newDate = new Date(date);
+      return new Intl.DateTimeFormat("es-ES", {
+        day: "numeric",
+        month: "numeric",
+        year: "2-digit",
+      }).format(newDate);
+    }
+    return "";
   };
 
   const handleReservationSubmit = async (values) => {
@@ -84,6 +97,16 @@ export default function ReservationModal({
     try {
       await axios.put("/api/user/reservation", reservation);
       const response = await axios.post("/api/lease_order", reservation);
+      const emailData = {
+        to: process.env.NEXT_PUBLIC_HFM_MAIL,
+        subject: `Solicitud de pre-reserva ${reservation.propertySerial} - ${reservation.roomSerial}`,
+        text: `${reservation.name} ${reservation.lastName} - ${
+          reservation.email
+        } ha realizado una pre-reserva. Fecha de alquiler: del ${formatedDate(
+          reservation.startDate
+        )} al ${formatedDate(reservation.endDate)}.`,
+      };
+      await sendEmail(emailData)
       // if (
       //   ["HELLO_ROOM", "HELLO_COLIVING", "HELLO_LANDLORD"].includes(category)
       // ) {

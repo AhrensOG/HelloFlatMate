@@ -161,7 +161,7 @@ export default function ProfileInfo({ action, image, name, lastName, email, data
                         <div className="relative mb-4">
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
-                                placeholder={t("modal_change_pass.label_conf_pass")}
+                                placeholder={t("modal_change_pass.conf_pass")}
                                 className="border p-2 w-full"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}

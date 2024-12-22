@@ -8,7 +8,11 @@ const ownerInit = (sequelize, DataTypes) => {
 
     Owner.init(
         {
-            ...userAttributes
+            ...userAttributes,
+            idNum: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
         }, {
         sequelize,
         modelName: "Owner",

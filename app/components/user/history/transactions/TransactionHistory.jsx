@@ -56,7 +56,32 @@ export default function TransactionHistory({ redirect }) {
     }, [state.user]);
 
     const downloadBillPDF = async (payment) => {
+        const toastId = toast.loading("Procesando...")
         try {
+            const user = state?.user;
+            if (!user) {
+                toast.info("Debe iniciar sesión antes de descargar la factura.", { id: toastId });
+                return;
+            }
+            const requiredFields = [
+                "name",
+                "lastName",
+                "idNum",
+                "street",
+                "streetNumber",
+                "city",
+                "postalCode",
+                "phone",
+                "email"
+            ];
+            const missingFields = requiredFields.filter((field) => !user[field]);
+    
+            if (missingFields.length > 0) {
+                toast.info(
+                    `Debes completar la información de tu perfil para poder descargar la factura.`, { description: `¡Dirigete a 'Perfil' para hacerlo!`, id: toastId }
+                );
+                return;
+            }
             //Generar y descargar el pdf
             const pdfRes = await axios.post(
                 "/api/payment?type=billPDF",
@@ -81,9 +106,10 @@ export default function TransactionHistory({ redirect }) {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            toast.success("¡Factura descargada!", {id: toastId})
         } catch (error) {
+            toast.info("¡Factura descargada!", {id: toastId})
             console.log(error);
-            throw error;
         }
     };
 
@@ -192,13 +218,7 @@ export default function TransactionHistory({ redirect }) {
                                         <button
                                             type="button"
                                             className="h-6 w-6"
-                                            onClick={() => {
-                                                toast.promise(downloadBillPDF(payment), {
-                                                    loading: "Descargando factura...",
-                                                    success: "Factura descargada correctamente",
-                                                    error: "Error al descargar la factura",
-                                                });
-                                            }}
+                                            onClick={() => downloadBillPDF(payment)}
                                         >
                                             <ArrowDownTrayIcon className="h-6 w-6" />
                                         </button>

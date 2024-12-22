@@ -31,6 +31,7 @@ import SecondaryCategorySelector from "../components/public/main-pages/Secondary
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import HTMLReactParser from "html-react-parser";
+import NavbarV3 from "../components/nav_bar/NavbarV3";
 
 const helloroom = {
     hero: {
@@ -212,7 +213,7 @@ export default function Home() {
                 {/* <BotIcon />
         <CookieModal /> */}
                 <header>
-                    <NavBar_1 />
+                    <NavbarV3 />
                 </header>
                 <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
                     <h1 className="text-3xl font-bold">hello flat mate</h1>
