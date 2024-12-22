@@ -65,10 +65,10 @@ export async function createClientBillPDF(data) {
             clientePhone: client.phone || "N/A",
             clienteEmail: client.email || "N/A",
             room: room
-                ? room.property.street + " " + room.property.streetNumber + " " + room.floor + " " + room.door
+                ? room.property?.street + " " + room.property?.streetNumber + " " + "P" + room.property?.floor
                 : property.street + " " + property.streetNumber,
             roomCode: room ? room.serial : property.serial,
-            gender: `Alquier ${room ? room.typology : property.typology}`,
+            gender: `${room ? room.property?.typology : property.typology}`,
             invoiceNumber: data.rentPaymentId,
             invoicePeriod: formatDate(leaseOrder.startDate) + " / " + formatDate(leaseOrder.endDate),
             details: detailsPayments,

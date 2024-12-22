@@ -205,7 +205,7 @@ export async function billBuilder(data) {
 
         currentRowY -= rowHeight;
 
-        page.drawText("Total de pagos efectuados:", {
+        page.drawText("Total de pagos efectuados", {
             x: width - margin - 170,
             y: currentRowY + 40,
             size: 10,
@@ -216,7 +216,7 @@ export async function billBuilder(data) {
         currentRowY -= paddingVertical;
 
         const estimatedCharWidth = 5;
-        const totalLabelWidth = "Total de pagos efectuados:".length * estimatedCharWidth;
+        const totalLabelWidth = "Total de pagos efectuados".length * estimatedCharWidth;
         const totalValueWidth = totalPagos.toFixed(2).toString().length * estimatedCharWidth;
         const totalLineWidth = Math.max(totalLabelWidth, totalValueWidth);
 
