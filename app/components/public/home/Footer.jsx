@@ -93,10 +93,7 @@ export default function Footer_1() {
           </article> */}
           <article className="flex flex-col gap-4">
             <h2 className="font-bold uppercase text-lg">Unete a nosotros</h2>
-            <Link
-              href="/colaboradores"
-              className="font-normal text-base"
-            >
+            <Link href="/colaboradores" className="font-normal text-base">
               Colaboradores
             </Link>
             {/* <Link href="#" target="_blank" className="font-normal text-base">
@@ -350,6 +347,13 @@ export default function Footer_1() {
                 >
                   Sobre nosotros
                 </Link>
+                <Link
+                  href="/contacto"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Contáctanos
+                </Link>
                 {/* <Link
                   href="#"
                   target="_blank"
@@ -437,10 +441,7 @@ export default function Footer_1() {
                 <h2 className="font-bold uppercase text-lg">
                   Únete a nosotros
                 </h2>
-                <Link
-                  href="/colaboradores"
-                  className="font-normal text-base"
-                >
+                <Link href="/colaboradores" className="font-normal text-base">
                   Colaboradores
                 </Link>
                 {/* <Link
