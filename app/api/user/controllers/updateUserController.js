@@ -4,33 +4,33 @@ import { NextResponse } from "next/server";
 export async function updateClient(data) {
     if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
     if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
-    if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    if (!data.idNum || data.idNum.trim().length < 1) return NextResponse.json({ error: "Se requiere el DNI" }, { status: 400 });
-    // if (typeof data.age !== 'number' || data.age < 1 || data.age > 120 || data.age < 18) return NextResponse.json({ error: "Se requiere la edad o es incorrecta" }, { status: 400 });
-    if (!data.phone) return NextResponse.json({ error: "Se requiere el teléfono" }, { status: 400 });
-    if (!data.city || data.city.trim().length < 1) return NextResponse.json({ error: "Se requiere la ciudad" }, { status: 400 });
-    if (!data.street || data.street.trim().length < 1) return NextResponse.json({ error: "Se requiere la calle" }, { status: 400 });
-    if (!data.streetNumber || data.streetNumber.trim().length < 1) return NextResponse.json({ error: "Se requiere el número" }, { status: 400 });
-    if (!data.postalCode || data.postalCode.trim().length < 1) return NextResponse.json({ error: "Se requiere el Código Postal" }, { status: 400 });
-    if (!data.birthDate || data.birthDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de nacimiento" }, { status: 400 });
-    if (!data.country || data.country.trim().length < 1) return NextResponse.json({ error: "Se requiere el nacionalidad" }, { status: 400 });
+    // if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
+    // if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
+    // if (!data.idNum || data.idNum.trim().length < 1) return NextResponse.json({ error: "Se requiere el DNI" }, { status: 400 });
+    // // if (typeof data.age !== 'number' || data.age < 1 || data.age > 120 || data.age < 18) return NextResponse.json({ error: "Se requiere la edad o es incorrecta" }, { status: 400 });
+    // if (!data.phone) return NextResponse.json({ error: "Se requiere el teléfono" }, { status: 400 });
+    // if (!data.city || data.city.trim().length < 1) return NextResponse.json({ error: "Se requiere la ciudad" }, { status: 400 });
+    // if (!data.street || data.street.trim().length < 1) return NextResponse.json({ error: "Se requiere la calle" }, { status: 400 });
+    // if (!data.streetNumber || data.streetNumber.trim().length < 1) return NextResponse.json({ error: "Se requiere el número" }, { status: 400 });
+    // if (!data.postalCode || data.postalCode.trim().length < 1) return NextResponse.json({ error: "Se requiere el Código Postal" }, { status: 400 });
+    // if (!data.birthDate || data.birthDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de nacimiento" }, { status: 400 });
+    // if (!data.country || data.country.trim().length < 1) return NextResponse.json({ error: "Se requiere el nacionalidad" }, { status: 400 });
 
-    // Validar nuevos campos
-    if (!data.emergencyName && data.emergencyName.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre de emergencia" }, { status: 400 });
-    if (!data.emergencyPhone) return NextResponse.json({ error: "Se requiere el teléfono de emergencia" }, { status: 400 });
-    if (!data.emergencyEmail && data.emergencyEmail.trim().length < 1) return NextResponse.json({ error: "Se requiere el email de emergencia" }, { status: 400 });
-    if (data.howMetUs && data.howMetUs.trim().length < 1) return NextResponse.json({ error: "Se requiere la información de cómo nos conociste" }, { status: 400 });
-    if (data.destinationUniversity && data.destinationUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de destino" }, { status: 400 });
-    if (data.homeUniversity && data.homeUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de origen" }, { status: 400 });
-    if (data.arrivalDate && data.arrivalDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de llegada" }, { status: 400 });
-    if (data.arrivalTime && data.arrivalTime.trim().length < 1) return NextResponse.json({ error: "Se requiere la hora de llegada" }, { status: 400 });
-    if (!data.genre || data.genre.trim().length < 1) return NextResponse.json({ error: "Se requiere el género" }, { status: 400 });
+    // // Validar nuevos campos
+    // if (!data.emergencyName && data.emergencyName.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre de emergencia" }, { status: 400 });
+    // if (!data.emergencyPhone) return NextResponse.json({ error: "Se requiere el teléfono de emergencia" }, { status: 400 });
+    // if (!data.emergencyEmail && data.emergencyEmail.trim().length < 1) return NextResponse.json({ error: "Se requiere el email de emergencia" }, { status: 400 });
+    // if (data.howMetUs && data.howMetUs.trim().length < 1) return NextResponse.json({ error: "Se requiere la información de cómo nos conociste" }, { status: 400 });
+    // if (data.destinationUniversity && data.destinationUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de destino" }, { status: 400 });
+    // if (data.homeUniversity && data.homeUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de origen" }, { status: 400 });
+    // if (data.arrivalDate && data.arrivalDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de llegada" }, { status: 400 });
+    // if (data.arrivalTime && data.arrivalTime.trim().length < 1) return NextResponse.json({ error: "Se requiere la hora de llegada" }, { status: 400 });
+    // if (!data.genre || data.genre.trim().length < 1) return NextResponse.json({ error: "Se requiere el género" }, { status: 400 });
 
 
     // Iniciar transacción
     const transaction = await Client.sequelize.transaction();
-
+    console.log(data)
     try {
         const user = await Client.findByPk(data.id);
         if (!user) {
@@ -42,7 +42,6 @@ export async function updateClient(data) {
         user.name = data.name || user.name;
         user.lastName = data.lastName || user.lastName;
         user.idNum = data.idNum || user.idNum;
-        // user.age = data.age || user.age;
         user.phone = data.phone || user.phone;
         user.city = data.city || user.city;
         user.street = data.street || user.street;
@@ -59,7 +58,7 @@ export async function updateClient(data) {
         user.destinationUniversity = data.destinationUniversity || user.destinationUniversity;
         user.homeUniversity = data.homeUniversity || user.homeUniversity;
         user.arrivalDate = data.arrivalDate ? new Date(data.arrivalDate) : user.arrivalDate;
-        user.arrivalTime = data.arrivalTime ? new Date(data.arrivalTime) : user.arrivalTime;
+        user.arrivalTime = data.arrivalTime ? data.arrivalTime : user.arrivalTime;
         user.genre = data.genre || user.genre || "OTHER";
         user.age = data.age || user.age;
 

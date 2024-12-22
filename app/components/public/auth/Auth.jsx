@@ -115,45 +115,6 @@ export default function Auth() {
           height={100}
         />
         <div className="buttons-auth flex flex-col gap-5 items-center w-full">
-          {!register && (
-            // Formulario de inicio de sesión
-            <form
-              onSubmit={handleLoginWithEmail}
-              className="flex flex-col gap-4 w-full"
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Correo electrónico"
-                className="border p-2 rounded-md"
-                required
-              />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Contraseña"
-                className="border p-2 rounded-md"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 sm:hover:bg-blue-500 sm:border sm:border-white"
-              >
-                Iniciar Sesión
-              </button>
-            </form>
-          )}
-          {!register && (
-            <span className="flex items-center text-sm font-thin w-full sm:text-white">
-              <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
-              {/* Línea izquierda */}
-              También puedes
-              <span className="flex-1 border-t border-gray-300 ml-2"></span>{" "}
-              {/* Línea derecha */}
-            </span>
-          )}
           {/* <button
             type="button"
             onClick={
@@ -192,6 +153,47 @@ export default function Auth() {
             </span>
             {register ? "Regístrate con Google" : "Iniciar con Google"}
           </button>
+          
+          {!register && (
+            <span className="flex items-center text-sm font-thin w-full sm:text-white">
+              <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
+              {/* Línea izquierda */}
+              También puedes
+              <span className="flex-1 border-t border-gray-300 ml-2"></span>{" "}
+              {/* Línea derecha */}
+            </span>
+          )}
+
+          {!register && (
+            // Formulario de inicio de sesión
+            <form
+              onSubmit={handleLoginWithEmail}
+              className="flex flex-col gap-4 w-full"
+            >
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Correo electrónico"
+                className="border p-2 rounded-md drop-shadow-md"
+                required
+              />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Contraseña"
+                className="border p-2 rounded-md drop-shadow-md"
+                required
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 sm:hover:bg-blue-500 sm:border sm:border-white drop-shadow-md"
+              >
+                Iniciar Sesión
+              </button>
+            </form>
+          )}
           {/* <p className="register-or-login-auth text-wrap text-xs sm:text-white">
             {register ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?"}
             <button
