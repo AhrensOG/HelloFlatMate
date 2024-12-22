@@ -17,6 +17,13 @@ export default function Footer_1() {
             >
               Sobre nosotros
             </Link>
+            <Link
+              href="/contacto"
+              target="_blank"
+              className="font-normal text-base"
+            >
+              Contáctanos
+            </Link>
             {/* <Link href="#" target="_blank" className="font-normal text-base">
               Blog
             </Link>
