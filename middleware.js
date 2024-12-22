@@ -40,6 +40,8 @@ export async function middleware(request) {
         "/colaboradores",
         "/sobre-nosotros",
         "/api/maps/geocoding",
+        "/contacto",
+        "/contacto/gracias"
     ];
 
     const dynamicPaths = [
