@@ -65,7 +65,7 @@ const ContactForm = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-        <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">
+        <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
           ¡Hablemos!
         </h1>
         <p className="text-lg text-gray-600 max-w-screen-lg">
@@ -77,7 +77,7 @@ const ContactForm = () => {
 
       {/* Formulario con Formik */}
       <motion.div
-        className="max-w-2xl w-full mx-auto bg-white shadow-lg rounded-lg p-8 lg:p-12"
+        className="max-w-2xl w-full mx-auto bg-white shadow-lg rounded-lg"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeInOut", delay: 0.5 }}
