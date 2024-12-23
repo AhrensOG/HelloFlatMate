@@ -49,7 +49,11 @@ function diversifyKey3DES(decodedKey, order) {
  *    3. HMAC-SHA256 con Ds_MerchantParameters
  *    4. Codificar en Base64
  */
-function createMerchantSignature(merchantKeyBase64, order, merchantParamsBase64) {
+function createMerchantSignature(
+  merchantKeyBase64,
+  order,
+  merchantParamsBase64
+) {
   // 1) Decodifica la clave
   const decodedKey = decodeBase64(merchantKeyBase64);
 
@@ -76,25 +80,31 @@ const {
   MERCHANT_KEY_BASE64,
   CURRENCY,
   URL_TPV_TEST,
+  MERCHANT_URL,
+  URL_OK,
+  URL_KO,
+  TRANSACTIONTYPE,
 } = process.env;
 
 export async function POST(request) {
   try {
     // 1) Leemos el body (o podrías harcodear datos de prueba):
-    const { amount, order, urlOk, urlKo, merchantUrl } = await request.json();
+    const { amount, order, paymentMetaData } = await request.json();
 
     // 2) Montar objeto Ds_MerchantParameters
-    //    (Si quieres harcodear, pon fijos: DS_MERCHANT_ORDER, DS_MERCHANT_AMOUNT, etc.)
     const merchantParamsObject = {
-      DS_MERCHANT_AMOUNT: String(amount),      // Ej: "4345" -> 43,45€
-      DS_MERCHANT_ORDER: order,               // Ej: "ABC12345"
+      DS_MERCHANT_AMOUNT: String(amount),
+      DS_MERCHANT_ORDER: order,
       DS_MERCHANT_MERCHANTCODE: MERCHANT_CODE,
       DS_MERCHANT_CURRENCY: CURRENCY,
       DS_MERCHANT_TERMINAL: MERCHANT_TERMINAL,
-      DS_MERCHANT_TRANSACTIONTYPE: "0",        // Compra normal
-      DS_MERCHANT_MERCHANTURL: merchantUrl,    // Notif online
-      DS_MERCHANT_URLOK: urlOk,               // Retorno OK
-      DS_MERCHANT_URLKO: urlKo,               // Retorno KO
+      DS_MERCHANT_TRANSACTIONTYPE: TRANSACTIONTYPE,
+      DS_MERCHANT_MERCHANTURL: MERCHANT_URL, // Webhook
+      DS_MERCHANT_URLOK: URL_OK, // Retorno OK
+      DS_MERCHANT_URLKO: URL_KO, // Retorno KO
+      DS_MERCHANT_MERCHANTDATA: paymentMetaData, // METADATA 
+      DS_MERCHANT_MERCHANTNAME: paymentMetaData.merchantName,
+      DS_MERCHANT_PRODUCTDESCRIPTION: paymentMetaData.merchantDescription,
     };
 
     // 3) Convertir a JSON y codificar en Base64 (paso previo a la firma)
@@ -121,6 +131,9 @@ export async function POST(request) {
     });
   } catch (err) {
     console.error("Error generando firma Redsys:", err);
-    return NextResponse.json({ error: "Error generando firma" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error generando firma" },
+      { status: 500 }
+    );
   }
 }

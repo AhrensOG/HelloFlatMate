@@ -1,77 +1,71 @@
 // app/api/redsys/notification/route.js
 
 import { NextResponse } from "next/server";
-import crypto from "crypto";
+import CryptoJS from "crypto-js";
+import { createMerchantSignatureNotif, decodeBase64, decodeHtmlEntities } from "./utils/functions";
+import { metadata } from "@/app/contacto/page";
 
-function base64Decode(b64String) {
-  return Buffer.from(b64String, "base64");
-}
-function base64Encode(data) {
-  return Buffer.from(data).toString("base64");
-}
-function encrypt3DES(keyBuffer, order) {
-  const iv = Buffer.alloc(8, 0);
-  const cipher = crypto.createCipheriv("des-ede3-cbc", keyBuffer, iv);
-  cipher.setAutoPadding(true);
+const { MERCHANT_KEY_BASE64 } = process.env;
 
-  let encrypted = cipher.update(order, "utf8", "base64");
-  encrypted += cipher.final("base64");
-  return encrypted;
-}
-
-function createMerchantSignatureNotif(merchantKey, paramsBase64) {
-  // 1) Decodificar la clave del módulo de administración
-  const decodedKey = base64Decode(merchantKey);
-
-  // 2) Decodificar params para extraer el "Ds_Order"
-  const decodedParams = JSON.parse(base64Decode(paramsBase64).toString("utf8"));
-  const order = decodedParams.Ds_Order; // Ojo, puede venir como DS_ORDER
-
-  // 3) Diversificar la clave
-  const encryptedOrder = encrypt3DES(decodedKey, order);
-  const keyOrderEncrypted = base64Decode(encryptedOrder);
-
-  // 4) Crear HMAC-SHA256
-  const hmac = crypto.createHmac("sha256", keyOrderEncrypted);
-  hmac.update(paramsBase64);
-
-  // 5) Retornar en Base64
-  return base64Encode(hmac.digest());
-}
-
-const MERCHANT_KEY = "XCw2GO1VDeCP8DAYosBvG/k7+MHYVmo/"; // Tu clave base64
-
+// Este endpoint recibe la notificación POST de Redsys
 export async function POST(request) {
   try {
+    // 1) Capturar los parámetros que Redsys envía en un POST "form-data"
     const formData = await request.formData();
 
     const version = formData.get("Ds_SignatureVersion");
     const params = formData.get("Ds_MerchantParameters");
-    const signatureReceived = formData.get("Ds_Signature");
+    let signatureReceived = formData.get("Ds_Signature");
 
-    // 1) Decodificamos para obtener data de notificación
-    const decodedParams = JSON.parse(base64Decode(params).toString("utf8"));
+    // Por si llegan con "+" cambiados a espacios (depende de la config del servidor)
+    if (signatureReceived) {
+      signatureReceived = signatureReceived.replace(" ", "+");
+    }
 
-    // 2) Calculamos firma con la misma lógica
+    // 2) Decodificamos Ds_MerchantParameters para inspeccionarlo
+    const decodedParamsWA = decodeBase64(params);
+    const decodedParamsJSON = CryptoJS.enc.Utf8.stringify(decodedParamsWA);
+    const decodedParams = JSON.parse(decodedParamsJSON);
+
+    // 3) Calculamos la firma con la misma lógica
     const signatureCalculated = createMerchantSignatureNotif(
-      MERCHANT_KEY,
+      MERCHANT_KEY_BASE64,
       params
     );
 
-    // 3) Importante: en la firma, a veces Redsys reemplaza '+' con '-' o '_'.
-    //    Asegúrate de normalizar: firma de Redsys vs firma calculada.
-    //    O haz el replace: signatureReceived = signatureReceived.replace(' ', '+');
-    //    (Depende si tu servidor recibe la firma con espacios, etc.)
-    if (signatureCalculated === signatureReceived) {
-      // FIRMA OK
-      const dsResponse = decodedParams.Ds_Response; // 0-99 => transacción OK
-      // Actualizar en BBDD el resultado, etc.
+    // A veces Redsys hace URL-safe base64 -> reemplaza '+'/'/' con '-'/'_'
 
-      console.log("Notificación Redsys OK, Ds_Response:", dsResponse);
-      // Redsys obliga a devolver "HTTP 200" si todo está OK
+    // Normalizas la firma recibida a Base64 "clásico"
+    let normalizedSignatureReceived = signatureReceived
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+    // Opcional: reponer "=" si es que el URL-safe base64 no trae padding al final
+    while (normalizedSignatureReceived.length % 4 !== 0) {
+      normalizedSignatureReceived += "=";
+    }
+
+    // 4) Comparamos ambas firmas (ojo con mayúsculas/minúsculas, etc.)
+    if (signatureCalculated === normalizedSignatureReceived) {
+      // FIRMA OK => procesamos la notificación
+
+      const htmlString = decodedParams.Ds_MerchantData;
+
+      // 1) Decodificas entidades
+      const unescapedString = decodeHtmlEntities(htmlString);
+
+      // 2) Parseas como JSON
+      const metadata = JSON.parse(unescapedString);
+
+      console.log(
+        "Notificación Redsys OK. Ds_Response:",
+        metadata
+      );
+
+      // Retornar HTTP 200, sin más HTML
       return NextResponse.json({ message: "Firma OK" });
     } else {
-      // FIRMA KO
+      // FIRMA KO => Rechazar
       console.log("Notificación Redsys firma inválida");
       return NextResponse.json({ error: "Firma KO" }, { status: 400 });
     }
