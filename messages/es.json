@@ -738,5 +738,13 @@
             "close": "Cerrar",
             "pay_now": "Pagar ahora"
         }
+    },
+    "forms": {
+        "update_client": {
+            "validations": {
+                "name": "El nombre es obligatorio",
+                "last_name": "El apellido es obligatorio"
+            }
+        }
     }
 }

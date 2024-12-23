@@ -34,7 +34,15 @@ export async function middleware(request) {
     }
 
     // ✅ Rutas públicas de la API (sin autenticación)
-    const publicApiPaths = ["/api/auth", "/api/stripe/webhook", "/api/payment", "/api/property", "/api/maps/geocoding"];
+    const publicApiPaths = [
+        "/api/auth",
+        "/api/stripe/webhook",
+        "/api/payment",
+        "/api/property",
+        "/api/maps/geocoding",
+        "/api/redsys",
+        "/api/redsys/notify",
+    ];
 
     if (publicApiPaths.includes(pathName)) {
         console.log(`🛑 Ruta API pública permitida: ${pathName}`);
