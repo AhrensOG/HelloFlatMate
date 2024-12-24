@@ -152,7 +152,7 @@ export default function ReservationPropertyCard({
           merchantName: `Alojamiento ${property.serial}`,
           merchantDescription: `Reserva - Alojamiento ${property.serial}`,
           merchantUrlOk: `/pages/user/success/${propertyId}?type=reserve&r=${roomId}&lo=${leaseOrder.id}`,
-          merchantUrlkO: `pages/user/my-reservations`,
+          merchantUrlkO: `/pages/user/my-reservations`,
         },
       };
 
