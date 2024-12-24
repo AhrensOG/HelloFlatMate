@@ -289,79 +289,78 @@ export async function POST(request) {
       } = metadata;
       let ownerId = null;
 
-      // if (paymentableType === "PROPERTY") {
-      //   const foundProperty = await Property.findByPk(paymentableId);
-      //   if (!foundProperty) {
-      //     return NextResponse.json(
-      //       { error: "Paymentable not found" },
-      //       { status: 404 }
-      //     );
-      //   }
-      //   ownerId = foundProperty.ownerId;
-      // } else {
-      //   // es ROOM
-      //   const foundRoom = await Room.findByPk(paymentableId, {
-      //     include: {
-      //       model: Property,
-      //       as: "property",
-      //       attributes: ["ownerId"],
-      //     },
-      //   });
-      //   if (!foundRoom) {
-      //     return NextResponse.json(
-      //       { error: "Room not found" },
-      //       { status: 404 }
-      //     );
-      //   }
-      //   ownerId = foundRoom.property.ownerId;
-      // }
-      console.log(metadata)
+      if (paymentableType === "PROPERTY") {
+        const foundProperty = await Property.findByPk(paymentableId);
+        if (!foundProperty) {
+          return NextResponse.json(
+            { error: "Paymentable not found" },
+            { status: 404 }
+          );
+        }
+        ownerId = foundProperty.ownerId;
+      } else {
+        // es ROOM
+        const foundRoom = await Room.findByPk(paymentableId, {
+          include: {
+            model: Property,
+            as: "property",
+            attributes: ["ownerId"],
+          },
+        });
+        if (!foundRoom) {
+          return NextResponse.json(
+            { error: "Room not found" },
+            { status: 404 }
+          );
+        }
+        ownerId = foundRoom.property.ownerId;
+      }
 
-      // const client = await Client.findByPk(clientId);
-      // if (!client) {
-      //   return NextResponse.json(
-      //     { error: "Client not found" },
-      //     { status: 404 }
-      //   );
-      // }
+      const client = await Client.findByPk(clientId);
+      if (!client) {
+        return NextResponse.json(
+          { error: "Client not found" },
+          { status: 404 }
+        );
+      }
 
-      // const rentData = {
-      //   amount: Number(amount),
-      //   type: "MONTHLY",
-      //   paymentableId,
-      //   paymentableType,
-      //   clientId,
-      //   leaseOrderId,
-      //   leaseOrderType,
-      //   status: "APPROVED",
-      //   quotaNumber,
-      //   date: new Date(),
-      //   ownerId,
-      //   paymentId: decodedParams.Ds_AuthorisationCode || order || "",
-      //   description: `Pago mensual - ${month}`,
-      // };
+      const rentData = {
+        amount: Number(amount),
+        type: "MONTHLY",
+        paymentableId,
+        paymentableType,
+        clientId,
+        leaseOrderId,
+        leaseOrderType,
+        status: "APPROVED",
+        quotaNumber,
+        date: new Date(),
+        ownerId,
+        paymentId: decodedParams.Ds_AuthorisationCode || order || "",
+        description: `Pago mensual - ${month}`,
+      };
 
-      // const rentPayment = await RentPayment.create(rentData);
+      const rentPayment = await RentPayment.create(rentData);
 
-      // // Enviar mail a client
-      // await sendMailFunction({
-      //   to: client.email,
-      //   subject: `Confirmación de pago mensual - Alojamiento ${propertySerial}`,
-      //   text: `¡Gracias por confiar en HelloFlatMate! 
-      //   Puedes descargar tu factura directamente desde la aplicación (helloflatmate.com). 
-      //   Basta con dirigirte a “Panel” y, en la sección “Mis finanzas”, podrás descargarla.`,
-      // });
+      // Enviar mail a client
+      await sendMailFunction({
+        to: client.email,
+        subject: `Confirmación de pago mensual - Alojamiento ${propertySerial}`,
+        text: `¡Gracias por confiar en HelloFlatMate! 
+        Puedes descargar tu factura directamente desde la aplicación (helloflatmate.com). 
+        Basta con dirigirte a “Panel” y, en la sección “Mis finanzas”, podrás descargarla.`,
+      });
 
-      // // Enviar mail a HFM
-      // await sendMailFunction({
-      //   to: HFM_MAIL,
-      //   subject: `Pago mensual realizado - ${propertySerial}`,
-      //   text: `El usuario ${client.name} ${client.lastName} realizó el pago de reserva por el alojamiento ${propertySerial}.`,
-      // });
+      // Enviar mail a HFM
+      await sendMailFunction({
+        to: HFM_MAIL,
+        subject: `Pago mensual realizado - ${propertySerial}`,
+        text: `El usuario ${client.name} ${client.lastName} realizó el pago de reserva por el alojamiento ${propertySerial}.`,
+      });
 
-      // console.log(
-      //   `✅ Rent Payment with ID ${rentPayment.id} updated to APPROVED`
-      // );
+      console.log(
+        `✅ Rent Payment with ID ${rentPayment.id} updated to APPROVED`
+      );
     } else {
       // No coincidió con ninguno => log
       console.log(`Unhandled paymentType: ${paymentType}`);

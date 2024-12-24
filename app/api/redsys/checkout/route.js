@@ -2,7 +2,6 @@
 import { NextResponse } from "next/server";
 import { createMerchantSignature, encodeBase64 } from "./utils/functions";
 
-
 // Ajusta a tu caso real:
 const {
   MERCHANT_CODE,
@@ -28,8 +27,8 @@ export async function POST(request) {
       DS_MERCHANT_TERMINAL: MERCHANT_TERMINAL,
       DS_MERCHANT_TRANSACTIONTYPE: TRANSACTIONTYPE,
       DS_MERCHANT_MERCHANTURL: MERCHANT_URL, // Webhook
-      DS_MERCHANT_URLOK: `${process.env.NEXT_PUBLIC_BASE_URL}${paymentMetaData.merchanUrlOK}`, // Retorno OK
-      DS_MERCHANT_URLKO: `${process.env.NEXT_PUBLIC_BASE_URL}${paymentMetaData.merchanUrlKO}`, // Retorno KO
+      DS_MERCHANT_URLOK: `${process.env.NEXT_PUBLIC_BASE_URL}${paymentMetaData.merchantUrlOk}`, // Retorno OK
+      DS_MERCHANT_URLKO: `${process.env.NEXT_PUBLIC_BASE_URL}${paymentMetaData.merchantUrlkO}`, // Retorno KO
       DS_MERCHANT_MERCHANTDATA: paymentMetaData, // METADATA
       DS_MERCHANT_MERCHANTNAME: paymentMetaData.merchantName,
       DS_MERCHANT_PRODUCTDESCRIPTION: paymentMetaData.merchantDescription,
@@ -38,7 +37,6 @@ export async function POST(request) {
     // 3) Convertir a JSON y codificar en Base64 (paso previo a la firma)
     const merchantParamsJson = JSON.stringify(merchantParamsObject);
     const merchantParamsBase64 = encodeBase64(merchantParamsJson);
-
     // 4) Crear firma con la clave (pasos 1,2,3,4 descritos)
     const signature = createMerchantSignature(
       MERCHANT_KEY_BASE64,
