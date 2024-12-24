@@ -8,7 +8,7 @@ const {
   MERCHANT_TERMINAL,
   MERCHANT_KEY_BASE64,
   CURRENCY,
-  URL_TPV_TEST,
+  URL_TPV,
   MERCHANT_URL,
   TRANSACTIONTYPE,
 } = process.env;
@@ -53,7 +53,7 @@ export async function POST(request) {
       Ds_SignatureVersion: "HMAC_SHA256_V1",
       Ds_MerchantParameters: merchantParamsBase64,
       Ds_Signature: signature,
-      redsysUrl: URL_TPV_TEST,
+      redsysUrl: URL_TPV,
     });
   } catch (err) {
     console.error("Error generando firma Redsys:", err);
