@@ -40,6 +40,11 @@ export async function middleware(request) {
         "/colaboradores",
         "/sobre-nosotros",
         "/api/maps/geocoding",
+        "/contacto",
+        "/contacto/gracias",
+        "/redsys",
+        "/api/redsys/checkout",
+        "/api/redsys/webhook",
     ];
 
     const dynamicPaths = [

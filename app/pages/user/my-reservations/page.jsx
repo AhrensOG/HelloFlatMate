@@ -18,10 +18,9 @@ export default function MyReservations() {
         if (state.user) {
             const getData = async () => {
                 try {
-                    const res = await axios.get(`/api/user?id=${state?.user?.id}`);
-                    setUser(res.data);
-                    const leaseRooms = res.data?.leaseOrdersRoom;
-                    const leaseProperties = res.data?.leaseOrdersProperty;
+                    setUser(state.user);
+                    const leaseRooms = state.user?.leaseOrdersRoom;
+                    const leaseProperties = state.user?.leaseOrdersProperty;
 
                     setLeaseOrdersList([...leaseRooms, ...leaseProperties]);
                 } catch (error) {
