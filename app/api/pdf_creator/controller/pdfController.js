@@ -15,10 +15,10 @@ export async function handleGetRequest(request) {
   //   request.ip ||
   //   "IP no disponible";
 
-  const forwardedFor = req.headers.get("x-forwarded-for");
+  const forwardedFor = request.headers.get("x-forwarded-for");
   const clientIp = forwardedFor
     ? forwardedFor.split(",")[0] // Si hay múltiples IPs, toma la primera
-    : req.headers.get("x-real-ip") || req.socket?.remoteAddress || "IP no disponible";
+    : request.headers.get("x-real-ip") || request.socket?.remoteAddress || "IP no disponible";
 
   // Utilizar UAParser para obtener los detalles del dispositivo, navegador y sistema operativo
   const parser = new UAParser();
