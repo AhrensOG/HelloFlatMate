@@ -1,17 +1,31 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-import { loadStripe } from "@stripe/stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Tooltip from "@/app/components/public/AuxiliarComponents/Tooltip";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
+// const stripePromise = loadStripe(
+//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+// );
+
+function generateDsOrder(leaseOrderId) {
+  const baseStr = String(leaseOrderId);
+  const timePart = Date.now().toString().slice(-4);
+  const randomDigit = Math.floor(Math.random() * 10).toString();
+  let dsOrder = baseStr + timePart + randomDigit;
+
+  // Redsys suele soportar 12:
+  if (dsOrder.length > 12) {
+    dsOrder = dsOrder.slice(0, 12);
+  }
+
+  return dsOrder;
+}
 
 export default function ReservationPropertyCard({
   property,
@@ -23,6 +37,12 @@ export default function ReservationPropertyCard({
     pending: false,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Nuevo: Aquí guardaremos la info de Redsys
+  const [redsysData, setRedsysData] = useState(null);
+
+  // Creamos una ref para un form oculto, si queremos “submit” programático
+  const formRef = useRef(null);
 
   const route = useRouter();
   const category = property?.property?.category || property?.category;
@@ -52,58 +72,143 @@ export default function ReservationPropertyCard({
     route.push(path);
   };
 
-  const handleCheckout = async () => {
-    const propertyId = property?.propertyId || property?.id;
-    const roomId =
-      category === "HELLO_ROOM" ||
-      category === "HELLO_COLIVING" ||
-      category === "HELLO_LANDLORD"
-        ? property.id
-        : false;
-    const userEmail = user?.email || ""; // Ajusta según tus datos de usuario
-    const price = parseInt(property?.price);
-    const propertyName = property?.serial;
-    const leaseOrderId = leaseOrder?.id;
+  // const handleCheckout = async () => {
+  //   const propertyId = property?.propertyId || property?.id;
+  //   const roomId =
+  //     category === "HELLO_ROOM" ||
+  //     category === "HELLO_COLIVING" ||
+  //     category === "HELLO_LANDLORD"
+  //       ? property.id
+  //       : false;
+  //   const userEmail = user?.email || ""; // Ajusta según tus datos de usuario
+  //   const price = parseInt(property?.price);
+  //   const propertyName = property?.serial;
+  //   const leaseOrderId = leaseOrder?.id;
 
+  //   try {
+  //     const response = await fetch("/api/stripe/create-checkout-session", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         propertyId,
+  //         userEmail,
+  //         price,
+  //         propertyName,
+  //         leaseOrderId,
+  //         roomId,
+  //         category,
+  //       }),
+  //     });
+
+  //     const session = await response.json();
+  //     if (session.error) {
+  //       throw new Error(session.error);
+  //     }
+
+  //     const stripe = await stripePromise;
+  //     const result = await stripe.redirectToCheckout({
+  //       sessionId: session.id,
+  //     });
+
+  //     if (result.error) {
+  //       console.error(result.error.message);
+  //     } else {
+  //       toast.info("Redirigiendo al checkout de Stripe...");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al iniciar el checkout de Stripe:", error.message);
+  //     toast.info(
+  //       "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente."
+  //     );
+  //   }
+  // };
+
+  const handleRedsysCheckout = async () => {
     try {
-      const response = await fetch("/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          propertyId,
-          userEmail,
-          price,
-          propertyName,
-          leaseOrderId,
-          roomId,
+      const propertyId = property?.propertyId || property?.id;
+      const roomId =
+        category === "HELLO_ROOM" ||
+        category === "HELLO_COLIVING" ||
+        category === "HELLO_LANDLORD"
+          ? property.id
+          : false;
+
+      const order = generateDsOrder(leaseOrder?.id);
+      // Info que enviamos al endpoint:
+      const body = {
+        amount: property?.price * 100, // Ejemplo: 43,45€ => 4345 en céntimos
+        order,
+        paymentMetaData: {
+          order,
+          paymentType: "reservation",
+          price: property.price,
           category,
-        }),
-      });
+          leaseOrderId: leaseOrder?.id,
+          roomId,
+          propertyId,
+          userEmail: user?.email || "",
+          merchantName: `Alojamiento ${property.serial}`,
+          merchantDescription: `Reserva - Alojamiento ${property.serial}`,
+          merchantUrlOk: `/pages/user/success/${propertyId}?type=reserve&r=${roomId}&lo=${leaseOrder.id}`,
+          merchantUrlkO: `pages/user/my-reservations`,
+        },
+      };
 
-      const session = await response.json();
-      if (session.error) {
-        throw new Error(session.error);
+      // Petición con fetch o axios
+      const res = await fetch("/api/redsys/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        throw new Error(data.error);
       }
 
-      const stripe = await stripePromise;
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
+      // Guardamos los datos en el estado
+      setRedsysData(data);
+      toast("Redirigiendo a Redsys...");
 
-      if (result.error) {
-        console.error(result.error.message);
-      } else {
-        toast.info("Redirigiendo al checkout de Stripe...");
-      }
+      // Opción A) Enviar el formulario automáticamente
+      setTimeout(() => {
+        formRef.current.submit();
+      }, 500);
+
+      // Opción B) Mostrar un nuevo modal con un botón de “Confirmar” para postear.
     } catch (error) {
-      console.error("Error al iniciar el checkout de Stripe:", error.message);
-      toast.info(
-        "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente."
-      );
+      console.error("Error al iniciar el checkout de Redsys:", error.message);
+      toast.error("Hubo un problema al procesar tu pago con Redsys.");
     }
   };
+
+  const redsysForm = redsysData && (
+    <form
+      ref={formRef}
+      name="redsysForm"
+      action={redsysData.redsysUrl}
+      method="POST"
+      style={{ display: "none" }} // oculto
+    >
+      <input
+        type="hidden"
+        name="Ds_SignatureVersion"
+        value={redsysData.Ds_SignatureVersion}
+      />
+      <input
+        type="hidden"
+        name="Ds_MerchantParameters"
+        value={redsysData.Ds_MerchantParameters}
+      />
+      <input
+        type="hidden"
+        name="Ds_Signature"
+        value={redsysData.Ds_Signature}
+      />
+    </form>
+  );
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -260,6 +365,9 @@ export default function ReservationPropertyCard({
         </div>
       </article>
 
+      {/* Formulario oculto para Redsys */}
+      {redsysForm}
+
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
@@ -302,7 +410,7 @@ export default function ReservationPropertyCard({
                 para firmar tu contrato digital.
               </p>
               <button
-                onClick={handleCheckout}
+                onClick={handleRedsysCheckout}
                 className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
               >
                 Realizar Pago

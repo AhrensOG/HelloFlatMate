@@ -77,8 +77,6 @@ function decodeHtmlEntities(str) {
 
 export {
   decodeBase64,
-  encodeBase64,
-  encrypt3DES_CBC_ZeroPadding,
   createMerchantSignatureNotif,
   decodeHtmlEntities,
 };
