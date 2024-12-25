@@ -18,6 +18,16 @@ export async function POST(request) {
     // 1) Leemos el body (o podrías harcodear datos de prueba):
     const { amount, order, paymentMetaData } = await request.json();
 
+    const URLOK = paymentMetaData.merchantUrlOk;
+    const URLKO = paymentMetaData.merchantUrlkO;
+    const merchantName = paymentMetaData.merchantName;
+    const merchantDescription = paymentMetaData.merchantDescription;
+
+    const merchantMetaDataString = JSON.stringify(paymentMetaData);
+    const merchantMetaDataB64 = Buffer.from(merchantMetaDataString).toString(
+      "base64"
+    );
+
     // 2) Montar objeto Ds_MerchantParameters
     const merchantParamsObject = {
       DS_MERCHANT_AMOUNT: String(amount),
@@ -27,11 +37,11 @@ export async function POST(request) {
       DS_MERCHANT_TERMINAL: MERCHANT_TERMINAL,
       DS_MERCHANT_TRANSACTIONTYPE: TRANSACTIONTYPE,
       DS_MERCHANT_MERCHANTURL: MERCHANT_URL, // Webhook
-      DS_MERCHANT_URLOK: `${process.env.NEXT_PUBLIC_BASE_URL}${paymentMetaData.merchantUrlOk}`, // Retorno OK
-      DS_MERCHANT_URLKO: `${process.env.NEXT_PUBLIC_BASE_URL}${paymentMetaData.merchantUrlkO}`, // Retorno KO
-      DS_MERCHANT_MERCHANTDATA: paymentMetaData, // METADATA
-      DS_MERCHANT_MERCHANTNAME: paymentMetaData.merchantName,
-      DS_MERCHANT_PRODUCTDESCRIPTION: paymentMetaData.merchantDescription,
+      DS_MERCHANT_URLOK: `${process.env.NEXT_PUBLIC_BASE_URL}${URLOK}`, // Retorno OK
+      DS_MERCHANT_URLKO: `${process.env.NEXT_PUBLIC_BASE_URL}${URLKO}`, // Retorno KO
+      DS_MERCHANT_MERCHANTDATA: merchantMetaDataB64, // METADATA
+      DS_MERCHANT_MERCHANTNAME: merchantName,
+      DS_MERCHANT_PRODUCTDESCRIPTION: merchantDescription,
     };
 
     // 3) Convertir a JSON y codificar en Base64 (paso previo a la firma)

@@ -81,10 +81,15 @@ export async function POST(request) {
     console.log(`✅ Payment approved. Ds_Response = ${dsResponseCode}`);
 
     // 5) Leer metadata (en Ds_MerchantData)
-    // Recordemos que la guardaste en la reserva como JSON
-    const htmlString = decodedParams.Ds_MerchantData; // Escapado
-    const unescapedString = decodeHtmlEntities(htmlString);
-    const metadata = JSON.parse(unescapedString);
+    // Recordemos que la guardaste en la reserva en Base64
+      const merchantDataB64 = decodedParams.Ds_MerchantData;
+    // A veces Redsys escapa & #..., por eso primero:
+    const unescaped = decodeHtmlEntities(merchantDataB64);
+    // luego Base64 decode:
+    const merchantDataString = Buffer.from(unescaped, "base64").toString(
+      "utf8"
+    );
+    const metadata = JSON.parse(merchantDataString);
 
     // De tu webhook Stripe, leías algo como:
     // { paymentType, roomId, leaseOrderId, supplyId, category, userEmail, price, ... }
