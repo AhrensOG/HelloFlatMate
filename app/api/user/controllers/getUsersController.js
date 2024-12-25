@@ -22,20 +22,6 @@ export async function getUserById(id) {
     return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
   try {
     const [owner, client, admin, worker] = await Promise.all([
-      Owner.findByPk(id, {
-        include: [
-          {
-            model: LeaseOrderProperty,
-            as: "leaseOrdersProperty",
-            include: [{ model: Property, as: "property" }],
-          },
-          { model: LeaseOrderRoom, as: "leaseOrdersRoom" },
-          { model: Property, as: "properties" },
-          { model: ToDo, as: "toDos" },
-          { model: Document, as: "documents" },
-          { model: ChatParticipant, as: "chats" },
-        ],
-      }),
       Client.findByPk(id, {
         include: [
           {
@@ -61,6 +47,20 @@ export async function getUserById(id) {
           { model: ChatParticipant, as: "chats" },
           { model: Payment, as: "payments" },
           { model: RentPayment, as: "rentPayments" },
+        ],
+      }),
+      Owner.findByPk(id, {
+        include: [
+          {
+            model: LeaseOrderProperty,
+            as: "leaseOrdersProperty",
+            include: [{ model: Property, as: "property" }],
+          },
+          { model: LeaseOrderRoom, as: "leaseOrdersRoom" },
+          { model: Property, as: "properties" },
+          { model: ToDo, as: "toDos" },
+          { model: Document, as: "documents" },
+          { model: ChatParticipant, as: "chats" },
         ],
       }),
       Admin.findByPk(id, {
