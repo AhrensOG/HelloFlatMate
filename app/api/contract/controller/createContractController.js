@@ -41,6 +41,7 @@ export async function createContract(data) {
             }
 
             if (leaseOrder) {
+                leaseOrder.isActive = true
                 leaseOrder.isSigned = true
                 leaseOrder.inReview = false
                 await leaseOrder.save()

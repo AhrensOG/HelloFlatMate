@@ -14,7 +14,6 @@ const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
             leaseOrdersList
               .filter((l) => l.status !== "REJECTED") // Filtrar las órdenes con estado "REJECTED"
               .map((l) => {
-                console.log(l);
                 // Construir una clave única concatenando el tipo y el ID
                 const uniqueKey = `${l.property ? "property" : "room"}-${l.id}`;
                 return (
