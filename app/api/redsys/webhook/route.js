@@ -17,6 +17,7 @@ import {
   decodeBase64,
   decodeHtmlEntities,
 } from "./utils/functions";
+import { baseTemplate } from "./utils/emailTemplates";
 
 const { MERCHANT_KEY_BASE64, HFM_MAIL } = process.env;
 
@@ -42,9 +43,43 @@ export async function POST(request) {
     }
 
     // 2) Decodificar params para inspeccionarlo
-    const decodedParamsWA = decodeBase64(params); // WordArray
+    // Verificar que params no sea null
+    if (!params) {
+      console.error("Ds_MerchantParameters is missing in the request.");
+      return NextResponse.json(
+        { error: "Ds_MerchantParameters is missing" },
+        { status: 400 }
+      );
+    }
+
+    // Decodificar params para inspeccionarlo
+    let decodedParamsWA;
+    try {
+      decodedParamsWA = decodeBase64(params); // Esto puede lanzar si params es inválido
+    } catch (decodeError) {
+      console.error("Error al decodificar Ds_MerchantParameters:", decodeError);
+      return NextResponse.json(
+        { error: `Error decodificando Ds_MerchantParameters : ${params}` },
+        { status: 400 }
+      );
+    }
+
     const decodedParamsJSON = CryptoJS.enc.Utf8.stringify(decodedParamsWA);
-    const decodedParams = JSON.parse(decodedParamsJSON);
+    let decodedParams;
+
+    try {
+      decodedParams = JSON.parse(decodedParamsJSON);
+    } catch (parseError) {
+      console.error("Error al parsear Ds_MerchantParameters:", parseError);
+      return NextResponse.json(
+        { error: "Error parseando Ds_MerchantParameters" },
+        { status: 400 }
+      );
+    }
+
+    // const decodedParamsWA = decodeBase64(params); // WordArray
+    // const decodedParamsJSON = CryptoJS.enc.Utf8.stringify(decodedParamsWA);
+    // const decodedParams = JSON.parse(decodedParamsJSON);
 
     // 3) Calcular firma
     const signatureCalculated = createMerchantSignatureNotif(
@@ -82,7 +117,7 @@ export async function POST(request) {
 
     // 5) Leer metadata (en Ds_MerchantData)
     // Recordemos que la guardaste en la reserva en Base64
-      const merchantDataB64 = decodedParams.Ds_MerchantData;
+    const merchantDataB64 = decodedParams.Ds_MerchantData;
     // A veces Redsys escapa & #..., por eso primero:
     const unescaped = decodeHtmlEntities(merchantDataB64);
     // luego Base64 decode:
@@ -231,8 +266,8 @@ export async function POST(request) {
         // Enviar mail a client
         await sendMailFunction({
           to: client.email,
-          subject: `Confirmación de reserva - Alojamiento ${theRoom.serial}`,
-          text: `¡Gracias por confiar en helloflatmate! Puedes revisar el estado de tu reserva en la sección "Histórico" de tu panel de usuario.`,
+          subject: `¡Reserva realizada correctamente! Alojamiento ${theRoom.serial}`,
+          html: baseTemplate,
           attachments: [
             {
               content: pdfBase64,
@@ -241,21 +276,7 @@ export async function POST(request) {
               disposition: "attachment",
             },
           ],
-        });
-
-        // Enviar mail a HFM
-        await sendMailFunction({
-          to: HFM_MAIL,
-          subject: `Pago de reserva - ${theRoom.serial}`,
-          text: `El usuario ${client.name} ${client.lastName} realizó el pago de reserva por el alojamiento ${theRoom.serial}.`,
-          attachments: [
-            {
-              content: pdfBase64,
-              filename: `factura_${rentPayment.id}.pdf`,
-              type: "application/pdf",
-              disposition: "attachment",
-            },
-          ],
+          cc: HFM_MAIL,
         });
 
         console.log(
@@ -292,33 +313,27 @@ export async function POST(request) {
         month,
         propertySerial,
       } = metadata;
-      let ownerId = null;
 
-      if (paymentableType === "PROPERTY") {
-        const foundProperty = await Property.findByPk(paymentableId);
-        if (!foundProperty) {
-          return NextResponse.json(
-            { error: "Paymentable not found" },
-            { status: 404 }
-          );
-        }
-        ownerId = foundProperty.ownerId;
-      } else {
-        // es ROOM
-        const foundRoom = await Room.findByPk(paymentableId, {
-          include: {
-            model: Property,
-            as: "property",
-            attributes: ["ownerId"],
-          },
-        });
-        if (!foundRoom) {
-          return NextResponse.json(
-            { error: "Room not found" },
-            { status: 404 }
-          );
-        }
-        ownerId = foundRoom.property.ownerId;
+      const foundRoom = await Room.findByPk(paymentableId, {
+        include: {
+          model: Property,
+          as: "property",
+          attributes: [
+            "ownerId",
+            "street",
+            "streetNumber",
+            "typology",
+            "floor",
+          ],
+        },
+      });
+      if (!foundRoom) {
+        return NextResponse.json({ error: "Room not found" }, { status: 404 });
+      }
+
+      const foundLeaseOrder = await LeaseOrderRoom.findByPk(leaseOrderId);
+      if (!foundLeaseOrder) {
+        return NextResponse.json({ error: "Room not found" }, { status: 404 });
       }
 
       const client = await Client.findByPk(clientId);
@@ -340,27 +355,83 @@ export async function POST(request) {
         status: "APPROVED",
         quotaNumber,
         date: new Date(),
-        ownerId,
+        ownerId: foundRoom.property.ownerId,
         paymentId: decodedParams.Ds_AuthorisationCode || order || "",
         description: `Pago mensual - ${month}`,
       };
 
       const rentPayment = await RentPayment.create(rentData);
 
+      const allRentPayments = await RentPayment.findAll({
+        where: {
+          clientId,
+          leaseOrderId,
+          leaseOrderType,
+          paymentableId,
+          paymentableType,
+        },
+      });
+
+      const detailsPayments = allRentPayments
+        .map((payment) => {
+          return {
+            amount: payment.amount,
+            date: payment.date,
+            status: payment.status,
+            id: payment.id,
+            quotaNumber: payment.quotaNumber,
+          };
+        })
+        .sort((a, b) => {
+          return b.quotaNumber - a.quotaNumber;
+        });
+
+      const pdfData = {
+        id: rentPayment.id,
+        clienteName: `${client.name || "-"} ${client.lastName || "-"}`,
+        clienteDni: client.idNum || "N/A",
+        clienteAddress: `${client.street || "-"} ${client.streetNumber || "-"}`,
+        clienteCity: `${client.city || "-"} CP: ${client.postalCode || "-"}`,
+        clientePhone: client.phone || "N/A",
+        clienteEmail: client.email || "N/A",
+        room: `${foundRoom.property?.street} ${foundRoom.property?.streetNumber} ${foundRoom.property?.floor}`,
+        roomCode: foundRoom.serial,
+        gender: foundRoom.property?.typology
+          ? foundRoom.property.typology === "MIXED"
+            ? "mixto"
+            : foundRoom.property.typology === "ONLY_WOMEN"
+            ? "solo mujeres"
+            : foundRoom.property.typology === "ONLY_MEN"
+            ? "solo hombres"
+            : "-"
+          : "-",
+        invoiceNumber: order,
+        invoicePeriod:
+          formatDate(foundLeaseOrder.startDate) +
+          " / " +
+          formatDate(foundLeaseOrder.endDate),
+        details: detailsPayments,
+        totalAmount: detailsPayments.reduce((total, p) => total + p.amount, 0),
+        returnBytes: true,
+      };
+
+      const pdfBytes = await billBuilder(pdfData);
+      const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
+
       // Enviar mail a client
       await sendMailFunction({
         to: client.email,
-        subject: `Confirmación de pago mensual - Alojamiento ${propertySerial}`,
-        text: `¡Gracias por confiar en HelloFlatMate! 
-        Puedes descargar tu factura directamente desde la aplicación (helloflatmate.com). 
-        Basta con dirigirte a “Panel” y, en la sección “Mis finanzas”, podrás descargarla.`,
-      });
-
-      // Enviar mail a HFM
-      await sendMailFunction({
-        to: HFM_MAIL,
-        subject: `Pago mensual realizado - ${propertySerial}`,
-        text: `El usuario ${client.name} ${client.lastName} realizó el pago de reserva por el alojamiento ${propertySerial}.`,
+        subject: `Pago mensual ${foundRoom.serial}`,
+        html: baseTemplate,
+        attachments: [
+          {
+            content: pdfBase64,
+            filename: `factura_${rentPayment.id}.pdf`,
+            type: "application/pdf",
+            disposition: "attachment",
+          },
+        ],
+        cc: HFM_MAIL,
       });
 
       console.log(

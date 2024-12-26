@@ -96,3 +96,24 @@ export async function getUserById(id) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function getOwnerByProperty(id) {
+  if (!id) {
+    return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
+  }
+  try {
+    const owner = await Owner.findOne({
+      include: {
+        model: Property,
+        as: "properties",
+        where: {
+          id,
+        },
+      },
+    });
+    return NextResponse.json(owner, { status: 200 });
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
