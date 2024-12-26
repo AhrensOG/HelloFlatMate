@@ -40,8 +40,8 @@ export async function middleware(request) {
         "/api/payment",
         "/api/property",
         "/api/maps/geocoding",
-        "/api/redsys",
-        "/api/redsys/notify",
+        "/api/redsys/checkout",
+        "/api/redsys/webhook",
     ];
 
     if (publicApiPaths.includes(pathName)) {
@@ -119,7 +119,9 @@ export async function middleware(request) {
         "/como-funciona",
         "/colaboradores",
         "/sobre-nosotros",
-        "/pages/auth",
+        "/contacto",
+        "/contacto/gracias",
+        "/redsys",
     ];
 
     if (pathName === `/${locale}/pages/auth`) {
