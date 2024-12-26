@@ -1,11 +1,24 @@
-import { loadStripe } from "@stripe/stripe-js";
+"use client";
+
 import axios from "axios";
-import React from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+function generateDsOrder(leaseOrderId) {
+    // Ejemplo sencillo: leaseOrderId + últimos 4 dígitos de timestamp + 1 dígito random
+    const baseStr = String(leaseOrderId);
+    const timePart = Date.now().toString().slice(-4);
+    const randomDigit = Math.floor(Math.random() * 10).toString();
+    let dsOrder = baseStr + timePart + randomDigit;
+
+    // Limitar a 12 chars si deseas
+    if (dsOrder.length > 12) {
+        dsOrder = dsOrder.slice(0, 12);
+    }
+    return dsOrder;
+}
 
 const PayModal = ({ payment, onClose }) => {
     const t = useTranslations("user_payment_history.pay_modal");
@@ -21,50 +34,126 @@ const PayModal = ({ payment, onClose }) => {
             quotaNumber: payment.quotaNumber,
             propertyName: payment.orderType === "ROOM" ? payment.order?.room?.serial : payment.order?.property?.serial,
         };
+        // State para guardar los datos de Redsys (si quieres hacer submit automático)
+        const [redsysData, setRedsysData] = useState(null);
 
-        const toastId = toast.loading(t("toat.loading"));
+        const handlePayment = async () => {
+            // 1) Generar un Ds_Order único, si no lo haces en el servidor.
+            const dsOrder = generateDsOrder(payment.order?.id);
 
+            // 2) Construir el body que enviarás a tu endpoint de Redsys
+
+            const propertyId = payment.orderType === "ROOM" ? payment.order?.roomId : payment.order?.propertyId;
+
+            const propertySerial = payment.orderType === "ROOM" ? payment.order?.room?.serial : payment.order?.property?.serial;
+
+            const body = {
+                amount: payment.amount * 100,
+                order: dsOrder,
+                paymentMetaData: {
+                    order: dsOrder,
+                    paymentType: "monthly",
+                    paymentableId: propertyId,
+                    paymentableType: payment.orderType,
+                    clientId: payment.order?.clientId,
+                    leaseOrderId: payment.order?.id,
+                    leaseOrderType: payment.orderType,
+                    quotaNumber: payment.quotaNumber,
+                    amount: payment.amount,
+                    month: payment.month,
+                    propertySerial,
+                    merchantName: `Pago mensual - ${propertySerial}`,
+                    merchantDescription: `Pago mensual - ${payment.month}`,
+                    merchantUrlOk: `/pages/user/success/${propertyId}?type=monthly`,
+                    merchantUrlkO: `/pages/user/history/payments`,
+                },
+            };
+
+            const toastId = toast.loading(t("toast.loading"));
+
+            try {
+                const res = await axios.post("/api/stripe/create-monthly-checkout-session", data);
+                const session = await res.data;
+                const stripe = await stripePromise;
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id,
+                });
+
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+
+                // //Generar y descargar el pdf
+                // const pdfRes = await axios.post(
+                //     "/api/payments?type=billPDF",
+                //     {
+                //         userId: payment.userId,
+                //         propertyId: payment.orderType === "ROOM" ? payment.order?.roomId : payment.order?.propertyId,
+                //         paymentableType: payment.orderType,
+                //     },
+                //     {
+                //         responseType: "blob", // Esto es importante para manejar archivos
+                //     }
+                // );
+
+                // // Crear un enlace temporal para descargar el PDF
+                // const url = window.URL.createObjectURL(new Blob([pdfRes.data], { type: "application/pdf" }));
+                // const link = document.createElement("a");
+                // link.href = url;
+                // link.setAttribute("download", `Factura_${payment.userId}.pdf`);
+                // document.body.appendChild(link);
+                // link.click();
+                // document.body.removeChild(link);
+
+                toast.success(t("toast.success"), { id: toastId });
+            } catch (error) {
+                toast.info(t("toast.error"), {
+                    id: toastId,
+                    description: t("toast.retry"),
+                });
+                console.log(error);
+            }
+        };
         try {
-            const res = await axios.post("/api/stripe/create-monthly-checkout-session", data);
-            const session = await res.data;
-            const stripe = await stripePromise;
-            const result = await stripe.redirectToCheckout({
-                sessionId: session.id,
-            });
-
-            if (result.error) {
-                throw new Error(result.error.message);
+            // 3) Llamada a tu endpoint /api/redsys/checkout (o el que uses)
+            const { data } = await axios.post("/api/redsys/checkout", body);
+            if (data.error) {
+                throw new Error(data.error);
             }
 
-            // //Generar y descargar el pdf
-            // const pdfRes = await axios.post(
-            //     "/api/payments?type=billPDF",
-            //     {
-            //         userId: payment.userId,
-            //         propertyId: payment.orderType === "ROOM" ? payment.order?.roomId : payment.order?.propertyId,
-            //         paymentableType: payment.orderType,
-            //     },
-            //     {
-            //         responseType: "blob", // Esto es importante para manejar archivos
-            //     }
-            // );
+            toast.success("Redirigiendo a Redsys...", { id: toastId });
 
-            // // Crear un enlace temporal para descargar el PDF
-            // const url = window.URL.createObjectURL(new Blob([pdfRes.data], { type: "application/pdf" }));
-            // const link = document.createElement("a");
-            // link.href = url;
-            // link.setAttribute("download", `Factura_${payment.userId}.pdf`);
-            // document.body.appendChild(link);
-            // link.click();
-            // document.body.removeChild(link);
+            // 4) Crear un formulario oculto y hacer submit a Redsys
+            const form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", data.redsysUrl);
 
-            toast.success(t("toast.success"), { id: toastId });
+            // Inputs ocultos
+            const inputVersion = document.createElement("input");
+            inputVersion.type = "hidden";
+            inputVersion.name = "Ds_SignatureVersion";
+            inputVersion.value = data.Ds_SignatureVersion;
+            form.appendChild(inputVersion);
+
+            const inputParams = document.createElement("input");
+            inputParams.type = "hidden";
+            inputParams.name = "Ds_MerchantParameters";
+            inputParams.value = data.Ds_MerchantParameters;
+            form.appendChild(inputParams);
+
+            const inputSignature = document.createElement("input");
+            inputSignature.type = "hidden";
+            inputSignature.name = "Ds_Signature";
+            inputSignature.value = data.Ds_Signature;
+            form.appendChild(inputSignature);
+
+            document.body.appendChild(form);
+            form.submit();
         } catch (error) {
-            toast.info(t("toast.error"), {
+            console.error("Error al iniciar el checkout de Redsys:", error);
+            toast.error("Ocurrió un error al intentar el pago", {
                 id: toastId,
-                description: t("toast.retry"),
             });
-            console.log(error);
         }
     };
 
