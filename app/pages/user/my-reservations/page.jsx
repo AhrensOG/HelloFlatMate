@@ -20,9 +20,9 @@ export default function MyReservations() {
                 try {
                     setUser(state.user);
                     const leaseRooms = state.user?.leaseOrdersRoom;
-                    const leaseProperties = state.user?.leaseOrdersProperty;
+                    // const leaseProperties = state.user?.leaseOrdersProperty;
 
-                    setLeaseOrdersList([...leaseRooms, ...leaseProperties]);
+                    setLeaseOrdersList([...leaseRooms]);
                 } catch (error) {
                     console.log(error);
                 }
