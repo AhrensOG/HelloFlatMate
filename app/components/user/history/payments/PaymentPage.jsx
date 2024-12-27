@@ -96,7 +96,7 @@ const PaymentPage = ({ redirect, user }) => {
   useEffect(() => {
     if (user) {
       const activeLeaseOrders = [
-        ...(user.leaseOrdersProperty || []),
+        // ...(user.leaseOrdersProperty || []),
         ...(user.leaseOrdersRoom || []),
       ].filter((order) => order.isActive);
 
@@ -222,7 +222,7 @@ const PaymentPage = ({ redirect, user }) => {
 
       {/* Modal para pagos pendientes */}
       {showModal && selectedPayment && (
-        <PayModal payment={selectedPayment} onClose={handleCloseModal} />
+        <PayModal payment={selectedPayment} user={user} onClose={handleCloseModal} />
       )}
     </div>
   );

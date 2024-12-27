@@ -19,7 +19,7 @@ function generateDsOrder(leaseOrderId) {
   return dsOrder;
 }
 
-const PayModal = ({ payment, onClose }) => {
+const PayModal = ({ payment, user, onClose }) => {
   // State para guardar los datos de Redsys (si quieres hacer submit automático)
   const [redsysData, setRedsysData] = useState(null);
 
@@ -55,7 +55,7 @@ const PayModal = ({ payment, onClose }) => {
         month: payment.month,
         propertySerial,
         merchantName: `Pago mensual - ${propertySerial}`,
-        merchantDescription: `Pago mensual - ${payment.month}`,
+        merchantDescription: `Pago mensual - ${payment.month} (${propertySerial} - ${user.name} ${user.lastName})`,
         merchantUrlOk: `/pages/user/success/${propertyId}?type=monthly`,
         merchantUrlkO: `/pages/user/history/payments`,
       },
