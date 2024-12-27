@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 function generateDsOrder(leaseOrderId) {
   // Ejemplo sencillo: leaseOrderId + últimos 4 dígitos de timestamp + 1 dígito random
@@ -12,6 +13,7 @@ function generateDsOrder(leaseOrderId) {
   const randomDigit = Math.floor(Math.random() * 10).toString();
   let dsOrder = baseStr + timePart + randomDigit;
 
+<<<<<<< HEAD
   // Limitar a 12 chars si deseas
   if (dsOrder.length > 12) {
     dsOrder = dsOrder.slice(0, 12);
@@ -22,6 +24,24 @@ function generateDsOrder(leaseOrderId) {
 const PayModal = ({ payment, user, onClose }) => {
   // State para guardar los datos de Redsys (si quieres hacer submit automático)
   const [redsysData, setRedsysData] = useState(null);
+=======
+const PayModal = ({ payment, onClose }) => {
+    const t = useTranslations("user_payment_history.pay_modal");
+    const handlePayment = async () => {
+        const data = {
+            amount: payment.amount,
+            type: payment.type,
+            paymentableId: payment.orderType === "ROOM" ? payment.order?.roomId : payment.order?.propertyId,
+            paymentableType: payment.orderType,
+            clientId: payment.order?.clientId,
+            leaseOrderId: payment.order?.id,
+            leaseOrderType: payment.orderType,
+            quotaNumber: payment.quotaNumber,
+            propertyName: payment.orderType === "ROOM" ? payment.order?.room?.serial : payment.order?.property?.serial,
+        };
+
+        const toastId = toast.loading(t("toat.loading"));
+>>>>>>> b0c250091e609284d44981f0b34cfe9ae71b6554
 
   const handlePayment = async () => {
     // 1) Generar un Ds_Order único, si no lo haces en el servidor.
@@ -39,6 +59,7 @@ const PayModal = ({ payment, user, onClose }) => {
         ? payment.order?.room?.serial
         : payment.order?.property?.serial;
 
+<<<<<<< HEAD
     const body = {
       amount: payment.amount * 100,
       order: dsOrder,
@@ -155,6 +176,62 @@ const PayModal = ({ payment, user, onClose }) => {
                 : payment.order?.property?.serial}
             </p>
           </div>
+=======
+            toast.success(t("toast.success"), { id: toastId });
+        } catch (error) {
+            toast.info(t("toast.error"), {
+                id: toastId,
+                description: t("toast.retry"),
+            });
+            console.log(error);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 p-2">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 className="text-lg font-semibold text-center text-blue-600 mb-4">
+                    <span className="font-bold">{t("title")}</span> <br />
+                    <span className="font-bold">{payment.month}</span>
+                </h2>
+                <div className="flex flex-col items-center mb-6 gap-2">
+                    <div className="relative w-full h-52">
+                        <Image
+                            src={payment.orderType === "ROOM" ? payment.order?.room?.images[0] : payment.order?.property?.images[0]}
+                            alt="Property/Room"
+                            fill
+                            className="object-cover object-center rounded-lg"
+                        />
+                    </div>
+                    <div className="w-full flex flex-col justify-center items-start">
+                        <p className="text-sm text-gray-500">
+                            <span className="font-semibold">{t("month")} </span> {payment.month}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            <span className="font-semibold">{t("amount")} </span>
+                            {`€ ${payment.amount.toFixed(2)}`}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            <span className="font-semibold">{t("desc_1")} </span>
+                            {payment.description}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            <span className="font-semibold">{t("room_code")} </span>
+                            {payment.orderType === "ROOM" ? payment.order?.room?.serial : payment.order?.property?.serial}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex justify-between">
+                    <button onClick={onClose} className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition">
+                        {t("close")}
+                    </button>
+                    <button onClick={() => handlePayment()} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        {t("pay_now")}
+                    </button>
+                </div>
+            </div>
+>>>>>>> b0c250091e609284d44981f0b34cfe9ae71b6554
         </div>
 
         {/* Botones */}

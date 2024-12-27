@@ -7,6 +7,7 @@ import CategoryCard from "../../user/home/categorySelector/auxiliarComponents/Ca
 import Select from "../../user/home/categorySelector/auxiliarComponents/Select";
 import DatePickerCategorySelector from "../../user/home/categorySelector/DatePickerCategoySelector";
 import SimpleSelect from "./SimpleSelect";
+import { useTranslations } from "next-intl";
 
 const list = [
     {
@@ -45,6 +46,7 @@ const CategorySelector = ({
     helloLandlordProperties,
     allProperties,
 }) => {
+    const t = useTranslations("secondary_category_selector");
     const router = useRouter();
     const [currentCategory, setCurrentCategory] = useState(category);
     const [date, setDate] = useState({ startDate: "", endDate: "" });
@@ -175,13 +177,13 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"helloroom"} categoryy={"HELLO_ROOM"} />
+                            <SimpleSelect options={typeArray} title={t("type_text")} initValue={"helloroom"} categoryy={"HELLO_ROOM"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloRoomLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="Zona"
+                                title={t("zone")}
                                 name="zone"
                             />
                             <Select
@@ -189,7 +191,7 @@ const CategorySelector = ({
                                 options={helloRoomRentalPeriods}
                                 data={filters}
                                 setData={setFilters}
-                                title="Fechas"
+                                title={t("dates")}
                                 name="rentalPeriod"
                             />
                             <Select
@@ -197,14 +199,14 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Comparte con"
+                                title={t("share_with")}
                                 name="type"
                             />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
@@ -216,13 +218,13 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellocoliving"} categoryy={"HELLO_COLIVING"} />
+                            <SimpleSelect options={typeArray} title={t("type_text")} initValue={"hellocoliving"} categoryy={"HELLO_COLIVING"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloColivingLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="Zona"
+                                title={t("zone")}
                                 name="zone"
                             />
                             <Select
@@ -230,7 +232,7 @@ const CategorySelector = ({
                                 options={helloColivingRentalPeriods}
                                 data={filters}
                                 setData={setFilters}
-                                title="Fechas"
+                                title={t("dates")}
                                 name="rentalPeriod"
                             />
                             <Select
@@ -238,14 +240,14 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Comparte con"
+                                title={t("share_with")}
                                 name="type"
                             />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
@@ -256,13 +258,13 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellostudio"} categoryy={"HELLO_STUDIO"} />
+                            <SimpleSelect options={typeArray} title={t("type_text")} initValue={"hellostudio"} categoryy={"HELLO_STUDIO"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloStudioLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="Zona"
+                                title={t("zone")}
                                 name="zone"
                             />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"start"} />
@@ -272,14 +274,14 @@ const CategorySelector = ({
                                 options={numbers}
                                 data={filters}
                                 setData={setFilters}
-                                title="Huespedes"
+                                title={t("guests")}
                                 name="numberOccupants"
                             />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
@@ -291,14 +293,21 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"hellolandlord"} categoryy={"HELLO_LANDLORD"} />
-                            <Select resetFilters={resetFilters} options={helloLandlordLocations} data={filters} setData={setFilters} title="Zona" name="zone" />
+                            <SimpleSelect options={typeArray} title={t("type_text")} initValue={"hellolandlord"} categoryy={"HELLO_LANDLORD"} />
+                            <Select
+                                resetFilters={resetFilters}
+                                options={helloLandlordLocations}
+                                data={filters}
+                                setData={setFilters}
+                                title={t("zone")}
+                                name="zone"
+                            />
                             <Select
                                 resetFilters={resetFilters}
                                 options={helloLandlordRentalPeriods}
                                 data={filters}
                                 setData={setFilters}
-                                title="Fechas"
+                                title={t("dates")}
                                 name="rentalPeriod"
                             />
                             <Select
@@ -306,14 +315,14 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Comparte con"
+                                title={t("share_with")}
                                 name="type"
                             />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
@@ -325,7 +334,7 @@ const CategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <SimpleSelect options={typeArray} title="Tipo alojamiento" initValue={"lastroom"} categoryy={"lastroom"} />
+                            <SimpleSelect options={typeArray} title={t("type_text")} initValue={"lastroom"} categoryy={"lastroom"} />
                             <Select
                                 resetFilters={resetFilters}
                                 options={lastroomLocations}
@@ -347,14 +356,14 @@ const CategorySelector = ({
                                 options={genre}
                                 data={filters}
                                 setData={setFilters}
-                                title="Comparte con"
+                                title={t("share_with")}
                                 name="type"
                             />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
+                                {t("search_btn")}
                                 <MagnifyingGlassIcon className="size-6 text-white" />
                             </button>
                         </div>
@@ -397,7 +406,7 @@ const CategorySelector = ({
                 </div>
                 <div className="w-full flex justify-center items-center">
                     <button onClick={() => cleanFilters()} className="text-sm underline">
-                        Reiniciar filtros
+                        {t("clean_btn")}
                     </button>
                 </div>
             </div>

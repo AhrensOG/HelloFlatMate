@@ -1,69 +1,37 @@
+import HTMLReactParser from "html-react-parser";
+import { useTranslations } from "next-intl";
+
 export default function TerminosCondiciones() {
-  return (
-    <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-resolution-blue">
-        Términos y condiciones
-      </h1>
-      <section className="mb-6">
-        <h2 className="text-lg font-semibold">
-          Las habitaciones hellorooms, hellolandlord y hellocoliving están
-          diseñadas para estudiantes internacionales y nacionales que buscan
-          comodidad y facilidad desde el primer día. <br />
-        </h2>
-        <p>
-          Están pensadas para estudiantes que llegan a Valencia por menos de un
-          año y necesitan un espacio listo para habitar desde el primer momento.
-          Estas habitaciones, gestionadas profesionalmente por helloflatmate,
-          te permiten centrarte en lo importante mientras nosotros nos ocupamos
-          de todo lo demás.
-          <br />
-          <br />
-          Sabemos que los propietarios no están legalmente obligados a entregar
-          las viviendas limpias y revisadas, por eso ofrecemos un completo
-          servicio de preparación. Esto incluye:
-          <br />
-        </p>
-      </section>
-      <section className="mb-6">
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Viviendas limpias y listas para tu llegada.</li>
-          <li>
-            Todos los suministros activos, incluyendo Internet de alta
-            velocidad.
-          </li>
-          <li>
-            La oportunidad de compartir piso con compañeros de tu misma edad y
-            estilo de vida.
-          </li>
-          <li>Atención personalizada durante toda tu estancia.</li>
-          <li>
-            Contrato de alquiler revisado por helloflatmate, pudiendo leerlo
-            antes de reservar.
-          </li>
-          <li>Informe de consumos de suministros y consejos de ahorro</li>
-          <li>Mediación en caso de problemas entre compañeros.</li>
-        </ul>
-      </section>
-      <section className="mb-6">
-        <p>
-          Este servicio, diseñado específicamente para satisfacer las
-          necesidades de estudiantes como tú, tiene un coste de honorarios de
-          gestión de 459,80€ Impuestos incluidos. <br /> <br />
-          Además, ofrecemos ventajas tanto para los estudiantes como para los propietarios, incluyendo:
-        </p>
-      </section>
-      <section className="mb-6">
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Suministros a nombre del propietario para mayor tranquilidad.</li>
-          <li>
-          Contratos flexibles de 5, 10 o 11 meses según la vivienda. 
-          </li>
-          <li>
-          Una fianza asequible de tan solo 300€.
-          </li>
-        </ul>
-      </section>
-      {/* <section className="mb-6">
+    const t = useTranslations("terms");
+    return (
+        <main className="p-6 max-w-4xl mx-auto">
+            <h1 className="text-2xl font-bold mb-4 text-resolution-blue">{t("title")}</h1>
+            <section className="mb-6">
+                <h2 className="text-lg font-semibold">{HTMLReactParser(t("sect_1_h2"))}</h2>
+                <p>{HTMLReactParser(t("sect_1_p"))}</p>
+            </section>
+            <section className="mb-6">
+                <ul className="list-disc pl-6 space-y-2">
+                    <li>{t("sect_2_ul_li_1")}</li>
+                    <li>{t("sect_2_ul_li_2")}</li>
+                    <li>{t("sect_2_ul_li_3")}</li>
+                    <li>{t("sect_2_ul_li_4")}</li>
+                    <li>{t("sect_2_ul_li_5")}</li>
+                    <li>{t("sect_2_ul_li_6")}</li>
+                    <li>{t("sect_2_ul_li_7")}</li>
+                </ul>
+            </section>
+            <section className="mb-6">
+                <p>{HTMLReactParser(t("sect_3_p"))}</p>
+            </section>
+            <section className="mb-6">
+                <ul className="list-disc pl-6 space-y-2">
+                    <li>{t("sect_4_ul_li_1")}</li>
+                    <li>{t("sect_4_ul_li_2")}</li>
+                    <li>{t("sect_4_ul_li_3")}</li>
+                </ul>
+            </section>
+            {/* <section className="mb-6">
         <h2 className="text-lg font-semibold">Legitimación</h2>
         <p>
           Según el artículo 6.1.a) del RGPD, el interesado dio su consentimiento
@@ -148,6 +116,6 @@ export default function TerminosCondiciones() {
           .
         </p>
       </section> */}
-    </main>
-  );
+        </main>
+    );
 }
