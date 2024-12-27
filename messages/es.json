@@ -664,11 +664,11 @@
         "dont_have_rooms": "Aun no tienes reservas",
         "card": {
             "info": {
-                "loading": "Redirigiendo al checkout de Stripe..."
+                "loading": "Redirigiendo a Redsys..."
             },
             "error": {
-                "info": "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente.",
-                "error": "Error al iniciar el checkout de Stripe:"
+                "info": "Hubo un problema al procesar tu pago con Redsys.",
+                "error": "Error al iniciar el checkout de Redsys:"
             },
             "contract": {
                 "signed": "Contrato firmado",

@@ -217,7 +217,6 @@ export default function Home() {
                 <header>
                     <NavbarV3 />
                 </header>
-                <TestRedSysButton />
                 <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
                     <h1 className="text-3xl font-bold">hello flat mate</h1>
                     <h3 className="text-lg text-center">{HTMLReactParser(t("home_title"))}</h3>

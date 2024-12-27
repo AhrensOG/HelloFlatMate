@@ -50,8 +50,7 @@ export async function createLeasePropertyOrder(data) {
         if (
             property.leaseOrdersProperty.filter(
                 (order) => order.status === "IN_PROGRESS" || order.status === "APPROVED" || order.status === "PENDING"
-            ).length > 0 &&
-            property.category !== "HELLO_STUDIO"
+            ).length > 0
         ) {
             return NextResponse.json({ message: "Property already has a lease order" }, { status: 400 });
         }
@@ -79,7 +78,7 @@ export async function createLeasePropertyOrder(data) {
         });
         if (property.chats && property.chats.length > 0) {
             const chatGroup = property.chats.find((chat) => chat.type === "GROUP");
-            
+
             if (chatGroup) {
                 await ChatParticipant.create({
                     participantId: data.clientId,
@@ -178,7 +177,7 @@ export async function createLeaseRoomOrder(data) {
 
         if (property.chats && property.chats.length > 0) {
             const chatGroup = property.chats.find((chat) => chat.type === "GROUP");
-            
+
             if (chatGroup) {
                 await ChatParticipant.create({
                     participantId: data.clientId,
@@ -192,4 +191,3 @@ export async function createLeaseRoomOrder(data) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
-

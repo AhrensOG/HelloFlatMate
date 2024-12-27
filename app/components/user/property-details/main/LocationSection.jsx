@@ -81,7 +81,7 @@ export default function LocationSection({ street, streetNumber, postalCode, city
     if (!isLoaded || loadingLocation) {
         return (
             <section className="flex flex-col gap-3 w-full">
-                <h2 className="font-bold text-[1.2rem]">{t("location_sect.title")}</h2>
+                <h2 className="font-bold text-[1.2rem]">{t("location_sec_title")}</h2>
                 <div className="animate-pulse w-full h-[350px] bg-gray-200 rounded-lg">
                     <div className="w-full h-full bg-gray-300"></div>
                 </div>

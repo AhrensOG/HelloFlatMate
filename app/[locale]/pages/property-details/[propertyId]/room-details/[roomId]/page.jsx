@@ -63,8 +63,8 @@ export default function RoomDetails({ params }) {
 
                     setData(propertyData);
 
-                    const roomData = propertyData.rooms.find((room) => roomId == room.id);
-                    setRoomData(roomData);
+                    const roomData_1 = propertyData.rooms.find((room) => roomId == room.id);
+                    setRoomData(roomData_1);
 
                     // Filtramos las habitaciones que no son la actual
                     const filtered = propertyData.rooms.filter((room) => room.id !== Number(roomId));
@@ -91,8 +91,31 @@ export default function RoomDetails({ params }) {
             };
 
             fetchData();
+        } else {
+            const roomData_1 = data.rooms.find((room) => roomId == room.id);
+            setRoomData(roomData_1);
+
+            // Filtramos las habitaciones que no son la actual
+            const filtered = data.rooms.filter((room) => room.id !== Number(roomId));
+            setFilteredRooms(filtered);
+
+            // Verificar si la habitación tiene alguna leaseOrderRoom con estado "active"
+            const activeLeaseOrder = roomData?.leaseOrdersRoom?.find((order) => order.isActive === true);
+
+            // Guardar en el estado local si hay alguna leaseOrderRoom con estado "active"
+            setIsLeaseOrderActive(activeLeaseOrder || false);
+
+            // Obtenemos las imágenes de la propiedad y de la habitación actual
+            const propertyImages = data?.images || [];
+            const roomImages = roomData?.images || [];
+
+            // Combinamos ambos arrays de imágenes en uno solo
+            const allImages = [...roomImages, ...propertyImages];
+
+            // Aquí puedes hacer lo que necesites con el array de imágenes combinado (e.g., guardarlo en un estado)
+            setAllImages(allImages);
         }
-    }, [data, propertyId]);
+    }, []);
 
     if (!data) {
         return (
@@ -146,40 +169,39 @@ export default function RoomDetails({ params }) {
                 </header>
                 <main className={`flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}>
                     <div className="w-full space-y-2 sticky top-0 min-h-56 bg-white z-10 pt-2 pb-1">
-                        <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+                        <h1 className="font-bold text-[1.37rem]">{roomData?.name || data?.name || "Alojamiento"}</h1>
                         <h4 className="font-light text-[#000000B2]">
-                            ({roomData.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"}){" "}
+                            ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"}){" "}
                         </h4>
                         <h4 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h4>
                         <h4 className="text-base font-bold text-resolution-blue">
-                            {!roomData.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
+                            {!roomData?.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
                         </h4>
-                        {roomData.price && <PriceSection data={roomData.price} />}
-                        {(data.category === "HELLO_ROOM" || data.category === "HELLO_COLIVING" || data.category === "HELLO_LANDLORD") &&
-                            roomData.price && <ReservationButton callback={handleShowModal} disabled={!roomData.isActive} />}
+                        <PriceSection data={roomData?.price} />
+                        <ReservationButton callback={handleShowModal} disabled={!roomData?.isActive} />
                     </div>
                     {roomData?.description?.length > 0 ? (
-                        <DescriptionSection title={t("desc_sec_title")} data={roomData.description} category="HELLO_ROOM" />
+                        <DescriptionSection title={t("desc_sec_title")} data={roomData?.description} category="HELLO_ROOM" />
                     ) : (
                         <DescriptionSection title={t("desc_sec_title")} data={data.description} />
                     )}
                     {/* <GuestInfoRoom
             data={[
-              { type: "bed", number: roomData.numberBeds },
-              { type: "bathroom", boolean: roomData.bathroom },
-              { type: "couple", boolean: roomData.couple },
+              { type: "bed", number: roomData?.numberBeds },
+              { type: "bathroom", boolean: roomData?.bathroom },
+              { type: "couple", boolean: roomData?.couple },
             ]}
           /> */}
                     {data.amenities && data.amenities?.length > 0 ? <AmenitiesSection data={data.amenities} /> : ""}
                     {/* <AmenitiesSection data={data.amenities} /> */}
-                    {roomData.linkVideo ? <VideoEmbedSection videoUrl={roomData.linkVideo} /> : ""}
-                    <LocationSection
+                    {roomData?.linkVideo ? <VideoEmbedSection videoUrl={roomData?.linkVideo} /> : ""}
+                    {/* <LocationSection
                         street={data?.street}
                         streetNumber={data?.streetNumber}
                         postalCode={data?.postalCode}
                         city={data?.city}
                         country={"España"}
-                    />
+                    /> */}
                     <MoreInfoSection
                         data={[
                             {
@@ -204,23 +226,23 @@ export default function RoomDetails({ params }) {
                     {filteredRooms.length > 0 ? <RoomSection data={filteredRooms} title={t("other_rooms_title")} /> : null}
                     {/* {showModal && (
             <ReservationModal
-              calendarType={roomData.calendar}
+              calendarType={roomData?.calendar}
               callback={handleShowModal}
               category={data.category}
               data={{
                 date: null,
                 startDate: null,
                 endDate: null,
-                price: roomData.price,
+                price: roomData?.price,
                 propertyId: data.id,
                 clientId: state?.user?.id,
                 ownerId: data.ownerId,
-                roomId: roomData.id,
+                roomId: roomData?.id,
                 propertyName: roomData?.name,
                 user: state?.user,
-                rentalPeriods: roomData.rentalItems,
-                leaseOrdersProperty: roomData.leaseOrdersRoom || null,
-                room: { roomData },
+                rentalPeriods: roomData?.rentalItems,
+                leaseOrdersProperty: roomData?.leaseOrdersRoom || null,
+                room: { roomData? },
               }}
             />
           )} */}
@@ -251,14 +273,14 @@ export default function RoomDetails({ params }) {
                                 <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
                             )}
                         </div>
-                        {roomData.linkVideo ? <VideoEmbedSection videoUrl={roomData.linkVideo} /> : null}
-                        <LocationSection
+                        {roomData?.linkVideo ? <VideoEmbedSection videoUrl={roomData?.linkVideo} /> : null}
+                        {/* <LocationSection
                             street={data?.street}
                             streetNumber={data?.streetNumber}
                             postalCode={data?.postalCode}
                             city={data?.city}
                             country={"España"}
-                        />
+                        /> */}
                         {filteredRooms.length > 0 ? (
                             <RoomSection data={filteredRooms} title={t("other_rooms_title")} category={data.category} />
                         ) : null}
@@ -269,32 +291,31 @@ export default function RoomDetails({ params }) {
                     {/* RIGHT SIDE */}
                     <div className="relative w-full max-w-[50%]">
                         <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
-                            <h1 className="font-bold text-[1.37rem]">{roomData.name}</h1>
+                            <h1 className="font-bold text-[1.37rem]">{roomData?.name}</h1>
                             <h6 className="font-light text-[#000000B2]">
-                                ({roomData.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"})
+                                ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"})
                             </h6>
                             <h6 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h6>
                             <h6 className="text-base font-bold text-resolution-blue">
-                                {!roomData.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
+                                {!roomData?.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
                             </h6>
-                            {roomData.price && <PriceSection data={roomData.price} />}
+                            <PriceSection data={roomData?.price} />
                             <div className="flex flex-col gap-6">
-                                {(data.category === "HELLO_ROOM" || data.category === "HELLO_COLIVING" || data.category === "HELLO_LANDLORD") &&
-                                    roomData.price && <ReservationButton callback={handleShowModal} disabled={!roomData.isActive} />}
+                                <ReservationButton callback={handleShowModal} disabled={!roomData?.isActive} />
                             </div>
                         </div>
 
                         <div className="w-full space-y-4">
                             {roomData?.description?.length > 0 ? (
-                                <DescriptionSection title={t("desc_sec_title")} data={roomData.description} category="HELLO_ROOM" />
+                                <DescriptionSection title={t("desc_sec_title")} data={roomData?.description} category="HELLO_ROOM" />
                             ) : (
                                 <DescriptionSection title={t("desc_sec_title")} data={data.description} />
                             )}
                             {/* <GuestInfoRoom
                 data={[
-                  { type: "bed", number: roomData.numberBeds },
-                  { type: "bathroom", boolean: roomData.bathroom },
-                  { type: "couple", boolean: roomData.couple },
+                  { type: "bed", number: roomData?.numberBeds },
+                  { type: "bathroom", boolean: roomData?.bathroom },
+                  { type: "couple", boolean: roomData?.couple },
                 ]}
               /> */}
                             {data.amenities && data.amenities?.length > 0 ? <AmenitiesSection data={data.amenities} /> : ""}
@@ -326,22 +347,22 @@ export default function RoomDetails({ params }) {
             <AnimatePresence>
                 {showModal && (
                     <ReservationModal
-                        calendarType={roomData.calendar}
+                        calendarType={roomData?.calendar}
                         callback={handleShowModal}
                         category={data.category}
                         data={{
                             date: null,
                             startDate: null,
                             endDate: null,
-                            price: roomData.price,
+                            price: roomData?.price,
                             propertyId: data.id,
                             clientId: state?.user?.id,
                             ownerId: data.ownerId,
-                            roomId: roomData.id,
+                            roomId: roomData?.id,
                             propertyName: roomData?.name,
                             user: state?.user,
-                            rentalPeriods: roomData.rentalItems,
-                            leaseOrdersProperty: roomData.leaseOrdersRoom || null,
+                            rentalPeriods: roomData?.rentalItems,
+                            leaseOrdersProperty: roomData?.leaseOrdersRoom || null,
                         }}
                     />
                 )}
