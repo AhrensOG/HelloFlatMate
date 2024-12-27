@@ -1,454 +1,187 @@
-// app/api/redsys/notification/route.js
-
 import { NextResponse } from "next/server";
 import CryptoJS from "crypto-js";
-import {
-  Client,
-  LeaseOrderRoom,
-  RentPayment,
-  Room,
-  Property,
-  Supply,
-} from "@/db/init";
-import { billBuilder } from "../../pdf_creator/utils/billBuilder";
-import { sendMailFunction } from "../../sendGrid/controller/sendMailFunction";
-import {
-  createMerchantSignatureNotif,
-  decodeBase64,
-  decodeHtmlEntities,
-} from "./utils/functions";
-import { baseTemplate } from "./utils/emailTemplates";
+import { processReservation } from "./utils/reservationFunctions";
+import { processMonthlyPayment } from "./utils/monthlyFunctions";
 
 const { MERCHANT_KEY_BASE64, HFM_MAIL } = process.env;
 
-function formatDate(date) {
-  const newDate = new Date(date);
-  const year = newDate.getFullYear();
-  const month = String(newDate.getMonth() + 1).padStart(2, "0");
-  const day = String(newDate.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
+// 🚀 1️⃣ Capturar parámetros de Redsys
 export async function POST(request) {
-  try {
-    // 1) Capturar parámetros de Redsys (POST form-data)
-    const formData = await request.formData();
-    const version = formData.get("Ds_SignatureVersion");
-    const params = formData.get("Ds_MerchantParameters");
-    let signatureReceived = formData.get("Ds_Signature");
+  console.log("✅ Iniciando Webhook de Redsys");
 
-    // Normalizar firma si hay "+" convertidos en espacios
-    if (signatureReceived) {
-      signatureReceived = signatureReceived.replace(" ", "+");
-    }
+  const formData = await request.formData();
+  const version = formData.get("Ds_SignatureVersion");
+  const params = formData.get("Ds_MerchantParameters");
+  let signatureReceived = formData.get("Ds_Signature");
 
-    // 2) Decodificar params para inspeccionarlo
-    // Verificar que params no sea null
-    if (!params) {
-      console.error("Ds_MerchantParameters is missing in the request.");
-      return NextResponse.json(
-        { error: "Ds_MerchantParameters is missing" },
-        { status: 400 }
-      );
-    }
-
-    // Decodificar params para inspeccionarlo
-    let decodedParamsWA;
-    try {
-      decodedParamsWA = decodeBase64(params); // Esto puede lanzar si params es inválido
-    } catch (decodeError) {
-      console.error("Error al decodificar Ds_MerchantParameters:", decodeError);
-      return NextResponse.json(
-        { error: `Error decodificando Ds_MerchantParameters : ${params}` },
-        { status: 400 }
-      );
-    }
-
-    const decodedParamsJSON = CryptoJS.enc.Utf8.stringify(decodedParamsWA);
-    let decodedParams;
-
-    try {
-      decodedParams = JSON.parse(decodedParamsJSON);
-    } catch (parseError) {
-      console.error("Error al parsear Ds_MerchantParameters:", parseError);
-      return NextResponse.json(
-        { error: "Error parseando Ds_MerchantParameters" },
-        { status: 400 }
-      );
-    }
-
-    // const decodedParamsWA = decodeBase64(params); // WordArray
-    // const decodedParamsJSON = CryptoJS.enc.Utf8.stringify(decodedParamsWA);
-    // const decodedParams = JSON.parse(decodedParamsJSON);
-
-    // 3) Calcular firma
-    const signatureCalculated = createMerchantSignatureNotif(
-      MERCHANT_KEY_BASE64,
-      params
-    );
-
-    // Normalizar firma recibida (URL-safe base64 => base64 clásico)
-    let normalizedSignatureReceived = signatureReceived
-      .replace(/-/g, "+")
-      .replace(/_/g, "/");
-    while (normalizedSignatureReceived.length % 4 !== 0) {
-      normalizedSignatureReceived += "=";
-    }
-
-    // 4) Comparar firmas
-    if (signatureCalculated !== normalizedSignatureReceived) {
-      console.log("Notificación Redsys firma inválida");
-      return NextResponse.json({ error: "Firma KO" }, { status: 400 });
-    }
-
-    // ---------------- FIRMA OK -----------------
-    // Revisar si la operación fue aprobada o denegada:
-    const dsResponseCode = parseInt(decodedParams.Ds_Response, 10);
-    // 0..99 => Aprobado
-    if (dsResponseCode < 0 || dsResponseCode > 99) {
-      // Pagos >= 100 => denegados
-      console.log(`❌ Payment denied. Ds_Response: ${dsResponseCode}`);
-      // Podrías marcar algo en BBDD, o simplemente loguear
-      return NextResponse.json({ message: "Pago denegado" }, { status: 200 });
-    }
-
-    // Si llegamos aquí, => dsResponseCode está entre 0 y 99 => Aprobado
-    console.log(`✅ Payment approved. Ds_Response = ${dsResponseCode}`);
-
-    // 5) Leer metadata (en Ds_MerchantData)
-    // Recordemos que la guardaste en la reserva en Base64
-    const merchantDataB64 = decodedParams.Ds_MerchantData;
-    // A veces Redsys escapa & #..., por eso primero:
-    const unescaped = decodeHtmlEntities(merchantDataB64);
-    // luego Base64 decode:
-    const merchantDataString = Buffer.from(unescaped, "base64").toString(
-      "utf8"
-    );
-    const metadata = JSON.parse(merchantDataString);
-
-    // De tu webhook Stripe, leías algo como:
-    // { paymentType, roomId, leaseOrderId, supplyId, category, userEmail, price, ... }
-    const {
-      order,
-      paymentType,
-      roomId,
-      leaseOrderId,
-      supplyId,
-      category,
-      userEmail,
-      price, // en caso de que lo hayas puesto
-    } = metadata;
-
-    // 6) Replicar lógica Stripe: "reservation", "supply", "monthly"
-    if (paymentType === "reservation") {
-      if (roomId !== "false") {
-        const successLeaseOrderRoom = await LeaseOrderRoom.findByPk(
-          leaseOrderId
-        );
-        if (!successLeaseOrderRoom) {
-          console.error(`LeaseOrderRoom with ID ${leaseOrderId} not found.`);
-          return NextResponse.json(
-            { error: "LeaseOrderRoom not found" },
-            { status: 404 }
-          );
-        }
-
-        // Busca la room (con property dentro) para info
-        const theRoom = await Room.findByPk(roomId, {
-          include: {
-            model: Property,
-            as: "property",
-            attributes: [
-              "ownerId",
-              "street",
-              "streetNumber",
-              "floor",
-              "typology",
-            ],
-          },
-        });
-
-        if (!theRoom) {
-          console.error(`Room with ID ${roomId} not found.`);
-          return NextResponse.json(
-            { error: "Room not found" },
-            { status: 404 }
-          );
-        }
-
-        const client = await Client.findOne({ where: { email: userEmail } });
-
-        if (!client) {
-          return NextResponse.json(
-            { error: "Client not found" },
-            { status: 404 }
-          );
-        }
-
-        const type =
-          category === "HELLO_ROOM" ||
-          category === "HELLO_COLIVING" ||
-          category === "HELLO_LANDLORD"
-            ? "ROOM"
-            : "PROPERTY";
-
-        const amountNumber = Number(price) || 0;
-
-        const rentData = {
-          amount: amountNumber, // si lo guardaste en EUR
-          type: "RESERVATION",
-          paymentableId: roomId,
-          paymentableType: type,
-          clientId: client.id,
-          leaseOrderId: leaseOrderId,
-          leaseOrderType: type,
-          status: "APPROVED",
-          quotaNumber: 1,
-          date: new Date(),
-          ownerId: theRoom.property.ownerId,
-          paymentId: decodedParams.Ds_AuthorisationCode || order || "", // Redsys no siempre da un code
-          description: "Pago reserva (Redsys)",
-        };
-
-        const rentPayment = await RentPayment.create(rentData);
-
-        // Desactivar la room
-        await theRoom.update({ isActive: false });
-
-        // Actualizar la leaseOrderRoom
-        await successLeaseOrderRoom.update({ status: "APPROVED" });
-
-        // Generar PDF
-        const detailsPayments = [
-          {
-            amount: rentPayment.amount,
-            date: rentPayment.date,
-            status: rentPayment.status,
-            id: rentPayment.id,
-            quotaNumber: rentPayment.quotaNumber,
-          },
-        ];
-        const pdfData = {
-          id: rentPayment.id,
-          clienteName: `${client.name || ""} ${client.lastName || ""}`,
-          clienteDni: client.idNum || "N/A",
-          clienteAddress: `${client.street || ""} ${client.streetNumber || ""}`,
-          clienteCity: `${client.city || ""} CP: ${client.postalCode || ""}`,
-          clientePhone: client.phone || "N/A",
-          clienteEmail: client.email || "N/A",
-          room: `${theRoom.property?.street} ${theRoom.property?.streetNumber} ${theRoom.property?.floor}`,
-          roomCode: theRoom.serial,
-          gender: theRoom.property?.typology
-            ? theRoom.property.typology === "MIXED"
-              ? "mixto"
-              : theRoom.property.typology === "ONLY_WOMEN"
-              ? "solo mujeres"
-              : theRoom.property.typology === "ONLY_MEN"
-              ? "solo hombres"
-              : "-"
-            : "-",
-          invoiceNumber: order,
-          invoicePeriod:
-            formatDate(successLeaseOrderRoom.startDate) +
-            " / " +
-            formatDate(successLeaseOrderRoom.endDate),
-          details: detailsPayments,
-          totalAmount: detailsPayments.reduce(
-            (total, p) => total + p.amount,
-            0
-          ),
-          returnBytes: true,
-        };
-
-        const pdfBytes = await billBuilder(pdfData);
-        const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
-
-        // Enviar mail a client
-        await sendMailFunction({
-          to: client.email,
-          subject: `¡Reserva realizada correctamente! Alojamiento ${theRoom.serial}`,
-          html: baseTemplate,
-          attachments: [
-            {
-              content: pdfBase64,
-              filename: `factura_${rentPayment.id}.pdf`,
-              type: "application/pdf",
-              disposition: "attachment",
-            },
-          ],
-          cc: HFM_MAIL,
-        });
-
-        console.log(
-          `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to APPROVED`
-        );
-        console.log(
-          `✅ Reservation Payment with ID ${rentPayment.id} updated to APPROVED`
-        );
-      }
-    } else if (paymentType === "supply") {
-      const successSupply = await Supply.findByPk(supplyId);
-      if (!successSupply) {
-        console.error(`Supply with ID ${supplyId} not found.`);
-        return NextResponse.json(
-          { error: "Supply not found" },
-          { status: 404 }
-        );
-      }
-      await successSupply.update({
-        paymentId: decodedParams.Ds_AuthorisationCode || order || "",
-        paymentDate: new Date(),
-        status: "PAID",
-      });
-      console.log(`✅ Supply with ID ${supplyId} updated to PAID`);
-    } else if (paymentType === "monthly") {
-      const {
-        paymentableType,
-        paymentableId,
-        clientId,
-        leaseOrderType,
-        leaseOrderId,
-        quotaNumber,
-        amount,
-        month,
-        propertySerial,
-      } = metadata;
-
-      const foundRoom = await Room.findByPk(paymentableId, {
-        include: {
-          model: Property,
-          as: "property",
-          attributes: [
-            "ownerId",
-            "street",
-            "streetNumber",
-            "typology",
-            "floor",
-          ],
-        },
-      });
-      if (!foundRoom) {
-        return NextResponse.json({ error: "Room not found" }, { status: 404 });
-      }
-
-      const foundLeaseOrder = await LeaseOrderRoom.findByPk(leaseOrderId);
-      if (!foundLeaseOrder) {
-        return NextResponse.json({ error: "Room not found" }, { status: 404 });
-      }
-
-      const client = await Client.findByPk(clientId);
-      if (!client) {
-        return NextResponse.json(
-          { error: "Client not found" },
-          { status: 404 }
-        );
-      }
-
-      const rentData = {
-        amount: Number(amount),
-        type: "MONTHLY",
-        paymentableId,
-        paymentableType,
-        clientId,
-        leaseOrderId,
-        leaseOrderType,
-        status: "APPROVED",
-        quotaNumber,
-        date: new Date(),
-        ownerId: foundRoom.property.ownerId,
-        paymentId: decodedParams.Ds_AuthorisationCode || order || "",
-        description: `Pago mensual - ${month}`,
-      };
-
-      const rentPayment = await RentPayment.create(rentData);
-
-      const allRentPayments = await RentPayment.findAll({
-        where: {
-          clientId,
-          leaseOrderId,
-          leaseOrderType,
-          paymentableId,
-          paymentableType,
-        },
-      });
-
-      const detailsPayments = allRentPayments
-        .map((payment) => {
-          return {
-            amount: payment.amount,
-            date: payment.date,
-            status: payment.status,
-            id: payment.id,
-            quotaNumber: payment.quotaNumber,
-          };
-        })
-        .sort((a, b) => {
-          return b.quotaNumber - a.quotaNumber;
-        });
-
-      const pdfData = {
-        id: rentPayment.id,
-        clienteName: `${client.name || "-"} ${client.lastName || "-"}`,
-        clienteDni: client.idNum || "N/A",
-        clienteAddress: `${client.street || "-"} ${client.streetNumber || "-"}`,
-        clienteCity: `${client.city || "-"} CP: ${client.postalCode || "-"}`,
-        clientePhone: client.phone || "N/A",
-        clienteEmail: client.email || "N/A",
-        room: `${foundRoom.property?.street} ${foundRoom.property?.streetNumber} ${foundRoom.property?.floor}`,
-        roomCode: foundRoom.serial,
-        gender: foundRoom.property?.typology
-          ? foundRoom.property.typology === "MIXED"
-            ? "mixto"
-            : foundRoom.property.typology === "ONLY_WOMEN"
-            ? "solo mujeres"
-            : foundRoom.property.typology === "ONLY_MEN"
-            ? "solo hombres"
-            : "-"
-          : "-",
-        invoiceNumber: order,
-        invoicePeriod:
-          formatDate(foundLeaseOrder.startDate) +
-          " / " +
-          formatDate(foundLeaseOrder.endDate),
-        details: detailsPayments,
-        totalAmount: detailsPayments.reduce((total, p) => total + p.amount, 0),
-        returnBytes: true,
-      };
-
-      const pdfBytes = await billBuilder(pdfData);
-      const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
-
-      // Enviar mail a client
-      await sendMailFunction({
-        to: client.email,
-        subject: `Pago mensual ${foundRoom.serial}`,
-        html: baseTemplate,
-        attachments: [
-          {
-            content: pdfBase64,
-            filename: `factura_${rentPayment.id}.pdf`,
-            type: "application/pdf",
-            disposition: "attachment",
-          },
-        ],
-        cc: HFM_MAIL,
-      });
-
-      console.log(
-        `✅ Rent Payment with ID ${rentPayment.id} updated to APPROVED`
-      );
-    } else {
-      // No coincidió con ninguno => log
-      console.log(`Unhandled paymentType: ${paymentType}`);
-    }
-
-    // Responde 200 si todo OK
+  if (!params || !signatureReceived) {
+    console.error("❌ Faltan parámetros necesarios");
     return NextResponse.json(
-      { message: "Notificación Redsys procesada" },
-      { status: 200 }
+      { error: "Faltan parámetros necesarios" },
+      { status: 400 }
     );
-  } catch (err) {
-    console.error("Error procesando notificación Redsys:", err);
-    return NextResponse.json({ error: "Error" }, { status: 500 });
+  }
+
+  signatureReceived = signatureReceived.replace(/ /g, "+");
+  console.log("✅ Parámetros recibidos correctamente");
+  console.log("🔹 Ds_SignatureVersion:", version);
+  console.log("🔹 Ds_MerchantParameters:", params);
+
+  // 🚀 2️⃣ Decodificar Ds_MerchantParameters
+  let decodedParamsJSON;
+  try {
+    const decodedParamsString = Buffer.from(params, "base64").toString("utf-8");
+    console.log("✅ Ds_MerchantParameters decodificado:", decodedParamsString);
+    decodedParamsJSON = JSON.parse(decodedParamsString);
+  } catch (error) {
+    console.error(
+      "❌ Error al decodificar Ds_MerchantParameters:",
+      error.message
+    );
+    return NextResponse.json(
+      { error: "Error al decodificar Ds_MerchantParameters" },
+      { status: 400 }
+    );
+  }
+
+  // 🚀 3️⃣ Validar la firma (HMAC-SHA256)
+  let signatureCalculated;
+  try {
+    const order = decodedParamsJSON.Ds_Order || "";
+    const cipher = CryptoJS.TripleDES.encrypt(
+      CryptoJS.enc.Utf8.parse(order),
+      CryptoJS.enc.Base64.parse(MERCHANT_KEY_BASE64),
+      {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.ZeroPadding,
+        iv: CryptoJS.enc.Utf8.parse("\0\0\0\0\0\0\0\0"),
+      }
+    );
+
+    const keyOrderEncrypted = cipher.ciphertext.toString(CryptoJS.enc.Base64);
+
+    signatureCalculated = CryptoJS.HmacSHA256(
+      params,
+      CryptoJS.enc.Base64.parse(keyOrderEncrypted)
+    );
+    signatureCalculated = CryptoJS.enc.Base64.stringify(signatureCalculated);
+
+    signatureReceived = signatureReceived
+      .replace(/-/g, "+")
+      .replace(/_/g, "/")
+      .padEnd(signatureReceived.length % 4, "=");
+
+    if (signatureCalculated !== signatureReceived) {
+      throw new Error("Firma no válida");
+    }
+
+    console.log("✅ Firma válida");
+  } catch (error) {
+    console.error("❌ Error en la validación de la firma:", error.message);
+    return NextResponse.json({ error: "Firma no válida" }, { status: 400 });
+  }
+
+  // 🚀 4️⃣ Procesar Ds_MerchantData
+  console.log(`✅ Before to read Ds_MerchantData`);
+
+  if (!decodedParamsJSON.Ds_MerchantData) {
+    console.error("❌ Ds_MerchantData is missing in the decodedParams.");
+    return NextResponse.json(
+      { error: "Ds_MerchantData is missing" },
+      { status: 400 }
+    );
+  }
+
+  console.log("✅ Ds_MerchantData exists:", decodedParamsJSON.Ds_MerchantData);
+
+  let merchantDataString;
+  try {
+    let merchantData = decodedParamsJSON.Ds_MerchantData;
+
+    // Decodificar posibles entidades HTML
+    merchantData = decodeURIComponent(merchantData);
+    merchantData = merchantData.replace(/&#(\d+);/g, (_, dec) =>
+      String.fromCharCode(dec)
+    );
+    console.log("✅ Decoded Ds_MerchantData (HTML Entities):", merchantData);
+
+    // Intentar parsear directamente como JSON
+    try {
+      merchantDataString = JSON.parse(merchantData);
+      console.log("✅ Parsed Metadata as JSON:", merchantDataString);
+    } catch (jsonError) {
+      console.log("🔄 Not valid JSON, trying Base64 decoding...");
+
+      // Si falla, intentar como Base64
+      const base64Decoded = Buffer.from(merchantData, "base64").toString(
+        "utf-8"
+      );
+      console.log("✅ Base64 Decoded Ds_MerchantData:", base64Decoded);
+
+      merchantDataString = JSON.parse(base64Decoded);
+      console.log("✅ Parsed Base64 Metadata as JSON:", merchantDataString);
+    }
+  } catch (error) {
+    console.error("❌ Error parsing Ds_MerchantData JSON:", error.message);
+    console.error("❌ Invalid JSON String:", merchantDataString);
+    return NextResponse.json(
+      { error: "Error parsing Ds_MerchantData JSON" },
+      { status: 400 }
+    );
+  }
+
+  // 🚀 5️⃣ Revisar estado del pago
+  const dsResponseCode = parseInt(decodedParamsJSON.Ds_Response, 10);
+  if (dsResponseCode < 0 || dsResponseCode > 99) {
+    console.log(`❌ Pago denegado. Ds_Response: ${dsResponseCode}`);
+    return NextResponse.json({ message: "Pago denegado" }, { status: 200 });
+  }
+
+  console.log("✅ Pago aprobado:", dsResponseCode);
+
+  const {
+    order,
+    paymentType,
+    roomId,
+    leaseOrderId,
+    supplyId,
+    category,
+    userEmail,
+    price,
+    paymentableType,
+    paymentableId,
+    clientId,
+    leaseOrderType,
+    quotaNumber,
+    amount,
+    month,
+    propertySerial,
+  } = merchantDataString;
+
+  // 🚀 6️⃣ Responder con éxito
+  switch (paymentType) {
+    case "reservation":
+      return await processReservation({
+        leaseOrderId,
+        roomId,
+        userEmail,
+        price,
+        order,
+        HFM_MAIL,
+      });
+    case "monthly":
+      return await processMonthlyPayment({
+        paymentableId,
+        leaseOrderId,
+        paymentableType,
+        clientId,
+        amount,
+        quotaNumber,
+        month,
+        order,
+        HFM_MAIL,
+      });
+    default:
+      console.log(`Tipo de pago desconocido: ${paymentType}`);
   }
 }
