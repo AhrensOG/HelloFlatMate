@@ -6,52 +6,54 @@ import ReservationSection from "@/app/components/user/profile/reservations/Reser
 import { useEffect } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import axios from "axios";
+import BotIcon from "@/app/components/public/chat-bot/BotIcon";
+import BotModal from "@/app/components/public/chat-bot/BotModal";
 
-export default function MyBedrooms() {
-  const { state } = useContext(Context);
-  const [user, setUser] = useState(false);
-  const [leaseOrdersList, setLeaseOrdersList] = useState([]);
+export default function MyReservations() {
+    const { state } = useContext(Context);
+    const [user, setUser] = useState(false);
+    const [leaseOrdersList, setLeaseOrdersList] = useState([]);
 
-  useEffect(() => {
-    if (state.user) {
-      const getData = async () => {
-        try {
-          const res = await axios.get(`/api/user?id=${state?.user?.id}`);
-          setUser(res.data);
-          const leaseRooms = res.data?.leaseOrdersRoom;
-          const leaseProperties = res.data?.leaseOrdersProperty;
-  
-          setLeaseOrdersList([...leaseRooms, ...leaseProperties]);
-        } catch (error) {
-          console.log(error)
+    useEffect(() => {
+        if (state.user) {
+            const getData = async () => {
+                try {
+                    setUser(state.user);
+                    const leaseRooms = state.user?.leaseOrdersRoom;
+                    // const leaseProperties = state.user?.leaseOrdersProperty;
+
+                    setLeaseOrdersList([...leaseRooms]);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            getData();
         }
-      };
-      getData();
-    }
-  }, [state.user]);
+    }, [state.user]);
 
-  if (!user) {
+    if (!user) {
+        return (
+            <AnimatePresence>
+                <div className="h-screen flex flex-col w-full">
+                    <header>
+                        <NavBar client={true} admin={false} owner={false} />
+                    </header>
+                    <div className="flex items-center justify-center grow">
+                        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+                    </div>
+                </div>
+            </AnimatePresence>
+        );
+    }
     return (
-      <AnimatePresence>
-        <div className="h-screen flex flex-col w-full">
-          <header>
-            <NavBar client={true} admin={false} owner={false} />
-          </header>
-          <div className="flex items-center justify-center grow">
-            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-          </div>
-        </div>
-      </AnimatePresence>
+        <AnimatePresence>
+            <div className="h-screen flex flex-col w-full relative">
+                <BotIcon />
+                <header>
+                    <NavBar client={true} admin={false} owner={false} />
+                </header>
+                <ReservationSection data={user} leaseOrdersList={leaseOrdersList} />
+            </div>
+        </AnimatePresence>
     );
-  }
-  return (
-    <AnimatePresence>
-      <div className="h-screen flex flex-col w-full">
-        <header>
-          <NavBar client={true} admin={false} owner={false} />
-        </header>
-        <ReservationSection data={user} leaseOrdersList={leaseOrdersList} />
-      </div>
-    </AnimatePresence>
-  );
 }

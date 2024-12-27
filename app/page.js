@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { Context } from "./context/GlobalContext";
 import { toast } from "sonner";
 import { getAllProperties } from "./context/actions";
@@ -14,6 +14,21 @@ import Banner from "./components/user/home/desktop/Banner";
 import Footer from "./components/user/home/desktop/Footer";
 import MapSection from "./components/user/home/desktop/auxiliarComponents/MapSection";
 import StayWithUs from "./components/user/home/desktop/StayWithUs";
+import BotIcon from "./components/public/chat-bot/BotIcon";
+import CookieModal from "./components/public/cookies/CookieModal";
+import TitleSection from "./components/public/home/TitleSection";
+import SecondSection from "./components/public/home/SecondSection";
+import ThirdSection from "./components/public/home/ThirdSection";
+import FourthSection from "./components/public/home/FourthSection";
+import FifthSection from "./components/public/home/FifthSection";
+import SixthSection from "./components/public/home/SixthSection";
+import SeventhSection from "./components/public/home/SeventhSection";
+import EightSection from "./components/public/home/EighthSection";
+import Footer_1 from "./components/public/home/Footer";
+import NavbarV3 from "./components/nav_bar/NavbarV3";
+// import CategorySelector from "./components/public/main-pages/CategorySelector";
+import SecondaryCategorySelector from "./components/public/main-pages/SecondaryCategorySelector";
+import Image from "next/image";
 
 const helloroom = {
   hero: {
@@ -100,7 +115,7 @@ const hellolandlord = {
   family: {
     title: "Habitaciones Gestionadas para tu Comodidad",
     description:
-      "Hello Landlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año",
+      "hellolandlord ofrece habitaciones gestionadas por propietarios de nuestra confianza, diseñadas específicamente para estudiantes internacionales y nacionales que buscan un espacio listo para habitar desde el primer momento al llegar a Valencia por menos de un año",
     img1: "/home/family1.svg",
     img2: "/home/subFamily1.svg",
   },
@@ -109,6 +124,11 @@ const hellolandlord = {
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const [properties, setProperties] = useState([]);
+  const [helloRoomProperties, setHelloRoomProperties] = useState([]);
+  const [helloColivingProperties, setHelloColivingProperties] = useState([]);
+  const [helloStudioProperties, setHelloStudioProperties] = useState([]);
+  const [helloLandlordProperties, setHelloLandlordProperties] = useState([]);
+
   const [propertiesInOffer, setPropertiesInOffer] = useState([]);
 
   // Estados para controlar las secciones visibles
@@ -125,12 +145,38 @@ export default function Home() {
       try {
         await getAllProperties(dispatch);
       } catch (error) {
-        toast.error("Error al obtener propiedades");
+        console.log(error);
+        // toast.error("Error al obtener propiedades");
       }
     };
 
     fetchProperties();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (state.properties && state.properties.length > 0) {
+      // Filtrar propiedades según la categoría
+      const roomProps = state.properties.filter(
+        (property) => property.category === "HELLO_ROOM"
+      );
+      const colivingProps = state.properties.filter(
+        (property) => property.category === "HELLO_COLIVING"
+      );
+      const studioProps = state.properties.filter(
+        (property) => property.category === "HELLO_STUDIO"
+      );
+      const landlordProps = state.properties.filter(
+        (property) => property.category === "HELLO_LANDLORD"
+      );
+
+      // Actualizar los estados locales
+      setProperties(state.properties);
+      setHelloRoomProperties(roomProps);
+      setHelloColivingProperties(colivingProps);
+      setHelloStudioProperties(studioProps);
+      setHelloLandlordProperties(landlordProps);
+    }
+  }, [state.properties]);
 
   useEffect(() => {
     if (state.properties && state.properties !== properties) {
@@ -140,129 +186,74 @@ export default function Home() {
     }
   }, [state.properties]);
 
+  const Loader = () => {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="loader"></div>{" "}
+        {/* Puedes crear una animación CSS para el loader */}
+        <style jsx>{`
+          .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+          }
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
+      </div>
+    );
+  };
   return (
     <div>
-      <div className="flex flex-col sm:min-h-screen">
+      <div className="flex flex-col relative">
+        {/* <BotIcon /> */}
+        <CookieModal />
         <header>
-          <HomeNavBar
-            setActiveSection={setActiveSection}
-            activeSection={activeSection}
-          />
+          <NavbarV3 />
         </header>
-
-        {/* Sección activa controlada por el estado */}
-        {activeSection === "inicio" && (
-          <div className="w-full flex flex-col">
-            <DesktopHero img="https://www.youtube.com/watch?v=ie78B4HShZ0"/>
-            <OffersSection />
-            <CommunitySection />
-            <FamilySection />
-            <StayWithUs setActiveSection={setActiveSection}/>
-            <PropertySlider data={properties} />
-            <MapSection />
+        <section className="relative flex flex-col gap-8 bg-white items-center justify-around pb-0 py-10 px-4">
+          <h1 className="text-5xl font-bold">helloflatmate</h1>
+          <h3 className="text-lg text-center">
+            Especializados en gestión de alojamientos para estudiantes en
+            Valencia. <br /> ¡Reservas y trámites 100% online, rápido, fácil y
+            sin complicaciones!
+          </h3>
+          <div className="w-full">
+            <SecondaryCategorySelector
+              helloRoomProperties={helloRoomProperties}
+              helloColivingProperties={helloColivingProperties}
+              helloStudioProperties={helloStudioProperties}
+              helloLandlordProperties={helloLandlordProperties}
+              allProperties={properties}
+            />
           </div>
-        )}
 
-        {activeSection === "helloroom" && (
-          <div className="w-full flex flex-col">
-            <DesktopHero
-              img={helloroom.hero.img}
-              title={helloroom.hero.title}
-              description={helloroom.hero.description}
-              link={helloroom.hero.link}
+          <div className="relative max-w-screen-lg w-full h-[150px] sm:h-[300px] ">
+            <Image
+              src={"/home/new_home/valencia.png"}
+              fill
+              className="object-contain object-bottom"
+              alt="Valencia"
             />
-            <OffersSection
-              title={helloroom.offer.title}
-              description={helloroom.offer.description}
-              link={helloroom.offer.link}
-            />
-            <CommunitySection />
-            <FamilySection
-              title={helloroom.family.title}
-              description={helloroom.family.description}
-              img1={helloroom.family.img1}
-              img2={helloroom.family.img2}
-            />
-            <PropertySlider data={properties} />
-            <MapSection />
           </div>
-        )}
-
-        {activeSection === "hellocoliving" && (
-          <div className="w-full flex flex-col">
-            <DesktopHero
-              img={hellocoliving.hero.img}
-              title={hellocoliving.hero.title}
-              description={hellocoliving.hero.description}
-              link={hellocoliving.hero.link}
-            />
-            <OffersSection
-              title={hellocoliving.offer.title}
-              description={hellocoliving.offer.description}
-              link={hellocoliving.offer.link}
-            />
-            <CommunitySection />
-            <FamilySection
-              title={hellocoliving.family.title}
-              description={hellocoliving.family.description}
-              img1={hellocoliving.family.img1}
-              img2={hellocoliving.family.img2}
-            />
-            <PropertySlider data={properties} />
-          </div>
-        )}
-
-        {activeSection === "hellostudio" && (
-          <div className="w-full flex flex-col">
-            <DesktopHero
-              img={hellostudio.hero.img}
-              title={hellostudio.hero.title}
-              description={hellostudio.hero.description}
-              link={hellostudio.hero.link}
-            />
-            <OffersSection
-              title={hellostudio.offer.title}
-              description={hellostudio.offer.description}
-              link={hellostudio.offer.link}
-            />
-            <CommunitySection />
-            <FamilySection
-              title={hellostudio.family.title}
-              description={hellostudio.family.description}
-              img1={hellostudio.family.img1}
-              img2={hellostudio.family.img2}
-            />
-            <PropertySlider data={properties} />
-            <MapSection />
-          </div>
-        )}
-
-        {activeSection === "hellolandlord" && (
-          <div className="w-full flex flex-col">
-            <DesktopHero
-              img={hellolandlord.hero.img}
-              title={hellolandlord.hero.title}
-              description={hellolandlord.hero.description}
-              link={hellolandlord.hero.link}
-            />
-            <OffersSection
-              title={hellolandlord.offer.title}
-              description={hellolandlord.offer.description}
-              link={hellolandlord.offer.link}
-            />
-            <CommunitySection />
-            <FamilySection
-              title={hellolandlord.family.title}
-              description={hellolandlord.family.description}
-              img1={hellolandlord.family.img1}
-              img2={hellolandlord.family.img2}
-            />
-            <PropertySlider data={properties} />
-          </div>
-        )}
-        <InfoSection />
-        <Banner />
-        <Footer />
+        </section>
+        <SecondSection />
+        <SixthSection />
+        <ThirdSection />
+        <FourthSection />
+        <FifthSection />
+        <SeventhSection />
+        <EightSection />
+        <Footer_1 />
       </div>
     </div>
   );

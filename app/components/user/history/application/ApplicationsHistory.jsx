@@ -3,7 +3,7 @@ import ApplicationCardHistory from "./ApplicationCardHistory";
 import { use, useContext, useEffect, useState } from "react";
 import ApplicationDetails from "./details/ApplicationDetails";
 import { motion, AnimatePresence } from "framer-motion";
-import { plus_jakarta } from "@/font";
+ 
 import { Context } from "@/app/context/GlobalContext";
 
 export default function ApplicationsHistory({ redirect }) {
@@ -55,7 +55,7 @@ export default function ApplicationsHistory({ redirect }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8 }}
-          className={`${plus_jakarta.className} flex flex-col gap-2 py-4 m-4`}
+          className={`  flex flex-col gap-2 py-4 m-4`}
         >
           <div className="border bg-gris-español "></div>
           {user?.toDos.map((toDo) => {

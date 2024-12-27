@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat, ChatParticipant, RentalPeriod, RentalItem } from "@/db/init";
 import { createGroupChat, createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
 import { sequelize } from "@/db/models/comment";
+import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
 
 export async function updateStatusLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 });
-    if (!data.action || (data.action !== "REJECTED" && data.action !== "APPROVED"))
+    if (!data.action || (data.action !== "REJECTED" && data.action !== "PENDING"))
         return NextResponse.json({ message: "No status provided" }, { status: 400 });
     if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 });
     if (!data.adminId || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 });
@@ -20,7 +21,7 @@ export async function updateStatusLeaseOrder(data) {
         const admin = (await Admin.findByPk(data.adminId, { transaction })) || (await Client.findByPk(data.adminId, { transaction }));
         if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 });
 
-        if (data.type === "PROPERTY") {
+        if (data.type === "PROPERTY") {PENDING
             // Buscar y verificar que la orden exista
             const leaseOrderProperty = await LeaseOrderProperty.findByPk(data.leaseOrderId, { transaction });
             if (!leaseOrderProperty) {
@@ -30,14 +31,20 @@ export async function updateStatusLeaseOrder(data) {
             const property = await Property.findByPk(
                 data.propertyId,
                 {
-                    include: {
-                        model: RentalItem,
-                        as: "rentalItems",
-                        include: {
-                            model: RentalPeriod,
-                            as: "rentalPeriod",
+                    include: [
+                        {
+                            model: RentalItem,
+                            as: "rentalItems",
+                            include: {
+                                model: RentalPeriod,
+                                as: "rentalPeriod",
+                            },
                         },
-                    },
+                        {
+                            model: Chat,
+                            as: "chats",
+                        },
+                    ],
                 },
                 { transaction }
             );
@@ -61,6 +68,8 @@ export async function updateStatusLeaseOrder(data) {
                 await leaseOrderProperty.save({ transaction });
                 await property.save({ transaction });
 
+                console.log(property);
+
                 // Crear chat con el dueño
                 const chatPrivate = await createPrivateChat({
                     type: "PRIVATE",
@@ -74,6 +83,12 @@ export async function updateStatusLeaseOrder(data) {
                 const participantCLientPriv = await ChatParticipant.create({
                     participantId: leaseOrderProperty.clientId,
                     chatId: chatPrivate.id,
+                    participantType: "CLIENT",
+                });
+
+                const participantClientGroup = await ChatParticipant.create({
+                    participantId: leaseOrderProperty.clientId,
+                    chatId: property.chats.find((chat) => chat.type === "GROUP").id,
                     participantType: "CLIENT",
                 });
 
@@ -98,6 +113,13 @@ export async function updateStatusLeaseOrder(data) {
             await transaction.rollback();
             return NextResponse.json({ message: "Lease order room not found" }, { status: 404 });
         }
+        const userId = leaseOrderRoom.clientId
+        const client = await Client.findByPk(userId)
+        if (!client) {
+            await transaction.rollback();
+            return NextResponse.json({ message: "Client not found" }, { status: 404 });
+        }
+
         const room = await Room.findByPk(
             data.roomId,
             {
@@ -124,25 +146,18 @@ export async function updateStatusLeaseOrder(data) {
                 },
                 {
                     model: Chat,
-                    as: "chat",
+                    as: "chats",
+                    as: "chats",
                 },
             ],
             transaction,
         });
         const roomsAvailable = property.rooms.filter((room) => room.status === "FREE");
 
-        if (data.action === "APPROVED") {
-            leaseOrderRoom.status = "APPROVED";
+        if (data.action === "PENDING") {
+            leaseOrderRoom.status = "PENDING";
             leaseOrderRoom.isActive = true;
             leaseOrderRoom.inReview = false;
-
-            // if (room.rentalPeriods.some(rentalPeriod => {
-            //     return rentalPeriod.status === "FREE";
-            // })) {
-            //     room.status = "FREE";
-            // } else {
-            //     room.status = roomsAvailable.length > 0 ? "FREE" : "OCCUPIED";
-            // }
 
             if (room.calendar === "SIMPLE") {
                 if (
@@ -172,17 +187,32 @@ export async function updateStatusLeaseOrder(data) {
                 relatedId: room.id,
             });
 
-            //Asignar al chat grupal de la propiedad
-            if (property.chat) {
-                const participantOwnerPriv = await ChatParticipant.create({
-                    participantId: leaseOrderRoom.clientId,
-                    chatId: property.chat.id,
-                    participantType: "CLIENT",
-                });
-            }
+            console.log(leaseOrderRoom);
 
+            const createParticipant = await ChatParticipant.create({
+                participantId: leaseOrderRoom.clientId,
+                chatId: chatPrivate.id,
+                participantType: "CLIENT",
+            });
+            const createOwnerParticipant = await ChatParticipant.create({
+                participantId: property.ownerId,
+                chatId: chatPrivate.id,
+                participantType: "OWNER",
+            });
+
+            const createGroupParticipant = await ChatParticipant.create({
+                participantId: leaseOrderRoom.clientId,
+                chatId: property.chats.find((chat) => chat.type === "GROUP").id,
+                participantType: "CLIENT",
+            });
+
+            const mailInfo = {
+                to: client.email, subject: "¡Aprobamos tu pre-reserva!", text: `Te informamos que hemos aceptado la pre-reserva del alojamiento ${room.serial}. Por favor verifica tu perfil y desde la seccion "Historico" podras continuar con el proceso.` 
+            };
+
+            await sendMailFunction(mailInfo);
             await transaction.commit();
-            return NextResponse.json({ message: "Lease order room approved" }, { status: 200 });
+            return NextResponse.json({ message: "Lease order room PENDING" }, { status: 200 });
         } else if (data.action === "REJECTED") {
             leaseOrderRoom.status = "REJECTED";
             leaseOrderRoom.isActive = false;

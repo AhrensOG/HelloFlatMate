@@ -16,27 +16,32 @@ const PropertySlider = ({ data }) => {
   return (
     <section className="p-4 pt-10 flex justify-center items-center">
       <div className="flex flex-col justify-center items-center space-y-2 max-w-screen-xl w-full">
-        <h2 className="text-3xl font-medium py-10 text-center">Explora nuestros nuevos alojamientos</h2>
+        <h2 className="text-3xl font-medium py-10 text-center">
+          Explora nuestros nuevos alojamientos
+        </h2>
         {properties && properties.length > 0 ? (
           <HomeSlider>
             {properties.map((item) => {
               // Si la categoría es "HELLO_ROOM" o "HELLO_COLIVING", mostrar las tarjetas de las habitaciones
               if (
                 item.category === "HELLO_ROOM" ||
-                item.category === "HELLO_COLIVING"
+                item.category === "HELLO_COLIVING" ||
+                item.category === "HELLO_LANDLORD"
               ) {
-                return item.rooms
-                  // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
-                  .map((room) => (
-                    <div className="my-5" key={room.id}>
-                      <PropertyCard
-                        roomId={room.id}
-                        propertyId={item.id}
-                        img={room?.images[0]}
-                        title={room.name}
-                      />
-                    </div>
-                  ));
+                return (
+                  item.rooms
+                    // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
+                    .map((room) => (
+                      <div className="my-5" key={room.id}>
+                        <PropertyCard
+                          roomId={room.id}
+                          propertyId={item.id}
+                          img={room?.images[0]}
+                          title={room.name}
+                        />
+                      </div>
+                    ))
+                );
               }
               return (
                 <div className="my-5" key={item.id}>

@@ -29,7 +29,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
         const leaseOrderId = searchParams.get("lo");
 
         if (property && leaseOrderId) {
-          if (roomId) {
+          if (roomId && roomId !== "false") {
             // Buscar la room si `roomId` está presente
             const rooms = property.rooms || [];
             const foundRoom = rooms.find(
@@ -112,7 +112,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   // Property DATA
   const contractDate = setDate();
   const landlordName = owner?.name + " " + owner?.lastName || "Javier García";
-  const landlordNIF = "12345678Z";
+  const landlordNIF = "B98358963";
   const landlordStreet = property.street || "Gran Vía";
   const landlordStreetNumber = property.streetNumber || "45";
   const landlordDoorNumber = room ? room.serial : "-";
@@ -191,7 +191,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+      className={`  w-full flex flex-col gap-7 p-4`}
     >
       <TitleSection
         title={"Contrato de renta"}

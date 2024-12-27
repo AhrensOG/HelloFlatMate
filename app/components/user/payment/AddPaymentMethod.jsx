@@ -10,7 +10,7 @@ export default function AddPaymentMethod({ handleContinue, handleBack }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className={`${plus_jakarta.className} w-full flex flex-col gap-7 p-4`}
+            className={`  w-full flex flex-col gap-7 p-4`}
         >
             <div className="flex items-center gap-5">
                 <button

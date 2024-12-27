@@ -6,9 +6,9 @@ export default function SideBarButton({ title, icon, redirect }) {
     <button
       onClick={redirect}
       type="button"
-      className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-white px-4 py-3 text-sm font-semibold text-gray-900 ring-inset ring-gray-300 hover:bg-gray-50"
+      className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-white px-4 text-sm font-semibold text-gray-900 ring-inset ring-gray-300 hover:bg-gray-50"
     >
-      <div className="flex gap-2 items-center w-full h-[1.25rem]">
+      <div className="flex gap-2 items-center w-full">
         {title === "Mi perfil" ? (
           <div className="w-6 h-6">
             <UserIcon />
@@ -17,9 +17,8 @@ export default function SideBarButton({ title, icon, redirect }) {
           <div className="mr-1">
             <Image
               src={icon}
-              layout="responsive"
-              width={25}
-              height={25}
+              width={40}
+              height={40}
               alt={`Boton ${title.toLowerCase()}`}
             />
           </div>

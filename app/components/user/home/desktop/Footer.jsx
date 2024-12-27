@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function Footer() {
   return (
     <footer className="flex flex-col justify-center items-center">
       {/* MOBILE DESIGN */}
       <div className="bg-gray-400 p-6 relative w-full flex flex-col items-center justify-center">
-        <div className="w-full sm:hidden flex flex-col items-center justify-center">
+        <div className="w-full lg:hidden flex flex-col items-center justify-center">
           {/* Logo */}
           <div className="mb-6">
             <Image
@@ -55,9 +56,14 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-xs underline">
+                  <Link
+                    href="/faq"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs underline"
+                  >
                     FAQS
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#" className="text-xs underline">
@@ -72,7 +78,7 @@ export default function Footer() {
                 ¿En qué podemos ayudarte?
               </h3>
               <ul className="space-y-2">
-                <li className="flex items-center gap-1">
+                {/* <li className="flex items-center gap-1">
                   <Image
                     src={"/home/helpCenter.svg"}
                     width={25}
@@ -82,7 +88,7 @@ export default function Footer() {
                   <Link href="#" alt="Centro de ayúda" className="text-xs">
                     Centro de ayuda
                   </Link>
-                </li>
+                </li> */}
                 <li className="flex items-center gap-1">
                   <Image
                     src={"/home/chat.svg"}
@@ -113,10 +119,10 @@ export default function Footer() {
         </div>
 
         {/* DESKTOP DESIGN */}
-        <div className="w-full sm:flex flex-col gap-4 hidden bg-gray-400 relative items-center justify-between min-h-72">
+        <div className="w-full lg:flex flex-col gap-4 hidden bg-gray-400 relative items-center justify-between">
           {/* Enlaces principales */}
           <div className="w-full flex justify-around items-start gap-4">
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex flex-col items-start gap-2 min-w-[258px]">
               <h3 className="font-bold text-sm sm:text-lg">
                 ¿En qué podemos ayudarte?
               </h3>
@@ -170,7 +176,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center grow">
               {/* Logo */}
               <div className="">
                 <Image
@@ -180,17 +186,23 @@ export default function Footer() {
                   height={80}
                 />
               </div>
-              <div className="w-full py-6">
+              <div className="w-full py-6 flex justify-center items-center">
                 <p className="font-medium text-lg text-center max-w-[32rem]">
                   Desde 2011 colaborando en la creación de alojamientos dignos
                   para estudiantes y nómadas digitales.
                 </p>
               </div>
+              {/* Derechos reservados */}
+              <div className="w-full text-center font-bold">
+                <p className="text-sm text-black">
+                  Todos los derechos reservados @helloflatmate 2024
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col items-start space-y-4">
+            <div className="flex flex-col items-start space-y-4 min-w-[258px]">
               <h3 className="font-bold text-sm sm:text-lg">Enlaces</h3>
               <ul className="space-y-2">
-                <li>
+                {/* <li>
                   <Link
                     href="#"
                     alt="¿Quiénes somos?"
@@ -198,34 +210,54 @@ export default function Footer() {
                   >
                     ¿Quiénes somos?
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link
-                    href="#"
                     alt="FAQS"
+                    href="/faq"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-xs sm:text-base underline"
                   >
                     FAQS
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="#"
+                  <button
+                    onClick={() =>
+                      toast.info("¡Muy pronto conoceras nuestro blog!")
+                    }
+                    // href="#"
                     alt="Blog"
                     className="text-xs sm:text-base underline"
                   >
                     Blog
+                  </button>
+                </li>
+                <li>
+                  <Link
+                    alt="Privacy-policy"
+                    href="/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs sm:text-base underline"
+                  >
+                    Políticas de privacidad
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    alt="Cookies"
+                    href="/cookies"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs sm:text-base underline"
+                  >
+                    Políticas de cookies
                   </Link>
                 </li>
               </ul>
             </div>
-          </div>
-
-          {/* Derechos reservados */}
-          <div className="w-full text-center font-bold">
-            <p className="text-sm lg:text-lg text-black">
-              Todos los derechos reservados @helloflatmate 2024
-            </p>
           </div>
         </div>
       </div>

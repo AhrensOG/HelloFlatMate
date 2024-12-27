@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { plus_jakarta } from "@/font";
+ 
 import { useRouter } from "next/navigation";
 
 export default function Notification() {
@@ -8,7 +8,7 @@ export default function Notification() {
 
   return (
     <div
-      className={`${plus_jakarta.className} notification-page w-screen h-screen flex flex-col justify-center items-center`}
+      className={`  notification-page w-screen h-screen flex flex-col justify-center items-center`}
     >
       <header className="notification-header w-full mt-10">
         <nav className="notification-nav w-full flex pl-3 items-center">

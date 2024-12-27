@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { plus_jakarta } from "@/font";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import SideBarButton from "./SideBarButton";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 const adminOptions = [
   {
@@ -80,25 +81,30 @@ const ownerOptions = [
 ];
 const clientOptions = [
   {
-    title: "Reservas",
-    icon: "/nav_bar/side_bar/client/payments.svg",
+    title: "Pagos",
+    icon: "/nav_bar/payment.gif",
+    link: "/pages/user/history/payments",
+  },
+  {
+    title: "Histórico",
+    icon: "/nav_bar/desktop-my-contracts.gif",
     link: "/pages/user/my-reservations",
   },
   {
-    title: "Dormitorios",
-    icon: "/nav_bar/side_bar/client/properties.svg",
+    title: "Panel",
+    icon: "/nav_bar/monitor.gif",
     link: "/pages/user/my-bedrooms",
   },
   {
-    title: "Chats",
-    icon: "/nav_bar/side_bar/client/chats.svg",
-    link: "/pages/user/chats",
-  },
-  {
     title: "Perfil",
-    icon: "/nav_bar/side_bar/client/properties.svg",
+    icon: "/nav_bar/desktop-profile.gif",
     link: "/pages/user/profile",
   },
+  // {
+  //   title: "Chats",
+  //   icon: "/nav_bar/side_bar/client/chats.svg",
+  //   link: "/pages/user/chats",
+  // },
   // {
   //   title: "Mis Contratos",
   //   icon: "/nav_bar/side_bar/client/documents.svg",
@@ -147,7 +153,7 @@ export default function SideBar({
           animate={{ opacity: 1, x: "0" }}
           exit={{ opacity: 0, x: "-100%" }}
           transition={{ duration: 0.5 }}
-          className={`${plus_jakarta.className} flex flex-col items-start fixed inset-0 z-10 w-full bg-white`}
+          className={`  flex flex-col items-start fixed inset-0 z-50 w-full bg-white`}
         >
           <div className="flex p-3 w-full">
             <button onClick={handleClose} aria-label="Cerrar menú">
@@ -173,7 +179,7 @@ export default function SideBar({
               <button
                 onClick={() => handleRedirect("/")}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex gap-2 items-center px-5 w-full"
               >
                 <div>
                   <Image
@@ -199,20 +205,19 @@ export default function SideBar({
                 );
               })}
               <button
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex items-center gap-3 px-3"
               >
-                <div className="relative w-6 h-6">
+                <div className="relative w-[40px] h-[40px] ml-2">
                   <Image
-                    src={"/nav_bar/side_bar/client/configuration.svg"}
+                    src="/nav_bar/cerrar-sesion.gif"
                     fill
-                    alt="Botón para ir al inicio"
+                    alt="Cerrar Sesion"
+                    priority
                   />
                 </div>
-                <h2 className="text-gris-español font-medium text-xl">
-                  Cerrar Sesión
-                </h2>
+                <h2 className="text-xl text-center text-gris-español">Salir</h2>
               </button>
             </nav>
           )}
@@ -221,7 +226,7 @@ export default function SideBar({
               <button
                 onClick={() => handleRedirect("/")}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex gap-2 items-center px-5 w-full"
               >
                 <div>
                   <Image
@@ -247,20 +252,14 @@ export default function SideBar({
                 );
               })}
               <button
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex flex-col items-center justify-between gap-1"
               >
-                <div className="relative w-6 h-6">
-                  <Image
-                    src={"/nav_bar/side_bar/client/configuration.svg"}
-                    fill
-                    alt="Botón para ir al inicio"
-                  />
+                <div className="relative w-[40px] h-[40px]">
+                  <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
-                <h2 className="text-gris-español font-medium text-xl">
-                  Cerrar Sesión
-                </h2>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
             </nav>
           )}
@@ -269,7 +268,7 @@ export default function SideBar({
               <button
                 onClick={() => handleRedirect("/")}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex gap-2 items-center px-5 w-full"
               >
                 <div>
                   <Image
@@ -295,20 +294,14 @@ export default function SideBar({
                 );
               })}
               <button
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
                 type="button"
-                className="flex gap-2 items-center px-4 py-3 w-full h-[1.25rem]"
+                className="flex flex-col items-center justify-between gap-1"
               >
-                <div className="relative w-6 h-6">
-                  <Image
-                    src={"/nav_bar/side_bar/client/configuration.svg"}
-                    fill
-                    alt="Botón para ir al inicio"
-                  />
+                <div className="relative w-[40px] h-[40px]">
+                  <ArrowRightStartOnRectangleIcon className="size-10" />
                 </div>
-                <h2 className="text-gris-español font-medium text-xl">
-                  Cerrar Sesión
-                </h2>
+                <h2 className="text-xs text-center text-[#636574]">Salir</h2>
               </button>
             </nav>
           )}

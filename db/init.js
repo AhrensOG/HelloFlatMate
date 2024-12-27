@@ -20,6 +20,7 @@ const Worker = require("./models/worker");
 const RentalItem = require("./models/rentalItem");
 const RentPayment = require("./models/rentPayment");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
+const SearchRequest = require("./models/searchRequest");
 
 (async () => {
     try {
@@ -71,6 +72,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         Client.hasMany(Contract, { as: "contracts", foreignKey: "clientId" });
         Client.hasMany(Payment, { as: "payments", foreignKey: "clientId" });
         Client.hasMany(RentPayment, { as: "rentPayments", foreignKey: "clientId" });
+        Client.hasMany(SearchRequest, { as: "searchRequests", foreignKey: "clientId" });
 
         //CHAT
         // Uno a Muchos
@@ -101,6 +103,9 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
         //RentPayment
         RentPayment.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         RentPayment.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //SearchRequest
+        SearchRequest.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
         //Relaciones polimorficas
         //Client
@@ -224,6 +229,11 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             foreignKey: "participantId",
             constraints: false,
         });
+        ChatParticipant.belongsTo(Worker, {
+            as: "worker",
+            foreignKey: "participantId",
+            constraints: false,
+        });
 
         // Client and Owner
         Client.hasMany(ChatParticipant, {
@@ -244,6 +254,13 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
             constraints: false,
             scope: { participantType: "ADMIN" },
         });
+        Worker.hasMany(ChatParticipant, {
+            as: "chats",
+            foreignKey: "participantId",
+            constraints: false,
+            scope: { participantType: "WORKER" },
+        });
+
         //Message Users
         Client.hasMany(Message, {
             as: "messages",
@@ -435,4 +452,5 @@ module.exports = {
     RentalItem,
     Worker,
     RentPayment,
+    SearchRequest,
 };

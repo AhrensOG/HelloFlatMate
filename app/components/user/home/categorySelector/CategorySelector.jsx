@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { plus_jakarta } from "@/font";
+ 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import CategoryCard from "./auxiliarComponents/CategoryCard";
@@ -44,6 +44,8 @@ const list = [
   },
 ];
 
+const genre = ["ONLY_WOMEN", "MIXED"];
+
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const CategorySelector = ({
@@ -57,7 +59,7 @@ const CategorySelector = ({
   const searchParams = useSearchParams();
   const categoryQuery = searchParams.get("c");
 
-  const [currentCategory, setCurrentCategory] = useState("HELLO_ROOM");
+  const [currentCategory, setCurrentCategory] = useState(null);
   const [data, setData] = useState({});
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [numberOccupants, setNumberOccupants] = useState();
@@ -98,6 +100,10 @@ const CategorySelector = ({
       params.append("endDate", date.endDate);
     }
 
+    if (data.type) {
+      params.append("type", data.type);
+    }
+
     if (currentCategory) {
       params.append("category", currentCategory);
     }
@@ -123,8 +129,8 @@ const CategorySelector = ({
         propiedad.rooms.forEach((room) => {
           // Acceder a rentalPeriods y formatear las fechas
           room.rentalItems?.forEach((periodo) => {
-            const startDate = new Date(periodo.rentalPeriod.startDate);
-            const endDate = new Date(periodo.rentalPeriod.endDate);
+            const startDate = new Date(periodo.rentalPeriod?.startDate);
+            const endDate = new Date(periodo.rentalPeriod?.endDate);
 
             // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
             const formattedStartDate = `${startDate
@@ -145,7 +151,6 @@ const CategorySelector = ({
               .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
 
             const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
-
             // Añadir la fecha al Set para evitar duplicados
             fechasUnicas.add(fecha);
           });
@@ -175,15 +180,22 @@ const CategorySelector = ({
                 options={helloRoomLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
                 name="zone"
               />
               <Select
                 options={helloRoomRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
+              />
+              <Select
+                options={genre}
+                data={data}
+                setData={setData}
+                title="Comparte con"
+                name="type"
               />
               {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -207,15 +219,22 @@ const CategorySelector = ({
                 options={helloColivingLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
                 name="zone"
               />
               <Select
                 options={helloColivingRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
+              />
+              <Select
+                options={genre}
+                data={data}
+                setData={setData}
+                title="Comparte con"
+                name="type"
               />
               {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -234,7 +253,7 @@ const CategorySelector = ({
                 options={helloStudioLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
                 name="zone"
               />
               <DatePickerCategorySelector
@@ -271,14 +290,21 @@ const CategorySelector = ({
                 options={helloLandlordLocations}
                 data={data}
                 setData={setData}
-                title="¿En qué zona?"
+                title="Zona"
               />
               <Select
                 options={helloLandlordRentalPeriods}
                 data={data}
                 setData={setData}
-                title="Selecciona un periodo"
+                title="Fechas"
                 name="rentalPeriod"
+              />
+              <Select
+                options={genre}
+                data={data}
+                setData={setData}
+                title="Comparte con"
+                name="type"
               />
               {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -299,7 +325,7 @@ const CategorySelector = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className={`${plus_jakarta.className} w-full flex flex-col gap-5 p-4`}
+      className={`  w-full flex flex-col gap-20 p-4`}
     >
       <div className="w-full flex flex-row justify-between items-center gap-2 p-5">
         <div
@@ -347,7 +373,7 @@ const CategorySelector = ({
         ))}
       </div>
       <div className="w-full flex justify-center items-start">
-        <div className="max-w-screen-xl w-full flex flex-col sm:flex-row justify-between items-center sm:items-start p-4">
+        <div className={`max-w-screen-xl w-full flex flex-col sm:flex-row ${currentCategory ? "justify-between" : "justify-end"   } items-center sm:items-start p-4`}>
           {currentCategory && (
             <AnimatePresence mode="wait">
               <motion.div
@@ -364,7 +390,7 @@ const CategorySelector = ({
           <div className="flex justify-start items-center">
             <button
               onClick={handleSearch}
-              className="p-4 bg-[#1FAECC] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
+              className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-black"
             >
               Buscar alojamiento
               <MagnifyingGlassIcon className="size-6 text-black" />
@@ -372,8 +398,7 @@ const CategorySelector = ({
           </div>
         </div>
       </div>
-
-      <div className="w-full flex justify-center items-center">
+      {/* <div className="w-full flex justify-center items-center">
         <div className="w-full max-w-screen-xl">
           <SelectCategorySlider>
             {allProperties.map((item) => {
@@ -388,19 +413,13 @@ const CategorySelector = ({
                     // .filter((room) => room.status === "FREE") // Filtrar habitaciones con status 'FREE'
                     .map((room) => (
                       <div className="mr-4" key={room.id}>
-                        {/* <PropertyCard
-                        roomId={room.id}
-                        propertyId={item.id}
-                        img={room?.images[0]}
-                        title={room.name}
-                      /> */}
                         <CategorySelectorPropertyCard
                           img={room?.images[0]}
                           category={item.category}
                           propertyId={item.id}
                           roomId={room.id}
                           location={{ street: item.street, city: item.city }}
-                          description={room.description}
+                          description={room.name}
                         />
                       </div>
                     ))
@@ -413,14 +432,14 @@ const CategorySelector = ({
                     category={item.category}
                     propertyId={item.id}
                     location={{ street: item.street, city: item.city }}
-                    description={item.description}
+                    description={item.name}
                   />
                 </div>
               );
             })}
           </SelectCategorySlider>
         </div>
-      </div>
+      </div> */}
     </motion.section>
   );
 };

@@ -11,6 +11,16 @@ import {
   Supply,
 } from "@/db/init"; // Importa el modelo Supply
 import rentPayment from "@/db/models/rentPayment";
+import { sendMailFunction } from "../../sendGrid/controller/sendMailFunction";
+import { billBuilder } from "../../pdf_creator/utils/billBuilder";
+
+const formatDate = (date) => {
+  const newDate = new Date(date);
+  const year = newDate.getFullYear();
+  const month = String(newDate.getMonth() + 1).padStart(2, "0");
+  const day = String(newDate.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -21,6 +31,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Este es tu webhook secret para verificar las solicitudes de Stripe
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+const hfm_email = process.env.HFM_MAIL;
 
 export async function POST(req) {
   // Convierte el cuerpo de la solicitud a un buffer
@@ -66,7 +78,7 @@ export async function POST(req) {
             include: {
               model: Property,
               as: "property",
-              attributes: ["ownerId"],
+              attributes: ["ownerId", "street", "streetNumber", "floor", "typology"],
             },
           });
           if (!property) {
@@ -109,6 +121,7 @@ export async function POST(req) {
                 ? property.ownerId
                 : property.property.ownerId,
             paymentId: session.payment_intent,
+            description: "Pago reserva",
           };
 
           const rentPayment = await RentPayment.create(paymenData);
@@ -116,25 +129,86 @@ export async function POST(req) {
             isActive: false,
           });
 
-          // // Crear el Payment
-          // await Payment.create({
-          //   amount: successLeaseOrderRoom.price,
-          //   date: new Date(), // La fecha actual
-          //   status: "APPROVED", // Estado inicial
-          //   type: "RESERVATION",
-          //   paymentableId: successLeaseOrderRoom.roomId,
-          //   paymentableType: "ROOM",
-          //   paymentId: session.id,
-          //   clientId: successLeaseOrderRoom.clientId,
-          //   ownerId: successLeaseOrderRoom.ownerId,
-          // });
-
           await successLeaseOrderRoom.update({
-            status: "PENDING",
-            inReview: true,
+            status: "APPROVED",
           });
+
+          const detailsPayments = [
+            {
+              amount: rentPayment.amount,
+              date: rentPayment.date,
+              status: rentPayment.status,
+              id: rentPayment.id,
+              quotaNumber: rentPayment.quotaNumber,
+            },
+          ];
+
+          const pdfData = {
+            id: rentPayment.id,
+            clienteName: client.name + " " + client.lastName || "N/A",
+            clienteDni: client.idNum || "N/A",
+            clienteAddress: client.street + " " + client.streetNumber || "N/A",
+            clienteCity:
+              client.city + " " + "CP: " + client.postalCode || "N/A",
+            clientePhone: client.phone || "N/A",
+            clienteEmail: client.email || "N/A",
+            room: `${property.property?.street} ${property.property?.streetNumber} ${property.property?.floor}`,
+            roomCode: property.serial,
+            gender: property?.property?.typology
+              ? property.property.typology === "MIXED"
+                ? "mixto"
+                : property.property.typology === "ONLY_WOMEN"
+                ? "solo mujeres"
+                : property.property.typology === "ONLY_MEN"
+                ? "solo hombres"
+                : "desconocido"
+              : "desconocido",
+            invoiceNumber: rentPayment.id,
+            invoicePeriod:
+              formatDate(successLeaseOrderRoom.startDate) +
+              " / " +
+              formatDate(successLeaseOrderRoom.endDate),
+            details: detailsPayments,
+            totalAmount: detailsPayments.reduce(
+              (total, payment) => total + payment.amount,
+              0
+            ),
+            returnBytes: true,
+          };
+
+          const pdfBytes = await billBuilder(pdfData);
+          const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
+
+          await sendMailFunction({
+            to: client.email,
+            subject: `Confirmacion de reserva - Alojamiento ${property.serial}`,
+            text: `¡Gracias por confiar en helloflatmate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
+            attachments: [
+              {
+                content: pdfBase64,
+                filename: `factura_${rentPayment.id}.pdf`,
+                type: "application/pdf",
+                disposition: "attachment",
+              },
+            ],
+          });
+
+          await sendMailFunction({
+            to: hfm_email,
+            subject: `Pago de reserva - ${property.serial}`,
+            text: `El usuario ${client.name} ${client.lastName} realizó el pago de reserva por el alojamiento ${property.serial}.`,
+            attachments: [
+              {
+                content: pdfBase64,
+                filename: `factura_${rentPayment.id}.pdf`,
+                type: "application/pdf",
+                disposition: "attachment",
+              },
+            ],
+          });
+
           console.log(
-            `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to PENDING`
+            `✅ LeaseOrderRoom with ID ${leaseOrderId} updated to APPROVED`
           );
           console.log(
             `✅ Reservation Payment with ID ${rentPayment.id} updated to APPROVED`
@@ -194,6 +268,7 @@ export async function POST(req) {
                 ? property.ownerId
                 : property.property.ownerId,
             paymentId: session.payment_intent,
+            description: "Pago reserva",
           };
 
           const rentPayment = await RentPayment.create(paymenData);
@@ -212,6 +287,11 @@ export async function POST(req) {
           // });
           await property.update({ isActive: false });
           await successLeaseOrder.update({ status: "PENDING", inReview: true });
+          await sendMailFunction({
+            to: client.email,
+            subject: `Confirmacion de reserva - Alojamiento ${property.serial}`,
+            text: `¡Gracias por confiar en helloflatmate! Puedes revisar el estado de tu reserva en la seccion "Histórico" de tu panel de usuario.`,
+          });
           console.log(
             `✅ LeaseOrderProperty with ID ${leaseOrderId} updated to PENDING`
           );
@@ -277,6 +357,7 @@ export async function POST(req) {
               ? property.ownerId
               : property.property.ownerId,
           paymentId: session.payment_intent,
+          description: "Pago mensual",
         };
 
         const rentPayment = await RentPayment.create(paymenData);
@@ -286,197 +367,9 @@ export async function POST(req) {
       }
     } else if (type === "checkout.session.expired") {
       if (paymentType === "reservation") {
-        if (roomId !== "false") {
-          const failedLeaseOrderRoom = await LeaseOrderRoom.findByPk(
-            leaseOrderId
-          );
-          if (!failedLeaseOrderRoom) {
-            console.error(`LeaseOrderRoom with ID ${leaseOrderId} not found.`);
-            return NextResponse.json(
-              { error: "LeaseOrderRoom not found" },
-              { status: 404 }
-            );
-          }
-          const property = await Room.findByPk(data.roomId, {
-            include: {
-              model: Property,
-              as: "property",
-              attributes: ["ownerId"],
-            },
-          });
-          if (!property) {
-            return NextResponse.json(
-              { error, message: "Paymentable / Room not found" },
-              { status: 404 }
-            );
-          }
-
-          const client = await Client.findOne({
-            where: { email: data.userEmail },
-          });
-          if (!client) {
-            return NextResponse.json(
-              { error, message: "Client not found" },
-              { status: 404 }
-            );
-          }
-
-          const type =
-            data.category === "HELLO_ROOM" ||
-            data.category === "HELLO_COLIVING" ||
-            data.category === "HELLO_LANDLORD"
-              ? "ROOM"
-              : "PROPERTY";
-
-          // Verificar si el estado es APPROVED
-          if (failedLeaseOrderRoom.status === "IN_PROGRESS") {
-            const paymenData = {
-              amount: data.price,
-              type: "RESERVATION",
-              paymentableId: data.roomId,
-              paymentableType: type,
-              clientId: client.id,
-              leaseOrderId: data.leaseOrderId,
-              leaseOrderType: type,
-              status: "REJECTED",
-              quotaNumber: 1,
-              date: new Date(),
-              ownerId:
-                type === "PROPERTY"
-                  ? property.ownerId
-                  : property.property.ownerId,
-              paymentId: session.payment_intent,
-            };
-
-            const rentPayment = await RentPayment.create(paymenData);
-            // await Payment.create({
-            //   amount: failedLeaseOrderRoom.price,
-            //   date: new Date(), // La fecha actual
-            //   status: "REJECTED", // Estado inicial
-            //   type: "RESERVATION",
-            //   paymentableId: failedLeaseOrderRoom.roomId,
-            //   paymentableType: "ROOM",
-            //   paymentId: session.id,
-            //   clientId: failedLeaseOrderRoom.clientId,
-            //   ownerId: failedLeaseOrderRoom.ownerId,
-            // });
-            await property.update({ status: "FREE" });
-            await failedLeaseOrderRoom.update({ status: "REJECTED" });
-            console.log(
-              `❌ LeaseOrderRoom with ID ${leaseOrderId} updated to REJECTED`
-            );
-            console.log(
-              `❌ Reservation Payment with ID ${rentPayment.id} updated to REJECTED`
-            );
-          } else {
-            console.log(
-              `LeaseOrderRoom with ID ${leaseOrderId} is already APPROVED. No changes made.`
-            );
-            console.log(
-              `Reservation Payment with ID ${rentPayment.id} is not IN_PROGRESS. No changes made`
-            );
-          }
-        } else {
-          const failedLeaseOrder = await LeaseOrderProperty.findByPk(
-            leaseOrderId
-          );
-          if (!failedLeaseOrder) {
-            console.error(
-              `LeaseOrderProperty with ID ${leaseOrderId} not found.`
-            );
-            return NextResponse.json(
-              { error: "LeaseOrderProperty not found" },
-              { status: 404 }
-            );
-          }
-          const property = await Property.findByPk(data.propertyId);
-          if (!property) {
-            return NextResponse.json(
-              { error, message: "Paymentable / Property not found" },
-              { status: 404 }
-            );
-          }
-
-          const client = await Client.findOne({
-            where: { email: data.userEmail },
-          });
-          if (!client) {
-            return NextResponse.json(
-              { error, message: "Client not found" },
-              { status: 404 }
-            );
-          }
-
-          const type =
-            data.category === "HELLO_ROOM" ||
-            data.category === "HELLO_COLIVING" ||
-            data.category === "HELLO_LANDLORD"
-              ? "ROOM"
-              : "PROPERTY";
-
-          // Verificar si el estado es APPROVED
-          if (failedLeaseOrder.status === "IN_PROGRESS") {
-            const paymenData = {
-              amount: data.price,
-              type: "RESERVATION",
-              paymentableId: data.propertyId,
-              paymentableType: type,
-              clientId: client.id,
-              leaseOrderId: data.leaseOrderId,
-              leaseOrderType: type,
-              status: "REJECTED",
-              quotaNumber: 1,
-              date: new Date(),
-              ownerId:
-                type === "PROPERTY"
-                  ? property.ownerId
-                  : property.property.ownerId,
-              paymentId: session.payment_intent,
-            };
-
-            const rentPayment = await RentPayment.create(paymenData);
-
-            // await Payment.create({
-            //   amount: failedLeaseOrder.price,
-            //   date: new Date(), // La fecha actual
-            //   status: "REJECTED", // Estado inicial
-            //   type: "RESERVATION",
-            //   paymentableId: failedLeaseOrder.propertyId,
-            //   paymentableType: "PROPERTY",
-            //   paymentId: session.id,
-            //   clientId: failedLeaseOrder.clientId,
-            //   ownerId: failedLeaseOrder.ownerId,
-            // });
-            await property.update({ status: "FREE" });
-            await failedLeaseOrder.update({ status: "REJECTED" });
-            console.log(
-              `❌ LeaseOrderProperty with ID ${leaseOrderId} updated to REJECTED`
-            );
-            console.log(
-              `❌ Reservation Payment with ID ${rentPayment.id} updated to REJECTED`
-            );
-          } else {
-            console.log(
-              `LeaseOrderProperty with ID ${leaseOrderId} is already APPROVED. No changes made.`
-            );
-            console.log(
-              `Reservation Payment with ID ${rentPayment.id} is not IN_PROGRESS. No changes made`
-            );
-          }
-        }
+        console.log(`❌ Reservation Payment expired`);
       } else if (paymentType === "supply") {
-        const failedSupply = await Supply.findByPk(supplyId);
-        if (!failedSupply) {
-          console.error(`Supply with ID ${supplyId} not found.`);
-          return NextResponse.json(
-            { error: "Supply not found" },
-            { status: 404 }
-          );
-        }
-        await failedSupply.update({
-          status: "NOT_PAID",
-        });
-        console.log(`❌ Supply with ID ${supplyId} updated to NOT_PAID`);
+        console.log(`❌ Supply Payment expired`);
       } else if (paymentType === "monthly") {
         console.log(`❌ Rent Payment expired`);
       }

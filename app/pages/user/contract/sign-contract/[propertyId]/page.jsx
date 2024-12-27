@@ -1,6 +1,6 @@
 "use client";
 import NavBar from "@/app/components/nav_bar/NavBar";
-import { plus_jakarta } from "@/font";
+ 
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState, Suspense } from "react";
 import ContractDetail from "@/app/components/user/contract/contract_detail/ContractDetail";
@@ -64,7 +64,7 @@ export default function Contract({ params }) {
       <header>
         <NavBar />
       </header>
-      <main className={`${plus_jakarta.className} p-2 text-[#000000]`}>
+      <main className={`  p-2 text-[#000000]`}>
         <Suspense
           fallback={
             <div className="flex items-center justify-center h-screen">

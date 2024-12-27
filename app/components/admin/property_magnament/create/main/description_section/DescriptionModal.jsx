@@ -50,7 +50,7 @@ export default function DescriptionModal({ data, setData, showModal }) {
         <h2 className="text-2xl mb-4">Descripción</h2>
         <div className="flex flex-col w-full max-h-[25rem] overflow-x-auto">
           <ul>
-            {items.length > 0
+            {items?.length > 0
               ? items.map((item, index) => (
                   <InputModal
                     key={index}

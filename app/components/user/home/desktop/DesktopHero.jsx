@@ -5,8 +5,9 @@ import Link from "next/link";
 export default function DesktopHero({
   img = "https://www.youtube.com/watch?v=TbgLp9EpTyI",
   title = "helloflatmate",
-  description = "Simplificamos la forma de compartir tu hogar",
+  description = "Alojamientos para estudiantes en Valencia",
   link = "/pages/select-category",
+  startTime = 0, // Nuevo parámetro para el tiempo de inicio
 }) {
   return (
     <section className="w-full">
@@ -20,7 +21,7 @@ export default function DesktopHero({
                 img.split("v=")[1]
               }?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=${
                 img.split("v=")[1]
-              }`}
+              }&start=${startTime}`} // Añadimos el startTime aquí
               title="YouTube Video"
               className="w-full h-full object-cover"
               allow="autoplay; encrypted-media"
@@ -31,7 +32,7 @@ export default function DesktopHero({
             <iframe
               src={`https://player.vimeo.com/video/${img
                 .split("/")
-                .pop()}?autoplay=1&muted=1&loop=1&background=1`}
+                .pop()}?autoplay=1&muted=1&loop=1&background=1#t=${startTime}s`} // Añadimos el startTime aquí
               title="Vimeo Video"
               className="w-full h-full object-cover"
               allow="autoplay; encrypted-media"
@@ -61,19 +62,21 @@ export default function DesktopHero({
         </div> */}
         {/* Contenido del Hero */}
         <div className="absolute w-full inset-0 z-20 flex flex-col items-center justify-center text-center text-white">
-          <div className="w-2/3 flex flex-col items-center justify-center ">
+          <div className="w-2/3 flex flex-col items-center justify-center gap-20 sm:gap-24 md:gap-52">
             {/* Título principal */}
-            <h1 className="font-extrabold text-4xl md:text-7xl leading-none tracking-[-1px]">
-              {title}
-            </h1>
+            <div className="flex flex-col justify-center items-center">
+              <h1 className="font-extrabold text-4xl md:text-7xl leading-none tracking-[-1px]">
+                {title}
+              </h1>
 
-            {/* Subtítulo */}
-            <p className="mt-4 font-semibold text-[16px] md:text-[24px] leading-tight">
-              {description}
-            </p>
+              {/* Subtítulo */}
+              <p className="mt-4 font-semibold text-[16px] md:text-[24px] leading-tight">
+                {description}
+              </p>
+            </div>
 
             {/* Botón de reserva */}
-            <div className="mt-12">
+            <div>
               <Link
                 href={link}
                 className="font-bold text-2xl md:text-4xl text-white border border-white px-6 py-2 md:py-4 rounded-md hover:bg-white hover:text-resolution-blue transition-all flex flex-row justify-center items-center gap-2"

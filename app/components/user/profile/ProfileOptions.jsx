@@ -8,31 +8,31 @@ export default function ProfileOptions() {
   };
   return (
     <section className="flex flex-col p-2 mt-1 rounded-3xl shadow-profile gap-3">
-      <ProfileOption
+      {/* <ProfileOption
         icon="/profile/profile_option/bx-home.svg"
-        title="Historial de renta"
+        title="Alojamie"
         action={() => {
           handleRedirect("/pages/user/history/rent");
         }}
-      />
-      <ProfileOption
+      /> */}
+      {/* <ProfileOption
         icon="/profile/profile_option/bx-home-smile.svg"
         title="Solicitudes"
         action={() => {
           handleRedirect("/pages/user/history/applications");
         }}
-      />
+      /> */}
       <ProfileOption
         icon="/profile/profile_option/history-line.svg"
-        title="Historial de Transacciones"
+        title="Transacciones"
         action={() => {
           handleRedirect("/pages/user/history/transactions");
         }}
       />
-      <ProfileOption
+      {/* <ProfileOption
         icon="/profile/profile_option/headphonesalt.svg"
         title="Hello soporte"
-      />
+      /> */}
     </section>
   );
 }

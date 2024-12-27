@@ -8,12 +8,17 @@ import hellolandlordContractTemplate from "../utils/hellolandlordContractTemplat
 
 export async function handleGetRequest(request) {
   const userAgentString = request.headers.get("user-agent");
-  const clientIp =
-    request.headers.get("x-forwarded-for") || // Cuando hay proxy
-    request.headers.get("x-real-ip") || // Otro posible header
-    request.connection?.remoteAddress || // Fallback si no hay proxy
-    request.ip ||
-    "IP no disponible";
+  // const clientIp =
+  //   request.headers.get("x-forwarded-for") || // Cuando hay proxy
+  //   request.headers.get("x-real-ip") || // Otro posible header
+  //   request.connection?.remoteAddress || // Fallback si no hay proxy
+  //   request.ip ||
+  //   "IP no disponible";
+
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  const clientIp = forwardedFor
+    ? forwardedFor.split(",")[0] // Si hay múltiples IPs, toma la primera
+    : request.headers.get("x-real-ip") || request.socket?.remoteAddress || "IP no disponible";
 
   // Utilizar UAParser para obtener los detalles del dispositivo, navegador y sistema operativo
   const parser = new UAParser();

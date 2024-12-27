@@ -6,7 +6,7 @@ import MoreInfoSectionTemplate from "../create/main/MoreInfoSectionTemplate";
 import RoomSectionTemplate from "../create/main/RoomSectionTemplate";
 import TitleSectionTemplate from "../create/main/TitleSectionTemplate";
 import SaveButton from "../shared/SaveButton";
-import { plus_jakarta } from "@/font";
+ 
 import { Suspense, useEffect, useState } from "react";
 import SliderUpdateTemplate from "./header/SliderUpdateTemplate";
 import DescriptionModal from "../create/main/description_section/DescriptionModal";
@@ -88,7 +88,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
       );
       setSelectedEmail(ownerEmail?.email);
       setOwners(res.data);
-      console.log(res.data);
     };
     if (property) {
       setName(property?.name || "");
@@ -375,7 +374,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             />
           </header>
           <main
-            className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
+            className={`  flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}
           >
             <TitleSectionTemplate
               name={name || ""}
@@ -555,10 +554,10 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             />
           </header>
           <main
-            className={`${plus_jakarta.className} flex flex-row gap-10 grow text-[#0D171C]`}
+            className={`  flex flex-row gap-10 grow text-[#0D171C]`}
           >
             {/* LEFT SIDE */}
-            <div className="space-y-10 flex-1">
+            <div className="space-y-10 w-full max-w-[50%]">
               <div className="w-full">
                 <SliderUpdateTemplate
                   data={sliderImage}
@@ -610,7 +609,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             <div className="border" />
 
             {/* RIGTH SIDE */}
-            <div className="space-y-10 flex-1">
+            <div className="space-y-10 w-full max-w-[50%]">
               <TitleSectionTemplate
                 name={name || ""}
                 setName={setName}

@@ -102,17 +102,13 @@ export const sendEmail = async (emailData) => {
     }
 
     // Realizar la solicitud POST al endpoint de envío de correos
-    await axios.post("/api/send-email", {
+    await axios.post("/api/sendGrid", {
       to,
       subject,
       text,
     });
   } catch (error) {
     console.error("Error al enviar el correo:", error);
-    throw new Error({
-      message: "Internal Server Error: SEND_EMAIL",
-      error: error,
-    });
   }
 };
 

@@ -33,6 +33,10 @@ const clientInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: true,
             },
+            country: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
             street: {
                 type: DataTypes.STRING(700),
                 allowNull: true,
@@ -57,12 +61,24 @@ const clientInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: true,
             },
-            arrybalDate: {
+            reasonForValencia: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            reasonForValenciaOther: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            personalReview: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            arrivalDate: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-            arrybalTime: {
-                type: DataTypes.DATE,
+            arrivalTime: {
+                type: DataTypes.TIME,
                 allowNull: true,
             },
         },

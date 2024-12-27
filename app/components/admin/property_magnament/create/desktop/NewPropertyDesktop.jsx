@@ -17,7 +17,7 @@ import SaveButton from "../../shared/SaveButton";
 import DescriptionModal from "../main/description_section/DescriptionModal";
 import RoomAddModal from "../main/room_section/RoomAddModal";
 import AddressModal from "../main/address_modal/AddressModal";
-import { plus_jakarta } from "@/font";
+ 
 import { toast } from "sonner";
 import validateData from "../validateData";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
@@ -308,7 +308,7 @@ export default function NewPropertyDesktop({ category, handleBack }) {
           <NavBarDetails callBack={handleBack} />
         </header>
         <main
-          className={`${plus_jakarta.className} px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
+          className={`  px-6 flex flex-col justify-center w-full grow text-[#0D171C]`}
         >
           <div className="flex flex-col items-center justify-center gap-[2.5rem]">
             <div className="w-full flex justify-center gap-4">

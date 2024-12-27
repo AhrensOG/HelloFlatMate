@@ -35,8 +35,8 @@ export default function DatePickerCategorySelector({ data, setData, type }) {
         {selectedDate
           ? selectedDate.toLocaleDateString()
           : type === "start"
-          ? "Ingreso"
-          : "Egreso"}
+          ? "Check in"
+          : "Check out"}
         <span
           className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
             showDatePicker ? "bg-[#1C8CD65E] rotate-180" : ""

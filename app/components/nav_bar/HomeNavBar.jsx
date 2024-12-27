@@ -3,10 +3,12 @@ import Link from "next/link";
 import React from "react";
 import Dropdown from "../public/auth/Dropdown";
 import AccountDropdown from "./AccountDropdown";
+import ClimaTime from "./ClimaTime";
+import { toast } from "sonner";
 
 const HomeNavBar = ({ setActiveSection, activeSection }) => {
   return (
-    <nav className="w-full p-2 sm:p-0">
+    <nav className="w-full p-2 sm:p-0 fixed bg-white z-50 h-[144px]">
       {/* Mobile version */}
       <div className="sm:hidden flex-col w-full divide-y">
         <div className="flex h-20 justify-between items-center w-full gap-2">
@@ -24,13 +26,14 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
                 priority
               />
             </Link>
-            <Link
+            {/* <Link
               href={"/pages/select-category"}
               className="px-4 py-2 text-sm font-medium underline underline-offset-2 rounded"
               aria-label="Buscar una habitación"
             >
               Buscar alojamientos
-            </Link>
+            </Link> */}
+            <ClimaTime />
           </div>
           <div className="flex items-center gap-2">
             <AccountDropdown />
@@ -40,8 +43,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
 
         {/* Segunda fila - Navegación */}
         <div className="w-full h-10 flex flex-wrap items-center justify-start gap-1">
-          <button
-            onClick={() => setActiveSection("inicio")}
+          <Link
+            href={"/"}
+            // onClick={() => setActiveSection("inicio")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "inicio"
                 ? "font-bold bg-slate-100"
@@ -49,10 +53,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             Inicio
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_ROOM"}
-            onClick={() => setActiveSection("helloroom")}
+          </Link>
+          <Link
+            href={"/helloroom"}
+            // onClick={() => setActiveSection("helloroom")}
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -60,10 +64,16 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </button>
+          </Link>
           <button
-            // href={"/pages/user/filtered?category=HELLO_STUDIO"}
-            onClick={() => setActiveSection("hellostudio")}
+            // href={"/hellostudio"}
+            // onClick={() => setActiveSection("hellostudio")}
+            onClick={() =>
+              toast.info("Proximamente", {
+                description:
+                  "Estamos trabajando para que tengas la mejor experiencia en hellostudio",
+              })
+            }
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellostudio"
                 ? "font-bold bg-slate-100"
@@ -73,8 +83,14 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             hellostudio
           </button>
           <button
-            // href={"/pages/user/filtered?category=HELLO_COLIVING"}
+            // href={"/hellocoliving"}
             // onClick={() => setActiveSection("hellocoliving")}
+            onClick={() =>
+              toast.info("Proximamente", {
+                description:
+                  "Estamos trabajando para que tengas la mejor experiencia en hellocoliving",
+              })
+            }
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
                 ? "font-bold bg-slate-100"
@@ -84,8 +100,14 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             hellocoliving
           </button>
           <button
-            // href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+            // href={"/hellolandlord"}
             // onClick={() => setActiveSection("hellolandlord")}
+            onClick={() =>
+              toast.info("Proximamente", {
+                description:
+                  "Estamos trabajando para que tengas la mejor experiencia en hellolandlord",
+              })
+            }
             className={`text-xs font-medium px-1 py-1 rounded-xl transition-colors ${
               activeSection === "hellolandlord"
                 ? "font-bold bg-slate-100"
@@ -115,18 +137,19 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
               />
             </Link>
             <div className="h-[40px] md:h-[44px] border-l border-black"></div>
-            <Link
+            {/* <Link
               href={"/pages/select-category"}
-              className="px-4 py-2 text-lg font-medium underline underline-offset-2 rounded"
+              className="px-4 py-2 text-lg font-medium rounded"
               aria-label="Buscar una habitación"
             >
-              Buscar alojamientos
-            </Link>
+              
+            </Link> */}
+            <ClimaTime />
           </div>
 
           <div className="flex items-center gap-4 md:gap-6">
             <Link
-              href={"/pages/user/filtered"}
+              href={"/pages/select-category"}
               className="bg-black text-white px-4 py-2 md:px-6 md:py-3 rounded"
               aria-label="Reservar una habitación"
             >
@@ -142,8 +165,9 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
         </div>
 
         <div className="w-full h-16 flex items-center justify-start gap-3 md:gap-4 px-4 md:px-6">
-          <button
-            onClick={() => setActiveSection("inicio")}
+          <Link
+            href={"/"}
+            // onClick={() => setActiveSection("inicio")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "inicio"
                 ? "font-bold bg-slate-100"
@@ -151,10 +175,10 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             Inicio
-          </button>
-          <button
-            // href={"/pages/user/filtered?category=HELLO_ROOM"}
-            onClick={() => setActiveSection("helloroom")}
+          </Link>
+          <Link
+            href={"/helloroom"}
+            // onClick={() => setActiveSection("helloroom")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "helloroom"
                 ? "font-bold bg-slate-100"
@@ -162,10 +186,16 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             }`}
           >
             helloroom
-          </button>
+          </Link>
           <button
-            // href={"/pages/user/filtered?category=HELLO_STUDIO"}
-            onClick={() => setActiveSection("hellostudio")}
+            // href={"/hellostudio"}
+            // onClick={() => setActiveSection("hellostudio")}
+            onClick={() =>
+              toast.info("Proximamente", {
+                description:
+                  "Estamos trabajando para que tengas la mejor experiencia en hellostudio",
+              })
+            }
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellostudio"
                 ? "font-bold bg-slate-100"
@@ -175,7 +205,13 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             hellostudio
           </button>
           <button
-            // href={"/pages/user/filtered?category=HELLO_COLIVING"}
+            // href={"/hellocoliving"}
+            onClick={() =>
+              toast.info("Proximamente", {
+                description:
+                  "Estamos trabajando para que tengas la mejor experiencia en hellocoliving",
+              })
+            }
             // onClick={() => setActiveSection("hellocoliving")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellocoliving"
@@ -186,7 +222,13 @@ const HomeNavBar = ({ setActiveSection, activeSection }) => {
             hellocoliving
           </button>
           <button
-            // href={"/pages/user/filtered?category=HELLO_LANDLORD"}
+            // href={"/hellolandlord"}
+            onClick={() =>
+              toast.info("Proximamente", {
+                description:
+                  "Estamos trabajando para que tengas la mejor experiencia en hellolandlord",
+              })
+            }
             // onClick={() => setActiveSection("hellolandlord")}
             className={`text-base md:text-lg font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-colors ${
               activeSection === "hellolandlord"

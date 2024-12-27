@@ -8,6 +8,7 @@ import PriceRange from "./filter_section/PriceRange";
 import DateRangeFilter from "./filter_section/DateRangeFilter";
 import { ArrowLeftIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import FilterSelect from "./FilterSelect";
 
 export default function DesktopFilter({
   isOpen,
@@ -16,6 +17,9 @@ export default function DesktopFilter({
   setFilters,
   onApplyFilters,
   onFilterChange,
+  category,
+  rentalPeriods,
+  zones,
 }) {
   const router = useRouter();
   const handleFilterChange = (filterName, selectedValues) => {
@@ -36,6 +40,8 @@ export default function DesktopFilter({
     "hellocoliving",
     "hellostudio",
     "hellolandlord",
+    "lastrooms",
+    "todos los alojamientos"
   ];
 
   const comoditis = [
@@ -54,13 +60,17 @@ export default function DesktopFilter({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -500 }}
         transition={{ duration: 0.8 }}
-        className={`${plus_jakarta.className} fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
+        className={`  fixed left-0 top-[93px] h-[calc(100vh-93px)] w-[25vw] bg-white z-50 py-6 overflow-y-auto scrollbar-thin`} // Ajustes realizados aquí
       >
         <div className="h-8 w-full flex items-center px-4">
-          <button onClick={() => router.back()}>
+          <button
+            onClick={() => router.back()}
+            className="w-full py-2 bg-[#4C8BF5] text-white text-[0.9rem] font-bold rounded-md flex justify-evenly items-center"
+          >
             <ArrowLeftIcon className="size-6" />
+            Volver a la busqueda
           </button>
-          <h2 className="text-center grow text-lg font-bold">Filtros</h2>
+          {/* <h2 className="text-center grow text-lg font-bold">Filtros</h2> */}
         </div>
         <div className="flex items-center justify-between px-4 mt-4">
           <button
@@ -83,10 +93,10 @@ export default function DesktopFilter({
         />
         <div className="space-y-6 px-4">
           <section className="flex flex-col gap-3">
-            <h2 className="text-[1.37rem] font-bold text-[#1C1C21]">
-              Ubicacion
+            <h2 className="text-base font-bold text-[#1C1C21]">
+              Ubicación y fechas disponibles
             </h2>
-            <div className="flex justify-between items-center h-[5vh] bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
+            {/* <div className="flex justify-between items-center h-[5vh] bg-[#F5F5F5] rounded-[0.6rem] border-[1px] border-[#00000033] outline-none focus:text-[#1C1C21] focus:pl-3">
               <label hidden htmlFor="location">
                 location
               </label>
@@ -102,15 +112,33 @@ export default function DesktopFilter({
               <span className="h-8 w-8">
                 <MapPinIcon />
               </span>
-            </div>
+            </div> */}
+            <FilterSelect
+              name="location"
+              options={zones}
+              data={filters}
+              setData={setFilters}
+              title="Zonas"
+            />
           </section>
 
-          {/* Nuevo componente de rango de fechas */}
-          <DateRangeFilter
-            onChange={handleFilterChange}
-            startDate={filters.startDate}
-            endDate={filters.endDate}
-          />
+          {filters.categorys?.length === 1 &&
+          (filters.categorys[0] === "hellostudio" ||
+            filters.categorys[0] === "HELLO_STUDIO") ? (
+            <DateRangeFilter
+              onChange={handleFilterChange}
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+            />
+          ) : (
+            <FilterSelect
+              name="rentalPeriod"
+              options={rentalPeriods}
+              data={filters}
+              setData={setFilters}
+              title="Fechas disponibles"
+            />
+          )}
 
           {/* <FilterSection
             onChange={handleFilterChange}
@@ -124,7 +152,7 @@ export default function DesktopFilter({
           /> */}
           <FilterSection
             onChange={handleFilterChange}
-            title={"Tipo de Propiedad"}
+            title={"Tipo de alojamiento"}
             entries={typeProperty}
             initialValues={filters.categorys || []}
           />

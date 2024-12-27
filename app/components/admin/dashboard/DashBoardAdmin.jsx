@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import ButtonsDashBoardAdmin from "./ButtonsDashBoardAdmin";
 import BarArticle from "./BarArticle";
@@ -16,7 +16,7 @@ export default function DashBoardAdmin({ data }) {
   };
   return (
     <main
-      className={`${plus_jakarta.className} flex flex-col gap-5 p-2 items-center`}
+      className={` flex flex-col gap-5 p-2 items-center`}
     >
       <TitleAdminPanel
         title={"Panel administrador"}

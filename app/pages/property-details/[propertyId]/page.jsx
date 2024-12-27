@@ -15,7 +15,7 @@ import ReservationButton from "@/app/components/user/property-details/main/Reser
 import RoomSection from "@/app/components/user/property-details/main/RoomSection";
 import VideoEmbedSection from "@/app/components/user/property-details/main/VideoEmbedSection";
 import { Context } from "@/app/context/GlobalContext";
-import { plus_jakarta } from "@/font";
+ 
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -72,7 +72,9 @@ export default function PropertyDetails({ params }) {
             {data.images?.length > 0 ? (
               <SliderDetails>
                 {data.images.map((image, index) => {
-                  return <SliderItem key={index} img={image} height="h-[23rem]" />;
+                  return (
+                    <SliderItem key={index} img={image} height="h-[23rem]" />
+                  );
                 })}
               </SliderDetails>
             ) : (
@@ -88,7 +90,7 @@ export default function PropertyDetails({ params }) {
           </div>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
+          className={`  flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}
         >
           <div className="w-full">
             <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
@@ -97,25 +99,34 @@ export default function PropertyDetails({ params }) {
               {data.city + ", " + data.street}
             </h4>
           </div>
-          {data.price &&
-          (data.category === "HELLO_STUDIO") ? (
+          {data.price && data.category === "HELLO_STUDIO" ? (
             <PriceSection data={data.price} />
           ) : null}
           <div className="flex flex-col gap-6">
-            <GuestInfo
+            {/* <GuestInfo
               data={[
                 { quantity: data.maximunOccupants || "-", type: "Huespedes" },
                 { quantity: data.bathrooms || "-", type: "Baños" },
                 { quantity: data.bed || "-", type: "Camas" },
               ]}
-            />
+            /> */}
             {data.category === "HELLO_STUDIO" && (
               <ReservationButton callback={handleShowModal} />
             )}
           </div>
-          <DescriptionSection data={data.description} />
-          <RoomSection data={data.rooms} category={data.category} />
-          <AmenitiesSection data={data.amenities} />
+
+          {data.description && data.description?.length > 0 ? (
+            <DescriptionSection data={data.description} />
+          ) : (
+            ""
+          )}
+          {/* <DescriptionSection data={data.description} /> */}
+          {data.amenities && data.amenities?.length > 0 ? (
+            <AmenitiesSection data={data.amenities} />
+          ) : (
+            ""
+          )}
+          {/* <AmenitiesSection data={data.amenities} /> */}
           {data.linkVideo ? (
             <VideoEmbedSection videoUrl={data.linkVideo} />
           ) : (
@@ -149,6 +160,8 @@ export default function PropertyDetails({ params }) {
               { title: "Otros servicios", body: data.checkOut },
             ]}
           />
+          <RoomSection data={data.rooms} category={data.category} />
+
           {showModal && (
             <ReservationModal
               callback={handleShowModal}
@@ -183,7 +196,7 @@ export default function PropertyDetails({ params }) {
           </div>
         </header>
         <main
-          className={`${plus_jakarta.className} flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}
+          className={`  flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}
         >
           {/* LEFT SIDE */}
           <div className="w-full flex flex-col gap-2">
@@ -191,14 +204,15 @@ export default function PropertyDetails({ params }) {
               {data.images?.length > 0 ? (
                 <SliderDetails>
                   {data.images.map((image, index) => {
-                    return <SliderItem key={index} img={image} height="h-[30rem]" />;
+                    return (
+                      <SliderItem key={index} img={image} height="h-[30rem]" />
+                    );
                   })}
                 </SliderDetails>
               ) : (
                 <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
               )}
             </div>
-            <RoomSection data={data.rooms} category={data.category} />
             {data.linkVideo ? (
               <VideoEmbedSection videoUrl={data.linkVideo} />
             ) : (
@@ -211,6 +225,7 @@ export default function PropertyDetails({ params }) {
               city={data?.city}
               country={"España"}
             />
+            <RoomSection data={data.rooms} category={data.category} />
           </div>
 
           <div className="border" />
@@ -222,24 +237,31 @@ export default function PropertyDetails({ params }) {
             <h4 className="text-[#000000B2] text-base">
               {data.city + ", " + data.street}
             </h4>
-            {data.price &&
-            (data.category === "HELLO_STUDIO") ? (
+            {data.price && data.category === "HELLO_STUDIO" ? (
               <PriceSection data={data.price} />
             ) : null}
             <div className="flex flex-col gap-6">
-              <GuestInfo
+              {/* <GuestInfo
                 data={[
                   { quantity: data.maximunOccupants || "-", type: "Huespedes" },
                   { quantity: data.bathrooms || "-", type: "Baños" },
                   { quantity: data.bed || "-", type: "Camas" },
                 ]}
-              />
+              /> */}
               {data.category === "HELLO_STUDIO" && (
                 <ReservationButton callback={handleShowModal} />
               )}
             </div>
-            <DescriptionSection data={data.description} />
-            <AmenitiesSection data={data.amenities} />
+            {data.description && data.description?.length > 0 ? (
+              <DescriptionSection data={data.description} />
+            ) : (
+              ""
+            )}
+            {data.amenities && data.amenities?.length > 0 ? (
+              <AmenitiesSection data={data.amenities} />
+            ) : (
+              ""
+            )}
             <MoreInfoSection
               data={[
                 {

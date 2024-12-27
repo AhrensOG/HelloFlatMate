@@ -12,7 +12,7 @@ export default function AccountDropdown() {
   // Definir las rutas según el rol del usuario
   const userProfileLink =
     user?.role === "CLIENT"
-      ? "/pages/user/profile"
+      ? "/pages/user/my-bedrooms"
       : user?.role === "ADMIN"
       ? "/pages/admin"
       : user?.role === "WORKER"

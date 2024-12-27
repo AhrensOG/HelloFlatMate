@@ -1,4 +1,4 @@
-import { plus_jakarta } from "@/font";
+ 
 import DocumentListItem from "./DocumentListItem";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { motion } from "framer-motion";
@@ -29,7 +29,7 @@ export default function DocumentsList({ action }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className={`${plus_jakarta.className} flex flex-col justify-center gap-6 items-center`}
+      className={`  flex flex-col justify-center gap-6 items-center`}
     >
       <div className="flex items-center justify-between w-full  mt-7">
         <button
