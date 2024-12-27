@@ -140,7 +140,7 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
                     propertyId,
                     userEmail: user?.email || "",
                     merchantName: `Alojamiento ${property.serial}`,
-                    merchantDescription: `Reserva - Alojamiento ${property.serial}`,
+                    merchantDescription: `Reserva - Alojamiento ${property.serial} (${user.name} ${user.lastName})`,
                     merchantUrlOk: `/pages/user/success/${propertyId}?type=reserve&r=${roomId}&lo=${leaseOrder.id}`,
                     merchantUrlkO: `/pages/user/my-reservations`,
                 },

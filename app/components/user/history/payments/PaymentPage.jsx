@@ -92,7 +92,10 @@ const PaymentPage = ({ redirect, user }) => {
 
     useEffect(() => {
         if (user) {
-            const activeLeaseOrders = [...(user.leaseOrdersProperty || []), ...(user.leaseOrdersRoom || [])].filter((order) => order.isActive);
+            const activeLeaseOrders = [
+                // ...(user.leaseOrdersProperty || []),
+                ...(user.leaseOrdersRoom || []),
+            ].filter((order) => order.isActive);
 
             const allPayments = [];
 

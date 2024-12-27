@@ -4,7 +4,7 @@ const connection = require("../index");
 const { userAttributes, User } = require("./user");
 
 const ownerInit = (sequelize, DataTypes) => {
-    class Owner extends User { }
+    class Owner extends User {}
 
     Owner.init(
         {
@@ -13,16 +13,20 @@ const ownerInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-        }, {
-        sequelize,
-        modelName: "Owner",
-        freezeTableName: true,
-        timestamps: false,
-    }
+            description: {
+                type: DataTypes.TEXT,
+                allowNull: true,
+            },
+        },
+        {
+            sequelize,
+            modelName: "Owner",
+            freezeTableName: true,
+            timestamps: false,
+        }
     );
 
+    return Owner;
+};
 
-    return Owner
-}
-
-module.exports = ownerInit(connection, DataTypes)
+module.exports = ownerInit(connection, DataTypes);
