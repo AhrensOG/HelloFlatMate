@@ -44,6 +44,7 @@ export async function createOwner(data) {
                 password: data.password, // (Opcional, podrías no almacenarla)
                 idNum: data.dni || null,
                 description: data.description || null,
+                role: "OWNER",
             },
             { transaction }
         );

@@ -180,7 +180,7 @@ export default function CreateOwnerModal({ options_1 }) {
                             </div>
 
                             {/* Opciones seleccionadas */}
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 py-2">
                                 {selectedOptions.map((option, index) => (
                                     <span
                                         key={index}

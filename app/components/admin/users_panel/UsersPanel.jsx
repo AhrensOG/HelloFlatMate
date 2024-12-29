@@ -29,7 +29,7 @@ export default function UsersPanel({ data, reload }) {
             try {
                 const response = await axios.get("/api/admin/property?simple=true");
                 const formatedData = response.data
-                    .filter((item) => item?.owner === null)
+                    .filter((item) => item?.owner?.id === "1")
                     .map((item) => {
                         return {
                             serial: item.serial,
@@ -53,6 +53,7 @@ export default function UsersPanel({ data, reload }) {
     }
     return (
         <main className={`  flex flex-col gap-5 p-2 items-center`}>
+            {console.log(opstionsSerial)}
             <TitleAdminPanel title={"Usuarios"} />
             <div className="w-full flex flex-wrap gap-2 justify-center items-center ">
                 {/* Input de búsqueda */}
