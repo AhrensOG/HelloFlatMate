@@ -17,11 +17,7 @@ const getRentalPeriods = (propiedades) => {
 
     propiedades.forEach((propiedad) => {
         // Verificar si la propiedad es de tipo HELLO_ROOM, HELLO_COLIVING o HELLO_LANDLORD
-        if (
-            propiedad.category === "HELLO_ROOM" || 
-            propiedad.category === "HELLO_COLIVING" || 
-            propiedad.category === "HELLO_LANDLORD"
-        ) {
+        if (propiedad.category === "HELLO_ROOM" || propiedad.category === "HELLO_COLIVING" || propiedad.category === "HELLO_LANDLORD" || propiedad.category === "HELLO_STUDIO") {
             // Acceder al array rooms y mapear sobre él
             propiedad.rooms.forEach((room) => {
                 // Acceder a rentalPeriods y filtrar los periodos válidos
@@ -32,25 +28,13 @@ const getRentalPeriods = (propiedades) => {
                     // Solo procesar si el startDate es superior a la fecha actual
                     if (startDate > today) {
                         // Formatear las fechas en el formato "Del dd/mm/aa al dd/mm/aa"
-                        const formattedStartDate = `${startDate
-                            .getDate()
+                        const formattedStartDate = `${startDate.getDate().toString().padStart(2, "0")}/${(startDate.getMonth() + 1)
                             .toString()
-                            .padStart(2, "0")}/${(startDate.getMonth() + 1)
-                            .toString()
-                            .padStart(2, "0")}/${startDate
-                            .getFullYear()
-                            .toString()
-                            .slice(-2)}`;
+                            .padStart(2, "0")}/${startDate.getFullYear().toString().slice(-2)}`;
 
-                        const formattedEndDate = `${endDate
-                            .getDate()
+                        const formattedEndDate = `${endDate.getDate().toString().padStart(2, "0")}/${(endDate.getMonth() + 1)
                             .toString()
-                            .padStart(2, "0")}/${(endDate.getMonth() + 1)
-                            .toString()
-                            .padStart(2, "0")}/${endDate
-                            .getFullYear()
-                            .toString()
-                            .slice(-2)}`;
+                            .padStart(2, "0")}/${endDate.getFullYear().toString().slice(-2)}`;
 
                         const fecha = `Del ${formattedStartDate} al ${formattedEndDate}`;
 
@@ -91,7 +75,7 @@ export default function FilterPage() {
     });
     const [filteredProperties, setFilteredProperties] = useState(properties);
     const [filteredRentalPeriods, setFilteredRentalPeriods] = useState([]);
-    const [zones, setZones] = useState([])
+    const [zones, setZones] = useState([]);
 
     const hasURLFilters = () => {
         return startDate || endDate || category || location || occupants || rentalPeriod;
@@ -103,13 +87,13 @@ export default function FilterPage() {
                 await getAllProperties(dispatch);
                 const activeProperties = (state.properties || []).filter((property) => property.isActive && property.status !== "DELETED");
                 setProperties(activeProperties);
-                const sorted = sortPropertiesByRooms(activeProperties)
+                const sorted = sortPropertiesByRooms(activeProperties);
                 setFilteredProperties(sorted);
 
                 // Extraer zonas únicas
                 const uniqueZones = [...new Set(activeProperties.map((property) => property.zone))];
                 setZones(uniqueZones);
-    
+
                 // Aplica los filtros solo si hay parámetros en la URL
                 if (hasURLFilters() && activeProperties.length > 0) {
                     applyFilters();
@@ -124,13 +108,12 @@ export default function FilterPage() {
         } else {
             const activeProperties = state.properties.filter((property) => property.isActive && property.status !== "DELETED");
             setProperties(activeProperties);
-            const sorted = sortPropertiesByRooms(activeProperties)
+            const sorted = sortPropertiesByRooms(activeProperties);
             setFilteredProperties(sorted);
 
             // Extraer zonas únicas
             const uniqueZones = [...new Set(activeProperties.map((property) => property.zone))];
             setZones(uniqueZones);
-
 
             // Aplica los filtros solo si hay parámetros en la URL
             if (hasURLFilters() && activeProperties.length > 0) {
@@ -160,7 +143,12 @@ export default function FilterPage() {
         }
 
         return properties.filter((property) => {
-            if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
+            if (
+                property.category === "HELLO_ROOM" ||
+                property.category === "HELLO_COLIVING" ||
+                property.category === "HELLO_LANDLORD" ||
+                property.category === "HELLO_STUDIO"
+            ) {
                 if (!property.rooms) return false;
 
                 const roomsInRange = property.rooms.filter((room) =>
@@ -183,27 +171,6 @@ export default function FilterPage() {
                 return roomsInRange.length > 0;
             }
 
-            if (property.category === "HELLO_STUDIO") {
-                if (!property.rentalItems) return false;
-
-                const itemsInRange = property.rentalItems.some((period) => {
-                    const periodStart = new Date(period.rentalPeriod.startDate);
-                    const periodEnd = new Date(period.rentalPeriod.endDate);
-
-                    if (!period.isFree) return false;
-
-                    if (startDate && endDate) {
-                        return periodStart <= new Date(endDate) && periodEnd >= new Date(startDate);
-                    } else if (startDate) {
-                        return periodEnd >= new Date(startDate);
-                    } else if (endDate) {
-                        return periodStart <= new Date(endDate);
-                    }
-                });
-
-                return itemsInRange;
-            }
-
             return false;
         });
     };
@@ -212,20 +179,20 @@ export default function FilterPage() {
         if (!filters.categorys || filters.categorys.length === 0) {
             return properties;
         }
-    
+
         const hasAllProperties = filters.categorys.includes("todos los alojamientos");
         const hasLastRooms = filters.categorys.includes("lastrooms");
-    
+
         // Caso especial: si solo está "lastrooms" en los filtros
         if (hasLastRooms && filters.categorys.length === 1) {
             return properties
                 .map((property) => {
                     // Filtrar las habitaciones activas
                     const activeRooms = property.rooms.filter((room) => room.isActive === true);
-    
+
                     // Si no hay habitaciones activas, excluir la propiedad
                     if (activeRooms.length === 0) return null;
-    
+
                     // Retornar la propiedad con solo las habitaciones activas
                     return {
                         ...property,
@@ -234,31 +201,28 @@ export default function FilterPage() {
                 })
                 .filter((property) => property !== null); // Eliminar propiedades sin habitaciones activas
         }
-    
+
         // Filtrar propiedades según las categorías seleccionadas (excluyendo "todos los alojamientos" y "lastrooms")
         const filteredByCategory = properties.filter((property) => {
             if (hasAllProperties) {
                 // Si "todos los alojamientos" está presente, incluir todas las categorías seleccionadas
                 return true;
             }
-    
+
             // Validar otras categorías
-            return (
-                filters.categorys.includes(property.category) ||
-                filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase())
-            );
+            return filters.categorys.includes(property.category) || filters.categorys.includes(property.category.replace(/_/g, "").toLowerCase());
         });
-    
+
         if (hasLastRooms) {
             // Filtrar las propiedades que cumplen con la lógica de "lastrooms"
             return filteredByCategory
                 .map((property) => {
                     // Filtrar las habitaciones activas
                     const activeRooms = property.rooms.filter((room) => room.isActive === true);
-    
+
                     // Si no hay habitaciones activas, excluir la propiedad
                     if (activeRooms.length === 0) return null;
-    
+
                     // Retornar la propiedad con solo las habitaciones activas
                     return {
                         ...property,
@@ -267,10 +231,10 @@ export default function FilterPage() {
                 })
                 .filter((property) => property !== null); // Eliminar propiedades sin habitaciones activas
         }
-    
+
         // Retornar las propiedades filtradas por categoría
         return filteredByCategory;
-    };    
+    };
 
     const filterByLocation = (properties) => {
         if (!filters.location) {
@@ -306,9 +270,12 @@ export default function FilterPage() {
         }
 
         return properties.filter((property) => {
-            if (property.category === "HELLO_STUDIO") {
-                return property.price >= (minPrice || 0) && property.price <= (maxPrice || 1000000);
-            } else if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
+            if (
+                property.category === "HELLO_ROOM" ||
+                property.category === "HELLO_COLIVING" ||
+                property.category === "HELLO_LANDLORD" ||
+                property.category === "HELLO_STUDIO"
+            ) {
                 return property.rooms.some((room) => {
                     return room.price >= (minPrice || 0) && room.price <= (maxPrice || 1000000);
                 });
@@ -339,19 +306,17 @@ export default function FilterPage() {
         return properties.filter((property) => {
             const queryRentalPeriod = filters.rentalPeriod;
 
-            if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
+            if (
+                property.category === "HELLO_ROOM" ||
+                property.category === "HELLO_COLIVING" ||
+                property.category === "HELLO_LANDLORD" ||
+                property.category === "HELLO_STUDIO"
+            ) {
                 return property.rooms?.some((room) => {
                     return room.rentalItems?.some((period) => {
                         const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
                         return rentalPeriodString === queryRentalPeriod;
                     });
-                });
-            }
-
-            if (property.category === "HELLO_STUDIO") {
-                return property.rentalItems?.some((period) => {
-                    const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
-                    return rentalPeriodString === queryRentalPeriod;
                 });
             }
 
@@ -382,7 +347,7 @@ export default function FilterPage() {
         if (!Array.isArray(properties)) {
             throw new Error("El parámetro debe ser un array de propiedades.");
         }
-    
+
         // Ordenar las propiedades y sus habitaciones
         return [...properties]
             .map((property) => {
@@ -395,7 +360,7 @@ export default function FilterPage() {
                     if (a.leaseOrdersRoom.length > 0 && b.leaseOrdersRoom.length === 0) {
                         return 1;
                     }
-    
+
                     // Priorizar habitaciones con isActive en true
                     if (a.isActive && !b.isActive) {
                         return -1;
@@ -403,11 +368,11 @@ export default function FilterPage() {
                     if (!a.isActive && b.isActive) {
                         return 1;
                     }
-    
+
                     // Si ambos criterios son iguales, mantener el orden actual
                     return 0;
                 });
-    
+
                 return {
                     ...property,
                     rooms: sortedRooms,
@@ -417,7 +382,7 @@ export default function FilterPage() {
                 // Ordenar propiedades en función del estado de las habitaciones
                 const aHasAvailableRoom = a.rooms.some((room) => room.leaseOrdersRoom.length === 0);
                 const bHasAvailableRoom = b.rooms.some((room) => room.leaseOrdersRoom.length === 0);
-    
+
                 // Priorizar propiedades con habitaciones disponibles
                 if (aHasAvailableRoom && !bHasAvailableRoom) {
                     return -1;
@@ -425,18 +390,18 @@ export default function FilterPage() {
                 if (!aHasAvailableRoom && bHasAvailableRoom) {
                     return 1;
                 }
-    
+
                 // Priorizar propiedades con habitaciones activas (isActive: true)
                 const aHasActiveRoom = a.rooms.some((room) => room.isActive);
                 const bHasActiveRoom = b.rooms.some((room) => room.isActive);
-    
+
                 if (aHasActiveRoom && !bHasActiveRoom) {
                     return -1;
                 }
                 if (!aHasActiveRoom && bHasActiveRoom) {
                     return 1;
                 }
-    
+
                 // Si ambos tienen el mismo estado, mantener el orden actual
                 return 0;
             });
@@ -451,7 +416,7 @@ export default function FilterPage() {
         // result = filterByOccupants(result);
         result = filterByRentalPeriod(result);
         result = filterByTypology(result);
-        result = sortPropertiesByRooms(result)
+        result = sortPropertiesByRooms(result);
 
         filterByCategoriesAndGetRentalPeriods(result);
         setFilteredProperties(result);
@@ -482,61 +447,35 @@ export default function FilterPage() {
                                 </p>
                                 {properties?.length > 0
                                     ? properties.map((property) => {
-                                          // Si la categoría es "HELLO_STUDIO", mostramos la propiedad completa
-                                          if (property.category === "HELLO_STUDIO") {
-                                              return (
-                                                  <PropertyCard
-                                                      key={property?.id + "property"}
-                                                      property={property}
-                                                      price={property.price}
-                                                      name={property.name}
-                                                      images={property.images[0]}
-                                                  />
-                                              );
-                                          } else {
-                                              // Si no, iteramos sobre las habitaciones y mostramos cada una
-                                              return property.rooms?.map((room) => (
-                                                  <PropertyCard
-                                                      key={room?.id + "room"}
-                                                      property={property}
-                                                      roomId={room.id}
-                                                      price={room.price}
-                                                      name={room.name}
-                                                      images={room.images[0]}
-                                                      room={room}
-                                                  />
-                                              ));
-                                          }
+                                          // Si no, iteramos sobre las habitaciones y mostramos cada una
+                                          return property.rooms?.map((room) => (
+                                              <PropertyCard
+                                                  key={room?.id + "room"}
+                                                  property={property}
+                                                  roomId={room.id}
+                                                  price={room.price}
+                                                  name={room.name}
+                                                  images={room.images[0]}
+                                                  room={room}
+                                              />
+                                          ));
                                       })
                                     : ""}
                             </div>
                         ) : (
                             filteredProperties.map((property) => {
-                                // Si la categoría es "HELLO_STUDIO", mostramos la propiedad completa
-                                if (property.category === "HELLO_STUDIO") {
-                                    return (
-                                        <PropertyCard
-                                            key={property?.id + "property"}
-                                            property={property}
-                                            price={property.price}
-                                            name={property.name}
-                                            images={property.images[0]}
-                                        />
-                                    );
-                                } else {
-                                    // Si no, iteramos sobre las habitaciones y mostramos cada una
-                                    return property.rooms?.map((room) => (
-                                        <PropertyCard
-                                            key={room?.id + "room"}
-                                            property={property}
-                                            roomId={room.id}
-                                            price={room.price}
-                                            name={room.name}
-                                            images={room.images[0]}
-                                            room={room}
-                                        />
-                                    ));
-                                }
+                                // Si no, iteramos sobre las habitaciones y mostramos cada una
+                                return property.rooms?.map((room) => (
+                                    <PropertyCard
+                                        key={room?.id + "room"}
+                                        property={property}
+                                        roomId={room.id}
+                                        price={room.price}
+                                        name={room.name}
+                                        images={room.images[0]}
+                                        room={room}
+                                    />
+                                ));
                             })
                         )}
                     </div>
@@ -564,31 +503,18 @@ export default function FilterPage() {
                                 {properties?.length > 0 ? (
                                     <div className="w-full flex flex-row flex-wrap justify-center items-start gap-7 h-[calc(100vh-181px)]">
                                         {properties.map((property) => {
-                                            // Si la categoría es "HELLO_STUDIO", mostramos la propiedad completa
-                                            if (property.category === "HELLO_STUDIO") {
-                                                return (
-                                                    <PropertyCard
-                                                        key={property?.id + "property"}
-                                                        property={property}
-                                                        price={property.price}
-                                                        name={property.name}
-                                                        images={property.images[0]}
-                                                    />
-                                                );
-                                            } else {
-                                                // Si no, iteramos sobre las habitaciones y mostramos cada una
-                                                return property.rooms?.map((room) => (
-                                                    <PropertyCard
-                                                        key={room?.id + "room"}
-                                                        property={property}
-                                                        roomId={room.id}
-                                                        price={room.price}
-                                                        name={room.name}
-                                                        images={room.images[0]}
-                                                        room={room}
-                                                    />
-                                                ));
-                                            }
+                                            // Si no, iteramos sobre las habitaciones y mostramos cada una
+                                            return property.rooms?.map((room) => (
+                                                <PropertyCard
+                                                    key={room?.id + "room"}
+                                                    property={property}
+                                                    roomId={room.id}
+                                                    price={room.price}
+                                                    name={room.name}
+                                                    images={room.images[0]}
+                                                    room={room}
+                                                />
+                                            ));
                                         })}
                                     </div>
                                 ) : (
@@ -597,31 +523,18 @@ export default function FilterPage() {
                             </div>
                         ) : (
                             filteredProperties.map((property) => {
-                                // Si la categoría es "HELLO_STUDIO", mostramos la propiedad completa
-                                if (property.category === "HELLO_STUDIO") {
-                                    return (
-                                        <PropertyCard
-                                            key={property?.id + "property"}
-                                            property={property}
-                                            price={property.price}
-                                            name={property.name}
-                                            images={property.images[0]}
-                                        />
-                                    );
-                                } else {
-                                    // Si no, iteramos sobre las habitaciones y mostramos cada una
-                                    return property.rooms?.map((room) => (
-                                        <PropertyCard
-                                            key={room?.id + "room"}
-                                            property={property}
-                                            roomId={room.id}
-                                            price={room.price}
-                                            name={room.name}
-                                            images={room.images[0]}
-                                            room={room}
-                                        />
-                                    ));
-                                }
+                                // Si no, iteramos sobre las habitaciones y mostramos cada una
+                                return property.rooms?.map((room) => (
+                                    <PropertyCard
+                                        key={room?.id + "room"}
+                                        property={property}
+                                        roomId={room.id}
+                                        price={room.price}
+                                        name={room.name}
+                                        images={room.images[0]}
+                                        room={room}
+                                    />
+                                ));
                             })
                         )}
                     </div>

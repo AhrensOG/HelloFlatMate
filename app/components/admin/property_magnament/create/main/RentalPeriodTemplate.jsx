@@ -39,7 +39,6 @@ export default function RentalPeriodTemplate({
   return (
     <div className="flex flex-col gap-3">
       <h3 className="font-bold text-[1.2rem]">Periodos de alquiler</h3>
-      {console.log(data)}
 
       <ul className="list-none flex flex-col gap-3">
         {selectedPeriodIds.map((_, index) => (

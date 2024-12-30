@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import CountrySelect from "@/app/components/public/main-pages/auxiliarComponents/CountrySelect";
+import { useTranslations } from "next-intl";
+
+const t = useTranslations("forms.update_client");
 
 // 📌 Validación con Yup
 const validationSchema = Yup.object().shape({

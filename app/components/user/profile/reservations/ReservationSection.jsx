@@ -1,6 +1,7 @@
 import React from "react";
 import TitleAdminPanel from "../../../admin/shared/TitleAdminPanel";
 import ReservationPropertyCard from "./ReservationPropertyCard";
+import { useTranslations } from "next-intl";
 
 const ReservationSection = ({ data = false, leaseOrdersList = false }) => {
   return (

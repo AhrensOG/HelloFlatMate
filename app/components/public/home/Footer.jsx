@@ -1,8 +1,11 @@
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer_1() {
+  const t = useTranslations("footer");
+
   return (
     <>
       {/* //Mobile */}
@@ -126,7 +129,7 @@ export default function Footer_1() {
 
         <section className="flex flex-wrap gap-7 p-4 justify-center">
           <h2 className="font-bold uppercase text-lg w-full">
-            Metodos de pago
+            {t("title_payment_methods")}
           </h2>
           <Image
             src={"https://static.spotahome.com/images/paypal-logo.svg"}
@@ -162,46 +165,30 @@ export default function Footer_1() {
 
         <section className="flex flex-col gap-7 p-6">
           <article className="flex flex-wrap justify-center gap-4">
-            <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
-            <Link
-              href="https://www.lasprovincias.es/v/20140506/economia/valenciano-revoluciona-servicio-atencion-20140506.html?ref=https%3A%2F%2Fwww.lasprovincias.es%2Fv%2F20140506%2Feconomia%2Fvalenciano-revoluciona-servicio-atencion-20140506.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <h2 className="font-bold uppercase text-lg w-full">
+              {t("title_download")}
+            </h2>
+            <button>
               <Image
-                src="/home/new_home/lasprovincias.svg"
-                alt="El Confidencial"
+                src={"https://static.spotahome.com/login_image/app-store.png"}
                 width={150}
                 height={150}
+                alt="app store"
               />
-            </Link>
-            <Link
-              href="https://www.elperiodic.com/valencia/estudiantes-internacionales-dispondran-facilidades-para-alojamiento-apartamentos_210855"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            </button>
+            <button>
               <Image
-                src="/home/new_home/elperiodic.svg"
-                alt="El Confidencial"
+                src={"https://static.spotahome.com/login_image/google-play.png"}
                 width={150}
                 height={150}
+                alt="google play"
               />
-            </Link>
-            <Link
-              href="https://madridpress.com/archive/292601/la-importancia-de-alquilar-un-buen-piso-para-estudiantes-en-valencia"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src="/home/new_home/madridlogo.png"
-                alt="El Confidencial"
-                width={250}
-                height={250}
-              />
-            </Link>
+            </button>
           </article>
           <article className="flex flex-wrap gap-4">
-            <h2 className="font-bold uppercase text-lg w-full">SÍGUENOS</h2>
+            <h2 className="font-bold uppercase text-lg w-full">
+              {t("title_follow_us")}
+            </h2>
             <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -229,7 +216,7 @@ export default function Footer_1() {
                 </defs>
               </svg>
             </Link>
-            {/* <Link href="#" target="_blank" className="">
+            <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -273,7 +260,7 @@ export default function Footer_1() {
                   fill="#666666"
                 ></path>
               </svg>
-            </Link> */}
+            </Link>
             <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -301,7 +288,7 @@ export default function Footer_1() {
                 </defs>
               </svg>
             </Link>
-            {/* <Link href="#" target="_blank" className="">
+            <Link href="#" target="_blank" className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -315,7 +302,7 @@ export default function Footer_1() {
                   fill="#666666"
                 ></path>
               </svg>
-            </Link> */}
+            </Link>
           </article>
         </section>
         <section>
@@ -327,7 +314,7 @@ export default function Footer_1() {
             className="hidden md:block"
           />
           <p className="text-center text-sm">
-            ©2024 helloflatmate — Todos los derechos reservados
+            ©2024 helloflatmate — {t("legal_rights")}
           </p>
         </section>
       </footer>
@@ -476,46 +463,32 @@ export default function Footer_1() {
 
           <section className="flex flex-col gap-7 p-6 w-[25rem]">
             <article className="flex flex-wrap gap-4">
-              <h2 className="font-bold uppercase text-lg w-full">Medios</h2>
-              <Link
-                href="https://www.lasprovincias.es/v/20140506/economia/valenciano-revoluciona-servicio-atencion-20140506.html?ref=https%3A%2F%2Fwww.lasprovincias.es%2Fv%2F20140506%2Feconomia%2Fvalenciano-revoluciona-servicio-atencion-20140506.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <h2 className="font-bold uppercase text-lg w-full">
+                {t("title_download")}
+              </h2>
+              <button>
                 <Image
-                  src="/home/new_home/lasprovincias.svg"
-                  alt="El Confidencial"
+                  src={"https://static.spotahome.com/login_image/app-store.png"}
                   width={150}
                   height={150}
+                  alt="app store"
                 />
-              </Link>
-              <Link
-                href="https://www.elperiodic.com/valencia/estudiantes-internacionales-dispondran-facilidades-para-alojamiento-apartamentos_210855"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              </button>
+              <button>
                 <Image
-                  src="/home/new_home/elperiodic.svg"
-                  alt="El Confidencial"
+                  src={
+                    "https://static.spotahome.com/login_image/google-play.png"
+                  }
                   width={150}
                   height={150}
+                  alt="google play"
                 />
-              </Link>
-              <Link
-                href="https://madridpress.com/archive/292601/la-importancia-de-alquilar-un-buen-piso-para-estudiantes-en-valencia"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/home/new_home/madridlogo.png"
-                  alt="El Confidencial"
-                  width={250}
-                  height={250}
-                />
-              </Link>
+              </button>
             </article>
             <article className="flex flex-wrap gap-4">
-              <h2 className="font-bold uppercase text-lg w-full">SíGUENOS</h2>
+              <h2 className="font-bold uppercase text-lg w-full">
+                {t("title_follow_us")}
+              </h2>
               <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -543,7 +516,7 @@ export default function Footer_1() {
                   </defs>
                 </svg>
               </Link>
-              {/* <Link href="#" target="_blank" className="">
+              <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -587,7 +560,7 @@ export default function Footer_1() {
                     fill="#666666"
                   ></path>
                 </svg>
-              </Link> */}
+              </Link>
               <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -615,7 +588,7 @@ export default function Footer_1() {
                   </defs>
                 </svg>
               </Link>
-              {/* <Link href="#" target="_blank" className="">
+              <Link href="#" target="_blank" className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -629,7 +602,7 @@ export default function Footer_1() {
                     fill="#666666"
                   ></path>
                 </svg>
-              </Link> */}
+              </Link>
             </article>
           </section>
         </div>
@@ -646,13 +619,13 @@ export default function Footer_1() {
               className="hidden md:block"
             />
             <p className="text-center font-semibold">
-              ©2024 helloflatmate — Todos los derechos reservados
+              ©2024 helloflatmate — {t("legal_rights")}
             </p>
           </section>
 
           <section className="flex gap-2 items-center p-4 justify-center">
             <h2 className="font-bold uppercase text-lg w-full">
-              Métodos de pago
+              {t("title_payment_methods")}
             </h2>
             <Image
               src={"https://static.spotahome.com/images/paypal-logo.svg"}

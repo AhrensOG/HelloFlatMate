@@ -12,6 +12,7 @@ import Select from "../../user/home/categorySelector/auxiliarComponents/Select";
 import DatePickerCategorySelector from "../../user/home/categorySelector/DatePickerCategoySelector";
 import CategoryCard from "../../user/home/categorySelector/auxiliarComponents/CategoryCard";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const list = [
     {
@@ -47,6 +48,7 @@ const SecondaryCategorySelector = ({
     helloLandlordProperties,
     allProperties,
 }) => {
+    const t = useTranslations("secondary_category_selector");
     const router = useRouter();
     // const searchParams = useSearchParams();
     // const categoryQuery = searchParams.get("c");
@@ -154,17 +156,16 @@ const SecondaryCategorySelector = ({
                 const helloRoomRentalPeriods = getRentalPeriods(helloRoomProperties);
                 return (
                     <div className="w-full flex justify-center items-center">
-                        {console.log(helloRoomProperties)}
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloRoomLocations} data={data} setData={setData} title="Zona" name="zone" />
-                            <Select options={helloRoomRentalPeriods} data={data} setData={setData} title="Fechas" name="rentalPeriod" />
-                            <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
+                            <Select options={helloRoomLocations} data={data} setData={setData} title={t("zone")} name="zone" />
+                            <Select options={helloRoomRentalPeriods} data={data} setData={setData} title={t("dates")} name="rentalPeriod" />
+                            <Select options={genre} data={data} setData={setData} title={t("share_with")} name="type" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-white" />
+                                {t("search_btn")}
+                                <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                             {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -180,15 +181,15 @@ const SecondaryCategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloColivingLocations} data={data} setData={setData} title="Zona" name="zone" />
-                            <Select options={helloColivingRentalPeriods} data={data} setData={setData} title="Fechas" name="rentalPeriod" />
-                            <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
+                            <Select options={helloColivingLocations} data={data} setData={setData} title={t("zone")} name="zone" />
+                            <Select options={helloColivingRentalPeriods} data={data} setData={setData} title={t("dates")} name="rentalPeriod" />
+                            <Select options={genre} data={data} setData={setData} title={t("share_with")} name="type" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-white" />
+                                {t("search_btn")}
+                                <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                             {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -203,16 +204,16 @@ const SecondaryCategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloStudioLocations} data={data} setData={setData} title="Zona" name="zone" />
+                            <Select options={helloStudioLocations} data={data} setData={setData} title={t("zone")} name="zone" />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"start"} />
                             <DatePickerCategorySelector data={date} setData={setDate} type={"end"} />
-                            <Select options={numbers} data={data} setData={setData} title="Huespedes" name="numberOccupants" />
+                            <Select options={numbers} data={data} setData={setData} title={t("guests")} name="numberOccupants" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-white" />
+                                {t("search_btn")}
+                                <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                         </div>
                     </div>
@@ -223,15 +224,15 @@ const SecondaryCategorySelector = ({
                 return (
                     <div className="w-full flex justify-center items-center">
                         <div className="w-full max-w-screen-lg flex flex-col sm:flex-row justify-center items-center sm:flex-wrap sm:justify-items-stretch sm:items-start gap-4">
-                            <Select options={helloLandlordLocations} data={data} setData={setData} title="Zona" />
-                            <Select options={helloLandlordRentalPeriods} data={data} setData={setData} title="Fechas" name="rentalPeriod" />
-                            <Select options={genre} data={data} setData={setData} title="Comparte con" name="type" />
+                            <Select options={helloLandlordLocations} data={data} setData={setData} title={t("zone")} />
+                            <Select options={helloLandlordRentalPeriods} data={data} setData={setData} title={t("dates")} name="rentalPeriod" />
+                            <Select options={genre} data={data} setData={setData} title={t("share_with")} name="type" />
                             <button
                                 onClick={handleSearch}
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
-                                Buscar alojamiento
-                                <MagnifyingGlassIcon className="size-6 text-white" />
+                                {t("search_btn")}
+                                <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                             {/* <SelectDate
                 title="Seleccione un rango de fechas"
@@ -272,9 +273,9 @@ const SecondaryCategorySelector = ({
           <span className="text-sm underline underline-offset-2 font-bold">
             Volver
           </span>
-        </div>
-                <h1 className="w-full text-center font-bold sm:text-lg">¿Qué deseas reservar?</h1>
-                <button
+        </div> */}
+            <h1 className="w-full text-center font-bold sm:text-lg">{t("title_h1")}</h1>
+            {/* <button
           onClick={() => router.push("/")}
           type="button"
           className="self-start flex justify-center min-w-20 items-center gap-2"

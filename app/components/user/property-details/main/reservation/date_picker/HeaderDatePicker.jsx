@@ -4,9 +4,7 @@ export default function HeaderDatePicker({ year, month, date, day, callback }) {
   const nextBtn = () => {
     if (month.month === 11) {
       month.setMonth(0);
-      console.log(month.month, year.year);
       year.setYear(year.year + 1);
-      console.log(month.month, year.year);
     } else {
       month.setMonth(month.month + 1);
     }

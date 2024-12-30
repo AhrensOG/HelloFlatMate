@@ -64,7 +64,7 @@ export async function createContract(data) {
                 propertyId: data.propertyId || room.propertyId,
                 clientId: data.clientId,
                 reference: data.reference || "",
-                type: "EXPENSES",
+                type: "DEPOSIT",
                 expirationDate: expirationDate
             },
             {
@@ -75,7 +75,7 @@ export async function createContract(data) {
                 propertyId: data.propertyId || room.propertyId,
                 clientId: data.clientId,
                 reference: data.reference || "",
-                type: "ELECTRICITY",
+                type: "GENERAL_SUPPLIES",
                 expirationDate: expirationDate
             },
             {
@@ -97,7 +97,7 @@ export async function createContract(data) {
                 propertyId: data.propertyId || room.propertyId,
                 clientId: data.clientId,
                 reference: data.reference || "",
-                type: "EXPENSES",
+                type: "AGENCY_FEES",
                 expirationDate: expirationDate
             }
             ]);

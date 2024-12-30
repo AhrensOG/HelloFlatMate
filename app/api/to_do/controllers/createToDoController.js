@@ -2,7 +2,6 @@ import { Client, Owner, Property, ToDo } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createToDo(data) {
-    console.log(data);
 
     if (!data) return NextResponse.json({ error: "No data provided" }, { status: 400 });
     if (!data.title || data.title.trim() === "") return NextResponse.json({ error: "No title provided" }, { status: 400 })

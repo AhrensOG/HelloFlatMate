@@ -1,0 +1,741 @@
+{
+    "nav_bar": {
+        "link_how_it_works": "How it works",
+        "link_terms_and_conditions": "Terms and conditions",
+        "link_register": "Register",
+        "link_login": "Login",
+        "admin_link_1": "Administration",
+        "owner_link_1": "My Properties",
+        "owner_link_2": "Earnings",
+        "user_link_1": "Profile",
+        "user_link_2": "Dashboard",
+        "user_link_3": "History",
+        "user_link_4": "Payments",
+        "worker_link_1": "Tasks",
+        "logout": "Log Out",
+        "items_nav_1": {
+            "client": {
+                "payments": "Payments",
+                "history": "History",
+                "dashboard": "Dashboard",
+                "chats": "Chats",
+                "profile": "Profile"
+            },
+            "owner": {
+                "dashboard": "Dashboard",
+                "properties": "Properties",
+                "tenants": "My Tenants",
+                "chats": "Chats"
+            },
+            "admin": {
+                "dashboard": "Dashboard",
+                "properties": "Properties",
+                "users": "Users",
+                "documents": "Documents",
+                "chats": "Messages"
+            },
+            "logout": "Log Out"
+        }
+    },
+    "home": {
+        "home_title": "Specialized in student accommodation management in Valencia. <br /> 100% online reservations and procedures, fast, easy and hassle-free!",
+        "home_second_sect_1": "14 <br/> Years",
+        "home_second_sect_2": "+6300 <br/> Contracts of 10 months",
+        "home_second_sect_3": "100% <br/> Specialized in Valencia",
+
+        "home_third_sect_1_title": "Accommodations in established areas",
+        "home_third_sect_1_desc": "Our Valencia-based agents carefully select safe, well-connected neighbourhoods that are ideal for your daily life. We help you focus on your studies, build your future, and create new friendships.",
+        "home_third_sect_2_title": "Contracts",
+        "home_third_sect_2_desc": "At hello flat mate, we guarantee legal and secure rental agreements based on the Civil Code, ensuring a fair balance between landlords and tenants.",
+        "home_third_sect_3_title": "Support",
+        "home_third_sect_3_desc": "Our customer service team is available Monday to Friday, from 9:00 to 17:00, to assist with any questions or requests. We also offer a 24/7 emergency service, ideal for situations like being locked out after hours.",
+        "home_third_sect_4_title": "Prepared accommodations",
+        "home_third_sect_4_desc": "We ensure that every property is clean and thoroughly inspected before your arrival, so you can enjoy a smooth, stress-free welcome from day one.",
+        "home_third_sect_5_title": "In-House Maintenance",
+        "home_third_sect_5_desc": "We take care of the properties we manage to ensure they’re always in great condition. Every room is cleaned and inspected before our flatmates move in.",
+        "home_third_sect_6_title": "Utilities Ready",
+        "home_third_sect_6_desc": "All our accommodations, except for hello Studios, come with electricity, water, and Wi-Fi fully set up before your arrival, so you don’t have to worry about a thing.",
+
+        "home_fourth_sect_1_title": "They say our customer service is the best",
+
+        "home_fifth_sect_h2": "¿Why choose hello flat mate?",
+        "home_fifth_sect_1_title": "Our local agents, always by your side",
+        "home_fifth_sect_1_desc": "With a team of agents based in Valencia, we help you find the perfect room from our range of accommodations. Plus, we’ll be with you throughout your stay, ensuring everything runs smoothly so you can live worry-free.",
+        "home_fifth_sect_2_title": "Safety first",
+        "home_fifth_sect_2_desc": "hello flat mate is an agency managing only 160 rooms because we value providing excellent support and management for all our flatmates.",
+        "home_fifth_sect_3_title": "Affordable",
+        "home_fifth_sect_3_desc": "Contracts for 5 and 10 months starting from €290/month.",
+        "home_fifth_sect_4_title": "100% online booking and easy 3-step check-in",
+        "home_fifth_sect_4_desc": "With our online system, you can quickly book your room and arrange your check-in. Since we manage all accommodations directly, we guarantee up-to-date photos and properties in excellent condition, ensuring a comfortable and hassle-free arrival.",
+        "home_fifth_sect_5_title": "Flexibility that fits your needs",
+        "home_fifth_sect_5_desc": "We understand plans can change, which is why we offer a flexible cancellation policy. If you need to cancel close to your check-in date, don’t worry—we’ll help you find another student to take over your contract so you can recover your deposit partially or in full. At hello flat mate, we’re always looking for solutions for you.",
+        "home_fifth_sect_6_title": "Security and trust every step of the way",
+        "home_fifth_sect_6_desc": "At hello flat mate, we prioritise personalised attention and quality management. By managing only 160 rooms, we ensure close, safe, and tailored service for each flatmate throughout their stay. Your peace of mind is our priority.",
+
+        "home_sixth_sect_h2_strong": "4",
+        "home_sixth_sect_h2": "types of fully secure accommodation for students",
+        "home_sixth_sect_1_title": "hello landlord",
+        "home_sixth_sect_1_desc": "Rooms in shared apartments directly managed by landlords selected by hello flat mate. Each landlord follows our contract and management model, providing security and peace of mind to students. Share with students like you!",
+        "home_sixth_sect_2_title": "hello rooms",
+        "home_sixth_sect_2_desc": "Medium-term rooms in Valencia, managed by the hello flat mate team to offer students a comfortable and hassle-free experience. Live with other students like you!",
+        "home_sixth_sect_3_title": "hello studios",
+        "home_sixth_sect_3_desc": "Long-term accommodation in fully equipped studios, managed by helloflatmate and reliable landlords. Ideal for students and digital nomads seeking comfort and privacy.",
+        "home_sixth_sect_4_title": "hello coliving",
+        "home_sixth_sect_4_desc": "Coliving spaces for students in Valencia, with a community atmosphere, cleaning service, and stay management by helloflatmate for a comfortable and secure experience.",
+
+        "home_seventh_sect_h2": "¿Any questions?",
+        "home_seventh_sect_div": "¿Do you have a different question?",
+        "home_seventh_sect_link": "Discover more",
+        "home_seventh_sect_1_title": "Can I cancel a booking?",
+        "home_seventh_sect_1_desc": "You can cancel your booking anytime. Here's how it works: You won't be charged for canceling the booking if it hasn't been accepted by the landlord yet. However, if you cancel after being accepted, the Spotahome fee will not be refunded, and you may lose the portion of the rent you paid in advance.",
+        "home_seventh_sect_2_title": "Can I visit the property before booking?",
+        "home_seventh_sect_2_desc": "At the moment, it is not possible to visit the property before booking.",
+        "home_seventh_sect_3_title": "Who will I live with?",
+        "home_seventh_sect_3_desc": "All information about your flatmates will be included in the listing.",
+        "home_seventh_sect_4_title": "What is a Homechecker?",
+        "home_seventh_sect_4_desc": "A Homechecker is an expert who verifies properties to ensure the accuracy of the listing.",
+
+        "home_eight_sect_1_title": "Find your ideal home with hello flat mate",
+        "home_eight_sect_1_link": "Start searching"
+    },
+    "footer": {
+        "link_about_us": "About us",
+        "link_blog": "Blog",
+        "link_institutions": "Institutions",
+        "link_company_data": "Company data",
+        "link_site_map": "Site map",
+        "title_legal": "Legal",
+        "link_privacy_policy": "Privacy policy",
+        "link_cookies_policy": "Cookies policy",
+        "link_terms_and_conditions": "Terms and conditions",
+        "title_tenants": "Tenants",
+        "link_how_it_works": "How it works",
+        "link_offers": "Offers",
+        "title_owners": "Owners",
+        "link_advertise": "Advertise your property",
+        "title_colaborators": "Join us",
+        "link_colaborators": "Collaborators",
+        "link_become_partner": "Become a partner",
+        "link_work_with_us": "Work with us",
+        "title_supp": "Support",
+        "button_supp": "Visit the help center",
+        "link_supp": "Contact Support",
+        "title_download": "Download the app",
+        "title_follow_us": "Follow us",
+        "title_payment_methods": "Payment methods",
+        "legal_rights": "All rights reserved",
+        "contact": "Contact Us"
+    },
+    "secondary_category_selector": {
+        "search_btn": "Search accommodation",
+        "title_h1": "What do you want to book?",
+        "zone": "Zone",
+        "dates": "Dates",
+        "share_with": "Share with",
+        "guests": "Guests",
+        "type_text": "Accommodation type",
+        "clean_btn": "Clear filters"
+    },
+    "about_us": {
+        "title": "helloflatmate is the online platform for renting apartments and rooms for medium and long stays",
+        "title_2": "Why is hello flat mate different?",
+        "title_3": "This is how hello flat mate began: an idea that was born in motion",
+        "title_4": "hello flat mate in the media",
+        "first_text": "Your ally from Valencia to find accommodation easily and safely. <br /> <br /> At (strong)helloflatmate(/strong), we specialize in offering accommodation for students and digital nomads seeking a unique experience in Valencia. Our platform combines professional management with a personal touch, helping international and national youth find their ideal home. <br /> <br /> Unlike other options, at (strong)helloflatmate(/strong) we guarantee a clear and efficient booking process, eliminating complications from day one. <br /> <br /> We take care of managing all aspects of your stay, from your arrival until you finish your contract. <br /> <br /> We offer a selection of rooms in shared apartments, exclusively designed for students and digital nomads up to 30 years old, creating a living environment adapted to your lifestyle. Additionally, we operate in the best areas of the city, such as Blasco Ibáñez, the Center, and Moncada, so you are always close to your university or workplace.",
+        "second_text": "Founded by Alberto Borrás, it is more than just a student service agency. It is a project designed to ensure personalized and exclusive attention for young newcomers to Valencia, ensuring that their experience is smooth, safe, and tailored to their needs. <br /> <br /> The inspiration for (strong)helloflatmate(/strong) arose while Alberto was living in Bristol (England), specifically when he was moving to London. <br /> <br /> Loaded with more luggage than he could handle, without accommodation booked because he didn't trust it, he began to dream of a service that would make arriving in an unfamiliar place easier. <br /> <br /> Can you imagine someone waiting for us upon arrival in London, helping us with our bags, paperwork, and guiding us in those first days? Alberto recalls thinking. <br /> <br /> That idea evolved into a comprehensive solution for international and national students looking for accommodation in Valencia. <br /> <br /> The goal was not only to find a place to live but to provide real support at every step of the process, from arrival to integration. <br /> <br /> Although Alberto insists he was not the first to offer rooms for students in the world, he is clear that (strong)helloflatmate(/strong) was a pioneer in prioritizing the adaptation of young people and their peace of mind, offering much more than just accommodation. The key lies in the small details: support with administrative tasks, local recommendations, and a close service that creates a positive impact on students' lives. <br /> <br /> Regarding the future, Alberto and his team are optimistic, although they prefer to focus on the present and continue providing quality service. 'Every day is full of challenges, but the gratitude from families and students is what drives us to keep going,' he states.",
+        "link_1": "hello flat mate, so that when you arrive in Valencia you feel at home",
+        "link_2": "A Valencian revolutionizes student service",
+        "link_3": "International students at UCV will have facilities for accommodation in apartments",
+        "link_4": "The importance of renting a good apartment for students in Valencia"
+    },
+    "how_it_works": {
+        "title": "3 easy steps and you're done",
+        "step_1_title": "1. Submit your booking request",
+        "step_1_text": "Explore our accommodation options and find the perfect home for you. With our virtual tours and detailed descriptions of each property and its surroundings, you’ll have all the information you need to make the best decision. Submit your booking request by completing the form for your chosen room. Within 2 hours (during business hours), you’ll receive confirmation from the landlord. Have any questions? Contact us! Our agents in Valencia are ready to help you find your new home.",
+        "step_2_title": "2. Request confirmed",
+        "step_2_text": "Once your booking request has been reviewed and approved, several forms and the payment gateway will be activated in your user area. At this stage, you’ll pay the first month’s rent in advance based on the period you’ve previously selected. Monthly payments are managed through (strong)helloflatmate(/strong) (except for (strong)hellolandlord(/strong)) to ensure cancellation policies are upheld and guarantee a smooth handover of the property. This amount will be transferred to the landlord 48 hours after your arrival unless you notify us of any issues that need to be resolved within that time frame.",
+        "step_3_title": "3. Plan your arrival in Valencia",
+        "step_3_title_2": "Two options:",
+        "step_3_text": "(strong)Fast Pass:(/strong) Complete all the paperwork through your user area and make payments for utilities, Wi-Fi, deposit, and fees at least 15 days before the start of your contract. With your passport in hand, collect your keys at our office, and you’re ready to go! <br /> <br /> (strong)Standard pass:(/strong) Once the first month’s rent is paid: Schedule your check-in appointment via our calendar to collect your keys at our office. Finalise the contract by making payments for utilities, Wi-Fi, deposit, and fees. This process takes approximately 30 minutes per student.",
+        "title_final": " Welcome to Valencia and (strong)helloflatmate(/strong)!"
+    },
+    "FAQ": {
+        "title": "¿Any questions?",
+        "1_title": "Service Costs at hellostudio",
+        "1_desc": "At hellostudio, the tenant is exempt from paying commission for intermediary services, according to the Urban Leasing Law (LAU) and Housing Law 12/23. The costs include two months' rent as a deposit (equivalent to the monthly rent) and, in some cases, the activation of utilities such as electricity, water, and gas. The apartments can be semi-furnished or unfurnished.",
+        "2_title": "Service Costs at hellorooms, hellolandlord, and hellocoliving",
+        "2_desc": "At hellorooms and hellolandlord, the service cost includes a one-time payment of €459.80 (VAT included) paid on the day of check-in by credit card. The rooms come with all utilities activated, including internet, and offer flexible contracts of 5, 10, or 11 months. The deposit is €300. In hellocoliving, utility bills are included up to a maximum of €50/month per person. The service cost includes a deposit of €500 and the payment of one full month’s rent.",
+        "3_title": "What type of audience does helloflatmate work with?",
+        "3_desc": "helloflatmate works with students, international digital nomads, and interns. None older than 30 years, except in apartments for digital nomads or colivings, where up to 35 years is allowed.",
+        "4_title": "What conditions apply to long-term contracts?",
+        "4_desc": "In long-term rental contracts (minimum 5 years), regulated by the Urban Leasing Law (LAU) and Housing Law 12/23, the tenant is exempt from paying commission for intermediary services.",
+        "5_title": "What type of apartments does helloflatmate offer?",
+        "5_desc": "The portfolio includes semi-furnished or unfurnished apartments, some requiring activation of utilities (electricity, water, gas).",
+        "6_title": "How much does the management service of hellorooms and hellolandlord cost?",
+        "6_desc": "The management fee is €459.80, VAT included, payable on the day of check-in by credit card.",
+        "7_title": "What is paid with the room reservation through helloflatmate's website?",
+        "7_desc": "The person reserving the room is paying for the first month’s rent of the selected room contract.",
+        "8_title": "If I arrive at the apartment on September 15th, do I have to pay for the whole month?",
+        "8_desc": "It depends: if the room is reserved in advance, the full month must be paid. If entering the room after the contract start date, only the proportional part of the month will be paid.",
+        "9_title": "Can I cancel my reservation and get a refund?",
+        "9_desc": "It depends: 100% of the amount is refunded if canceled at least 30 days before the start of the contract. Cancellations with less than 30 days do not have a right to a refund.",
+        "10_title": "Can the owner cancel my reservation?",
+        "10_desc": "Yes, the owner can cancel with at least 30 days' notice. helloflatmate offers the option to transfer the reservation to another similar room or refund 100% of the money.",
+        "11_title": "If I have a 5-month contract and only stay for 3, do I have to pay for 5?",
+        "11_desc": "Yes, but if you give 30 days' notice, helloflatmate will help find a new tenant to replace your contract.",
+        "12_title": "Are bills included?",
+        "12_desc": "No, except in hellocoliving where they are included with a maximum cap of €50 per month per person.",
+        "13_title": "Are building maintenance bills included?",
+        "13_desc": "Yes, flatmates are exempt from paying community expenses such as elevator maintenance, cleaning or building repairs.",
+        "14_title": "Is there internet? How are internet payments made?",
+        "14_desc": "Yes, there is internet with a fixed fee of €16/month, payable every 5 months in advance (€80/room), except in hellostudios.",
+        "15_title": "How are water, electricity and gas bills paid?",
+        "15_desc": "In hellorooms and hellostudios, payments are made at the beginning of the contract and halfway through. This amount is given to the owner and adjusted with actual bills.",
+        "16_title": "How will I be informed about electricity and water expenses?",
+        "16_desc": "helloflatmate informs through a report via a specific informational channel.",
+        "17_title": "What should I do if there are damages in the room?",
+        "17_desc": "helloflatmate conducts a photographic inventory that you have access to. If you find an unreported damage, notify it within three days of your arrival.",
+        "18_title": "What should I do if on check-in day my room is not clean as it should be?",
+        "18_desc": "Notify helloflatmate, and cleaning staff will be sent on the same day.",
+        "19_title": "What should I do if common areas are not clean upon arrival?",
+        "19_desc": "Notify helloflatmate, and cleaning staff will be organized. The cost will be deducted from the current flatmates' deposit.",
+        "20_title": "What deposit do I need to pay? When and how do I do it?",
+        "20_desc": "hellorooms and hellolandlord require a deposit of €300. hellocoliving requires €500, and hellostudios require one month's rent. It is refunded between 30-45 days after contract termination.",
+        "21_title": "Can family and friends come visit me and sleep in the apartment?",
+        "21_desc": "Yes, with at least 2 days' notice and approval from flatmates. For stays longer than two days, they may ask for €5 per day to cover expenses.",
+        "22_title": "Are pets allowed?",
+        "22_desc": "No, although we love them."
+    },
+    "pryvacy": {
+        "title": "Privacy Policy",
+        "p_1": "At HELLO FLAT MATE, S.L., we take privacy and the protection of personal data very seriously. This policy describes how we collect, use, store, and share your information in accordance with Regulation (EU) 2016/679 (General Data Protection Regulation, GDPR) and Organic Law 3/2018 (LOPDGDD). By using our services, you confirm that you have read and understood this policy.",
+
+        "sect_1_h2": "1. Data Controller",
+        "sect_1_ul_li_1": "(strong)Company Name:(/strong) HELLO FLAT MATE, S.L.",
+        "sect_1_ul_li_2": "(strong)Tax ID:(/strong) B98358963",
+        "sect_1_ul_li_3": "(strong)Registered Address:(/strong) C/ Campoamor 8, 1º, 46021 - Valencia (Valencia)",
+        "sect_1_ul_li_4": "(strong)Phone Number:(/strong) 601 158 261",
+        "sect_1_ul_li_5": "(strong)Email Address:(/strong)",
+        "sect_1_ul_li_5_a": "rooms@helloflatmate.com",
+
+        "sect_2_h2": "2. What data do we collect and how do we obtain it?",
+        "sect_2_h3_1": "2.1. Information provided directly by you",
+        "sect_2_p_1": "(strong)a)(/strong) User Registration: To create a user account as a tenant or owner, we request basic information such as name, surname, and email address. If you use third-party registration options (Facebook or Google), additional data such as date of birth and gender will also be collected.",
+        "sect_2_p_2": "(strong)b)(/strong) Booking Requests: We may ask you for data such as:",
+        "sect_2_ul_1_li_1": "Date of birth",
+        "sect_2_ul_1_li_2": "Nationality",
+        "sect_2_ul_1_li_3": "Gender",
+        "sect_2_ul_1_li_4": "ID/Passport",
+        "sect_2_ul_1_li_5": "Academic or professional information",
+        "sect_2_ul_1_li_6": "Personal description (lifestyle, living preferences, etc.)",
+        "sect_2_p_3": "If approved, you will be redirected to Stripe.com for payment, ensuring that HELLO FLAT MATE does not have access to your financial data.",
+        "sect_2_p_4": "(strong)c)(/strong) Owner Registration: We collect the following data:",
+        "sect_2_ul_2_li_1": "Name, surname, email address, and phone number",
+        "sect_2_ul_2_li_2": "Address of the property you wish to advertise",
+        "sect_2_ul_2_li_3": "Bank information for making payments related to bookings",
+        "sect_2_ul_2_li_4": "Photographs or videos of the property for your advertisement",
+        "sect_2_p_5": "(strong)e)(/strong) Promotional Actions: Participation in promotions, contests, or sweepstakes may require data such as name and email address.",
+        "sect_2_p_6": "(strong)f)(/strong) Satisfaction Surveys: We collect name, age, nationality, and satisfaction level after your stay.",
+        "sect_2_h3_2": "2.2. Data collected automatically",
+        "sect_2_p_7": "(strong)a)(/strong) Data from third-party registration: If you choose to register with Facebook or Google, we obtain data such as name, email address, date of birth, and gender.",
+        "sect_2_p_8": "(strong)b)(/strong) Technical Data: Through tools like Google Analytics, we collect technical information about your interaction, including:",
+        "sect_2_ul_3_li_1": "IP Address",
+        "sect_2_ul_3_li_2": "Browser type and operating system",
+        "sect_2_ul_3_li_3": "Approximate location",
+        "sect_2_ul_3_li_4": "Pages visited, session duration, and other browsing-related data",
+
+        "sect_3_h2": "3. Purpose of data processing",
+        "sect_3_p_1": "HELLO FLAT MATE uses your personal data for the following purposes:",
+        "sect_3_ul_li_1": "Manage the creation and use of your account as a tenant or owner",
+        "sect_3_ul_li_2": "Allow you to make and manage bookings",
+        "sect_3_ul_li_3": "Facilitate payments through secure platforms like Stripe",
+        "sect_3_ul_li_4": "Formalize lease agreements via digital signature",
+        "sect_3_ul_li_5": "Communicate with you regarding booking requests",
+
+        "sect_4_h2": "4. Legal basis for data processing",
+        "sect_4_p": "HELLO FLAT MATE processes your data under the following legal bases: contract execution, legitimate interest, and explicit consent.",
+
+        "sect_5_h2": "5. Data retention period",
+        "sect_5_p": "Data will be retained as long as necessary for the provision of the service or until you request its deletion, respecting legal obligations.",
+
+        "sect_6_h2": "6. Who do we share your data with?",
+        "sect_6_ul_li_1": "Owners and tenants: Basic information necessary for bookings and stays.",
+        "sect_6_ul_li_2": "Service providers: Authorized third parties to process payments and host data.",
+        "sect_6_ul_li_3": "Competent authorities: As required by law.",
+
+        "sect_7_h2": "7. Exercise of your rights",
+        "sect_7_p": "You can exercise your rights of access, rectification, deletion, limitation, portability, and opposition by writing to",
+        "sect_7_a": "rooms@helloflatmate.com",
+
+        "sect_8_h2": "8. Data security",
+        "sect_8_p": "HELLO FLAT MATE implements advanced measures to protect your personal data.",
+
+        "sect_9_h2": "9. Changes to this policy",
+        "sect_9_p": "We reserve the right to modify this Privacy Policy. In case of substantial changes, we will notify you by email or through a notice on our platform.",
+
+        "legal": "© 2024 HELLO FLAT MATE, S.L. All rights reserved."
+    },
+    "terms": {
+        "title": "Terms and Conditions",
+        "sect_1_h2": "The hellorooms, hellolandlord, and hellocoliving rooms are designed for international and national students seeking comfort and convenience from day one. <br />",
+        "sect_1_p": "They are intended for students arriving in Valencia for less than a year who need a space ready to live in from the very start. These rooms, professionally managed by helloflatmate, allow you to focus on what matters while we take care of everything else. <br /> <br /> We know that landlords are not legally obligated to deliver clean and inspected homes, which is why we offer a comprehensive preparation service. This includes: <br />",
+
+        "sect_2_ul_li_1": "Clean homes ready for your arrival.",
+        "sect_2_ul_li_2": "All utilities active, including high-speed internet.",
+        "sect_2_ul_li_3": "The opportunity to share an apartment with peers of your same age and lifestyle.",
+        "sect_2_ul_li_4": "Personalized attention throughout your stay.",
+        "sect_2_ul_li_5": "Lease agreement reviewed by helloflatmate, allowing you to read it before booking.",
+        "sect_2_ul_li_6": "Utility consumption report and savings tips.",
+        "sect_2_ul_li_7": "Mediation in case of issues between roommates.",
+
+        "sect_3_p": "This service, specifically designed to meet the needs of students like you, has a management fee of €459.80, including taxes. <br /> <br /> Additionally, we offer benefits for both students and landlords, including:",
+
+        "sect_4_ul_li_1": "Utilities in the landlord's name for greater peace of mind.",
+        "sect_4_ul_li_2": "Flexible contracts of 5, 10, or 11 months depending on the property.",
+        "sect_4_ul_li_3": "An affordable deposit of only €300."
+    },
+    "helloroom_page": {
+        "h3": "hellorooms are furnished rooms ready for you to move in from day one, with high-speed Internet and all services active. We take care of management and maintenance so you can focus on studying, enjoying, and exploring Valencia. Share an apartment with other students of similar age and experience a unique lifestyle designed for you. <br /> <br /> With you from booking to your last day in Valencia.",
+        "span": "No properties matching your preferences were found. But don't worry! Here are some other options that might interest you:",
+        "span_2_1": "Page",
+        "span_2_2": "of"
+    },
+    "text_section": {
+        "title": "Rentals in Valencia: Find the ideal home in the Mediterranean city",
+        "p_1": "Are you looking for a rental apartment in Valencia? This Mediterranean city combines history, modernity, and quality of life. Valencia is one of the most desired cities to live in Spain, thanks to its pleasant climate, beaches, cultural richness, and gastronomic offerings. Discover all the rental options in Valencia and find the perfect place for you.",
+        "p_2": "Take advantage of its privileged climate to stroll through the city and enjoy its numerous attractions. From the impressive City of Arts and Sciences to the historical charm of the Carmen neighborhood, Valencia is full of places that will surprise you. Don't forget to visit its cathedral, the famous Miguelete, and the Central Market, one of the largest fresh produce markets in Europe. If you decide to move to Valencia, you'll be surrounded by culture, history, and innovative design.",
+        "p_3": "Although the city has a dynamic energy, you will always find spaces to disconnect from the hustle and bustle. Walk through the Turia Gardens, a huge park that crosses the city along the old riverbed of the Turia River, or relax on its golden sandy beaches like Malvarrosa or El Saler. Valencia is a city where you can enjoy both the sea and nature, with the Albufera Natural Park just a few kilometers away, ideal for outdoor getaways.",
+        "h3": "What are the most attractive areas of Valencia?",
+        "p_4": "If you are looking for tranquility, residential neighborhoods like Campanar or Benimaclet are ideal for families or students. On the other hand, if you enjoy nightlife and a modern atmosphere, Ruzafa is the perfect option with its wide variety of bars, restaurants, and cultural events. If you prefer to live in the historic heart, Ciutat Vella will enchant you with its medieval architecture and picturesque streets. Whatever your style, Valencia has a neighborhood that fits your needs.",
+        "h3_2": "Is it difficult to find rental apartments in Valencia?",
+        "p_5": "It is true that the rental market in Valencia can be competitive, especially in more central areas or near the sea. However, with some patience and dedication, it is possible to find interesting options. Valencia also offers a good variety of studios and shared apartments, ideal for saving money and enjoying the city in company.",
+        "h3_3": "What is the average rent price in Valencia?",
+        "p_6": "Rental prices in Valencia are more affordable than in other major cities in Spain. In the center, renting an apartment can range from 700 to 1000 euros, while in neighborhoods further from the urban core, such as Patraix or Quatre Carreres, prices vary between 500 and 800 euros. If your budget is tighter, sharing an apartment is an excellent alternative to enjoy the city without spending too much.",
+        "h3_4": "Is Valencia a good place to live?",
+        "p_7": "Of course! Valencia is a welcoming city with a perfect balance between tranquility and dynamism. It is known for its world-renowned cuisine, from authentic Valencian paella to artisanal horchatas and fartons. Additionally, its wide cultural offerings, proximity to the Mediterranean Sea, and friendly people make Valencia an exceptional place to live. Here you will find a city that combines the best of Spanish tradition with a modern and relaxed lifestyle. Ready to start a new chapter in Valencia? There is always a place for you here!"
+    },
+    "hellocoliving_page": {
+        "h3": "Where comfort meets community. At helloflatmate, we transform the concept of shared living with hellocoliving. We have dedicated three modern homes in Valencia exclusively for the coliving format, creating spaces designed for students seeking comfort, privacy, and community. Your new way of living in Valencia is waiting for you! <br /> <br /> Your new way of living in Valencia is waiting for you!",
+        "span": "No properties matching your preferences were found. But don't worry! Here are other options that might interest you:",
+        "span_2_1": "Page",
+        "span_2_2": "of"
+    },
+    "hellolandlord_page": {
+        "h2": "Rooms in shared flats with the quality of (strong)helloflatmate(/strong)",
+        "h3": "(strong)hellolandlord(/strong) is the perfect solution for students looking for rooms in shared flats managed directly by trusted landlords. Each landlord has been carefully selected by (strong)helloflatmate(/strong), following our contract model and management standards. This ensures a safe, comfortable environment tailored to your needs. <br /> <br /> Additionally, you will always have the support of our team to ensure that you have a smooth and hassle-free experience.",
+        "span": "No properties matching your preferences were found. But don't worry! Here are other options that might interest you:",
+        "span_2_1": "Page",
+        "span_2_2": "of"
+    },
+    "hellostudio_page": {
+        "hero": {
+            "title": "Work, connect, and grow at hellostudio",
+            "desc": "Productive and collaborative coworking spaces with advanced technology, fast internet, meeting rooms, common areas, and community events, ideal for growing professionals and entrepreneurs.",
+            "btn": "Book now"
+        },
+        "offer": {
+            "title": "Flexibility and comfort",
+            "desc": "Our spaces are designed to adapt to your schedules and needs. Whether you need to work early in the morning or late at night, hellostudio is always available for you.",
+            "desc_1": "Since 2011, helloflatmate has been offering accommodation to students in Valencia, with options for rooms and studios managed by us (hellorooms) or by trusted landlords (hellolandlord).",
+            "desc_2": "Also discover our hellocoliving if you're looking for more privacy and attention.",
+            "p": "Since 2011, at helloflatmate we offer specialized accommodation for students in Valencia. We have a variety of options tailored to your needs: (strong)hellorooms(/strong), rooms managed directly by our team, and (strong)hellolandlord(/strong), rooms in collaboration with trusted landlords. Additionally, discover our (strong)hellocoliving(/strong) for a more private experience and personalized attention."
+        },
+        "family": {
+            "title": "Perfect for studying throughout your career in Valencia",
+            "desc": "hellostudio offers a productive and collaborative environment designed for professionals and entrepreneurs. Enjoy modern and functional spaces that foster creativity and efficiency. At HelloStudio, you will find high technology, fast internet, equipped meeting rooms, comfortable common areas, and community events that promote networking and collaboration.",
+            "helloroom_desc_1": "Medium-stay rooms in Valencia, managed by the helloflatmate team to provide students with a comfortable and hassle-free experience.",
+            "helloroom_desc_2": "Live with other students like you!",
+            "hellolandlord_desc_1": "These are shared flat rooms managed directly by landlords selected by helloflatmate. Each landlord follows our contract and management model, providing security and peace of mind to students.",
+            "hellolandlord_desc_2": "Share with students like you!",
+            "hellostudio_desc_1": "Long-stay accommodation in equipped studios, managed both by helloflatmate and trusted landlords.",
+            "hellostudio_desc_2": "Ideal for students and digital nomads seeking comfort and privacy.",
+            "hellocoliving_desc_1": "Coliving spaces for students in Valencia, with a community atmosphere, cleaning service, and stay management by helloflatmate for a comfortable and safe experience."
+        },
+        "community_section": {
+            "h2": "Live, Share, and Enjoy",
+            "p": "At helloflatmate, you don't just rent a room; you join a community. Live with like-minded people and create unforgettable memories. We are waiting for you!"
+        },
+        "slider": "Explore our new accommodations",
+        "map_section": {
+            "h1": "The best location",
+            "h2": "Join the community",
+            "p": "Members of the helloflatmate community are not the only ones eager to travel... Check out some of the new cities where you will soon find the community. Some locations are under construction, others are in planning and development phases, and some are in research stages.",
+            "btn_1": "Open now!",
+            "btn_2": "Coming soon!",
+            "p_2": "Here’s what’s"
+        },
+        "info_section": {
+            "h2": "Why choose helloflatmate?",
+            "title_1": "Established accommodations",
+            "desc_1": "A safe and hassle-free place with everything you need to study, build your future, and forge lifelong friendships.",
+            "title_2": "Contracts",
+            "desc_2": "Having a rental contract is crucial for legal residency. All our accommodations follow a contractual model based on the Civil Code, equating rights and responsibilities for landlords and tenants.",
+            "title_3": "Support",
+            "desc_3": "Flatmate support is available from 9 AM to 5 PM, Monday to Friday. 24/7 emergencies: Perfect for when you've forgotten your keys at home outside of hours.",
+            "title_4": "Prepared accommodations",
+            "desc_4": "We ensure that accommodations are clean and checked for the contract start date so that you enjoy a comfortable welcome.",
+            "title_5": "In-house maintenance",
+            "desc_5": "Accommodations with 5-month contracts are painted and checked twice a year. For 10- and 11-month contracts, this check is annual. For technical assistance during your stay, contact us via WhatsApp during business hours.",
+            "title_6": "Utility setup",
+            "desc_6": "All our accommodations, except for hellostudios, come with setups for electricity, water, and wifi internet."
+        },
+        "banner": {
+            "h2": "Register today and enjoy our amazing services",
+            "span": "Register"
+        }
+    },
+    "request_section": {
+        "title": "Can't find what you're looking for?",
+        "desc": "Don't worry! We're here to help you find the perfect accommodation for you. Tell us your needs and we'll make it happen.",
+        "btn": "Contact us"
+    },
+    "cookies": {
+        "title": "Cookie Policy",
+        "sec_1": {
+            "p_1": "At (strong)HELLO FLAT MATE, S.L.(/strong) we use cookies or other similar functionality files (hereinafter, “cookies”) that store and retrieve information when you browse. These technologies serve to recognize you as a user, obtain information about your browsing habits, or customize how content is displayed.",
+            "p_2": "The purpose of this policy is to inform you clearly and in detail about what a cookie is, its purpose, what types of cookies we use, and how to configure or disable them."
+        },
+        "sec_2": {
+            "h2": "What are cookies?",
+            "p": "A cookie is a small text file that is stored in your browser when you visit our website and saves information about your browsing to make the user experience more efficient. Some cookies are essential for the proper functioning of websites, such as technical cookies or interface customization cookies, while others, like analytical or behavioral advertising cookies, require your consent for their use."
+        },
+        "sec_3": {
+            "h2": "Types of Cookies",
+            "ul_li_1": "(strong)Technical Cookies:(/strong) Allow navigation and basic functioning of the website, such as identifying sessions, managing orders, or enabling essential functions.",
+            "ul_li_2": "(strong)Preference or Customization Cookies:(/strong) Store information about user preferences, such as language or region, to provide a personalized experience.",
+            "ul_li_3": "(strong)Analytical or Measurement Cookies:(/strong) Help measure and analyze how users interact with the website, allowing for improvements to products or services.",
+            "ul_li_4": "(strong)Marketing or Behavioral Advertising Cookies:(/strong) Collect information about browsing habits to show relevant ads based on your interests."
+        },
+        "sec_4": {
+            "h2": "What does this website use cookies for and what are they?",
+            "p": "Below, we detail the cookies used on this site:",
+            "th_1": "Cookie",
+            "th_2": "Type",
+            "th_3": "Purpose",
+            "th_4": "More information",
+            "tr_td_1": "Google Analytics",
+            "tr_td_2": "Third-party",
+            "tr_td_3": "Collect information about users' browsing to perform statistical analyses.",
+            "tr_td_4": "Google Analytics Privacy Center"
+        },
+        "sec_5": {
+            "h2": "Profile Creation",
+            "p": "No type of 'profile' will be created based on the information provided nor will automated decisions be made based on profiles. If profiles are created in the future, we will transparently detail their use."
+        },
+        "sec_6": {
+            "h2": "Data Retention Period",
+            "p": "Data obtained through cookies will be retained for a maximum period of 24 months. After this period, we will request your consent again."
+        },
+        "sec_7": {
+            "h2": "How can I deactivate or delete cookies?",
+            "p": "You can manage cookies from your browser settings:"
+        },
+        "sec_8": {
+            "h2": "Rights of Data Subjects",
+            "p": "You can obtain more information about the processing of your data and how to exercise your rights by consulting our",
+            "p_link": "privacy policy",
+            "p_2": "The Agency recommends renewing consent at appropriate intervals, at most every 24 months, while preserving the preferences selected by the user."
+        }
+    },
+    "room_details": {
+        "other_rooms_title": "Other rooms on the same floor",
+        "desc_sec_title": "Description",
+        "location_sec_title": "Location",
+        "more_info": {
+            "title": "More about this place",
+            "title_1": "Features of the apartment",
+            "title_2": "Rental conditions",
+            "title_3": "Bills",
+            "title_4": "Maintenance",
+            "title_5": "Check in / Check out",
+            "title_6": "Agent's opinion",
+            "title_7": "House rules",
+            "title_8": "Other services"
+        }
+    },
+    "reservation_btn": {
+        "btn": "Book"
+    },
+    "clauses": {
+        "title": "Contract Clauses",
+        "sec_1": {
+            "h2": "FIRST. PURPOSE AND OBJECT OF THE CONTRACT",
+            "p": "That the LANDLORD leases to the TENANT the room described in this contract.",
+            "p_2": "The agreed purpose for the building is for (strong)use other than housing(/strong) and specifically the temporary residence of the TENANT for work or educational reasons, without the tenants being able to change the agreed purpose."
+        },
+        "sec_2": {
+            "h2": "SECOND. CONDITION",
+            "p": "Given that the TENANT may sign the contract without having previously visited the property in person, they will have (strong)3 days(/strong) to report any defects found in common areas as well as in the rented room.",
+            "p_2": "Once this period has elapsed without the TENANT notifying any defects in the property or in the rented room, it will be understood that the property was in perfect condition for use and habitability, and must be returned by the tenant at the end of the contract in that same condition."
+        },
+        "sec_3": {
+            "h2": "THIRD. DURATION OF THE CONTRACT",
+            "p": "This contract is agreed to extend for the period from (strong)…./…/202… to …./.…/202…(/strong). After this period, the contract will be resolved without any requirement and the room must be vacated by (strong)9 a.m.(/strong).",
+            "p_2": "In case the TENANT is interested in adding an extra night to their stay, it will cost (strong)35 €(/strong), and will always be subject to room availability and LANDLORD's authorization."
+        },
+        "sec_4": {
+            "h2": "FOURTH. RENT",
+            "p": "The tenant will pay the landlord, as rent, the amount of (strong)…… € monthly(/strong), always in advance and within the period between (strong)20 and 25 of each month(/strong).",
+            "p_2_1": "This price does not include expenses related to water, electricity, and internet supplies. This rent will be paid through the TENANT's user area on the website",
+            "p_2_2": "via the payment gateway, using a credit or debit card.",
+            "p_3": "Repeated failure to comply with the payment obligation or notification of proof of payment within the established period will be grounds for termination of the contract, giving the landlord the right to request eviction.",
+            "p_4": "In case the tenant fails to meet the rent payment deadline, the LANDLORD may penalize the TENANT with (strong)10 € for each day of delay in payment(/strong).",
+            "p_5": "The TENANT will be obliged to pay along with the rent of the last month of contract, (strong)50 €(/strong) for deep cleaning of the property."
+        },
+        "sec_5": {
+            "h2": "FIFTH. FIRST KEY DELIVERY",
+            "p": "Before handing over keys, the tenant must pay the following amounts:",
+            "ul_li_1": "(strong)300 €(/strong) as a deposit. This amount will be returned within (strong)30 to 45 days(/strong) after termination of the contract.",
+            "ul_li_2": "(strong)200 €(/strong) for water and electricity supplies for each five-month contract period.",
+            "ul_li_3": "(strong)80 €(/strong) as a flat fee for internet for the first five months of contract."
+        },
+        "sec_6": {
+            "h2": "SIXTH. LANDLORD'S RIGHT OF ACCESS TO THE PROPERTY",
+            "p": "The parties expressly agree that the TENANT waives their right to prevent the LANDLORD from accessing common areas of the property and rooms that are not rented at the time of access to the property.",
+            "p_2": "In case a visit is to be made, it will be communicated at least (strong)one hour in advance(/strong) to the tenant."
+        },
+        "sec_7": {
+            "h2": "SEVENTH. WITHDRAWAL FROM THE CONTRACT BY THE TENANT",
+            "p": "In case of withdrawal by the TENANT, they will be obliged to pay all agreed monthly payments until termination of the contract, unless they present a new tenant who is accepted by the landlord."
+        },
+        "sec_8": {
+            "h2": "EIGHTH. FORCE MAJEURE",
+            "p": "In case of force majeure, the TENANT cannot demand termination, suspension or modification of the contract, nor a reduction of agreed rent.",
+            "p_2": "'Force majeure' is understood as any unforeseeable and inevitable circumstance affecting compliance with contractual obligations, such as floods, earthquakes, pandemics, among others.",
+            "p_3": "The LANDLORD is exempt from any liability arising from measures taken by competent authorities beyond their control."
+        },
+        "sec_9": {
+            "h2": "NINTH. ASSIGNMENT AND SUBLETTING",
+            "p": "'With express waiver of what is provided in article 32 of LAU, the TENANT agrees not to sublet or assign the room without express consent from the LANDLORD. Non-compliance with this clause will be grounds for termination of contract.'"
+        },
+        "sec_10": {
+            "h2": "TENTH. RETURN OF KEYS BY THE TENANT",
+            "p": "The TENANT must return the keys to the dwelling and room at the end of the contract in the same format as received.",
+            "p_2": "In case of delay in returning the keys without authorization, a fee of (strong)35 €(/strong) will be charged for each day of delay plus any incurred expenses."
+        },
+        "sec_11": {
+            "h2": "ELEVENTH. REGISTRATION",
+            "p": "The TENANT has the right to register as a resident as long as they meet local requirements. Contracts shorter than 6 months do not allow registration.",
+            "p_2": "If HELLO FLAT MATE manages the registration, the cost will be (strong)150 €(/strong). At the end of the contract, the TENANT must request cancellation from the municipal registry; otherwise, (strong)50 €(/strong) will be deducted from the deposit."
+        },
+        "sec_12": {
+            "h2": "TWELFTH. HOUSE RULES",
+            "p": "The TENANT agrees to abide by the house rules established by the homeowners' association and those included in Annex I of the contract."
+        },
+        "sec_13": {
+            "h2": "THIRTEENTH. OBLIGATIONS OF THE LANDLORD AND TENANT REGARDING MAINTENANCE AND REPAIRS",
+            "p": "The LANDLORD will carry out necessary repairs to keep the dwelling in habitable conditions, except for damages attributable to the TENANT.",
+            "p_2": "Minor repairs due to wear and tear will be the responsibility of the TENANT, including light bulbs, clogs, and similar issues. Making holes or using adhesives that damage walls or doors will not be allowed."
+        },
+        "sec_14": {
+            "h2": "FOURTEENTH. CONDITIONS FOR THE EFFECTIVENESS OF THE CONTRACT",
+            "p": "The contract will only be valid if the following conditions are met simultaneously: payment of deposit and utilities, electronic signature of the contract, and compliance with the profile of the TENANT.",
+            "p_2": "If these requirements are not met, the contract will be considered null."
+        },
+        "sec_15": {
+            "h2": "FIFTEENTH. BREACH OF OBLIGATIONS",
+            "p": "Breach of obligations by either party will allow for enforcement or termination of the contract according to article 1.124 of the Civil Code.",
+            "p_2": "The LANDLORD may terminate the contract for non-payment of rent, deposit, intentional damages, illegal activities, or breach of house rules."
+        },
+        "sec_16": {
+            "h2": "SIXTEENTH. APPLICABLE LEGISLATION",
+            "p": "This contract will be governed by Law 29/1994 on Urban Leases and supplementary provisions of the Civil Code."
+        },
+        "sec_17": {
+            "h2": "SEVENTEENTH. JURISDICTION",
+            "p": "The contracting parties expressly submit to the Courts and Tribunals of the city of Valencia for any disputes that may arise from this contract, as it is where the rented room is located. With this declaration in mind, they sign this contract at the indicated place and date."
+        },
+        "p": "All rights reserved."
+    },
+    "user_profile": {
+        "title": "My Profile",
+        "profile_info": {
+            "h4_1": "Your Profile Information",
+            "btn_change_pass": "Change Password",
+            "targ_1": {
+                "h2": "Personal Information",
+                "name": "First Name",
+                "last_name": "Last Name",
+                "email": "Email"
+            },
+            "targ_2": {
+                "h2": "Personal Data",
+                "birthday": "Date of Birth",
+                "gender": "Gender",
+                "dni": "Identification Number",
+                "male": "Male",
+                "female": "Female",
+                "not_defined": "Not Defined"
+            },
+            "targ_3": {
+                "h2": "Contact",
+                "phone": "Phone Number"
+            },
+            "targ_4": {
+                "h2": "Address",
+                "city": "City",
+                "street": "Street",
+                "number": "Number",
+                "zip": "Postal Code"
+            },
+            "targ_5": {
+                "h2": "Emergency Information",
+                "name": "Emergency Name",
+                "phone": "Emergency Phone",
+                "email": "Emergency Email"
+            },
+            "modal_change_pass": {
+                "title": "Change Password",
+                "label_old_pass": "Current Password",
+                "label_new_pass": "New Password",
+                "show_off": "Hide",
+                "show_on": "Show",
+                "conf_pass": "Confirm Password",
+                "cancel": "Cancel",
+                "ok": "Change"
+            },
+            "error": {
+                "pass_not_match": "Passwords do not match",
+                "incorrect_pass": "The current password is incorrect",
+                "error_change_pass": "An error occurred while changing the password"
+            },
+            "success": {
+                "pass_changed": "Password changed successfully"
+            },
+            "loading": {
+                "loading": "Changing password..."
+            }
+        }
+    },
+    "logout": {
+        "logout": "Logout"
+    },
+    "user_panel": {
+        "mobile": {
+            "title": "My Bedrooms",
+            "dont_have_rooms": "You don't have any accommodations yet!"
+        },
+        "desktop": {
+            "dont_have_rooms": "You don't have any accommodations yet!",
+            "p": "Select an accommodation to view the details"
+        },
+        "bedrooms_details": {
+            "pay": "Payment for the month of",
+            "not_expired": "No expiration",
+            "finish": "End Date",
+            "total_pay": "Total Paid",
+            "total_price": "Amount to Pay",
+            "lease_duration": "Lease Duration",
+            "months": "months",
+            "start_date": "Check-in Date",
+            "end_date": "Check-out Date",
+            "new_reserv": "New Reservation",
+            "next_payments": "Payments to be made",
+            "modal_rent": {
+                "quota_pay": "Installment Payment",
+                "current_quota": "Current Installment:",
+                "current_quota_of": "of",
+                "total_pay": "Total to Pay:",
+                "cancel": "Cancel",
+                "confirm": "Confirm"
+            }
+        },
+        "bedrooms_activity": {
+            "title": "Activities of My Accommodation",
+            "toast_info": "We are improving for you! Soon you will be able to manage everything from a single place. In the meantime, remember that you can access your invoices, contracts, and supplies in the shared Google Drive folder.",
+            "my_finances": "My Finances",
+            "services": "Services",
+            "supplies": "Supplies",
+            "documents": "Documents"
+        },
+        "bedrooms_list": {
+            "hi": "Hello",
+            "ours_rooms": "Your Accommodations",
+            "card": {
+                "finish": "End Date",
+                "expiration": "Expiration",
+                "not_expired": "No expiration"
+            }
+        }
+    },
+    "user_history": {
+        "title": "My Reservations",
+        "dont_have_rooms": "You don't have any reservations yet",
+        "card": {
+            "info": {
+                "loading": "Redirecting to Stripe checkout..."
+            },
+            "error": {
+                "info": "There was a problem processing your payment. Please try again.",
+                "error": "Error starting Stripe checkout:"
+            },
+            "contract": {
+                "signed": "Contract Signed",
+                "signed_info": "Your request has been approved and the contract is signed!",
+                "in_revision": "Under Review",
+                "in_revision_info": "Your request is under review. We will notify you when it's finished!"
+            },
+            "continue": {
+                "btn": "Continue with the process",
+                "btn_2": "Continue"
+            },
+            "code": "Code",
+            "income": "Check-in:",
+            "out": "Check-out:",
+            "month": "/month",
+            "detail_payment": {
+                "title": "Payment Details",
+                "total_pay": "The total amount to pay is",
+                "after_pay": "After making the payment, you will be automatically redirected to sign your digital contract.",
+                "make_pay": "Make Payment"
+            }
+        }
+    },
+    "user_payment_history": {
+        "desc": "Payment",
+        "desc_res": "Payment (Reservation)",
+        "months": {
+            "1": "January",
+            "2": "February",
+            "3": "March",
+            "4": "April",
+            "5": "May",
+            "6": "June",
+            "7": "July",
+            "8": "August",
+            "9": "September",
+            "10": "October",
+            "11": "November",
+            "12": "December"
+        },
+        "status": {
+            "pending": "Pending Payment",
+            "success": "Payment Approved",
+            "rejected": "Payment Rejected",
+            "other": "Unknown"
+        },
+        "toast": {
+            "info": "You will be able to see your invoice very soon!"
+        },
+        "pays": "Payments",
+        "pay_id": "Payment ID:",
+        "desc_pay": "Description:",
+        "paid": "Paid",
+        "not_pend_pay": "There are no pending payments",
+        "pay_modal": {
+            "toast": {
+                "loading": "Processing payment...",
+                "succes": "Redirecting to payment system",
+                "error": "An error occurred while trying to make the payment",
+                "retry": "Please try again later or report the error through our support channel."
+            },
+            "title": "Payment Details",
+            "month": "Month:",
+            "amount": "Amount:",
+            "desc_1": "Description:",
+            "room_code": "Accommodation Code:",
+            "close": "Close",
+            "pay_now": "Pay Now"
+        }
+    }
+}

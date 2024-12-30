@@ -23,7 +23,6 @@ export async function updateRoom(id, data) {
     };
 
     if (Array.isArray(data) && data.length > 0) {
-        console.log("entre al primer if");
         
         for (let i = 0; i < data.length; i++) {
             // Validación de cada habitación
@@ -168,7 +167,6 @@ export async function updateStatusRoom(data) {
 
 
 export async function setProperty(data) {
-    console.log(data);
 
     if (!data || !data.ids || !data.propertyId) {
         return NextResponse.json({ error: "Se requiere la informacion" }, { status: 400 });

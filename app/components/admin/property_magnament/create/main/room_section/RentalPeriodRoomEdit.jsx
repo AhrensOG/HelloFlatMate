@@ -6,7 +6,6 @@ export default function RentalPeriodRoomEdit({
   predefineRental,
   oldRentalPeriods,
 }) {
-  // console.log(oldRentalPeriods);
 
   const [selectedRentalPeriods, setSelectedRentalPeriods] = useState([]);
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 function generateDsOrder(leaseOrderId) {
   // Ejemplo sencillo: leaseOrderId + últimos 4 dígitos de timestamp + 1 dígito random

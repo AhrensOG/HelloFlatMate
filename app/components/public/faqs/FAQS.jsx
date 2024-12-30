@@ -23,7 +23,6 @@ export default function FAQS() {
       fetchProperties();
     } else if (filteredProperties?.length === 0) {
       const shuffledProperties = filterProperties(state.properties);
-      // console.log(shuffledProperties)
       setFilteredProperties(shuffledProperties);
     }
   }, [dispatch, state.properties]);

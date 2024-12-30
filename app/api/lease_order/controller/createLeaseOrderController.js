@@ -95,18 +95,20 @@ export async function createLeaseRoomOrder(data) {
         });
         if (!room) return NextResponse.json({ message: "Habitación no encontrada" }, { status: 404 });
 
-        // Verificar conflictos en las fechas
+        // Verificar conflictos en las fechas con estado APPROVED
         const hasConflict = room.leaseOrdersRoom.some((order) => {
-            return (
+            const isDateConflict =
                 (new Date(data.startDate) <= new Date(order.endDate) &&
                     new Date(data.endDate) >= new Date(order.startDate)) ||
                 (new Date(order.startDate) <= new Date(data.endDate) &&
-                    new Date(order.endDate) >= new Date(data.startDate))
-            );
+                    new Date(order.endDate) >= new Date(data.startDate));
+
+            // Si hay conflicto de fechas, verificar el estado
+            return isDateConflict && order.status === "APPROVED";
         });
 
         if (hasConflict) {
-            return NextResponse.json({ message: "La habitación ya tiene una orden en este periodo" }, { status: 400 });
+            return NextResponse.json({ message: "La habitación ya tiene una orden APROBADA en este periodo" }, { status: 400 });
         }
 
         // Validar que la habitación corresponda a la propiedad

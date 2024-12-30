@@ -11,7 +11,6 @@ const OwnerTenants = ({ data = false }) => {
   const handleOpenModal = (tenant) => {
     setSelectedTenant(tenant);
     setIsModalOpen(true);
-    console.log(tenant);
   };
 
   const handleCloseModal = () => {

@@ -22,8 +22,7 @@ export default function TasksSection({ section }) {
       try {
         const res = await axios.get("/api/to_do?status=available");
         setTasks(res.data);
-        setFilteredTasks(res.data); // Inicializamos las tareas filtradas
-        console.log(res.data);
+        setFilteredTasks(res.data);
       } catch (error) {
         console.log(error);
       }

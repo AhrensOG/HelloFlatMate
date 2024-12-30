@@ -4,14 +4,10 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-// import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Tooltip from "@/app/components/public/AuxiliarComponents/Tooltip";
-
-// const stripePromise = loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-// );
+import { useTranslations } from "next-intl";
 
 function generateDsOrder(leaseOrderId) {
   const baseStr = String(leaseOrderId);
@@ -32,6 +28,7 @@ export default function ReservationPropertyCard({
   leaseOrder,
   user = false,
 }) {
+  const t = useTranslations("user_history.card");
   const [isTooltipOpen, setIsTooltipOpen] = useState({
     signed: false,
     pending: false,
@@ -48,22 +45,12 @@ export default function ReservationPropertyCard({
   const category = property?.property?.category || property?.category;
 
   const handleRedirect = () => {
-    const path =
-      category === "HELLO_ROOM" ||
-      category === "HELLO_COLIVING" ||
-      category === "HELLO_LANDLORD"
-        ? `/pages/property-details/${property.propertyId}/room-details/${property.id}`
-        : `/pages/property-details/${property?.id}`;
+    const path = `/pages/property-details/${property.propertyId}/room-details/${property.id}`;
     route.push(path);
   };
 
   const handleRedirectToContract = () => {
-    const path =
-      category === "HELLO_ROOM" ||
-      category === "HELLO_COLIVING" ||
-      category === "HELLO_LANDLORD"
-        ? `/pages/user/contract/${property?.propertyId}?r=${property.id}&lo=${leaseOrder.id}`
-        : `/pages/user/contract/${property?.id}?lo=${leaseOrder.id}`;
+    const path = `/pages/user/contract/${property?.propertyId}?r=${property.id}&lo=${leaseOrder.id}`;
     route.push(path);
   };
 
@@ -72,68 +59,10 @@ export default function ReservationPropertyCard({
     route.push(path);
   };
 
-  // const handleCheckout = async () => {
-  //   const propertyId = property?.propertyId || property?.id;
-  //   const roomId =
-  //     category === "HELLO_ROOM" ||
-  //     category === "HELLO_COLIVING" ||
-  //     category === "HELLO_LANDLORD"
-  //       ? property.id
-  //       : false;
-  //   const userEmail = user?.email || ""; // Ajusta según tus datos de usuario
-  //   const price = parseInt(property?.price);
-  //   const propertyName = property?.serial;
-  //   const leaseOrderId = leaseOrder?.id;
-
-  //   try {
-  //     const response = await fetch("/api/stripe/create-checkout-session", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         propertyId,
-  //         userEmail,
-  //         price,
-  //         propertyName,
-  //         leaseOrderId,
-  //         roomId,
-  //         category,
-  //       }),
-  //     });
-
-  //     const session = await response.json();
-  //     if (session.error) {
-  //       throw new Error(session.error);
-  //     }
-
-  //     const stripe = await stripePromise;
-  //     const result = await stripe.redirectToCheckout({
-  //       sessionId: session.id,
-  //     });
-
-  //     if (result.error) {
-  //       console.error(result.error.message);
-  //     } else {
-  //       toast.info("Redirigiendo al checkout de Stripe...");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al iniciar el checkout de Stripe:", error.message);
-  //     toast.info(
-  //       "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente."
-  //     );
-  //   }
-  // };
-
   const handleRedsysCheckout = async () => {
     try {
       const propertyId = property?.propertyId || property?.id;
-      const roomId =
-        category === "HELLO_ROOM" ||
-        category === "HELLO_COLIVING" ||
-        category === "HELLO_LANDLORD"
-          ? property.id
-          : false;
+      const roomId = property?.id;
 
       const order = generateDsOrder(leaseOrder?.id);
       // Info que enviamos al endpoint:
@@ -170,17 +99,15 @@ export default function ReservationPropertyCard({
 
       // Guardamos los datos en el estado
       setRedsysData(data);
-      toast("Redirigiendo a Redsys...");
+      toast(t("info.loading"));
 
       // Opción A) Enviar el formulario automáticamente
       setTimeout(() => {
         formRef.current.submit();
       }, 500);
-
-      // Opción B) Mostrar un nuevo modal con un botón de “Confirmar” para postear.
     } catch (error) {
-      console.error("Error al iniciar el checkout de Redsys:", error.message);
-      toast.error("Hubo un problema al procesar tu pago con Redsys.");
+      console.error(t("error.error"), error.message);
+      toast.error(t("error.info"));
     }
   };
 
@@ -242,10 +169,10 @@ export default function ReservationPropertyCard({
   const renderActions = () => {
     if (leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
       return renderStatus(
-        "Contrato Firmado",
+        t("contract.signed"),
         "green-600",
         "signed",
-        "¡Tu solicitud fue aprobada y el contrato está firmado!"
+        t("contract.signed_info")
       );
     }
     if (!leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
@@ -255,7 +182,7 @@ export default function ReservationPropertyCard({
             onClick={() => handleRedirectToContract()}
             className="w-full py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition duration-200"
           >
-            Continuar con el proceso
+            {t("continue.btn")}
           </button>
         </>
       );
@@ -272,7 +199,7 @@ export default function ReservationPropertyCard({
             onClick={() => setIsModalOpen(true)}
             className="w-full py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition duration-200"
           >
-            Continuar
+            {t("continue.btn_2")}
           </button>
         </>
       );
@@ -284,10 +211,10 @@ export default function ReservationPropertyCard({
       leaseOrder.inReview
     ) {
       return renderStatus(
-        "En Revisión",
+        t("contract.in_revision"),
         "blue-500",
         "pending",
-        "¡Tu solicitud está bajo revisión. Te notificaremos al finalizar!"
+        t("contract.in_revision_info")
       );
     }
 
@@ -331,15 +258,10 @@ export default function ReservationPropertyCard({
                 height={14}
                 alt="Ubicación"
               />
-              {category === "HELLO_ROOM" ||
-              category === "HELLO_COLIVING" ||
-              category === "HELLO_LANDLORD"
-                ? `${property?.property?.city}, ${property?.property?.street} ${property?.property?.streetNumber}`
-                : `${property?.city}, ${property?.street} ${property?.streetNumber}` ||
-                  ""}
+              {`${property?.property?.city}, ${property?.property?.street} ${property?.property?.streetNumber}`}
             </h2>
             <span className="text-xs font-medium text-gray-600">
-              Código: {property.serial || ""}
+              {t("code")} {property.serial || ""}
             </span>
           </div>
 
@@ -347,15 +269,16 @@ export default function ReservationPropertyCard({
           <div className="flex justify-between items-center">
             <div>
               <p className="text-sm text-gray-600">
-                Ingreso: {formatDate(leaseOrder.startDate)}
+                {t("income")} {formatDate(leaseOrder.startDate)}
               </p>
               <p className="text-sm text-gray-600">
-                Salida: {formatDate(leaseOrder.endDate)}
+                {t("out")} {formatDate(leaseOrder.endDate)}
               </p>
             </div>
             {property?.price > 0 && (
               <span className="text-lg font-bold text-blue-600">
-                € {property?.price} <span className="text-sm">/mes</span>
+                € {property?.price}{" "}
+                <span className="text-sm">{t("month")}</span>
               </span>
             )}
           </div>
@@ -393,27 +316,25 @@ export default function ReservationPropertyCard({
 
               {/* Contenido del Modal */}
               <h2 className="text-lg font-semibold mb-4">
-                Detalles de tu pago
+                {t("detail_payment.title")}
               </h2>
               <p className="text-sm mb-4">
-                <strong>Ingreso:</strong> {formatDate(leaseOrder.startDate)}
+                <strong>{t("income")}</strong>{" "}
+                {formatDate(leaseOrder.startDate)}
               </p>
               <p className="text-sm mb-4">
-                <strong>Salida:</strong> {formatDate(leaseOrder.endDate)}
+                <strong>{t("out")}</strong> {formatDate(leaseOrder.endDate)}
               </p>
               <p className="text-sm mb-4">
-                El monto total a pagar es de{" "}
+                {t("detail_payment.total_pay")}{" "}
                 <span className="font-bold">{property?.price}€</span>.
               </p>
-              <p className="text-sm mb-6">
-                Después de realizar el pago, serás redirigido automáticamente
-                para firmar tu contrato digital.
-              </p>
+              <p className="text-sm mb-6">{t("detail_payment.after_pay")}</p>
               <button
                 onClick={handleRedsysCheckout}
                 className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
               >
-                Realizar Pago
+                {t("detail_payment.make_pay")}
               </button>
             </motion.div>
           </motion.div>

@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 .custom-arrow::before,
 .custom-arrow::after {
-  background-color: #000000 !important; /* Aquí pones el color que prefieras */
-  width: 24px; /* Ajusta las dimensiones si lo necesitas */
-  height: 6px;
+    background-color: #000000 !important; /* Aquí pones el color que prefieras */
+    width: 24px; /* Ajusta las dimensiones si lo necesitas */
+    height: 6px;
 }
 
 .custom-arrow-2::before,
 .custom-arrow-2::after {
-  background-color: #ffff !important; /* Aquí pones el color que prefieras */
-  width: 24px; /* Ajusta las dimensiones si lo necesitas */
-  height: 6px;
+    background-color: #ffff !important; /* Aquí pones el color que prefieras */
+    width: 24px; /* Ajusta las dimensiones si lo necesitas */
+    height: 6px;
 }

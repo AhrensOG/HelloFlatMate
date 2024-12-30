@@ -2,7 +2,6 @@ import { Client, Property, Supply } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createSupplyController(data) {
-  console.log(data);
   if (!data)
     return NextResponse.json({ error: "No data provided" }, { status: 400 });
   if (!data.title || data.title.trim() === "")

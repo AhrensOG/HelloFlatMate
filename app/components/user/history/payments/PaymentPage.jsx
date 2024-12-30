@@ -8,35 +8,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import PayModal from "./PayModal";
-
-// Función para obtener el nombre del mes en español
-const getMonthName = (date) => {
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-  return months[date.getMonth()] + " " + date.getFullYear();
-};
-
-// Función para calcular la cantidad de meses entre dos fechas
-const calculateMonthsBetweenDates = (startDate, endDate) => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  let months = (end.getFullYear() - start.getFullYear()) * 12;
-  months -= start.getMonth();
-  months += end.getMonth() + 1;
-  return months;
-};
+import { useTranslations } from "next-intl";
 
 // Función para obtener el fondo de la etiqueta según el estado
 const getStatusBgColor = (status, paid) => {
@@ -74,24 +46,52 @@ const getStatusIcon = (status, paid) => {
   }
 };
 
-// Función para obtener el estado descriptivo
-const getStatusDescription = (status) => {
-  switch (status) {
-    case "PENDING":
-      return "Pendiente de pago";
-    case "APPROVED":
-      return "Pago aprobado";
-    case "REJECTED":
-      return "Pago rechazado";
-    default:
-      return "Desconocido";
-  }
+// Función para calcular la cantidad de meses entre dos fechas
+const calculateMonthsBetweenDates = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  let months = (end.getFullYear() - start.getFullYear()) * 12;
+  months -= start.getMonth();
+  months += end.getMonth() + 1;
+  return months;
 };
 
 const PaymentPage = ({ redirect, user }) => {
   const [paymentsToShow, setPaymentsToShow] = useState([]);
   const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
   const [selectedPayment, setSelectedPayment] = useState(null); // Información del pago seleccionado
+  const t = useTranslations("user_payment_history");
+
+  const getMonthName = (date) => {
+    const months = [
+      t("months.1"),
+      t("months.2"),
+      t("months.3"),
+      t("months.4"),
+      t("months.5"),
+      t("months.6"),
+      t("months.7"),
+      t("months.8"),
+      t("months.9"),
+      t("months.10"),
+      t("months.11"),
+      t("months.12"),
+    ];
+    return months[date.getMonth()] + " " + date.getFullYear();
+  };
+
+  const getStatusDescription = (status) => {
+    switch (status) {
+      case "PENDING":
+        return t("status.pending");
+      case "APPROVED":
+        return t("status.success");
+      case "REJECTED":
+        return t("status.rejected");
+      default:
+        return t("status.other");
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -127,9 +127,10 @@ const PaymentPage = ({ redirect, user }) => {
               status: "PENDING",
               type: "MONTHLY",
               quotaNumber: i,
-              description: `Pago ${getMonthName(pendingMonth)}`,
+              description: `${t("desc")} ${getMonthName(pendingMonth)}`,
               paid: false,
-              orderType: order.hasOwnProperty("roomId") ? "ROOM" : "PROPERTY",
+              //   orderType: order.hasOwnProperty("roomId") ? "ROOM" : "PROPERTY",
+              orderType: "ROOM",
             });
           }
         }
@@ -144,7 +145,7 @@ const PaymentPage = ({ redirect, user }) => {
 
   const handlePaymentClick = (payment) => {
     if (payment.paid) {
-      toast.info("¡Muy pronto podrás ver tu factura!"); // Muestra un toast si el pago está realizado
+      toast.info(t("toast.info")); // Muestra un toast si el pago está realizado
     } else {
       setSelectedPayment(payment); // Establece el pago pendiente seleccionado
       setShowModal(true); // Abre el modal para pagos pendientes
@@ -170,7 +171,7 @@ const PaymentPage = ({ redirect, user }) => {
           >
             <ArrowLeftIcon />
           </button>
-          <h1 className="text-xl font-bold">Pagos</h1>
+          <h1 className="text-xl font-bold">{t("pays")}</h1>
         </div>
       </div>
       <main className="flex w-full justify-center items-start px-4">
@@ -188,14 +189,14 @@ const PaymentPage = ({ redirect, user }) => {
                     <div className="flex flex-col items-start justify-center">
                       <h2 className="text-lg font-semibold">
                         {payment.type === "RESERVATION"
-                          ? `Pago (Reserva) - ${payment.month}`
-                          : `Pago ${payment.month}`}
+                          ? `${t("desc_res")} - ${payment.month}`
+                          : `${t("desc")} ${payment.month}`}
                       </h2>
                       <p className="text-sm text-gray-500">
-                        ID de Pago: {payment.id}
+                        {t("pay_id")} {payment.id}
                       </p>
                       <p className="text-sm">
-                        Descripción: {payment.description}
+                        {t("desc_pay")} {payment.description}
                       </p>
                     </div>
                   </div>
@@ -207,7 +208,7 @@ const PaymentPage = ({ redirect, user }) => {
                       )}`}
                     >
                       {payment.paid
-                        ? "Pagado"
+                        ? t("paid")
                         : getStatusDescription(payment.status)}
                     </span>
                   </div>
@@ -215,14 +216,18 @@ const PaymentPage = ({ redirect, user }) => {
               </button>
             ))
           ) : (
-            <p className="text-gray-500 text-center">No hay pagos pendientes</p>
+            <p className="text-gray-500 text-center">{t("not_pend_pay")}</p>
           )}
         </div>
       </main>
 
       {/* Modal para pagos pendientes */}
       {showModal && selectedPayment && (
-        <PayModal payment={selectedPayment} user={user} onClose={handleCloseModal} />
+        <PayModal
+          payment={selectedPayment}
+          user={user}
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );

@@ -11,7 +11,6 @@ const formatDate = (date) => {
 };
 
 export async function createClientBillPDF(data) {
-    console.log(data);
 
     if (!data) return NextResponse.json({ error: "No data provided" }, { status: 400 });
     if (!data.userId || data.userId.trim() === "") return NextResponse.json({ error: "No user id provided" }, { status: 400 });

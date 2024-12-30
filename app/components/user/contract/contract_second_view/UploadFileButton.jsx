@@ -5,7 +5,7 @@ import { saveUserContractDocuments } from "@/app/context/actions";
 import { toast } from "sonner";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
-export default function UploadFileButton({ description, id }) {
+export default function UploadFileButton({ description, id, setNext }) {
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState(description);
   const { dispatch } = useContext(Context);
@@ -27,6 +27,7 @@ export default function UploadFileButton({ description, id }) {
       };
       setFileName(files.length);
       saveUserContractDocuments(dispatch, values);
+      setNext(true);
       return toast.success("Documentos almacenados");
     }
   };

@@ -1,7 +1,9 @@
+import { useTranslations } from "next-intl";
 import MyBedroomCard from "./MyBedroomCard";
 import { motion } from "framer-motion";
 
 export default function MyBedroomsList({ action, user, properties }) {
+    const t = useTranslations("user_panel.bedrooms_list");
     return (
         <motion.section
             initial={{ opacity: 0, x: "-100%" }}
@@ -10,8 +12,10 @@ export default function MyBedroomsList({ action, user, properties }) {
             transition={{ duration: 0.25 }}
             className="flex flex-col gap-5 w-full"
         >
-            <h2 className="font-semibold text-base text-[#000000CC]">Hola {user.name}</h2>
-            <p className="font-semibold text-base text-[#000000CC]">Tus alojamientos</p>
+            <h2 className="font-semibold text-base text-[#000000CC]">
+                {t("hi")} {user.name}
+            </h2>
+            <p className="font-semibold text-base text-[#000000CC]">{t("ours_rooms")}</p>
             <div className="flex flex-col gap-5 pt-5">
                 {properties.map((p) => {
                     const prop = p.room || p.property;
