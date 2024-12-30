@@ -29,7 +29,6 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
     const data = await req.json();
-    console.log(data);
 
     const result = await deleteRoom(data);
     return result

@@ -49,8 +49,6 @@ export default function TableArticle({ data, role = "ADMIN" }) {
                 return a.isActive ? -1 : 1; // `true` primero, `false` después
             });
 
-        console.log(filtered);
-
         setFilteredData(filtered); // Actualiza los datos filtrados
     }, [searchTerm, selectedCategories, selectedStatus, originalData, alphabeticalOrder]);
 

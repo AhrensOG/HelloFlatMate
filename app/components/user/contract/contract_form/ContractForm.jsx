@@ -85,7 +85,6 @@ const ContractForm = ({ handleContinue }) => {
     const toastId = toast.loading("Guardando informacion...");
     try {
       const updatedData = { ...values, id: state?.user?.id };
-      console.log(updatedData);
       await axios.put("/api/user", updatedData);
       saveUserContractInformation(dispatch, updatedData);
       toast.success("Información guardada", { id: toastId });

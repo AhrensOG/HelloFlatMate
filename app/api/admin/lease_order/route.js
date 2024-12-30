@@ -9,7 +9,6 @@ export async function GET(req) {
     const id = searchParams.get('id')
     const type = searchParams.get('type')
     if (id && type) {
-        console.log(id, type)
         const result = await getLeaserOrderById(id, type)
         return result
     }

@@ -9,7 +9,6 @@ export default function AdminProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/api/admin/property?simple=true");
-      console.log(res.data);
       setPropertiesSimple(res.data);
     };
     fetchData();

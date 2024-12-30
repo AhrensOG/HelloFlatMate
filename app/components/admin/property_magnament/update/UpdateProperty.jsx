@@ -312,7 +312,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 tags: Array.isArray(tags) && tags.length > 0 ? tags : [tags],
                 calendar: calendarType || "SIMPLE",
             };
-            console.log(newRentalPeriods);
 
             const response = await axios.put(`/api/admin/property?id=${data.id}`, updateDataProperty);
             toast.success("Propiedad actualizada correctamente");
@@ -329,7 +328,6 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
             const newCategory = response.data.property.category;
             // router.push(`/pages/admin/update/${newId}/${newCategory}`);
             window.open(`/pages/admin/update/${newId}/${newCategory}`, "_blank");
-            console.log(response.data);
         } catch (error) {
             console.log(error);
             throw error;

@@ -152,7 +152,6 @@ export default function NewPropertyDesktop({ category, handleBack }) {
     };
 
     const submitRoom = async (data) => {
-        console.log(data);
 
         let rooms;
         if (data[0].amountOwner || data[0].amountHelloflatmate) {
@@ -193,7 +192,6 @@ export default function NewPropertyDesktop({ category, handleBack }) {
         }
     };
     const setProperty = (data, id) => {
-        console.log(data, id);
 
         const ids = data.map((room) => room.id);
         try {

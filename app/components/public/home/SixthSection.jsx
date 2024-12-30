@@ -37,7 +37,6 @@ export default function SixthSection() {
     return (
         <section className="py-12 w-full">
             <div className="max-w-screen-xl mx-auto px-4">
-                {console.log(t("home_sixth_sect_h2"))}
 
                 <h2 className="text-3xl text-center mb-12">
                     <strong>{t("home_sixth_sect_h2_strong")}</strong> {HTMLReactParser(t("home_sixth_sect_h2"))}

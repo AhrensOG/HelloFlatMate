@@ -68,8 +68,6 @@ export async function updateStatusLeaseOrder(data) {
                 await leaseOrderProperty.save({ transaction });
                 await property.save({ transaction });
 
-                console.log(property);
-
                 // Crear chat con el dueño
                 const chatPrivate = await createPrivateChat({
                     type: "PRIVATE",
@@ -186,8 +184,6 @@ export async function updateStatusLeaseOrder(data) {
                 relatedType: "ROOM",
                 relatedId: room.id,
             });
-
-            console.log(leaseOrderRoom);
 
             const createParticipant = await ChatParticipant.create({
                 participantId: leaseOrderRoom.clientId,

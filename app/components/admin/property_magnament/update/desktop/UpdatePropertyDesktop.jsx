@@ -80,7 +80,6 @@ export default function UpdatePropertyDesktop({
       );
       setSelectedEmail(ownerEmail?.email);
       setOwners(res.data);
-      console.log(res.data);
     };
     if (property) {
       setName(property?.name || "");
@@ -261,7 +260,6 @@ export default function UpdatePropertyDesktop({
           );
 
           const roomsFormated = newRooms.map((room) => {
-            console.log(room);
 
             return {
               ...room,
