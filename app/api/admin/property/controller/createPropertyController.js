@@ -28,14 +28,6 @@ export async function createProperty(data) {
         IVA = data.IVA || 0;
     }
 
-    // Si es HELLO_STUDIO o HELLO_LANDLORD, el precio y los valores relacionados deben ser mayores que 0
-    if (data.category === "HELLO_STUDIO" || data.category === "HELLO_LANDLORD") {
-        price = data.price;
-        amountOwner = data.amountOwner || 0;
-        amountHelloflatmate = data.amountHelloflatmate || 0;
-        IVA = data.IVA || 0;
-    }
-
     // Definir si la propiedad está completa y debe estar activa
     const requiredFields = [
         data.name,

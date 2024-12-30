@@ -124,7 +124,8 @@
         "title_download": "DESCARGA LA APP",
         "title_follow_us": "Síguenos",
         "title_payment_methods": "Métodos de pago",
-        "legal_rights": "Todos los derechos reservados"
+        "legal_rights": "Todos los derechos reservados",
+        "contact": "Contáctanos"
     },
     "secondary_category_selector": {
         "search_btn": "Buscar alojamiento",
@@ -664,11 +665,11 @@
         "dont_have_rooms": "Aun no tienes reservas",
         "card": {
             "info": {
-                "loading": "Redirigiendo al checkout de Stripe..."
+                "loading": "Redirigiendo a Redsys..."
             },
             "error": {
-                "info": "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente.",
-                "error": "Error al iniciar el checkout de Stripe:"
+                "info": "Hubo un problema al procesar tu pago con Redsys.",
+                "error": "Error al iniciar el checkout de Redsys:"
             },
             "contract": {
                 "signed": "Contrato firmado",
@@ -737,6 +738,14 @@
             "room_code": "Codigo de alojamiento:",
             "close": "Cerrar",
             "pay_now": "Pagar ahora"
+        }
+    },
+    "forms": {
+        "update_client": {
+            "validations": {
+                "name": "El nombre es obligatorio",
+                "last_name": "El apellido es obligatorio"
+            }
         }
     }
 }

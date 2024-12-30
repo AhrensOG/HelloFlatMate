@@ -114,7 +114,7 @@ export default function LastRoomsPage() {
         return properties.filter((property) => {
             const queryRentalPeriod = filters.rentalPeriod;
 
-            if (property.category === "HELLO_ROOM" || property.category === "HELLO_COLIVING" || property.category === "HELLO_LANDLORD") {
+            if (property.category) {
                 return property.rooms?.some((room) => {
                     return room.rentalItems?.some((period) => {
                         const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
@@ -123,12 +123,12 @@ export default function LastRoomsPage() {
                 });
             }
 
-            if (property.category === "HELLO_STUDIO") {
-                return property.rentalItems?.some((period) => {
-                    const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
-                    return rentalPeriodString === queryRentalPeriod;
-                });
-            }
+            // if (property.category === "HELLO_STUDIO") {
+            //     return property.rentalItems?.some((period) => {
+            //         const rentalPeriodString = convertRentalPeriodToString(period.rentalPeriod?.startDate, period.rentalPeriod?.endDate);
+            //         return rentalPeriodString === queryRentalPeriod;
+            //     });
+            // }
 
             return true;
         });
@@ -285,13 +285,7 @@ export default function LastRoomsPage() {
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
                                         {state.properties
-                                            ?.filter(
-                                                (property) =>
-                                                    property.category === "HELLO_ROOM" ||
-                                                    property.category === "HELLO_LANDLORD" ||
-                                                    property.category === "HELLO_COLIVING"
-                                            )
-                                            .flatMap((property) =>
+                                            ?.flatMap((property) =>
                                                 property.rooms
                                                     ?.filter((room) => room.isActive === true)
                                                     .map((room) => ({

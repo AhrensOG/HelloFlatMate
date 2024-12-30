@@ -4,16 +4,10 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-// import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Tooltip from "@/app/components/public/AuxiliarComponents/Tooltip";
 import { useTranslations } from "next-intl";
-
-<<<<<<< HEAD
-// const stripePromise = loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-// );
 
 function generateDsOrder(leaseOrderId) {
   const baseStr = String(leaseOrderId);
@@ -28,19 +22,19 @@ function generateDsOrder(leaseOrderId) {
 
   return dsOrder;
 }
-=======
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
->>>>>>> b0c250091e609284d44981f0b34cfe9ae71b6554
 
-export default function ReservationPropertyCard({ property, leaseOrder, user = false }) {
-    const t = useTranslations("user_history.card");
-    const [isTooltipOpen, setIsTooltipOpen] = useState({
-        signed: false,
-        pending: false,
-    });
-    const [isModalOpen, setIsModalOpen] = useState(false);
+export default function ReservationPropertyCard({
+  property,
+  leaseOrder,
+  user = false,
+}) {
+  const t = useTranslations("user_history.card");
+  const [isTooltipOpen, setIsTooltipOpen] = useState({
+    signed: false,
+    pending: false,
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-<<<<<<< HEAD
   // Nuevo: Aquí guardaremos la info de Redsys
   const [redsysData, setRedsysData] = useState(null);
 
@@ -49,95 +43,26 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
 
   const route = useRouter();
   const category = property?.property?.category || property?.category;
-=======
-    const route = useRouter();
-    const category = property?.property?.category || property?.category;
->>>>>>> b0c250091e609284d44981f0b34cfe9ae71b6554
 
-    const handleRedirect = () => {
-        const path =
-            category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD"
-                ? `/pages/property-details/${property.propertyId}/room-details/${property.id}`
-                : `/pages/property-details/${property?.id}`;
-        route.push(path);
-    };
+  const handleRedirect = () => {
+    const path = `/pages/property-details/${property.propertyId}/room-details/${property.id}`;
+    route.push(path);
+  };
 
-    const handleRedirectToContract = () => {
-        const path =
-            category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD"
-                ? `/pages/user/contract/${property?.propertyId}?r=${property.id}&lo=${leaseOrder.id}`
-                : `/pages/user/contract/${property?.id}?lo=${leaseOrder.id}`;
-        route.push(path);
-    };
+  const handleRedirectToContract = () => {
+    const path = `/pages/user/contract/${property?.propertyId}?r=${property.id}&lo=${leaseOrder.id}`;
+    route.push(path);
+  };
 
-    const handleRedirectToForm = () => {
-        const path = `/pages/user/contract/${property?.propertyId || property?.id}`;
-        route.push(path);
-    };
-
-<<<<<<< HEAD
-  // const handleCheckout = async () => {
-  //   const propertyId = property?.propertyId || property?.id;
-  //   const roomId =
-  //     category === "HELLO_ROOM" ||
-  //     category === "HELLO_COLIVING" ||
-  //     category === "HELLO_LANDLORD"
-  //       ? property.id
-  //       : false;
-  //   const userEmail = user?.email || ""; // Ajusta según tus datos de usuario
-  //   const price = parseInt(property?.price);
-  //   const propertyName = property?.serial;
-  //   const leaseOrderId = leaseOrder?.id;
-
-  //   try {
-  //     const response = await fetch("/api/stripe/create-checkout-session", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         propertyId,
-  //         userEmail,
-  //         price,
-  //         propertyName,
-  //         leaseOrderId,
-  //         roomId,
-  //         category,
-  //       }),
-  //     });
-
-  //     const session = await response.json();
-  //     if (session.error) {
-  //       throw new Error(session.error);
-  //     }
-
-  //     const stripe = await stripePromise;
-  //     const result = await stripe.redirectToCheckout({
-  //       sessionId: session.id,
-  //     });
-
-  //     if (result.error) {
-  //       console.error(result.error.message);
-  //     } else {
-  //       toast.info("Redirigiendo al checkout de Stripe...");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al iniciar el checkout de Stripe:", error.message);
-  //     toast.info(
-  //       "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente."
-  //     );
-  //   }
-  // };
+  const handleRedirectToForm = () => {
+    const path = `/pages/user/contract/${property?.propertyId || property?.id}`;
+    route.push(path);
+  };
 
   const handleRedsysCheckout = async () => {
     try {
       const propertyId = property?.propertyId || property?.id;
-      const roomId =
-        category === "HELLO_ROOM" ||
-        category === "HELLO_COLIVING" ||
-        category === "HELLO_LANDLORD"
-          ? property.id
-          : false;
+      const roomId = property?.id;
 
       const order = generateDsOrder(leaseOrder?.id);
       // Info que enviamos al endpoint:
@@ -174,17 +99,15 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
 
       // Guardamos los datos en el estado
       setRedsysData(data);
-      toast("Redirigiendo a Redsys...");
+      toast(t("info.loading"));
 
       // Opción A) Enviar el formulario automáticamente
       setTimeout(() => {
         formRef.current.submit();
       }, 500);
-
-      // Opción B) Mostrar un nuevo modal con un botón de “Confirmar” para postear.
     } catch (error) {
-      console.error("Error al iniciar el checkout de Redsys:", error.message);
-      toast.error("Hubo un problema al procesar tu pago con Redsys.");
+      console.error(t("error.error"), error.message);
+      toast.error(t("error.info"));
     }
   };
 
@@ -219,113 +142,152 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear()).slice(-2);
-=======
-    const handleCheckout = async () => {
-        const propertyId = property?.propertyId || property?.id;
-        const roomId = category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD" ? property.id : false;
-        const userEmail = user?.email || ""; // Ajusta según tus datos de usuario
-        const price = parseInt(property?.price);
-        const propertyName = property?.serial;
-        const leaseOrderId = leaseOrder?.id;
 
-        try {
-            const response = await fetch("/api/stripe/create-checkout-session", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    propertyId,
-                    userEmail,
-                    price,
-                    propertyName,
-                    leaseOrderId,
-                    roomId,
-                    category,
-                }),
-            });
+    return `${day}/${month}/${year}`;
+  };
 
-            const session = await response.json();
-            if (session.error) {
-                throw new Error(session.error);
-            }
+  const renderStatus = (label, color, tooltipKey, tooltipContent) => (
+    <div
+      className="relative flex items-center justify-center gap-1 cursor-pointer"
+      onMouseEnter={() =>
+        setIsTooltipOpen((prev) => ({ ...prev, [tooltipKey]: true }))
+      }
+      onMouseLeave={() =>
+        setIsTooltipOpen((prev) => ({ ...prev, [tooltipKey]: false }))
+      }
+    >
+      <p className={`text-center text-${color} tex-yello font-bold`}>{label}</p>
+      <QuestionMarkCircleIcon className={`w-5 h-5 text-${color}`} />
+      <Tooltip
+        isOpen={isTooltipOpen[tooltipKey]}
+        content={tooltipContent}
+        position="top"
+      />
+    </div>
+  );
 
-            const stripe = await stripePromise;
-            const result = await stripe.redirectToCheckout({
-                sessionId: session.id,
-            });
+  const renderActions = () => {
+    if (leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
+      return renderStatus(
+        t("contract.signed"),
+        "green-600",
+        "signed",
+        t("contract.signed_info")
+      );
+    }
+    if (!leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
+      return (
+        <>
+          <button
+            onClick={() => handleRedirectToContract()}
+            className="w-full py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition duration-200"
+          >
+            {t("continue.btn")}
+          </button>
+        </>
+      );
+    }
 
-            if (result.error) {
-                console.error(result.error.message);
-            } else {
-                toast.info(t("info.loading"));
-            }
-        } catch (error) {
-            console.error(t("error.error"), error.message);
-            toast.info(t("error.info"));
-        }
-    };
+    if (
+      !leaseOrder.isSigned &&
+      leaseOrder.status === "PENDING" &&
+      !leaseOrder.inReview
+    ) {
+      return (
+        <>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition duration-200"
+          >
+            {t("continue.btn_2")}
+          </button>
+        </>
+      );
+    }
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const year = String(date.getFullYear()).slice(-2);
->>>>>>> b0c250091e609284d44981f0b34cfe9ae71b6554
+    if (
+      !leaseOrder.isSigned &&
+      leaseOrder.status === "IN_PROGRESS" &&
+      leaseOrder.inReview
+    ) {
+      return renderStatus(
+        t("contract.in_revision"),
+        "blue-500",
+        "pending",
+        t("contract.in_revision_info")
+      );
+    }
 
-        return `${day}/${month}/${year}`;
-    };
+    return null;
+  };
 
-    const renderStatus = (label, color, tooltipKey, tooltipContent) => (
+  return (
+    <>
+      <article className="max-w-md bg-white border border-gray-200 rounded-xl drop-shadow-md hover:drop-shadow-xl duration-300 overflow-hidden">
+        {/* Imagen */}
         <div
-            className="relative flex items-center justify-center gap-1 cursor-pointer"
-            onMouseEnter={() => setIsTooltipOpen((prev) => ({ ...prev, [tooltipKey]: true }))}
-            onMouseLeave={() => setIsTooltipOpen((prev) => ({ ...prev, [tooltipKey]: false }))}
+          onClick={handleRedirect}
+          className="relative h-36 w-36 sm:w-[302.55px] sm:h-48 rounded-xl"
         >
-            <p className={`text-center text-${color} tex-yello font-bold`}>{label}</p>
-            <QuestionMarkCircleIcon className={`w-5 h-5 text-${color}`} />
-            <Tooltip isOpen={isTooltipOpen[tooltipKey]} content={tooltipContent} position="top" />
+          <Image
+            className="h-full rounded-t-xl"
+            src={property?.images[0] || ""}
+            fill
+            alt="Imagen de propiedad"
+          />
         </div>
-    );
 
-    const renderActions = () => {
-        if (leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
-            return renderStatus(t("contract.signed"), "green-600", "signed", t("contract.signed_info"));
-        }
-        if (!leaseOrder.isSigned && leaseOrder.status === "APPROVED") {
-            return (
-                <>
-                    <button
-                        onClick={() => handleRedirectToContract()}
-                        className="w-full py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition duration-200"
-                    >
-                        {t("continue.btn")}
-                    </button>
-                </>
-            );
-        }
+        {/* Contenido */}
+        <div className="p-4 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-600">
+                {category?.replace(/_/g, "").toLowerCase() || ""}
+              </span>
+            </div>
+            <span className="text-xs text-gray-500">
+              {formatDate(leaseOrder.date)}
+            </span>
+          </div>
 
-        if (!leaseOrder.isSigned && leaseOrder.status === "PENDING" && !leaseOrder.inReview) {
-            return (
-                <>
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="w-full py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition duration-200"
-                    >
-                        {t("continue.btn_2")}
-                    </button>
-                </>
-            );
-        }
+          <div>
+            <h2 className="text-sm text-gray-500 flex items-center gap-2">
+              <Image
+                src="/property-card/location-icon.svg"
+                width={14}
+                height={14}
+                alt="Ubicación"
+              />
+              {`${property?.property?.city}, ${property?.property?.street} ${property?.property?.streetNumber}`}
+            </h2>
+            <span className="text-xs font-medium text-gray-600">
+              {t("code")} {property.serial || ""}
+            </span>
+          </div>
 
-        if (!leaseOrder.isSigned && leaseOrder.status === "IN_PROGRESS" && leaseOrder.inReview) {
-            return renderStatus(t("contract.in_revision"), "blue-500", "pending", t("contract.in_revision_info"));
-        }
+          {/* Información de contrato */}
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-sm text-gray-600">
+                {t("income")} {formatDate(leaseOrder.startDate)}
+              </p>
+              <p className="text-sm text-gray-600">
+                {t("out")} {formatDate(leaseOrder.endDate)}
+              </p>
+            </div>
+            {property?.price > 0 && (
+              <span className="text-lg font-bold text-blue-600">
+                € {property?.price}{" "}
+                <span className="text-sm">{t("month")}</span>
+              </span>
+            )}
+          </div>
 
-        return null;
-    };
+          {/* Acciones y estados */}
+          <div>{renderActions()}</div>
+        </div>
+      </article>
 
-<<<<<<< HEAD
       {/* Formulario oculto para Redsys */}
       {redsysForm}
 
@@ -354,27 +316,25 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
 
               {/* Contenido del Modal */}
               <h2 className="text-lg font-semibold mb-4">
-                Detalles de tu pago
+                {t("detail_payment.title")}
               </h2>
               <p className="text-sm mb-4">
-                <strong>Ingreso:</strong> {formatDate(leaseOrder.startDate)}
+                <strong>{t("income")}</strong>{" "}
+                {formatDate(leaseOrder.startDate)}
               </p>
               <p className="text-sm mb-4">
-                <strong>Salida:</strong> {formatDate(leaseOrder.endDate)}
+                <strong>{t("out")}</strong> {formatDate(leaseOrder.endDate)}
               </p>
               <p className="text-sm mb-4">
-                El monto total a pagar es de{" "}
+                {t("detail_payment.total_pay")}{" "}
                 <span className="font-bold">{property?.price}€</span>.
               </p>
-              <p className="text-sm mb-6">
-                Después de realizar el pago, serás redirigido automáticamente
-                para firmar tu contrato digital.
-              </p>
+              <p className="text-sm mb-6">{t("detail_payment.after_pay")}</p>
               <button
                 onClick={handleRedsysCheckout}
                 className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
               >
-                Realizar Pago
+                {t("detail_payment.make_pay")}
               </button>
             </motion.div>
           </motion.div>
@@ -382,102 +342,4 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
       </AnimatePresence>
     </>
   );
-=======
-    return (
-        <>
-            <article className="max-w-md bg-white border border-gray-200 rounded-xl drop-shadow-md hover:drop-shadow-xl duration-300 overflow-hidden">
-                {/* Imagen */}
-                <div onClick={handleRedirect} className="relative h-36 w-36 sm:w-[302.55px] sm:h-48 rounded-xl">
-                    <Image className="h-full rounded-t-xl" src={property?.images[0] || ""} fill alt="Imagen de propiedad" />
-                </div>
-
-                {/* Contenido */}
-                <div className="p-4 flex flex-col gap-4">
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-gray-600">{category?.replace(/_/g, "").toLowerCase() || ""}</span>
-                        </div>
-                        <span className="text-xs text-gray-500">{formatDate(leaseOrder.date)}</span>
-                    </div>
-
-                    <div>
-                        <span className="text-sm font-medium text-gray-600">
-                            {t("code")} {property.serial || ""}
-                        </span>
-                    </div>
-
-                    <h2 className="text-xs text-gray-500 flex items-center gap-2">
-                        <Image src="/property-card/location-icon.svg" width={18} height={18} alt="Ubicación" />
-                        {category === "HELLO_ROOM" || category === "HELLO_COLIVING" || category === "HELLO_LANDLORD"
-                            ? `${property?.property?.city}, ${property?.property?.street} ${property?.property?.streetNumber}`
-                            : `${property?.city}, ${property?.street} ${property?.streetNumber}` || ""}
-                    </h2>
-
-                    {/* Información de contrato */}
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <p className="text-sm text-gray-600">
-                                {t("income")} {formatDate(leaseOrder.startDate)}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                                {t("out")} {formatDate(leaseOrder.endDate)}
-                            </p>
-                        </div>
-                        {property?.price > 0 && (
-                            <span className="text-lg font-bold text-blue-600">
-                                € {property?.price} <span className="text-sm">{t("month")}</span>
-                            </span>
-                        )}
-                    </div>
-
-                    {/* Acciones y estados */}
-                    <div>{renderActions()}</div>
-                </div>
-            </article>
-
-            <AnimatePresence>
-                {isModalOpen && (
-                    <motion.div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                    >
-                        <motion.div
-                            className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6 relative"
-                            initial={{ y: "-100vh", opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: "-100vh", opacity: 0 }}
-                            transition={{ type: "spring", stiffness: 120, damping: 20 }}
-                        >
-                            {/* Botón de cerrar */}
-                            <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-                                ✖
-                            </button>
-
-                            {/* Contenido del Modal */}
-                            <h2 className="text-lg font-semibold mb-4">Detalles de tu pago</h2>
-                            <p className="text-sm mb-4">
-                                <strong>{t("income")}</strong> {formatDate(leaseOrder.startDate)}
-                            </p>
-                            <p className="text-sm mb-4">
-                                <strong>{t("out")}</strong> {formatDate(leaseOrder.endDate)}
-                            </p>
-                            <p className="text-sm mb-4">
-                                {t("detail_payment.total_pay")} <span className="font-bold">{property?.price}€</span>.
-                            </p>
-                            <p className="text-sm mb-6">{t("detail_payment.after_pay")}</p>
-                            <button
-                                onClick={handleCheckout}
-                                className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
-                            >
-                                {t("make_pay")}
-                            </button>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </>
-    );
->>>>>>> b0c250091e609284d44981f0b34cfe9ae71b6554
 }
