@@ -32,8 +32,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import HTMLReactParser from "html-react-parser";
 import NavbarV3 from "../components/nav_bar/NavbarV3";
-import axios from "axios";
-import TestRedSysButton from "../components/public/redsysBtnPrueba";
 
 const helloroom = {
     hero: {

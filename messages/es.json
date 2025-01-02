@@ -111,6 +111,7 @@
         "link_terms_and_conditions": "Términos y condiciones",
         "title_tenants": "Inquilinos",
         "link_how_it_works": "Cómo funciona",
+        "link_clauses": "Cláusulas del contrato",
         "link_offers": "Promociones",
         "title_owners": "Propietarios",
         "link_advertise": "Anuncia tu propiedad",
@@ -124,7 +125,9 @@
         "title_download": "DESCARGA LA APP",
         "title_follow_us": "Síguenos",
         "title_payment_methods": "Métodos de pago",
-        "legal_rights": "Todos los derechos reservados"
+        "legal_rights": "Todos los derechos reservados",
+        "contact": "Contáctanos",
+        "link_faq": "Preguntas frecuentes"
     },
     "secondary_category_selector": {
         "search_btn": "Buscar alojamiento",
@@ -439,6 +442,11 @@
         }
     },
     "room_details": {
+        "title": "Alojamiento",
+        "only_women": "Piso solo para chicas",
+        "only_men": "Piso solo para chicos",
+        "mixed": "Piso mixto",
+        "is_reserved": "¡Este alojamiento ya esta reservado!",
         "other_rooms_title": "Otras habitaciones en el mismo piso",
         "desc_sec_title": "Descripción",
         "location_sec_title": "Ubicación",
@@ -452,6 +460,9 @@
             "title_6": "Opinion del agente",
             "title_7": "Normas de convivencia",
             "title_8": "Otros servicios"
+        },
+        "amenities": {
+            "h2": "¿Qué ofrece este lugar?"
         }
     },
     "reservation_btn": {

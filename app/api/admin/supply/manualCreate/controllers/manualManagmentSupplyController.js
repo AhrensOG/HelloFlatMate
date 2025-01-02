@@ -39,7 +39,6 @@ export async function manualCreateSupply(data) {
       clientId: data.clientId,
       propertyId: data.propertyId,
     });
-    console.log(data);
     return NextResponse.json(supply.toJSON(), { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });

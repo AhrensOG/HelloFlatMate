@@ -138,7 +138,6 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
       if (selectedProperty.category !== "HELLO_STUDIO" && selectedRoom) {
         leaseOrderData.roomId = selectedRoom;
       }
-      console.log(leaseOrderData)
       const res = await axios.post("/api/lease_order/manualCreate", leaseOrderData);
     } catch (error) {
       console.log(error);
@@ -170,7 +169,6 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
               url: uploadedContract.url,
             }
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }

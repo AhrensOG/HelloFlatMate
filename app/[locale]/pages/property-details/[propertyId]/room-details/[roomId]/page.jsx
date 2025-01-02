@@ -142,7 +142,9 @@ export default function RoomDetails({ params }) {
     const handleShowModal = () => {
         if (!state?.user?.id) {
             toast.info("Inicia sesión antes de continuar");
-            return router.push("/pages/auth");
+            const currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
+            window.location.href = `/pages/auth?redirect=${currentUrl}`;
+            return;
         }
         setShowModal(!showModal);
     };
@@ -169,14 +171,12 @@ export default function RoomDetails({ params }) {
                 </header>
                 <main className={`flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}>
                     <div className="w-full space-y-2 sticky top-0 min-h-56 bg-white z-10 pt-2 pb-1">
-                        <h1 className="font-bold text-[1.37rem]">{roomData?.name || data?.name || "Alojamiento"}</h1>
+                        <h1 className="font-bold text-[1.37rem]">{roomData?.name || data?.name || t("title")}</h1>
                         <h4 className="font-light text-[#000000B2]">
-                            ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"}){" "}
+                            ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? t("only_women") : t("mixed")}){" "}
                         </h4>
                         <h4 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h4>
-                        <h4 className="text-base font-bold text-resolution-blue">
-                            {!roomData?.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
-                        </h4>
+                        <h4 className="text-base font-bold text-resolution-blue">{!roomData?.isActive ? t("is_reserved") : ""}</h4>
                         <PriceSection data={roomData?.price} />
                         <ReservationButton callback={handleShowModal} disabled={!roomData?.isActive} />
                     </div>
@@ -195,13 +195,13 @@ export default function RoomDetails({ params }) {
                     {data.amenities && data.amenities?.length > 0 ? <AmenitiesSection data={data.amenities} /> : ""}
                     {/* <AmenitiesSection data={data.amenities} /> */}
                     {roomData?.linkVideo ? <VideoEmbedSection videoUrl={roomData?.linkVideo} /> : ""}
-                    {/* <LocationSection
+                    <LocationSection
                         street={data?.street}
                         streetNumber={data?.streetNumber}
                         postalCode={data?.postalCode}
                         city={data?.city}
                         country={"España"}
-                    /> */}
+                    />
                     <MoreInfoSection
                         data={[
                             {
@@ -274,13 +274,13 @@ export default function RoomDetails({ params }) {
                             )}
                         </div>
                         {roomData?.linkVideo ? <VideoEmbedSection videoUrl={roomData?.linkVideo} /> : null}
-                        {/* <LocationSection
+                        <LocationSection
                             street={data?.street}
                             streetNumber={data?.streetNumber}
                             postalCode={data?.postalCode}
                             city={data?.city}
                             country={"España"}
-                        /> */}
+                        />
                         {filteredRooms.length > 0 ? (
                             <RoomSection data={filteredRooms} title={t("other_rooms_title")} category={data.category} />
                         ) : null}
@@ -293,12 +293,10 @@ export default function RoomDetails({ params }) {
                         <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
                             <h1 className="font-bold text-[1.37rem]">{roomData?.name}</h1>
                             <h6 className="font-light text-[#000000B2]">
-                                ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"})
+                                ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? t("only_women") : t("mixed")})
                             </h6>
                             <h6 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h6>
-                            <h6 className="text-base font-bold text-resolution-blue">
-                                {!roomData?.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
-                            </h6>
+                            <h6 className="text-base font-bold text-resolution-blue">{!roomData?.isActive ? t("is_reserved") : ""}</h6>
                             <PriceSection data={roomData?.price} />
                             <div className="flex flex-col gap-6">
                                 <ReservationButton callback={handleShowModal} disabled={!roomData?.isActive} />
@@ -356,9 +354,11 @@ export default function RoomDetails({ params }) {
                             endDate: null,
                             price: roomData?.price,
                             propertyId: data.id,
+                            propertySerial: data.serial,
                             clientId: state?.user?.id,
                             ownerId: data.ownerId,
                             roomId: roomData?.id,
+                            roomSerial: roomData.serial,
                             propertyName: roomData?.name,
                             user: state?.user,
                             rentalPeriods: roomData?.rentalItems,

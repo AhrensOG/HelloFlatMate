@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function DetailsModal({ data, callback }) {
-  console.log(data);
   return (
     <motion.aside
       initial={{ opacity: 0, y: "-100%" }}

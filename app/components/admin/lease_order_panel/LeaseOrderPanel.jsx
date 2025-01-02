@@ -20,7 +20,7 @@ export default function LeaseOrderPanel({ data }) {
 
     const property = data;
     const rooms = useMemo(() => property?.rooms?.filter((room) => room.leaseOrdersRoom.length > 0), [property?.rooms]);
-    const leaserOrders = useMemo(() => (property?.category === "HELLO_STUDIO" ? property?.leaseOrdersProperty : null), [property]);
+    const leaserOrders = useMemo(() => ([]), [property]);
 
     const currentUser = useMemo(() => state?.user, [state?.user]);
 

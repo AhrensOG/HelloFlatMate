@@ -3,8 +3,10 @@ import ButtonReadAndSingContract from "./ButtonReadAndSingContract";
 import DocumentsSection from "./contract_second_view/DocumentsSection";
 import TitleSection from "./TitleSection";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function ContractSecondView({ handleContinue, handleBack }) {
+  const [next, setNext] = useState(false)
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -39,11 +41,12 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
             }
             width={135}
             height={135}
+            setNext={setNext}
           />
           <ButtonReadAndSingContract
             action={() => handleContinue()}
             title={"Continuar"}
-            isChecked={true}
+            isChecked={next}
           />
         </div>
       </div>

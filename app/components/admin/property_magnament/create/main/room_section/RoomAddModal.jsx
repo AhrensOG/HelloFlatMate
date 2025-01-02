@@ -170,8 +170,8 @@ export default function RoomAddModal({ data, setData, showModal, propertyId, cat
                             onChange={(event) => setDataRoom({ ...dataRoom, calendar: event.target.value })}
                             className="w-full p-2 border border-gray-300 rounded"
                         >
-                            <option value="SIMPLE">Simple</option>
-                            <option value="FULL">Completo</option>
+                            <option value="SIMPLE">Universitario</option>
+                            <option value="FULL">Vacacional</option>
                         </select>
                     </div>
                     <div className="mt-4">

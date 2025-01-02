@@ -17,7 +17,6 @@ const BaseWorkerPanelTemplate = ({ children, section }) => {
       try {
         const res = await axios.get(`/api/to_do?id=${id}`);
         setTask(res.data);
-        console.log(res.data);
       } catch (err) {
         console.log(err);
       }

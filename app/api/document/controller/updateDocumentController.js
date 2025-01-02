@@ -2,7 +2,6 @@ import { Admin, Document } from "@/db/init"
 import { NextResponse } from "next/server"
 
 export async function updateDocument(data) {
-    console.log(data);
 
     if (!data) {
         return NextResponse.json({ message: "No data provided" }, { status: 400 })

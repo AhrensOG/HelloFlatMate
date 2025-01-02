@@ -103,12 +103,18 @@ const PayModal = ({ payment, user, onClose }) => {
 
     return (
         <div className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 p-2">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+                {/* Botón de cerrar */}
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                    ✖
+                </button>
+
                 <h2 className="text-lg font-semibold text-center text-blue-600 mb-4">
-                    <span className="font-bold">{t("title")}</span> <br />
+                    <span className="font-bold">Detalles del Pago Mensual</span> <br />
                     <span className="font-bold">{payment.month}</span>
                 </h2>
                 <div className="flex flex-col items-center mb-6 gap-2">
+                    {/* Imagen */}
                     <div className="relative w-full h-52">
                         <Image
                             src={payment.orderType === "ROOM" ? payment.order?.room?.images[0] : payment.order?.property?.images[0]}
@@ -117,31 +123,33 @@ const PayModal = ({ payment, user, onClose }) => {
                             className="object-cover object-center rounded-lg"
                         />
                     </div>
+                    {/* Info del pago */}
                     <div className="w-full flex flex-col justify-center items-start">
                         <p className="text-sm text-gray-500">
-                            <span className="font-semibold">{t("month")} </span> {payment.month}
+                            <span className="font-semibold">Mes: </span> {payment.month}
                         </p>
                         <p className="text-sm text-gray-500">
-                            <span className="font-semibold">{t("amount")} </span>
+                            <span className="font-semibold">Monto: </span>
                             {`€ ${payment.amount.toFixed(2)}`}
                         </p>
                         <p className="text-sm text-gray-500">
-                            <span className="font-semibold">{t("desc_1")} </span>
+                            <span className="font-semibold">Descripción: </span>
                             {payment.description}
                         </p>
                         <p className="text-sm text-gray-500">
-                            <span className="font-semibold">{t("room_code")} </span>
+                            <span className="font-semibold">Código de Alojamiento: </span>
                             {payment.orderType === "ROOM" ? payment.order?.room?.serial : payment.order?.property?.serial}
                         </p>
                     </div>
                 </div>
 
+                {/* Botones */}
                 <div className="flex justify-between">
                     <button onClick={onClose} className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition">
-                        {t("close")}
+                        Cerrar
                     </button>
-                    <button onClick={() => handlePayment()} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                        {t("pay_now")}
+                    <button onClick={handlePayment} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        Pagar ahora
                     </button>
                 </div>
             </div>

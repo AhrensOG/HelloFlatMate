@@ -1,9 +1,22 @@
+import validateHMACToken from "@/app/libs/lib";
 import { LeaseOrderRoom } from "@/db/init";
 import { NextResponse } from "next/server";
 import { Op } from "sequelize";
 
-export async function GET() {
+export async function GET(req) {
     try {
+        const secretKey = process.env.SECRET_KEY_CRON;
+        const secretPassword = process.env.SECRET_PASSWORD_CRON;
+        const token = req.headers.get("x-cron-token");
+
+        if (!token) {
+            return NextResponse.json({ error: "Token not provided" }, { status: 401 });
+        }
+
+        if (!validateHMACToken(token, secretPassword, secretKey)) {
+            return NextResponse.json({ error: "Invalid token 1" }, { status: 401 });
+        }
+
         const leaseOrders = await LeaseOrderRoom.findAll({ where: { isActive: true, endDate: { [Op.lte]: new Date() } } });
 
         if (leaseOrders.length === 0) {

@@ -10,6 +10,7 @@ export default function DocumentsSection({
   description,
   width,
   height,
+  setNext,
 }) {
   const { state } = useContext(Context);
   const documents = state.reservationInfo || {};
@@ -38,6 +39,7 @@ export default function DocumentsSection({
       <UploadFileButton
         description={check ? check.length : "Seleccionar archivo"}
         id={id}
+        setNext={setNext}
       />
     </div>
   );

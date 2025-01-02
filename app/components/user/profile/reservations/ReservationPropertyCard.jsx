@@ -4,15 +4,10 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-// import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Tooltip from "@/app/components/public/AuxiliarComponents/Tooltip";
 import { useTranslations } from "next-intl";
-
-// const stripePromise = loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-// );
 
 function generateDsOrder(leaseOrderId) {
     const baseStr = String(leaseOrderId);
@@ -28,13 +23,6 @@ function generateDsOrder(leaseOrderId) {
     return dsOrder;
 }
 
-// export default function ReservationPropertyCard({ property, leaseOrder, user = false }) {
-//     const t = useTranslations("user_history.card");
-//     const [isTooltipOpen, setIsTooltipOpen] = useState({
-//         signed: false,
-//         pending: false,
-//     });
-//     const [isModalOpen, setIsModalOpen] = useState(false);
 export default function ReservationPropertyCard({ property, leaseOrder, user = false }) {
     const t = useTranslations("user_history.card");
     const [isTooltipOpen, setIsTooltipOpen] = useState({
@@ -66,59 +54,6 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
         const path = `/pages/user/contract/${property?.propertyId || property?.id}`;
         route.push(path);
     };
-
-    // const handleCheckout = async () => {
-    //   const propertyId = property?.propertyId || property?.id;
-    //   const roomId =
-    //     category === "HELLO_ROOM" ||
-    //     category === "HELLO_COLIVING" ||
-    //     category === "HELLO_LANDLORD"
-    //       ? property.id
-    //       : false;
-    //   const userEmail = user?.email || ""; // Ajusta según tus datos de usuario
-    //   const price = parseInt(property?.price);
-    //   const propertyName = property?.serial;
-    //   const leaseOrderId = leaseOrder?.id;
-
-    //   try {
-    //     const response = await fetch("/api/stripe/create-checkout-session", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         propertyId,
-    //         userEmail,
-    //         price,
-    //         propertyName,
-    //         leaseOrderId,
-    //         roomId,
-    //         category,
-    //       }),
-    //     });
-
-    //     const session = await response.json();
-    //     if (session.error) {
-    //       throw new Error(session.error);
-    //     }
-
-    //     const stripe = await stripePromise;
-    //     const result = await stripe.redirectToCheckout({
-    //       sessionId: session.id,
-    //     });
-
-    //     if (result.error) {
-    //       console.error(result.error.message);
-    //     } else {
-    //       toast.info("Redirigiendo al checkout de Stripe...");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error al iniciar el checkout de Stripe:", error.message);
-    //     toast.info(
-    //       "Hubo un problema al procesar tu pago. Por favor, intenta nuevamente."
-    //     );
-    //   }
-    // };
 
     const handleRedsysCheckout = async () => {
         try {
@@ -166,8 +101,6 @@ export default function ReservationPropertyCard({ property, leaseOrder, user = f
             setTimeout(() => {
                 formRef.current.submit();
             }, 500);
-
-            // Opción B) Mostrar un nuevo modal con un botón de “Confirmar” para postear.
         } catch (error) {
             console.error(t("error.error"), error.message);
             toast.error(t("error.info"));

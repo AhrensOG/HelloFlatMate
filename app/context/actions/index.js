@@ -28,7 +28,8 @@ export const createContractPDF = async (
   values,
   dataContract,
   clientSignatureUrl,
-  ownerSignatureUrl = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Firmas%2FhelloflatmateSignature.png?alt=media&token=d2049b5a-fccf-4407-bfcd-cd5d73f462a2"
+  ownerSignatureUrl,
+  files
 ) => {
   try {
     const contractInfo = { values, clientSignatureUrl, ownerSignatureUrl };
@@ -56,12 +57,27 @@ export const createContractPDF = async (
         ...dataContract,
       });
     }
+
+    // create document
+    const docInfo = await uploadFiles(files);
+    const docUrls = docInfo.map((doc) => doc.url);
+
+    const docData = {
+      userId: dataContract.clientId,
+      name: "Nómina / Matrícula",
+      type: "ROSTER",
+      urls: docUrls,
+      typeUser: "CLIENT",
+    };
+
+    await axios.post("/api/document", docData);
+
     return dispatch({
       type: "CONTRACT_PDF_DATA",
       payload: data,
     });
   } catch (error) {
-    throw new Error("Internal Server Error: SAVE_USER_CONTRACT_INFORMATION");
+    throw new Error(error);
   }
 };
 

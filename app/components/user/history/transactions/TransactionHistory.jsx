@@ -38,22 +38,41 @@ export default function TransactionHistory({ redirect }) {
     const [isAgencyFeesOpen, setIsAgencyFeesOpen] = useState(false);
 
     useEffect(() => {
-        if (state.user?.rentPayments && state.user?.supplies) {
-            const rentPaymentsWithId = state.user.rentPayments.map((payment) => ({
-                ...payment,
-                uniqueKey: uuidv4(),
-            }));
+        if (state.user?.rentPayments && state.user?.supplies && state.user?.leaseOrdersRoom) {
+            // Crear un mapa para las leaseOrdersRoom para un acceso rápido por leaseOrderId
+            const leaseOrdersMap = state.user.leaseOrdersRoom.reduce((acc, leaseOrder) => {
+                acc[leaseOrder.id] = {
+                    startDate: leaseOrder.startDate,
+                    endDate: leaseOrder.endDate,
+                };
+                return acc;
+            }, {});
+    
+            // Mapear rentPayments con las fechas correspondientes de leaseOrdersRoom
+            const rentPaymentsWithId = state.user.rentPayments.map((payment) => {
+                const leaseOrder = leaseOrdersMap[payment.leaseOrderId] || {};
+                return {
+                    ...payment,
+                    uniqueKey: uuidv4(),
+                    startDate: leaseOrder.startDate || null,
+                    endDate: leaseOrder.endDate || null,
+                };
+            });
+    
+            // Mapear supplies con uniqueKey
             const supplyPaymentsWithId = state.user.supplies.map((payment) => ({
                 ...payment,
                 uniqueKey: uuidv4(),
             }));
-
+    
+            // Actualizar el estado
             setAllPayments({
                 rentPayments: rentPaymentsWithId,
                 supplies: supplyPaymentsWithId,
             });
         }
     }, [state.user]);
+    
 
     const downloadBillPDF = async (payment) => {
         const toastId = toast.loading("Procesando...")
@@ -145,38 +164,38 @@ export default function TransactionHistory({ redirect }) {
 
     const renderRentPayments = () => {
         const rentPayments = allPayments.rentPayments || [];
-
-        // Encontrar el pago con quotaNumber 1 para obtener su fecha como referencia (startDate)
-        const firstPayment = rentPayments.find((payment) => payment.quotaNumber === 1);
-        const startDate = firstPayment ? new Date(firstPayment.date) : null;
-
-        const getMonthFromQuota = (startDate, quotaNumber) => {
+    
+        // Función para obtener el nombre del mes desde una fecha y cuota
+        const getMonthFromLeaseOrder = (startDate, quotaNumber) => {
             if (!startDate) return "Fecha no disponible";
-
+    
             const date = new Date(startDate);
-            date.setMonth(date.getMonth() + quotaNumber - 1); // Ajustar meses según la cuota
+            date.setMonth(date.getMonth() + quotaNumber - 1); // Ajustar al mes correcto
+    
+            // Si la fecha está más allá de endDate, devolver "Fecha fuera de rango"
             return date.toLocaleDateString("es-ES", {
                 month: "long",
                 year: "numeric",
             });
         };
-
+    
         // Función para mostrar el toast con Sonner
         const showToast = () => {
             return toast.info("Muy pronto podrá ver la factura.", {
                 description: "Estamos trabajando en la migración de datos.",
             });
         };
-
+    
         return (
             <div>
-                {console.log(allPayments)}
                 <h2
                     onClick={() => setIsReserveOpen(!isReserveOpen)}
                     className="cursor-pointer text-lg font-semibold flex items-center justify-between gap-2 mt-2 py-3 px-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
                 >
                     <span className="text-blue-700">Pagos mensuales</span>
-                    <ChevronDownIcon className={`${isReserveOpen ? "rotate-180" : "rotate-0"} transition-all duration-300 ease-in-out size-6`} />
+                    <ChevronDownIcon
+                        className={`${isReserveOpen ? "rotate-180" : "rotate-0"} transition-all duration-300 ease-in-out size-6`}
+                    />
                 </h2>
                 <motion.div
                     initial={{ height: 0 }}
@@ -186,53 +205,57 @@ export default function TransactionHistory({ redirect }) {
                 >
                     <div className="grid gap-1">
                         {rentPayments.length > 0 ? (
-                            rentPayments.map((payment) => (
-                                <motion.div
-                                    key={`reservation-${payment.uniqueKey}`}
-                                    className="p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition cursor-pointer"
-                                    initial={{ y: -20, opacity: 0 }}
-                                    animate={{
-                                        y: 0,
-                                        opacity: 1,
-                                        transition: { duration: 0.2 },
-                                    }}
-                                    // onClick={showToast} // Mostrar toast al hacer clic
-                                >
-                                    <div className="flex justify-between items-center">
-                                        <h3 className="text-md font-medium">{`Pago - ${getMonthFromQuota(startDate, payment.quotaNumber)}`}</h3>
-                                        {renderPaymentStatus(payment.status)}
-                                    </div>
-                                    <p className="text-sm text-gray-500">ID: {payment.paymentId || "-"}</p>
-                                    <p className="text-sm text-gray-500">
-                                        {new Date(payment.date).toLocaleDateString("es-ES", {
-                                            day: "2-digit",
-                                            month: "long",
-                                            year: "numeric",
-                                        })}
-                                    </p>
-                                    <p className="text-sm text-gray-500">Descripción: {payment.description || "-"}</p>
-                                    <div className="flex justify-between items-center">
-                                        <p className="text-lg mt-2 p-2 bg-blue-100 text-blue-800 max-w-20 rounded-full text-center">
-                                            € {payment.amount}
+                            rentPayments.map((payment) => {
+                                const monthLabel = getMonthFromLeaseOrder(payment.startDate, payment.quotaNumber);
+    
+                                return (
+                                    <motion.div
+                                        key={`reservation-${payment.uniqueKey}`}
+                                        className="p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition cursor-pointer"
+                                        initial={{ y: -20, opacity: 0 }}
+                                        animate={{
+                                            y: 0,
+                                            opacity: 1,
+                                            transition: { duration: 0.2 },
+                                        }}
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <h3 className="text-md font-medium capitalize">{`Pago - ${monthLabel}`}</h3>
+                                            {renderPaymentStatus(payment.status)}
+                                        </div>
+                                        <p className="text-sm text-gray-500">ID: {payment.paymentId || "-"}</p>
+                                        <p className="text-sm text-gray-500">
+                                            {new Date(payment.date).toLocaleDateString("es-ES", {
+                                                day: "2-digit",
+                                                month: "long",
+                                                year: "numeric",
+                                            })}
                                         </p>
-                                        <button
-                                            type="button"
-                                            className="h-6 w-6"
-                                            onClick={() => downloadBillPDF(payment)}
-                                        >
-                                            <ArrowDownTrayIcon className="h-6 w-6" />
-                                        </button>
-                                    </div>
-                                </motion.div>
-                            ))
+                                        <p className="text-sm text-gray-500">Descripción: {payment.description || "-"}</p>
+                                        <div className="flex justify-between items-center">
+                                            <p className="text-lg mt-2 p-2 bg-blue-100 text-blue-800 max-w-20 rounded-full text-center">
+                                                € {payment.amount}
+                                            </p>
+                                            <button
+                                                type="button"
+                                                className="h-6 w-6"
+                                                onClick={() => downloadBillPDF(payment)}
+                                            >
+                                                <ArrowDownTrayIcon className="h-6 w-6" />
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })
                         ) : (
-                            <p className="text-gray-500">No hay pagos de mensuales disponibles.</p>
+                            <p className="text-gray-500">No hay pagos mensuales disponibles.</p>
                         )}
                     </div>
                 </motion.div>
             </div>
         );
     };
+    
 
     const renderSupplyPayments = () => {
         // Filtrar los pagos de suministros, excluyendo las tasas de la agencia

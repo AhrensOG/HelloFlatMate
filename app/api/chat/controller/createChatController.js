@@ -132,7 +132,6 @@ export async function createGroupChat(data) {
 }
 
 export async function createSupportChat(data) {
-    console.log(data);
 
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });

@@ -13,7 +13,6 @@ export default function ChatsPanelPage() {
       try {
         const res = await axios.get("/api/admin/chat");
         setChats(res.data);
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }

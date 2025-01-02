@@ -47,7 +47,6 @@ const SignaturePad = ({
         id: order.id,
         isSigned: true,
       });
-      console.log(res);
       return;
     } catch (err) {
       console.log(err);

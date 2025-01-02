@@ -21,7 +21,6 @@ export default function FinalModal({ data, setData }) {
 
   // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
-    console.log(data);
 
     const { name, value } = e.target;
     setFormData({

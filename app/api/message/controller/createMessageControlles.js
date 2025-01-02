@@ -2,7 +2,6 @@ import { Admin, Chat, ChatParticipant, Client, Message, Owner } from "@/db/init"
 import { NextResponse } from "next/server";
 
 export async function createMessage(data) {
-    console.log(data);
 
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });

@@ -21,7 +21,6 @@ export async function handlerChatBot(data) {
             ],
             stream: true,
         });
-        console.log(stream);
     } catch (error) {
         console.error("Error al generar respuesta:", error);
         return NextResponse.json({ error: "Error generando respuesta" }, { status: 500 });

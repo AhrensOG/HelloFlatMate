@@ -49,7 +49,6 @@ export default function TaskDetails({ section }) {
     }, [user, id]);
 
     const handleShowModal = (comment, status) => {
-        console.log(status, comment);
 
         setShowModal(!showModal);
 
@@ -90,7 +89,6 @@ export default function TaskDetails({ section }) {
                 workerId: user?.id,
                 userId: task.userId,
             });
-            console.log(res);
         } catch (err) {
             console.log(err);
             throw err;
@@ -115,7 +113,6 @@ export default function TaskDetails({ section }) {
                 transition={{ duration: 0.8 }}
             >
                 <header>
-                    {console.log(task)}
                     <UserSerivceNavBar />
                 </header>
                 <main className="flex-grow">

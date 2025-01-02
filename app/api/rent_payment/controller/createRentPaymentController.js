@@ -34,7 +34,6 @@ export async function createRentPayment(data) {
         if (!property) {
             return NextResponse.json({ error, message: "Paymentable not found" }, { status: 404 });
         }
-        console.log(property.toJSON());
 
         const client = await Client.findByPk(data.clientId);
         if (!client) {
@@ -54,7 +53,6 @@ export async function createRentPayment(data) {
             date: new Date(),
             ownerId: data.paymentableType === "PROPERTY" ? property.ownerId : property.property.ownerId,
         };
-        console.log(paymenData);
 
         const rentPayment = await RentPayment.create(paymenData);
         return NextResponse.json(rentPayment, { status: 201 });

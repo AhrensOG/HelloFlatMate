@@ -5,38 +5,49 @@ import Link from "next/link";
 
 export default function Footer_1() {
     const t = useTranslations("footer");
+
     return (
         <>
             {/* //Mobile */}
-            <footer className="bg-[#f2efed] w-full flex flex-col gap-11 md:hidden py-10">
+            <footer className="bg-[#f5f2f1] w-full flex flex-col gap-11 md:hidden py-10">
                 <section className="flex flex-col gap-10 p-6">
                     <article className="flex flex-col gap-4">
                         <h2 className="font-bold uppercase text-lg">helloflatmate</h2>
                         <Link href="/sobre-nosotros" target="_blank" className="font-normal text-base">
                             {t("link_about_us")}
                         </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_blog")}
+                        <Link href="/contacto" target="_blank" className="font-normal text-base">
+                            {t("contact")}
                         </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_institutions")}
-                        </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_company_data")}
-                        </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_site_map")}
-                        </Link>
+                        {/* <Link href="#" target="_blank" className="font-normal text-base">
+              Blog
+            </Link>
+            <Link href="#" target="_blank" className="font-normal text-base">
+              Instituciones
+            </Link>
+            <Link href="#" target="_blank" className="font-normal text-base">
+              Datos de la empresa
+            </Link>
+            <Link href="#" target="_blank" className="font-normal text-base">
+              Mapa del sitio
+            </Link> */}
                     </article>
                     <article className="flex flex-col gap-4">
                         <h2 className="font-bold uppercase text-lg">{t("title_legal")}</h2>
                         <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                             {t("link_privacy_policy")}
                         </Link>
+                        {/* <Link
+              href="/privacy-policy"
+              target="_blank"
+              className="font-normal text-base"
+            >
+              Politica de cancelacion
+            </Link> */}
                         <Link href="/cookies" target="_blank" className="font-normal text-base">
                             {t("link_cookies_policy")}
                         </Link>
-                        <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
+                        <Link href="/terminos-condiciones" target="_blank" className="font-normal text-base">
                             {t("link_terms_and_conditions")}
                         </Link>
                     </article>
@@ -45,35 +56,37 @@ export default function Footer_1() {
                         <Link href="/como-funciona" target="_blank" className="font-normal text-base">
                             {t("link_how_it_works")}
                         </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_offers")}
+                        <Link href="/clausulas" target="_blank" className="font-normal text-base">
+                            {t("link_clauses")}
                         </Link>
                     </article>
-                    <article className="flex flex-col gap-4">
-                        <h2 className="font-bold uppercase text-lg">{t("title_owners")}</h2>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_advertise")}
-                        </Link>
-                    </article>
+                    {/* <article className="flex flex-col gap-4">
+            <h2 className="font-bold uppercase text-lg">Propietarios</h2>
+            <Link href="#" target="_blank" className="font-normal text-base">
+              Anuncia tu propiedad
+            </Link>
+          </article> */}
                     <article className="flex flex-col gap-4">
                         <h2 className="font-bold uppercase text-lg">{t("title_colaborators")}</h2>
-                        <Link href="#" target="_blank" className="font-normal text-base">
+                        <Link href="/colaboradores" className="font-normal text-base">
                             {t("link_colaborators")}
                         </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_become_partner")}
-                        </Link>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_work_with_us")}
-                        </Link>
+                        {/* <Link href="#" target="_blank" className="font-normal text-base">
+              Hazte Partner
+            </Link>
+            <Link href="#" target="_blank" className="font-normal text-base">
+              Trabaja con nosotros
+            </Link> */}
                     </article>
                 </section>
                 <section className="flex flex-col gap-7 p-6">
                     <h2 className="font-bold uppercase text-lg">{t("title_supp")}</h2>
-                    <button className="p-5 border border-[#676767] font-bold">{t("button_supp")}</button>
-                    <Link href="#" target="_blank" className="font-normal text-base">
-                        {t("link_supp")}
+                    <Link href="/faq" className="p-5 border border-[#676767] font-bold">
+                        {t("link_faq")}
                     </Link>
+                    {/* <Link href="#" target="_blank" className="font-normal text-base">
+            Contacta con Soporte
+          </Link> */}
                 </section>
 
                 <div className="flex items-center gap-4 p-6">
@@ -137,7 +150,7 @@ export default function Footer_1() {
                                 ></path>
                             </svg>
                         </Link>
-                        <Link href="#" target="_blank" className="">
+                        {/* <Link href="#" target="_blank" className="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 19 22" className="" aria-label="my-icon">
                                 <path
                                     d="M18.6455 9.10767C16.865 9.14858 15.2032 8.57581 13.7787 7.51209V14.8354C13.7787 17.6174 12.1169 20.0721 9.58457 21.054C7.09182 22.0359 4.24296 21.2995 2.502 19.213C0.72146 17.0855 0.40492 14.0989 1.67108 11.6442C2.93724 9.2304 5.54869 7.8803 8.23928 8.24851V11.9306C7.01269 11.5215 5.66739 11.9715 4.91561 13.0352C4.2034 14.1399 4.2034 15.5718 4.95518 16.6355C5.70696 17.6992 7.05226 18.1493 8.23928 17.7401C9.46587 17.331 10.2968 16.1446 10.2968 14.8354V0.516113H13.7787C13.7787 0.84341 13.7787 1.1298 13.8579 1.45709C14.0953 2.80719 14.847 3.99365 15.9945 4.73006C16.7463 5.26192 17.6959 5.54831 18.6455 5.54831V9.10767Z"
@@ -189,7 +202,7 @@ export default function Footer_1() {
                                     fill="#666666"
                                 ></path>
                             </svg>
-                        </Link>
+                        </Link> */}
                     </article>
                 </section>
                 <section>
@@ -209,69 +222,102 @@ export default function Footer_1() {
                                 <Link href="/sobre-nosotros" target="_blank" className="font-normal text-base">
                                     {t("link_about_us")}
                                 </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_blog")}
+                                <Link href="/contacto" target="_blank" className="font-normal text-base">
+                                    {t("contact")}
                                 </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_institutions")}
-                                </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_company_data")}
-                                </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_site_map")}
-                                </Link>
+                                {/* <Link
+                  href="#"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Blog
+                </Link>
+                <Link
+                  href="#"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Instituciones
+                </Link>
+                <Link
+                  href="#"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Datos de la empresa
+                </Link>
+                <Link
+                  href="#"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Mapa del sitio
+                </Link> */}
                             </article>
 
                             <article className="flex flex-col gap-4">
-                                <h2 className="font-bold uppercase text-lg">{t("title_legal")}</h2>
+                                <h2 className="font-bold uppercase text-lg">{t("legal_rights")}</h2>
                                 <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
                                     {t("link_privacy_policy")}
                                 </Link>
                                 <Link href="/cookies" target="_blank" className="font-normal text-base">
                                     {t("link_cookies_policy")}
                                 </Link>
-                                <Link href="/privacy-policy" target="_blank" className="font-normal text-base">
+                                <Link href="/terminos-y-condiciones" target="_blank" className="font-normal text-base">
                                     {t("link_terms_and_conditions")}
                                 </Link>
                             </article>
                         </div>
                         <div className="flex flex-col gap-9">
                             <article className="flex flex-col gap-4">
-                                <h2 className="font-bold uppercase text-lg">{t("title_tenants")}</h2>
+                                <h2 className="font-bold uppercase text-lg">{t("title_legal")}</h2>
                                 <Link href="/como-funciona" target="_blank" className="font-normal text-base">
                                     {t("link_how_it_works")}
                                 </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_offers")}
+                                <Link href="/clausulas" target="_blank" className="font-normal text-base">
+                                    {t("link_clauses")}
                                 </Link>
                             </article>
-                            <article className="flex flex-col gap-4">
-                                <h2 className="font-bold uppercase text-lg">{t("title_owners")}</h2>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_advertise")}
-                                </Link>
-                            </article>
+                            {/* <article className="flex flex-col gap-4">
+                <h2 className="font-bold uppercase text-lg">Propietarios</h2>
+                <Link
+                  href="#"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Anuncia tu propiedad
+                </Link>
+              </article> */}
                             <article className="flex flex-col gap-4">
                                 <h2 className="font-bold uppercase text-lg">{t("title_colaborators")}</h2>
-                                <Link href="#" target="_blank" className="font-normal text-base">
+                                <Link href="/colaboradores" className="font-normal text-base">
                                     {t("link_colaborators")}
                                 </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_become_partner")}
-                                </Link>
-                                <Link href="#" target="_blank" className="font-normal text-base">
-                                    {t("link_work_with_us")}
-                                </Link>
+                                {/* <Link
+                  href="#"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Hazte Partner
+                </Link>
+                <Link
+                  href="#"
+                  target="_blank"
+                  className="font-normal text-base"
+                >
+                  Trabaja con nosotros
+                </Link> */}
                             </article>
                         </div>
                     </section>
                     <section className="flex flex-col gap-7 p-6">
-                        <h2 className="font-bold uppercase text-lg">{t("title_supp")}</h2>
-                        <button className="p-5 border border-[#676767] font-bold text-xl w-[15rem]">{t("button_supp")}</button>
-                        <Link href="#" target="_blank" className="font-normal text-base">
-                            {t("link_supp")}
+                        <h2 className="font-bold uppercase text-lg">{t("title_support")}</h2>
+                        <Link href="/faq" className="p-5 border border-[#676767] font-bold text-lg  text-center w-[15rem]">
+                            {t("link_faq")}
                         </Link>
+                        {/* <Link href="#" target="_blank" className="font-normal text-base">
+              Contacta con Soporte
+            </Link> */}
                     </section>
 
                     <section className="flex flex-col gap-7 p-6 w-[25rem]">

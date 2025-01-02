@@ -41,7 +41,20 @@ const getStatusIcon = (status, paid) => {
     }
 };
 
+// Función para calcular la cantidad de meses entre dos fechas
+const calculateMonthsBetweenDates = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    let months = (end.getFullYear() - start.getFullYear()) * 12;
+    months -= start.getMonth();
+    months += end.getMonth() + 1;
+    return months;
+};
+
 const PaymentPage = ({ redirect, user }) => {
+    const [paymentsToShow, setPaymentsToShow] = useState([]);
+    const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
+    const [selectedPayment, setSelectedPayment] = useState(null); // Información del pago seleccionado
     const t = useTranslations("user_payment_history");
 
     const getMonthName = (date) => {
@@ -62,17 +75,6 @@ const PaymentPage = ({ redirect, user }) => {
         return months[date.getMonth()] + " " + date.getFullYear();
     };
 
-    // Función para calcular la cantidad de meses entre dos fechas
-    const calculateMonthsBetweenDates = (startDate, endDate) => {
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        let months = (end.getFullYear() - start.getFullYear()) * 12;
-        months -= start.getMonth();
-        months += end.getMonth() + 1;
-        return months;
-    };
-
-    // Función para obtener el estado descriptivo
     const getStatusDescription = (status) => {
         switch (status) {
             case "PENDING":
@@ -85,10 +87,6 @@ const PaymentPage = ({ redirect, user }) => {
                 return t("status.other");
         }
     };
-
-    const [paymentsToShow, setPaymentsToShow] = useState([]);
-    const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
-    const [selectedPayment, setSelectedPayment] = useState(null); // Información del pago seleccionado
 
     useEffect(() => {
         if (user) {
@@ -123,7 +121,8 @@ const PaymentPage = ({ redirect, user }) => {
                             quotaNumber: i,
                             description: `${t("desc")} ${getMonthName(pendingMonth)}`,
                             paid: false,
-                            orderType: order.hasOwnProperty("roomId") ? "ROOM" : "PROPERTY",
+                            //   orderType: order.hasOwnProperty("roomId") ? "ROOM" : "PROPERTY",
+                            orderType: "ROOM",
                         });
                     }
                 }
@@ -207,7 +206,7 @@ const PaymentPage = ({ redirect, user }) => {
             </main>
 
             {/* Modal para pagos pendientes */}
-            {showModal && selectedPayment && <PayModal payment={selectedPayment} onClose={handleCloseModal} />}
+            {showModal && selectedPayment && <PayModal payment={selectedPayment} user={user} onClose={handleCloseModal} />}
         </div>
     );
 };

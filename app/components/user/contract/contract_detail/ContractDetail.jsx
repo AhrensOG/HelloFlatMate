@@ -177,11 +177,21 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
           propertyId: property?.id,
         };
       }
+      const documentsFiles = state.reservationInfo?.nomina || [];
+      const ownerSignature = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Firmas%2FhelloflatmateSignature.png?alt=media&token=d2049b5a-fccf-4407-bfcd-cd5d73f462a2"
+      await createContractPDF(
+        dispatch,
+        values,
+        dataContract,
+        clientSignature,
+        ownerSignature,
+        documentsFiles
+      );
 
-      await createContractPDF(dispatch, values, dataContract, clientSignature);
-      return toast.success("¡Contrato bajo revision!");
+      return toast.success("¡Contrato firmado!");
     } catch (error) {
-      return toast.error("Ocurrió un error al crear el contrato.");
+      console.log(error);
+      return toast.info("Ocurrió un error al crear el contrato.");
     }
   };
 

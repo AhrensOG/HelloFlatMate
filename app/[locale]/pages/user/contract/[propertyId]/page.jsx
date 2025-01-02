@@ -6,7 +6,7 @@ import PaymentComponent from "@/app/components/user/payment/PaymentComponent";
 import GlobalContext from "@/app/context/GlobalContext";
 
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import ThankYou from "@/app/components/user/thank_you/ThankYou";
@@ -73,54 +73,67 @@ export default function Contract({ params }) {
                 handleBack={handleBack}
               />
             )}
+          </AnimatePresence>
+
+          <AnimatePresence>
             {currentStep === 2 && (
               <ContractSecondView
                 handleContinue={handleContinue}
                 handleBack={handleBack}
               />
             )}
-            {/* {currentStep === 3 && (
+          </AnimatePresence>
+          {/* {currentStep === 3 && (
               <ContractCheckIn
                 handleContinue={handleContinue}
                 handleBack={handleBack}
               />
             )} */}
-            {currentStep === 3 && (
-              <ContractDetail
-                owner={owner}
-                property={property}
-                room={room}
-                handleContinue={handleContinue}
-                handleBack={handleBack}
-              />
-            )}
-            {currentStep === 4 && (
-              <ThankYou
-                title={"¡Felicidades!"}
-                subTitle={
-                  "Tu firma digital y contrato fueron generados con éxito."
-                }
-                body={
-                  "Recuerda abonar los suministros antes de la fecha de ingreso a la propiedad."
-                }
-                action={"Regresar "}
-                callback={handleRedirect}
-              />
-            )}
-            {/* {currentStep === 3 && (
+          <Suspense fallback={<div></div>}>
+            <AnimatePresence>
+              {currentStep === 3 && (
+                <ContractDetail
+                  owner={owner}
+                  property={property}
+                  room={room}
+                  handleContinue={handleContinue}
+                  handleBack={handleBack}
+                />
+              )}
+            </AnimatePresence>
+          </Suspense>
+
+          <Suspense fallback={<div></div>}>
+            <AnimatePresence>
+              {currentStep === 4 && (
+                <ThankYou
+                  title={"¡Felicidades!"}
+                  subTitle={
+                    "Tu firma digital y contrato fueron generados con éxito."
+                  }
+                  body={
+                    "Recuerda abonar los suministros antes de la fecha de ingreso a la propiedad."
+                  }
+                  action={"Regresar "}
+                  callback={handleRedirect}
+                />
+              )}
+            </AnimatePresence>
+          </Suspense>
+          {/* {currentStep === 3 && (
               <PaymentComponent
                 handleContinue={handleContinue}
                 handleBack={handleBack}
               />
             )} */}
-            {/* {currentStep === 3 && (
+          {/* {currentStep === 3 && (
               <ContractDetail
                 owner={owner}
                 handleContinue={handleContinue}
                 handleBack={handleBack}
               />
             )} */}
-            {/* {currentStep === 4 && (
+          {/* {currentStep === 4 && (
               <ThankYou
                 title={"¡Felicidades!"}
                 subTitle={"Hemos recibido la información correctamente."}
@@ -131,7 +144,6 @@ export default function Contract({ params }) {
                 callback={handleRedirect}
               />
             )} */}
-          </AnimatePresence>
         </main>
       </div>
     </GlobalContext>

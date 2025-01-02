@@ -117,7 +117,7 @@ export default function NavbarV3({ fixed = false }) {
             </div>
 
             {/* Logo */}
-            <Link href={`/${locale}`}>
+            <Link href={`/`}>
                 <Image src="/home/new_home/Helloflatmate.png" width={150} height={47.45} alt="logo" />
             </Link>
 
