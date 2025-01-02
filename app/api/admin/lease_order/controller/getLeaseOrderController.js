@@ -14,25 +14,25 @@ import {
 export async function getAllLeaseOrders() {
   try {
     //Obtener todas las ordene
-    const LeaseOrdersProperty = await LeaseOrderProperty.findAll({
-      include: [
-        {
-          model: Property,
-          as: "property",
-          attributes: ["id", "serial", "category", "ownerId"],
-        },
-        {
-          model: Client,
-          as: "client",
-          attributes: ["id", "name", "lastName", "email"],
-          include: [
-            { model: Supply, as: "supplies" },
-            { model: Payment, as: "payments" },
-            { model: RentPayment, as: "rentPayments" },
-          ],
-        },
-      ],
-    });
+    // const LeaseOrdersProperty = await LeaseOrderProperty.findAll({
+    //   include: [
+    //     {
+    //       model: Property,
+    //       as: "property",
+    //       attributes: ["id", "serial", "category", "ownerId"],
+    //     },
+    //     {
+    //       model: Client,
+    //       as: "client",
+    //       attributes: ["id", "name", "lastName", "email"],
+    //       include: [
+    //         { model: Supply, as: "supplies" },
+    //         { model: Payment, as: "payments" },
+    //         { model: RentPayment, as: "rentPayments" },
+    //       ],
+    //     },
+    //   ],
+    // });
     const LeaseOrdersRoom = await LeaseOrderRoom.findAll({
       include: [
         {
@@ -44,7 +44,19 @@ export async function getAllLeaseOrders() {
         {
           model: Client,
           as: "client",
-          attributes: ["id", "name", "lastName", "email"],
+          attributes: [
+            "id",
+            "name",
+            "lastName",
+            "email",
+            "idNum",
+            "birthDate",
+            "country",
+            "reasonForValencia",
+            "reasonForValenciaOther",
+            "personalReview",
+            "phone",
+          ],
           include: [
             { model: Supply, as: "supplies" },
             { model: Payment, as: "payments" },
@@ -52,14 +64,15 @@ export async function getAllLeaseOrders() {
           ],
         },
       ],
+      order: [["date", "DESC"]],
     });
-    const mapPropertyOrders = LeaseOrdersProperty.map((order) => {
-      return { ...order.dataValues, type: "property" };
-    });
+    // const mapPropertyOrders = LeaseOrdersProperty.map((order) => {
+    //   return { ...order.dataValues, type: "property" };
+    // });
     const mapRoomOrders = LeaseOrdersRoom.map((order) => {
       return { ...order.dataValues, type: "room" };
     });
-    const LeaseOrders = [...mapPropertyOrders, ...mapRoomOrders];
+    const LeaseOrders = [...mapRoomOrders];
     return NextResponse.json(LeaseOrders, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });

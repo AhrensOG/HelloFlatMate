@@ -11,8 +11,7 @@ export async function updateStatusLeaseOrder(data) {
     if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 });
     if (!data.adminId || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 });
     if (!data.propertyId && !data.roomId) return NextResponse.json({ message: "No property id or room id provided" }, { status: 400 });
-    if (!data.type || (data.type !== "PROPERTY" && data.type !== "ROOM")) return NextResponse.json({ message: "No type provided" }, { status: 400 });
-
+    
     let transaction;
     try {
         // Iniciar la transacción
@@ -21,91 +20,6 @@ export async function updateStatusLeaseOrder(data) {
         const admin = (await Admin.findByPk(data.adminId, { transaction })) || (await Client.findByPk(data.adminId, { transaction }));
         if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 });
 
-        if (data.type === "PROPERTY") {PENDING
-            // Buscar y verificar que la orden exista
-            const leaseOrderProperty = await LeaseOrderProperty.findByPk(data.leaseOrderId, { transaction });
-            if (!leaseOrderProperty) {
-                await transaction.rollback();
-                return NextResponse.json({ message: "Lease order property not found" }, { status: 404 });
-            }
-            const property = await Property.findByPk(
-                data.propertyId,
-                {
-                    include: [
-                        {
-                            model: RentalItem,
-                            as: "rentalItems",
-                            include: {
-                                model: RentalPeriod,
-                                as: "rentalPeriod",
-                            },
-                        },
-                        {
-                            model: Chat,
-                            as: "chats",
-                        },
-                    ],
-                },
-                { transaction }
-            );
-            if (!property) {
-                await transaction.rollback();
-                return NextResponse.json({ message: "Property not found" }, { status: 404 });
-            }
-
-            if (data.action === "APPROVED") {
-                leaseOrderProperty.status = "APPROVED";
-                leaseOrderProperty.isActive = true;
-                leaseOrderProperty.inReview = false;
-                if (property.calendar === "SIMPLE") {
-                    let isFree = property.rentalItems.some((rentalPeriod) => {
-                        return rentalPeriod.isFree;
-                    });
-                    property.status = isFree ? "FREE" : "OCCUPIED";
-                } else {
-                    property.status = "FREE";
-                }
-                await leaseOrderProperty.save({ transaction });
-                await property.save({ transaction });
-
-                // Crear chat con el dueño
-                const chatPrivate = await createPrivateChat({
-                    type: "PRIVATE",
-                    ownerId: property.ownerId,
-                    receiverId: leaseOrderProperty.clientId,
-                    relatedType: "PROPERTY",
-                    relatedId: property.id,
-                });
-
-                //Crear participantes del chat
-                const participantCLientPriv = await ChatParticipant.create({
-                    participantId: leaseOrderProperty.clientId,
-                    chatId: chatPrivate.id,
-                    participantType: "CLIENT",
-                });
-
-                const participantClientGroup = await ChatParticipant.create({
-                    participantId: leaseOrderProperty.clientId,
-                    chatId: property.chats.find((chat) => chat.type === "GROUP").id,
-                    participantType: "CLIENT",
-                });
-
-                await transaction.commit();
-                return NextResponse.json({ message: "Lease order property approved" }, { status: 200 });
-            } else if (data.action === "REJECTED") {
-                leaseOrderProperty.status = "REJECTED";
-                leaseOrderProperty.isActive = false;
-                leaseOrderProperty.inReview = false;
-                property.status = "FREE";
-                await leaseOrderProperty.save({ transaction });
-                await property.save({ transaction });
-
-                await transaction.commit();
-                return NextResponse.json({ message: "Lease order property rejected" }, { status: 200 });
-            }
-        }
-
-        // EN CASO QUE SEA DE UNA HABITACIÓN
         const leaseOrderRoom = await LeaseOrderRoom.findByPk(data.leaseOrderId, { transaction });
         if (!leaseOrderRoom) {
             await transaction.rollback();
