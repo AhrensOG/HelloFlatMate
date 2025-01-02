@@ -142,7 +142,7 @@ export default function MyBedrooms() {
                                 >
                                     {propertiesList.length > 0 ? (
                                         <MyBedroomsList
-                                            key="list"
+                                            key="list_21"
                                             action={handleShowDetails}
                                             properties={propertiesList}
                                             user={state?.user || false}

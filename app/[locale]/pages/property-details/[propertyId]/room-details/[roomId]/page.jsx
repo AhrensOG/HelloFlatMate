@@ -171,14 +171,12 @@ export default function RoomDetails({ params }) {
                 </header>
                 <main className={`flex flex-col gap-[2.5rem] grow text-[#0D171C] w-full px-3`}>
                     <div className="w-full space-y-2 sticky top-0 min-h-56 bg-white z-10 pt-2 pb-1">
-                        <h1 className="font-bold text-[1.37rem]">{roomData?.name || data?.name || "Alojamiento"}</h1>
+                        <h1 className="font-bold text-[1.37rem]">{roomData?.name || data?.name || t("title")}</h1>
                         <h4 className="font-light text-[#000000B2]">
-                            ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"}){" "}
+                            ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? t("only_women") : t("mixed")}){" "}
                         </h4>
                         <h4 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h4>
-                        <h4 className="text-base font-bold text-resolution-blue">
-                            {!roomData?.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
-                        </h4>
+                        <h4 className="text-base font-bold text-resolution-blue">{!roomData?.isActive ? t("is_reserved") : ""}</h4>
                         <PriceSection data={roomData?.price} />
                         <ReservationButton callback={handleShowModal} disabled={!roomData?.isActive} />
                     </div>
@@ -295,12 +293,10 @@ export default function RoomDetails({ params }) {
                         <div className="space-y-2 sticky top-0 min-h-56 bg-white z-10 w-full">
                             <h1 className="font-bold text-[1.37rem]">{roomData?.name}</h1>
                             <h6 className="font-light text-[#000000B2]">
-                                ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? "Piso solo para chicas" : "Piso mixto"})
+                                ({roomData?.serial} - {data.typology === "ONLY_WOMEN" ? t("only_women") : t("mixed")})
                             </h6>
                             <h6 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h6>
-                            <h6 className="text-base font-bold text-resolution-blue">
-                                {!roomData?.isActive ? `¡Este alojamiento ya esta reservado!` : ""}
-                            </h6>
+                            <h6 className="text-base font-bold text-resolution-blue">{!roomData?.isActive ? t("is_reserved") : ""}</h6>
                             <PriceSection data={roomData?.price} />
                             <div className="flex flex-col gap-6">
                                 <ReservationButton callback={handleShowModal} disabled={!roomData?.isActive} />

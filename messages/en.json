@@ -124,7 +124,9 @@
         "title_follow_us": "Follow us",
         "title_payment_methods": "Payment methods",
         "legal_rights": "All rights reserved",
-        "contact": "Contact Us"
+        "contact": "Contact Us",
+        "link_faq": "Frequently Asked Questions",
+        "link_clauses": "Clauses of the contract"
     },
     "secondary_category_selector": {
         "search_btn": "Search accommodation",
@@ -438,9 +440,14 @@
         }
     },
     "room_details": {
+        "title": "Accommodation",
         "other_rooms_title": "Other rooms on the same floor",
         "desc_sec_title": "Description",
         "location_sec_title": "Location",
+        "only_women": "Apartment for girls only",
+        "only_men": "Apartment for boys only",
+        "mixed": "Mixed apartment",
+        "is_reserved": "This accommodation is already reserved!",
         "more_info": {
             "title": "More about this place",
             "title_1": "Features of the apartment",
@@ -451,6 +458,9 @@
             "title_6": "Agent's opinion",
             "title_7": "House rules",
             "title_8": "Other services"
+        },
+        "amenities": {
+            "h2": "What does this place offer?"
         }
     },
     "reservation_btn": {

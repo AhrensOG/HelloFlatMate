@@ -15,6 +15,7 @@ export default function MyBedroomCard({
 }) {
     const t = useTranslations("user_panel.bedrooms_list.card");
     const [nextDueDate, setNextDueDate] = useState(null);
+    const [showTooltip, setShowTooltip] = useState(false); // Estado para manejar la visibilidad del tooltip
 
     useEffect(() => {
         function calculateNextDueDate(startDate, endDate) {
@@ -51,6 +52,23 @@ export default function MyBedroomCard({
         return `${day}/${month}/${year}`;
     }
 
+    const contratStatus = (bgOk, bgWarning, bgFinish, dueDate) => {
+        const today = new Date();
+        const endDate = new Date(dueDate.endDate);
+
+        const differenceTime = endDate - today;
+        const differenceDays = differenceTime / (1000 * 3600 * 24);
+
+        return differenceDays <= 15 && differenceDays > 0
+            ? { bg: bgWarning, text: "text-red-800 font-bold" }
+            : differenceDays <= 0
+            ? { bg: bgFinish + " text-black", text: "text-red-800" }
+            : { bg: bgOk + " text-white", text: "text-black" };
+    };
+
+    // Obtener las clases de estado
+    const statusClasses = contratStatus("bg-[#0E155F]", "bg-amber-400", "bg-[#FFD7D1]", dueDate);
+
     return (
         <article className="flex gap-1 items-stretch h-48" onClick={action}>
             <div className="relative h-full min-w-[7.25rem] w-[7.25rem] rounded-2xl">
@@ -62,8 +80,19 @@ export default function MyBedroomCard({
                     style={{ objectFit: "cover", objectPosition: "center" }}
                 />
             </div>
-            <div className="flex flex-col py-2 pl-1 gap-1.5 flex-1 h-full justify-between">
-                <p className="text-sm text-white font-medium p-1 text-center bg-[#0E155F] rounded-3xl w-28">{type.replace(/_/g, "").toLowerCase()}</p>
+            <div className="flex flex-col py-2 pl-1 gap-1.5 flex-1 h-full justify-between relative">
+                <p
+                    className={`text-sm font-medium p-1 text-center rounded-3xl w-28 ${statusClasses.bg} cursor-default`}
+                    onMouseEnter={() => statusClasses.text === "text-red-800 font-bold" && setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                >
+                    {type.replace(/_/g, "").toLowerCase()}
+                </p>
+                {showTooltip && (
+                    <div className="absolute right-[5rem] top-[-2.5rem] transform mt-1 w-40 p-2 bg-black text-white text-sm rounded-md shadow-lg z-[1000]">
+                        Está pronto a vencer
+                    </div>
+                )}
                 <div className="flex items-top">
                     <span className="h-5 w-5">
                         <MapPinIcon />
@@ -75,7 +104,7 @@ export default function MyBedroomCard({
                 <p className="text-[10px] font-normal text-[#828282]">{amenities.slice(0, 3).join(" - ")}</p>
                 <p className="font-light text-sm flex justify-between">
                     {type === "HELLO_STUDIO" ? t("finish") : t("expiration")}
-                    <span className="font-medium text-sm">
+                    <span className={statusClasses.text}>
                         {type === "HELLO_STUDIO" ? formatDate(new Date(dueDate.endDate)) : nextDueDate ? formatDate(nextDueDate) : t("not_expired")}
                     </span>
                 </p>
