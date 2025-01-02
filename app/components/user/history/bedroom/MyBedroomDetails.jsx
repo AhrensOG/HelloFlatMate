@@ -182,7 +182,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
                         <p className="font-medium">{dueDate.endDate ? formatDate(new Date(dueDate.endDate)) : "-"}</p>
                     </div>
                 </div>
-                {type === "HELLO_STUDIO" ? (
+                {/* {type === "HELLO_STUDIO" ? (
                     <Link
                         href={`/pages/user/property-details/${property.id}`}
                         className="bg-[#0C1660] rounded-xl text-center flex items-center justify-center text-white font-medium text-sm h-11"
@@ -190,7 +190,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
                     >
                         {t("new_reserv")}
                     </Link>
-                ) : (
+                ) : ( */}
                     <Link
                         href={"/pages/user/history/payments"}
                         // onClick={() => setIsModalOpen(true)}
@@ -199,7 +199,7 @@ export default function MyBedroomDetails({ room, rentPayments }) {
                     >
                         {t("next_payments")}
                     </Link>
-                )}
+                {/* )} */}
             </section>
 
             {/* Modal para el pago */}
