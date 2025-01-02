@@ -7,7 +7,7 @@ export async function GET(req) {
     try {
         const secretKey = process.env.SECRET_KEY_CRON;
         const secretPassword = process.env.SECRET_PASSWORD_CRON;
-        const token = req.headers.get("x-cron-token");
+        const token = process.env.CRON_SK
 
         if (!token) {
             return NextResponse.json({ error: "Token not provided" }, { status: 401 });

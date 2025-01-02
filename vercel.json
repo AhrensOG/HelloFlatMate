@@ -2,10 +2,7 @@
     "crons": [
         {
             "path": "/api/cron/update_contracts",
-            "schedule": "0 0 * * *",
-            "headers": {
-                "x-cron-token": "Q09OVFJBU0XDkUExMjM6MWI5YTU0YWVjZTIyYmFlOTQwNWE4MjQzMDMzMzcxNmMwMDE1YjUzNzAwZmNmNzk4NDJkNGZlMjY4ZGVlNmIyZA=="
-            }
+            "schedule": "0 0 * * *"
         }
     ]
 }
