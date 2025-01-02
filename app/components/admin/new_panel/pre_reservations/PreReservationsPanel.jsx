@@ -4,11 +4,24 @@ import formatDateToDDMMYYYY from "../utils/formatDate";
 import { toast } from "sonner";
 import axios from "axios";
 import { Context } from "@/app/context/GlobalContext";
+import OrderModal from "./OrderModal";
 
 const PreReservationsPanel = ({ leaseOrders = [] }) => {
   const { state } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
   const [orders, setOrders] = useState(leaseOrders);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(false);
+
+  const handleOpenModal = (lo) => {
+    setSelectedOrder(lo);
+    setIsOpen(true);
+  };
+
+  const handleCloseModal = (lo) => {
+    setSelectedOrder(false);
+    setIsOpen(false);
+  };
 
   const filteredOrders = orders.filter((lo) => {
     const roomSerial = lo.room?.serial || "";
@@ -129,7 +142,8 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
             {filteredOrders.map((lo) => (
               <tr
                 key={lo.id}
-                className="hover:bg-gray-100 even:bg-gray-50 transition-colors"
+                className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => handleOpenModal(lo)}
               >
                 <td className="border p-2 text-gray-700 text-center">
                   {lo.id}
@@ -172,6 +186,9 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
           </tbody>
         </table>
       </div>
+      {isOpen && (
+        <OrderModal order={selectedOrder} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };
