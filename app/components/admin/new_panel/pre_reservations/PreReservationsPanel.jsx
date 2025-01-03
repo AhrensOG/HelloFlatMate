@@ -116,6 +116,12 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
                 Usuario
               </th>
               <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
+                Pais
+              </th>
+              <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
+                Fecha Nac.
+              </th>
+              <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
                 Serial
               </th>
               <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
@@ -149,6 +155,12 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
                   {lo.id}
                 </td>
                 <td className="border p-2 text-gray-700 text-left">{`${lo.client?.name} ${lo.client?.lastName}`}</td>
+                <td className="border p-2 text-gray-700 text-center">
+                  {lo.client?.country}
+                </td>
+                <td className="border p-2 text-gray-700 text-center">
+                  {formatDateToDDMMYYYY(lo.client?.birthDate)}
+                </td>
                 <td className="border p-2 text-gray-700 text-center">
                   {lo.room?.serial}
                 </td>
