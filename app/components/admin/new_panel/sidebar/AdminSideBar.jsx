@@ -33,7 +33,7 @@ const AdminSideBar = ({ onSelect }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="h-screen bg-white shadow-lg flex flex-col overflow-hidden border-r drop-shadow-xl rounded-r-xl  relative"
+        className="h-screen bg-white shadow-lg flex flex-col overflow-hidden border-r drop-shadow-xl rounded-r-xl relative min-w-14 max-w-[180px]"
         initial={{ width: "56px" }}
         animate={{ width: isOpen ? "180px" : "56px" }} // Suavizar transición
         exit={{ width: "56px" }}
