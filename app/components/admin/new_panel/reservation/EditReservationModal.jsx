@@ -13,7 +13,7 @@ export default function EditReservationModal({ leaseOrder, onClose, fetch }) {
                 leaseOrderId: leaseOrder.id,
             };
             await axios.put(`/api/admin/lease_order`, data);
-            await fetch();
+            // await fetch();
             toast.success("Orden actualizada correctamente!", { id: toastId });
             // onClose();
         } catch (error) {

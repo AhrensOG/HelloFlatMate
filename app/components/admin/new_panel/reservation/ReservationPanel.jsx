@@ -1,16 +1,34 @@
-import { useEffect, useState } from "react";
+"use client"; // Asegúrate de que este componente sea un componente del lado del cliente
+import { useState } from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 import OrderModalReservation from "./OrderModalReservation";
 import EditReservationModal from "./EditReservationModal";
 import axios from "axios";
+import useSWR from "swr";
+import { toast } from "sonner";
 
-export default function ReservationPanel({ data }) {
+const fetcher = (url) => axios.get(url).then((res) => res.data);
+
+export default function ReservationPanel() {
     const [searchQuery, setSearchQuery] = useState("");
-    const [orders, setOrders] = useState(data);
-    const [filteredOrders, setFilteredOrders] = useState(data); // Estado para órdenes filtradas
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+
+    // Usar SWR para obtener las órdenes
+    const { data: orders, error, mutate } = useSWR("/api/admin/lease_order", fetcher);
+
+    // Filtrar órdenes
+    const filteredOrders = (orders || []).filter((lo) => {
+        const roomSerial = lo.room?.serial || "";
+        const clientName = lo.client?.name || "";
+        const clientLastName = lo.client?.lastName || "";
+        return (
+            roomSerial.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            clientLastName.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    });
 
     const handleOpenModal = (lo) => {
         setSelectedOrder(lo);
@@ -18,7 +36,7 @@ export default function ReservationPanel({ data }) {
     };
 
     const handleCloseModal = () => {
-        setSelectedOrder(false);
+        setSelectedOrder(null);
         setIsOpen(false);
     };
 
@@ -28,43 +46,24 @@ export default function ReservationPanel({ data }) {
     };
 
     const handleCloseModalEdit = () => {
-        setSelectedOrder(false);
+        setSelectedOrder(null);
         setIsOpenEdit(false);
     };
 
-    // Función para filtrar órdenes
-    const filterOrders = (query) => {
-        const lowerCaseQuery = query.toLowerCase();
-        const filtered = orders.filter((lo) => {
-            const roomSerial = lo.room?.serial || "";
-            const clientName = lo.client?.name || "";
-            const clientLastName = lo.client?.lastName || "";
-            return (
-                roomSerial.toLowerCase().includes(lowerCaseQuery) ||
-                clientName.toLowerCase().includes(lowerCaseQuery) ||
-                clientLastName.toLowerCase().includes(lowerCaseQuery)
-            );
-        });
-        setFilteredOrders(filtered); // Actualiza el estado de órdenes filtradas
-    };
-
-    useEffect(() => {
-        filterOrders(searchQuery); // Filtra órdenes al cambiar el query
-    }, [searchQuery, orders]); // Dependencias: cambia cuando searchQuery o orders cambian
-
-    const fetchLeaseOrders = async () => {
+    // Función para manejar la actualización de una reserva
+    const handleUpdateOrder = async (updatedOrder) => {
         try {
-            const res = await axios.get("/api/admin/lease_order");
-            setOrders(res.data);
-            setFilteredOrders(res.data); // Inicializa también las órdenes filtradas
+            await axios.put(`/api/admin/lease_order`, updatedOrder); // Llama a tu API para actualizar
+            toast.success("Orden actualizada correctamente!");
+            mutate(); // Actualiza los datos en caché
+            handleCloseModalEdit(); // Cierra el modal de edición
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            toast.error("Ocurrió un error al actualizar la orden.");
         }
     };
 
-    useEffect(() => {
-        fetchLeaseOrders();
-    }, []);
+    if (error) return <div>Error al cargar las reservas.</div>;
 
     return (
         <div className="h-screen flex flex-col p-4 gap-4">
@@ -91,7 +90,7 @@ export default function ReservationPanel({ data }) {
                             <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Check-In</th>
                             <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Check-Out</th>
                             <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Firmada</th>
-                            <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">¿En revision?</th>
+                            <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">¿En revisión?</th>
                             <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Creado</th>
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-52">Acciones</th>
                         </tr>
@@ -111,13 +110,13 @@ export default function ReservationPanel({ data }) {
                                 <td className="border p-2 text-gray-700 text-center">{lo?.isSigned ? "Si" : "No"}</td>
                                 <td className="border p-2 text-gray-700 text-center">{lo?.inReview ? "Si" : "No"}</td>
                                 <td className="border p-2 text-gray-700 text-center">{formatDateToDDMMYYYY(lo.date)}</td>
-                                <td className="border p-2 text-gray-700 text-center flex justify-around" onClick={() => handleOpenModalEdit(lo)}>
+                                <td className="border p-2 text-gray-700 text-center flex justify-around">
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation(); // Evita que el clic en el botón propague al tr
                                             handleOpenModalEdit(lo); // Abre el modal de edición
                                         }}
-                                        className="bg-green-500 text-white px-2 py-1 mr-2 rounded"
+                                        className="bg-green-500 text-white px-2 py-1 mr2 rounded"
                                     >
                                         Editar
                                     </button>
@@ -129,7 +128,7 @@ export default function ReservationPanel({ data }) {
             </div>
 
             {isOpen && <OrderModalReservation data={selectedOrder} onClose={handleCloseModal} />}
-            {isOpenEdit && <EditReservationModal leaseOrder={selectedOrder} onClose={handleCloseModalEdit} fetch={fetchLeaseOrders} />}
+            {isOpenEdit && <EditReservationModal leaseOrder={selectedOrder} onClose={handleCloseModalEdit} onUpdate={handleUpdateOrder} />}
         </div>
     );
 }
