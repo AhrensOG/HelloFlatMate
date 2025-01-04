@@ -12,6 +12,10 @@ export default async function RootLayout({ children, params: { locale } }) {
         notFound();
     }
 
+    if (typeof window === 'undefined') {
+        require('../../utils/cron');
+      }
+
     // Obtener mensajes de traducción
     const messages = await getMessages(locale);
 
