@@ -1,5 +1,6 @@
 import Link from "next/link";
 import formatDateToDDMMYYYY from "../utils/formatDate";
+import Image from "next/image";
 
 export default function OrderModalReservation({ data, onClose }) {
     const { date, startDate, endDate, price, status, room, property, client } = data || {};
@@ -18,6 +19,7 @@ export default function OrderModalReservation({ data, onClose }) {
         birthDate,
         documents,
         contracts,
+        signature,
     } = client || {};
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={onClose}>
@@ -88,6 +90,11 @@ export default function OrderModalReservation({ data, onClose }) {
                             </p>
                             <p>
                                 <strong>Fecha de nacimiento:</strong> {formatDateToDDMMYYYY(birthDate)}
+                            </p>
+
+                            <p>
+                                <strong>Firma:</strong>
+                                {signature ? <Image src={signature} width={100} height={100} alt="signature" /> : <p>No hay firma</p>}
                             </p>
                         </div>
                         <hr className="my-4" />

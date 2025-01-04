@@ -46,6 +46,7 @@ export async function getAllLeaseOrders() {
                         "reasonForValenciaOther",
                         "personalReview",
                         "phone",
+                        "signature",
                     ],
                     include: [
                         { model: Supply, as: "supplies" },
