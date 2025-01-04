@@ -26,6 +26,8 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 function formatDateToDDMMYYYY(isoDate) {
     const date = new Date(isoDate);
 
@@ -142,8 +144,7 @@ export default function RoomDetails({ params }) {
     const handleShowModal = () => {
         if (!state?.user?.id) {
             toast.info("Inicia sesión antes de continuar");
-            const currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
-            window.location.href = `/pages/auth?redirect=${currentUrl}`;
+            router.push(`/pages/auth?redirect=${encodeURIComponent(BASE_URL + window.location.pathname)}`)
             return;
         }
         setShowModal(!showModal);

@@ -117,7 +117,7 @@ export default function ReservationModal({ callback, data, category, calendarTyp
                 description: "Intenta nuevamente o contacta al soporte",
             });
             setIsSubmitting(false);
-            throw error;
+            console.log(error);
         }
     };
 
