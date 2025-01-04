@@ -12,8 +12,8 @@ const NewAdminPanel = ({ data }) => {
   // Función para renderizar la sección según la URL
   const renderSection = () => {
     switch (section) {
-      case "propiedades":
-        return <PreReservationsPanel />;
+      case "pre-reservas":
+        return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
       default:
         return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
     }

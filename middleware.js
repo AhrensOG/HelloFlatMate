@@ -52,9 +52,9 @@ const publicPaths = [
 // Roles y accesos permitidos
 const rolesPaths = {
     ADMIN: ["/pages/worker-panel", "/pages/admin", "/pages/users", "/pages/owner", "/pages/home", "/api/admin", "/api", "/pages"],
-    OWNER: ["/pages/worker-panel", "/pages/owner", "/pages/user", "/pages/home", "/api", "/pages/property-details"],
-    WORKER: ["/pages/worker-panel", "/pages/user", "/api", "/pages/property-details"],
-    CLIENT: ["/pages/user", "/pages/home", "/api", "/pages/property-details"],
+    OWNER: ["/pages/worker-panel", "/pages/owner", "/pages/user", "/pages/home", "/api"],
+    WORKER: ["/pages/worker-panel", "/pages/user", "/api"],
+    CLIENT: ["/pages/user", "/pages/home", "/api"],
 };
 
 export async function middleware(request) {
@@ -107,7 +107,9 @@ export async function middleware(request) {
 
     // ✅ Rutas públicas
     const isPublicApi = publicApiPaths.includes(pathname);
-    const isPublicPage = publicPaths.includes(pathWithoutLocale);
+    const isPublicPage = publicPaths.some((publicPath) => 
+        pathWithoutLocale.startsWith(publicPath)
+      );
 
     if (isPublicApi || isPublicPage || pathname === `/${locale}/pages/auth`) {
         console.log(`✅ Acceso permitido a ruta pública: ${pathname}`);
