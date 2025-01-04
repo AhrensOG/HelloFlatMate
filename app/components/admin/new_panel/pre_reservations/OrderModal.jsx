@@ -29,9 +29,10 @@ const OrderModal = ({ order, onClose }) => {
   } = client || {};
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={onClose}>
+    <div className="fixed inset-0 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}/>
       {/* Contenedor principal */}
-      <div className="bg-white w-full max-w-md mx-auto rounded shadow p-6 relative text-sm">
+      <div className="bg-white w-full max-w-md mx-auto rounded shadow p-6 relative text-sm z-50">
         {/* Botón de Cerrar */}
         <button
           onClick={onClose}
