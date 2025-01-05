@@ -17,8 +17,7 @@ const updateContracts = async () => {
   }
 };
 
-// Programa el cron job para que se ejecute cada minuto
-cron.schedule("* * * * *", () => {
+cron.schedule("0 0 * * *", () => {
   console.log("Ejecutando cron job: updateContracts cada minuto");
   updateContracts();
 });
