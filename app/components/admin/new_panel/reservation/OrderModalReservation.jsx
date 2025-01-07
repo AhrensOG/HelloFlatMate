@@ -118,12 +118,11 @@ export default function OrderModalReservation({ data, onClose }) {
                                 <strong>Email de emergencia:</strong> {emergencyEmail}
                             </p>
                             <p>
-                                <strong>Género:</strong> {genre === "MALE" ? "Hombre" : genre === "FEMALE" ? "Mujer" : "N/A"}
+                                <strong>Género:</strong> {genre === "MALE" ? "Masculino" : genre === "FEMALE" ? "Femenino" : genre === "OTHER" ? "Otro" : "No definido"}
                             </p>
                             <p>
                                 <strong>Fecha de nacimiento:</strong> {formatDateToDDMMYYYY(new Date(birthDate))}
                             </p>
-                            <p>{/* <strong>Género:</strong> {genre === "MALE" ? "Hombre" : genre === "FEMALE" ? "Mujer" : "N/A"} */}</p>
                             <p>
                                 <strong>Review Personal:</strong> {personalReview}
                             </p>
