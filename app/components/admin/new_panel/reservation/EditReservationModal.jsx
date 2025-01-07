@@ -2,8 +2,6 @@ import axios from "axios";
 import { Formik, Field, Form } from "formik";
 import { toast } from "sonner";
 export default function EditReservationModal({ leaseOrder, onClose, fetch }) {
-    console.log(leaseOrder);
-
     const handleSubmit = async (values) => {
         const toastId = toast.loading("Actualizadno...");
         try {

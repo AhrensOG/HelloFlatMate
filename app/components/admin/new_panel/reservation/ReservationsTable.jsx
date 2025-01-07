@@ -71,7 +71,6 @@ const ReservationsTable = ({
             </td>
             <td className={`${lo.status === "APPROVED" ? "text-green-700" : "text-yellow-700"} border p-2 text-center`}>
               {lo.status === "APPROVED" ? "Aprobada" : "Pendiente"}
-              {console.log(lo.status)}
             </td>
             <td className="border p-2 text-gray-700 text-center flex justify-around">
               <button
