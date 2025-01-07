@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import crypto from "crypto";
-import validateHMACToken from "./app/libs/lib";
+// import crypto from "crypto";
+// import validateHMACToken from "./app/libs/lib";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -83,27 +83,28 @@ export async function middleware(request) {
 
     const pathWithoutLocale = `/${segments.slice(2).join("/")}`;
 
-    // ✅ Verificaion de token para cron
-    if (pathWithoutLocale.startsWith("/api/cron")) {
-        console.log(`🔒 Verificando token para ruta cron: ${pathname}`);
+    // // ✅ Verificaion de token para cron
+    // if (pathWithoutLocale.startsWith("/api/cron")) {
+    //     console.log(`🔒 Verificando token para ruta cron: ${pathname}`);
 
-        const cronToken = cookieStore.get("x-cron-token")?.value;
-        const secretKey = process.env.SECRET_KEY_CRON;
-        const secretPassword = process.env.SECRET_PASSWORD_CRON;
+    //     const cronToken = cookieStore.get("x-cron-token")?.value;
+    //     console.log(cronToken)
+    //     const secretKey = process.env.SECRET_KEY_CRON;
+    //     const secretPassword = process.env.SECRET_PASSWORD_CRON;
 
-        if (!cronToken || !secretKey || !secretPassword) {
-            console.log(`🔒 Parametros no encontrado.`);
-            return NextResponse.json({ error: "Unauthorized: Missing token or keys" }, { status: 401 });
-        }
+    //     if (!cronToken || !secretKey || !secretPassword) {
+    //         console.log(`🔒 Parametros no encontrado.`);
+    //         return NextResponse.json({ error: "Unauthorized: Missing token or keys" }, { status: 401 });
+    //     }
 
-        if (!validateHMACToken(cronToken, secretPassword, secretKey)) {
-            console.log(`🔒 Token inválido`);
-            return NextResponse.json({ error: "Unauthorized: Invalid Token" }, { status: 401 });
-        }
-        console.log(`✅ Acceso permitido a ruta cron: ${pathname}`);
+    //     if (!validateHMACToken(cronToken, secretPassword, secretKey)) {
+    //         console.log(`🔒 Token inválido`);
+    //         return NextResponse.json({ error: "Unauthorized: Invalid Token" }, { status: 401 });
+    //     }
+    //     console.log(`✅ Acceso permitido a ruta cron: ${pathname}`);
 
-        return NextResponse.next();
-    }
+    //     return NextResponse.next();
+    // }
 
     // ✅ Rutas públicas
     const isPublicApi = publicApiPaths.includes(pathname);

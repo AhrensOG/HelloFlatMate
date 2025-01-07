@@ -1,14 +1,13 @@
 import React from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 
-const PreReservationsTable = ({
+const ReservationsTable = ({
   filteredOrders,
-  handleApprove,
-  handleReject,
   handleOpenModal,
+  handleOpenModalEdit,
 }) => {
   return (
-    <table className="w-full border-collapse">
+    <table className="min-w-full border-collapse">
       <thead className="sticky top-0 bg-white">
         <tr>
           <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">
@@ -18,30 +17,27 @@ const PreReservationsTable = ({
             Usuario
           </th>
           <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
-            Pais
-          </th>
-          <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
-            Fecha Nac.
-          </th>
-          <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
             Room
           </th>
           <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
-            Fecha
-          </th>
-          {/* <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
             Check-In
           </th>
           <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
             Check-Out
-          </th> */}
-          <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
-            Precio
           </th>
           <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
+            Firmada
+          </th>
+          <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
+            ¿En revisión?
+          </th>
+          <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
+            Fecha
+          </th>
+          <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
             Estado
           </th>
-          <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-52">
+          <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-24">
             Acciones
           </th>
         </tr>
@@ -56,51 +52,36 @@ const PreReservationsTable = ({
             <td className="border p-2 text-gray-700 text-center">{lo.id}</td>
             <td className="border p-2 text-gray-700 text-left">{`${lo.client?.name} ${lo.client?.lastName}`}</td>
             <td className="border p-2 text-gray-700 text-center">
-              {lo.client?.country}
-            </td>
-            <td className="border p-2 text-gray-700 text-center">
-              {formatDateToDDMMYYYY(lo.client?.birthDate)}
-            </td>
-            <td className="border p-2 text-gray-700 text-center">
               {lo.room?.serial}
+            </td>
+            <td className="border p-2 text-gray-700 text-center">
+              {formatDateToDDMMYYYY(lo?.startDate)}
+            </td>
+            <td className="border p-2 text-gray-700 text-center">
+              {formatDateToDDMMYYYY(lo?.endDate)}
+            </td>
+            <td className="border p-2 text-gray-700 text-center">
+              {lo?.isSigned ? "Si" : "No"}
+            </td>
+            <td className="border p-2 text-gray-700 text-center">
+              {lo?.inReview ? "Si" : "No"}
             </td>
             <td className="border p-2 text-gray-700 text-center">
               {formatDateToDDMMYYYY(lo.date)}
             </td>
-            {/* <td className="border p-2 text-gray-700 text-center">
-              {formatDateToDDMMYYYY(lo.startDate)}
-            </td>
-            <td className="border p-2 text-gray-700 text-center">
-              {formatDateToDDMMYYYY(lo.endDate)}
-            </td> */}
-            <td className="border p-2 text-gray-700 text-center">
-              {lo.price} €
-            </td>
-            <td
-              className={`${
-                lo.status === "IN_PROGRESS" ? "text-blue-700" : "text-red-700"
-              } border p-2 w-36 text-center`}
-            >
-              {lo.status === "IN_PROGRESS" ? "En progreso" : "Rechazada"}
+            <td className={`${lo.status === "APPROVED" ? "text-green-700" : "text-yellow-700"} border p-2 text-center`}>
+              {lo.status === "APPROVED" ? "Aprobada" : "Pendiente"}
+              {console.log(lo.status)}
             </td>
             <td className="border p-2 text-gray-700 text-center flex justify-around">
               <button
                 onClick={(e) => {
-                  e.stopPropagation();
-                  handleApprove(lo.id, lo.room?.id);
+                  e.stopPropagation(); // Evita que el clic en el botón propague al tr
+                  handleOpenModalEdit(lo); // Abre el modal de edición
                 }}
-                className="bg-green-500 text-white px-2 py-1 mr-2 rounded"
+                className="bg-green-500 text-white px-2 py-1 mr2 rounded"
               >
-                Aprobar
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleReject(lo.id, lo.room?.id);
-                }}
-                className="bg-red-500 text-white px-2 py-1 rounded"
-              >
-                Rechazar
+                Editar
               </button>
             </td>
           </tr>
@@ -110,4 +91,4 @@ const PreReservationsTable = ({
   );
 };
 
-export default PreReservationsTable;
+export default ReservationsTable;

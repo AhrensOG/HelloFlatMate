@@ -31,6 +31,7 @@
         "html-react-parser": "^5.2.1",
         "next": "^14.2.12",
         "next-intl": "^3.26.0",
+        "node-cron": "^3.0.3",
         "openai": "^4.71.1",
         "pdf-lib": "^1.17.1",
         "pg": "^8.12.0",

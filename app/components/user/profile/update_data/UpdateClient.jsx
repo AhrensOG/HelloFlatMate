@@ -13,8 +13,6 @@ import "react-phone-input-2/lib/style.css";
 import CountrySelect from "@/app/components/public/main-pages/auxiliarComponents/CountrySelect";
 import { useTranslations } from "next-intl";
 
-const t = useTranslations("forms.update_client");
-
 // 📌 Validación con Yup
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("El nombre es obligatorio"),
@@ -73,6 +71,8 @@ export default function UpdateClient() {
   const { state } = useContext(Context);
   const [initialValues, setInitialValues] = useState(null);
   const router = useRouter();
+  const t = useTranslations("forms.update_client");
+
 
   useEffect(() => {
     if (state?.user?.id) {
