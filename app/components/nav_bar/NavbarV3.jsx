@@ -123,7 +123,7 @@ export default function NavbarV3({ fixed = false }) {
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
-                <Link href={`/${locale?.toLowerCase()}/lastrooms`} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
+                <Link href={`/${locale?.toLowerCase()}/ultimas-habitaciones`} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
                     Last rooms
                 </Link>
                 <Link href={`/${locale?.toLowerCase()}/como-funciona`} target="_blank" className="font-bold text-base">

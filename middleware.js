@@ -31,11 +31,11 @@ const publicApiPaths = [
 
 const publicPaths = [
     "/",
-    "/helloroom",
+    "/alquiler-habitaciones-valencia",
     "/hellostudio",
-    "/hellocoliving",
+    "/coliving-valencia",
     "/hellolandlord",
-    "/lastrooms",
+    "/ultimas-habitaciones",
     "/faq",
     "/cookies",
     "/privacy-policy",

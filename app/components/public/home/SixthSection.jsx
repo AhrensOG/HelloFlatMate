@@ -18,7 +18,7 @@ export default function SixthSection() {
             title: t("home_sixth_sect_2_title"),
             description: t("home_sixth_sect_2_desc"),
             imageUrl: "/home/new_home/privateRoom.jpg",
-            link: "/helloroom",
+            link: "/alquiler-habitaciones-valencia",
         },
         {
             title: t("home_sixth_sect_3_title"),
@@ -30,7 +30,7 @@ export default function SixthSection() {
             title: t("home_sixth_sect_4_title"),
             description: t("home_sixth_sect_4_desc"),
             imageUrl: "/home/new_home/sharedRoom.jpg",
-            link: "/hellocoliving",
+            link: "/coliving-valencia",
         },
     ];
 
