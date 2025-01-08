@@ -40,7 +40,7 @@ const UserModal = ({ user, onClose }) => {
         onClick={onClose}
       />
       {/* Contenedor principal */}
-      <div className="bg-white w-full max-w-md mx-auto rounded shadow p-6 relative text-sm z-50 max-h-[95%] overflow-y-auto">
+      <div className="bg-white w-full max-w-md mx-auto rounded shadow p-6 relative text-sm z-50 max-h-[90%] overflow-y-auto">
         {/* Botón de Cerrar */}
         <button
           onClick={onClose}
@@ -49,8 +49,8 @@ const UserModal = ({ user, onClose }) => {
           X
         </button>
 
-        <div className="space-y-1 text-">
-          <h2 className="text-lg font-semibold">Datos del usuario</h2>
+        <div>
+          <h2 className="text-lg font-semibold mb-2">Datos del usuario</h2>
           <strong>ID:</strong> {id}
           <p>
             <strong>Nombre:</strong> {name}
@@ -90,7 +90,7 @@ const UserModal = ({ user, onClose }) => {
             {formatDateToDDMMYYYY(birthDate)}
           </p>
           <hr className="my-4" />
-          <h3 className="text-lg font-semibold">Contacto de emergencia</h3>
+          <h3 className="text-lg font-semibold mb-2">Contacto de emergencia</h3>
           <p>
             <strong>Contacto de emergencia:</strong> {emergencyName}
           </p>
@@ -101,7 +101,7 @@ const UserModal = ({ user, onClose }) => {
             <strong>Teléfono de emergencia:</strong> {emergencyPhone}
           </p>
           <hr className="my-4" />
-          <h3 className="text-lg font-semibold">Otros datos del usuario</h3>
+          <h3 className="text-lg font-semibold mb-2">Otros datos del usuario</h3>
           <p>
             <strong>Review Personal:</strong> {personalReview}
           </p>
@@ -126,7 +126,7 @@ const UserModal = ({ user, onClose }) => {
             <strong>Hora de llegada:</strong> {arrivalTime}
           </p>
           <hr className="my-4" />
-          <h3 className="text-lg font-semibold">Firma dle usuario</h3>
+          <h3 className="text-lg font-semibold mb-2">Firma del usuario</h3>
           <p>
             <strong>Firma:</strong>
             {signature ? (
@@ -137,7 +137,7 @@ const UserModal = ({ user, onClose }) => {
           </p>
           <hr className="my-4" />
           <div className="space-y-1 text-">
-            <h3 className="text-lg font-semibold">Contratos</h3>
+            <h3 className="text-lg font-semibold mb-2">Contratos</h3>
             {contracts?.length > 0 ? (
               contracts.map((contract) => (
                 <div key={contract.id}>

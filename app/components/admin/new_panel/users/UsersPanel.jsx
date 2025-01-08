@@ -23,7 +23,7 @@ export default function UsersPanel({ allUsers = [] }) {
     fallbackData: allUsers,
     refreshInterval: 60000,
   });
-  
+
   const users = [
     ...swrData.clients,
     ...swrData.admins,
@@ -36,12 +36,19 @@ export default function UsersPanel({ allUsers = [] }) {
     const clientLastName = user.lastName || "";
     const clientEmail = user.email || "";
 
+    let roleEs = "";
+    if (user.role === "CLIENT") roleEs = "cliente";
+    if (user.role === "ADMIN") roleEs = "administrador";
+    if (user.role === "WORKER") roleEs = "trabajador";
+    if (user.role === "OWNER") roleEs = "propietario";
+
     const searchString = searchQuery.toLowerCase();
 
     return (
       clientName.toLowerCase().includes(searchString) ||
       clientLastName.toLowerCase().includes(searchString) ||
-      clientEmail.toLowerCase().includes(searchString)
+      clientEmail.toLowerCase().includes(searchString) ||
+      roleEs.toLowerCase().includes(searchString)
     );
   });
 
@@ -83,14 +90,14 @@ export default function UsersPanel({ allUsers = [] }) {
   return (
     <div className="h-screen flex flex-col p-4 gap-4">
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold">Reservas</h2>
+        <h2 className="text-2xl font-bold">Usuarios</h2>
         <div className="w-full">
           <input
             type="text"
-            placeholder="Buscar por código, nombre, apellido, email o estado..."
+            placeholder="Buscar por nombre, apellido, email o rol..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)} // Actualiza el estado de búsqueda
-            className="border rounded px-3 py-2 w-[450px]"
+            className="border rounded px-3 py-2 w-96"
           />
         </div>
       </div>
@@ -103,12 +110,7 @@ export default function UsersPanel({ allUsers = [] }) {
         />
       </div>
 
-      {isOpen && (
-        <UserModal
-          user={selectedUser}
-          onClose={handleCloseModal}
-        />
-      )}
+      {isOpen && <UserModal user={selectedUser} onClose={handleCloseModal} />}
     </div>
   );
 }
