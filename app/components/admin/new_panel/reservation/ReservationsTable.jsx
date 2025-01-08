@@ -82,7 +82,7 @@ const ReservationsTable = ({
             >
               {lo.status === "APPROVED" ? "Aprobada" : "Pendiente"}
             </td>
-            <td className="border p-2 text-gray-700 text-center flex justify-around">
+            <td className="border p-2 text-gray-700 text-center">
               <button
                 onClick={(e) => {
                   e.stopPropagation(); // Evita que el clic en el botón propague al tr

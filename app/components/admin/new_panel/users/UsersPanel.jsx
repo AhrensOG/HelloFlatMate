@@ -1,73 +1,67 @@
-"use client"; // Asegúrate de que este componente sea un componente del lado del cliente
+"use client";
 import { useState } from "react";
-import OrderModalReservation from "./OrderModalReservation";
-import EditReservationModal from "./EditReservationModal";
 import axios from "axios";
 import useSWR from "swr";
 import { toast } from "sonner";
-import ReservationsTable from "./ReservationsTable";
+import UsersTable from "./UsersTable";
+import UserModal from "./UserModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function ReservationPanel({ leaseOrders = [] }) {
+export default function UsersPanel({ allUsers = [] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   // Usar SWR para obtener las órdenes
   const {
     data: swrData,
     error,
     mutate,
-  } = useSWR("/api/admin/lease_order", fetcher, {
-    fallbackData: leaseOrders,
+  } = useSWR("/api/admin/user", fetcher, {
+    fallbackData: allUsers,
     refreshInterval: 60000,
   });
-
-  const orders = (swrData || []).filter(
-    (lo) => lo.status === "PENDING" || lo.status === "APPROVED"
-  );
-
-  // Filtrar órdenes
-  const filteredOrders = (orders || []).filter((lo) => {
-    const roomSerial = lo.room?.serial || "";
-    const clientName = lo.client?.name || "";
-    const clientLastName = lo.client?.lastName || "";
-    const clientEmail = lo.client?.email || "";
-
-    let statusEs = "";
-    if (lo.status === "PENDING") statusEs = "pendiente";
-    if (lo.status === "APPROVED") statusEs = "aprobada";
+  
+  const users = [
+    ...swrData.clients,
+    ...swrData.admins,
+    ...swrData.owners,
+    ...swrData.workers,
+  ];
+  // Filtrar ó rdenes
+  const filteredUsers = (users || []).filter((user) => {
+    const clientName = user.name || "";
+    const clientLastName = user.lastName || "";
+    const clientEmail = user.email || "";
 
     const searchString = searchQuery.toLowerCase();
 
     return (
-      roomSerial.toLowerCase().includes(searchString) ||
       clientName.toLowerCase().includes(searchString) ||
       clientLastName.toLowerCase().includes(searchString) ||
-      clientEmail.toLowerCase().includes(searchString) ||
-      statusEs.toLowerCase().includes(searchString)
+      clientEmail.toLowerCase().includes(searchString)
     );
   });
 
   const handleOpenModal = (lo) => {
-    setSelectedOrder(lo);
+    setSelectedUser(lo);
     setIsOpen(true);
   };
 
   const handleCloseModal = () => {
-    setSelectedOrder(null);
+    setSelectedUser(null);
     setIsOpen(false);
   };
 
   const handleOpenModalEdit = (lo) => {
-    setSelectedOrder(lo);
+    setSelectedUser(lo);
     setIsOpenEdit(true);
   };
 
   const handleCloseModalEdit = () => {
-    setSelectedOrder(null);
+    setSelectedUser(null);
     setIsOpenEdit(false);
   };
 
@@ -102,24 +96,17 @@ export default function ReservationPanel({ leaseOrders = [] }) {
       </div>
 
       <div className="flex-1 overflow-y-auto border rounded-lg">
-        <ReservationsTable
-          filteredOrders={filteredOrders}
+        <UsersTable
+          filteredUsers={filteredUsers}
           handleOpenModal={handleOpenModal}
           handleOpenModalEdit={handleOpenModalEdit}
         />
       </div>
 
       {isOpen && (
-        <OrderModalReservation
-          data={selectedOrder}
+        <UserModal
+          user={selectedUser}
           onClose={handleCloseModal}
-        />
-      )}
-      {isOpenEdit && (
-        <EditReservationModal
-          leaseOrder={selectedOrder}
-          onClose={handleCloseModalEdit}
-          onUpdate={handleUpdateOrder}
         />
       )}
     </div>
