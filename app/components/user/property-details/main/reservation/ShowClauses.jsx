@@ -3,7 +3,7 @@ import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 
-const ShowClauses = () => {
+const ShowClauses = ({ mothlyRent, startDate, endDate }) => {
   const [showClauses, setShowClauses] = useState(false);
 
   const handleClick = () => {
@@ -34,7 +34,7 @@ const ShowClauses = () => {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Clauses />
+            <Clauses monthlyRent={mothlyRent} startDate={startDate} endDate={endDate} />
           </motion.div>
         )}
       </AnimatePresence>

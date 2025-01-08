@@ -146,7 +146,16 @@ const SecondaryCategorySelector = ({
     // Función que se llama al hacer clic en el botón "Buscar"
     const handleSearch = () => {
         const queryString = buildQueryString();
-        router.push(`/${currentCategory.split("_").join("").toLowerCase()}?${queryString}`);
+        let path;
+        if (currentCategory === "HELLO_ROOM") {
+            path = "alquiler-habitaciones-valencia"
+        } else if (currentCategory === "HELLO_COLIVING"){
+            path = "coliving-valencia"
+        } else {
+            path = currentCategory.split("_").join("").toLowerCase()
+        }
+        
+        router.push(`/${path}?${queryString}`);
     };
 
     const renderSelectedCategoryContent = () => {

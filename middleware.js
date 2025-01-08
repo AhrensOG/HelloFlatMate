@@ -31,11 +31,11 @@ const publicApiPaths = [
 
 const publicPaths = [
     "/",
-    "/helloroom",
+    "/alquiler-habitaciones-valencia",
     "/hellostudio",
-    "/hellocoliving",
+    "/coliving-valencia",
     "/hellolandlord",
-    "/lastrooms",
+    "/ultimas-habitaciones",
     "/faq",
     "/cookies",
     "/privacy-policy",
@@ -77,7 +77,7 @@ export async function middleware(request) {
 
     // ✅ Internacionalización: Verificar si el locale es válido
     if (!supportedLocales.includes(locale)) {
-        console.log(`🛑 Locale inválido. Redirigiendo a: /${preferredLocale}${pathname}`);
+        console.log(`🛑 Locale inválido. Redirigiendo a: /${preferredLocale}${pathname}${search}`);
         return NextResponse.redirect(new URL(`/${preferredLocale}${pathname}${search}`, request.url));
     }
 
@@ -113,7 +113,7 @@ export async function middleware(request) {
       );
 
     if (isPublicApi || isPublicPage || pathname === `/${locale}/pages/auth`) {
-        console.log(`✅ Acceso permitido a ruta pública: ${pathname}`);
+        console.log(`✅ Acceso permitido a ruta pública: ${pathname}${search}`);
         const response = NextResponse.next();
         response.headers.set("x-next-intl-locale", locale);
         return response;

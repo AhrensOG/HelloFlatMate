@@ -24,10 +24,10 @@ const SimpleSelect = ({ options, title = "Seleccionar una opción", initValue, c
         // Redirige según la opción seleccionada
         switch (option) {
             case "helloroom":
-                router.push(`/helloroom?category=HELLO_ROOM`);
+                router.push(`/alquiler-habitaciones-valencia?category=HELLO_ROOM`);
                 break;
             case "hellocoliving":
-                router.push(`/hellocoliving?category=HELLO_COLIVING`);
+                router.push(`/coliving-valencia?category=HELLO_COLIVING`);
                 break;
             case "hellostudio":
                 router.push(`/hellostudio?category=HELLO_STUDIO`);
@@ -36,7 +36,7 @@ const SimpleSelect = ({ options, title = "Seleccionar una opción", initValue, c
                 router.push(`/hellolandlord?category=HELLO_LANDLORD`);
                 break;
             case "lastrooms":
-                router.push("/lastrooms");
+                router.push("/ultimas-habitaciones");
                 break;
             case "todos":
                 router.push(`/pages/user/filtered`);

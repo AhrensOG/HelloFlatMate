@@ -52,7 +52,7 @@ export default function PropertyCard({ name, images = "/not-image.png", property
                 </div>
                 <div className="flex flex-col justify-between flex-1 items-stretch p-2 sm:py-4 gap-2">
                     <div className="flex flex-col grow sm:gap-2">
-                        <h4 className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-normal">
+                        <span className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-normal">
                             {property?.category === "HELLO_ROOM" || property?.category === "HELLO_COLIVING" || property?.category === "HELLO_LANDLORD"
                                 ? "HABITACION"
                                 : property?.category.toLowerCase().split("_").join("")}
@@ -88,16 +88,16 @@ export default function PropertyCard({ name, images = "/not-image.png", property
                                     : // Si no hay leaseOrder activa, mostrar "Disponible ahora!"
                                       "Disponible ahora!"}
                             </span>
-                        </h4>
-                        <h2 className="flex w-full gap-2 items-center text-sm text-black/80 font-medium">{name || ""}</h2>
-                        <h2 className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-medium">
+                        </span>
+                        <span className="flex w-full gap-2 items-center text-sm text-black/80 font-medium">{name || ""}</span>
+                        <p className="flex w-full gap-2 items-center text-xs text-[#000000B2] font-medium">
                             <span>
                                 <Image src={"/property-card/location-icon.svg"} width={18} height={18} alt="Icono de Ubicación" />
                             </span>
                             {property?.property
                                 ? property?.property?.city + ", " + property?.property?.street
                                 : property?.city + ", " + property?.street || ""}
-                        </h2>
+                        </p>
                         <p className="text-[0.68rem] text-[#828282] font-normal">
                             {
                                 // Si existen `property?.property?.amenities` o `property?.amenities`
@@ -136,9 +136,9 @@ export default function PropertyCard({ name, images = "/not-image.png", property
               {property?.price > 0 && (
                 ""
               )} */}
-                            <h3 className="text-base text-[#000000B2]">
+                            <p className="text-base text-[#000000B2]">
                                 {price} € <span className="text-xs text-[#B2B2B2]">/mes</span>
-                            </h3>
+                            </p>
                         </div>
                     </div>
                 </div>

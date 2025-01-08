@@ -34,7 +34,7 @@ export default function NavbarV3({ fixed = false }) {
                 return (
                     <>
                         <Link
-                            href={`${locale?.toLowerCase()}/pages/admin/properties`}
+                            href={`/pages/admin/properties`}
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("admin_link_1")}
@@ -123,7 +123,7 @@ export default function NavbarV3({ fixed = false }) {
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
-                <Link href={`/${locale?.toLowerCase()}/lastrooms`} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
+                <Link href={`/${locale?.toLowerCase()}/ultimas-habitaciones`} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
                     Last rooms
                 </Link>
                 <Link href={`/${locale?.toLowerCase()}/como-funciona`} target="_blank" className="font-bold text-base">
