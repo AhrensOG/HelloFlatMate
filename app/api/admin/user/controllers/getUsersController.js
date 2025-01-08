@@ -1,10 +1,10 @@
-import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Worker } from "@/db/init";
+import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Worker, Contract } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllUsers() {
     try {
-        const owners = await Owner.findAll();
-        const clients = await Client.findAll();
+        const owners = await Owner.findAll({ include: [ { model: Contract, as: "contracts" }, { model: Document, as: "documents" } ] });
+        const clients = await Client.findAll({ include: [ { model: Contract, as: "contracts" }, { model: Document, as: "documents" } ] });
         const admins = await Admin.findAll();
         const workers = await Worker.findAll();
         return NextResponse.json({ owners, clients, admins, workers });

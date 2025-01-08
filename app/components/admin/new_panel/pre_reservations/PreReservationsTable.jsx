@@ -24,6 +24,9 @@ const PreReservationsTable = ({
             Fecha Nac.
           </th>
           <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
+            Razón
+          </th>
+          <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
             Room
           </th>
           <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
@@ -35,9 +38,9 @@ const PreReservationsTable = ({
           <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
             Check-Out
           </th> */}
-          <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
+          {/* <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
             Precio
-          </th>
+          </th> */}
           <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
             Estado
           </th>
@@ -62,6 +65,9 @@ const PreReservationsTable = ({
               {formatDateToDDMMYYYY(lo.client?.birthDate)}
             </td>
             <td className="border p-2 text-gray-700 text-center">
+              {lo.client?.reasonForValencia}
+            </td>
+            <td className="border p-2 text-gray-700 text-center">
               {lo.room?.serial}
             </td>
             <td className="border p-2 text-gray-700 text-center">
@@ -73,9 +79,9 @@ const PreReservationsTable = ({
             <td className="border p-2 text-gray-700 text-center">
               {formatDateToDDMMYYYY(lo.endDate)}
             </td> */}
-            <td className="border p-2 text-gray-700 text-center">
+            {/* <td className="border p-2 text-gray-700 text-center">
               {lo.price} €
-            </td>
+            </td> */}
             <td
               className={`${
                 lo.status === "IN_PROGRESS" ? "text-blue-700" : "text-red-700"

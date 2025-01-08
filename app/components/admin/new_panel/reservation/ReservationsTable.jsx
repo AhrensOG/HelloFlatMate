@@ -26,7 +26,10 @@ const ReservationsTable = ({
             Check-Out
           </th>
           <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
-            Firmada
+            ¿Activa?
+          </th>
+          <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
+            ¿Firmada?
           </th>
           <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
             ¿En revisión?
@@ -61,6 +64,9 @@ const ReservationsTable = ({
               {formatDateToDDMMYYYY(lo?.endDate)}
             </td>
             <td className="border p-2 text-gray-700 text-center">
+              {lo?.isActive ? "Si" : "No"}
+            </td>
+            <td className="border p-2 text-gray-700 text-center">
               {lo?.isSigned ? "Si" : "No"}
             </td>
             <td className="border p-2 text-gray-700 text-center">
@@ -69,11 +75,14 @@ const ReservationsTable = ({
             <td className="border p-2 text-gray-700 text-center">
               {formatDateToDDMMYYYY(lo.date)}
             </td>
-            <td className={`${lo.status === "APPROVED" ? "text-green-700" : "text-yellow-700"} border p-2 text-center`}>
+            <td
+              className={`${
+                lo.status === "APPROVED" ? "text-green-700" : "text-yellow-700"
+              } border p-2 text-center`}
+            >
               {lo.status === "APPROVED" ? "Aprobada" : "Pendiente"}
-              {console.log(lo.status)}
             </td>
-            <td className="border p-2 text-gray-700 text-center flex justify-around">
+            <td className="border p-2 text-gray-700 text-center">
               <button
                 onClick={(e) => {
                   e.stopPropagation(); // Evita que el clic en el botón propague al tr

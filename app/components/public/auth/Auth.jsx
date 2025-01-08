@@ -95,6 +95,7 @@ export default function Auth() {
           fill
           alt="Desktop Auth Image"
           className="object-cover object-bottom"
+          priority
         />
       </div>
       <div
@@ -105,7 +106,7 @@ export default function Auth() {
           src="/auth/whiteLogo.png"
           alt="Logo de Autenticación"
           width={200}
-          height={100}
+          height={61.2}
         />
         <Image
           className="logo-auth sm:hidden"
