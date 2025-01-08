@@ -31,7 +31,7 @@ export default async function RootLayout({ children, params: { locale } }) {
     <html lang={locale}>
       <Head>
         {/* Google Tag Manager */}
-        <Script
+        {/* <Script
           id="google-tag-manager"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -41,18 +41,18 @@ export default async function RootLayout({ children, params: { locale } }) {
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-TSK9NKT');`,
           }}
-        />
+        /> */}
         {/* End Google Tag Manager */}
       </Head>
       <body className={`${montserrat.className}`}>
-        <noscript>
+        {/* <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-TSK9NKT"
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
-        </noscript>
+        </noscript> */}
 
         <GlobalContext>
           <ClientWrapper locale={locale} messages={messages}>
