@@ -20,6 +20,9 @@ export async function createDocument(data) {
     if (!data.name || data.name.trim() === "") {
         return NextResponse.json({ message: "No document name provided" }, { status: 400 })
     }
+    if (!data.leaseOrderId) {
+        return NextResponse.json({ message: "No order id provided" }, { status: 400 })
+    }
 
     try {
         const document = Document.create({
@@ -28,6 +31,8 @@ export async function createDocument(data) {
             urls: data.urls,
             documentableId: data.userId,
             documentableType: data.typeUser,
+            leaseOrderId: data.leaseOrderId,
+            leaseOrderType: "ROOM"
         })
         if (document) {
             return NextResponse.json({ message: "Document created successfully" }, { status: 200 })

@@ -8,6 +8,7 @@ export async function createContract(data) {
     if (!(data.propertyId > 0 || data.roomId > 0)) return NextResponse.json({ message: "No property id provided" }, { status: 400 })
     if (!data.name || data.name.trim() === "") return NextResponse.json({ message: "No contract name provided" }, { status: 400 })
     if (!data.url || data.url.trim() === "") return NextResponse.json({ message: "No contract url provided" }, { status: 400 })
+    if (!data.leaseOrderId) return NextResponse.json({ message: "No Order id provided" }, { status: 400 })
 
     try {
         const transaction = await Contract.sequelize.transaction();
@@ -26,6 +27,8 @@ export async function createContract(data) {
                     contractableId: data.roomId,
                     contractableType: "ROOM",
                     status: "APPROVED",
+                    leaseOrderId: data.leaseOrderId,
+                    leaseOrderType: "ROOM"
                 }
             } else {
                 leaseOrder = await LeaseOrderProperty.findOne({ where: { propertyId: data.propertyId } })
@@ -37,6 +40,8 @@ export async function createContract(data) {
                     contractableId: data.propertyId,
                     contractableType: "PROPERTY",
                     status: "APPROVED",
+                    leaseOrderId: data.leaseOrderId,
+                    leaseOrderType: "PROPERTY"
                 }
             }
 
@@ -65,7 +70,9 @@ export async function createContract(data) {
                 clientId: data.clientId,
                 reference: data.reference || "",
                 type: "DEPOSIT",
-                expirationDate: expirationDate
+                expirationDate: expirationDate,
+                leaseorderId: data.leaseOrderId,
+                leaseorderType: "ROOM"
             },
             {
                 name: "Suministros",
@@ -76,7 +83,9 @@ export async function createContract(data) {
                 clientId: data.clientId,
                 reference: data.reference || "",
                 type: "GENERAL_SUPPLIES",
-                expirationDate: expirationDate
+                expirationDate: expirationDate,
+                leaseorderId: data.leaseOrderId,
+                leaseorderType: "ROOM"
             },
             {
                 name: "Wifi",
@@ -87,7 +96,9 @@ export async function createContract(data) {
                 clientId: data.clientId,
                 reference: data.reference || "",
                 type: "INTERNET",
-                expirationDate: expirationDate
+                expirationDate: expirationDate,
+                leaseorderId: data.leaseOrderId,
+                leaseorderType: "ROOM"
             },
             {
                 name: "Tasa de la agencia",
@@ -98,7 +109,9 @@ export async function createContract(data) {
                 clientId: data.clientId,
                 reference: data.reference || "",
                 type: "AGENCY_FEES",
-                expirationDate: expirationDate
+                expirationDate: expirationDate,
+                leaseorderId: data.leaseOrderId,
+                leaseorderType: "ROOM"
             }
             ]);
 

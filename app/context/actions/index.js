@@ -41,7 +41,8 @@ export const createContractPDF = async (
     7;
     const now = new Date();
     const formattedDate = now.toISOString().slice(0, 10); // Format YYYY-MM-DD
-    const fileName = `contract_${formattedDate}.pdf`;
+    const timestamp = Date.now(); // Genera un timestamp único
+    const fileName = `contract_${formattedDate}_${timestamp}.pdf`;
     const data = await uploadContractPDF(pdfBlob, fileName, "Contratos");
 
     if (data) {
@@ -68,6 +69,7 @@ export const createContractPDF = async (
       type: "ROSTER",
       urls: docUrls,
       typeUser: "CLIENT",
+      leaseOrderId: values.leaseOrderId
     };
 
     await axios.post("/api/document", docData);

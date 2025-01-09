@@ -6,6 +6,7 @@ export default function HelloLandlordContract({
   contractDate = "… de ……. de 202…..",
   landlordName = "………………………",
   landlordNIF = "………………………………………",
+  landlordIBAN = "ES………………………………………",
   landlordStreet = "……………………………",
   landlordStreetNumber = "……..",
   landlordDoorNumber = "……….ª",
@@ -130,7 +131,7 @@ export default function HelloLandlordContract({
           suministros de agua, luz e internet. Dicha renta se abonará mediante
           transferencia bancaria o ingreso en la siguiente cuenta de EL
           ARRENDADOR, indicando en el concepto el nombre del inquilino: IBAN
-          Arrendador: ES……………………………………………………………………… El incumplimiento reiterado
+          Arrendador: {landlordIBAN || "ES…………………………………………"} El incumplimiento reiterado
           de la obligación de pago o notificación del justificante del pago en
           el periodo fijado será motivo de resolución del contrato, dando
           derecho al arrendador a solicitar el desahucio, siendo por cuenta del
@@ -404,7 +405,7 @@ export default function HelloLandlordContract({
           pudieran derivarse del presente contrato, por ser el lugar donde se
           encuentra la habitación arrendada.
         </p>
-        <p className="mb-4 text-sm font-light">
+        {/* <p className="mb-4 text-sm font-light">
           Y con el carácter expresado en la intervención, firman el presente
           contrato, en el lugar y fecha indicados.
         </p>
@@ -415,14 +416,14 @@ export default function HelloLandlordContract({
           </p>
           <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
             Firma ARRENDADORA:{" "}
-            {/* <Image
+            <Image
               src={"/contract/signature.png"}
               width={200}
               height={100}
               alt="Owner Signature"
-            /> */}
+            />
           </p>
-        </div>
+        </div> */}
 
         <h3 className="text-sm font-bold mb-2">
           ANEXO I – NORMAS DE CONVIVENCIA
