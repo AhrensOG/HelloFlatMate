@@ -10,7 +10,7 @@ export async function manualCreateSupply(data) {
 
     try {
         // Crear el registro de Supply
-        const supply = await Supply.create({
+        const supply = await Supply.create({ 
             name: data.name,
             amount: data.amount,
             status: data.status, // El estado por defecto es 'APPROVED'

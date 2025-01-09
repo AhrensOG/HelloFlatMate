@@ -2,7 +2,7 @@
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 
-const supplyInit = (sequelize, DataTypes) => {
+const supplyInit = (sequelize, DataTypes) => { 
     class Supply extends Model {}
 
     Supply.init(

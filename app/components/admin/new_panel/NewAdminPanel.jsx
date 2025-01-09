@@ -6,7 +6,7 @@ import PreReservationsPanel from "./pre_reservations/PreReservationsPanel";
 import ReservationPanel from "./reservation/ReservationPanel";
 import UsersPanel from "./users/UsersPanel";
 
-const NewAdminPanel = ({ data }) => {
+const NewAdminPanel = ({ data }) => { 
     const router = useRouter();
     const searchParams = useSearchParams();
     const section = searchParams.get("section") || "propiedades";

@@ -12,7 +12,7 @@ function isEmpty(data) {
     return false;
 }
 
-const FetchDataComponent = async () => {
+const FetchDataComponent = async () => { 
     let data = null;
     let error = false;
 

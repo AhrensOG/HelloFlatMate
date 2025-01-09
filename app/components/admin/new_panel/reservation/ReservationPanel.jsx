@@ -10,7 +10,7 @@ import CreateLeaseOrderModal from "../../create_lo_modal/CreateLeaseOrderModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function ReservationPanel({ leaseOrders = [], data }) {
+export default function ReservationPanel({ leaseOrders = [], data }) { 
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);

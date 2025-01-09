@@ -130,11 +130,17 @@ export async function createLeaseRoomOrder(data) {
 
         // Verificar si hay conflictos de fechas
         const hasDateConflict = room.leaseOrdersRoom.some((order) => {
+            // Ignorar órdenes con estado REJECTED
+            if (order.status === "REJECTED" || order.status === "CANCELED" || order.status === "FINISHED" ) {
+                return false; // No considerar esta orden
+            }
+
             const existingStartDate = new Date(order.startDate);
             const existingEndDate = new Date(order.endDate);
             const newStartDate = new Date(data.startDate);
             const newEndDate = new Date(data.endDate);
 
+            // Verificar conflicto de fechas
             return !(newStartDate > existingEndDate || newEndDate < existingStartDate);
         });
 
