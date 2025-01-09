@@ -80,7 +80,7 @@ export default function RoomDetails({ params }) {
 
                     // Obtenemos las imágenes de la propiedad y de la habitación actual
                     const propertyImages = propertyData?.images || [];
-                    const roomImages = roomData?.images || [];
+                    const roomImages = roomData_1?.images || [];
 
                     // Combinamos ambos arrays de imágenes en uno solo
                     const allImages = [...roomImages, ...propertyImages];
@@ -109,7 +109,7 @@ export default function RoomDetails({ params }) {
 
             // Obtenemos las imágenes de la propiedad y de la habitación actual
             const propertyImages = data?.images || [];
-            const roomImages = roomData?.images || [];
+            const roomImages = roomData_1?.images || [];
 
             // Combinamos ambos arrays de imágenes en uno solo
             const allImages = [...roomImages, ...propertyImages];
