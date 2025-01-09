@@ -89,7 +89,7 @@ const PreReservationsTable = ({
             >
               {lo.status === "IN_PROGRESS" ? "En progreso" : "Rechazada"}
             </td>
-            <td className="border p-2 text-gray-700 text-center flex justify-around">
+            <td className="border p-2 text-gray-700 text-center">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
