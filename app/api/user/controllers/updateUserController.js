@@ -60,6 +60,10 @@ export async function updateClient(data) {
         user.arrivalTime = data.arrivalTime ? data.arrivalTime : user.arrivalTime;
         user.genre = data.genre || user.genre || "OTHER";
         user.age = data.age || user.age;
+        user.reasonForValencia = data.reasonForValencia || user.reasonForValencia;
+        user.reasonForValenciaOther = data.reasonForValenciaOther || user.reasonForValenciaOther;
+        user.personalReview = data.personalReview || user.personalReview;
+
 
         await user.save({ transaction });
 

@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import { Context } from "@/app/context/GlobalContext";
 import { saveUserContractInformation } from "@/app/context/actions";
@@ -19,9 +19,15 @@ const ContractForm = ({ handleContinue }) => {
   useEffect(() => {
     const user = state?.user;
     if (user?.id) {
-      const readableDate = new Date(user?.birthDate)
-        .toISOString()
-        .split("T")[0];
+      const readableBirthDate = user?.birthDate
+        ? new Date(user.birthDate).toISOString().split("T")[0]
+        : "";
+
+      const readableArrivalDate = user?.arrivalDate
+        ? new Date(user.arrivalDate).toISOString().split("T")[0]
+        : "";
+      const readableArrivalTime = user?.arrivalTime ? user.arrivalTime : "";
+
       setInitialValues({
         name: user.name || "",
         lastName: user.lastName || "",
@@ -34,10 +40,18 @@ const ContractForm = ({ handleContinue }) => {
         postalCode: user.postalCode || "",
         country: user.country || "",
         genre: user.genre || "MALE",
-        birthDate: readableDate,
+        birthDate: readableBirthDate,
         emergencyName: user.emergencyName || "",
         emergencyPhone: user.emergencyPhone || "",
         emergencyEmail: user.emergencyEmail || "",
+        howMetUs: user.howMetUs || "",
+        destinationUniversity: user.destinationUniversity || "",
+        homeUniversity: user.homeUniversity || "",
+        arrivalDate: readableArrivalDate,
+        arrivalTime: readableArrivalTime,
+        reasonForValencia: user.reasonForValencia || "",
+        reasonForValenciaOther: user.reasonForValenciaOther || "",
+        personalReview: user.personalReview || "",
       });
     }
   }, [state]);
@@ -47,14 +61,20 @@ const ContractForm = ({ handleContinue }) => {
     lastName: Yup.string().required("Apellido es requerido"),
     idNum: Yup.string().required("ID/Passport es requerido"),
     phone: Yup.string().required("Teléfono es requerido"),
+    city: Yup.string().required("Ciudad es requerida"),
+    street: Yup.string().required("Calle es requerida"),
+    streetNumber: Yup.string().required("Número de calle es requerido"),
+    postalCode: Yup.string().required("Código postal es requerido"),
+    country: Yup.string().required("Nacionalidad es requerida"),
+    genre: Yup.string()
+      .oneOf(["MALE", "FEMALE", "OTHER"], "Género inválido")
+      .required("Género es requerido"),
     birthDate: Yup.date()
       .required("Fecha de nacimiento es requerida")
       .test("age", "Debes ser mayor de 18", (value) => {
         const age = new Date().getFullYear() - new Date(value).getFullYear();
         return age >= 18;
       }),
-    country: Yup.string().required("Nacionalidad es requerida"),
-    email: Yup.string().email("Email inválido").required("Email es requerido"),
     emergencyName: Yup.string().required("Nombre de emergencia es requerido"),
     emergencyPhone: Yup.string().required(
       "Teléfono de emergencia es requerido"
@@ -62,6 +82,15 @@ const ContractForm = ({ handleContinue }) => {
     emergencyEmail: Yup.string()
       .email("Email inválido")
       .required("Email de emergencia es requerido"),
+    howMetUs: Yup.string().required("¿Cómo nos conociste? es requerido"),
+    destinationUniversity: Yup.string().required(
+      "Universidad de destino es requerida"
+    ),
+    homeUniversity: Yup.string().required("Universidad de origen es requerida"),
+    arrivalDate: Yup.date().required("Fecha de llegada es requerida"),
+    arrivalTime: Yup.string().required("Hora de llegada es requerida"),
+    reasonForValencia: Yup.string().required("La razón es requerida"),
+    personalReview: Yup.string().required("Tu review personal es requerida"),
   });
 
   const fields = [
@@ -73,12 +102,25 @@ const ContractForm = ({ handleContinue }) => {
     { name: "street", label: "Calle", type: "text" },
     { name: "streetNumber", label: "Número", type: "text" },
     { name: "postalCode", label: "Código Postal", type: "text" },
-    { name: "email", label: "Email", type: "email" },
+    { name: "email", label: "Email", type: "email", disabled: true },
   ];
 
   const emergencyFields = [
     { name: "emergencyName", label: "Nombre de emergencia", type: "text" },
     { name: "emergencyEmail", label: "Email de emergencia", type: "email" },
+  ];
+
+  // 📌 Opciones para el campo howMetUs
+  const howMetUsOptions = [
+    { value: "", label: "Seleccione una opción" },
+    { value: "Recomendado por amigos", label: "Recomendado por amigos" },
+    {
+      value: "Recomendado por la Universidad",
+      label: "Recomendado por la Universidad",
+    },
+    { value: "Página web helloflatmate", label: "Página web helloflatmate" },
+    { value: "Idealista", label: "Idealista" },
+    { value: "Otros portales web", label: "Otros portales web" },
   ];
 
   const handleSubmit = async (values) => {
@@ -110,6 +152,16 @@ const ContractForm = ({ handleContinue }) => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
+          validate={(values) => {
+            const errors = {};
+            if (
+              values.reasonForValencia === "Otro" &&
+              !values.reasonForValenciaOther
+            ) {
+              errors.reasonForValenciaOther = "Indícanos un poco más";
+            }
+            return errors;
+          }}
           onSubmit={handleSubmit}
           enableReinitialize
         >
@@ -132,6 +184,7 @@ const ContractForm = ({ handleContinue }) => {
                       id={field.name}
                       name={field.name}
                       type={field.type}
+                      disabled={field.disabled ? true : false}
                       className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
                     />
                     {errors[field.name] && touched[field.name] && (
@@ -199,6 +252,28 @@ const ContractForm = ({ handleContinue }) => {
                     </span>
                   )}
                 </div>
+
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Género
+                  </label>
+                  <Field
+                    as="select"
+                    id="genre"
+                    name="genre"
+                    className="p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                  >
+                    <option value="">Selecciona una opción</option>
+                    <option value="MALE">Masculino</option>
+                    <option value="FEMALE">Femenino</option>
+                    <option value="OTHER">Otro</option>
+                  </Field>
+                  {errors.genre && touched.genre && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.genre}
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Contacto de Emergencia */}
@@ -254,6 +329,180 @@ const ContractForm = ({ handleContinue }) => {
                     }}
                   />
                   {errors.emergencyPhone && touched.emergencyPhone && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.emergencyPhone}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* 🔹 Sección 3: Datos Adicionales */}
+              <h2 className="w-full text-center text-xl pb-2 py-10">
+                Datos adicionales
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Información adicional
+                  </label>
+                  <Field
+                    id="personalReview"
+                    name="personalReview"
+                    type="text"
+                    className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                  />
+                  {errors.personalReview && touched.personalReview && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.personalReview}
+                    </span>
+                  )}
+                </div>
+                {/* Razón para Valencia */}
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    ¿Por qué vienes a Valencia?
+                  </label>
+                  <Field
+                    as="select"
+                    name="reasonForValencia"
+                    className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setFieldValue("reasonForValencia", value);
+                      if (value !== "Otro") {
+                        setFieldValue("reasonForValenciaOther", ""); // Resetea el campo "Otro"
+                      }
+                    }}
+                    value={values.reasonForValencia}
+                  >
+                    <option value="">Selecciona una opción</option>
+                    <option value="Por estudios">Por estudios</option>
+                    <option value="Por trabajo">Por trabajo</option>
+                    <option value="Soy nomada digital">
+                      Soy nomada digital
+                    </option>
+                    <option value="Por turismo">Por turismo</option>
+                    <option value="Aprender el idioma">
+                      Aprender el idioma
+                    </option>
+                    <option value="A vivir">A vivir</option>
+                    <option value="Otro">Otro</option>
+                  </Field>
+                  {errors.reasonForValencia && touched.reasonForValencia && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.reasonForValencia}
+                    </span>
+                  )}
+                </div>
+
+                <AnimatePresence>
+                  {values.reasonForValencia === "Otro" && (
+                    <motion.div
+                      key="reason-input"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className=""
+                    >
+                      <label className="text-sm font-medium text-gray-600">
+                        Cuéntanos sobre tí
+                      </label>
+                      <Field
+                        as="textarea"
+                        name="reasonForValenciaOther"
+                        placeholder="Comparte con nosotros tus intereses, pasatiempos y qué tipo de inquilino eres."
+                        className="w-full p-3 rounded-lg outline-none bg-white border border-gray-300 text-sm text-gray-700 focus:ring-1 focus:ring-blue-300 transition h-24"
+                      />
+                      <ErrorMessage
+                        name="reasonForValenciaOther"
+                        component="p"
+                        className="text-red-500 text-xs mt-1"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    ¿Cómo nos conociste?
+                  </label>
+                  <Field
+                    as="select"
+                    name="howMetUs"
+                    className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                  >
+                    {howMetUsOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </Field>
+                  {errors.howMetUs && touched.howMetUs && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.howMetUs}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Fecha de check-in
+                  </label>
+                  <Field
+                    name="arrivalDate"
+                    type="date"
+                    placeholder="Fecha llegada"
+                    className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                  />
+                  {errors.arrivalDate && touched.arrivalDate && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.arrivalDate}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Hora de check-in
+                  </label>
+                  <Field
+                    name="arrivalTime"
+                    type="time"
+                    placeholder="Hora llegada"
+                    className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                  />
+                  {errors.arrivalTime && touched.arrivalTime && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.arrivalTime}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Universidad de origen
+                  </label>
+                  <Field
+                    name="homeUniversity"
+                    placeholder="Universidad de origen"
+                    className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                  />
+                  {errors.homeUniversity && touched.homeUniversity && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.emergencyPhone}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-600">
+                    Universidad de destino
+                  </label>
+                  <Field
+                    name="destinationUniversity"
+                    placeholder="Universidad de destino"
+                    className="mt-1 p-2 border rounded-lg focus:ring-1 focus:ring-blue-300 focus:outline-none drop-shadow-sm transition"
+                  />
+                  {errors.destinationUniversity && touched.emergencyPhone && (
                     <span className="text-red-500 text-sm mt-1">
                       {errors.emergencyPhone}
                     </span>
