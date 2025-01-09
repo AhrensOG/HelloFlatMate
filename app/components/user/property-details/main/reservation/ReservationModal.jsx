@@ -45,7 +45,7 @@ export default function ReservationModal({ callback, data, category, calendarTyp
             return new Intl.DateTimeFormat("es-ES", {
                 day: "numeric",
                 month: "numeric",
-                year: "2-digit",
+                year: "numeric",
             }).format(newDate);
         }
         return "";
@@ -169,7 +169,7 @@ export default function ReservationModal({ callback, data, category, calendarTyp
                             rentalPeriods={rentalPeriods}
                         />
                     ) : null}
-                    <ShowClauses />
+                    <ShowClauses mothlyRent={data.price || 500} startDate={formatedDate(info.startDate) || "-"} endDate={formatedDate(info.endDate) || "-"} />
                     <ReservationForm
                         data={data}
                         handleReservationSubmit={handleReservationSubmit}
