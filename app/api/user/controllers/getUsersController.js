@@ -83,13 +83,6 @@ export async function getUserById(id) {
       });
     }
 
-    if (!user) {
-      return NextResponse.json(
-        { error: "Usuario no encontrado" },
-        { status: 404 }
-      );
-    }
-
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
     console.error("Error en getUserById:", error.message);

@@ -45,12 +45,12 @@ export default function Auth() {
       } else if (registerProvider === "facebook") {
         await logInWithFacebook();
       } else {
-        toast.error("No se reconoce el proveedor de registro");
+        toast.info("No se reconoce el proveedor de registro");
       }
       setIsOpen(false);
       return router.push(redirect || "/");
     } catch (error) {
-      toast.error("Fallo la autenticación. Intente nuevamente.");
+      toast.info("Fallo la autenticación. Intente nuevamente.");
     }
   };
 
@@ -63,27 +63,34 @@ export default function Auth() {
       await logInWithFacebook();
       return router.push(redirect || "/");
     } catch (error) {
-      toast.error("Fallo la autenticación. Intente nuevamente.");
+      toast.info("Fallo la autenticación. Intente nuevamente.");
     }
   };
 
   const handleLoginGoogle = async () => {
+    const toastId = toast.loading("Autenticando...");
     try {
       await logInWithGoogle();
+      toast.success("¡Inicio de sesión exitoso!", { id: toastId });
       return router.push(redirect || "/");
     } catch (error) {
-      toast.error("Fallo la autenticación. Intente nuevamente.");
+      toast.info("Fallo la autenticación. Intente nuevamente.", {
+        id: toastId,
+      });
     }
   };
 
   const handleLoginWithEmail = async (e) => {
     e.preventDefault();
+    const toastId = toast.loading("Autenticando...");
     try {
       await logInWithEmailAndPassword(email, password);
-      toast.success("Inicio de sesión exitoso.");
+      toast.success("¡Inicio de sesión exitoso!", { id: toastId });
       router.push(redirect || "/");
     } catch (error) {
-      toast.error("Fallo la autenticación. Verifica tu correo y contraseña.");
+      toast.info("Fallo la autenticación. Verifica tu correo y contraseña.", {
+        id: toastId,
+      });
     }
   };
 
@@ -154,7 +161,7 @@ export default function Auth() {
             </span>
             {register ? "Regístrate con Google" : "Iniciar con Google"}
           </button>
-          
+
           {!register && (
             <span className="flex items-center text-sm font-thin w-full sm:text-white">
               <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
