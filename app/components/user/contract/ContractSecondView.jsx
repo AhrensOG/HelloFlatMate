@@ -37,7 +37,7 @@ export default function ContractSecondView({ handleContinue, handleBack }) {
             id="nomina"
             img={"/contract/second_view/file-icon.svg"}
             description={
-              "Nómina si eres nómada digital o matrícula universitaria si eres estudiante"
+              "Certificado de matrícula universitaria (Nómina si eres nómada digital)"
             }
             width={135}
             height={135}

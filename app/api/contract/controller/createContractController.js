@@ -18,7 +18,7 @@ export async function createContract(data) {
             let room
             if (data.roomId) {
                 room = await Room.findByPk(data.roomId)
-                leaseOrder = await LeaseOrderRoom.findOne({ where: { roomId: data.roomId } })
+                leaseOrder = await LeaseOrderRoom.findOne({ where: { id: data.leaseOrderId } })
                 contractData = {
                     name: data.name,
                     url: data.url,

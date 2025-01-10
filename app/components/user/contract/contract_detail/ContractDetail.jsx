@@ -111,12 +111,12 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
 
   // Property DATA
   const contractDate = setDate();
-  const landlordName = owner?.name + " " + owner?.lastName || "-";
+  const landlordName = owner?.name + " " + owner?.lastName || " ";
   const landlordNIF = owner?.idNum || "-";
   const landlordIBAN = owner?.IBAN || "-";
   const landlordStreet = property.street || "-";
   const landlordStreetNumber = property.streetNumber || "-";
-  const landlordDoorNumber = room ? room.serial : "-";
+  const landlordDoorNumber = property.floor || "-";
   const landlordPostalCode = property.postalCode || "-";
   const numberOfRooms = property.rooms?.length || 1;
   const numberOfBathrooms = property.bathrooms || 1;
