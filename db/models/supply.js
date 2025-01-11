@@ -63,11 +63,11 @@ const supplyInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: true,
             },
-            leaseorderId: {
+            leaseOrderId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },
-            leaseorderType: {
+            leaseOrderType: {
                 type: DataTypes.ENUM("PROPERTY", "ROOM"),
                 allowNull: true,
             },
