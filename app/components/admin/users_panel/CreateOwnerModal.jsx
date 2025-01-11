@@ -22,24 +22,24 @@ export default function CreateOwnerModal({ options_1 }) {
       busqueda: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Requerido"),
-      lastName: Yup.string().required("Requerido"),
+      // name: Yup.string().required("Requerido"),
+      // lastName: Yup.string().required("Requerido"),
       email: Yup.string().email("Email inválido").required("Requerido"),
       password: Yup.string().required("Requerido"),
-      IBAN: Yup.string().required("Requerido"),
-      idNum: Yup.string()
-        .required("Requerido"),
+      // IBAN: Yup.string().required("Requerido"),
+      // idNum: Yup.string()
+      //   .required("Requerido"),
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
         const payload = {
-          name: values.name,
-          lastName: values.lastName,
-          email: values.email,
-          password: values.password,
-          idNum: values.idNum,
+          name: values.name || null,
+          lastName: values.lastName || null,
+          email: values.email || null,
+          password: values.password || null,
+          idNum: values.idNum || null,
           description: values.description || null,
-          IBAN: values.IBAN,
+          IBAN: values.IBAN || null,
           properties: selectedOptionsId.map((id) => ({ id })),
         };
 
