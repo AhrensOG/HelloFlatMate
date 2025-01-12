@@ -80,7 +80,7 @@ export default function UsersPanel({ data, reload }) {
                 )}
             </section>
             {showModal && <SetRolModal action={setShowModal} data={user} reload={reload} />}
-            {showCreateUserModal && <CreateUserModal action={setShowCreateUserModal} reload={reload} />}
+            {showCreateUserModal && <CreateUserModal action={setShowCreateUserModal} reload={reload} options_1={opstionsSerial} />}
         </main>
     );
 }
