@@ -59,61 +59,104 @@ export async function createContract(data) {
             const currentDate = new Date();
             const expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 5); // Establecer 5 días en el futuro
-
-            await Supply.bulkCreate([
-            {
-                name: "Depósito",
-                amount: 300,
-                date: currentDate,
-                status: "PENDING",
-                propertyId: data.propertyId || room.propertyId,
-                clientId: data.clientId,
-                reference: data.reference || "",
-                type: "DEPOSIT",
-                expirationDate: expirationDate,
-                leaseorderId: data.leaseOrderId,
-                leaseorderType: "ROOM"
-            },
-            {
-                name: "Suministros",
-                amount: 200, 
-                date: currentDate,
-                status: "PENDING",
-                propertyId: data.propertyId || room.propertyId,
-                clientId: data.clientId,
-                reference: data.reference || "",
-                type: "GENERAL_SUPPLIES",
-                expirationDate: expirationDate,
-                leaseorderId: data.leaseOrderId,
-                leaseorderType: "ROOM"
-            },
-            {
-                name: "Wifi",
-                amount: 80,
-                date: currentDate,
-                status: "PENDING",
-                propertyId: data.propertyId || room.propertyId,
-                clientId: data.clientId,
-                reference: data.reference || "",
-                type: "INTERNET",
-                expirationDate: expirationDate,
-                leaseorderId: data.leaseOrderId,
-                leaseorderType: "ROOM"
-            },
-            {
-                name: "Tasa de la agencia",
-                amount: 459.80, // 380€ + IVA
-                date: currentDate,
-                status: "PENDING",
-                propertyId: data.propertyId || room.propertyId,
-                clientId: data.clientId,
-                reference: data.reference || "",
-                type: "AGENCY_FEES",
-                expirationDate: expirationDate,
-                leaseorderId: data.leaseOrderId,
-                leaseorderType: "ROOM"
+            if (data.category === "HELLO_COLIVING") {
+                await Supply.bulkCreate([
+                    {
+                        name: "Depósito",
+                        amount: 500,
+                        date: currentDate,
+                        status: "PENDING",
+                        propertyId: data.propertyId || room.propertyId,
+                        clientId: data.clientId,
+                        reference: data.reference || "",
+                        type: "DEPOSIT",
+                        expirationDate: expirationDate,
+                        leaseorderId: data.leaseOrderId,
+                        leaseorderType: "ROOM"
+                    },
+                    {
+                        name: "Suministros",
+                        amount: 200, 
+                        date: currentDate,
+                        status: "PENDING",
+                        propertyId: data.propertyId || room.propertyId,
+                        clientId: data.clientId,
+                        reference: data.reference || "",
+                        type: "GENERAL_SUPPLIES",
+                        expirationDate: expirationDate,
+                        leaseorderId: data.leaseOrderId,
+                        leaseorderType: "ROOM"
+                    },
+                    {
+                        name: "Tasa de la agencia",
+                        amount: 459.80, // 380€ + IVA
+                        date: currentDate,
+                        status: "PENDING",
+                        propertyId: data.propertyId || room.propertyId,
+                        clientId: data.clientId,
+                        reference: data.reference || "",
+                        type: "AGENCY_FEES",
+                        expirationDate: expirationDate,
+                        leaseorderId: data.leaseOrderId,
+                        leaseorderType: "ROOM"
+                    }
+                    ]);
+            } else {
+                await Supply.bulkCreate([
+                {
+                    name: "Depósito",
+                    amount: 300,
+                    date: currentDate,
+                    status: "PENDING",
+                    propertyId: data.propertyId || room.propertyId,
+                    clientId: data.clientId,
+                    reference: data.reference || "",
+                    type: "DEPOSIT",
+                    expirationDate: expirationDate,
+                    leaseorderId: data.leaseOrderId,
+                    leaseorderType: "ROOM"
+                },
+                {
+                    name: "Suministros",
+                    amount: 200, 
+                    date: currentDate,
+                    status: "PENDING",
+                    propertyId: data.propertyId || room.propertyId,
+                    clientId: data.clientId,
+                    reference: data.reference || "",
+                    type: "GENERAL_SUPPLIES",
+                    expirationDate: expirationDate,
+                    leaseorderId: data.leaseOrderId,
+                    leaseorderType: "ROOM"
+                },
+                {
+                    name: "Wifi",
+                    amount: 80,
+                    date: currentDate,
+                    status: "PENDING",
+                    propertyId: data.propertyId || room.propertyId,
+                    clientId: data.clientId,
+                    reference: data.reference || "",
+                    type: "INTERNET",
+                    expirationDate: expirationDate,
+                    leaseorderId: data.leaseOrderId,
+                    leaseorderType: "ROOM"
+                },
+                {
+                    name: "Tasa de la agencia",
+                    amount: 459.80, // 380€ + IVA
+                    date: currentDate,
+                    status: "PENDING",
+                    propertyId: data.propertyId || room.propertyId,
+                    clientId: data.clientId,
+                    reference: data.reference || "",
+                    type: "AGENCY_FEES",
+                    expirationDate: expirationDate,
+                    leaseorderId: data.leaseOrderId,
+                    leaseorderType: "ROOM"
+                }
+                ]);
             }
-            ]);
 
             return NextResponse.json({ message: "Contract created successfully" }, { status: 200 })
         } catch (error) { await transaction.rollback(); return NextResponse.json({ message: "Contract not created" }, { status: 400 }) }

@@ -51,6 +51,7 @@ export const createContractPDF = async (
         signature: clientSignatureUrl,
       });
       const contract = await loadContract({
+        category: values.propertyCategory,
         ownerId: dataContract.ownerId,
         clientId: dataContract.clientId,
         name: data.name,
