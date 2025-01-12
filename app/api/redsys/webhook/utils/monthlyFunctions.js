@@ -124,7 +124,12 @@ async function processMonthlyPayment({
     );
   } catch (error) {
     console.error(`❌ Error en el proceso de pago mensual: ${error.message}`);
-    throw error;
+    return NextResponse.json(
+      {
+        message: `❌ Error en el proceso de pago mensual: ${error.message}`,
+      },
+      { status: 400 }
+    );
   }
 }
 

@@ -4,45 +4,67 @@ import {
   CheckCircleIcon,
   XCircleIcon,
   ExclamationCircleIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import PayModal from "./PayModal";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
+
+const SUPPLY_TYPE_LABELS = {
+  WATER: "Agua",
+  GAS: "Gas",
+  ELECTRICITY: "Electricidad",
+  EXPENSES: "Expensas",
+  INTERNET: "WIFI",
+  AGENCY_FEES: "Tasa de la agencia",
+  CLEANUP: "Limpieza check-out",
+  OTHERS: "Otros",
+  DEPOSIT: "Depósito",
+  GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
+};
+
+const orderPriority = [
+  "DEPOSIT",
+  "AGENCY_FEES",
+  "GENERAL_SUPPLIES",
+  "WIFI",
+  "MONTHLY",
+  "CLEANUP",
+];
 
 // Función para obtener el fondo de la etiqueta según el estado
 const getStatusBgColor = (status, paid) => {
   if (paid) {
     return "bg-green-100 text-green-500"; // Pagado
-  } else {
-    switch (status) {
-      case "PENDING":
-        return "bg-blue-100 text-blue-500"; // Pendiente
-      case "APPROVED":
-        return "bg-green-100 text-green-500"; // Aprobado
-      case "REJECTED":
-        return "bg-yellow-100 text-yellow-500"; // Rechazado
-      default:
-        return "bg-gray-100 text-gray-500"; // Desconocido
-    }
+  }
+  switch (status) {
+    case "PENDING":
+      return "bg-blue-100 text-blue-500";
+    case "APPROVED":
+      return "bg-green-100 text-green-500";
+    case "REJECTED":
+      return "bg-yellow-100 text-yellow-500";
+    default:
+      return "bg-gray-100 text-gray-500";
   }
 };
 
 // Función para obtener el ícono según el estado
 const getStatusIcon = (status, paid) => {
   if (paid) {
-    return <CheckCircleIcon className="w-6 h-6 text-green-500" />; // Pagado
-  } else {
-    switch (status) {
-      case "PENDING":
-        return <ExclamationCircleIcon className="w-6 h-6 text-blue-500" />; // Pendiente
-      case "APPROVED":
-        return <CheckCircleIcon className="w-6 h-6 text-green-500" />; // Aprobado
-      case "REJECTED":
-        return <XCircleIcon className="w-6 h-6 text-yellow-500" />; // Rechazado
-      default:
-        return <ExclamationCircleIcon className="w-6 h-6 text-gray-500" />; // Desconocido
-    }
+    return <CheckCircleIcon className="w-6 h-6 text-green-500" />;
+  }
+  switch (status) {
+    case "PENDING":
+      return <ExclamationCircleIcon className="w-6 h-6 text-blue-500" />;
+    case "APPROVED":
+      return <CheckCircleIcon className="w-6 h-6 text-green-500" />;
+    case "REJECTED":
+      return <XCircleIcon className="w-6 h-6 text-yellow-500" />;
+    default:
+      return <ExclamationCircleIcon className="w-6 h-6 text-gray-500" />;
   }
 };
 
@@ -58,8 +80,9 @@ const calculateMonthsBetweenDates = (startDate, endDate) => {
 
 const PaymentPage = ({ redirect, user }) => {
   const [paymentsToShow, setPaymentsToShow] = useState([]);
-  const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
-  const [selectedPayment, setSelectedPayment] = useState(null); // Información del pago seleccionado
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  const [isOpen, setIsOpen] = useState(true);
   const t = useTranslations("user_payment_history");
 
   const getMonthName = (date) => {
@@ -94,67 +117,103 @@ const PaymentPage = ({ redirect, user }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      const activeLeaseOrders = [
-        // ...(user.leaseOrdersProperty || []),
-        ...(user.leaseOrdersRoom || []),
-      ].filter((order) => order.isActive);
+    if (!user) return;
 
-      const allPayments = [];
+    const activeLeaseOrders = [...(user.leaseOrdersRoom || [])].filter(
+      (order) => order.isActive
+    );
 
-      activeLeaseOrders.forEach((order) => {
-        const startDate = new Date(order.startDate);
-        const endDate = new Date(order.endDate);
-        const totalMonths = calculateMonthsBetweenDates(startDate, endDate);
+    const monthlyPendingPayments = [];
+    activeLeaseOrders.forEach((order) => {
+      const startDate = new Date(order.startDate);
+      const endDate = new Date(order.endDate);
+      const totalMonths = calculateMonthsBetweenDates(startDate, endDate);
 
-        const rentPayments =
-          user.rentPayments?.filter(
-            (payment) => payment.leaseOrderId === order.id
-          ) || [];
+      const rentPayments =
+        user.rentPayments?.filter(
+          (payment) => payment.leaseOrderId === order.id
+        ) || [];
 
-        const paidQuotas = rentPayments.map((payment) => payment.quotaNumber);
+      const paidQuotas = rentPayments.map((payment) => payment.quotaNumber);
 
-        for (let i = 1; i <= totalMonths; i++) {
-          if (!paidQuotas.includes(i)) {
-            const pendingMonth = new Date(startDate);
-            pendingMonth.setMonth(startDate.getMonth() + i - 1);
+      for (let i = 1; i <= totalMonths; i++) {
+        if (!paidQuotas.includes(i)) {
+          const pendingMonth = new Date(startDate);
+          pendingMonth.setMonth(startDate.getMonth() + i - 1);
 
-            allPayments.push({
-              order: order,
-              id: ``,
-              month: getMonthName(pendingMonth),
-              amount: order.price,
-              status: "PENDING",
-              type: "MONTHLY",
-              quotaNumber: i,
-              description: `${t("desc")} ${getMonthName(pendingMonth)}`,
-              paid: false,
-              //   orderType: order.hasOwnProperty("roomId") ? "ROOM" : "PROPERTY",
-              orderType: "ROOM",
-            });
-          }
+          monthlyPendingPayments.push({
+            id: "",
+            month: getMonthName(pendingMonth),
+            amount: order.price,
+            status: "PENDING",
+            type: "MONTHLY",
+            quotaNumber: i,
+            description: `${t("desc")} - ${getMonthName(pendingMonth)}`,
+            paid: false,
+            orderType: "ROOM",
+            order,
+            paymentType: "MONTHLY",
+          });
         }
+      }
+    });
+
+    const pendingSupplies = (user.supplies || [])
+      .filter((sup) => sup.status === "PENDING")
+      .map((sup) => {
+        const matchedOrder = activeLeaseOrders.find(
+          (o) => o.id === sup.leaseOrderId
+        );
+        return {
+          id: sup.id,
+          month: null,
+          amount: sup.amount,
+          status: sup.status,
+          type: sup.type,
+          quotaNumber: null,
+          description: `Pago - ${SUPPLY_TYPE_LABELS[sup.type] || sup.type}`,
+          paid: sup.status !== "PENDING",
+          orderType: sup.leaseOrderType,
+          order: matchedOrder,
+          paymentType: "SUPPLY",
+        };
       });
 
-      allPayments.sort(
-        (a, b) => a.paid - b.paid || a.quotaNumber - b.quotaNumber
-      );
-      setPaymentsToShow(allPayments.filter((payment) => !payment.paid)); // Mostrar solo pagos pendientes
-    }
-  }, [user]);
+    const allPending = [...monthlyPendingPayments, ...pendingSupplies];
+
+    allPending.sort((a, b) => {
+      const typeA = a.type || "";
+      const typeB = b.type || "";
+
+      const indexA = orderPriority.indexOf(typeA);
+      const indexB = orderPriority.indexOf(typeB);
+
+      if (indexA === -1 && indexB === -1) {
+        return 0;
+      } else if (indexA === -1) {
+        return 1;
+      } else if (indexB === -1) {
+        return -1;
+      }
+
+      return indexA - indexB;
+    });
+
+    setPaymentsToShow(allPending);
+  }, [user, t]);
 
   const handlePaymentClick = (payment) => {
     if (payment.paid) {
-      toast.info(t("toast.info")); // Muestra un toast si el pago está realizado
+      toast.info(t("toast.info"));
     } else {
-      setSelectedPayment(payment); // Establece el pago pendiente seleccionado
-      setShowModal(true); // Abre el modal para pagos pendientes
+      setSelectedPayment(payment);
+      setShowModal(true);
     }
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); // Cierra el modal
-    setSelectedPayment(null); // Limpia el pago seleccionado
+    setShowModal(false);
+    setSelectedPayment(null);
   };
 
   return (
@@ -175,53 +234,102 @@ const PaymentPage = ({ redirect, user }) => {
         </div>
       </div>
       <main className="flex w-full justify-center items-start px-4">
-        <div className="flex flex-col gap-4 py-4 w-full max-w-screen-xl">
-          {paymentsToShow.length > 0 ? (
-            paymentsToShow.map((payment, index) => (
-              <button
-                key={index}
-                onClick={() => handlePaymentClick(payment)} // Se agrega el onClick al botón
-                className="p-4 border rounded-lg shadow-md transition hover:shadow-lg bg-white shadow-amenity-template cursor-pointer"
-              >
-                <div className="flex flex-col gap-4 justify-between items-start sm:flex-row sm:items-center">
-                  <div className="flex items-center gap-4">
-                    {getStatusIcon(payment.status, payment.paid)}
-                    <div className="flex flex-col items-start justify-center">
-                      <h2 className="text-lg font-semibold">
-                        {payment.type === "RESERVATION"
-                          ? `${t("desc_res")} - ${payment.month}`
-                          : `${t("desc")} ${payment.month}`}
-                      </h2>
-                      <p className="text-sm text-gray-500">
-                        {t("pay_id")} {payment.id}
-                      </p>
-                      <p className="text-sm">
-                        {t("desc_pay")} {payment.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <span
-                      className={`px-4 py-1 text-sm font-semibold rounded-full ${getStatusBgColor(
-                        payment.status,
-                        payment.paid
-                      )}`}
+        <div className="flex flex-col gap-1 py-4 w-full max-w-screen-xl">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full text-left flex items-center justify-between bg-white border rounded-lg shadow-md px-4 py-4 hover:shadow-lg transition"
+          >
+            <span className="text-lg font-semibold text-blue-700">
+              Pagos pendientes
+            </span>
+            <span
+              className={`transform transition-transform duration-300 ${
+                isOpen ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              <ChevronDownIcon className="size-4" />
+            </span>
+          </button>
+
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: isOpen ? "auto" : 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="grid gap-4 mt-2">
+              {paymentsToShow.length > 0 ? (
+                paymentsToShow.map((payment, index) => {
+                  // Revisar si hay order y si su room tiene serial
+                  const hasRoomSerial =
+                    payment.order?.room?.serial !== undefined;
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handlePaymentClick(payment)}
+                      className="p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition cursor-pointer text-left"
                     >
-                      {payment.paid
-                        ? t("paid")
-                        : getStatusDescription(payment.status)}
-                    </span>
-                  </div>
-                </div>
-              </button>
-            ))
-          ) : (
-            <p className="text-gray-500 text-center">{t("not_pend_pay")}</p>
-          )}
+                      <div className="flex flex-col gap-2 justify-between sm:flex-row sm:items-center">
+                        <div className="flex items-center gap-3">
+                          {getStatusIcon(payment.status, payment.paid)}
+                          <div>
+                            {payment.type === "MONTHLY" ? (
+                              <h2 className="text-lg font-semibold">
+                                {t("desc")} {payment.month}
+                              </h2>
+                            ) : (
+                              <h2 className="text-lg font-semibold">
+                                {SUPPLY_TYPE_LABELS[payment.type] ||
+                                  payment.description ||
+                                  payment.type}
+                              </h2>
+                            )}
+
+                            {/* ID de pago (en monthly era ""), en supply es supply.id */}
+                            <p className="text-sm text-gray-500">
+                              {t("pay_id")} {"-"}
+                            </p>
+
+                            {/* Descripción final */}
+                            <p className="text-sm">
+                              {t("desc_pay")} {payment.description}
+                            </p>
+
+                            {/* Alojamiento (serial) si aplica */}
+                            {hasRoomSerial && (
+                              <p className="text-sm text-blue-700 font-medium">
+                                Alojamiento: {payment.order.room.serial}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div>
+                          <span
+                            className={`px-4 py-1 text-sm font-semibold rounded-full ${getStatusBgColor(
+                              payment.status,
+                              payment.paid
+                            )}`}
+                          >
+                            {payment.paid
+                              ? t("paid")
+                              : getStatusDescription(payment.status)}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })
+              ) : (
+                <p className="text-gray-500 text-center">{t("not_pend_pay")}</p>
+              )}
+            </div>
+          </motion.div>
         </div>
       </main>
 
-      {/* Modal para pagos pendientes */}
+      {/* MODAL para pagos pendientes */}
       {showModal && selectedPayment && (
         <PayModal
           payment={selectedPayment}

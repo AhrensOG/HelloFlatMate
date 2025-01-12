@@ -40,27 +40,56 @@ const PayModal = ({ payment, user, onClose }) => {
         ? payment.order?.room?.serial
         : payment.order?.property?.serial;
 
-    const body = {
-      amount: payment.amount * 100,
-      order: dsOrder,
-      paymentMetaData: {
+    let body;
+    if (payment.paymentType === "MONTHLY") {
+      body = {
+        amount: payment.amount * 100,
         order: dsOrder,
-        paymentType: "monthly",
-        paymentableId: propertyId,
-        paymentableType: payment.orderType,
-        clientId: payment.order?.clientId,
-        leaseOrderId: payment.order?.id,
-        leaseOrderType: payment.orderType,
-        quotaNumber: payment.quotaNumber,
-        amount: payment.amount,
-        month: payment.month,
-        propertySerial,
-        merchantName: `Pago mensual - ${propertySerial}`,
-        merchantDescription: `Pago mensual - ${payment.month} (${propertySerial} - ${user.name} ${user.lastName})`,
-        merchantUrlOk: `/pages/user/success/${propertyId}?type=monthly`,
-        merchantUrlkO: `/pages/user/history/payments`,
-      },
-    };
+        paymentMetaData: {
+          order: dsOrder,
+          paymentType: "monthly",
+          paymentableId: propertyId,
+          paymentableType: payment.orderType,
+          clientId: payment.order?.clientId,
+          leaseOrderId: payment.order?.id,
+          leaseOrderType: payment.orderType,
+          quotaNumber: payment.quotaNumber,
+          amount: payment.amount,
+          month: payment.month,
+          propertySerial,
+          merchantName: `Pago mensual - ${propertySerial}`,
+          merchantDescription: `Pago mensual - ${payment.month} (${propertySerial} - ${user.name} ${user.lastName})`,
+          merchantUrlOk: `/pages/user/success/${propertyId}?type=monthly`,
+          merchantUrlkO: `/pages/user/history/payments`,
+        },
+      };
+    } else if (payment.paymentType === "SUPPLY") {
+      body = {
+        amount: payment.amount * 100,
+        order: dsOrder,
+        paymentMetaData: {
+          supplyId: payment.id,
+          order: dsOrder,
+          paymentType: "supply",
+          paymentableId: propertyId,
+          paymentableType: payment.orderType,
+          clientId: payment.order?.clientId,
+          leaseOrderId: payment.order?.id,
+          leaseOrderType: payment.orderType,
+          amount: payment.amount,
+          propertySerial,
+          merchantName: `${payment.description}`,
+          merchantDescription: `${payment.description} (${propertySerial} - ${user.name} ${user.lastName})`,
+          merchantUrlOk: `/pages/user/success/${propertyId}?type=supply`,
+          merchantUrlkO: `/pages/user/history/payments`,
+        },
+      };
+    } else {
+      toast.info("Tipo de pago no reconocido", {
+        description: "Intenta nuevamente o contacta con nuestro soporte.",
+      });
+      return;
+    }
 
     const toastId = toast.loading("Procesando el pago...");
 
@@ -119,7 +148,7 @@ const PayModal = ({ payment, user, onClose }) => {
         </button>
 
         <h2 className="text-lg font-semibold text-center text-blue-600 mb-4">
-          <span className="font-bold">Detalles del Pago Mensual</span> <br />
+          <span className="font-bold">Detalles del pago</span> <br />
           <span className="font-bold">{payment.month}</span>
         </h2>
         <div className="flex flex-col items-center mb-6 gap-2">
@@ -138,9 +167,11 @@ const PayModal = ({ payment, user, onClose }) => {
           </div>
           {/* Info del pago */}
           <div className="w-full flex flex-col justify-center items-start">
-            <p className="text-sm text-gray-500">
-              <span className="font-semibold">Mes: </span> {payment.month}
-            </p>
+            {payment.paymentType === "MONTHLY" && (
+              <p className="text-sm text-gray-500">
+                <span className="font-semibold">Mes: </span> {payment.month}
+              </p>
+            )}
             <p className="text-sm text-gray-500">
               <span className="font-semibold">Monto: </span>
               {`€ ${payment.amount.toFixed(2)}`}

@@ -106,7 +106,12 @@ async function processReservation({
     );
   } catch (error) {
     console.error(`❌ Error en el proceso de reserva: ${error.message}`);
-    throw error;
+    return NextResponse.json(
+      {
+        message: `❌ Error en el proceso de reserva: ${error.message}`,
+      },
+      { status: 400 }
+    );
   }
 }
 
