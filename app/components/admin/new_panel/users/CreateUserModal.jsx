@@ -9,6 +9,26 @@ export default function CreateUserModal({ action, reload, options_1 }) {
     const [selectedProperties, setSelectedProperties] = useState([]);
     const [options, setOptions] = useState(options_1);
 
+    const handleCreateUser = async (values) => {
+        try {
+            const payload = {
+                ...values,
+                properties: selectedProperties.map((prop) => prop.id),
+            };
+
+            const endpoint = values.rol === "OWNER" ? "/api/admin/user/create/owner" : "/api/admin/user/create";
+
+            const response = await axios.post(endpoint, payload);
+
+            action(false); // Cerrar modal
+            return response.data.message; // Mensaje de éxito
+        } catch (err) {
+            toast.info("Ocurrio un error al crear el usuario");
+            console.log(err);
+            throw err;
+        }
+    };
+
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -32,29 +52,10 @@ export default function CreateUserModal({ action, reload, options_1 }) {
             }),
         }),
         onSubmit: async (values) => {
-            try {
-                toast.promise(
-                    async () => {
-                        const payload = {
-                            ...values,
-                            properties: selectedProperties.map((prop) => prop.id),
-                        };
-
-                        const endpoint = values.rol === "OWNER" ? "/api/admin/user/create/owner" : "/api/admin/user/create";
-
-                        const response = await axios.post(endpoint, payload);
-                        return response.data.message; // Mensaje de éxito
-                    },
-                    {
-                        loading: "Creando usuario...",
-                        success: "Usuario creado correctamente",
-                    }
-                );
-                action(false); // Cerrar modal
-            } catch (err) {
-                toast.info("Ocurrio un error al crear el usuario");
-                throw err;
-            }
+            toast.promise(handleCreateUser(values), {
+                loading: "Creando usuario...",
+                success: "Usuario creado correctamente",
+            });
         },
     });
 

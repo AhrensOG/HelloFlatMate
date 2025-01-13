@@ -1,7 +1,7 @@
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import UserCard from "./UserCard";
 import SetRolModal from "./SetRolModal";
-import CreateUserModal from "./CreateUserModal";
+import CreateUserModal from "../new_panel/users/CreateUserModal";
 import { useEffect, useState } from "react";
 import CreateOwnerModal from "./CreateOwnerModal";
 import axios from "axios";

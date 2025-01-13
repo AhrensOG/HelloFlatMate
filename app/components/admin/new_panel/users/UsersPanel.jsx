@@ -5,7 +5,8 @@ import useSWR from "swr";
 import { toast } from "sonner";
 import UsersTable from "./UsersTable";
 import UserModal from "./UserModal";
-import CreateUserModal from "../../users_panel/CreateUserModal";
+import CreateUserModal from "./CreateUserModal";
+import SkeletonLoader from "../SkeletonLoader";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -85,12 +86,13 @@ export default function UsersPanel({ allUsers = [], properties = [] }) {
             mutate(); // Actualiza los datos en caché
             handleCloseModalEdit(); // Cierra el modal de edición
         } catch (error) {
-            console.error(error);
             toast.error("Ocurrió un error al actualizar la orden.");
         }
     };
 
-    if (error) return <div>Error al cargar las reservas.</div>;
+    if (error) {
+        return <SkeletonLoader error={error} />;
+    }
 
     return (
         <div className="h-screen flex flex-col p-4 gap-4">
@@ -119,7 +121,7 @@ export default function UsersPanel({ allUsers = [], properties = [] }) {
             </div>
 
             {isOpen && <UserModal user={selectedUser} onClose={handleCloseModal} />}
-            {isOpenCreatUserModal && <CreateUserModal onClose={handleCloseModalCreate} data={properties} />}
+            {isOpenCreatUserModal && <CreateUserModal action={handleCloseModalCreate} options_1={properties} />}
         </div>
     );
 }

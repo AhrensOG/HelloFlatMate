@@ -1,9 +1,9 @@
 import { authAdmin } from "@/app/firebase/adminConfig";
 import { NextResponse } from "next/server";
-import { Client } from "@/db/init";
+import { Admin, Client } from "@/db/init";
 
 export async function POST(req) {
-    const { email, password, name, lastName, DNI, description } = await req.json(); // Obtener el cuerpo de la solicitud
+    const { email, password, name, lastName, DNI, description, rol } = await req.json(); // Obtener el cuerpo de la solicitud
 
     if (!email || !password) {
         return NextResponse.json({ error: "Se requieren tanto el correo electrónico como la contraseña." }, { status: 400 });
@@ -15,19 +15,36 @@ export async function POST(req) {
             password: password,
         });
 
-        const newUser = await Client.create({
+        let newUser;
+
+        if (rol === "ADMIN") {
+            newUser = await Admin.create({
+                id: userRecord.uid,
+                email: userRecord.email,
+                name: name,
+                lastName: lastName,
+                profilePicture: userRecord.photoURL || "",
+                role: "ADMIN",
+                idNum: DNI,
+                description: description,
+            });
+        }
+
+        newUser = await Client.create({
             id: userRecord.uid,
             email: userRecord.email,
             name: name,
             lastName: lastName,
             profilePicture: userRecord.photoURL || "",
             role: "CLIENT",
-            DNI: DNI,
+            idNum: DNI,
             description: description,
         });
 
         return NextResponse.json({ message: "Usuario creado exitosamente", userRecord, newUser }, { status: 201 });
     } catch (error) {
+        console.log(error);
+
         // Manejar errores específicos de Firebase
         switch (error.code) {
             case "auth/email-already-exists":
