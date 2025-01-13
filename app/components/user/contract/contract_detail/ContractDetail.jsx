@@ -130,9 +130,8 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   const tenantID = info?.idNum || "-";
   const tenantPhone = info?.phone || "-";
   const tenantEmail = info?.email || "-";
-  const tenantAddress =
-    info?.street + " " + info?.streetNumber || "-";
-  const tenantStreet = info?.street || "-";
+  const tenantAddress = info?.city + ", " + info?.country || "-";
+  const tenantStreet = info?.street + " " + info.streetNumber + ", CP " + info.postalCode || "-";
   const startDate = leaseOrder?.startDate
     ? parseDate(leaseOrder.startDate)
     : "-";

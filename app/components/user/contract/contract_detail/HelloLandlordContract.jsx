@@ -63,7 +63,7 @@ export default function HelloLandlordContract({
         <p className="mb-4 text-sm font-light">
           De otra parte, <strong>D./Dª {tenantName || "……………………………"}</strong>,
           mayor de edad, con D.N.I o pasaporte {tenantID || "……………"}, nº de
-          teléfono {tenantPhone || "+……………………"}, email{" "}
+          teléfono +{tenantPhone || "+……………………"}, email{" "}
           {tenantEmail || "………………………"}, y con domicilio en{" "}
           {tenantAddress || "………………………"}, C/ {tenantStreet || "……………………………………"}{" "}
           actuando como parte ARRENDATARIA, está interesado en arrendar la
@@ -351,7 +351,7 @@ export default function HelloLandlordContract({
         </p>
 
         <h3 className="text-sm font-bold mb-2">
-          DECIMOCUARTA. – CONDICIONES DE EFECTIVIDAD DEL CONTRATO..
+          DECIMOCUARTA. – CONDICIONES DE EFECTIVIDAD DEL CONTRATO.
         </h3>
         <p className="mb-4 text-sm font-light">
           El presente contrato de arrendamiento{" "}

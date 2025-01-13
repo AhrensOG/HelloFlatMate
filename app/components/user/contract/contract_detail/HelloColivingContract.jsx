@@ -2,32 +2,32 @@ import Image from "next/image";
 import ButtonReadAndSingContract from "../ButtonReadAndSingContract";
 
 export default function HelloColivingContract({
-  contractDate,
-  landlordName,
-  landlordNIF,
-  landlordStreet,
-  landlordStreetNumber,
-  landlordDoorNumber,
-  landlordPostalCode,
-  numberOfRooms,
-  numberOfBathrooms,
-  tenantName,
-  tenantID,
-  tenantPhone,
-  tenantEmail,
-  tenantAddress,
-  tenantStreet,
-  roomNumber,
-  startDate,
-  endDate,
-  monthlyRent,
+  contractDate = "… de ……. de 202…..",
+  landlordName = "………………………",
+  landlordNIF = "………………………………………",
+  landlordStreet = "……………………………",
+  landlordStreetNumber = "……..",
+  landlordDoorNumber = "……….ª",
+  landlordPostalCode = "46…………...",
+  numberOfRooms = "…..",
+  numberOfBathrooms = "…",
+  tenantName = "……………………………",
+  tenantID = "……………",
+  tenantPhone = "+……………………",
+  tenantEmail = "………………………",
+  tenantAddress = "………………………",
+  tenantStreet = "……………………………………",
+  roomNumber = "R……",
+  startDate = "…/…/202…",
+  endDate = "…/…/202…",
+  monthlyRent = "……..",
   handleModal,
   isChecked,
   setIsChecked,
 }) {
   return (
-    <div className="contract-container p-4 max-w-screen-lg mx-auto">
-      <div className="container mx-auto p-4 max-w-screen-lg max-h-[50vh] overflow-y-scroll w-full text-justify">
+    <div className="w-full grid place-items-center">
+      <div className="container mx-auto p-4 max-w-screen-lg max-h-max overflow-y-auto w-full text-justify">
         <p className="text-justify mb-4">
           <strong>
             CONTRATO DE ARRENDAMIENTO DE HABITACIÓN EN VIVIENDA COMPARTIDA
@@ -39,22 +39,22 @@ export default function HelloColivingContract({
         <h2 className="text-base font-bold mb-2">REUNIDOS</h2>
         <p className="mb-4 text-sm break-words font-light">
           De una parte, D./Dª{" "}
-          <span className="font-medium">{landlordName}</span>, como parte
+          <span className="font-semibold">{landlordName}</span>, como parte
           ARRENDADORA, siendo mayor de edad, con NIF{" "}
-          <span className="font-medium">{landlordNIF}</span>, propietario/a en
+          <span className="font-semibold">{landlordNIF}</span>, propietario/a en
           pleno dominio del inmueble sito en Valencia:
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          C/ <span className="font-medium">{landlordStreet}</span> nº{" "}
-          <span className="font-medium">{landlordStreetNumber}</span> - PUERTA{" "}
-          <span className="font-medium">{landlordDoorNumber}</span>ª, Valencia{" "}
-          <span className="font-medium">{landlordPostalCode}</span>
+          C/ <span className="font-semibold">{landlordStreet}</span> nº{" "}
+          <span className="font-semibold">{landlordStreetNumber}</span> - PUERTA{" "}
+          <span className="font-semibold">{landlordDoorNumber}</span>ª, Valencia{" "}
+          <span className="font-semibold">{landlordPostalCode}</span>
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Dicho inmueble se halla amueblado y consta de{" "}
-          <span className="font-medium">{numberOfRooms}</span> habitaciones,
+          <span className="font-semibold">{numberOfRooms}</span> habitaciones,
           sala de estar, cocina y{" "}
-          <span className="font-medium">{numberOfBathrooms}</span> cuartos de
+          <span className="font-semibold">{numberOfBathrooms}</span> cuartos de
           baño.
         </p>
         <p className="mb-4 text-justify">
@@ -62,12 +62,11 @@ export default function HelloColivingContract({
           mandato expreso, únicamente la formalización de este contrato.
         </p>
         <p className="mb-4 text-justify">
-          De otra parte, D./Dª <span>{tenantName}</span>, mayor de edad, con
-          pasaporte <span>{tenantID}</span>, nº de teléfono{}
-          <span>{tenantPhone}</span>, email <span>{tenantEmail}</span>, y con
-          domicilio en <span>{tenantAddress}</span>, Calle{" "}
-          <span>{tenantStreet}</span> CP… actuando como parte ARRENDATARIA, está
-          interesado en arrendar la habitación n.º <span>{roomNumber}</span> del
+          De otra parte, <strong>D./Dª {tenantName}</strong>, mayor de edad, con
+          D.N.I o pasaporte {tenantID}, nº de teléfono +{tenantPhone}, email{" "}
+          {tenantEmail}, y con domicilio en {tenantAddress}, Calle{" "}
+          {tenantStreet} CP… actuando como parte ARRENDATARIA, está interesado
+          en arrendar la habitación n.º <strong>{roomNumber}</strong> del
           mencionado inmueble.
         </p>
         <h2 className="text-base font-bold mb-2">INTERVIENEN</h2>
@@ -114,25 +113,25 @@ export default function HelloColivingContract({
           <strong>TERCERA. - DURACIÓN DEL CONTRATO.</strong>
           <br />
           El presente contrato se acuerda que se extenderá por el período
-          comprendido del <span>{startDate}</span> al <span>{endDate}</span>.
-          Transcurrido dicho período, el contrato quedará resuelto sin necesidad
-          de requerimiento alguno y se dejará libre la habitación a las 9 a.m.
-          La expiración del tiempo pactado para el presente contrato de
-          arrendamiento producirá la automática extinción del contrato, quedando
-          obligadas los arrendatarios a dejar la habitación libre de enseres a
-          la referida fecha y a disposición del ARRENDADOR, y en las mismas
-          condiciones existentes en el momento de la ocupación. Para el caso de
-          que el ARRENDATARIO estuviera interesado en añadir una noche extra a
-          su estancia, ésta tendrá un coste de 35 €, y siempre estará
-          condicionada a la disponibilidad de la habitación y a la autorización
-          del ARRENDADOR.
+          comprendido del <strong>{startDate}</strong> al{" "}
+          <strong>{endDate}</strong>. Transcurrido dicho período, el contrato
+          quedará resuelto sin necesidad de requerimiento alguno y se dejará
+          libre la habitación a las 9 a.m. La expiración del tiempo pactado para
+          el presente contrato de arrendamiento producirá la automática
+          extinción del contrato, quedando obligadas los arrendatarios a dejar
+          la habitación libre de enseres a la referida fecha y a disposición del
+          ARRENDADOR, y en las mismas condiciones existentes en el momento de la
+          ocupación. Para el caso de que el ARRENDATARIO estuviera interesado en
+          añadir una noche extra a su estancia, ésta tendrá un coste de{" "}
+          <strong>35 €</strong>, y siempre estará condicionada a la
+          disponibilidad de la habitación y a la autorización del ARRENDADOR.
         </p>
 
         <p className="mb-4 text-justify">
           <strong>CUARTA. - RENTA.</strong>
           <br />
           El arrendatario abonará al arrendador, en concepto de renta, la
-          cantidad de <span>{monthlyRent}</span> € mensuales, siempre por
+          cantidad de <strong>{monthlyRent}</strong> € mensuales, siempre por
           adelantado y dentro del período comprendido entre los días 20 y 25 de
           cada mes. <br />
           Dicha renta se abonará a través del área de usuario del ARRENDATARIO
@@ -154,11 +153,13 @@ export default function HelloColivingContract({
           siguientes cantidades:
           <ul className="list-disc ml-6">
             <li>
-              Un depósito de QUINIENTOS EUROS (500 €) en concepto de FIANZA.
+              Un depósito de <strong>QUINIENTOS EUROS (500 €)</strong> en
+              concepto de <strong>FIANZA</strong>.
             </li>
             <li>
-              La cantidad de DOSCIENTOS EUROS (200 €) POR PERSONA en concepto de
-              suministros de agua y luz por cada período de CINCO MESES de
+              La cantidad de{" "}
+              <strong>DOSCIENTOS EUROS (200 €) POR PERSONA</strong> en concepto
+              de suministros de agua y luz por cada período de CINCO MESES de
               contrato.
             </li>
           </ul>
@@ -294,8 +295,50 @@ export default function HelloColivingContract({
           éste se las abonará al ARRENDATARIO mediante transferencia bancaria.
         </p>
 
+        <h3 className="text-sm font-bold mb-2">
+          DECIMOCUARTA. – CONDICIONES DE EFECTIVIDAD DEL CONTRATO.
+        </h3>
+        <p className="mb-4 text-sm font-light">
+          El presente contrato de arrendamiento{" "}
+          <strong>
+            únicamente entrará en vigor y será válido cuando se cumplan de
+            manera simultánea las siguientes condiciones:
+          </strong>
+        </p>
+        <p className="mb-4 text-sm font-light">
+          Además, el ARRENDADOR podrá resolver de pleno derecho el contrato por
+          las siguientes causas:
+        </p>
+        <ul className="list-disc ml-6">
+          <li className="mb-2">
+            1) El ARRENDATARIO haya abonado las cantidades indicadas en la
+            cláusula quinta en concepto de fianza, depósito, tarifa plana de
+            internet y gastos de suministros.
+          </li>
+          <li className="mb-2">
+            2) El contrato haya sido firmado electrónicamente por ambas partes a
+            través de la plataforma habilitada por{" "}
+            <strong>Helloflatmate</strong>.
+          </li>
+          <li className="mb-2">
+            3) El ARRENDATARIO cumpla con los requisitos de perfil establecidos
+            por el ARRENDADOR,{" "}
+            <strong>
+              específicamente ser estudiante menor de 30 años de edad
+            </strong>
+            .
+          </li>
+        </ul>
+        <p className="mb-4 text-sm font-light">
+          <strong>
+            En caso de que el ARRENDATARIO no cumpla con alguno de estos
+            requisitos, el contrato será considerado nulo, sin generar derechos
+            ni obligaciones entre las partes.
+          </strong>
+        </p>
+
         <p className="mb-4 text-justify">
-          <strong>DECIMOCUARTA. – INCUMPLIMIENTO DE OBLIGACIONES.</strong>
+          <strong>DECIMOQUINTA. – INCUMPLIMIENTO DE OBLIGACIONES.</strong>
           <br />
           El incumplimiento por cualquiera de las partes de las obligaciones
           resultantes del contrato dará derecho a la parte que hubiere cumplido
@@ -326,7 +369,7 @@ export default function HelloColivingContract({
         </p>
 
         <p className="mb-4 text-justify">
-          <strong>DECIMOQUINTA. - LEGISLACIÓN APLICABLE.</strong>
+          <strong>DECIMOSEXTA. - LEGISLACIÓN APLICABLE.</strong>
           <br />
           En todo lo no previsto en el presente contrato, éste se regirá por lo
           dispuesto tanto en la Ley 29/1994, de 24 de noviembre, de
@@ -335,7 +378,7 @@ export default function HelloColivingContract({
         </p>
 
         <p className="mb-4 text-justify">
-          <strong>DECIMOSEXTA. - SUMISIÓN.</strong>
+          <strong>DECIMOSEPTIMA. - SUMISIÓN.</strong>
           <br />
           Los contratantes se someten expresamente a los Juzgados y Tribunales
           de la ciudad de Valencia para todas aquellas cuestiones litigiosas que
@@ -343,11 +386,11 @@ export default function HelloColivingContract({
           encuentra la habitación arrendada.
         </p>
 
-        <p className="mb-4 text-sm break-words font-light">
+        {/* <p className="mb-4 text-sm break-words font-light">
           Y con el carácter expresado en la intervención, firman el presente
           contrato, en el lugar y fecha indicados.
-          {/* En prueba de conformidad, y para que así conste, firman el presente
-            contrato por duplicado en el lugar y fecha al principio indicados. */}
+          En prueba de conformidad, y para que así conste, firman el presente
+            contrato por duplicado en el lugar y fecha al principio indicados.
         </p>
 
         <div className="my-8 text-center w-full flex flex-wrap items-start justify-around">
@@ -356,14 +399,14 @@ export default function HelloColivingContract({
           </p>
           <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
             Firma ARRENDADORA:{" "}
-            {/* <Image
+            <Image
               src={"/contract/signature.png"}
               width={200}
               height={100}
               alt="Owner Signature"
-            /> */}
+            />
           </p>
-        </div>
+        </div> */}
 
         <h3 className="text-base font-bold mb-2">
           ANEXO I – NORMAS DE CONVIVENCIA
