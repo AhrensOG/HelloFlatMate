@@ -31,7 +31,7 @@ export async function GET() {
         {
           model: Property,
           as: "property",
-          attributes: ["category"],
+          attributes: ["category", "serial"],
         },
         {
           model: Room,
@@ -101,11 +101,18 @@ export async function GET() {
         leaseOrder.property &&
         leaseOrder.property.category === "HELLO_COLIVING";
 
+      const isSpecialSerial = ["ZSV53P1", "ZPS57P19", "ZCDN9P2"].includes(
+        leaseOrder.property?.serial
+      );
+
+      const generalSuppliesAmount = isSpecialSerial ? 220 : 200;
+      const internetSuppliesAmount = isSpecialSerial ? 96 : 80;
+
       if (generalSuppliesCount < 2) {
         suppliesToAdd.push({
           name: generalSuppliesCount === 0 ? "Suministros" : "Suministros 2Q",
           type: "GENERAL_SUPPLIES",
-          amount: 200,
+          amount: generalSuppliesAmount,
           date: new Date(),
           expirationDate: new Date(),
           status: "PENDING",
@@ -120,7 +127,7 @@ export async function GET() {
         suppliesToAdd.push({
           name: internetSuppliesCount === 0 ? "Wifi" : "Wifi 2Q",
           type: "INTERNET",
-          amount: 80,
+          amount: internetSuppliesAmount,
           date: new Date(),
           expirationDate: new Date(),
           status: "PENDING",
