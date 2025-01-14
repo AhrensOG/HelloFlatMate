@@ -1,12 +1,12 @@
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import UserCard from "./UserCard";
 import SetRolModal from "./SetRolModal";
-import CreateUserModal from "./CreateUserModal";
+import CreateUserModal from "../new_panel/users/CreateUserModal";
 import { useEffect, useState } from "react";
 import CreateOwnerModal from "./CreateOwnerModal";
 import axios from "axios";
 
-export default function UsersPanel({ data, reload }) {
+export default function UsersPanel({ data, reload }) { 
     const [showModal, setShowModal] = useState(false);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false); // Estado para el modal de creación de usuario
     const [user, setUser] = useState(null);
@@ -70,7 +70,6 @@ export default function UsersPanel({ data, reload }) {
                 >
                     Crear Usuario
                 </button>
-                <CreateOwnerModal options_1={opstionsSerial} />
             </div>
             <section className="w-full flex flex-col gap-4 justify-center items-center">
                 {filteredData?.length > 0 ? (
@@ -80,7 +79,7 @@ export default function UsersPanel({ data, reload }) {
                 )}
             </section>
             {showModal && <SetRolModal action={setShowModal} data={user} reload={reload} />}
-            {showCreateUserModal && <CreateUserModal action={setShowCreateUserModal} reload={reload} />}
+            {showCreateUserModal && <CreateUserModal action={setShowCreateUserModal} reload={reload} options_1={opstionsSerial} />}
         </main>
     );
 }

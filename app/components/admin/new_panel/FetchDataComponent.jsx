@@ -12,7 +12,7 @@ function isEmpty(data) {
     return false;
 }
 
-const FetchDataComponent = async () => { 
+const FetchDataComponent = async () => {
     let data = null;
     let error = false;
 
@@ -22,6 +22,12 @@ const FetchDataComponent = async () => {
         const clientsFetch = await axios.get(`${BASE_URL}/api/admin/user?role=CLIENT`);
         const propertiesFetch = await axios.get(`${BASE_URL}/api/admin/property?simple=true`);
         const filteredOrders = loFetch.data?.filter((lo) => lo.status === "IN_PROGRESS" || lo.status === "REJECTED");
+        const optionSerials = propertiesFetch.data?.map((property) => {
+            return {
+                serial: property.serial,
+                id: property.id,
+            };
+        });
 
         data = {
             leaseOrders: filteredOrders,
@@ -29,6 +35,7 @@ const FetchDataComponent = async () => {
             allUsers: usersFetch.data,
             clients: clientsFetch.data,
             properties: propertiesFetch.data,
+            optionSerials,
         };
     } catch (err) {
         console.error("Error en SSR:", err);

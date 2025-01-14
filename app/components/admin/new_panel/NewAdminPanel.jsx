@@ -6,7 +6,7 @@ import PreReservationsPanel from "./pre_reservations/PreReservationsPanel";
 import ReservationPanel from "./reservation/ReservationPanel";
 import UsersPanel from "./users/UsersPanel";
 
-const NewAdminPanel = ({ data }) => { 
+const NewAdminPanel = ({ data }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const section = searchParams.get("section") || "propiedades";
@@ -19,7 +19,7 @@ const NewAdminPanel = ({ data }) => {
             case "reservas":
                 return <ReservationPanel leaseOrders={data.leaseOrdersApproved} data={{ clients: data.clients, properties: data.properties }} />;
             case "usuarios":
-                return <UsersPanel allUsers={data.allUsers} />;
+                return <UsersPanel allUsers={data.allUsers} properties={data.optionSerials} />;
             default:
                 return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
         }

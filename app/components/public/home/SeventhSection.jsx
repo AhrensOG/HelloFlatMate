@@ -53,10 +53,10 @@ const SeventhSection = () => {
             title: t("home_seventh_sect_3_title"),
             content: t("home_seventh_sect_3_desc"),
         },
-        {
-            title: t("home_seventh_sect_4_title"),
-            content: t("home_seventh_sect_4_desc"),
-        },
+        // {
+        //     title: t("home_seventh_sect_4_title"),
+        //     content: t("home_seventh_sect_4_desc"),
+        // },
     ];
 
     return (

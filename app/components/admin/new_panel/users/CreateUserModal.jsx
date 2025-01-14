@@ -1,58 +1,125 @@
 import { useState } from "react";
-import { toast } from "sonner";
-import axios from "axios";
+import { toast } from "sonner"; // Para mostrar mensajes
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios"; // Para solicitudes HTTP
 
-export default function CreateUserModal({ onClose }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(null);
+export default function CreateUserModal({ action, reload, options_1 }) {
+  const [showPassword, setShowPassword] = useState(false); // Mostrar/ocultar contraseña
+  const [selectedProperties, setSelectedProperties] = useState([]);
+  const [options, setOptions] = useState(options_1);
 
-  const handleCreateUser = async (e) => {
-    e.preventDefault();
-    const toastId = toast.loading("Creando...");
+  const handleCreateUser = async (values) => {
     try {
-      await axios.post("/api/admin/user/create", {
-        email,
-        password,
-      });
-      onClose();
-      setError(null);
-      toast.success("¡Usuario creado correctamente!", { id: toastId });
+      const payload = {
+        ...values,
+        properties: selectedProperties.map((prop) => prop.id),
+      };
+
+      const endpoint =
+        values.rol === "OWNER"
+          ? "/api/admin/user/create/owner"
+          : "/api/admin/user/create";
+
+      const response = await axios.post(endpoint, payload);
+
+      action(false); // Cerrar modal
+      return response.data.message; // Mensaje de éxito
     } catch (err) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.error);
-        toast.info(err.response.data.error, { id: toastId });
-      } else {
-        setError("Error al crear el usuario. Inténtalo nuevamente.");
-        toast.info("Error al crear el usuario. Inténtalo nuevamente.", {
-          id: toastId,
-        });
-      }
+      toast.info("Ocurrio un error al crear el usuario");
+      console.log(err);
+      throw err;
     }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      lastName: "",
+      dni: "",
+      email: "",
+      password: "",
+      rol: "CLIENT",
+      IBAN: "",
+      search: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Nombre es obligatorio"),
+      lastName: Yup.string().required("Apellido es obligatorio"),
+      email: Yup.string()
+        .email("Correo electrónico inválido")
+        .required("Correo electrónico es obligatorio"),
+      password: Yup.string().required("Contraseña es obligatoria"),
+    }),
+    onSubmit: async (values) => {
+      toast.promise(handleCreateUser(values), {
+        loading: "Creando usuario...",
+        success: "Usuario creado correctamente",
+      });
+    },
+  });
+
+  const handleSelectProperty = (property) => {
+    if (!selectedProperties.includes(property)) {
+      setSelectedProperties([...selectedProperties, property]);
+    }
+    formik.setFieldValue("search", ""); // Limpiar la búsqueda
+  };
+
+  const handleRemoveProperty = (property) => {
+    setSelectedProperties(
+      selectedProperties.filter((p) => p.id !== property.id)
+    );
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-semibold mb-4">Crear nuevo usuario</h2>
-        <form onSubmit={handleCreateUser} className="flex flex-col gap-4">
+        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            {...formik.getFieldProps("name")}
+            placeholder="Nombre (obligatorio)"
+            className="border p-2 rounded-md"
+          />
+          {formik.touched.name && formik.errors.name && (
+            <p className="text-red-500 text-sm">{formik.errors.name}</p>
+          )}
+
+          <input
+            type="text"
+            {...formik.getFieldProps("lastName")}
+            placeholder="Apellido (obligatorio)"
+            className="border p-2 rounded-md"
+          />
+          {formik.touched.lastName && formik.errors.lastName && (
+            <p className="text-red-500 text-sm">{formik.errors.lastName}</p>
+          )}
+
+          <input
+            type="text"
+            {...formik.getFieldProps("dni")}
+            placeholder="ID / Pasaporte (opcional)"
+            className="border p-2 rounded-md w-full"
+          />
+
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...formik.getFieldProps("email")}
             placeholder="Correo electrónico"
             className="border p-2 rounded-md"
-            required
           />
+          {formik.touched.email && formik.errors.email && (
+            <p className="text-red-500 text-sm">{formik.errors.email}</p>
+          )}
+
           <div className="relative">
             <input
-              type={showPassword ? "text" : "password"} // Cambiar entre text y password
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type={showPassword ? "text" : "password"}
+              {...formik.getFieldProps("password")}
               placeholder="Contraseña"
               className="border p-2 rounded-md w-full"
-              required
             />
             <button
               type="button"
@@ -61,13 +128,79 @@ export default function CreateUserModal({ onClose }) {
             >
               {showPassword ? "Ocultar" : "Mostrar"}
             </button>
+            {formik.touched.password && formik.errors.password && (
+              <p className="text-red-500 text-sm">{formik.errors.password}</p>
+            )}
           </div>
-          {error && <p className="text-red-500 text-xs">{error}</p>}
+
+          <select
+            {...formik.getFieldProps("rol")}
+            className="border p-2 rounded-md"
+          >
+            <option value="ADMIN">Administrador</option>
+            <option value="CLIENT">Cliente</option>
+            <option value="OWNER">Propietario</option>
+          </select>
+
+          {formik.values.rol === "OWNER" && (
+            <>
+              <input
+                type="text"
+                {...formik.getFieldProps("IBAN")}
+                placeholder="IBAN (opcional)"
+                className="border p-2 rounded-md"
+              />
+              {formik.touched.IBAN && formik.errors.IBAN && (
+                <p className="text-red-500 text-sm">{formik.errors.IBAN}</p>
+              )}
+
+              <div className="relative mb-4">
+                <input
+                  type="text"
+                  {...formik.getFieldProps("search")}
+                  placeholder="Buscar propiedades por serial..."
+                  className="border p-2 rounded-md w-full"
+                />
+                {formik.values.search.trim() && (
+                  <ul className="absolute mt-1 max-h-40 overflow-y-auto border bg-white rounded-md w-full z-10">
+                    {options
+                      .filter((option) =>
+                        option.serial
+                          .toLowerCase()
+                          .includes(formik.values.search.toLowerCase())
+                      )
+                      .map((option) => (
+                        <li
+                          key={option.id}
+                          onClick={() => handleSelectProperty(option)}
+                          className="cursor-pointer hover:bg-gray-200 p-1"
+                        >
+                          {option.serial}
+                        </li>
+                      ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-2 py-2">
+                {selectedProperties.map((property) => (
+                  <span
+                    key={property.id}
+                    onClick={() => handleRemoveProperty(property)}
+                    className="bg-blue-200 text-blue-800 px-2 py-1 rounded-full cursor-pointer"
+                  >
+                    {property.serial} ✕
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+
           <div className="flex justify-end gap-2">
             <button
               type="button"
               className="bg-gray-300 px-4 py-2 rounded-md"
-              onClick={() => onClose()} // Cerrar el modal
+              onClick={() => action(false)}
             >
               Cancelar
             </button>
