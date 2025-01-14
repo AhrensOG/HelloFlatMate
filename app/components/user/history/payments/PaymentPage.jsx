@@ -29,7 +29,7 @@ const orderPriority = [
   "DEPOSIT",
   "AGENCY_FEES",
   "GENERAL_SUPPLIES",
-  "WIFI",
+  "INTERNET",
   "MONTHLY",
   "CLEANUP",
 ];

@@ -19,3 +19,11 @@ html {
     width: 24px; /* Ajusta las dimensiones si lo necesitas */
     height: 6px;
 }
+
+.flicking-arrow-prev::before,
+.flicking-arrow-prev::after,
+.flicking-arrow-next::before,
+.flicking-arrow-next::after {
+  content: none !important; /* Remueve el contenido */
+  display: none !important; /* Asegúrate de que no se muestren */
+}
