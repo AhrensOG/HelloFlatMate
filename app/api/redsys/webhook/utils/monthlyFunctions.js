@@ -100,7 +100,7 @@ async function processMonthlyPayment({
     await sendMailFunction({
       to: client.email,
       subject: `Pago mensual ${foundRoom.serial}`,
-      html: baseTemplate(client.name, client.lastName, foundRoom.serial),
+      html: baseTemplate(client.name, client.lastName, foundRoom.serial, month),
       // attachments: [
       //   {
       //     content: pdfBase64,

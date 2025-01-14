@@ -1,4 +1,4 @@
-const baseTemplate = (name, lastName, serial) => `
+const baseTemplate = (name, lastName, serial, month) => `
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,7 +8,7 @@ const baseTemplate = (name, lastName, serial) => `
 </head>
 <body>
   <p>
-  ¡Gracias, ${name} ${lastName}! Por realizar el pago mensual por el alojamiento ${serial}.
+  ¡Gracias, ${name} ${lastName}! Por realizar el pago mensual (${month}) por el alojamiento ${serial}.
   </p>
   <br/>
   <p>
