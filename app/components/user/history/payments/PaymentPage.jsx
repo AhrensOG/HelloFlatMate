@@ -125,6 +125,10 @@ const PaymentPage = ({ redirect, user }) => {
 
     const monthlyPendingPayments = [];
     activeLeaseOrders.forEach((order) => {
+      if (order.room?.property?.category === "HELLO_LANDLORD") {
+        return;
+      }
+
       const startDate = new Date(order.startDate);
       const endDate = new Date(order.endDate);
       const totalMonths = calculateMonthsBetweenDates(startDate, endDate);
