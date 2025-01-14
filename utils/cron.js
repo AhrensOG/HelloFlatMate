@@ -3,7 +3,6 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-// Función que deseas ejecutar periódicamente
 const updateContracts = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/api/cron/update_contracts`);
