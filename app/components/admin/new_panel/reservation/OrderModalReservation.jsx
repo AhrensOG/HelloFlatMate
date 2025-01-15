@@ -171,12 +171,12 @@ export default function OrderModalReservation({ data, onClose }) {
                         <hr className="my-4" />
                         <div className="space-y-1 text-">
                             <h3 className="text-lg font-semibold mb-2">Documentos</h3>
-                            {documents?.filter((document) => document.type === "IDENTIFICATION").length > 0 ? (
+                            {documents?.filter((document) => document.type === "ROSTER").length > 0 ? (
                                 <div className="flex flex-wrap gap-2">
                                     {" "}
                                     {/* Contenedor flex para las imágenes */}
                                     {documents
-                                        .filter((document) => document.type === "IDENTIFICATION") // Filtra los documentos
+                                        .filter((document) => document.type === "ROSTER") // Filtra los documentos
                                         .map((document) => (
                                             <div key={document.id} className="flex-shrink-0">
                                                 {" "}
