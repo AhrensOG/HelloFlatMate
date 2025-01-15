@@ -171,28 +171,25 @@ export default function OrderModalReservation({ data, onClose }) {
                         <hr className="my-4" />
                         <div className="space-y-1 text-">
                             <h3 className="text-lg font-semibold mb-2">Documentos</h3>
-                            {documents?.filter((document) => document.type === "ROSTER").length > 0 ? (
+                            {documents?.length > 0 ? (
                                 <div className="flex flex-wrap gap-2">
-                                    {" "}
-                                    {/* Contenedor flex para las imágenes */}
-                                    {documents
-                                        .filter((document) => document.type === "ROSTER") // Filtra los documentos
-                                        .map((document) => (
-                                            <div key={document.id} className="flex-shrink-0">
-                                                {" "}
-                                                {/* Cada imagen en un div */}
-                                                {document.urls.map((url) => (
-                                                    <Image
-                                                        src={url}
-                                                        width={100}
-                                                        height={100}
-                                                        alt={document.name}
-                                                        key={document.name + document.id}
-                                                        className="rounded" // Añadir clase para bordes redondeados
-                                                    />
-                                                ))}
-                                            </div>
-                                        ))}
+                                    {/* Contenedor flex para los enlaces */}
+                                    {documents.map((document) => (
+                                        <div key={document.id} className="flex-shrink-0">
+                                            {/* Cada enlace en un div */}
+                                            {document.urls?.map((url) => (
+                                                <Link
+                                                    href={url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    key={document.name + document.id}
+                                                    className="text-blue-500 underline" // Añadir clase para estilo
+                                                >
+                                                    {document.name}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    ))}
                                 </div>
                             ) : (
                                 <p>No hay documentos</p>
