@@ -8,15 +8,18 @@ import UserModal from "./UserModal";
 import CreateUserModal from "./CreateUserModal";
 import SkeletonLoader from "../SkeletonLoader";
 import UpdateUserModal from "./UpdateUserModal";
+import OrdersModal from "./OrdersModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function UsersPanel({ allUsers = [], properties = [] }) {
+export default function UsersPanel({ allUsers = [], properties = [], orders = [] }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isOpenCreatUserModal, setIsOpenCreatUserModal] = useState(false);
+    const [isOpenOrdesModal, setIsOpenOrdesModal] = useState(false);
+    const [ordersUser, setOrdersUser] = useState(null);
 
     // Usar SWR para obtener las órdenes
     const {
@@ -79,6 +82,17 @@ export default function UsersPanel({ allUsers = [], properties = [] }) {
         setIsOpenCreatUserModal(false);
     };
 
+    const handleOpenModalOrders = (user) => {
+        const ordersFiltered = orders.filter((order) => order.clientId === user.id);
+
+        setOrdersUser(ordersFiltered);
+        setIsOpenOrdesModal(true);
+    };
+
+    const handleCloseModalOrders = () => {
+        setIsOpenOrdesModal(false);
+    };
+
     // Función para manejar la actualización de una reserva
     const handleUpdateOrder = async (updatedOrder) => {
         try {
@@ -118,12 +132,18 @@ export default function UsersPanel({ allUsers = [], properties = [] }) {
             </div>
 
             <div className="flex-1 overflow-y-auto border rounded-lg">
-                <UsersTable filteredUsers={filteredUsers} handleOpenModal={handleOpenModal} handleOpenModalEdit={handleOpenModalEdit} />
+                <UsersTable
+                    filteredUsers={filteredUsers}
+                    handleOpenModal={handleOpenModal}
+                    handleOpenModalEdit={handleOpenModalEdit}
+                    handleOpenOrdersModal={handleOpenModalOrders}
+                />
             </div>
 
             {isOpen && <UserModal user={selectedUser} onClose={handleCloseModal} />}
             {isOpenCreatUserModal && <CreateUserModal action={handleCloseModalCreate} options_1={properties} />}
             {isOpenEdit && <UpdateUserModal user={selectedUser} onClose={handleCloseModalEdit} />}
+            {isOpenOrdesModal && <OrdersModal data={ordersUser} onClose={handleCloseModalOrders} />}
         </div>
     );
 }
