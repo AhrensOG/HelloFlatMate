@@ -7,7 +7,7 @@ const uploadFiles = async (files, folder = "Documentos", name = false) => {
 
     for (const file of files) {
       const timestamp = Date.now();
-      const uniqueName = `${name || file.name}_${timestamp}`;
+      const uniqueName = `${timestamp}_${name || file.name}`;
       const storageRef = ref(storage, `${folder}/${uniqueName}`);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
