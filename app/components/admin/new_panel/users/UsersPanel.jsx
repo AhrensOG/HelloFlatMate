@@ -95,7 +95,7 @@ export default function UsersPanel({ allUsers = [], properties = [] }) {
     }
 
     return (
-        <div className="h-screen flex flex-col p-4 gap-4">
+        <div className="h-screen contain-strict flex flex-col p-4 gap-4">
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold">Usuarios</h2>
                 <div className="w-full flex gap-4">
@@ -116,9 +116,7 @@ export default function UsersPanel({ allUsers = [], properties = [] }) {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto border rounded-lg">
-                <UsersTable filteredUsers={filteredUsers} handleOpenModal={handleOpenModal} handleOpenModalEdit={handleOpenModalEdit} />
-            </div>
+            <UsersTable filteredUsers={filteredUsers} handleOpenModal={handleOpenModal} handleOpenModalEdit={handleOpenModalEdit} />
 
             {isOpen && <UserModal user={selectedUser} onClose={handleCloseModal} />}
             {isOpenCreatUserModal && <CreateUserModal action={handleCloseModalCreate} options_1={properties} />}
