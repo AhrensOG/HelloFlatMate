@@ -7,6 +7,7 @@ import UsersTable from "./UsersTable";
 import UserModal from "./UserModal";
 import CreateUserModal from "./CreateUserModal";
 import SkeletonLoader from "../SkeletonLoader";
+import UpdateUserModal from "./UpdateUserModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -122,6 +123,7 @@ export default function UsersPanel({ allUsers = [], properties = [] }) {
 
             {isOpen && <UserModal user={selectedUser} onClose={handleCloseModal} />}
             {isOpenCreatUserModal && <CreateUserModal action={handleCloseModalCreate} options_1={properties} />}
+            {isOpenEdit && <UpdateUserModal user={selectedUser} onClose={handleCloseModalEdit} />}
         </div>
     );
 }
