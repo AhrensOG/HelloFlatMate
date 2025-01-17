@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 export default function EditReservationModal({ leaseOrder, onClose, fetch }) {
   const handleSubmit = async (values) => {
-    const toastId = toast.loading("Actualizadno...");
+    const toastId = toast.loading("Actualizando...");
     try {
       const data = {
         ...values,
