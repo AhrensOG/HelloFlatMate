@@ -19,7 +19,13 @@ const NewAdminPanel = ({ data }) => {
             case "reservas":
                 return <ReservationPanel leaseOrders={data.leaseOrdersApproved} data={{ clients: data.clients, properties: data.properties }} />;
             case "usuarios":
-                return <UsersPanel allUsers={data.allUsers} properties={data.optionSerials} />;
+                return (
+                    <UsersPanel
+                        allUsers={data.allUsers}
+                        properties={data.optionSerials}
+                        orders={[...data.leaseOrdersApproved, ...data.leaseOrders]}
+                    />
+                );
             default:
                 return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
         }
