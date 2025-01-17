@@ -128,14 +128,13 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-auto border rounded-lg">
-                <PreReservationsTable
-                    filteredOrders={filteredOrders}
-                    handleApprove={handleApprove}
-                    handleReject={handleReject}
-                    handleOpenModal={handleOpenModal}
-                />
-            </div>
+            <PreReservationsTable
+                filteredOrders={filteredOrders}
+                handleApprove={handleApprove}
+                handleReject={handleReject}
+                handleOpenModal={handleOpenModal}
+            />
+
             {isOpen && <OrderModal order={selectedOrder} onClose={handleCloseModal} />}
         </div>
     );

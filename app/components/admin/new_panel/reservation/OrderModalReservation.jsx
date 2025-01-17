@@ -50,7 +50,7 @@ export default function OrderModalReservation({ data, onClose }) {
                 <h2 className="text-lg font-bold mb-4">Detalle de la reserva</h2>
                 Datos de la reserva
                 <p>
-                    <strong>ID:</strong> {id}
+                    <strong>ID:</strong> {data.id}
                 </p>
                 <p>
                     <strong>Serial:</strong> {room?.serial || property?.serial}
@@ -150,7 +150,7 @@ export default function OrderModalReservation({ data, onClose }) {
 
                             <p>
                                 <strong>Firma:</strong>
-                                {signature ? <Image src={signature} width={100} height={100} alt="signature" /> : <p>No hay firma</p>}
+                                {signature ? <Image src={signature} width={100} height={100} alt="signature" /> : <span>No hay firma</span>}
                             </p>
                         </div>
                         <hr className="my-4" />

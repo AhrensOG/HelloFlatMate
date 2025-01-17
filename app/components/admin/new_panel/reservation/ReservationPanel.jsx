@@ -129,16 +129,14 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto border rounded-lg">
-                <ReservationsTable
-                    filteredOrders={filteredOrders}
-                    handleOpenModal={handleOpenModal}
-                    handleOpenModalEdit={handleOpenModalEdit}
-                    availableDates={availableDates}
-                    selectedDateFilter={selectedDateFilter}
-                    setSelectedDateFilter={setSelectedDateFilter} 
-                />
-            </div>
+            <ReservationsTable
+                filteredOrders={filteredOrders}
+                handleOpenModal={handleOpenModal}
+                handleOpenModalEdit={handleOpenModalEdit}
+                availableDates={availableDates}
+                selectedDateFilter={selectedDateFilter}
+                setSelectedDateFilter={setSelectedDateFilter} 
+            />
 
             {isOpen && <OrderModalReservation data={selectedOrder} onClose={handleCloseModal} />}
             {isOpenEdit && <EditReservationModal leaseOrder={selectedOrder} onClose={handleCloseModalEdit} onUpdate={handleUpdateOrder} />}
