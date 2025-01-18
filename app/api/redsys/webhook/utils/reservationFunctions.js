@@ -1,6 +1,6 @@
 import { billBuilder } from "@/app/api/pdf_creator/utils/billBuilder";
 import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
-import { Client, LeaseOrderRoom, Property, RentPayment, Room } from "@/db/init";
+import { Client, LeaseOrderRoom, Property, RentPayment, Room, Supply } from "@/db/init";
 import { reservationTemplate } from "./emailTemplates";
 import { NextResponse } from "next/server";
 
@@ -27,6 +27,7 @@ async function processReservation({
             "streetNumber",
             "floor",
             "typology",
+            "category",
           ],
         },
       }),
@@ -98,6 +99,10 @@ async function processReservation({
     });
 
     console.log(`✅ Correo enviado al cliente: ${client.email}`);
+
+    await addSupplies(theRoom, successLeaseOrderRoom, client);
+    console.log(`✅ Suministros asignados al cliente: ${client.email}`);
+
     return NextResponse.json(
       {
         message: "Webhook procesado correctamente",
@@ -167,6 +172,147 @@ function formatDate(date) {
   const month = String(newDate.getMonth() + 1).padStart(2, "0");
   const day = String(newDate.getDate()).padStart(2, "0");
   return `${day}-${month}-${year}`;
+}
+
+async function addSupplies(room, leaseOrder, client) {
+  try {
+    const currentDate = new Date();
+
+    const startDate = new Date(leaseOrder.startDate);
+    const endDate = new Date(leaseOrder.endDate);
+
+    const monthsDifference =
+      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+      (endDate.getMonth() - startDate.getMonth());
+
+    const isLongTerm = monthsDifference > 8;
+
+    const supplies = [
+      {
+        name: "Suministros 1Q",
+        amount: 200,
+        date: currentDate,
+        status: "PENDING",
+        propertyId: room.propertyId,
+        clientId: client.id,
+        type: "GENERAL_SUPPLIES",
+        expirationDate: currentDate,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
+      },
+      {
+        name: "Tasa de la agencia",
+        amount: 459.8, // 380€ + IVA
+        date: currentDate,
+        status: "PENDING",
+        propertyId: room.propertyId,
+        clientId: client.id,
+        type: "AGENCY_FEES",
+        expirationDate: currentDate,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
+      },
+      {
+        name: "Limpieza Check-Out",
+        amount: 50,
+        date: currentDate,
+        status: "PENDING",
+        propertyId: room.propertyId,
+        clientId: client.id,
+        type: "CLEANUP",
+        expirationDate: currentDate,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
+      },
+    ];
+
+    if (room.property?.category === "HELLO_COLIVING") {
+      supplies.unshift({
+        name: "Depósito",
+        amount: 500,
+        date: currentDate,
+        status: "PENDING",
+        propertyId: room.propertyId,
+        clientId: client.id,
+        type: "DEPOSIT",
+        expirationDate: currentDate,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
+      });
+
+      if (isLongTerm) {
+        supplies.push({
+          name: "Suministros 2Q",
+          amount: 200,
+          date: currentDate,
+          status: "PENDING",
+          propertyId: room.propertyId,
+          clientId: client.id,
+          type: "GENERAL_SUPPLIES",
+          expirationDate: currentDate,
+          leaseOrderId: leaseOrder.id,
+          leaseOrderType: "ROOM",
+        });
+      }
+    } else {
+      supplies.unshift({
+        name: "Depósito",
+        amount: 300,
+        date: currentDate,
+        status: "PENDING",
+        propertyId: room.propertyId,
+        clientId: client.id,
+        type: "DEPOSIT",
+        expirationDate: currentDate,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
+      });
+
+      supplies.push({
+        name: "Wifi 1Q",
+        amount: 80,
+        date: currentDate,
+        status: "PENDING",
+        propertyId: room.propertyId,
+        clientId: client.id,
+        type: "INTERNET",
+        expirationDate: currentDate,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
+      });
+
+      if (isLongTerm) {
+        supplies.push({
+          name: "Suministros 2Q",
+          amount: 200,
+          date: currentDate,
+          status: "PENDING",
+          propertyId: room.propertyId,
+          clientId: client.id,
+          type: "GENERAL_SUPPLIES",
+          expirationDate: currentDate,
+          leaseOrderId: leaseOrder.id,
+          leaseOrderType: "ROOM",
+        });
+
+        supplies.push({
+          name: "Wifi 2Q",
+          amount: 80,
+          date: currentDate,
+          status: "PENDING",
+          propertyId: room.propertyId,
+          clientId: client.id,
+          type: "INTERNET",
+          expirationDate: currentDate,
+          leaseOrderId: leaseOrder.id,
+          leaseOrderType: "ROOM",
+        });
+      }
+    }
+    await Supply.bulkCreate(supplies);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export { processReservation };
