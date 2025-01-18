@@ -75,7 +75,7 @@ export async function createContract(data) {
                         leaseOrderType: "ROOM"
                     },
                     {
-                        name: "Suministros",
+                        name: "Suministros 1Q",
                         amount: 200, 
                         date: currentDate,
                         status: "PENDING",
@@ -130,7 +130,7 @@ export async function createContract(data) {
                     leaseOrderType: "ROOM"
                 },
                 {
-                    name: "Suministros",
+                    name: "Suministros 1Q",
                     amount: 200, 
                     date: currentDate,
                     status: "PENDING",
@@ -143,7 +143,7 @@ export async function createContract(data) {
                     leaseOrderType: "ROOM"
                 },
                 {
-                    name: "Wifi",
+                    name: "Wifi 1Q",
                     amount: 80,
                     date: currentDate,
                     status: "PENDING",
@@ -183,6 +183,7 @@ export async function createContract(data) {
                 },
                 ]);
             }
+            console.log(`✅ Contrato firmado y suministros asignados para el usuario: ${data.clientId}`);
 
             return NextResponse.json({ message: "Contract created successfully" }, { status: 200 })
         } catch (error) { await transaction.rollback(); return NextResponse.json({ message: "Contract not created" }, { status: 400 }) }
