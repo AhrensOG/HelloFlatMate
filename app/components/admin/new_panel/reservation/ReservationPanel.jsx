@@ -1,5 +1,4 @@
-"use client"; // Asegúrate de que este componente sea un componente del lado del cliente
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import OrderModalReservation from "./OrderModalReservation";
 import EditReservationModal from "./EditReservationModal";
 import axios from "axios";
@@ -16,6 +15,7 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isOpenCreatOrderModal, setIsOpenCreatOrderModal] = useState(false);
+    const [selectedDateFilter, setSelectedDateFilter] = useState(""); // Nuevo estado para el filtro de fecha
 
     // Usar SWR para obtener las órdenes
     const {
@@ -29,12 +29,13 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
 
     const orders = (swrData || []).filter((lo) => lo.status === "PENDING" || lo.status === "APPROVED");
 
-    // Filtrar órdenes
+    // Filtrar órdenes por la búsqueda de texto y por fecha
     const filteredOrders = (orders || []).filter((lo) => {
         const roomSerial = lo.room?.serial || "";
         const clientName = lo.client?.name || "";
         const clientLastName = lo.client?.lastName || "";
         const clientEmail = lo.client?.email || "";
+        const startDate = lo.startDate ? lo.startDate : ""; // Formateamos la fecha
 
         let statusEs = "";
         if (lo.status === "PENDING") statusEs = "pendiente";
@@ -42,14 +43,26 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
 
         const searchString = searchQuery.toLowerCase();
 
-        return (
+        // Filtrar por la búsqueda de texto
+        const matchesSearchQuery =
             roomSerial.toLowerCase().includes(searchString) ||
             clientName.toLowerCase().includes(searchString) ||
             clientLastName.toLowerCase().includes(searchString) ||
             clientEmail.toLowerCase().includes(searchString) ||
-            statusEs.toLowerCase().includes(searchString)
-        );
+            statusEs.toLowerCase().includes(searchString);
+
+        // Filtrar por la fecha de Check-In (startDate)
+        const matchesDateFilter = selectedDateFilter
+            ? startDate === selectedDateFilter
+            : true;
+
+        return matchesSearchQuery && matchesDateFilter;
     });
+
+    // Extraer los rangos de fechas únicas
+    const availableDates = [
+        ...new Set(orders.map((lo) => lo.startDate ? lo.startDate : "")),
+    ];
 
     const handleOpenModal = (lo) => {
         setSelectedOrder(lo);
@@ -116,9 +129,14 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto border rounded-lg">
-                <ReservationsTable filteredOrders={filteredOrders} handleOpenModal={handleOpenModal} handleOpenModalEdit={handleOpenModalEdit} />
-            </div>
+            <ReservationsTable
+                filteredOrders={filteredOrders}
+                handleOpenModal={handleOpenModal}
+                handleOpenModalEdit={handleOpenModalEdit}
+                availableDates={availableDates}
+                selectedDateFilter={selectedDateFilter}
+                setSelectedDateFilter={setSelectedDateFilter} 
+            />
 
             {isOpen && <OrderModalReservation data={selectedOrder} onClose={handleCloseModal} />}
             {isOpenEdit && <EditReservationModal leaseOrder={selectedOrder} onClose={handleCloseModalEdit} onUpdate={handleUpdateOrder} />}

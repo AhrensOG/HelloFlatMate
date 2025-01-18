@@ -51,7 +51,7 @@ export default function OrdersModal({ data, onClose }) {
                         <tr>
                             <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th>
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Usuario</th>
-                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Propiedad</th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Room</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Check In</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Check Out</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Precio</th>
@@ -99,7 +99,7 @@ export default function OrdersModal({ data, onClose }) {
                                 >
                                     <td className="border p-2 text-gray-700 text-center">{lo.id}</td>
                                     <td className="border p-2 text-gray-700 text-left">{`${lo.client?.name} ${lo.client?.lastName}`}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{lo.property.serial}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{lo.room?.serial}</td>
                                     <td className="border p-2 text-gray-700 text-center">{formatDateToDDMMYYYY(lo.startDate)}</td>
                                     <td className="border p-2 text-gray-700 text-center">{formatDateToDDMMYYYY(lo.endDate)}</td>
                                     <td className="border p-2 text-gray-700 text-center">{lo.price}</td>
@@ -114,8 +114,9 @@ export default function OrdersModal({ data, onClose }) {
                                     >
                                         {lo.status === "IN_PROGRESS" ? "En progreso" : lo.status === "APPROVED" ? "Aprobado" : "Rechazado"}
                                     </td>
-                                    <td className="border p-2 text-gray-700 text-center">{lo.inReview ? "Si" : "No"}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{lo.isActive ? "Si" : "No"}</td>
                                     <td className="border p-2 text-gray-700 text-center">{lo.signed ? "Si" : "No"}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{lo.inReview ? "Si" : "No"}</td>
                                 </tr>
                             ))
                         ) : (

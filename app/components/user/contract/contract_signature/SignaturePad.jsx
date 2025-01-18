@@ -19,6 +19,7 @@ const SignaturePad = ({
 }) => {
   const sigCanvas = useRef(null);
   const [loader, setLoader] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
   const { state, dispatch } = useContext(Context);
   const clearSignature = () => {
     sigCanvas.current.clear();
@@ -26,6 +27,7 @@ const SignaturePad = ({
 
   const uploadSignature = async () => {
     setLoader(true);
+    setDisableButton(true)
     const signatureDataUrl = sigCanvas.current.toDataURL();
     const response = await fetch(signatureDataUrl);
     const blob = await response.blob();
@@ -106,7 +108,8 @@ const SignaturePad = ({
             </button>
             <button
               onClick={uploadSignature}
-              className="mt-2 px-4 py-2 bg-resolution-blue text-white rounded-md text-sm w-full min-h-9 flex justify-center items-center"
+              disabled={disableButton}
+              className={`mt-2 px-4 py-2 ${!disableButton ? "bg-resolution-blue" : "bg-gray-400" } text-white rounded-md text-sm w-full min-h-9 flex justify-center items-center`}
             >
               {loader ? (
                 <CloudArrowUpIcon className="size-5 animate-pulse" />

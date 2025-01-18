@@ -45,6 +45,6 @@ const renewSupplies = async () => {
 cron.schedule("0 0 * * *", () => {
   console.log("Ejecutando cron job");
   updateContracts();
-  addCheckOutClean();
-  renewSupplies();
+  // addCheckOutClean();
+  // renewSupplies();
 });

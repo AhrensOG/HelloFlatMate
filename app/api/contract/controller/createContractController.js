@@ -27,7 +27,7 @@ export async function createContract(data) {
                     contractableId: data.roomId,
                     contractableType: "ROOM",
                     status: "APPROVED",
-                    leaseOrderId: data.leaseOrderId,
+                    leaseOrderId: leaseOrder.id,
                     leaseOrderType: "ROOM"
                 }
             } else {
@@ -40,7 +40,7 @@ export async function createContract(data) {
                     contractableId: data.propertyId,
                     contractableType: "PROPERTY",
                     status: "APPROVED",
-                    leaseOrderId: data.leaseOrderId,
+                    leaseOrderId: leaseOrder.id,
                     leaseOrderType: "PROPERTY"
                 }
             }
@@ -71,11 +71,11 @@ export async function createContract(data) {
                         reference: data.reference || "",
                         type: "DEPOSIT",
                         expirationDate: expirationDate,
-                        leaseorderId: data.leaseOrderId,
-                        leaseorderType: "ROOM"
+                        leaseOrderId: leaseOrder.id,
+                        leaseOrderType: "ROOM"
                     },
                     {
-                        name: "Suministros",
+                        name: "Suministros 1Q",
                         amount: 200, 
                         date: currentDate,
                         status: "PENDING",
@@ -84,8 +84,8 @@ export async function createContract(data) {
                         reference: data.reference || "",
                         type: "GENERAL_SUPPLIES",
                         expirationDate: expirationDate,
-                        leaseorderId: data.leaseOrderId,
-                        leaseorderType: "ROOM"
+                        leaseOrderId: leaseOrder.id,
+                        leaseOrderType: "ROOM"
                     },
                     {
                         name: "Tasa de la agencia",
@@ -97,9 +97,22 @@ export async function createContract(data) {
                         reference: data.reference || "",
                         type: "AGENCY_FEES",
                         expirationDate: expirationDate,
-                        leaseorderId: data.leaseOrderId,
-                        leaseorderType: "ROOM"
-                    }
+                        leaseOrderId: leaseOrder.id,
+                        leaseOrderType: "ROOM"
+                    },
+                    {
+                        name: "Limpieza Check-Out",
+                        amount: 50,
+                        date: currentDate,
+                        status: "PENDING",
+                        propertyId: data.propertyId || room.propertyId,
+                        clientId: data.clientId,
+                        reference: data.reference || "",
+                        type: "CLEANUP",
+                        expirationDate: expirationDate,
+                        leaseOrderId: leaseOrder.id,
+                        leaseOrderType: "ROOM"
+                    },
                     ]);
             } else {
                 await Supply.bulkCreate([
@@ -113,11 +126,11 @@ export async function createContract(data) {
                     reference: data.reference || "",
                     type: "DEPOSIT",
                     expirationDate: expirationDate,
-                    leaseorderId: data.leaseOrderId,
-                    leaseorderType: "ROOM"
+                    leaseOrderId: leaseOrder.id,
+                    leaseOrderType: "ROOM"
                 },
                 {
-                    name: "Suministros",
+                    name: "Suministros 1Q",
                     amount: 200, 
                     date: currentDate,
                     status: "PENDING",
@@ -126,11 +139,11 @@ export async function createContract(data) {
                     reference: data.reference || "",
                     type: "GENERAL_SUPPLIES",
                     expirationDate: expirationDate,
-                    leaseorderId: data.leaseOrderId,
-                    leaseorderType: "ROOM"
+                    leaseOrderId: leaseOrder.id,
+                    leaseOrderType: "ROOM"
                 },
                 {
-                    name: "Wifi",
+                    name: "Wifi 1Q",
                     amount: 80,
                     date: currentDate,
                     status: "PENDING",
@@ -139,8 +152,8 @@ export async function createContract(data) {
                     reference: data.reference || "",
                     type: "INTERNET",
                     expirationDate: expirationDate,
-                    leaseorderId: data.leaseOrderId,
-                    leaseorderType: "ROOM"
+                    leaseOrderId: leaseOrder.id,
+                    leaseOrderType: "ROOM"
                 },
                 {
                     name: "Tasa de la agencia",
@@ -152,11 +165,25 @@ export async function createContract(data) {
                     reference: data.reference || "",
                     type: "AGENCY_FEES",
                     expirationDate: expirationDate,
-                    leaseorderId: data.leaseOrderId,
-                    leaseorderType: "ROOM"
-                }
+                    leaseOrderId: leaseOrder.id,
+                    leaseOrderType: "ROOM"
+                },
+                {
+                    name: "Limpieza Check-Out",
+                    amount: 50,
+                    date: currentDate,
+                    status: "PENDING",
+                    propertyId: data.propertyId || room.propertyId,
+                    clientId: data.clientId,
+                    reference: data.reference || "",
+                    type: "CLEANUP",
+                    expirationDate: expirationDate,
+                    leaseOrderId: leaseOrder.id,
+                    leaseOrderType: "ROOM"
+                },
                 ]);
             }
+            console.log(`✅ Contrato firmado y suministros asignados para el usuario: ${data.clientId}`);
 
             return NextResponse.json({ message: "Contract created successfully" }, { status: 200 })
         } catch (error) { await transaction.rollback(); return NextResponse.json({ message: "Contract not created" }, { status: 400 }) }

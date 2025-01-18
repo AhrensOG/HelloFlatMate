@@ -11,7 +11,7 @@ export async function PATCH(req) {
 
     try {
         // Actualizar la contraseña en Firebase Authentication
-        if (user.password.length < 0) {
+        if (user.password.length > 0) {
             await authAdmin.updateUser(user.userId, { password: user.password });
         }
 
