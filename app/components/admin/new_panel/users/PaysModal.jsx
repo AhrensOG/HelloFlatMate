@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
-export default function OrdersModal({ data, onClose }) {
-    const [orders, setOrders] = useState(data);
+export default function PaysModal({ data, onClose }) {
+    console.log(data);
+
+    const [pays, setPays] = useState(data);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState("Estado"); // Estado inicial
 
@@ -30,9 +32,9 @@ export default function OrdersModal({ data, onClose }) {
         }
         setDropdownOpen(false);
         if (status !== "ALL") {
-            setOrders(data.filter((lo) => lo.status === status));
+            setPays(data.filter((lo) => lo.status === status));
         } else {
-            setOrders(data);
+            setPays(data);
         }
     };
 
@@ -89,9 +91,9 @@ export default function OrdersModal({ data, onClose }) {
                             <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Firmado?</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {orders.length > 0 ? (
-                            orders.map((lo) => (
+                    {/* <tbody>
+                        {pays.length > 0 ? (
+                            pays.map((lo) => (
                                 <tr
                                     key={lo.id}
                                     className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer"
@@ -125,7 +127,7 @@ export default function OrdersModal({ data, onClose }) {
                                 </td>
                             </tr>
                         )}
-                    </tbody>
+                    </tbody> */}
                 </table>
             </div>
         </div>

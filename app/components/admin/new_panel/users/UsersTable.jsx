@@ -1,7 +1,7 @@
 import React from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 
-const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handleOpenOrdersModal }) => {
+const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handleOpenOrdersModal, handleOpenPaysModal }) => {
     return (
         <table className="min-w-full border-collapse">
             <thead className="sticky top-0 bg-white">
@@ -13,7 +13,8 @@ const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handl
                     <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Fecha Nac.</th>
                     <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Razón</th>
                     <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Tel.</th>
-                    <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Ordenes</th>
+                    <th className="border border-t-0 p-2 w-24 text-center font-semibold text-gray-700">Ordenes</th>
+                    <th className="border border-t-0 p-2 w-24 text-center font-semibold text-gray-700"> Pagos </th>
                     <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-24">Acciones</th>
                 </tr>
             </thead>
@@ -40,6 +41,17 @@ const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handl
                             onClick={(e) => {
                                 e.stopPropagation();
                                 handleOpenOrdersModal(user);
+                            }}
+                        >
+                            Ver mas
+                        </td>
+                        <td
+                            className="border p-2 text-gray-700 text-center hover:underline"
+                            onClick={(e) => {
+                                console.log("user", user);
+
+                                e.stopPropagation();
+                                handleOpenPaysModal(user);
                             }}
                         >
                             Ver mas

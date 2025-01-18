@@ -9,6 +9,7 @@ import CreateUserModal from "./CreateUserModal";
 import SkeletonLoader from "../SkeletonLoader";
 import UpdateUserModal from "./UpdateUserModal";
 import OrdersModal from "./OrdersModal";
+import PaysModal from "./PaysModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -19,6 +20,8 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     const [selectedUser, setSelectedUser] = useState(null);
     const [isOpenCreatUserModal, setIsOpenCreatUserModal] = useState(false);
     const [isOpenOrdesModal, setIsOpenOrdesModal] = useState(false);
+    const [isPaysModal, setIsPaysModal] = useState(false);
+    const [pays, setPays] = useState(null);
     const [ordersUser, setOrdersUser] = useState(null);
 
     // Usar SWR para obtener las órdenes
@@ -93,6 +96,17 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
         setIsOpenOrdesModal(false);
     };
 
+    const handleOpenModalPays = (user) => {
+        console.log(user);
+
+        setPays([...user.payments.map((pay) => ({ ...pay, type: "PAYMENT" })), ...user.supplies]);
+        setIsPaysModal(true);
+    };
+
+    const handleCloseModalPays = () => {
+        setIsPaysModal(false);
+    };
+
     // Función para manejar la actualización de una reserva
     const handleUpdateOrder = async (updatedOrder) => {
         try {
@@ -137,6 +151,7 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
                     handleOpenModal={handleOpenModal}
                     handleOpenModalEdit={handleOpenModalEdit}
                     handleOpenOrdersModal={handleOpenModalOrders}
+                    handleOpenPaysModal={handleOpenModalPays}
                 />
             </div>
 
@@ -144,6 +159,7 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
             {isOpenCreatUserModal && <CreateUserModal action={handleCloseModalCreate} options_1={properties} />}
             {isOpenEdit && <UpdateUserModal user={selectedUser} onClose={handleCloseModalEdit} />}
             {isOpenOrdesModal && <OrdersModal data={ordersUser} onClose={handleCloseModalOrders} />}
+            {isPaysModal && <PaysModal data={pays} onClose={handleCloseModalPays} />}
         </div>
     );
 }
