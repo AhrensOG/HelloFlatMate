@@ -99,7 +99,7 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     const handleOpenModalPays = (user) => {
         console.log(user);
 
-        setPays([...user.payments.map((pay) => ({ ...pay, type: "PAYMENT" })), ...user.supplies]);
+        setPays([...user.rentPayments, ...user.supplies]);
         setIsPaysModal(true);
     };
 

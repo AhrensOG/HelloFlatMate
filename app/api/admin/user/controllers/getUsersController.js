@@ -1,4 +1,18 @@
-import { Owner, Client, Admin, LeaseOrderProperty, LeaseOrderRoom, Property, ToDo, Document, Supply, Worker, Contract, Payment } from "@/db/init";
+import {
+    Owner,
+    Client,
+    Admin,
+    LeaseOrderProperty,
+    LeaseOrderRoom,
+    Property,
+    ToDo,
+    Document,
+    Supply,
+    Worker,
+    Contract,
+    Payment,
+    RentPayment,
+} from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllUsers() {
@@ -14,7 +28,7 @@ export async function getAllUsers() {
                 { model: Contract, as: "contracts" },
                 { model: Document, as: "documents" },
                 { model: Supply, as: "supplies" },
-                { model: Payment, as: "payments" },
+                { model: RentPayment, as: "rentPayments" },
             ],
         });
         const admins = await Admin.findAll();
