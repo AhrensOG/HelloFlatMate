@@ -6,32 +6,32 @@ export default function FifthSection() {
     const t = useTranslations("home");
     const garantias = [
         {
-            icon: "/home/new_home/mesa-de-ayuda.gif",
+            icon: "/home/new_home/mesa-de-ayuda.png",
             title: t("home_fifth_sect_1_title"),
             description: t("home_fifth_sect_1_desc"),
         },
         {
-            icon: "/home/new_home/blindaje.gif",
+            icon: "/home/new_home/blindaje.png",
             title: t("home_fifth_sect_2_title"),
             description: t("home_fifth_sect_2_desc"),
         },
         {
-            icon: "/home/new_home/facil.gif",
+            icon: "/home/new_home/facil.png",
             title: t("home_fifth_sect_3_title"),
             description: t("home_fifth_sect_3_desc"),
         },
         {
-            icon: "/home/new_home/compras.gif",
+            icon: "/home/new_home/compras.png",
             title: t("home_fifth_sect_4_title"),
             description: t("home_fifth_sect_4_desc"),
         },
         {
-            icon: "/home/new_home/reiniciar.gif",
+            icon: "/home/new_home/reiniciar.png",
             title: t("home_fifth_sect_5_title"),
             description: t("home_fifth_sect_5_desc"),
         },
         {
-            icon: "/home/new_home/confianza.gif",
+            icon: "/home/new_home/confianza.png",
             title: t("home_fifth_sect_6_title"),
             description: t("home_fifth_sect_6_desc"),
         },
