@@ -704,7 +704,7 @@
         }
     },
     "user_payment_history": {
-        "desc": "Pago",
+        "desc": "Pago mensual",
         "desc_res": "Pago (Reserva)",
         "months": {
             "1": "Enero",

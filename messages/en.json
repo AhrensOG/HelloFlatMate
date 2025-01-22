@@ -702,7 +702,7 @@
         }
     },
     "user_payment_history": {
-        "desc": "Payment",
+        "desc": "Monthly payment",
         "desc_res": "Payment (Reservation)",
         "months": {
             "1": "January",

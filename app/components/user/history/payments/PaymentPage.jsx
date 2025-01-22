@@ -123,44 +123,39 @@ const PaymentPage = ({ redirect, user }) => {
       (order) => order.isActive
     );
 
-    const monthlyPendingPayments = [];
-    activeLeaseOrders.forEach((order) => {
-      if (order.room?.property?.category === "HELLO_LANDLORD") {
-        return;
-      }
+    const monthlyPendingPayments = user.rentPayments
+      ?.filter((payment) => payment.status === "PENDING")
+      .map((payment) => {
+        const matchedOrder = activeLeaseOrders.find(
+          (order) => order.id === payment.leaseOrderId
+        );
 
-      const startDate = new Date(order.startDate);
-      const endDate = new Date(order.endDate);
-      const totalMonths = calculateMonthsBetweenDates(startDate, endDate);
-
-      const rentPayments =
-        user.rentPayments?.filter(
-          (payment) => payment.leaseOrderId === order.id
-        ) || [];
-
-      const paidQuotas = rentPayments.map((payment) => payment.quotaNumber);
-
-      for (let i = 1; i <= totalMonths; i++) {
-        if (!paidQuotas.includes(i)) {
-          const pendingMonth = new Date(startDate);
-          pendingMonth.setMonth(startDate.getMonth() + i - 1);
-
-          monthlyPendingPayments.push({
-            id: "",
-            month: getMonthName(pendingMonth),
-            amount: order.price,
-            status: "PENDING",
-            type: "MONTHLY",
-            quotaNumber: i,
-            description: `${t("desc")} - ${getMonthName(pendingMonth)}`,
-            paid: false,
-            orderType: "ROOM",
-            order,
-            paymentType: "MONTHLY",
-          });
+        if (
+          !matchedOrder ||
+          matchedOrder.room?.property?.category === "HELLO_LANDLORD"
+        ) {
+          return null;
         }
-      }
-    });
+
+        const startDate = new Date(matchedOrder.startDate);
+        const paymentMonth = new Date(startDate);
+        paymentMonth.setMonth(startDate.getMonth() + payment.quotaNumber - 1);
+
+        return {
+          id: payment.id,
+          month: getMonthName(paymentMonth),
+          amount: payment.amount,
+          status: payment.status,
+          type: payment.type,
+          quotaNumber: payment.quotaNumber,
+          description: `${t("desc")} - ${getMonthName(paymentMonth)}`,
+          paid: false,
+          orderType: "ROOM",
+          order: matchedOrder,
+          paymentType: payment.type,
+        };
+      })
+      .filter(Boolean);
 
     const pendingSupplies = (user.supplies || [])
       .filter((sup) => sup.status === "PENDING")
