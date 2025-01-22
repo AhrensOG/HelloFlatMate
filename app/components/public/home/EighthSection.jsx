@@ -9,7 +9,7 @@ export default function EightSection() {
         <section className="bg-white min-h-screen flex flex-col items-center justify-center text-center px-2">
             {/* Ilustración */}
             <div className="relative w-[300px] h-[150px] sm:w-[350px] sm:h-[300px]">
-                <Image src={"/home/new_home/demasiado.gif"} fill alt="livingroom" className="object-cover" />
+                <Image src={"/home/new_home/demasiado.gif"} fill alt="livingroom" className="object-cover overflow-visible" />
             </div>
 
             {/* Texto */}

@@ -18,7 +18,7 @@ const AboutUs = () => {
     return (
         <section className="bg-white w-full">
             {/* Header con imagen de fondo */}
-            <header className="bg-[url('/home/new_home/bg.jpg')] bg-cover bg-no-repeat bg-bottom">
+            <header className="bg-[url('/home/new_home/bg1.png')] bg-cover bg-no-repeat bg-center">
                 <SecondaryNavbar />
                 <div className="w-full flex justify-center items-center py-40">
                     <h1 className="text-2xl font-bold max-w-screen-lg text-center text-white">{t("title")}</h1>
