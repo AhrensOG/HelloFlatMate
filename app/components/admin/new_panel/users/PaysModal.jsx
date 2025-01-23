@@ -22,7 +22,7 @@ export default function PaysModal({ data, onClose }) {
     };
 
     // Orden de prioridad para los tipos
-    const orderPriority = ["DEPOSIT", "AGENCY_FEES", "GENERAL_SUPPLIES", "INTERNET", "MONTHLY", "CLEANUP"];
+    const orderPriority = ["DEPOSIT", "AGENCY_FEES", "GENERAL_SUPPLIES", "INTERNET", "RESERVATION", "MONTHLY", "CLEANUP"];
 
     useEffect(() => {
         const sortedData = groupPaysByLeaseOrder(sortPays(data));
@@ -72,12 +72,33 @@ export default function PaysModal({ data, onClose }) {
 
     // Función para ordenar los pagos según el criterio
     const sortPays = (pays) => {
-        console.log(pays);
+        const quotaNumber = pays.reduce((acc, item) => {
+            if (item.quotaNumber) {
+                return (acc += 1);
+            }
+            return acc;
+        }, 0);
 
         // Dividir pagos en dos grupos: primer período y 2Q
-        const firstPeriod = pays.filter((item) => !item.name?.includes("2Q"));
-        const secondPeriod = pays.filter((item) => item.name?.includes("2Q"));
+        const firstPeriod = pays
+            .filter((item) => {
+                if (item?.quotaNumber) {
+                    return item.quotaNumber <= quotaNumber / 2;
+                } else if (!item.name?.includes("2Q") && item.type !== "CLEANUP") {
+                    return item;
+                }
+            })
+            .sort((a, b) => a?.quotaNumber - b?.quotaNumber);
 
+        const secondPeriod = pays
+            .filter((item) => {
+                if (item?.quotaNumber) {
+                    return item.quotaNumber > quotaNumber / 2;
+                } else if (item.name?.includes("2Q")) {
+                    return item;
+                }
+            })
+            .sort((a, b) => a?.quotaNumber - b?.quotaNumber);
         // Ordenar cada grupo según la prioridad
         const sortedFirstPeriod = firstPeriod.sort((a, b) => {
             const priorityA = orderPriority.indexOf(a.type);
