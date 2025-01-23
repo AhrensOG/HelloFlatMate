@@ -13,6 +13,7 @@ import PremiumContract from "./PremiunContract";
 import HelloRoomContract from "./HelloroomContract";
 import HelloColivingContract from "./HelloColivingContract";
 import HelloLandlordContract from "./HelloLandlordContract";
+// import { isUserLogged } from "@/app/context/actions/isUserLogged";
 
 const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   const { state, dispatch } = useContext(Context);
@@ -25,6 +26,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // await isUserLogged(dispatch);
         const roomId = searchParams.get("r");
         const leaseOrderId = searchParams.get("lo");
 
