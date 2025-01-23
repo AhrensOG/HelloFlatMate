@@ -141,6 +141,7 @@ export async function POST(request) {
   console.log("✅ Pago aprobado:", dsResponseCode);
 
   const {
+    paymentId,
     supplyId,
     order,
     paymentType,
@@ -172,6 +173,7 @@ export async function POST(request) {
       });
     case "monthly":
       return await processMonthlyPayment({
+        paymentId,
         paymentableId,
         leaseOrderId,
         paymentableType,

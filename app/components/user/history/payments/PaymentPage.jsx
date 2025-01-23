@@ -149,6 +149,7 @@ const PaymentPage = ({ redirect, user }) => {
           type: payment.type,
           quotaNumber: payment.quotaNumber,
           description: `${t("desc")} - ${getMonthName(paymentMonth)}`,
+          title: `${t("desc")}`,
           paid: false,
           orderType: "ROOM",
           order: matchedOrder,
@@ -195,7 +196,16 @@ const PaymentPage = ({ redirect, user }) => {
         return -1;
       }
 
-      return indexA - indexB;
+      if (indexA !== indexB) {
+        return indexA - indexB;
+      }
+
+      // If type is "MONTHLY", sort by quotaNumber
+      if (typeA === "MONTHLY" && typeB === "MONTHLY") {
+        return (a.quotaNumber || 0) - (b.quotaNumber || 0);
+      }
+
+      return 0;
     });
 
     setPaymentsToShow(allPending);

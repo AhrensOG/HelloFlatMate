@@ -21,24 +21,12 @@ function generateDsOrder(leaseOrderId) {
 }
 
 const PayModal = ({ payment, user, onClose }) => {
-  // State para guardar los datos de Redsys (si quieres hacer submit automático)
-  const [redsysData, setRedsysData] = useState(null);
-
   const handlePayment = async () => {
-    // 1) Generar un Ds_Order único, si no lo haces en el servidor.
     const dsOrder = generateDsOrder(payment.order?.id);
 
-    // 2) Construir el body que enviarás a tu endpoint de Redsys
+    const propertyId = payment.order?.roomId;
 
-    const propertyId =
-      payment.orderType === "ROOM"
-        ? payment.order?.roomId
-        : payment.order?.propertyId;
-
-    const propertySerial =
-      payment.orderType === "ROOM"
-        ? payment.order?.room?.serial
-        : payment.order?.property?.serial;
+    const propertySerial = payment.order?.room?.serial;
 
     let body;
     if (payment.paymentType === "MONTHLY") {
@@ -46,6 +34,7 @@ const PayModal = ({ payment, user, onClose }) => {
         amount: payment.amount * 100,
         order: dsOrder,
         paymentMetaData: {
+          paymentId: payment.id,
           order: dsOrder,
           paymentType: "monthly",
           paymentableId: propertyId,
@@ -57,8 +46,8 @@ const PayModal = ({ payment, user, onClose }) => {
           amount: payment.amount,
           month: payment.month,
           propertySerial,
-          merchantName: `Pago mensual - ${propertySerial}`,
-          merchantDescription: `Pago mensual - ${payment.month} (${propertySerial} - ${user.name} ${user.lastName})`,
+          merchantName: `${payment.title} - ${propertySerial}`,
+          merchantDescription: `${payment.description} (${propertySerial} - ${user.name} ${user.lastName})`,
           merchantUrlOk: `/pages/user/success/${propertyId}?type=monthly`,
           merchantUrlkO: `/pages/user/history/payments`,
         },

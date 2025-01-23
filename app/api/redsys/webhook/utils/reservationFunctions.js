@@ -1,6 +1,13 @@
 import { billBuilder } from "@/app/api/pdf_creator/utils/billBuilder";
 import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
-import { Client, LeaseOrderRoom, Property, RentPayment, Room, Supply } from "@/db/init";
+import {
+  Client,
+  LeaseOrderRoom,
+  Property,
+  RentPayment,
+  Room,
+  Supply,
+} from "@/db/init";
 import { reservationTemplate } from "./emailTemplates";
 import { NextResponse } from "next/server";
 
@@ -45,6 +52,9 @@ async function processReservation({
 
     const amountNumber = Number(price) || 0;
 
+    const start = new Date(successLeaseOrderRoom.startDate);
+    const paymentMonth = new Date(start.getFullYear(), start.getMonth());
+
     const rentData = {
       amount: amountNumber,
       type: "RESERVATION",
@@ -58,7 +68,13 @@ async function processReservation({
       date: new Date(),
       ownerId: theRoom.property.ownerId,
       paymentId: order || "",
-      description: "Pago reserva (Redsys)",
+      description: `Pago reserva - ${paymentMonth
+        .toLocaleString("es-ES", {
+          month: "long",
+        })
+        .replace(/^./, (char) =>
+          char.toUpperCase()
+        )} ${paymentMonth.getFullYear()}`,
     };
 
     // 3️⃣ Crear Pago y Actualizar Estados
@@ -102,6 +118,9 @@ async function processReservation({
 
     await addSupplies(theRoom, successLeaseOrderRoom, client);
     console.log(`✅ Suministros asignados al cliente: ${client.email}`);
+
+    await addRentPayments(theRoom, successLeaseOrderRoom, client);
+    console.log(`✅ Pagos mensuales asignados al cliente: ${client.email}`);
 
     return NextResponse.json(
       {
@@ -312,6 +331,53 @@ async function addSupplies(room, leaseOrder, client) {
     await Supply.bulkCreate(supplies);
   } catch (error) {
     console.error(error);
+  }
+}
+
+async function addRentPayments(room, leaseOrder, client) {
+  try {
+    const start = new Date(leaseOrder.startDate);
+    const end = new Date(leaseOrder.endDate);
+
+    const monthsDifference =
+      (end.getFullYear() - start.getFullYear()) * 12 +
+      (end.getMonth() - start.getMonth()) +
+      1;
+
+    const payments = [];
+
+    for (let monthOffset = 1; monthOffset < monthsDifference; monthOffset++) {
+      const paymentMonth = new Date(
+        start.getFullYear(),
+        start.getMonth() + monthOffset
+      );
+
+      payments.push({
+        amount: leaseOrder.price,
+        type: "MONTHLY",
+        paymentableId: room.id,
+        paymentableType: "ROOM",
+        clientId: client.id,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
+        status: "PENDING",
+        quotaNumber: monthOffset + 1,
+        date: new Date(),
+        ownerId: room.property.ownerId,
+        paymentId: "-",
+        description: `Pago mensual - ${paymentMonth
+          .toLocaleString("es-ES", {
+            month: "long",
+          })
+          .replace(/^./, (char) =>
+            char.toUpperCase()
+          )} ${paymentMonth.getFullYear()}`,
+      });
+    }
+
+    await RentPayment.bulkCreate(payments);
+  } catch (error) {
+    console.error(`❌ Error generating rent payments: ${error.message}`);
   }
 }
 
