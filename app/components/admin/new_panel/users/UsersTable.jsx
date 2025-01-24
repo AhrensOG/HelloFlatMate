@@ -3,18 +3,19 @@ import formatDateToDDMMYYYY from "../utils/formatDate";
 
 const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handleOpenOrdersModal, handleOpenPaysModal }) => {
     return (
-        <table className="min-w-full border-collapse">
+        <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
+            <table className="min-w-full border-collapse">
             <thead className="sticky top-0 bg-white">
                 <tr>
-                    <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">ID</th>
+                    {/* <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">ID</th> */}
                     <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Usuario</th>
-                    <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">Email</th>
-                    <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">País</th>
-                    <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Fecha Nac.</th>
-                    <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Razón</th>
-                    <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Tel.</th>
-                    <th className="border border-t-0 p-2 w-24 text-center font-semibold text-gray-700">Ordenes</th>
-                    <th className="border border-t-0 p-2 w-24 text-center font-semibold text-gray-700"> Pagos </th>
+                    <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Email</th>
+                    <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">País</th>
+                    <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Fecha Nac.</th>
+                    <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Razón</th>
+                    <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Tel.</th>
+                    <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Ordenes</th>
+                    <th className="border border-t-0 p-2 text-center font-semibold text-gray-700"> Pagos </th>
                     <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-24">Acciones</th>
                 </tr>
             </thead>
@@ -25,9 +26,9 @@ const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handl
                         className="hover:bg-gray-100 even:bg-gray-50 transition-couserrs cursor-pointer"
                         onClick={() => handleOpenModal(user)}
                     >
-                        <td className="border p-2 text-gray-700 text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-20">{user.id}</td>
-                        <td className="border p-2 text-gray-700 text-left">{`${user.name} ${user.lastName}`}</td>
-                        <td className="border p-2 text-gray-700 text-center max-w-28 whitespace-nowrap overflow-hidden text-ellipsis">
+                        {/* <td className="border p-2 text-gray-700 text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-20">{user.id}</td> */}
+                        <td className="border p-2 text-gray-700 text-center">{`${user.name} ${user.lastName}`}</td>
+                        <td className="border p-2 text-gray-700 text-center">
                             {user.email}
                         </td>
                         <td className="border p-2 text-gray-700 text-center">{user.country}</td>
@@ -70,7 +71,8 @@ const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handl
                     </tr>
                 ))}
             </tbody>
-        </table>
+            </table>
+        </div>
     );
 };
 

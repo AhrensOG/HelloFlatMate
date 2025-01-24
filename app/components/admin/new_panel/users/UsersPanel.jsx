@@ -145,15 +145,13 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto border rounded-lg">
-                <UsersTable
-                    filteredUsers={filteredUsers}
-                    handleOpenModal={handleOpenModal}
-                    handleOpenModalEdit={handleOpenModalEdit}
-                    handleOpenOrdersModal={handleOpenModalOrders}
-                    handleOpenPaysModal={handleOpenModalPays}
-                />
-            </div>
+            <UsersTable
+                filteredUsers={filteredUsers}
+                handleOpenModal={handleOpenModal}
+                handleOpenModalEdit={handleOpenModalEdit}
+                handleOpenOrdersModal={handleOpenModalOrders}
+                handleOpenPaysModal={handleOpenModalPays}
+            />
 
             {isOpen && <UserModal user={selectedUser} onClose={handleCloseModal} />}
             {isOpenCreatUserModal && <CreateUserModal action={handleCloseModalCreate} options_1={properties} />}

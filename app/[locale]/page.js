@@ -230,7 +230,7 @@ export default function Home() {
                         </Suspense>
                     </div>
                     <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
-                        <Image src={"/home/new_home/hero4.jpeg"} fill className="object-cover" />
+                        <Image src={"/home/new_home/hero4.jpeg"} fill className="object-cover" alt="Valencia" />
                     </div>
                 </section>
                 <SecondSection />
