@@ -12,6 +12,7 @@ import {
     Contract,
     Payment,
     RentPayment,
+    Room,
 } from "@/db/init";
 import { NextResponse } from "next/server";
 
@@ -28,9 +29,57 @@ export async function getAllUsers() {
                 { model: Contract, as: "contracts" },
                 { model: Document, as: "documents" },
                 { model: Supply, as: "supplies" },
-                { model: RentPayment, as: "rentPayments" },
+                { model: RentPayment, as: "rentPayments", required: false },
+                { model: LeaseOrderRoom, as: "leaseOrdersRoom" },
             ],
         });
+
+        // Iterar sobre cada cliente para buscar las órdenes de arrendamiento
+        for (const client of clients) {
+            for (const payment of client.rentPayments) {
+                if (payment.leaseOrderType === "ROOM") {
+                    // Buscar LeaseOrderRoom usando leaseOrderId
+                    const leaseOrderRoom = await LeaseOrderRoom.findOne({
+                        where: { id: payment.leaseOrderId },
+                        attributes: ["startDate", "endDate"],
+                        include: { model: Room, as: "room", attributes: ["serial"] },
+                    });
+                    // Agregar dinámicamente la información al objeto RentPayment
+                    payment.dataValues.leaseOrderInfo = leaseOrderRoom;
+                } else if (payment.leaseOrderType === "PROPERTY") {
+                    // Buscar LeaseOrderProperty usando leaseOrderId
+                    const leaseOrderProperty = await LeaseOrderProperty.findOne({
+                        where: { id: payment.leaseOrderId },
+                        attributes: ["startDate", "endDate"],
+                        include: { model: Room, as: "room", attributes: ["serial"] },
+                    });
+                    // Agregar dinámicamente la información al objeto RentPayment
+                    payment.dataValues.leaseOrderInfo = leaseOrderProperty;
+                }
+            }
+            for (const supply of client.supplies) {
+                if (supply.leaseOrderType === "ROOM") {
+                    // Buscar LeaseOrderRoom usando leaseOrderId
+                    const leaseOrderRoom = await LeaseOrderRoom.findOne({
+                        where: { id: supply.leaseOrderId },
+                        attributes: ["startDate", "endDate"],
+                        include: { model: Room, as: "room", attributes: ["serial"] },
+                    });
+                    // Agregar dinámicamente la información al objeto RentPayment
+                    supply.dataValues.leaseOrderInfo = leaseOrderRoom;
+                } else if (supply.leaseOrderType === "PROPERTY") {
+                    // Buscar LeaseOrderProperty usando leaseOrderId
+                    const leaseOrderProperty = await LeaseOrderProperty.findOne({
+                        where: { id: supply.leaseOrderId },
+                        attributes: ["startDate", "endDate"],
+                        include: { model: Room, as: "room", attributes: ["serial"] },
+                    });
+                    // Agregar dinámicamente la información al objeto RentPayment
+                    supply.dataValues.leaseOrderInfo = leaseOrderProperty;
+                }
+            }
+        }
+
         const admins = await Admin.findAll();
         const workers = await Worker.findAll();
         return NextResponse.json({ owners, clients, admins, workers });
@@ -102,14 +151,6 @@ export async function getUserById(id) {
                     {
                         model: Document,
                         as: "documents",
-                    },
-                    {
-                        model: Supply,
-                        as: "supplies",
-                    },
-                    {
-                        model: Payment,
-                        as: "payments",
                     },
                     {
                         model: Supply,
