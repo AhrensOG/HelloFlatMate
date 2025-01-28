@@ -757,5 +757,82 @@
                 "last_name": "El apellido es obligatorio"
             }
         }
+    },
+    "last_room_page": {
+        "h1": "Últimas habitaciones en alquiler en Valencia para estudiantes",
+        "p_1": " ¿Buscas una habitación en Valencia? Descubre las (strong)últimas habitaciones en alquiler en Valencia(/strong) con (strong)helloflatmate(/strong). Habitaciones modernas, totalmente equipadas y en (strong)pisos compartidos(/strong) bien ubicados, ideales para estudiantes y jóvenes profesionales. <br /> <br /> No dejes pasar esta oportunidad: ¡reserva tu habitación antes de que se agoten!",
+        "span_1": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",
+        "page": "Página",
+        "of": "of",
+        "next": "Next",
+        "text_section": {
+            "h2_1": "¿Por qué elegir nuestras últimas habitaciones en alquiler en Valencia?",
+            "p_1": "En helloflatmate, sabemos lo importante que es encontrar un alojamiento que cumpla con todas tus expectativas. Nuestras últimas habitaciones disponibles ofrecen:",
+            "ul_1": {
+                "li_1": "Pisos recién reformados: Habitaciones con mobiliario nuevo y diseño moderno.",
+                "li_2": "Ubicaciones estratégicas: Cerca de universidades, transporte público y zonas de ocio.",
+                "li_3": "Servicios incluidos: Agua, electricidad, internet de alta velocidad y limpieza de zonas comunes.",
+                "li_4": "Proceso rápido y transparente: Reserva tu habitación online con total confianza."
+            },
+            "p_2": "¡No te quedes sin tu espacio ideal! La disponibilidad es limitada.",
+            "h2_2": "Habitaciones en alquiler para estudiantes y jóvenes en Valencia",
+            "p_3": "Nuestras habitaciones en alquiler están pensadas para estudiantes nacionales, Erasmus y jóvenes profesionales que buscan:",
+            "ul_2": {
+                "li_1": "Comodidad: Habitaciones individuales y dobles adaptadas a tu estilo de vida.",
+                "li_2": "Convivencia: Comparte piso con personas afines y disfruta de una experiencia multicultural.",
+                "li_3": " Proximidad a universidades: Habitaciones cerca de la Universidad de Valencia (UV), Universidad Politécnica (UPV) y otras instituciones."
+            },
+            "p_4": "Ya sea para un curso completo, un semestre o una estancia corta, en helloflatmate encontrarás la opción perfecta.",
+            "h2_3": "¿Cómo reservar una de las últimas habitaciones en Valencia?",
+            "p_5": "El proceso es rápido y sencillo. Sigue estos pasos y asegura tu habitación en pocos minutos:",
+            "ol_1": {
+                "li_1": "Explora nuestras habitaciones disponibles: Accede a nuestra plataforma y utiliza los filtros para encontrar la mejor opción.",
+                "li_2": "Revisa las características: Consulta fotos, ubicación, servicios incluidos y precio.",
+                "li_3": "Reserva online: Formaliza tu reserva con un contrato transparente y seguro.",
+                "li_4": "Disfruta tu estancia: Instálate en tu nueva habitación y vive una experiencia única en Valencia."
+            },
+            "p_6": "Si tienes alguna duda, nuestro equipo de atención personalizada está aquí para ayudarte durante todo el proceso.",
+            "h2_4": "¿Qué incluyen nuestras últimas habitaciones en alquiler?",
+            "p_7": "Las habitaciones en alquiler de helloflatmate están diseñadas para que tu estancia sea lo más cómoda y sencilla posible. Nuestras habitaciones incluyen:",
+            "ul_3": {
+                "li_1": "Mobiliario completo: Cama, escritorio, armario y espacios de almacenamiento.",
+                "li_2": "Internet de alta velocidad: Perfecto para estudiar, trabajar o relajarte viendo tus series favoritas.",
+                "li_3": "Gastos incluidos: Agua, luz y gas, para que no tengas que preocuparte por nada.",
+                "li_4": "Limpieza de zonas comunes: Para que siempre disfrutes de un entorno limpio y ordenado."
+            },
+            "p_8": "Alquila una habitación lista para entrar a vivir, sin complicaciones y con todas las comodidades.",
+            "h2_5": "Últimas habitaciones en alquiler: ¡Disponibilidad limitada!",
+            "p_9": "Nuestras habitaciones en alquiler en Valencia tienen una alta demanda, especialmente al inicio del curso académico. Si buscas:",
+            "ul_4": {
+                "li_1": "Habitaciones cerca de tu universidad.",
+                "li_2": "Pisos compartidos modernos y bien ubicados.",
+                "li_3": "Flexibilidad en la duración de la estancia."
+            },
+            "p_10": "¡No esperes más! Las últimas habitaciones se agotan rápidamente. Asegura la tuya y disfruta de una estancia sin preocupaciones con helloflatmate.",
+            "h2_6": "Ventajas de alquilar con helloflatmate en Valencia",
+            "p_11": "Al elegir helloflatmate para encontrar tu habitación en alquiler, disfrutarás de:",
+            "ul_5": {
+                "li_1": "Atención personalizada: Te ayudamos a encontrar la habitación perfecta para ti.",
+                "li_2": "Transparencia total: Sin sorpresas ni letra pequeña en tu contrato.",
+                "li_3": "Flexibilidad: Opciones de alquiler adaptadas a tu presupuesto y tiempo de estancia.",
+                "li_4": "Soporte continuo: Resolvemos cualquier incidencia durante tu estancia."
+            },
+            "h2_7": "Valencia: La ciudad perfecta para estudiantes",
+            "ul_6": {
+                "li_1": "Clima mediterráneo: Disfruta del buen tiempo durante todo el año.",
+                "li_2": "Cultura y ocio: Museos, playas, parques y una gastronomía inigualable.",
+                "li_3": "Coste de vida asequible: Perfecto para estudiantes y jóvenes.",
+                "li_4": "Bien comunicada: Excelente transporte público para moverte fácilmente por la ciudad."
+            },
+            "p_12": "Con nuestras últimas habitaciones en alquiler en Valencia, podrás aprovechar todo lo que esta ciudad tiene para ofrecerte.",
+            "h2_8": "¡Reserva ahora tu habitación en Valencia antes de que se agoten!",
+            "p_13": "Las últimas habitaciones en alquiler en Valencia están disponibles por tiempo limitado. Si quieres asegurar tu espacio en un piso compartido moderno y bien ubicado, no pierdas más tiempo.",
+            "ul_7": {
+                "li_1": "Contacta con nosotros y reserva tu habitación ideal.",
+                "li_2": "Vive en las mejores zonas de Valencia.",
+                "li_3": "Disfruta de una experiencia cómoda y sin complicaciones."
+            },
+            "strong": "¡No te quedes sin la tuya! Tu habitación perfecta en Valencia te está esperando."
+        }
     }
 }

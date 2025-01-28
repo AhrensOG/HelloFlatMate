@@ -148,13 +148,13 @@ const SecondaryCategorySelector = ({
         const queryString = buildQueryString();
         let path;
         if (currentCategory === "HELLO_ROOM") {
-            path = "alquiler-habitaciones-valencia"
-        } else if (currentCategory === "HELLO_COLIVING"){
-            path = "coliving-valencia"
+            path = "alquiler-habitaciones-valencia";
+        } else if (currentCategory === "HELLO_COLIVING") {
+            path = "coliving-valencia";
         } else {
-            path = currentCategory.split("_").join("").toLowerCase()
+            path = currentCategory.split("_").join("").toLowerCase();
         }
-        
+
         router.push(`/${path}?${queryString}`);
     };
 
@@ -222,6 +222,7 @@ const SecondaryCategorySelector = ({
                                 className="p-4 bg-[#5ce0e5] rounded-md font-bold min-w-72 flex justify-center items-center gap-2 my-2 text-white"
                             >
                                 {t("search_btn")}
+
                                 <MagnifyingGlassIcon className="size-6 text-black" />
                             </button>
                         </div>

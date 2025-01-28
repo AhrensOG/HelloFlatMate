@@ -15,7 +15,7 @@ const SUPPLY_TYPE_LABELS = {
     GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
     MONTHLY: "Mensual",
     RESERVATION: "Reserva",
-  };
+};
 
 export default function PaysModal({ data, onClose }) {
     const [pays, setPays] = useState([]);
@@ -24,27 +24,29 @@ export default function PaysModal({ data, onClose }) {
     const [expandedGroups, setExpandedGroups] = useState({}); // Estado para manejar grupos expandidos
 
     // Secionar los pagos dependiendo de la leasOrder
+    // Asegúrate de que siempre devuelvas un array
     const groupPaysByLeaseOrder = (pays) => {
         const grouped = pays.reduce((acc, pay) => {
             const key = pay.leaseOrderId;
             if (!acc[key]) {
                 acc[key] = [];
             }
-
             acc[key].push(pay);
             return acc;
         }, {});
-        return Object.values(grouped);
+        return Object.values(grouped).filter((group) => Array.isArray(group)); // Filtrar grupos no válidos
     };
 
     // Orden de prioridad para los tipos
     const orderPriority = ["DEPOSIT", "AGENCY_FEES", "GENERAL_SUPPLIES", "INTERNET", "RESERVATION", "MONTHLY", "CLEANUP"];
 
+    // En el efecto useEffect
     useEffect(() => {
         const sortedData = groupPaysByLeaseOrder(sortPays(data));
+        console.log(sortedData); // Verifica la estructura aquí
         setPays(sortedData);
 
-        // Inicializar todos los grupos como expandidos por defecto
+        // Inicializar grupos expandidos
         const initialExpandedGroups = sortedData.reduce((acc, _, index) => {
             acc[index] = true;
             return acc;
@@ -131,7 +133,6 @@ export default function PaysModal({ data, onClose }) {
         return [...sortedFirstPeriod, ...sortedSecondPeriod];
     };
 
-    // Función para manejar el cambio de estado
     const handleStatusChange = (status) => {
         switch (status) {
             case "APPROVED":
@@ -149,11 +150,18 @@ export default function PaysModal({ data, onClose }) {
         }
         setDropdownOpen(false);
 
+        // Primero, ordena los pagos
+        let sortedPays = sortPays(data);
+
+        // Agrupa los pagos por leaseOrderId
+        let groupedPays = groupPaysByLeaseOrder(sortedPays);
+
+        // Filtra los grupos según el estado seleccionado
         if (status !== "ALL") {
-            setPays(data.filter((lo) => lo.status === status));
-        } else {
-            setPays(sortPays(data)); // Reordenar y mostrar todos los pagos si se selecciona "Todos"
+            groupedPays = groupedPays.map((group) => group.filter((item) => item.status === status)).filter((group) => group.length > 0); // Filtra grupos vacíos
         }
+
+        setPays(groupedPays.length > 0 ? groupedPays : []); // Asegúrate de que sea un array
     };
 
     // Función para formatear fechas
@@ -180,12 +188,18 @@ export default function PaysModal({ data, onClose }) {
                                 <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-[7rem]">Fecha</th>
                                 <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-[7rem]">Importe</th>
                                 <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4 w-[7rem]">
-                                    <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="flex items-center justify-center w-full gap-2">
-                                        {selectedStatus} <ChevronDownIcon className="size-3"/>
+                                    <button
+                                        onClick={() => setDropdownOpen(!isDropdownOpen)}
+                                        className="flex items-center justify-center w-full gap-2"
+                                    >
+                                        {selectedStatus} <ChevronDownIcon className="size-3" />
                                     </button>
                                     {isDropdownOpen && (
                                         <div className="absolute left-0 mt-1 w-32 bg-white border rounded shadow-lg z-10">
-                                            <button onClick={() => handleStatusChange("ALL")} className="block w-full text-left p-2 hover:bg-gray-100">
+                                            <button
+                                                onClick={() => handleStatusChange("ALL")}
+                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                            >
                                                 Todos
                                             </button>
                                             <button
@@ -200,7 +214,10 @@ export default function PaysModal({ data, onClose }) {
                                             >
                                                 Pendiente
                                             </button>
-                                            <button onClick={() => handleStatusChange("PAID")} className="block w-full text-left p-2 hover:bg-gray-100">
+                                            <button
+                                                onClick={() => handleStatusChange("PAID")}
+                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                            >
                                                 Pagado
                                             </button>
                                         </div>
@@ -223,8 +240,8 @@ export default function PaysModal({ data, onClose }) {
                                                 className="bg-gray-200 cursor-pointer"
                                             >
                                                 <td colSpan={13} className="border p-2 text-gray-700 text-center font-bold">
-                                                    Orden Nº:{" "} {handleNullValue(group[0]?.leaseOrderId)} / Room:{" "}
-                                                    {handleNullValue(group[0]?.leaseOrderInfo.room.serial)}
+                                                    Orden Nº: {handleNullValue(group[0]?.leaseOrderId)} / Room:{" "}
+                                                    {handleNullValue(group[0]?.leaseOrderInfo?.room?.serial)}
                                                 </td>
                                             </tr>
 
@@ -241,32 +258,36 @@ export default function PaysModal({ data, onClose }) {
                                                             transition={{ duration: 0.3 }}
                                                         >
                                                             <td className="border p-2 text-center">
-                                                                {handleNullValue(item.leaseOrderInfo.room.serial)}
+                                                                {handleNullValue(item?.leaseOrderInfo?.room?.serial)}
                                                             </td>
-                                                            <td className="border p-2 text-center text-gray700">{formatDateToDDMMYYYY(item.date)}</td>
-                                                            <td className="border p-2 text-center text-gray700">{handleNullValue(item.amount)} €</td>
+                                                            <td className="border p-2 text-center text-gray700">
+                                                                {formatDateToDDMMYYYY(item?.date)}
+                                                            </td>
+                                                            <td className="border p-2 text-center text-gray700">{handleNullValue(item?.amount)} €</td>
                                                             <td
                                                                 className={`border p-2 text-center font-bold ${
-                                                                    item.status === "APPROVED" || item.status === "PAID"
+                                                                    item?.status === "APPROVED" || item?.status === "PAID"
                                                                         ? "text-green-700"
                                                                         : "text-yellow-700"
                                                                 }`}
                                                             >
                                                                 {handleNullValue(
-                                                                    item.status === "PAID" || item.status === "APPROVED" ? "Pagado" : "Pendiente"
+                                                                    item?.status === "PAID" || item?.status === "APPROVED" ? "Pagado" : "Pendiente"
                                                                 )}
                                                             </td>
-                                                            <td className="border p-2 text-center">{SUPPLY_TYPE_LABELS[handleNullValue(item.type)] || "-"}</td>
+                                                            <td className="border p-2 text-center">
+                                                                {SUPPLY_TYPE_LABELS[handleNullValue(item?.type)] || "-"}
+                                                            </td>
                                                             <td className="border p-2 text-center">
                                                                 {handleNullValue(
                                                                     calculateMonthsBetweenDatesAndNames(
-                                                                        item.leaseOrderInfo.startDate,
-                                                                        item.leaseOrderInfo.endDate
-                                                                    ).months[item.quotaNumber - 1]
+                                                                        item?.leaseOrderInfo?.startDate,
+                                                                        item?.leaseOrderInfo?.endDate
+                                                                    ).months[item?.quotaNumber - 1]
                                                                 )}
                                                             </td>
-                                                            {/* <td className="border p-2 text-center">{handleNullValue(item.description)}</td> */}
-                                                            <td className="border p-2 text-center">{handleNullValue(item.name)}</td>
+                                                            {/* <td className="border p-2 text-center">{handleNullValue(item?.description)}</td> */}
+                                                            <td className="border p-2 text-center">{handleNullValue(item?.name)}</td>
                                                         </motion.tr>
                                                     ))}
                                             </AnimatePresence>

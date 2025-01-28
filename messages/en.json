@@ -747,5 +747,82 @@
             "close": "Close",
             "pay_now": "Pay Now"
         }
+    },
+    "last_room_page": {
+        "h1": "Last rooms for rent in Valencia for students",
+        "p_1": "Are you looking for a room in Valencia? Discover the (strong)last rooms for rent in Valencia(/strong) with (strong)helloflatmate(/strong). Modern rooms, fully equipped and in (strong)well-located shared apartments(/strong), ideal for students and young professionals. <br /> <br /> Don't miss this opportunity: book your room before they run out!",
+        "span_1": "No properties matching your preferences were found. But don't worry! Here are other options you might be interested in:",
+        "page": "Page",
+        "of": "of",
+        "next": "Next",
+        "text_section": {
+            "h2_1": "Why choose our latest rooms for rent in Valencia?",
+            "p_1": "At helloflatmate, we know how important it is to find accommodation that meets all your expectations. Our latest available rooms offer:",
+            "ul_1": {
+                "li_1": "Recently renovated apartments: Rooms with new furniture and modern design.",
+                "li_2": "Strategic locations: Close to universities, public transport, and leisure areas.",
+                "li_3": "Included services: Water, electricity, high-speed internet, and cleaning of common areas.",
+                "li_4": "Fast and transparent process: Book your room online with total confidence."
+            },
+            "p_2": "Don't miss out on your ideal space! Availability is limited.",
+            "h2_2": "Rooms for rent for students and young people in Valencia",
+            "p_3": "Our rooms for rent are designed for national students, Erasmus students, and young professionals looking for:",
+            "ul_2": {
+                "li_1": "Comfort: Single and double rooms adapted to your lifestyle.",
+                "li_2": "Community: Share an apartment with like-minded people and enjoy a multicultural experience.",
+                "li_3": "Proximity to universities: Rooms near the University of Valencia (UV), Polytechnic University (UPV), and other institutions."
+            },
+            "p_4": "Whether for a full course, a semester, or a short stay, at helloflatmate you will find the perfect option.",
+            "h2_3": "How to book one of the latest rooms in Valencia?",
+            "p_5": "The process is quick and simple. Follow these steps and secure your room in minutes:",
+            "ol_1": {
+                "li_1": "Explore our available rooms: Access our platform and use filters to find the best option.",
+                "li_2": "Review the features: Check photos, location, included services, and price.",
+                "li_3": "Book online: Formalize your reservation with a transparent and secure contract.",
+                "li_4": "Enjoy your stay: Move into your new room and have a unique experience in Valencia."
+            },
+            "p_6": "If you have any questions, our personalized support team is here to help you throughout the process.",
+            "h2_4": "What do our latest rooms for rent include?",
+            "p_7": "The rental rooms at helloflatmate are designed to make your stay as comfortable and easy as possible. Our rooms include:",
+            "ul_3": {
+                "li_1": "Complete furniture: Bed, desk, wardrobe, and storage spaces.",
+                "li_2": "High-speed internet: Perfect for studying, working, or relaxing with your favorite series.",
+                "li_3": "Included expenses: Water, electricity, and gas, so you don't have to worry about anything.",
+                "li_4": "Cleaning of common areas: So you can always enjoy a clean and organized environment."
+            },
+            "p_8": "Rent a move-in-ready room without complications and with all the amenities.",
+            "h2_5": "Latest rooms for rent: Limited availability!",
+            "p_9": "Our rental rooms in Valencia are in high demand, especially at the beginning of the academic year. If you're looking for:",
+            "ul_4": {
+                "li_1": "Rooms near your university.",
+                "li_2": "Modern and well-located shared apartments.",
+                "li_3": "Flexibility in the length of stay."
+            },
+            "p_10": "Don't wait any longer! The latest rooms are going fast. Secure yours and enjoy a worry-free stay with helloflatmate.",
+            "h2_6": "Advantages of renting with helloflatmate in Valencia",
+            "p_11": "By choosing helloflatmate to find your rental room, you will enjoy:",
+            "ul_5": {
+                "li_1": "Personalized attention: We help you find the perfect room for you.",
+                "li_2": "Total transparency: No surprises or fine print in your contract.",
+                "li_3": "Flexibility: Rental options adapted to your budget and length of stay.",
+                "li_4": "Continuous support: We resolve any issues during your stay."
+            },
+            "h2_7": "Valencia: The perfect city for students",
+            "ul_6": {
+                "li_1": "Mediterranean climate: Enjoy good weather all year round.",
+                "li_2": "Culture and leisure: Museums, beaches, parks, and unmatched gastronomy.",
+                "li_3": "Affordable cost of living: Perfect for students and young people.",
+                "li_4": "Well-connected: Excellent public transport to easily move around the city."
+            },
+            "p_12": "With our latest rooms for rent in Valencia, you can take full advantage of everything this city has to offer.",
+            "h2_8": "Book your room in Valencia now before they run out!",
+            "p_13": "The latest rooms for rent in Valencia are available for a limited time. If you want to secure your space in a modern and well-located shared apartment, don't wait any longer.",
+            "ul_7": {
+                "li_1": "Contact us and book your ideal room.",
+                "li_2": "Live in the best areas of Valencia.",
+                "li_3": "Enjoy a comfortable and hassle-free experience."
+            },
+            "strong": "Don't miss out! Your perfect room in Valencia is waiting for you."
+        }
     }
 }
