@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import React from "react";
 
-const LastRoomsTextSection = () => {
+const LastRoomsTextSection = () => { 
     const t = useTranslations("last_room_page.text_section");
     return (
         <div className="p-4 max-w-screen-lg mx-auto py-10">

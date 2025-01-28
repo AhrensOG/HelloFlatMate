@@ -7,23 +7,29 @@ import * as yup from "yup";
 import CountrySelect from "./CountrySelect";
 import { toast } from "sonner";
 import axios from "axios";
+import { useTranslations } from "next-intl";
 
-const validationSchema = yup.object({
-  name: yup.string().required("El nombre es requerido"),
-  lastName: yup.string().required("El apellido es requerido"),
-  country: yup.string().required("El país es requerido"),
-  reasonForValencia: yup.string().required("Selecciona una razón"),
-  preferences: yup.string().required("Indícanos tus preferencias"),
-  phone: yup.string().required("El teléfono es requerido"),
-  email: yup.string().required("El correo es requerido"),
-  birthDate: yup
-    .date()
-    .nullable()
-    .required("La fecha de nacimiento es requerida")
-    .max(new Date(), "La fecha de nacimiento no puede ser en el futuro"),
-});
+const validationSchema = (t) =>
+  yup.object({
+    name: yup.string().required(t("form.fields.name.error")),
+    lastName: yup.string().required(t("form.fields.lastName.error")),
+    country: yup.string().required(t("form.fields.country.error")),
+    reasonForValencia: yup
+      .string()
+      .required(t("form.fields.reasonForValencia.error")),
+    preferences: yup.string().required(t("form.fields.preferences.error")),
+    phone: yup.string().required(t("form.fields.phone.error")),
+    email: yup.string().required(t("form.fields.email.error")),
+    birthDate: yup
+      .date()
+      .nullable()
+      .required(t("form.fields.birthDate.error"))
+      .max(new Date(), t("form.fields.birthDate.errorMax")),
+  });
 
 const RequestForm = ({ toggleModal, data, filters }) => {
+  const t = useTranslations("request_section");
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -53,7 +59,7 @@ const RequestForm = ({ toggleModal, data, filters }) => {
           transition={{ delay: 0.2 }}
           className="text-xl font-semibold text-gray-800 mb-4"
         >
-          Envíanos tus datos
+          {t("btn")}
         </motion.h3>
 
         <Formik
@@ -70,34 +76,33 @@ const RequestForm = ({ toggleModal, data, filters }) => {
               ? new Date(data.birthDate).toISOString().split("T")[0]
               : "",
           }}
-          validationSchema={validationSchema}
+          validationSchema={validationSchema(t)}
           validate={(values) => {
             const errors = {};
             if (
               values.reasonForValencia === "Otro" &&
               !values.reasonForValenciaOther
             ) {
-              errors.reasonForValenciaOther = "Indícanos un poco más";
+              errors.reasonForValenciaOther = t(
+                "form.fields.reasonForValenciaOther.label"
+              );
             }
             return errors;
           }}
           onSubmit={async (values) => {
-            const toastId = toast.loading("Enviando datos...");
+            const toastId = toast.loading(t("form.notif.loading"));
             try {
               values.clientId = data.id;
               const allInfo = { ...values, ...filters };
               await axios.post("/api/user/searchRequest", allInfo);
-              toast.success("Datos enviados con éxito", {
+              toast.success(t("form.notif.success.title"), {
                 id: toastId,
-                description: "¡Estaremos en contacto!",
+                description: t("form.notif.success.description"),
               });
               toggleModal();
             } catch (error) {
               console.error(error);
-              toast.info(
-                "Hubo un error al enviar los datos. Por favor, inténtalo de nuevo.",
-                { id: toastId }
-              );
+              toast.info(t("form.notif.error"), { id: toastId });
             }
           }}
         >
@@ -110,11 +115,15 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                 className="flex flex-col justify-center items-start sm:flex-row gap-2 text-start"
               >
                 {[
-                  { label: "Nombre", name: "name", placeholder: "Tu nombre" },
                   {
-                    label: "Apellido",
+                    label: t("form.fields.name.label"),
+                    name: "name",
+                    placeholder: t("form.fields.name.placeholder"),
+                  },
+                  {
+                    label: t("form.fields.lastName.label"),
                     name: "lastName",
-                    placeholder: "Tu apellido",
+                    placeholder: t("form.fields.lastName.placeholder"),
                   },
                 ].map((field, index) => (
                   <motion.div
@@ -154,12 +163,12 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                   className="w-full"
                 >
                   <label className="text-start block text-xs text-gray-700 mb-0.5">
-                    Fecha de nacimiento
+                    {t("form.fields.birthDate.label")}
                   </label>
                   <Field
                     name="birthDate"
                     type="date"
-                    placeholder="Tu fecha de nacimiento"
+                    placeholder={t("form.fields.birthDate.placeholder")}
                     className="w-full border rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-300 outline-none"
                   />
                   <ErrorMessage
@@ -175,7 +184,7 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                   className="w-full"
                 >
                   <label className="text-start block text-xs text-gray-700 mb-0.5">
-                    Nacionalidad
+                    {t("form.fields.country.label")}
                   </label>
                   <Field name="country">
                     {({ field, form }) => (
@@ -202,7 +211,7 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                 className="text-start"
               >
                 <label className="text-start block text-xs text-gray-700 mb-0.5">
-                  ¿Por qué vienes a Valencia?
+                  {t("form.fields.reasonForValencia.label")}
                 </label>
                 <Field
                   as="select"
@@ -210,15 +219,15 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                   className="w-full border rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-300 outline-none appearance-none"
                 >
                   <option value="" disabled>
-                    Selecciona una opción
+                    {t("form.fields.reasonForValencia.placeholder")}
                   </option>
-                  <option value="Por estudios">Por estudios</option>
-                  <option value="Por trabajo">Por trabajo</option>
-                  <option value="Soy nómada digital">Soy nómada digital</option>
-                  <option value="Por turismo">Por turismo</option>
-                  <option value="Aprender el idioma">Aprender el idioma</option>
-                  <option value="A vivir">A vivir</option>
-                  <option value="Otro">Otro</option>
+                  {t
+                    .raw("form.fields.reasonForValencia.options")
+                    .map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
                 </Field>
                 <ErrorMessage
                   name="reasonForValencia"
@@ -228,7 +237,8 @@ const RequestForm = ({ toggleModal, data, filters }) => {
               </motion.div>
 
               <AnimatePresence>
-                {values.reasonForValencia === "Otro" && (
+                {values.reasonForValencia ===
+                  t("form.fields.reasonForValencia.options[6]") && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
@@ -237,12 +247,14 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                     className="mt-2 text-start"
                   >
                     <label className="text-start block text-xs text-gray-700 mb-0.5">
-                      Cuéntanos más
+                      {t("form.fields.reasonForValenciaOther.label")}
                     </label>
                     <Field
                       as="textarea"
                       name="reasonForValenciaOther"
-                      placeholder="Dinos más sobre tu visita"
+                      placeholder={t(
+                        "form.fields.reasonForValenciaOther.placeholder"
+                      )}
                       className="w-full border rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-300 outline-none h-12"
                     />
                     <ErrorMessage
@@ -261,12 +273,12 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                 className="text-start"
               >
                 <label className="text-start block text-xs text-gray-700 mb-0.5">
-                  Indícanos tus preferencias
+                  {t("form.fields.preferences.label")}
                 </label>
                 <Field
                   as="textarea"
                   name="preferences"
-                  placeholder="Cuéntanos lo que buscas"
+                  placeholder={t("form.fields.preferences.placeholder")}
                   className="w-full border rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-300 outline-none h-12"
                 />
                 <ErrorMessage
@@ -283,7 +295,7 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                 className="text-start"
               >
                 <label className="text-start block text-xs text-gray-700 mb-0.5">
-                  Teléfono
+                  {t("form.fields.phone.label")}
                 </label>
                 <PhoneInput
                   inputProps={{
@@ -323,11 +335,11 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                 transition={{ delay: 0.8, duration: 0.3 }}
               >
                 <label className="text-start block text-xs text-gray-700 mb-0.5">
-                  Correo electrónico
+                  {t("form.fields.email.label")}
                 </label>
                 <Field
                   name="email"
-                  placeholder="Tu correo electrónico"
+                  placeholder={t("form.fields.email.placeholder")}
                   className="w-full border rounded-md px-3 py-2 bg-gray-100 text-gray-600 cursor-auto"
                   disabled
                 />
@@ -339,7 +351,7 @@ const RequestForm = ({ toggleModal, data, filters }) => {
                 type="submit"
                 className="bg-[#5ce0e5] text-white text-lg font-bold py-2 px-10 rounded-lg hover:bg-[#5ce0e5] transition outline-none"
               >
-                Enviar
+                {t("form.submit")}
               </motion.button>
             </Form>
           )}

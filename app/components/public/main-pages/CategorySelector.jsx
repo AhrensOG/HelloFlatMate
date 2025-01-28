@@ -340,7 +340,7 @@ const CategorySelector = ({
                                 options={lastroomLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title={t("zone")}
+                                title={t("zone")} 
                                 name="zone"
                             />
                             <Select

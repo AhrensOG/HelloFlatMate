@@ -17,7 +17,7 @@ import LastRoomsTextSection from "@/app/components/public/main-pages/LastRoomsTe
 import { useTranslations } from "next-intl";
 import HTMLReactParser from "html-react-parser";
 
-export default function LastRoomsPage() {
+export default function LastRoomsPage() { 
     const t = useTranslations("last_room_page");
     const formatedStrong = (text) => {
         return text.replace(/\(strong\)/g, "<strong>").replace(/\(\/strong\)/g, "</strong>");

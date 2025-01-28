@@ -48,7 +48,7 @@ const SecondaryCategorySelector = ({
     helloLandlordProperties,
     allProperties,
 }) => {
-    const t = useTranslations("secondary_category_selector");
+    const t = useTranslations("secondary_category_selector"); 
     const router = useRouter();
     // const searchParams = useSearchParams();
     // const categoryQuery = searchParams.get("c");

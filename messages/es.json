@@ -391,7 +391,75 @@
     "request_section": {
         "title": "¿No encuentras lo que buscas?",
         "desc": "¡No te preocupes! Estamos aquí para ayudarte a encontrar el alojamiento perfecto para ti. Cuéntanos tus necesidades y lo haremos realidad.",
-        "btn": "Contáctanos"
+        "btn": "Contáctanos",
+        "form": {
+            "fields": {
+                "name": {
+                    "label": "Nombre",
+                    "placeholder": "Tu nombre",
+                    "error": "El nombre es requerido"
+                },
+                "lastName": {
+                    "label": "Apellido",
+                    "placeholder": "Tu apellido",
+                    "error": "El apellido es requerido"
+                },
+                "birthDate": {
+                    "label": "Fecha de nacimiento",
+                    "placeholder": "Tu fecha de nacimiento",
+                    "error": "La fecha de nacimiento es requerida",
+                    "errorMax": "La fecha de nacimiento no puede ser en el futuro"
+                },
+                "country": {
+                    "label": "Nacionalidad",
+                    "placeholder": "Selecciona tu país",
+                    "error": "El país es requerido"
+                },
+                "reasonForValencia": {
+                    "label": "¿Por qué vienes a Valencia?",
+                    "placeholder": "Selecciona una opción",
+                    "error": "Selecciona una razón",
+                    "options": [
+                        "Por estudios",
+                        "Por trabajo",
+                        "Soy nómada digital",
+                        "Por turismo",
+                        "Aprender el idioma",
+                        "A vivir",
+                        "Otro"
+                    ]
+                },
+                "reasonForValenciaOther": {
+                    "label": "Cuéntanos más",
+                    "placeholder": "Dinos más sobre tu visita",
+                    "error": "Indícanos un poco más"
+                },
+                "preferences": {
+                    "label": "Indícanos tus preferencias",
+                    "placeholder": "Cuéntanos lo que buscas",
+                    "error": "Indícanos tus preferencias"
+                },
+                "phone": {
+                    "label": "Teléfono",
+                    "placeholder": "Tu teléfono",
+                    "error": "El teléfono es requerido"
+                },
+                "email": {
+                    "label": "Correo electrónico",
+                    "placeholder": "Tu correo electrónico",
+                    "error": "El correo es requerido"
+                }
+            },
+            "submit": "Enviar",
+            "notif": {
+                "loading": "Enviando...",
+                "success": {
+                    "title": "Informacíon enviada correctamente",
+                    "description": "¡Estaremos en contacto!"
+                },
+                "error": "Ocurrió un error al enviar la información. Intenta nuevamente"
+            }
+        }
     },
     "cookies": {
         "title": "Política de Cookies",
@@ -758,7 +826,7 @@
             }
         }
     },
-    "last_room_page": {
+    "last_room_page": { 
         "h1": "Últimas habitaciones en alquiler en Valencia para estudiantes",
         "p_1": " ¿Buscas una habitación en Valencia? Descubre las (strong)últimas habitaciones en alquiler en Valencia(/strong) con (strong)helloflatmate(/strong). Habitaciones modernas, totalmente equipadas y en (strong)pisos compartidos(/strong) bien ubicados, ideales para estudiantes y jóvenes profesionales. <br /> <br /> No dejes pasar esta oportunidad: ¡reserva tu habitación antes de que se agoten!",
         "span_1": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",
