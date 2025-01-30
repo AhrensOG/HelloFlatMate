@@ -96,6 +96,7 @@ export default function UpdateUserModal({ onClose, user }) {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    disabled={true}
                                     placeholder="Ingrese el correo electrónico"
                                     className="border p-2 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 />
