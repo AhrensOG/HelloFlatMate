@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import NewAdminPanel from "./NewAdminPanel";
 import SkeletonLoader from "./SkeletonLoader";
+import { addLeaseOrderToPayments } from "./utils/addLeaseOrderToPayments";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -28,14 +29,18 @@ const FetchDataComponent = async () => {
                 id: property.id,
             };
         });
+        const paymentsFetch = await axios.get(`${BASE_URL}/api/admin/payments`);
+        const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(usersFetch.data, loFetch.data)
 
         data = {
+            allLeaseOrders: loFetch.data,
             leaseOrders: filteredOrders,
             leaseOrdersApproved: loFetch.data?.filter((lo) => lo.status === "PENDING" || lo.status === "APPROVED"),
-            allUsers: usersFetch.data,
+            allUsers: usersWithLeaseOrderDataInPayment,
             clients: clientsFetch.data,
             properties: propertiesFetch.data,
             optionSerials,
+            payments: paymentsFetch.data
         };
     } catch (err) {
         console.error("Error en SSR:", err);

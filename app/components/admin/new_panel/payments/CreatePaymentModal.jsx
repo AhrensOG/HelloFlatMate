@@ -21,9 +21,11 @@ const TYPE_LABELS = {
 const CreatePaymentModal = ({ users, onClose }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
 
   const handleUserSearch = (e) => {
     const query = e.target.value.toLowerCase();
+    setSearchValue(query);
     if (!query) return setFilteredUsers([]);
     setFilteredUsers(
       users.filter(
@@ -36,6 +38,7 @@ const CreatePaymentModal = ({ users, onClose }) => {
 
   const handleUserSelect = (user, setFieldValue) => {
     setSelectedUser(user);
+    setSearchValue(`${user.name} - ${user.email}`);
     setFieldValue("userId", user.id);
     setFilteredUsers([]);
   };
@@ -92,6 +95,7 @@ const CreatePaymentModal = ({ users, onClose }) => {
                 <input
                   type="text"
                   placeholder="Buscar usuario por nombre o email"
+                  value={searchValue}
                   onChange={handleUserSearch}
                   className="outline-none border p-2 w-full"
                 />

@@ -10,10 +10,11 @@ import SkeletonLoader from "../SkeletonLoader";
 import UpdateUserModal from "./UpdateUserModal";
 import OrdersModal from "./OrdersModal";
 import PaysModal from "./PaysModal";
+import { addLeaseOrderToPayments } from "../utils/addLeaseOrderToPayments";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function UsersPanel({ allUsers = [], properties = [], orders = [] }) {
+export default function UsersPanel({ allUsers = [], properties = [], orders = [], allLeaseOrders = [] }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -23,7 +24,7 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     const [isPaysModal, setIsPaysModal] = useState(false);
     const [pays, setPays] = useState(null);
     const [ordersUser, setOrdersUser] = useState(null);
-
+    console.log(allUsers)
     // Usar SWR para obtener las órdenes
     const {
         data: swrData,
@@ -31,10 +32,10 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
         mutate,
     } = useSWR("/api/admin/user", fetcher, {
         fallbackData: allUsers,
-        refreshInterval: 60000,
+        refreshInterval: 120000,
     });
-
-    const users = [...swrData.clients, ...swrData.admins, ...swrData.owners, ...swrData.workers];
+    const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(swrData, allLeaseOrders)
+    const users = [...usersWithLeaseOrderDataInPayment.clients, ...usersWithLeaseOrderDataInPayment.admins, ...usersWithLeaseOrderDataInPayment.owners, ...usersWithLeaseOrderDataInPayment.workers];
     // Filtrar ó rdenes
     const filteredUsers = (users || []).filter((user) => {
         const clientName = user.name || "";
@@ -97,8 +98,6 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     };
 
     const handleOpenModalPays = (user) => {
-        console.log(user);
-
         setPays([...user.rentPayments, ...user.supplies]);
         setIsPaysModal(true);
     };

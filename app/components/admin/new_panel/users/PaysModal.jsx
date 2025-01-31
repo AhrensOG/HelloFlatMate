@@ -43,7 +43,6 @@ export default function PaysModal({ data, onClose }) {
     // En el efecto useEffect
     useEffect(() => {
         const sortedData = groupPaysByLeaseOrder(sortPays(data));
-        console.log(sortedData); // Verifica la estructura aquí
         setPays(sortedData);
 
         // Inicializar grupos expandidos

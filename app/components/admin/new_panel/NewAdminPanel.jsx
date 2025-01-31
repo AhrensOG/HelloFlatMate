@@ -5,13 +5,13 @@ import AdminSideBar from "./sidebar/AdminSideBar";
 import PreReservationsPanel from "./pre_reservations/PreReservationsPanel";
 import ReservationPanel from "./reservation/ReservationPanel";
 import UsersPanel from "./users/UsersPanel";
+import PaymentsPanel from "./payments/PaymentsPanel";
 
 const NewAdminPanel = ({ data }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const section = searchParams.get("section") || "propiedades";
 
-    // Función para renderizar la sección según la URL
     const renderSection = () => {
         switch (section) {
             case "pre-reservas":
@@ -24,6 +24,14 @@ const NewAdminPanel = ({ data }) => {
                         allUsers={data.allUsers}
                         properties={data.optionSerials}
                         orders={[...data.leaseOrdersApproved, ...data.leaseOrders]}
+                        allLeaseOrders={data.allLeaseOrders}
+                    />
+                );
+            case "cobros":
+                return (
+                    <PaymentsPanel
+                        payments={data.payments}
+                        users={data.allUsers?.clients || []}
                     />
                 );
             default:
