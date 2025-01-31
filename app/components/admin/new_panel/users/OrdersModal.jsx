@@ -168,7 +168,7 @@ export default function OrdersModal({ data, onClose }) {
                       {lo.isActive ? "Si" : "No"}
                     </td>
                     <td className="border p-2 text-gray-700 text-center">
-                      {lo.signed ? "Si" : "No"}
+                      {lo.isSigned ? "Si" : "No"}
                     </td>
                     <td className="border p-2 text-gray-700 text-center">
                       {lo.inReview ? "Si" : "No"}

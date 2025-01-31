@@ -32,6 +32,9 @@ const PaymentsTable = ({ payments }) => {
         <thead className="sticky top-0 bg-white">
           <tr>
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
+              Usuario
+            </th>
+            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Room
             </th>
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
@@ -50,7 +53,7 @@ const PaymentsTable = ({ payments }) => {
               Descripción
             </th>
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
-              Nombre
+              Acciones
             </th>
           </tr>
         </thead>
@@ -60,6 +63,9 @@ const PaymentsTable = ({ payments }) => {
               key={`${payment.id}${payment.type}`}
               className="hover:bg-gray-100 even:bg-gray-50 transition-cursor cursor-pointer"
             >
+              <td className="border p-2 text-gray-700 text-center">
+                {payment.user?.name + payment.user?.lastName || "-"}
+              </td>
               <td className="border p-2 text-gray-700 text-center">
                 {payment.leaseOrderInfo?.room || "-"}
               </td>
@@ -82,10 +88,18 @@ const PaymentsTable = ({ payments }) => {
                 {TYPE_LABELS[payment.type] || "-"}
               </td>
               <td className="border p-2 text-gray-700 text-center">
-                {payment.description || "-"}
+                {payment.description || payment.name || "-"}
               </td>
               <td className="border p-2 text-gray-700 text-center">
-                {payment.name || "-"}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // handleOpenModalEdit(user);
+                  }}
+                  className="bg-green-500 text-white px-2 py-1 rounded w-full h-full"
+                >
+                  Editar
+                </button>
               </td>
             </tr>
           ))}
