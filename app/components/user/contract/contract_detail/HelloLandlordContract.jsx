@@ -34,22 +34,23 @@ export default function HelloLandlordContract({
           <strong>CONTRATO DE ARRENDAMIENTO DE ALOJAMIENTO</strong>
         </p>
         <p className="mb-4 text-sm font-light">
-          En la ciudad de Valencia, a {contractDate || "… de ……. de 202….."}
+          En la ciudad de Valencia, a{" "}
+          <span className="font-semibold">{contractDate}</span>
         </p>
         <h2 className="text-base font-bold mb-2">REUNIDOS</h2>
         <p className="mb-4 text-sm font-light">
-          De una parte, <strong>D./Dª {landlordName || "………………………"}</strong>,
+          De una parte, <span className="font-semibold">D./Dª {landlordName || "………………………"}</span>,
           como parte ARRENDADORA, siendo mayor de edad, con NIF{" "}
           {landlordNIF || "………………………………………"}, propietario/a en pleno dominio del
           inmueble sito en Valencia:
         </p>
         <p className="mb-4 text-sm font-light">
-          <strong>
+          <span className="font-semibold">
             C/ {landlordStreet || "……………………………"} nº{" "}
             {landlordStreetNumber || "…….."} - PUERTA{" "}
             {landlordDoorNumber || "……….ª"}, Valencia{" "}
             {landlordPostalCode || "46…………..."}.
-          </strong>
+          </span>
         </p>
         <p className="mb-4 text-sm font-light">
           Dicho inmueble se halla amueblado y consta de {numberOfRooms || "….."}{" "}
@@ -61,13 +62,13 @@ export default function HelloLandlordContract({
           mandato expreso, únicamente la formalización de este contrato.
         </p>
         <p className="mb-4 text-sm font-light">
-          De otra parte, <strong>D./Dª {tenantName || "……………………………"}</strong>,
+          De otra parte, <span className="font-semibold">D./Dª {tenantName || "……………………………"}</span>,
           mayor de edad, con D.N.I o pasaporte {tenantID || "……………"}, nº de
           teléfono +{tenantPhone || "+……………………"}, email{" "}
           {tenantEmail || "………………………"}, y con domicilio en{" "}
           {tenantAddress || "………………………"}, C/ {tenantStreet || "……………………………………"}{" "}
           actuando como parte ARRENDATARIA, está interesado en arrendar la
-          habitación n.º <strong>{roomNumber || "R……"}</strong> del mencionado
+          habitación n.º <span className="font-semibold">{roomNumber || "R……"}</span> del mencionado
           inmueble.
         </p>
         <h2 className="text-base font-bold mb-2">INTERVIENEN</h2>
@@ -78,9 +79,9 @@ export default function HelloLandlordContract({
           en el arrendamiento de la habitación indicada en el Expositivo
           anterior, y la ARRENDADORA en concedérselo, han convenido la
           celebración del presente{" "}
-          <strong>
+          <span className="font-semibold">
             CONTRATO DE ARRENDAMIENTO DE HABITACIÓN EN VIVIENDA COMPARTIDA
-          </strong>
+          </span>
           , el cual se formaliza con sujeción al régimen jurídico establecido en
           la Ley de Arrendamientos Urbanos de 24 de noviembre de 1.994, así como
           el recogido en el Código Civil, el cual llevan a cabo por medio del
@@ -113,8 +114,8 @@ export default function HelloLandlordContract({
         </h3>
         <p className="mb-4 text-sm font-light">
           El presente contrato se acuerda que se extenderá por el período
-          comprendido del <strong>{startDate || "…/…/202…"}</strong> al{" "}
-          <strong>{endDate || "…/…/202…"}</strong>. Transcurrido dicho período,
+          comprendido del <span className="font-semibold">{startDate || "…/…/202…"}</span> al{" "}
+          <span className="font-semibold">{endDate || "…/…/202…"}</span>. Transcurrido dicho período,
           el contrato quedará resuelto sin necesidad de requerimiento alguno y
           se dejará libre la habitación a las 9 a.m. La expiración del tiempo
           pactado para el presente contrato de arrendamiento producirá la
@@ -123,21 +124,21 @@ export default function HelloLandlordContract({
           fecha y a disposición del ARRENDADOR, y en las mismas condiciones
           existentes en el momento de la ocupación. Para el caso de que el
           ARRENDATARIO estuviera interesado en añadir una noche extra a su
-          estancia, ésta tendrá un coste de <strong>35 €</strong>, y siempre
+          estancia, ésta tendrá un coste de <span className="font-semibold">35 €</span>, y siempre
           estará condicionada a la disponibilidad de la habitación y a la
           autorización del ARRENDADOR.
         </p>
         <h3 className="text-sm font-bold mb-2">CUARTA. - RENTA.</h3>
         <p className="mb-4 text-sm font-light">
           El arrendatario abonará al arrendador, en concepto de renta, la
-          cantidad de <strong>{monthlyRent || "…….."} €</strong> mensuales,
+          cantidad de <span className="font-semibold">{monthlyRent || "…….."} €</span> mensuales,
           siempre por adelantado y dentro del período comprendido entre los días
           20 y 25 de cada mes. En dicho precio no se incluyen los gastos
           relativos a los suministros de agua, luz e internet. Dicha renta se
           abonará mediante transferencia bancaria o ingreso en la siguiente
           cuenta de EL ARRENDADOR, indicando en el concepto el nombre del
           inquilino: IBAN Arrendador:{" "}
-          <strong>{landlordIBAN || "ES…………………………………………"}</strong> El
+          <span className="font-semibold">{landlordIBAN || "ES…………………………………………"}</span> El
           incumplimiento reiterado de la obligación de pago o notificación del
           justificante del pago en el periodo fijado será motivo de resolución
           del contrato, dando derecho al arrendador a solicitar el desahucio,
@@ -152,7 +153,7 @@ export default function HelloLandlordContract({
         </p>
         <p className="mb-4 text-sm font-light">
           El ARRENDATARIO estará obligado a abonar junto a la renta del último
-          mes de contrato, <strong>50 €</strong> para la limpieza profunda de la
+          mes de contrato, <span className="font-semibold">50 €</span> para la limpieza profunda de la
           vivienda. No obstante, el ARRENDATARIO deberá dejar la habitación, así
           como las zonas comunes totalmente limpias y sin enseres personales. En
           ese sentido, el ARRENDATARIO se responsabiliza solidariamente junto a
@@ -169,8 +170,8 @@ export default function HelloLandlordContract({
           siguientes cantidades:
         </p>
         <p className="mb-4 text-sm font-light">
-          • Un depósito de <strong>TRESCIENTOS EUROS (300 €)</strong> en
-          concepto de <strong>FIANZA</strong>. Este importe será devuelto entre
+          • Un depósito de <span className="font-semibold">TRESCIENTOS EUROS (300 €)</span> en
+          concepto de <span className="font-semibold">FIANZA</span>. Este importe será devuelto entre
           30 y 45 días tras la finalización del contrato, por parte del
           ARRENDADOR al ARRENDATARIO, mediante transferencia bancaria y una vez
           revisado que la vivienda se encuentra en perfecto estado y se hayan
@@ -189,7 +190,7 @@ export default function HelloLandlordContract({
           cantidad a devolver del antes mencionado depósito.
         </p>
         <p className="mb-4 text-sm font-light">
-          • La cantidad de <strong>DOSCIENTOS EUROS (200 €)</strong> en concepto
+          • La cantidad de <span className="font-semibold">DOSCIENTOS EUROS (200 €)</span> en concepto
           de suministros de agua y luz por cada período de CINCO MESES de
           contrato. Una vez transcurrido dicho periodo, se calculará el importe
           exacto a abonar por parte del ARRENDATARIO en concepto de suministros,
@@ -202,7 +203,7 @@ export default function HelloLandlordContract({
           ARRENDATARIO por parte del ARRENDADOR.
         </p>
         <p className="mb-4 text-sm font-light">
-          • La cantidad de <strong>OCHENTA EUROS (80 €)</strong> en concepto de
+          • La cantidad de <span className="font-semibold">OCHENTA EUROS (80 €)</span> en concepto de
           TARIFA PLANA de internet por los primeros cinco meses de contrato.
           Para los contratos de 10 meses, a final de enero, junto a la renta de
           febrero, se hará otra aportación para los siguientes 5 meses de
@@ -355,10 +356,10 @@ export default function HelloLandlordContract({
         </h3>
         <p className="mb-4 text-sm font-light">
           El presente contrato de arrendamiento{" "}
-          <strong>
+          <span className="font-semibold">
             únicamente entrará en vigor y será válido cuando se cumplan de
             manera simultánea las siguientes condiciones:
-          </strong>
+          </span>
         </p>
         <p className="mb-4 text-sm font-light">
           Además, el ARRENDADOR podrá resolver de pleno derecho el contrato por
@@ -373,23 +374,23 @@ export default function HelloLandlordContract({
           <li className="mb-2">
             2) El contrato haya sido firmado electrónicamente por ambas partes a
             través de la plataforma habilitada por{" "}
-            <strong>Helloflatmate</strong>.
+            <span className="font-semibold">Helloflatmate</span>.
           </li>
           <li className="mb-2">
             3) El ARRENDATARIO cumpla con los requisitos de perfil establecidos
             por el ARRENDADOR,{" "}
-            <strong>
+            <span className="font-semibold">
               específicamente ser estudiante menor de 30 años de edad
-            </strong>
+            </span>
             .
           </li>
         </ul>
         <p className="mb-4 text-sm font-light">
-          <strong>
+          <span className="font-semibold">
             En caso de que el ARRENDATARIO no cumpla con alguno de estos
             requisitos, el contrato será considerado nulo, sin generar derechos
             ni obligaciones entre las partes.
-          </strong>
+          </span>
         </p>
 
         <h3 className="text-sm font-bold mb-2">
@@ -626,7 +627,7 @@ export default function HelloLandlordContract({
               onChange={(e) => setIsChecked(e.target.checked)}
               className="form-checkbox"
             />
-            <span>
+            <span className="font-semibold">
               Habiendo leído el contrato acepto los términos y condiciones
             </span>
           </label>
