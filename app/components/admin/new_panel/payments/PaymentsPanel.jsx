@@ -3,11 +3,15 @@ import PaymentsTable from "./PaymentsTable";
 import CreatePaymentModal from "./CreatePaymentModal";
 import useSWR from "swr";
 import axios from "axios";
+import EditPaymentModal from "./EditPaymentModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const PaymentsPanel = ({ payments, users }) => {
   const [showCreatePaymentModal, setShowCreatePaymentModal] = useState(false);
+  const [showEditPaymentModal, setShowEditPaymentModal] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const {
@@ -16,7 +20,7 @@ const PaymentsPanel = ({ payments, users }) => {
     mutate,
   } = useSWR("/api/admin/payments", fetcher, {
     fallbackData: payments,
-    refreshInterval: 60000,
+    refreshInterval: 180000,
   });
 
   const filteredPayments = (swrData || []).filter((payment) => {
@@ -33,6 +37,16 @@ const PaymentsPanel = ({ payments, users }) => {
     );
   });
 
+  const closeEditPayment = () => {
+    setSelectedPayment(null);
+    setShowEditPaymentModal(false);
+  };
+
+  const openEditPayment = (payment) => {
+    setSelectedPayment(payment);
+    setShowEditPaymentModal(true);
+  };
+
   return (
     <div className="h-screen flex flex-col p-4 gap-4">
       <div className="space-y-6">
@@ -42,7 +56,7 @@ const PaymentsPanel = ({ payments, users }) => {
             type="text"
             placeholder="Buscar por nombre, apellido, email o rol..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Actualiza el estado de búsqueda
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="border rounded px-3 py-2 w-96"
           />
 
@@ -55,10 +69,19 @@ const PaymentsPanel = ({ payments, users }) => {
         </div>
       </div>
 
-      <PaymentsTable payments={filteredPayments} />
+      <PaymentsTable
+        payments={filteredPayments}
+        openEditPayment={openEditPayment}
+      />
 
       {showCreatePaymentModal && (
         <CreatePaymentModal users={users} onClose={setShowCreatePaymentModal} />
+      )}
+      {showEditPaymentModal && (
+        <EditPaymentModal
+          payment={selectedPayment}
+          onClose={closeEditPayment}
+        />
       )}
     </div>
   );

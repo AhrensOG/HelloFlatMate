@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useFormik, Formik, Field, Form } from "formik";
+import React from "react";
+import { Formik, Field, Form } from "formik";
 import { toast } from "sonner";
 import axios from "axios";
 
@@ -14,31 +14,7 @@ const TYPE_LABELS = {
   RESERVATION: "Reserva",
 };
 
-const CreatePaymentModal = ({ users, onClose }) => {
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
-
-  const handleUserSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchValue(query);
-    if (!query) return setFilteredUsers([]);
-    setFilteredUsers(
-      users.filter(
-        (user) =>
-          user.name.toLowerCase().includes(query) ||
-          user.email.toLowerCase().includes(query)
-      )
-    );
-  };
-
-  const handleUserSelect = (user, setFieldValue) => {
-    setSelectedUser(user);
-    setSearchValue(`${user.name} - ${user.email}`);
-    setFieldValue("userId", user.id);
-    setFilteredUsers([]);
-  };
-
+const EditPaymentModal = ({ payment, onClose }) => {
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
@@ -54,89 +30,74 @@ const CreatePaymentModal = ({ users, onClose }) => {
         >
           X
         </button>
-        <h2 className="text-lg font-semibold pb-2">Crear Pago</h2>
+        <h2 className="text-lg font-semibold pb-2">Editar Pago</h2>
         <Formik
           initialValues={{
-            userId: "",
-            leaseOrderId: "",
-            type: "",
-            name: "",
-            status: "",
-            date: "",
-            amount: "",
-            quotaNumber: "",
-            description: "",
-            paymentId: "",
+            id: payment.id,
+            userId: `${payment?.user?.name} - ${payment?.user?.email}` || "",
+            leaseOrderId: payment?.leaseOrderInfo?.room || "",
+            type: payment?.type || "",
+            name: payment?.name || "",
+            status: payment?.status || "",
+            date: payment?.date ? payment.date.split("T")[0] : "",
+            amount: payment?.amount || "",
+            quotaNumber: payment?.quotaNumber || "",
+            description: payment?.description || "",
+            paymentId: payment?.paymentId || "",
           }}
           onSubmit={async (values) => {
-            const toastId = toast.loading("Creando cobro...");
+            const toastId = toast.loading("Actualizando cobro...");
             try {
               if (values.type === "RESERVATION" || values.type === "MONTHLY") {
-                await axios.post("/api/admin/payments/rentPayments", values);
+                await axios.put("/api/admin/payments/rentPayments", values);
               } else {
-                await axios.post("/api/admin/payments/supplyPayments", values);
+                await axios.put("/api/admin/payments/supplyPayments", values);
               }
-              toast.success("Cobro asignado correctamente", { id: toastId });
+              toast.success("Cobro actualizado correctamente", { id: toastId });
             } catch (error) {
-              toast.info("Ocurrio un error creando el cobro", {
-                description: "Intenta nuevamente o contacta con el soporte",
+              toast.info("Error al actualizar el cobro", {
+                description: "Intenta nuevamente o contacta con soporte",
                 id: toastId,
               });
             }
           }}
         >
-          {({ setFieldValue, values }) => (
+          {({ values }) => (
             <Form className="space-y-4">
-              <div className="w-full relative flex flex-col justify-center items-start">
-                <label className="text-xs font-light">Usuario</label>
-                <input
-                  type="text"
-                  placeholder="Buscar usuario por nombre o email"
-                  value={searchValue}
-                  onChange={handleUserSearch}
-                  className="outline-none border p-2 w-full"
-                />
-                {filteredUsers.length > 0 && (
-                  <ul className="outline-none border p-2 top-10 absolute max-h-64 w-full bg-white overflow-y-scroll">
-                    {filteredUsers.map((user) => (
-                      <li
-                        key={user.id}
-                        className="cursor-pointer p-1 hover:bg-gray-100"
-                        onClick={() => handleUserSelect(user, setFieldValue)}
-                      >
-                        {user.name} - {user.email}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              {selectedUser && (
-                <div>
-                  <label className="text-xs font-light">Orden - room</label>
-                  <Field
-                    as="select"
-                    name="leaseOrderId"
-                    className="outline-none border p-2 w-full"
-                  >
-                    <option value="">
-                      Seleccionar orden de alquiler (room)
-                    </option>
-                    {selectedUser.leaseOrdersRoom.map((order) => (
-                      <option key={order.id} value={order.id}>
-                        {order.room?.serial}
-                      </option>
-                    ))}
-                  </Field>
-                </div>
-              )}
               <div>
-                <label className="text-xs font-light">Tipo de cobro</label>
+                <label className="text-xs font-light">
+                  Usuario
+                </label>
+                <Field
+                  type="text"
+                  name="userId"
+                  placeholder="ID de Usuario"
+                  className="outline-none border p-2 w-full"
+                  disabled
+                />
+              </div>
+              <div>
+                <label className="text-xs font-light">
+                  Orden - Room
+                </label>
+                <Field
+                  type="text"
+                  name="leaseOrderId"
+                  className="outline-none border p-2 w-full"
+                  disabled
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-light">
+                  Tipo de cobro
+                </label>
                 <Field
                   as="select"
                   name="type"
                   className="outline-none border p-2 w-full"
                 >
-                  <option value="">Seleccionar Tipo de cobro</option>
+                  <option value="">Seleccionar tipo de cobro</option>
                   {Object.entries(TYPE_LABELS).map(([key, value]) => (
                     <option key={key} value={key}>
                       {value}
@@ -144,9 +105,12 @@ const CreatePaymentModal = ({ users, onClose }) => {
                   ))}
                 </Field>
               </div>
+
               {values.type !== "RESERVATION" && values.type !== "MONTHLY" ? (
                 <div>
-                  <label className="text-xs font-light">Estado</label>
+                  <label className="text-xs font-light">
+                    Estado
+                  </label>
                   <Field
                     as="select"
                     name="status"
@@ -159,7 +123,9 @@ const CreatePaymentModal = ({ users, onClose }) => {
                 </div>
               ) : (
                 <div>
-                  <label className="text-xs font-light">Estado</label>
+                  <label className="text-xs font-light">
+                    Estado
+                  </label>
                   <Field
                     as="select"
                     name="status"
@@ -171,16 +137,22 @@ const CreatePaymentModal = ({ users, onClose }) => {
                   </Field>
                 </div>
               )}
+
               <div>
-                <label className="text-xs font-light">Fecha</label>
+                <label className="text-xs font-light">
+                  Fecha
+                </label>
                 <Field
                   type="date"
                   name="date"
                   className="outline-none border p-2 w-full"
                 />
               </div>
+
               <div>
-                <label className="text-xs font-light">Importe</label>
+                <label className="text-xs font-light">
+                  Importe
+                </label>
                 <Field
                   type="number"
                   name="amount"
@@ -188,6 +160,7 @@ const CreatePaymentModal = ({ users, onClose }) => {
                   className="outline-none border p-2 w-full"
                 />
               </div>
+
               {values.type === "RESERVATION" || values.type === "MONTHLY" ? (
                 <>
                   <div>
@@ -201,8 +174,11 @@ const CreatePaymentModal = ({ users, onClose }) => {
                       className="outline-none border p-2 w-full"
                     />
                   </div>
+
                   <div>
-                    <label className="text-xs font-light">Descripción</label>
+                    <label className="text-xs font-light">
+                      Descripción
+                    </label>
                     <Field
                       type="text"
                       name="description"
@@ -213,7 +189,9 @@ const CreatePaymentModal = ({ users, onClose }) => {
                 </>
               ) : (
                 <div>
-                  <label className="text-xs font-light">Título</label>
+                  <label className="text-xs font-light">
+                    Título
+                  </label>
                   <Field
                     type="text"
                     name="name"
@@ -222,8 +200,11 @@ const CreatePaymentModal = ({ users, onClose }) => {
                   />
                 </div>
               )}
+
               <div>
-                <label className="text-xs font-light">ID de cobro</label>
+                <label className="text-xs font-light">
+                  ID de cobro
+                </label>
                 <Field
                   type="text"
                   name="paymentId"
@@ -231,11 +212,12 @@ const CreatePaymentModal = ({ users, onClose }) => {
                   className="outline-none border p-2 w-full"
                 />
               </div>
+
               <button
                 type="submit"
                 className="bg-blue-500 text-white p-2 w-full"
               >
-                Crear Pago
+                Actualizar Pago
               </button>
             </Form>
           )}
@@ -245,4 +227,4 @@ const CreatePaymentModal = ({ users, onClose }) => {
   );
 };
 
-export default CreatePaymentModal;
+export default EditPaymentModal;

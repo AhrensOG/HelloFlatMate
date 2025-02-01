@@ -2,10 +2,6 @@ import React from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 
 const TYPE_LABELS = {
-  WATER: "Agua",
-  GAS: "Gas",
-  ELECTRICITY: "Electricidad",
-  EXPENSES: "Expensas",
   INTERNET: "WIFI",
   AGENCY_FEES: "Tasa de la agencia",
   CLEANUP: "Limpieza check-out",
@@ -25,7 +21,7 @@ const STATUS = {
   REJECTED: "Rechazado",
 };
 
-const PaymentsTable = ({ payments }) => {
+const PaymentsTable = ({ payments, openEditPayment }) => {
   return (
     <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
       <table className="min-w-full border-collapse">
@@ -94,7 +90,7 @@ const PaymentsTable = ({ payments }) => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    // handleOpenModalEdit(user);
+                    openEditPayment(payment);
                   }}
                   className="bg-green-500 text-white px-2 py-1 rounded w-full h-full"
                 >
