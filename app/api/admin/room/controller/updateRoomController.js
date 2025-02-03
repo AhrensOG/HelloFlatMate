@@ -10,8 +10,7 @@ export async function updateRoom(id, data) {
         const isBaseComplete =
             roomData.name && roomData.name.trim() !== '' &&
             roomData.numberBeds && roomData.numberBeds > 0 &&
-            roomData.images && roomData.images.length > 0 &&
-            roomData.typology && roomData.zone !== undefined;
+            roomData.images && roomData.images.length > 0
 
         // Validar campos relacionados con el precio según la categoría
         if (roomData.category === "HELLO_ROOM" || roomData.category === "HELLO_COLIVING") {
@@ -73,7 +72,7 @@ export async function updateRoom(id, data) {
                 }
             
                 // Actualizar la habitación
-                await room.update({ ...data[i], isActive: isComplete });
+                await room.update({ ...data[i]});
             } catch (error) {
                 return NextResponse.json({ error: "Error al actualizar la habitación" }, { status: 500 });
             }
@@ -128,7 +127,7 @@ export async function updateRoom(id, data) {
         }
 
         // Actualizar la habitación y definir isActive según la validación
-        await room.update({ ...data, isActive: isComplete });
+        await room.update({ ...data});
         return NextResponse.json(room, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al actualizar la habitación" }, { status: 500 });
