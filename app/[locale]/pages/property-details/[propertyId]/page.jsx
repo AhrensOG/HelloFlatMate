@@ -85,6 +85,7 @@ export default function PropertyDetails({ params }) {
                         <span className="font-light text-slate-400">({data.serial})</span>
                         <h4 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h4>
                     </div>
+                    <RoomSection data={data.rooms} category={data.category} />
                     {/* {data.price && data.category === "HELLO_STUDIO" ? <PriceSection data={data.price} /> : null} */}
                     <div className="flex flex-col gap-6">
                         {/* <GuestInfo
@@ -132,7 +133,6 @@ export default function PropertyDetails({ params }) {
                             { title: "Otros servicios", body: data.checkOut },
                         ]}
                     />
-                    <RoomSection data={data.rooms} category={data.category} />
 
                     {showModal && (
                         <ReservationModal
@@ -165,7 +165,7 @@ export default function PropertyDetails({ params }) {
                 </header>
                 <main className={`  flex flex-row gap-10 grow p-5 text-[#0D171C] w-full max-w-screen-2xl px-3`}>
                     {/* LEFT SIDE */}
-                    <div className="w-full flex flex-col gap-2">
+                    <div className="w-full flex flex-col gap-2 max-w-[50%]">
                         <div className="w-full">
                             {data.images?.length > 0 ? (
                                 <SliderDetails>
@@ -177,6 +177,7 @@ export default function PropertyDetails({ params }) {
                                 <div className="h-[30rem] w-full bg-gray-200 animate-pulse" />
                             )}
                         </div>
+                        <RoomSection data={data.rooms} category={data.category} />
                         {data.linkVideo ? <VideoEmbedSection videoUrl={data.linkVideo} /> : ""}
                         <LocationSection
                             street={data?.street}
@@ -185,13 +186,12 @@ export default function PropertyDetails({ params }) {
                             city={data?.city}
                             country={"España"}
                         />
-                        <RoomSection data={data.rooms} category={data.category} />
                     </div>
 
                     <div className="border" />
 
                     {/* RIGHT SIDE */}
-                    <div className="w-full space-y-4">
+                    <div className="w-full space-y-4 max-w-[50%]">
                         <h1 className="font-bold text-[1.37rem]">{data.name}</h1>
                         <span className="font-light text-slate-400">({data.serial})</span>
                         <h4 className="text-[#000000B2] text-base">{data.city + ", " + data.street}</h4>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ModalRomInfo from "./ModalRomInfo";
 import { CurrencyEuroIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function RoomInfo({ data, action, category }) {
   const router = useRouter();
@@ -11,14 +12,9 @@ export default function RoomInfo({ data, action, category }) {
     );
   };
   return (
-    <article
-      onClick={
-        category === "HELLO_ROOM" ||
-        category === "HELLO_COLIVING" ||
-        category === "HELLO_LANDLORD"
-          ? handleRedirect
-          : () => action(data)
-      }
+    <Link
+      href={`/pages/property-details/${data.propertyId}/room-details/${data.id}`}
+      target="_blank"
       className={`cursor-pointer flex flex-col gap-2 w-48 items-center justify-between relative`}
     >
       <div className="relative h-32 rounded-sm w-48">
@@ -90,6 +86,6 @@ export default function RoomInfo({ data, action, category }) {
           </div>
         ) : null} */}
       </div>
-    </article>
+    </Link>
   );
 }
