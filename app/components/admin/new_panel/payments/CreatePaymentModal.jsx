@@ -97,7 +97,7 @@ const CreatePaymentModal = ({ users, onClose }) => {
                   className="outline-none border p-2 w-full"
                 />
                 {filteredUsers.length > 0 && (
-                  <ul className="outline-none border p-2 top-10 absolute max-h-64 w-full bg-white overflow-y-scroll">
+                  <ul className="outline-none border p-2 top-14 absolute max-h-64 w-full bg-white overflow-y-scroll">
                     {filteredUsers.map((user) => (
                       <li
                         key={user.id}

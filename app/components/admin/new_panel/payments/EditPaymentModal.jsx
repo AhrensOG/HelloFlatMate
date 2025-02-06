@@ -14,7 +14,7 @@ const TYPE_LABELS = {
   RESERVATION: "Reserva",
 };
 
-const EditPaymentModal = ({ payment, onClose }) => {
+const EditPaymentModal = ({ payment, onClose, mutate }) => {
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
@@ -53,6 +53,7 @@ const EditPaymentModal = ({ payment, onClose }) => {
               } else {
                 await axios.put("/api/admin/payments/supplyPayments", values);
               }
+              await mutate()
               toast.success("Cobro actualizado correctamente", { id: toastId });
             } catch (error) {
               toast.info("Error al actualizar el cobro", {

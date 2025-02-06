@@ -1,5 +1,6 @@
 import React from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
+import { toast } from "sonner";
 
 const TYPE_LABELS = {
   INTERNET: "WIFI",
@@ -21,7 +22,7 @@ const STATUS = {
   REJECTED: "Rechazado",
 };
 
-const PaymentsTable = ({ payments, openEditPayment }) => {
+const PaymentsTable = ({ payments, openEditPayment, deletePayment }) => {
   return (
     <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
       <table className="min-w-full border-collapse">
@@ -86,7 +87,7 @@ const PaymentsTable = ({ payments, openEditPayment }) => {
               <td className="border p-2 text-gray-700 text-center">
                 {payment.description || payment.name || "-"}
               </td>
-              <td className="border p-2 text-gray-700 text-center">
+              <td className="border p-2 text-gray-700 text-center space-y-2">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -95,6 +96,21 @@ const PaymentsTable = ({ payments, openEditPayment }) => {
                   className="bg-green-500 text-white px-2 py-1 rounded w-full h-full"
                 >
                   Editar
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast("¿Quieres eliminar el cobro?", {
+                      action: {
+                        label: "Confirmar",
+                        onClick: async () =>
+                          deletePayment({ id: payment.id, type: payment.type }),
+                      },
+                    });
+                  }}
+                  className="bg-red-500 text-white px-2 py-1 rounded w-full h-full"
+                >
+                  Borrar
                 </button>
               </td>
             </tr>

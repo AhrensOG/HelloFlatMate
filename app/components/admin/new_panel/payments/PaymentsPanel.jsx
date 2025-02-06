@@ -4,6 +4,7 @@ import CreatePaymentModal from "./CreatePaymentModal";
 import useSWR from "swr";
 import axios from "axios";
 import EditPaymentModal from "./EditPaymentModal";
+import { toast } from "sonner";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -47,6 +48,26 @@ const PaymentsPanel = ({ payments, users }) => {
     setShowEditPaymentModal(true);
   };
 
+  const deletePayment = async (payment) => {
+    const toastId = toast.loading("Eliminando cobro...");
+    try {
+      if (payment.type === "RESERVATION" || payment.type === "MONTHLY") {
+        await axios.delete(`/api/admin/payments/rentPayments?id=${payment.id}`);
+      } else {
+        await axios.delete(
+          `/api/admin/payments/supplyPayments?id=${payment.id}`
+        );
+      }
+      await mutate();
+      toast.success("Cobro eliminado correctamente", { id: toastId });
+    } catch (error) {
+      toast.info("Error al eliminar el cobro", {
+        description: "Intenta nuevamente o contacta con soporte",
+        id: toastId,
+      });
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col p-4 gap-4">
       <div className="space-y-6">
@@ -72,6 +93,7 @@ const PaymentsPanel = ({ payments, users }) => {
       <PaymentsTable
         payments={filteredPayments}
         openEditPayment={openEditPayment}
+        deletePayment={deletePayment}
       />
 
       {showCreatePaymentModal && (
@@ -81,6 +103,7 @@ const PaymentsPanel = ({ payments, users }) => {
         <EditPaymentModal
           payment={selectedPayment}
           onClose={closeEditPayment}
+          mutate={mutate}
         />
       )}
     </div>

@@ -65,7 +65,7 @@ export async function getAllPayments() {
         payment.leaseOrderInfo = {
           startDate: leaseOrder.startDate,
           endDate: leaseOrder.endDate,
-          room: leaseOrder.room.serial,
+          room: leaseOrder.room?.serial,
         };
         payment.user = {
           name: leaseOrder.client?.name,
