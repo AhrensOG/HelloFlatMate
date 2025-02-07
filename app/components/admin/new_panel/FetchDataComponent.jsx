@@ -30,7 +30,8 @@ const FetchDataComponent = async () => {
             };
         });
         const paymentsFetch = await axios.get(`${BASE_URL}/api/admin/payments`);
-        const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(usersFetch.data, loFetch.data)
+        const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(usersFetch.data, loFetch.data);
+        const rooms = await axios.get(`${BASE_URL}/api/admin/room`);
 
         data = {
             allLeaseOrders: loFetch.data,
@@ -40,7 +41,8 @@ const FetchDataComponent = async () => {
             clients: clientsFetch.data,
             properties: propertiesFetch.data,
             optionSerials,
-            payments: paymentsFetch.data
+            payments: paymentsFetch.data,
+            rooms: rooms.data,
         };
     } catch (err) {
         console.error("Error en SSR:", err);
