@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function RoomsPanel({ data, filteredOrders, handleApprove, handleReject, handleOpenModal }) {
+export default function RoomsPanel({ data }) {
     console.log(data);
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -15,7 +15,7 @@ export default function RoomsPanel({ data, filteredOrders, handleApprove, handle
         data: swrData,
         error,
         mutate,
-    } = useSWR("/api/admin/lease_order", fetcher, {
+    } = useSWR("/api/admin/room", fetcher, {
         fallbackData: data,
         refreshInterval: 60000,
     });
@@ -23,13 +23,13 @@ export default function RoomsPanel({ data, filteredOrders, handleApprove, handle
     return (
         <div className="h-screen w-full flex flex-col p-4 gap-4">
             <div className="space-y-6">
-                <h2 className="text-2xl font-bold">Pre-reservas</h2>
+                <h2 className="text-2xl font-bold">Habitaciones</h2>
                 <div className="w-full">
                     <input
                         type="text"
-                        placeholder="Buscar por código, nombre, apellido, email o estado..."
+                        placeholder="Buscar por código, nombreo o estado..."
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        // onChange={(e) => setSearchQuery(e.target.value)}
                         className="border rounded px-3 py-2 w-[450px]"
                     />
                 </div>

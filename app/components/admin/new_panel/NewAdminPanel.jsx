@@ -7,6 +7,7 @@ import ReservationPanel from "./reservation/ReservationPanel";
 import UsersPanel from "./users/UsersPanel";
 import PaymentsPanel from "./payments/PaymentsPanel";
 import RoomsPanel from "./rooms/RoomsPanel";
+import DocumentsPanel from "./documents/DocumentsPanel";
 
 const NewAdminPanel = ({ data }) => {
     const router = useRouter();
@@ -32,6 +33,8 @@ const NewAdminPanel = ({ data }) => {
                 return <PaymentsPanel payments={data.payments} users={data.allUsers?.clients || []} />;
             case "habitaciones":
                 return <RoomsPanel data={data.rooms} />;
+            case "documentos":
+                return <DocumentsPanel data={data.documents} />;
             default:
                 return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
         }
