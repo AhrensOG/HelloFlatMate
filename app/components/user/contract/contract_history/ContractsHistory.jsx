@@ -43,7 +43,7 @@ export default function ContractsHistory() {
             }}
             title={"Administra tus contratos"}
             img={"/contract/history/contract.svg"}
-            body={"Administra los contratos de renta."}
+            body={"Administra los contratos de alquiler."}
           />
 
           <h2 className="text-[#222222] font-semibold text-xl mt-6">
@@ -56,7 +56,7 @@ export default function ContractsHistory() {
             }}
             title={"Administra tus documentos"}
             img={"/contract/history/document.svg"}
-            body={"Administra y ve tus documentos importantes."}
+            body={"Administra tus documentos."}
           />
         </motion.main>
       ) : open == "contracts" ? (
