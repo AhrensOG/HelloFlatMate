@@ -14,7 +14,7 @@ const TYPE_LABELS = {
   RESERVATION: "Reserva",
 };
 
-const CreatePaymentModal = ({ users, onClose }) => {
+const CreatePaymentModal = ({ users, onClose, mutate }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -76,6 +76,7 @@ const CreatePaymentModal = ({ users, onClose }) => {
               } else {
                 await axios.post("/api/admin/payments/supplyPayments", values);
               }
+              await mutate();
               toast.success("Cobro asignado correctamente", { id: toastId });
             } catch (error) {
               toast.info("Ocurrio un error creando el cobro", {

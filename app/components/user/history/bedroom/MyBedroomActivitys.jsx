@@ -50,10 +50,10 @@ export default function MyBedroomActivitys({ data }) {
                 <ActivityItem
                     title={t("documents")}
                     img={"/my_bedrooms/activitys/document.svg"}
-                    // action={() => {
-                    //   route.push("/pages/user/contract/history");
-                    // }}
-                    action={() => toast.info(t("toast_info"))}
+                    action={() => {
+                        route.push("/pages/user/contract/history");
+                    }}
+                    // action={() => toast.info(t("toast_info"))}
                 />
             </div>
         </section>

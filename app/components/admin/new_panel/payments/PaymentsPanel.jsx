@@ -97,7 +97,7 @@ const PaymentsPanel = ({ payments, users }) => {
       />
 
       {showCreatePaymentModal && (
-        <CreatePaymentModal users={users} onClose={setShowCreatePaymentModal} />
+        <CreatePaymentModal users={users} onClose={setShowCreatePaymentModal} mutate={mutate} />
       )}
       {showEditPaymentModal && (
         <EditPaymentModal

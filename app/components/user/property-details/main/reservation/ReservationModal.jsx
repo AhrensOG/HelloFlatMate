@@ -157,7 +157,7 @@ export default function ReservationModal({ callback, data, category, calendarTyp
                 <div className="space-y-5 flex flex-col justify-start items-center grow overflow-y-auto scrollbar-none">
                     {calendarType === "SIMPLE" ? (
                         <SelectRentalPeriod
-                            data={rentalPeriods.filter((rental) => rental.isFree && new Date(rental?.rentalPeriod?.startDate) > new Date())}
+                            data={rentalPeriods.filter((rental) => rental.isFree && new Date(rental?.rentalPeriod?.startDate) > new Date("2025-01-01"))}
                             setData={handleSetDuration}
                             info={info}
                         />
