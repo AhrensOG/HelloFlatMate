@@ -8,6 +8,7 @@ import UsersPanel from "./users/UsersPanel";
 import PaymentsPanel from "./payments/PaymentsPanel";
 import RoomsPanel from "./rooms/RoomsPanel";
 import DocumentsPanel from "./documents/DocumentsPanel";
+import RentalPeriodsPanel from "./rental_periods/RentalPeriodsPanel";
 
 const NewAdminPanel = ({ data }) => {
     const router = useRouter();
@@ -35,6 +36,8 @@ const NewAdminPanel = ({ data }) => {
                 return <RoomsPanel data={data.rooms} />;
             case "documentos":
                 return <DocumentsPanel data={data.documents} />;
+            case "periodos":
+                return <RentalPeriodsPanel data={data.rentalPeriods} />;
             default:
                 return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
         }
