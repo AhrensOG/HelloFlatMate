@@ -53,7 +53,7 @@ async function processReservation({
     const amountNumber = Number(price) || 0;
 
     const start = new Date(successLeaseOrderRoom.startDate);
-    const paymentMonth = new Date(start.getFullYear(), start.getMonth());
+    const paymentMonth = new Date(start.getFullYear(), start.getMonth() + 1);
 
     const rentData = {
       amount: amountNumber,
