@@ -2,9 +2,9 @@ import { Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllRooms() {
-
     try {
-        const rooms = await Room.findAll();
+        const rooms = await Room.findAll({ attributes: ["id", "serial"] });
+        if (!rooms) return NextResponse.json({ error: "Habitaciones no encontradas" }, { status: 404 });
         return NextResponse.json(rooms, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Error al obtener las habitaciones" }, { status: 500 });
