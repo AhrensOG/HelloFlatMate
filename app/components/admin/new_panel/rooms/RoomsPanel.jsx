@@ -33,7 +33,7 @@ export default function RoomsPanel({ data }) {
                         className="border rounded px-3 py-2 w-[450px]"
                     />
                 </div>
-            </div>
+            </div> 
             <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
                 <table className="w-full border-collapse">
                     <thead className="sticky top-0 bg-white">

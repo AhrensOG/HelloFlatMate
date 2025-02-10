@@ -11,6 +11,8 @@ import {
   DocumentTextIcon,
   UserGroupIcon,
   ArrowRightStartOnRectangleIcon,
+  ClipboardDocumentIcon,
+  CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
@@ -24,6 +26,8 @@ const AdminSideBar = ({ onSelect }) => {
     { name: "Pre-reservas", icon: <BellAlertIcon className="w-6 h-6" /> },
     { name: "Reservas", icon: <DocumentTextIcon className="w-6 h-6" /> },
     { name: "Usuarios", icon: <UserGroupIcon className="w-6 h-6" /> },
+    { name: "Documentos", icon: <ClipboardDocumentIcon className="w-6 h-6" /> },
+    { name: "Periodos", icon: <CalendarDaysIcon className="w-6 h-6" /> },
     {
       name: "Cerrar sesión",
       icon: <ArrowRightStartOnRectangleIcon className="w-6 h-6" />,
