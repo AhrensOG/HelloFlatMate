@@ -12,6 +12,7 @@ const PaymentsPanel = ({ payments, users }) => {
   const [showCreatePaymentModal, setShowCreatePaymentModal] = useState(false);
   const [showEditPaymentModal, setShowEditPaymentModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(false);
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState("Estado");
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -30,12 +31,20 @@ const PaymentsPanel = ({ payments, users }) => {
     const clientEmail = payment.user?.email || "";
 
     const searchString = searchQuery.toLowerCase();
-
-    return (
+    const matchesSearch =
       clientName.toLowerCase().includes(searchString) ||
       clientLastName.toLowerCase().includes(searchString) ||
-      clientEmail.toLowerCase().includes(searchString)
-    );
+      clientEmail.toLowerCase().includes(searchString);
+
+    const matchesStatus =
+      selectedStatusFilter === "Estado" ||
+      (selectedStatusFilter === "APPROVED" &&
+        ["APPROVED", "PAID"].includes(payment.status)) ||
+      (selectedStatusFilter === "PAID" &&
+        ["APPROVED", "PAID"].includes(payment.status)) ||
+      payment.status === selectedStatusFilter;
+
+    return matchesSearch && matchesStatus;
   });
 
   const closeEditPayment = () => {
@@ -94,10 +103,16 @@ const PaymentsPanel = ({ payments, users }) => {
         payments={filteredPayments}
         openEditPayment={openEditPayment}
         deletePayment={deletePayment}
+        setSelectedStatusFilter={setSelectedStatusFilter}
+        selectedStatusFilter={selectedStatusFilter}
       />
 
       {showCreatePaymentModal && (
-        <CreatePaymentModal users={users} onClose={setShowCreatePaymentModal} mutate={mutate} />
+        <CreatePaymentModal
+          users={users}
+          onClose={setShowCreatePaymentModal}
+          mutate={mutate}
+        />
       )}
       {showEditPaymentModal && (
         <EditPaymentModal
