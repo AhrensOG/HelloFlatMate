@@ -31,18 +31,18 @@ export default function UpdateUserModal({ onClose, user }) {
                     initialValues={{
                         name: user.name || "",
                         lastName: user.lastName || "",
-                        dni: user.dni || "", // Campo opcional
-                        email: user.email || "", // Campo opcional
+                        dni: user.idNum || "",
+                        email: user.email || "",
                         password: "",
-                        IBAN: user.IBAN || "", // Campo opcional
+                        IBAN: user.IBAN || "",
                     }}
                     validationSchema={Yup.object({
                         name: Yup.string().required("Nombre es obligatorio"),
                         lastName: Yup.string().required("Apellido es obligatorio"),
-                        dni: Yup.string().optional(), // Campo opcional
-                        email: Yup.string().email("Correo electrónico inválido").optional(), // Campo opcional
-                        password: Yup.string().optional(), // Campo opcional
-                        IBAN: Yup.string().optional(), // Campo opcional
+                        dni: Yup.string().optional(),
+                        email: Yup.string().email("Correo electrónico inválido").optional(),
+                        password: Yup.string().optional(),
+                        IBAN: Yup.string().optional(),
                     })}
                     onSubmit={handleUpdateUser}
                 >
