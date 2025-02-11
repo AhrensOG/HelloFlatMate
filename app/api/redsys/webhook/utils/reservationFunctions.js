@@ -53,7 +53,7 @@ async function processReservation({
     const amountNumber = Number(price) || 0;
 
     const start = new Date(successLeaseOrderRoom.startDate);
-    const paymentMonth = new Date(start.getFullYear(), start.getMonth() + 1);
+    const paymentMonth = new Date(start.getUTCFullYear(), start.getUTCMonth());
 
     const rentData = {
       amount: amountNumber,
@@ -339,18 +339,18 @@ async function addRentPayments(room, leaseOrder, client) {
     const start = new Date(leaseOrder.startDate);
     const end = new Date(leaseOrder.endDate);
 
-    const monthsDifference =
-      (end.getFullYear() - start.getFullYear()) * 12 +
-      (end.getMonth() - start.getMonth()) +
-      1;
+    const startYear = start.getUTCFullYear();
+    const startMonth = start.getUTCMonth();
+    const endYear = end.getUTCFullYear();
+    const endMonth = end.getUTCMonth();
+
+    const monthsDifference = (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+    const monthlyPaymentsCount = monthsDifference - 1;
 
     const payments = [];
 
-    for (let monthOffset = 1; monthOffset < monthsDifference; monthOffset++) {
-      const paymentMonth = new Date(
-        start.getFullYear(),
-        start.getMonth() + monthOffset
-      );
+    for ( let monthOffset = 1; monthOffset <= monthlyPaymentsCount; monthOffset++ ) {
+      const paymentMonth = new Date(startYear, startMonth + monthOffset);
 
       payments.push({
         amount: leaseOrder.price,
@@ -366,9 +366,7 @@ async function addRentPayments(room, leaseOrder, client) {
         ownerId: room.property.ownerId,
         paymentId: "-",
         description: `Pago mensual - ${paymentMonth
-          .toLocaleString("es-ES", {
-            month: "long",
-          })
+          .toLocaleString("es-ES", { month: "long" })
           .replace(/^./, (char) =>
             char.toUpperCase()
           )} ${paymentMonth.getFullYear()}`,
