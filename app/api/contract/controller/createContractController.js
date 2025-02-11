@@ -56,134 +56,134 @@ export async function createContract(data) {
                 return NextResponse.json({ message: "Property or Room not found" }, { status: 400 })
             }
             const contract = await Contract.create(contractData)
-            const currentDate = new Date();
-            const expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + 5); // Establecer 5 días en el futuro
-            if (data.category === "HELLO_COLIVING") {
-                await Supply.bulkCreate([
-                    {
-                        name: "Depósito",
-                        amount: 500,
-                        date: currentDate,
-                        status: "PENDING",
-                        propertyId: data.propertyId || room.propertyId,
-                        clientId: data.clientId,
-                        reference: data.reference || "",
-                        type: "DEPOSIT",
-                        expirationDate: expirationDate,
-                        leaseOrderId: leaseOrder.id,
-                        leaseOrderType: "ROOM"
-                    },
-                    {
-                        name: "Suministros 1Q",
-                        amount: 200, 
-                        date: currentDate,
-                        status: "PENDING",
-                        propertyId: data.propertyId || room.propertyId,
-                        clientId: data.clientId,
-                        reference: data.reference || "",
-                        type: "GENERAL_SUPPLIES",
-                        expirationDate: expirationDate,
-                        leaseOrderId: leaseOrder.id,
-                        leaseOrderType: "ROOM"
-                    },
-                    {
-                        name: "Tasa de la agencia",
-                        amount: 459.80, // 380€ + IVA
-                        date: currentDate,
-                        status: "PENDING",
-                        propertyId: data.propertyId || room.propertyId,
-                        clientId: data.clientId,
-                        reference: data.reference || "",
-                        type: "AGENCY_FEES",
-                        expirationDate: expirationDate,
-                        leaseOrderId: leaseOrder.id,
-                        leaseOrderType: "ROOM"
-                    },
-                    {
-                        name: "Limpieza Check-Out",
-                        amount: 50,
-                        date: currentDate,
-                        status: "PENDING",
-                        propertyId: data.propertyId || room.propertyId,
-                        clientId: data.clientId,
-                        reference: data.reference || "",
-                        type: "CLEANUP",
-                        expirationDate: expirationDate,
-                        leaseOrderId: leaseOrder.id,
-                        leaseOrderType: "ROOM"
-                    },
-                    ]);
-            } else {
-                await Supply.bulkCreate([
-                {
-                    name: "Depósito",
-                    amount: 300,
-                    date: currentDate,
-                    status: "PENDING",
-                    propertyId: data.propertyId || room.propertyId,
-                    clientId: data.clientId,
-                    reference: data.reference || "",
-                    type: "DEPOSIT",
-                    expirationDate: expirationDate,
-                    leaseOrderId: leaseOrder.id,
-                    leaseOrderType: "ROOM"
-                },
-                {
-                    name: "Suministros 1Q",
-                    amount: 200, 
-                    date: currentDate,
-                    status: "PENDING",
-                    propertyId: data.propertyId || room.propertyId,
-                    clientId: data.clientId,
-                    reference: data.reference || "",
-                    type: "GENERAL_SUPPLIES",
-                    expirationDate: expirationDate,
-                    leaseOrderId: leaseOrder.id,
-                    leaseOrderType: "ROOM"
-                },
-                {
-                    name: "Wifi 1Q",
-                    amount: 80,
-                    date: currentDate,
-                    status: "PENDING",
-                    propertyId: data.propertyId || room.propertyId,
-                    clientId: data.clientId,
-                    reference: data.reference || "",
-                    type: "INTERNET",
-                    expirationDate: expirationDate,
-                    leaseOrderId: leaseOrder.id,
-                    leaseOrderType: "ROOM"
-                },
-                {
-                    name: "Tasa de la agencia",
-                    amount: 459.80, // 380€ + IVA
-                    date: currentDate,
-                    status: "PENDING",
-                    propertyId: data.propertyId || room.propertyId,
-                    clientId: data.clientId,
-                    reference: data.reference || "",
-                    type: "AGENCY_FEES",
-                    expirationDate: expirationDate,
-                    leaseOrderId: leaseOrder.id,
-                    leaseOrderType: "ROOM"
-                },
-                {
-                    name: "Limpieza Check-Out",
-                    amount: 50,
-                    date: currentDate,
-                    status: "PENDING",
-                    propertyId: data.propertyId || room.propertyId,
-                    clientId: data.clientId,
-                    reference: data.reference || "",
-                    type: "CLEANUP",
-                    expirationDate: expirationDate,
-                    leaseOrderId: leaseOrder.id,
-                    leaseOrderType: "ROOM"
-                },
-                ]);
-            }
-            console.log(`✅ Contrato firmado y suministros asignados para el usuario: ${data.clientId}`);
+            // const currentDate = new Date();
+            // const expirationDate = new Date();
+            // expirationDate.setDate(expirationDate.getDate() + 5); // Establecer 5 días en el futuro
+            // if (data.category === "HELLO_COLIVING") {
+            //     await Supply.bulkCreate([
+            //         {
+            //             name: "Depósito",
+            //             amount: 500,
+            //             date: currentDate,
+            //             status: "PENDING",
+            //             propertyId: data.propertyId || room.propertyId,
+            //             clientId: data.clientId,
+            //             reference: data.reference || "",
+            //             type: "DEPOSIT",
+            //             expirationDate: expirationDate,
+            //             leaseOrderId: leaseOrder.id,
+            //             leaseOrderType: "ROOM"
+            //         },
+            //         {
+            //             name: "Suministros 1Q",
+            //             amount: 200, 
+            //             date: currentDate,
+            //             status: "PENDING",
+            //             propertyId: data.propertyId || room.propertyId,
+            //             clientId: data.clientId,
+            //             reference: data.reference || "",
+            //             type: "GENERAL_SUPPLIES",
+            //             expirationDate: expirationDate,
+            //             leaseOrderId: leaseOrder.id,
+            //             leaseOrderType: "ROOM"
+            //         },
+            //         {
+            //             name: "Tasa de la agencia",
+            //             amount: 459.80, // 380€ + IVA
+            //             date: currentDate,
+            //             status: "PENDING",
+            //             propertyId: data.propertyId || room.propertyId,
+            //             clientId: data.clientId,
+            //             reference: data.reference || "",
+            //             type: "AGENCY_FEES",
+            //             expirationDate: expirationDate,
+            //             leaseOrderId: leaseOrder.id,
+            //             leaseOrderType: "ROOM"
+            //         },
+            //         {
+            //             name: "Limpieza Check-Out",
+            //             amount: 50,
+            //             date: currentDate,
+            //             status: "PENDING",
+            //             propertyId: data.propertyId || room.propertyId,
+            //             clientId: data.clientId,
+            //             reference: data.reference || "",
+            //             type: "CLEANUP",
+            //             expirationDate: expirationDate,
+            //             leaseOrderId: leaseOrder.id,
+            //             leaseOrderType: "ROOM"
+            //         },
+            //         ]);
+            // } else {
+            //     await Supply.bulkCreate([
+            //     {
+            //         name: "Depósito",
+            //         amount: 300,
+            //         date: currentDate,
+            //         status: "PENDING",
+            //         propertyId: data.propertyId || room.propertyId,
+            //         clientId: data.clientId,
+            //         reference: data.reference || "",
+            //         type: "DEPOSIT",
+            //         expirationDate: expirationDate,
+            //         leaseOrderId: leaseOrder.id,
+            //         leaseOrderType: "ROOM"
+            //     },
+            //     {
+            //         name: "Suministros 1Q",
+            //         amount: 200, 
+            //         date: currentDate,
+            //         status: "PENDING",
+            //         propertyId: data.propertyId || room.propertyId,
+            //         clientId: data.clientId,
+            //         reference: data.reference || "",
+            //         type: "GENERAL_SUPPLIES",
+            //         expirationDate: expirationDate,
+            //         leaseOrderId: leaseOrder.id,
+            //         leaseOrderType: "ROOM"
+            //     },
+            //     {
+            //         name: "Wifi 1Q",
+            //         amount: 80,
+            //         date: currentDate,
+            //         status: "PENDING",
+            //         propertyId: data.propertyId || room.propertyId,
+            //         clientId: data.clientId,
+            //         reference: data.reference || "",
+            //         type: "INTERNET",
+            //         expirationDate: expirationDate,
+            //         leaseOrderId: leaseOrder.id,
+            //         leaseOrderType: "ROOM"
+            //     },
+            //     {
+            //         name: "Tasa de la agencia",
+            //         amount: 459.80, // 380€ + IVA
+            //         date: currentDate,
+            //         status: "PENDING",
+            //         propertyId: data.propertyId || room.propertyId,
+            //         clientId: data.clientId,
+            //         reference: data.reference || "",
+            //         type: "AGENCY_FEES",
+            //         expirationDate: expirationDate,
+            //         leaseOrderId: leaseOrder.id,
+            //         leaseOrderType: "ROOM"
+            //     },
+            //     {
+            //         name: "Limpieza Check-Out",
+            //         amount: 50,
+            //         date: currentDate,
+            //         status: "PENDING",
+            //         propertyId: data.propertyId || room.propertyId,
+            //         clientId: data.clientId,
+            //         reference: data.reference || "",
+            //         type: "CLEANUP",
+            //         expirationDate: expirationDate,
+            //         leaseOrderId: leaseOrder.id,
+            //         leaseOrderType: "ROOM"
+            //     },
+            //     ]);
+            // }
+            console.log(`✅ Contrato firmado para el usuario: ${data.clientId}`);
 
             return NextResponse.json({ message: "Contract created successfully" }, { status: 200 })
         } catch (error) { await transaction.rollback(); return NextResponse.json({ message: "Contract not created" }, { status: 400 }) }
