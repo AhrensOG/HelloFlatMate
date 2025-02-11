@@ -9,17 +9,13 @@ export async function updateStatusLeaseOrder(data) {
     if (!data.action || (data.action !== "REJECTED" && data.action !== "PENDING"))
         return NextResponse.json({ message: "No status provided" }, { status: 400 });
     if (!data.leaseOrderId || data.leaseOrderId <= 0) return NextResponse.json({ message: "No lease order id provided" }, { status: 400 });
-    if (!data.adminId || data.adminId <= 0) return NextResponse.json({ message: "No admin id provided" }, { status: 400 });
     if (!data.propertyId && !data.roomId) return NextResponse.json({ message: "No property id or room id provided" }, { status: 400 });
     
     let transaction;
     try {
         // Iniciar la transacción
         transaction = await sequelize.transaction();
-
-        const admin = (await Admin.findByPk(data.adminId, { transaction })) || (await Client.findByPk(data.adminId, { transaction }));
-        if (!admin) return NextResponse.json({ message: "Admin not found" }, { status: 404 });
-
+        
         const leaseOrderRoom = await LeaseOrderRoom.findByPk(data.leaseOrderId, { transaction });
         if (!leaseOrderRoom) {
             await transaction.rollback();
