@@ -40,7 +40,7 @@ export async function createOwner(data) {
                 name: data.name,
                 lastName: data.lastName,
                 email: userRecord.email,
-                idNum: data.idNum || null,
+                idNum: data.dni || null,
                 description: data.description || null,
                 IBAN: data.IBAN || null,
                 role: "OWNER",

@@ -81,7 +81,7 @@ const PaymentsTable = ({
                     onClick={() => handleStatusChange("APPROVED")}
                     className="block w-full text-left p-2 hover:bg-gray-100"
                   >
-                    Aprobado
+                    Pagado
                   </button>
                 </div>
               )}

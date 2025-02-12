@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { Admin, Client } from "@/db/init";
 
 export async function POST(req) {
-    const { email, password, name, lastName, DNI, description, rol } = await req.json(); // Obtener el cuerpo de la solicitud
+    const { email, password, name, lastName, dni, description, rol } = await req.json(); // Obtener el cuerpo de la solicitud
 
     if (!email || !password) {
         return NextResponse.json({ error: "Se requieren tanto el correo electrónico como la contraseña." }, { status: 400 });
@@ -25,7 +25,7 @@ export async function POST(req) {
                 lastName: lastName,
                 profilePicture: userRecord.photoURL || "",
                 role: "ADMIN",
-                idNum: DNI,
+                idNum: dni || null,
                 description: description,
             });
         }
@@ -37,7 +37,7 @@ export async function POST(req) {
             lastName: lastName,
             profilePicture: userRecord.photoURL || "",
             role: "CLIENT",
-            idNum: DNI,
+            idNum: dni || null,
             description: description,
         });
 
