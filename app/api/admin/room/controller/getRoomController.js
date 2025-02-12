@@ -1,12 +1,26 @@
-import { Room } from "@/db/init";
+import { Property, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllRooms() {
     try {
-        const rooms = await Room.findAll({ attributes: ["id", "serial"] });
-        if (!rooms) return NextResponse.json({ error: "Habitaciones no encontradas" }, { status: 404 });
+        const rooms = await Room.findAll({
+            attributes: ["id", "serial", "price", "name", "status", "couple", "floor", "door", "typology"],
+            include: [
+                {
+                    model: Property,
+                    as: "property", // Esto es importante: Debe coincidir con el alias de la asociación
+                    attributes: ["id", "city", "street", "streetNumber", "zone", "ownerId", "typology"],
+                },
+            ],
+        });
+
+        if (!rooms) {
+            return NextResponse.json({ error: "Habitaciones no encontradas" }, { status: 404 });
+        }
+
         return NextResponse.json(rooms, { status: 200 });
     } catch (error) {
+        console.error("Error al obtener las habitaciones:", error); // Muy importante para depurar
         return NextResponse.json({ error: "Error al obtener las habitaciones" }, { status: 500 });
     }
 }
