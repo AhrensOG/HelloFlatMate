@@ -1,27 +1,18 @@
-import React, { useState, useCallback, useContext } from "react";
-import { IoMdClose } from "react-icons/io";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Import Firebase Storage functions
+import React, { useState, useCallback } from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 import axios from "axios";
-import { Context } from "@/app/context/GlobalContext";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import { toast } from "sonner";
 
 const DocumentModal = ({ document, onClose, onDocumentUpdate }) => {
-    const [newFileName, setNewFileName] = useState(document.name); // State for editable document name
+    const [newFileName, setNewFileName] = useState(document.name);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const { state, dispatch } = useContext(Context);
 
-    // Sacamos datos de la orden
-    const { id, documentableId, leaseOrderId, type, url } = document; // Added type and url
+    const { id, documentableId, leaseOrderId, type, url } = document;
     const client = document.client;
 
-    // Datos del usuario
     const { name, lastName, idNum, country, reasonForValencia, reasonForValenciaOther, personalReview, phone, email, birthDate } = client || {};
-
-    // Firebase Storage reference
-    const storage = getStorage();
 
     const handleFileUpload = useCallback(
         async (files) => {
@@ -44,7 +35,7 @@ const DocumentModal = ({ document, onClose, onDocumentUpdate }) => {
                 const downloadURLs = uploadedFiles.map((file) => file.url); // Obtener las URLs
 
                 // Construir el objeto de actualización basado en document.type
-                let updateData = { adminId: state.user.id, id: document.id, urls: downloadURLs };
+                let updateData = { id: document.id, urls: downloadURLs };
 
                 const response = await axios.patch(`/api/admin/document`, updateData);
 
@@ -60,7 +51,7 @@ const DocumentModal = ({ document, onClose, onDocumentUpdate }) => {
                 setUploading(false);
             }
         },
-        [documentableId, document, storage, state.user.id]
+        [documentableId, document]
     );
 
     const handleNameChange = (e) => {
@@ -68,12 +59,10 @@ const DocumentModal = ({ document, onClose, onDocumentUpdate }) => {
     };
 
     const handleNameUpdate = async () => {
-        // Call a function to update the document name in the database
         try {
             const response = await axios.patch(`/api/admin/document`, {
                 id,
                 name: newFileName,
-                adminId: state.user.id,
             });
             if (response.status === 200) {
                 toast.success("Documento actualizado con éxito!");

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 import { toast } from "sonner";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const TYPE_LABELS = {
   INTERNET: "WIFI",
@@ -14,6 +15,7 @@ const TYPE_LABELS = {
 };
 
 const STATUS = {
+  ALL: "Todos",
   PENDING: "Pendiente",
   PAID: "Pagado",
   NOT_PAID: "No Pagado",
@@ -22,7 +24,20 @@ const STATUS = {
   REJECTED: "Rechazado",
 };
 
-const PaymentsTable = ({ payments, openEditPayment, deletePayment }) => {
+const PaymentsTable = ({
+  payments,
+  openEditPayment,
+  deletePayment,
+  selectedStatusFilter,
+  setSelectedStatusFilter,
+}) => {
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleStatusChange = (status) => {
+    setSelectedStatusFilter(status);
+    setDropdownOpen(false);
+  };
+
   return (
     <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
       <table className="min-w-full border-collapse">
@@ -40,8 +55,36 @@ const PaymentsTable = ({ payments, openEditPayment, deletePayment }) => {
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Importe
             </th>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
-              Estado
+            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4 w-[8rem]">
+              <button
+                onClick={() => setDropdownOpen(!isDropdownOpen)}
+                className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md"
+              >
+                {STATUS[selectedStatusFilter] || "Estado"}
+                <ChevronDownIcon className="size-4" />
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute left-0 mt-1 w-40 bg-white border rounded shadow-lg z-10">
+                  <button
+                    onClick={() => handleStatusChange("Estado")}
+                    className="block w-full text-left p-2 hover:bg-gray-100"
+                  >
+                    Todos
+                  </button>
+                  <button
+                    onClick={() => handleStatusChange("PENDING")}
+                    className="block w-full text-left p-2 hover:bg-gray-100"
+                  >
+                    Pendiente
+                  </button>
+                  <button
+                    onClick={() => handleStatusChange("APPROVED")}
+                    className="block w-full text-left p-2 hover:bg-gray-100"
+                  >
+                    Pagado
+                  </button>
+                </div>
+              )}
             </th>
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Tipo
@@ -61,7 +104,7 @@ const PaymentsTable = ({ payments, openEditPayment, deletePayment }) => {
               className="hover:bg-gray-100 even:bg-gray-50 transition-cursor cursor-pointer"
             >
               <td className="border p-2 text-gray-700 text-center">
-                {payment.user?.name + payment.user?.lastName || "-"}
+                {payment.user?.name + " " + payment.user?.lastName || "-"}
               </td>
               <td className="border p-2 text-gray-700 text-center">
                 {payment.leaseOrderInfo?.room || "-"}

@@ -6,6 +6,11 @@ import { toast } from "sonner";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
+const LABELS_TYPE = {
+    ROSTER: "Nómina / Matricula",
+    CONTRACT: "Contrato"
+}
+
 export default function DocumentsPanel({ data }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -102,7 +107,7 @@ export default function DocumentsPanel({ data }) {
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Usuario</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Orden</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Tipo</th>
-                            <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Estado</th>
+                            {/* <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Estado</th> */}
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Acciones</th>
                         </tr>
                     </thead>
@@ -110,7 +115,7 @@ export default function DocumentsPanel({ data }) {
                         {filteredDocuments &&
                             filteredDocuments?.map((doc) => (
                                 <tr
-                                    key={doc.id}
+                                    key={`${doc.id}${doc.type}`}
                                     className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer"
                                     onClick={() => {
                                         if (doc.type === "CONTRACT") {
@@ -124,8 +129,8 @@ export default function DocumentsPanel({ data }) {
                                     <td className="border p-2 text-gray-700 text-left">{doc.name}</td>
                                     <td className="border p-2 text-gray-700 text-center">{`${doc.client?.name} ${doc.client?.lastName}`}</td>
                                     <td className="border p-2 text-gray-700 text-center">{doc.leaseOrderId}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{doc.type}</td>
-                                    <td className={`border p-2 w-36 text-center`}>{doc.status}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{LABELS_TYPE[doc.type]}</td>
+                                    {/* <td className={`border p-2 w-36 text-center`}>{doc.status}</td> */}
                                     <td className="border p-2 text-gray-700 text-center flex gap-2">
                                         <button
                                             onClick={(e) => {

@@ -1,8 +1,7 @@
-import { Admin, Client, Document } from "@/db/init";
+import { Document } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function updateStateDocument(data) {
-    console.log(data);
 
     if (!data) {
         return NextResponse.json({ message: "No data provided" }, { status: 400 });
@@ -10,17 +9,9 @@ export async function updateStateDocument(data) {
     if (!data.id || data.id <= 0) {
         return NextResponse.json({ message: "No document id provided" }, { status: 400 });
     }
-    if (!data.adminId || data.adminId.trim() === "") {
-        return NextResponse.json({ message: "No admin id provided" }, { status: 400 });
-    }
 
     const transaction = await Document.sequelize.transaction();
     try {
-        const admin = (await Admin.findByPk(data.adminId)) || (await Client.findByPk(data.adminId));
-        if (!admin) {
-            transaction.rollback();
-            return NextResponse.json({ message: "Admin not found" }, { status: 404 });
-        }
         const document = await Document.findByPk(data.id);
         if (document) {
             await document.update(

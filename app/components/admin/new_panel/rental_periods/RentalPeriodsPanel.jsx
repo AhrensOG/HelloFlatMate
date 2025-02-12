@@ -20,7 +20,7 @@ export default function RentalPeriodsPanel({ data }) {
         mutate,
     } = useSWR("/api/admin/rental_period", fetcher, {
         fallbackData: data,
-        refreshInterval: 60000,
+        refreshInterval: 600000,
     });
 
     const handleOpenModal = (period) => {

@@ -59,7 +59,7 @@ const ContractForm = ({ handleContinue }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Nombre es requerido"),
     lastName: Yup.string().required("Apellido es requerido"),
-    idNum: Yup.string().required("ID/Passport es requerido"),
+    idNum: Yup.string().trim("ID/Passport no puede estar vacio").strict(true).required("ID/Passport es requerido"),
     phone: Yup.string().required("Teléfono es requerido"),
     city: Yup.string().required("Ciudad es requerida"),
     street: Yup.string().required("Calle es requerida"),
