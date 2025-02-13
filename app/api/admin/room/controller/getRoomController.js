@@ -4,12 +4,12 @@ import { NextResponse } from "next/server";
 export async function getAllRooms() {
     try {
         const rooms = await Room.findAll({
-            attributes: ["id", "serial", "price", "name", "status", "couple", "floor", "door", "typology"],
+            attributes: ["id", "serial", "price", "name", "status", "couple", "floor", "door", "typology", "isActive"],
             include: [
                 {
                     model: Property,
                     as: "property", // Esto es importante: Debe coincidir con el alias de la asociación
-                    attributes: ["id", "city", "street", "streetNumber", "zone", "ownerId", "typology"],
+                    attributes: ["id", "city", "street", "streetNumber", "zone", "ownerId", "typology", "category"],
                 },
             ],
         });
