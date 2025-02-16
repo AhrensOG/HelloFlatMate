@@ -18,7 +18,7 @@ export default function PropertiesPanel({ data }) {
         mutate,
     } = useSWR("/api/admin/property?simple=true", fetcher, {
         fallbackData: data,
-        refreshInterval: 60000,
+        refreshInterval: 600000,
     });
 
     const handleOpenModal = (room) => {
@@ -89,13 +89,13 @@ export default function PropertiesPanel({ data }) {
                                     <td className="border p-2 text-gray-700 text-center">{property.typology}</td>
                                     <td className="border p-2 text-gray-700 text-center">{property.isActive ? "Si" : "No"}</td>
                                     <td className="border p-2 text-gray-700 text-center">{`${property.street}, ${property.city}, ${property.country}`}</td>
-                                    <td className="border p-2 text-gray-700 text-center flex flex-wrap gap-4 items-center">
+                                    <td className="border p-2 text-gray-700 text-center flex flex-wrap gap-2 items-center">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 handleOpenModal(property);
                                             }}
-                                            className="bg-green-500 text-white px-2 py-1 mr-2 rounded"
+                                            className="bg-green-500 text-white px-2 py-1 rounded w-full"
                                         >
                                             Editar
                                         </button>
@@ -108,7 +108,7 @@ export default function PropertiesPanel({ data }) {
                                                     info: "Error al eliminar la habitación",
                                                 });
                                             }}
-                                            className="bg-red-500 text-white px-2 py-1 rounded"
+                                            className="bg-red-500 text-white px-2 py-1 rounded w-full"
                                         >
                                             Eliminar
                                         </button>
@@ -117,7 +117,8 @@ export default function PropertiesPanel({ data }) {
                                                 e.stopPropagation();
                                             }}
                                             href={`/pages/admin/update/${property.id}/${property.category}`}
-                                            className="bg-blue-500 text-white px-2 py-1 rounded"
+                                            target="_blank"
+                                            className="bg-blue-500 text-white px-2 py-1 rounded w-full"
                                         >
                                             Editar completo
                                         </Link>
