@@ -26,6 +26,12 @@ export default function RoomsPanel({ data }) {
         setIsOpen(true);
     };
 
+    const filteredData = swrData?.filter((room) =>
+        [room.id, room.serial, room.name, room.zone, room.type]
+            .map((field) => field?.toString().toLowerCase())
+            .some((field) => field?.includes(searchQuery.toLowerCase()))
+    );
+
     const handleOnsave = () => {
         setIsOpen(false);
         console.log("save");
@@ -38,15 +44,40 @@ export default function RoomsPanel({ data }) {
                 // Handle successful deletion without parsing
                 const updatedData = swrData.filter((item) => item.id !== id);
                 mutate(updatedData);
-            } else {
-                // Handle other statuses if needed
-                const updatedData = swrData.filter((item) => item.id !== id);
-                mutate(updatedData);
             }
         } catch (error) {
             console.error("Error deleting item:", error);
             throw error;
         }
+    };
+
+    const deleteToast = (data) => {
+        toast(
+            <div className="flex items-center mx-auto gap-2 flex-col">
+                <p>Estas seguro que deseas eliminar la habitacion?</p>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => {
+                            toast.promise(handleDelete(data.id), {
+                                loading: "Eliminando...",
+                                success: "Habitacion eliminada",
+                                info: "Error al eliminar la habitacion",
+                            });
+                            toast.dismiss();
+                        }}
+                        className="bg-red-500 text-white px-2 py-1 rounded"
+                    >
+                        Si
+                    </button>
+                    <button onClick={() => toast.dismiss()} className="bg-green-500 text-white px-2 py-1 rounded">
+                        No
+                    </button>
+                </div>
+            </div>,
+            {
+                position: "top-center",
+            }
+        );
     };
 
     return (
@@ -58,7 +89,7 @@ export default function RoomsPanel({ data }) {
                         type="text"
                         placeholder="Buscar por código, nombreo o estado..."
                         value={searchQuery}
-                        // onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="border rounded px-3 py-2 w-[450px]"
                     />
                 </div>
@@ -79,8 +110,8 @@ export default function RoomsPanel({ data }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {data &&
-                            data?.map((room) => (
+                        {filteredData &&
+                            filteredData?.map((room) => (
                                 <tr key={room.id} className="hover:bg-gray-100 even:bg-gray-50 transition-colors">
                                     {/* <td className="border p-2 text-gray-700 text-center">{room.id}</td> */}
                                     <td className="border p-2 text-gray-700 text-left">{room.serial}</td>
@@ -90,7 +121,7 @@ export default function RoomsPanel({ data }) {
                                     <td className="border p-2 text-gray-700 text-center">{room.typology || room.property.typology}</td>
                                     <td className="border p-2 text-gray-700 text-center">{room.isActive ? "Si" : "No"}</td>
                                     <td className="border p-2 text-gray-700 text-center">{`${room.property.street}, ${room.property.city}, ${room.property.country}, piso ${room.floor}, departamento ${room.door}`}</td>
-                                    <td className="border p-2 text-gray-700 text-center flex flex-wrap gap-2 items-center">
+                                    <td className="border p-2 text-gray-700 text-center flex flex-wrap gap-4 items-center justify-center">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
@@ -103,11 +134,7 @@ export default function RoomsPanel({ data }) {
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                toast.promise(handleDelete(room.id), {
-                                                    loading: "Eliminando...",
-                                                    success: "Habitación eliminada",
-                                                    info: "Error al eliminar la habitación",
-                                                });
+                                                deleteToast(room);
                                             }}
                                             className="bg-red-500 text-white px-2 py-1 rounded w-full"
                                         >

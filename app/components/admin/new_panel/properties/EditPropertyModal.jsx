@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { toast } from "sonner";
 
 const modalStyles = {
     overlay: "fixed inset-0 flex items-center justify-center z-50",
@@ -26,8 +27,8 @@ const validationSchema = Yup.object().shape({
     ciudad: Yup.string().required("La ciudad es requerida"),
     zona: Yup.string().required("La zona es requerida"),
     street: Yup.string().required("La calle es requerida"),
-    streetNumber: Yup.string().matches(/^\d+$/, "Debe ser un número").required("El número de calle es requerido"),
-    activo: Yup.boolean().required("Este campo es requerido"),
+    streetNumber: Yup.string().required("El número de calle es requerido"),
+    isActive: Yup.boolean().required("Este campo es requerido"),
 });
 
 export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
@@ -36,15 +37,21 @@ export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
             nombre: data?.name || "",
             ciudad: data?.city || "",
             zona: data?.zone || "",
-            activo: data?.isactive ?? false,
+            isActive: Boolean(data?.isactive), // Asegura que sea booleano
             street: data?.street || "",
             streetNumber: data?.streetNumber || "",
         },
         enableReinitialize: true,
         validationSchema,
         onSubmit: (values) => {
-            onSave({ ...data, ...values });
-            onClose();
+            toast.promise(onSave({ id: data.id, ...values }), {
+                loading: "Guardando...",
+                success: () => {
+                    toast.success("Propiedad guardada correctamente");
+                    onClose();
+                },
+                info: "Error al guardar la propiedad",
+            });
         },
     });
 
@@ -59,10 +66,7 @@ export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
                 </button>
                 <h2 className={modalStyles.title}>Editar Ubicación</h2>
                 <form onSubmit={formik.handleSubmit} className={modalStyles.form}>
-                    {Object.entries({
-                        id: data?.id,
-                        serial: data?.serial,
-                    }).map(([key, value]) => (
+                    {Object.entries({ id: data?.id, serial: data?.serial }).map(([key, value]) => (
                         <div key={key} className={modalStyles.inputGroup}>
                             <label className={modalStyles.label}>{key.toUpperCase()}:</label>
                             <input type="text" value={value || "-"} className={modalStyles.input} readOnly />
@@ -96,17 +100,17 @@ export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
                                 <label key={val.toString()} className={modalStyles.radioLabel}>
                                     <input
                                         type="radio"
-                                        name="activo"
-                                        value={val}
-                                        onChange={() => formik.setFieldValue("activo", val)}
-                                        checked={formik.values.activo === val}
+                                        name="isActive"
+                                        value={val} // Este valor es necesario para que el formulario funcione correctamente
+                                        onChange={() => formik.setFieldValue("isActive", val)} // Establece el valor booleano directamente
+                                        checked={formik.values.isActive === val} // Compara booleanos directamente
                                         className={modalStyles.radioInput}
                                     />
                                     {val ? "Sí" : "No"}
                                 </label>
                             ))}
                         </div>
-                        {formik.touched.activo && formik.errors.activo && <div className={modalStyles.error}>{formik.errors.activo}</div>}
+                        {formik.touched.isActive && formik.errors.isActive && <div className={modalStyles.error}>{formik.errors.isActive}</div>}
                     </div>
 
                     <div className={modalStyles.buttonContainer}>
