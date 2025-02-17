@@ -18,7 +18,7 @@ export default function PropertiesPanel({ data }) {
         mutate,
     } = useSWR("/api/admin/property?simple=true", fetcher, {
         fallbackData: data,
-        refreshInterval: 60000,
+        refreshInterval: 600000,
     });
 
     const filteredData = swrData?.filter((property) =>
@@ -130,7 +130,7 @@ export default function PropertiesPanel({ data }) {
                                                 e.stopPropagation();
                                                 handleOpenModal(property);
                                             }}
-                                            className="bg-green-500 text-white px-2 py-1 mr-2 rounded"
+                                            className="bg-green-500 text-white px-2 py-1 rounded w-full"
                                         >
                                             Editar
                                         </button>
@@ -139,7 +139,7 @@ export default function PropertiesPanel({ data }) {
                                                 e.stopPropagation();
                                                 deleteToast(property);
                                             }}
-                                            className="bg-red-500 text-white px-2 py-1 rounded"
+                                            className="bg-red-500 text-white px-2 py-1 rounded w-full"
                                         >
                                             Eliminar
                                         </button>
