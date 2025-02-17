@@ -14,12 +14,9 @@ const modalStyles = {
     label: "block text-gray-700 text-sm font-bold mb-1",
     input: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm",
     error: "text-red-500 text-xs italic",
-    buttonContainer: "flex justify-end",
+    buttonContainer: "flex justify-center",
     saveButton: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 text-sm",
     cancelButton: "bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-sm",
-    radioGroup: "flex gap-4",
-    radioLabel: "flex items-center gap-2",
-    radioInput: "form-radio h-4 w-4 text-blue-500",
 };
 
 const validationSchema = Yup.object().shape({
@@ -28,16 +25,18 @@ const validationSchema = Yup.object().shape({
     zona: Yup.string().required("La zona es requerida"),
     street: Yup.string().required("La calle es requerida"),
     streetNumber: Yup.string().required("El número de calle es requerido"),
-    isActive: Yup.boolean().required("Este campo es requerido"),
+    isActive: Yup.boolean(),
 });
 
 export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
+    console.log(data);
+
     const formik = useFormik({
         initialValues: {
             nombre: data?.name || "",
             ciudad: data?.city || "",
             zona: data?.zone || "",
-            isActive: Boolean(data?.isactive), // Asegura que sea booleano
+            isActive: Boolean(data?.isActive),
             street: data?.street || "",
             streetNumber: data?.streetNumber || "",
         },
@@ -93,22 +92,19 @@ export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
                         )
                     )}
 
-                    <div className={modalStyles.inputGroup}>
-                        <label className={modalStyles.label}>Activo:</label>
-                        <div className={modalStyles.radioGroup}>
-                            {[true, false].map((val) => (
-                                <label key={val.toString()} className={modalStyles.radioLabel}>
-                                    <input
-                                        type="radio"
-                                        name="isActive"
-                                        value={val} // Este valor es necesario para que el formulario funcione correctamente
-                                        onChange={() => formik.setFieldValue("isActive", val)} // Establece el valor booleano directamente
-                                        checked={formik.values.isActive === val} // Compara booleanos directamente
-                                        className={modalStyles.radioInput}
-                                    />
-                                    {val ? "Sí" : "No"}
-                                </label>
-                            ))}
+                    <div className={`flex flex-col gap-2 ${modalStyles.inputGroup} `}>
+                        <label className={modalStyles.label}>Esta Activo?</label>
+                        {console.log(formik.values.isActive)}
+
+                        <div className="flex gap-2">
+                            <input
+                                type="checkbox"
+                                name="isActive"
+                                checked={formik.values.isActive}
+                                onChange={formik.handleChange}
+                                className="form-checkbox h-5 w-5 text-blue-500 ml-3"
+                            />
+                            {""} <p>Si</p>
                         </div>
                         {formik.touched.isActive && formik.errors.isActive && <div className={modalStyles.error}>{formik.errors.isActive}</div>}
                     </div>

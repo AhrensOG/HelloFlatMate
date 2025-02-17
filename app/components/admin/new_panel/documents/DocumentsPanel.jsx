@@ -3,19 +3,21 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import DocumentModal from "./DocumentModal";
 import { toast } from "sonner";
+import CreateDocumentModal from "./CreateDocument";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const LABELS_TYPE = {
     ROSTER: "Nómina / Matricula",
-    CONTRACT: "Contrato"
-}
+    CONTRACT: "Contrato",
+};
 
-export default function DocumentsPanel({ data }) {
+export default function DocumentsPanel({ data, users }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedDocument, setSelectedDocument] = useState(null);
     const [documents, setDocuments] = useState(data);
+    const [isOpenCreate, setIsOpenCreate] = useState(false);
 
     const {
         data: swrData,
@@ -87,7 +89,7 @@ export default function DocumentsPanel({ data }) {
     return (
         <div className="h-screen w-full flex flex-col p-4 gap-4">
             <div className="space-y-6">
-                <h2 className="text-2xl font-bold">Documentos</h2>
+                <h2 className="text-2xl font-bold flex gap-3">Documentos</h2>
                 <div className="w-full">
                     <input
                         type="text"
@@ -96,6 +98,9 @@ export default function DocumentsPanel({ data }) {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="border rounded px-3 py-2 w-[450px]"
                     />
+                    <button onClick={() => setIsOpenCreate(true)} className="bg-[#0C1660] text-white px-3 py-3 rounded ml-5">
+                        Crear Documento
+                    </button>
                 </div>
             </div>
             <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
@@ -157,6 +162,7 @@ export default function DocumentsPanel({ data }) {
                 </table>
             </div>
             {isOpen && <DocumentModal isOpen={isOpen} onClose={() => setIsOpen(false)} document={selectedDocument} />}
+            {isOpenCreate && <CreateDocumentModal isOpen={isOpenCreate} onClose={() => setIsOpenCreate(false)} users={users} mutate={mutate} />}
         </div>
     );
 }

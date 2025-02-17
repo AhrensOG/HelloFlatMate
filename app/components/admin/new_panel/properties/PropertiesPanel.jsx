@@ -124,7 +124,7 @@ export default function PropertiesPanel({ data }) {
                                     <td className="border p-2 text-gray-700 text-center">{property.typology}</td>
                                     <td className="border p-2 text-gray-700 text-center">{property.isActive ? "Si" : "No"}</td>
                                     <td className="border p-2 text-gray-700 text-center">{`${property.street}, ${property.city}, ${property.streetNumber}`}</td>
-                                    <td className="border p-2 text-gray-700 text-center flex flex-wrap gap-4 items-center justify-center">
+                                    <td className="border p-2 text-gray-700 text-center flex flex-col gap-2 items-center justify-center">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();

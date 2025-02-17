@@ -36,7 +36,7 @@ const NewAdminPanel = ({ data }) => {
             case "habitaciones":
                 return <RoomsPanel data={data.rooms} />;
             case "documentos":
-                return <DocumentsPanel data={data.documents} />;
+                return <DocumentsPanel data={data.documents} users={data.allUsers?.clients} />;
             case "periodos":
                 return <RentalPeriodsPanel data={data.rentalPeriods} />;
             case "propiedades":

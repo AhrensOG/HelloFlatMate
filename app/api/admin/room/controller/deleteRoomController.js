@@ -10,7 +10,7 @@ export async function deleteRoom(data) {
                 try {
                     const room = await Room.findByPk(data.rooms[i]);
                     if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
-                    await room.update({ isActive: false });
+                    await room.update({ isActive: false, status: "DELETED" });
                 } catch (error) {
                     return NextResponse.json({ error: error.message }, { status: 500 });
                 }
@@ -20,7 +20,7 @@ export async function deleteRoom(data) {
             try {
                 const room = await Room.findByPk(data);
                 if (!room) return NextResponse.json({ error: "Habitacion no encontrada" }, { status: 404 });
-                await room.update({ isActive: false });
+                await room.update({ isActive: false, status: "DELETED" });
                 return NextResponse.json("Habitacion eliminada", { status: 200 });
             } catch (error) {
                 return NextResponse.json({ error: error.message }, { status: 500 });

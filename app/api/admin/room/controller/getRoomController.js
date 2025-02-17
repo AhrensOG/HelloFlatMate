@@ -1,5 +1,6 @@
 import { Property, Room } from "@/db/init";
 import { NextResponse } from "next/server";
+import { Op } from "sequelize";
 
 export async function getAllRooms() {
     try {
@@ -12,8 +13,8 @@ export async function getAllRooms() {
                     attributes: ["id", "city", "street", "streetNumber", "zone", "ownerId", "typology", "category"],
                 },
             ],
+            where: { status: { [Op.ne]: "DELETED" } },
         });
-
         if (!rooms) {
             return NextResponse.json({ error: "Habitaciones no encontradas" }, { status: 404 });
         }
