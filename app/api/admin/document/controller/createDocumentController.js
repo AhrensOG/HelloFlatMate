@@ -1,7 +1,7 @@
 import { Document } from "@/db/init";
 import { NextResponse } from "next/server";
 
-export async function createDocument(data) {
+export async function createDocument(data) { 
     try {
         if (!data) {
             return NextResponse.json({ error: "Missing data" }, { status: 400 });

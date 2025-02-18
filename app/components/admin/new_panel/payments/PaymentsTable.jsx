@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 import { toast } from "sonner";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const TYPE_LABELS = {
   INTERNET: "WIFI",
@@ -130,31 +130,31 @@ const PaymentsTable = ({
               <td className="border p-2 text-gray-700 text-center">
                 {payment.description || payment.name || "-"}
               </td>
-              <td className="border p-2 text-gray-700 text-center space-y-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openEditPayment(payment);
-                  }}
-                  className="bg-green-500 text-white px-2 py-1 rounded w-full h-full"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toast("¿Quieres eliminar el cobro?", {
-                      action: {
-                        label: "Confirmar",
-                        onClick: async () =>
-                          deletePayment({ id: payment.id, type: payment.type }),
-                      },
-                    });
-                  }}
-                  className="bg-red-500 text-white px-2 py-1 rounded w-full h-full"
-                >
-                  Borrar
-                </button>
+              <td className="border p-2 text-gray-700 text-center">
+                <div className="w-full h-full flex gap-2 items-center justify-around">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openEditPayment(payment);
+                    }}
+                  >
+                    <PencilIcon title="Edición" className="size-6 text-green-500"/>
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toast("¿Quieres eliminar el cobro?", {
+                        action: {
+                          label: "Confirmar",
+                          onClick: async () =>
+                            deletePayment({ id: payment.id, type: payment.type }),
+                        },
+                      });
+                    }}
+                  >
+                    <TrashIcon title="Eliminar" className="size-6 text-red-500" />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

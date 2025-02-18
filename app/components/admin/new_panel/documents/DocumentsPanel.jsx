@@ -4,6 +4,7 @@ import useSWR from "swr";
 import DocumentModal from "./DocumentModal";
 import { toast } from "sonner";
 import CreateDocumentModal from "./CreateDocument";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -12,7 +13,7 @@ const LABELS_TYPE = {
     CONTRACT: "Contrato",
 };
 
-export default function DocumentsPanel({ data, users }) {
+export default function DocumentsPanel({ data, users }) { 
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedDocument, setSelectedDocument] = useState(null);
@@ -80,10 +81,10 @@ export default function DocumentsPanel({ data, users }) {
     // Filtra los documentos basados en el texto de búsqueda
     const filteredDocuments = documents?.filter((doc) => {
         const searchTerm = searchQuery.toLowerCase();
-        const name = doc.name?.toLowerCase() || "";
-        const type = doc.type?.toLowerCase() || "";
+        const name = doc.client.name?.toLowerCase() || "";
+        const email = doc.client.email?.toLowerCase() || "";
 
-        return name.includes(searchTerm) || type.includes(searchTerm);
+        return name.includes(searchTerm) || email.includes(searchTerm);
     });
 
     return (
@@ -136,25 +137,25 @@ export default function DocumentsPanel({ data, users }) {
                                     <td className="border p-2 text-gray-700 text-center">{doc.leaseOrderId}</td>
                                     <td className="border p-2 text-gray-700 text-center">{LABELS_TYPE[doc.type]}</td>
                                     {/* <td className={`border p-2 w-36 text-center`}>{doc.status}</td> */}
-                                    <td className="border p-2 text-gray-700 text-center flex gap-2">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleOpenModal(doc);
-                                            }}
-                                            className="bg-green-500 text-white px-2 py-1 mr-2 rounded"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                deleteToast(doc);
-                                            }}
-                                            className="bg-red-500 text-white px-2 py-1 rounded"
-                                        >
-                                            Eliminar
-                                        </button>
+                                    <td className="border p-2 text-gray-700 text-center">
+                                        <div className="flex gap-2 items-center justify-around">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleOpenModal(doc);
+                                                }}
+                                            >
+                                                <PencilIcon title="Editar" className="size-6 text-green-500"/>
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteToast(doc);
+                                                }}
+                                            >
+                                                <TrashIcon title="Eliminar" className="size-6 text-red-500"/>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

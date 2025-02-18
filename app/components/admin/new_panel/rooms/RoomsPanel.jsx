@@ -4,13 +4,23 @@ import useSWR from "swr";
 import RoomEditModal from "./RoomEditModal";
 import Link from "next/link";
 import { toast } from "sonner";
+import { ChevronDownIcon, PencilIcon, TrashIcon, WrenchIcon } from "@heroicons/react/24/outline";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
+
+const TYPOLOGY_LABELS = {
+    "MIXED": "Mixto",
+    "ONLY_WOMEN": "Solo chicas",
+    "ONLY_MEN": "Solo chicos",
+}
 
 export default function RoomsPanel({ data }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState("Estado");
+    
 
     const {
         data: swrData,
@@ -26,15 +36,26 @@ export default function RoomsPanel({ data }) {
         setIsOpen(true);
     };
 
-    const filteredData = swrData?.filter((room) =>
-        [room.id, room.serial, room.name, room.zone, room.type]
+    const filteredData = swrData?.filter((room) => {
+        const matchesSearch = [room.id, room.serial, room.name, room.zone, room.type]
             .map((field) => field?.toString().toLowerCase())
-            .some((field) => field?.includes(searchQuery.toLowerCase()))
-    );
+            .some((field) => field?.includes(searchQuery.toLowerCase()));
+    
+        const matchesStatus =
+            selectedStatusFilter === "all"
+                ? true
+                : selectedStatusFilter === "active"
+                ? room.isActive === true
+                : selectedStatusFilter === "inactive"
+                ? room.isActive === false
+                : true;
+
+        return matchesSearch && matchesStatus;
+    });
+
 
     const handleOnsave = () => {
         setIsOpen(false);
-        console.log("save");
     };
 
     const handleDelete = async (id) => {
@@ -99,12 +120,52 @@ export default function RoomsPanel({ data }) {
                     <thead className="sticky top-0 bg-white">
                         <tr>
                             {/* <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th> */}
-                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Serial</th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Código</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Nombre</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Precio</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Zona</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Tipo</th>
-                            <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Activo?</th>
+                            <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700 relative">
+                                <div className="w-full h-full flex items-center justify-center gap-1">
+                                    ¿Activo?
+                                    <button
+                                        onClick={() => setDropdownOpen(!isDropdownOpen)}
+                                    >
+                                        <ChevronDownIcon className="size-4" />
+                                    </button>
+                                    {isDropdownOpen && (
+                                        <div className="absolute left-0 top-9 mt-1 w-full bg-white border rounded shadow-lg z-10">
+                                        <button
+                                            onClick={() => {
+                                                setSelectedStatusFilter("all")
+                                                setDropdownOpen(false)
+                                            }}
+                                            className="block w-full text-left p-2 hover:bg-gray-100"
+                                        >
+                                            Todos
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setSelectedStatusFilter("active")
+                                                setDropdownOpen(false)
+                                            }}
+                                            className="block w-full text-left p-2 hover:bg-gray-100"
+                                        >
+                                            Activo
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setSelectedStatusFilter("inactive")
+                                                setDropdownOpen(false)
+                                            }}
+                                            className="block w-full text-left p-2 hover:bg-gray-100"
+                                        >
+                                            Inactivo
+                                        </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </th>
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-52">Direccion</th>
                             <th className="border border-t-0 p-2 w-40 text-center font-semibold text-gray-700">Acciones</th>
                         </tr>
@@ -114,42 +175,41 @@ export default function RoomsPanel({ data }) {
                             filteredData?.map((room) => (
                                 <tr key={room.id} className="hover:bg-gray-100 even:bg-gray-50 transition-colors">
                                     {/* <td className="border p-2 text-gray-700 text-center">{room.id}</td> */}
-                                    <td className="border p-2 text-gray-700 text-left">{room.serial}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{room.serial}</td>
                                     <td className="border p-2 text-gray-700 text-center">{room.name}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{room.price}</td>
+                                    <td className="border p-2 text-gray-700 text-center"> €{room.price}</td>
                                     <td className="border p-2 text-gray-700 text-center">{room.property.zone}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{room.typology || room.property.typology}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{TYPOLOGY_LABELS[room.property.typology]}</td>
                                     <td className="border p-2 text-gray-700 text-center">{room.isActive ? "Si" : "No"}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{`${room.property.street}, ${room.property.city}, ${room.property.country}, piso ${room.floor}, departamento ${room.door}`}</td>
-                                    <td className="border p-2 text-gray-700 text-center flex flex-wrap gap-4 items-center justify-center">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleOpenModal(room);
-                                            }}
-                                            className="bg-green-500 text-white px-2 py-1 rounded w-full"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                deleteToast(room);
-                                            }}
-                                            className="bg-red-500 text-white px-2 py-1 rounded w-full"
-                                        >
-                                            Eliminar
-                                        </button>
-                                        <Link
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            href={`/pages/admin/update/${room.property.id}/${room.property.category}`}
-                                            target="_blank"
-                                            className="bg-blue-500 text-white px-2 py-1 rounded w-full"
-                                        >
-                                            Editar completo
-                                        </Link>
+                                    <td className="border p-2 text-gray-700 text-center">{`${room.property.street} ${room.property.streetNumber}, ${room.property.city}`}</td>
+                                    <td className="border p-2 text-gray-700 text-center">
+                                        <div className="w-full h-full flex gap-2 items-center justify-around">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleOpenModal(room);
+                                                }}
+                                            >
+                                                <PencilIcon title="Edición rapida" className="size-6 text-green-500"/>
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteToast(room);
+                                                }}
+                                            >
+                                                <TrashIcon title="Eliminar" className="size-6 text-red-500" />
+                                            </button>
+                                            <Link
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                }}
+                                                href={`/pages/admin/update/${room.property.id}/${room.property.category}`}
+                                                target="_blank"
+                                            >
+                                                <WrenchIcon title="Edición completa" className="size-6 text-blue-500" />
+                                            </Link>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

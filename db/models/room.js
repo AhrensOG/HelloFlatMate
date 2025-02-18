@@ -94,7 +94,7 @@ const roomInit = (sequelize, DataTypes) => {
             },
             tags: {
                 type: DataTypes.ARRAY(DataTypes.STRING),
-                allowNull: true,
+                allowNull: true, 
             },
         },
         {

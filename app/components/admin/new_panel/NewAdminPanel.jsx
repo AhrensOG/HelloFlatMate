@@ -11,7 +11,7 @@ import DocumentsPanel from "./documents/DocumentsPanel";
 import RentalPeriodsPanel from "./rental_periods/RentalPeriodsPanel";
 import PropertiesPanel from "./properties/PropertiesPanel";
 
-const NewAdminPanel = ({ data }) => {
+const NewAdminPanel = ({ data }) => { 
     const router = useRouter();
     const searchParams = useSearchParams();
     const section = searchParams.get("section") || "propiedades";

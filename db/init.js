@@ -425,7 +425,7 @@ const SearchRequest = require("./models/searchRequest");
         // await Owner.bulkCreate(testOwnerData);
         // await Room.bulkCreate(testRoom);
 
-        console.log("Data inserted");
+        // console.log("Data inserted");
     } catch (error) {
         console.log(error);
     }

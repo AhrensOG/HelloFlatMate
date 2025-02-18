@@ -2,7 +2,7 @@ import { Property, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 import { Op } from "sequelize";
 
-export async function getAllRooms() {
+export async function getAllRooms() { 
     try {
         const rooms = await Room.findAll({
             attributes: ["id", "serial", "price", "name", "status", "couple", "floor", "door", "typology", "isActive"],

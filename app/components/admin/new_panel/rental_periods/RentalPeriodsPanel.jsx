@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 import RentalPeriodModal from "./RentalPeriodModal";
 import CreateRentalPeriodModal from "./CreateRentalModal";
+import { PencilIcon } from "@heroicons/react/24/outline";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -129,15 +130,14 @@ export default function RentalPeriodsPanel({ data }) {
                                     <td className="border p-2 text-gray-700 text-center">{period.id}</td>
                                     <td className="border p-2 text-gray-700 text-center">{formatDateToDDMMYYYY(period.startDate)}</td>
                                     <td className="border p-2 text-gray-700 text-center">{formatDateToDDMMYYYY(period.endDate)}</td>
-                                    <td className="border p-2 text-gray-700 text-center flex gap-2">
+                                    <td className="border p-2 text-gray-700 text-center">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 handleOpenModal(period);
                                             }}
-                                            className="bg-green-500 text-white px-2 py-1 mr-2 rounded"
                                         >
-                                            Editar
+                                            <PencilIcon title="Editar" className="size-6 text-green-500"/>
                                         </button>
                                     </td>
                                 </tr>

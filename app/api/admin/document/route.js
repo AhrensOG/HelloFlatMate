@@ -25,7 +25,7 @@ export async function DELETE(req) {
     return result;
 }
 
-export async function POST(req) {
+export async function POST(req) { 
     const data = await req.json();
     const result = await createDocument(data);
     return result;

@@ -29,8 +29,6 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
-    console.log(data);
-
     const formik = useFormik({
         initialValues: {
             nombre: data?.name || "",

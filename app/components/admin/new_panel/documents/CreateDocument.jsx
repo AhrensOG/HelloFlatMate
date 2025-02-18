@@ -28,7 +28,7 @@ const validationSchema = Yup.object().shape({
     }),
 });
 
-export default function CreateDocumentModal({ isOpen, onClose, users }) {
+export default function CreateDocumentModal({ isOpen, onClose, users }) { 
     const [selectedUser, setSelectedUser] = useState(null);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchValue, setSearchValue] = useState("");
@@ -57,7 +57,6 @@ export default function CreateDocumentModal({ isOpen, onClose, users }) {
     const handleUploadImage = async (files) => {
         try {
             const uploadedFile = await uploadFiles(files, "Documentos");
-            console.log(uploadedFile);
             return uploadedFile; // Return uploaded files for form submission
         } catch (error) {
             throw error;
@@ -65,11 +64,11 @@ export default function CreateDocumentModal({ isOpen, onClose, users }) {
     };
 
     const handleSubmit = async (values) => {
+        const toastId = toast.loading("Guardando...");
         try {
-            toast.loading("Guardando...");
             const uploadedImages = await handleUploadImage(values.images);
             const response = await axios.post("/api/admin/document", {
-                name: `${selectedUser.name} ${selectedUser.lastName} - Nomina/Matricula`,
+                name: `Nómina / Matrícula`,
                 urls: uploadedImages.map((doc) => doc.url),
                 type: "ROSTER",
                 documentableId: selectedUser.id,
@@ -77,10 +76,9 @@ export default function CreateDocumentModal({ isOpen, onClose, users }) {
                 leaseOrderId: values.leaseOrder,
                 leaseOrderType: "ROOM",
             });
-            toast.dismiss();
-            toast.success("Datos guardados correctamente.", { duration: 5000 });
+            toast.success("Datos guardados correctamente.", {id: toastId });
         } catch (error) {
-            toast.error("Error al guardar los datos.");
+            toast.info("Error al guardar los datos.", { id: toastId });
         }
     };
 

@@ -4,8 +4,15 @@ import useSWR from "swr";
 import Link from "next/link";
 import { toast } from "sonner";
 import EditPropertyModal from "./EditPropertyModal";
+import { PencilIcon, TrashIcon, WrenchIcon } from "@heroicons/react/24/outline";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
+
+const TYPOLOGY_LABELS = {
+    "MIXED": "Mixto",
+    "ONLY_WOMEN": "Solo chicas",
+    "ONLY_MEN": "Solo chicos",
+}
 
 export default function PropertiesPanel({ data }) {
     const [searchQuery, setSearchQuery] = useState("");
@@ -21,7 +28,7 @@ export default function PropertiesPanel({ data }) {
         refreshInterval: 600000,
     });
 
-    const filteredData = swrData?.filter((property) =>
+    const filteredData = (swrData || [])?.filter((property) =>
         [property.id, property.serial, property.name, property.zone]
             .map((field) => field?.toString().toLowerCase())
             .some((field) => field?.includes(searchQuery.toLowerCase()))
@@ -101,58 +108,60 @@ export default function PropertiesPanel({ data }) {
                 <table className="w-full border-collapse">
                     <thead className="sticky top-0 bg-white">
                         <tr>
-                            <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th>
-                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Serial</th>
-                            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Nombre</th>
+                            {/* <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th> */}
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Código</th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Nombre</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Ciudad</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Zona</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Tipo</th>
-                            <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Activo?</th>
+                            {/* <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">Activo?</th> */}
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-52">Direccion</th>
-                            <th className="border border-t-0 p-2 w-60 text-center font-semibold text-gray-700">Acciones</th>
+                            <th className="border border-t-0 p-2 w-40 text-center font-semibold text-gray-700">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredData &&
                             filteredData?.map((property) => (
                                 <tr key={property.id} className="hover:bg-gray-100 even:bg-gray-50 transition-colors">
-                                    <td className="border p-2 text-gray-700 text-center">{property.id}</td>
-                                    <td className="border p-2 text-gray-700 text-left">{property.serial}</td>
+                                    {/* <td className="border p-2 text-gray-700 text-center">{property.id}</td> */}
+                                    <td className="border p-2 text-gray-700 text-center">{property.serial}</td>
                                     <td className="border p-2 text-gray-700 text-center">{property.name}</td>
                                     <td className="border p-2 text-gray-700 text-center">{property.city}</td>
                                     <td className="border p-2 text-gray-700 text-center">{property.zone}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{property.typology}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{property.isActive ? "Si" : "No"}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{`${property.street}, ${property.city}, ${property.streetNumber}`}</td>
-                                    <td className="border p-2 text-gray-700 text-center flex flex-col gap-2 items-center justify-center">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleOpenModal(property);
-                                            }}
-                                            className="bg-green-500 text-white px-2 py-1 rounded w-full"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                deleteToast(property);
-                                            }}
-                                            className="bg-red-500 text-white px-2 py-1 rounded w-full"
-                                        >
-                                            Eliminar
-                                        </button>
-                                        <Link
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            href={`/pages/admin/update/${property.id}/${property.category}`}
-                                            className="bg-blue-500 text-white px-2 py-1 rounded"
-                                            target="_blank"
-                                        >
-                                            Editar completo
-                                        </Link>
+                                    <td className="border p-2 text-gray-700 text-center">{TYPOLOGY_LABELS[property.typology]}</td>
+                                    {/* <td className="border p-2 text-gray-700 text-center">{property.isActive ? "Si" : "No"}</td> */}
+                                    <td className="border p-2 text-gray-700 text-center">{`${property.street} ${property.streetNumber}, ${property.city}`}</td>
+                                    <td className="border p-2 text-gray-700 text-center">
+                                        <div className="w-full h-full flex gap-2 items-center justify-around">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleOpenModal(property);
+                                                }}
+                                                className="h-full"
+                                            >
+                                                <PencilIcon title="Edición rapida" className="size-6 text-green-500"/>
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteToast(property);
+                                                }}
+                                                className="h-full"
+                                            >
+                                                <TrashIcon title="Eliminar" className="size-6 text-red-500" />
+                                            </button>
+                                            <Link
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                }}
+                                                className="h-full"
+                                                href={`/pages/admin/update/${property.id}/${property.category}`}
+                                                target="_blank"
+                                            >
+                                                <WrenchIcon title="Edición completa" className="size-6 text-blue-500" />
+                                            </Link>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

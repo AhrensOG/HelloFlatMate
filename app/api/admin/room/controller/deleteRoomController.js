@@ -1,7 +1,7 @@
 import { Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
-export async function deleteRoom(data) {
+export async function deleteRoom(data) { 
     if (data) {
         if (Array.isArray(data.rooms) && data.rooms.length > 0) {
             for (let i = 0; i < data.rooms.length; i++) {
