@@ -10,8 +10,9 @@ import RoomsPanel from "./rooms/RoomsPanel";
 import DocumentsPanel from "./documents/DocumentsPanel";
 import RentalPeriodsPanel from "./rental_periods/RentalPeriodsPanel";
 import PropertiesPanel from "./properties/PropertiesPanel";
+import ConsumptionsPanel from "./consumptions/ConsumptionsPanel";
 
-const NewAdminPanel = ({ data }) => { 
+const NewAdminPanel = ({ data }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const section = searchParams.get("section") || "propiedades";
@@ -41,6 +42,8 @@ const NewAdminPanel = ({ data }) => {
                 return <RentalPeriodsPanel data={data.rentalPeriods} />;
             case "propiedades":
                 return <PropertiesPanel data={data.properties} />;
+            case "consumos":
+                return <ConsumptionsPanel data={{}} />;
             default:
                 return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
         }
