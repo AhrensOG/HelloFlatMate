@@ -43,7 +43,7 @@ const NewAdminPanel = ({ data }) => {
             case "propiedades":
                 return <PropertiesPanel data={data.properties} />;
             case "consumos":
-                return <ConsumptionsPanel data={{}} />;
+                return <ConsumptionsPanel data={data.consumptions} users={data.allUsers?.clients} />;
             default:
                 return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
         }

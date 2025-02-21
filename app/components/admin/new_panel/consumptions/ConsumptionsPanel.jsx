@@ -3,12 +3,19 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { toast } from "sonner";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import CreateConsumptionsModal from "./CreateConsumptionsModal";
+import formatDateToDDMMYYYY from "../utils/formatDate";
+import EditConsumptionModal from "./EditConsumptionModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function ConsumptionsPanel({ data }) {
+export default function ConsumptionsPanel({ data, users }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [consumptions, setConsumptions] = useState(data);
+    const [createIsOpen, setCreateIsOpen] = useState(false);
+    const [editIsOpen, setEditIsOpen] = useState(false);
+    const [selectedConsumption, setSelectedConsumption] = useState(null);
+    console.log(data);
 
     const {
         data: swrData,
@@ -19,10 +26,6 @@ export default function ConsumptionsPanel({ data }) {
         refreshInterval: 60000,
     });
 
-    useEffect(() => {
-        setConsumptions(swrData || data);
-    }, [swrData, data]);
-
     const handleDelete = async (id) => {
         try {
             await axios.delete(`/api/admin/consumptions?id=${id}`);
@@ -31,6 +34,11 @@ export default function ConsumptionsPanel({ data }) {
         } catch (error) {
             throw error;
         }
+    };
+
+    const handleEdit = (consumption) => {
+        setSelectedConsumption(consumption);
+        setEditIsOpen(true);
     };
 
     const deleteToast = (consumption) => {
@@ -62,12 +70,23 @@ export default function ConsumptionsPanel({ data }) {
         );
     };
 
-    // const filteredConsumptions = consumptions?.filter((consumption) => {
-    //     const searchTerm = searchQuery.toLowerCase();
-    //     const name = consumption.name?.toLowerCase() || "";
+    let filteredConsumptions = consumptions?.filter((consumption) => {
+        const searchTerm = searchQuery.toLowerCase();
+        const user = consumption?.client?.name?.toLowerCase() + " " + consumption?.client?.lastName?.toLowerCase() || "";
+        const type = consumption?.type?.toLowerCase() || "";
+        const id = consumption?.id?.toString() || "";
 
-    //     return name.includes(searchTerm);
-    // });
+        return user.includes(searchTerm) || type.includes(searchTerm) || id.includes(searchTerm);
+    });
+
+    const handleModify = (data) => {
+        filteredConsumptions = filteredConsumptions.map((consumption) => {
+            if (data.id === consumption.id) {
+                return { ...consumption, type: data.type, amount: data.amount };
+            }
+            return consumption;
+        });
+    };
 
     return (
         <div className="h-screen w-full flex flex-col p-4 gap-4">
@@ -76,11 +95,15 @@ export default function ConsumptionsPanel({ data }) {
                 <div className="w-full">
                     <input
                         type="text"
-                        placeholder="Buscar por nombre..."
+                        placeholder="Buscar por usuario, tipo o id..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="border rounded px-3 py-2 w-[450px]"
                     />
+
+                    <button onClick={() => setIsOpenCreate(true)} className="bg-[#0C1660] text-white px-3 py-3 rounded ml-5">
+                        Crear Consumo
+                    </button>
                 </div>
             </div>
             <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
@@ -88,26 +111,28 @@ export default function ConsumptionsPanel({ data }) {
                     <thead className="sticky top-0 bg-white">
                         <tr>
                             <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th>
-                            <th className="border border-t-0 p-2 w-72 text-center font-semibold text-gray-700">Nombre</th>
+                            <th className="border border-t-0 p-2 w-72 text-center font-semibold text-gray-700">Usuario</th>
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Valor</th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Tipo</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Fecha</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {/* {filteredConsumptions &&
-                            filteredConsumptions?.map((consumption) => (
+                        {filteredConsumptions.length > 0 ? (
+                            filteredConsumptions.map((consumption) => (
                                 <tr key={consumption.id} className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer">
-                                    <td className="border p-2 text-gray-700 text-center">{consumption.id}</td>
-                                    <td className="border p-2 text-gray-700 text-left">{consumption.name}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{consumption.value}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{consumption.date}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{consumption?.id}</td>
+                                    <td className="border p-2 text-gray-700 text-left">{`${consumption?.client?.name} ${consumption?.client?.lastName}`}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{consumption?.amount}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{consumption?.type}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{formatDateToDDMMYYYY(consumption?.date)}</td>
                                     <td className="border p-2 text-gray-700 text-center">
                                         <div className="flex gap-2 items-center justify-around">
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    // handleOpenModal(consumption); // You'll need to implement handleOpenModal if you want to edit
+                                                    handleEdit(consumption);
                                                 }}
                                             >
                                                 <PencilIcon title="Editar" className="size-6 text-green-500" />
@@ -123,10 +148,26 @@ export default function ConsumptionsPanel({ data }) {
                                         </div>
                                     </td>
                                 </tr>
-                            ))} */}
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="6" className="border p-4 text-gray-500 text-center">
+                                    No hay consumos registrados.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
+            {createIsOpen && <CreateConsumptionsModal isOpen={createIsOpen} onClose={() => setCreateIsOpen(false)} users={users} />}
+            {editIsOpen && (
+                <EditConsumptionModal
+                    isOpen={editIsOpen}
+                    onClose={() => setEditIsOpen(false)}
+                    consumption={selectedConsumption}
+                    update={handleModify}
+                />
+            )}
         </div>
     );
 }
