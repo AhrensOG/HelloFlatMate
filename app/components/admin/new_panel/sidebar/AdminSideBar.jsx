@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Bars3Icon,
   BuildingOffice2Icon,
   BuildingOfficeIcon,
   BanknotesIcon,
@@ -13,8 +12,10 @@ import {
   ArrowRightStartOnRectangleIcon,
   ClipboardDocumentIcon,
   CalendarDaysIcon,
+  DocumentCurrencyEuroIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { logOut } from "@/app/firebase/logOut";
 
 const AdminSideBar = ({ onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,10 +29,11 @@ const AdminSideBar = ({ onSelect }) => {
     { name: "Usuarios", icon: <UserGroupIcon className="w-6 h-6" /> },
     { name: "Documentos", icon: <ClipboardDocumentIcon className="w-6 h-6" /> },
     { name: "Periodos", icon: <CalendarDaysIcon className="w-6 h-6" /> },
-    {
-      name: "Cerrar sesión",
-      icon: <ArrowRightStartOnRectangleIcon className="w-6 h-6" />,
-    },
+    { name: "Consumos", icon: <DocumentCurrencyEuroIcon className="w-6 h-6" /> },
+    // {
+    //   name: "Cerrar sesión",
+    //   icon: <ArrowRightStartOnRectangleIcon className="w-6 h-6" />,
+    // },
   ];
 
   return (
@@ -78,6 +80,27 @@ const AdminSideBar = ({ onSelect }) => {
               </motion.span>
             </motion.div>
           ))}
+            <motion.div
+              className="flex items-center px-4 py-3 rounded-lg cursor-pointer hover:bg-slate-50 transition-all duration-300 group"
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 2 }}
+              onClick={() => logOut()}
+            >
+              {/* Icon */}
+              <div className="w-6 h-6 text-[#440cac] transition-colors duration-300">
+                <ArrowRightStartOnRectangleIcon className="w-6 h-6" />
+              </div>
+
+              {/* Text */}
+              <motion.span
+                className={`ml-4 text-gray-500 whitespace-nowrap font-bold transition-all duration-300 group-hover:text-[#5ce0e5] ${
+                  !isOpen ? "opacity-0 w-0" : "opacity-100 w-auto"
+                }`}
+              >
+                Cerrar Sesión
+              </motion.span>
+            </motion.div>
         </div>
       </motion.div>
     </AnimatePresence>
