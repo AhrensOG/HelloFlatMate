@@ -8,27 +8,27 @@ export default function ThirdSection() {
         {
             title: t("home_third_sect_1_title"),
             description: t("home_third_sect_1_desc"),
-            image: "/home/new_home/dormir.gif",
+            image: "/home/new_home/dormir.png",
         },
         {
             title: t("home_third_sect_2_title"),
             description: t("home_third_sect_2_desc"),
-            image: "/home/new_home/documento.gif",
+            image: "/home/new_home/documento.png",
         },
         {
             title: t("home_third_sect_3_title"),
             description: t("home_third_sect_3_desc"),
-            image: "/home/new_home/robot-de-chat.gif",
+            image: "/home/new_home/robot-de-chat.png",
         },
         {
             title: t("home_third_sect_4_title"),
             description: t("home_third_sect_4_desc"),
-            image: "/home/new_home/escritorio.gif",
+            image: "/home/new_home/escritorio.png",
         },
         {
             title: t("home_third_sect_5_title"),
             description: t("home_third_sect_5_desc"),
-            image: "/home/new_home/mecanico.gif",
+            image: "/home/new_home/mecanico.png",
         },
         {
             title: t("home_third_sect_6_title"),
@@ -42,11 +42,11 @@ export default function ThirdSection() {
             {articles.map(({ title, description, image }, index) => (
                 <article
                     key={index}
-                    className="border-2 rounded-2xl flex flex-col items-center justify-stretch gap-4 p-4 w-full max-w-[500px] hover:scale-[1.025] hover:shadow-reservation-list duration-300 transition"
+                    className="border-2 rounded-2xl flex flex-col items-center justify-between gap-4 p-4 w-full max-w-[500px] hover:scale-[1.025] hover:shadow-reservation-list duration-300 transition"
                 >
                     <h1 className="text-3xl font-bold text-center">{title}</h1>
                     <h2 className="text-lg text-center">{description}</h2>
-                    <Image src={image} width={150} height={150} alt={title} />
+                    <Image src={image} width={130} height={130} alt={title} />
                 </article>
             ))}
         </section>

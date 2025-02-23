@@ -101,7 +101,9 @@ const UserModal = ({ user, onClose }) => {
             <strong>Teléfono de emergencia:</strong> {emergencyPhone}
           </p>
           <hr className="my-4" />
-          <h3 className="text-lg font-semibold mb-2">Otros datos del usuario</h3>
+          <h3 className="text-lg font-semibold mb-2">
+            Otros datos del usuario
+          </h3>
           <p>
             <strong>Review Personal:</strong> {personalReview}
           </p>
@@ -153,39 +155,36 @@ const UserModal = ({ user, onClose }) => {
           <hr className="my-4" />
           <div className="space-y-1 text-">
             <h3 className="text-lg font-semibold mb-2">Documentos</h3>
-            {documents?.filter((document) => document.type === "ROSTER")
-              .length > 0 ? (
+            {documents?.length > 0 ? (
               <div className="flex flex-wrap gap-4">
-                {documents
-                  .filter((document) => document.type === "ROSTER")
-                  .map((document) => (
-                    <div
-                      key={document.id}
-                      className="flex-shrink-0 border p-2 rounded-lg shadow-md"
-                    >
-                      {/* Mostrar Información del Documento */}
-                      <p className="font-semibold text-gray-800">
-                        {document.name}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {formatDateToDDMMYYYY(document.createdAt)}
-                      </p>
+                {documents.map((document) => (
+                  <div
+                    key={document.id}
+                    className="flex-shrink-0 border p-2 rounded-lg shadow-md"
+                  >
+                    {/* Mostrar Información del Documento */}
+                    <p className="font-semibold text-gray-800">
+                      {document.name}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {formatDateToDDMMYYYY(document.createdAt)}
+                    </p>
 
-                      {/* Mostrar las URLs */}
-                      {document.urls?.map((url) => (
-                        <div key={url} className="mt-2">
-                          <Link
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 hover:underline text-sm"
-                          >
-                            Ver documento
-                          </Link>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
+                    {/* Mostrar las URLs */}
+                    {document.urls?.map((url) => (
+                      <div key={url} className="mt-2">
+                        <Link
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:underline text-sm"
+                        >
+                          Ver documento
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             ) : (
               <p>No hay documentos</p>

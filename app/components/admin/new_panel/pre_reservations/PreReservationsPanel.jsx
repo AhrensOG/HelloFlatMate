@@ -1,8 +1,7 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
-import { Context } from "@/app/context/GlobalContext";
 import OrderModal from "./OrderModal";
 import PreReservationsTable from "./PreReservationsTable";
 import useSWR from "swr";
@@ -11,7 +10,6 @@ import SkeletonLoader from "../SkeletonLoader";
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const PreReservationsPanel = ({ leaseOrders = [] }) => {
-    const { state } = useContext(Context);
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -59,15 +57,10 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
 
     const handleApprove = async (id, roomId) => {
         const toastId = toast.loading("Procesando...");
-        if (!state.user) {
-            toast.dismiss(toastId);
-            return;
-        }
         try {
             const dataToSend = {
                 action: "PENDING",
                 leaseOrderId: id,
-                adminId: state.user?.id,
                 roomId,
             };
             await axios.patch("/api/admin/lease_order", dataToSend);
@@ -85,15 +78,10 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
 
     const handleReject = async (id, roomId) => {
         const toastId = toast.loading("Procesando...");
-        if (!state.user) {
-            toast.dismiss(toastId);
-            return;
-        }
         try {
             const dataToSend = {
                 action: "REJECTED",
                 leaseOrderId: id,
-                adminId: state.user?.id,
                 roomId,
             };
             await axios.patch("/api/admin/lease_order", dataToSend);
@@ -128,14 +116,13 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-auto border rounded-lg">
-                <PreReservationsTable
-                    filteredOrders={filteredOrders}
-                    handleApprove={handleApprove}
-                    handleReject={handleReject}
-                    handleOpenModal={handleOpenModal}
-                />
-            </div>
+            <PreReservationsTable
+                filteredOrders={filteredOrders}
+                handleApprove={handleApprove}
+                handleReject={handleReject}
+                handleOpenModal={handleOpenModal}
+            />
+
             {isOpen && <OrderModal order={selectedOrder} onClose={handleCloseModal} />}
         </div>
     );

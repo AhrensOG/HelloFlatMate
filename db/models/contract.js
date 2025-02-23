@@ -31,7 +31,15 @@ const contractInit = (sequelize, DataTypes) => {
         contractableType: {
             type: DataTypes.ENUM('PROPERTY', 'ROOM'),
             allowNull: false
-        }
+        },
+        leaseOrderId: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        leaseOrderType: {
+            type: DataTypes.ENUM('PROPERTY', 'ROOM'),
+            allowNull: true
+        },
     },
         {
             sequelize,

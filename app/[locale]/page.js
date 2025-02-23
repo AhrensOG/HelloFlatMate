@@ -216,9 +216,9 @@ export default function Home() {
                     <NavbarV3 />
                 </header>
                 <section className="relative flex flex-col gap-8 bg-white items-center justify-around py-10 pb-40 px-2">
-                    <h1 className="text-3xl font-bold">hello flat mate</h1>
+                    <h1 className="text-3xl font-bold">helloflatmate</h1>
                     <h3 className="text-lg text-center">{HTMLReactParser(t("home_title"))}</h3>
-                    <div className="mb-64 w-full">
+                    <div className="mb-0 sm:mb-20 md:mb-40 lg:mb-60 xl:mb-96 2xl:mb-[450px] w-full">
                         <Suspense fallback={<Loader />}>
                             <SecondaryCategorySelector
                                 helloRoomProperties={helloRoomProperties}
@@ -229,8 +229,8 @@ export default function Home() {
                             />
                         </Suspense>
                     </div>
-                    <div className="absolute w-44 h-32 sm:w-full sm:h-96 bottom-0 left-0">
-                        <Image src={"/home/new_home/hero4.jpeg"} fill className="object-cover" />
+                    <div className="absolute w-full h-36 sm:w-full sm:h-60 md:h-72 lg:h-96 xl:h-[500px] 2xl:h-[600px] bottom-0 left-0">
+                        <Image src={"/home/new_home/hero4.jpeg"} fill className="object-cover object-bottom" alt="Valencia" />
                     </div>
                 </section>
                 <SecondSection />

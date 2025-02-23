@@ -174,7 +174,7 @@ export default function NavbarV3({ fixed = false }) {
                     >
                         <div className="flex flex-col">
                             <Link
-                                href="/lastrooms"
+                                href="/ultimas-habitaciones"
                                 target="_blank"
                                 className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                             >

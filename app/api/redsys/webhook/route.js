@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import CryptoJS from "crypto-js";
 import { processReservation } from "./utils/reservationFunctions";
 import { processMonthlyPayment } from "./utils/monthlyFunctions";
+import { processSupplyPayment } from "./utils/supplyFunctions";
 
 const { MERCHANT_KEY_BASE64, HFM_MAIL } = process.env;
 
@@ -140,11 +141,12 @@ export async function POST(request) {
   console.log("✅ Pago aprobado:", dsResponseCode);
 
   const {
+    paymentId,
+    supplyId,
     order,
     paymentType,
     roomId,
     leaseOrderId,
-    supplyId,
     category,
     userEmail,
     price,
@@ -171,6 +173,7 @@ export async function POST(request) {
       });
     case "monthly":
       return await processMonthlyPayment({
+        paymentId,
         paymentableId,
         leaseOrderId,
         paymentableType,
@@ -181,7 +184,20 @@ export async function POST(request) {
         order,
         HFM_MAIL,
       });
+    case "supply":
+      return await processSupplyPayment({
+        order,
+        supplyId,
+        clientId,
+        HFM_MAIL,
+      });
     default:
-      console.log(`Tipo de pago desconocido: ${paymentType}`);
+      console.log(`❌ Tipo de pago desconocido: ${paymentType}`);
+      return NextResponse.json(
+        {
+          error: `❌ Tipo de pago desconocido: ${paymentType}`,
+        },
+        { status: 400 }
+      );
   }
 }

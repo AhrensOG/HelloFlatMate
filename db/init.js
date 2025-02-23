@@ -19,6 +19,7 @@ const RentalPeriod = require("./models/rentalPeriod");
 const Worker = require("./models/worker");
 const RentalItem = require("./models/rentalItem");
 const RentPayment = require("./models/rentPayment");
+const Consumption = require("./models/consumption");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 const SearchRequest = require("./models/searchRequest");
 
@@ -413,6 +414,12 @@ const SearchRequest = require("./models/searchRequest");
             constraints: false,
         });
 
+        // Consumption
+        Client.hasMany(Consumption, { as: "consumptions", foreignKey: "clientId" });
+        Consumption.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+        LeaseOrderRoom.hasMany(Consumption, { as: "consumptions", foreignKey: "leaseOrderRoomId" });
+        Consumption.belongsTo(LeaseOrderRoom, { as: "leaseOrderRoom", foreignKey: "leaseOrderRoomId" });
+
         // await connection.drop({ cascade: true })
         await connection.sync({ alter: true });
         console.log("Initializing DB");
@@ -453,4 +460,5 @@ module.exports = {
     Worker,
     RentPayment,
     SearchRequest,
+    Consumption,
 };

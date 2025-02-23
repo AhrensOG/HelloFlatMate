@@ -6,7 +6,7 @@ import { deleteRoom } from "./controller/deleteRoomController";
 
 export async function GET() {
     const rooms = await getAllRooms();
-    return NextResponse.json(rooms);
+    return rooms;
 }
 
 export async function POST(req) {
@@ -19,11 +19,11 @@ export async function PUT(req) {
     try {
         const data = await req.json();
         const { searchParams } = new URL(req.url);
-        const id = searchParams.get('id');
+        const id = searchParams.get("id");
         const updatedRoom = await updateRoom(id, data);
         return NextResponse.json(updatedRoom);
     } catch (error) {
-        return NextResponse.json({ error: 'Error updating room', details: error.message }, { status: 500 });
+        return NextResponse.json({ error: "Error updating room", details: error.message }, { status: 500 });
     }
 }
 
@@ -31,7 +31,7 @@ export async function DELETE(req) {
     const data = await req.json();
 
     const result = await deleteRoom(data);
-    return result
+    return result;
 }
 
 export async function PATCH(req) {
@@ -40,5 +40,5 @@ export async function PATCH(req) {
     if (data) {
         result = await setProperty(data);
     }
-    return result
+    return result;
 }

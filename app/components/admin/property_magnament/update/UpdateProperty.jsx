@@ -31,6 +31,7 @@ import LocationSection from "@/app/components/user/property-details/main/Locatio
 import { AnimatePresence, motion } from "framer-motion";
 import CalendarSection from "../create/main/CalendarSection";
 import RentalPeriodRoomEdit from "../create/main/room_section/RentalPeriodRoomEdit";
+import PropertyManagmentNavBarDetails from "@/app/components/user/property-details/header/PropertyManagmentNavBarDetails";
 
 export default function UpdateProperty({ data = false, category, handleBack }) {
     const [property, setProperty] = useState(data ? data : null);
@@ -350,7 +351,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                         <div className="w-full">
                             <SliderUpdateTemplate data={sliderImage} action={handleShowSliderModal} />
                         </div>
-                        <NavBarDetails link={() => router.back()} callBack={handleBack} detailLink={`/pages/property-details/${data?.id}`} />
+                        <PropertyManagmentNavBarDetails link={() => router.back()} callBack={handleBack} detailLink={`/pages/property-details/${data?.id}`} />
                     </header>
                     <main className={`  flex flex-col gap-[2.5rem] grow m-4 text-[#0D171C]`}>
                         <TitleSectionTemplate
@@ -492,7 +493,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
 
                 <div className="hidden md:flex flex-col w-full gap-2 p-4">
                     <header className="w-full space-y-4">
-                        <NavBarDetails link={() => router.back()} callBack={handleBack} detailLink={`/pages/property-details/${data?.id}`} />
+                        <PropertyManagmentNavBarDetails link={() => router.back()} callBack={handleBack} detailLink={`/pages/property-details/${data?.id}`} />
                     </header>
                     <main className={`  flex flex-row gap-10 grow text-[#0D171C]`}>
                         {/* LEFT SIDE */}

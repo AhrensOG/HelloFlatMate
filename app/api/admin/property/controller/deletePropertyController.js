@@ -1,7 +1,6 @@
 import { Property } from "@/db/init";
 import { NextResponse } from "next/server";
 
-
 export async function deleteProperty(id) {
     try {
         const property = await Property.findByPk(id);
@@ -9,6 +8,7 @@ export async function deleteProperty(id) {
             return NextResponse.json({ error: "Propiedad no encontrada" }, { status: 404 });
         }
         property.status = "DELETED";
+        property.isActive = false;
         await property.save();
         return NextResponse.json({ message: "Propiedad eliminada correctamente" }, { status: 200 });
     } catch (error) {

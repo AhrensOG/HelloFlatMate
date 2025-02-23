@@ -340,7 +340,7 @@ const CategorySelector = ({
                                 options={lastroomLocations}
                                 data={filters}
                                 setData={setFilters}
-                                title="¿En qué zona?"
+                                title={t("zone")} 
                                 name="zone"
                             />
                             <Select
@@ -348,7 +348,7 @@ const CategorySelector = ({
                                 options={lastroomRentalPeriods}
                                 data={filters}
                                 setData={setFilters}
-                                title="Selecciona un periodo"
+                                title={t("dates")}
                                 name="rentalPeriod"
                             />
                             <Select

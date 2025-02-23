@@ -27,7 +27,7 @@ export default function HelloRoomContract({
 }) {
   return (
     <div className="w-full grid place-items-center">
-      <div className="container mx-auto p-4 max-w-screen-lg max-h-[50vh] overflow-y-scroll w-full text-justify">
+      <div className="container mx-auto p-4 max-w-screen-lg max-h-max overflow-y-auto w-full text-justify">
         <p className="text-justify mb-4">
           <strong>
             CONTRATO DE ARRENDAMIENTO DE HABITACIÓN EN VIVIENDA COMPARTIDA
@@ -35,27 +35,27 @@ export default function HelloRoomContract({
         </p>
         <p className="mb-4 text-sm break-words font-light">
           En la ciudad de Valencia, a{" "}
-          <span className="font-medium">{contractDate}</span>
+          <span className="font-semibold">{contractDate}</span>
         </p>
         <h2 className="text-base font-bold mb-2">REUNIDOS</h2>
         <p className="mb-4 text-sm break-words font-light">
           De una parte, D./Dª{" "}
-          <span className="font-medium">{landlordName}</span>, como parte
+          <span className="font-semibold">{landlordName}</span>, como parte
           ARRENDADORA, siendo mayor de edad, con NIF{" "}
-          <span className="font-medium">{landlordNIF}</span>, propietario/a en
+          <span className="font-semibold">{landlordNIF}</span>, propietario/a en
           pleno dominio del inmueble sito en Valencia:
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          C/ <span className="font-medium">{landlordStreet}</span> nº{" "}
-          <span className="font-medium">{landlordStreetNumber}</span> - PUERTA{" "}
-          <span className="font-medium">{landlordDoorNumber}</span>ª, Valencia{" "}
-          <span className="font-medium">{landlordPostalCode}</span>
+          C/ <span className="font-semibold">{landlordStreet}</span> nº{" "}
+          <span className="font-semibold">{landlordStreetNumber}</span> - PUERTA{" "}
+          <span className="font-semibold">{landlordDoorNumber}</span>ª, Valencia{" "}
+          <span className="font-semibold">{landlordPostalCode}</span>
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Dicho inmueble se halla amueblado y consta de{" "}
-          <span className="font-medium">{numberOfRooms}</span> habitaciones,
+          <span className="font-semibold">{numberOfRooms}</span> habitaciones,
           sala de estar, cocina y{" "}
-          <span className="font-medium">{numberOfBathrooms}</span> cuartos de
+          <span className="font-semibold">{numberOfBathrooms}</span> cuartos de
           baño.
         </p>
         <p className="mb-4 text-sm break-words font-light">
@@ -63,15 +63,15 @@ export default function HelloRoomContract({
           mandato expreso, únicamente la formalización de este contrato.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          De otra parte, D/Dª <span className="font-medium">{tenantName}</span>,
+          De otra parte, D/Dª <span className="font-semibold">{tenantName}</span>,
           mayor de edad, con D.N.I o pasaporte{" "}
-          <span className="font-medium">{tenantID}</span>, nº de teléfono{" "}
-          <span className="font-medium">{tenantPhone}</span>, email{" "}
-          <span className="font-medium">{tenantEmail}</span>, y con domicilio en{" "}
-          <span className="font-medium">{tenantAddress}</span>, C/{" "}
-          <span className="font-medium">{tenantStreet}</span>, actuando como
+          <span className="font-semibold">{tenantID}</span>, nº de teléfono{" "}
+          <span className="font-semibold">{tenantPhone}</span>, email{" "}
+          <span className="font-semibold">{tenantEmail}</span>, y con domicilio en{" "}
+          <span className="font-semibold">{tenantAddress}</span>, C/{" "}
+          <span className="font-semibold">{tenantStreet}</span>, actuando como
           parte ARRENDATARIA, está interesado en arrendar la habitación n.º{" "}
-          <span className="font-medium">{roomNumber}</span> del mencionado
+          <span className="font-semibold">{roomNumber}</span> del mencionado
           inmueble.
         </p>
         <h2 className="text-base font-bold mb-2">INTERVIENEN</h2>
@@ -83,11 +83,13 @@ export default function HelloRoomContract({
         <p className="mb-4 text-sm break-words font-light">
           Que, estando interesada la parte la ARRENDATARIA en el arrendamiento
           de la habitación indicada en el Expositivo anterior, y la ARRENDADORA
-          en concedérselo, han convenido la celebración del presente CONTRATO DE
-          ARRENDAMIENTO DE HABITACIÓN EN VIVIENDA COMPARTIDA, el cual se
-          formaliza con sujeción al régimen jurídico establecido en la Ley de
-          Arrendamientos Urbanos de 24 de noviembre de 1.994, así como el
-          recogido en el Código Civil, el cual llevan a cabo por medio del
+          en concedérselo, han convenido la celebración del presente{" "}
+          <span className="font-semibold">
+            CONTRATO DE ARRENDAMIENTO DE HABITACIÓN EN VIVIENDA COMPARTIDA
+          </span>
+          , el cual se formaliza con sujeción al régimen jurídico establecido en
+          la Ley de Arrendamientos Urbanos de 24 de noviembre de 1.994, así como
+          el recogido en el Código Civil, el cual llevan a cabo por medio del
           presente contrato y, con arreglo a las siguientes
         </p>
         <h2 className="text-base font-bold mb-2">CLÁUSULAS</h2>
@@ -96,32 +98,29 @@ export default function HelloRoomContract({
           PRIMERA. - DESTINO Y OBJETO DEL CONTRATO.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
-          Que el <span className="font-medium">ARRENDADOR</span>, arrienda al{" "}
-          <span className="font-medium">ARRENDATARIO</span>, la habitación
-          descrita en este contrato.
+          Que el ARRENDADOR, arrienda al ARRENDATARIO, la habitación descrita en
+          este contrato.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           El destino pactado para la edificación es de Uso distinto al de
-          vivienda y concretamente la residencia temporal del{" "}
-          <span className="font-medium">ARRENDATARIO</span> por motivos
-          laborales o educativos, sin que los arrendatarios puedan cambiar el
-          destino pactado para el mismo.
+          vivienda y concretamente la residencia temporal del ARRENDATARIO por
+          motivos laborales o educativos, sin que los arrendatarios puedan
+          cambiar el destino pactado para el mismo.
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">SEGUNDA. - ESTADO.</h3>
         <p className="mb-4 text-sm break-words font-light">
-          Dado que el <span className="font-medium">ARRENDATARIO</span> es
-          posible que firme el contrato sin haber previamente visitado la
-          vivienda in situ, tendrá 3 días para reportar cualquier desperfecto
-          que se encuentren en zonas comunes como en la habitación alquilada.
+          Dado que el ARRENDATARIO es posible que firme el contrato sin haber
+          previamente visitado la vivienda in situ, tendrá 3 días para reportar
+          cualquier desperfecto que se encuentren en zonas comunes como en la
+          habitación alquilada.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          Una vez transcurrido este período sin que el{" "}
-          <span className="font-medium">ARRENDATARIO</span> haya notificado
-          desperfecto alguno en la vivienda o en la habitación arrendada, se
-          entenderá que la vivienda se encontraba en perfecto estado para su uso
-          y habitabilidad, debiendo devolverla el arrendatario a la finalización
-          del contrato en ese mismo estado.
+          Una vez transcurrido este período sin que el ARRENDATARIO haya
+          notificado desperfecto alguno en la vivienda o en la habitación
+          arrendada, se entenderá que la vivienda se encontraba en perfecto
+          estado para su uso y habitabilidad, debiendo devolverla el
+          arrendatario a la finalización del contrato en ese mismo estado.
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">
@@ -129,8 +128,8 @@ export default function HelloRoomContract({
         </h3>
         <p className="mb-4 text-sm break-words font-light">
           El presente contrato se acuerda que se extenderá por el período
-          comprendido del <span className="font-medium">{startDate}</span> al{" "}
-          <span className="font-medium">{endDate}</span>. Transcurrido dicho
+          comprendido del <span className="font-semibold">{startDate}</span> al{" "}
+          <span className="font-semibold">{endDate}</span>. Transcurrido dicho
           período, el contrato quedará resuelto sin necesidad de requerimiento
           alguno y se dejará libre la habitación a las 9 a.m.
         </p>
@@ -138,67 +137,59 @@ export default function HelloRoomContract({
           La expiración del tiempo pactado para el presente contrato de
           arrendamiento producirá la automática extinción del contrato, quedando
           obligadas los arrendatarios a dejar la habitación libre de enseres a
-          la referida fecha y a disposición del{" "}
-          <span className="font-medium">ARRENDADOR</span>, y en las mismas
+          la referida fecha y a disposición del ARRENDADOR, y en las mismas
           condiciones existentes en el momento de la ocupación.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          Para el caso de que el{" "}
-          <span className="font-medium">ARRENDATARIO</span> estuviera interesado
-          en añadir una noche extra a su estancia, ésta tendrá un coste de 35 €,
-          y siempre estará condicionada a la disponibilidad de la habitación y a
-          la autorización del <span className="font-medium">ARRENDADOR</span>.
+          Para el caso de que el ARRENDATARIO estuviera interesado en añadir una
+          noche extra a su estancia, ésta tendrá un coste de 35 €, y siempre
+          estará condicionada a la disponibilidad de la habitación y a la
+          autorización del ARRENDADOR.
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">CUARTA. - RENTA.</h3>
         <p className="mb-4 text-sm break-words font-light">
           El arrendatario abonará al arrendador, en concepto de renta, la
-          cantidad de <span className="font-medium">{monthlyRent}</span> €
+          cantidad de <span className="font-semibold">{monthlyRent} €</span>{" "}
           mensuales, siempre por adelantado y dentro del período comprendido
           entre los días 20 y 25 de cada mes.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           En dicho precio no se incluyen los gastos relativos a los suministros
           de agua, luz e internet. Dicha renta se abonará a través del área de
-          usuario del <span className="font-medium">ARRENDATARIO</span> de la
-          página web www.helloflatmate.com a través de la pasarela de pago,
-          mediante tarjeta de crédito o débito.
+          usuario del ARRENDATARIO de la página web www.helloflatmate.com a
+          través de la pasarela de pago, mediante tarjeta de crédito o débito.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           El incumplimiento reiterado de la obligación de pago o notificación
           del justificante del pago en el periodo fijado será motivo de
           resolución del contrato, dando derecho al arrendador a solicitar el
-          desahucio, siendo por cuenta del{" "}
-          <span className="font-medium">ARRENDATARIO</span> los gastos que estas
+          desahucio, siendo por cuenta del ARRENDATARIO los gastos que estas
           acciones originen.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          El <span className="font-medium">ARRENDATARIO</span> es conocedor y
-          asume que en caso de impago de las rentas deberá abandonar la
-          vivienda, perdiendo las cantidades entregadas en concepto de fianza
-          así como suministros de agua, luz, gas e internet.
+          El ARRENDATARIO es conocedor y asume que en caso de impago de las
+          rentas deberá abandonar la vivienda, perdiendo las cantidades
+          entregadas en concepto de fianza así como suministros de agua, luz,
+          gas e internet.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Del mismo modo, para el caso de que el arrendatario incumpla el plazo
-          de pago de la renta, el{" "}
-          <span className="font-medium">ARRENDADOR</span> podrá sancionar al{" "}
-          <span className="font-medium">ARRENDATARIO</span> por dicho
-          incumplimiento con 10€ por cada día de retraso en el pago.
+          de pago de la renta, el ARRENDADOR podrá sancionar al ARRENDATARIO por
+          dicho incumplimiento con 10€ por cada día de retraso en el pago.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          El <span className="font-medium">ARRENDATARIO</span> estará obligado a
-          abonar junto a la renta del último mes de contrato, 50 € para la
-          limpieza profunda de la vivienda. No obstante, el{" "}
-          <span className="font-medium">ARRENDATARIO</span> deberá dejar la
-          habitación, así como las zonas comunes totalmente limpias y sin
-          enseres personales.
+          El ARRENDATARIO estará obligado a abonar junto a la renta del último
+          mes de contrato, 50 € para la limpieza profunda de la vivienda. No
+          obstante, el ARRENDATARIO deberá dejar la habitación, así como las
+          zonas comunes totalmente limpias y sin enseres personales.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          En ese sentido, el <span className="font-medium">ARRENDATARIO</span>{" "}
-          se responsabiliza solidariamente junto a sus compañeros a dejar la
-          vivienda completamente limpia. En caso de que la vivienda no quede en
-          las condiciones establecidas se descontará del depósito la cantidad de
-          horas extra que se haya invertido en la limpieza de ésta.
+          En ese sentido, el ARRENDATARIO se responsabiliza solidariamente junto
+          a sus compañeros a dejar la vivienda completamente limpia. En caso de
+          que la vivienda no quede en las condiciones establecidas se descontará
+          del depósito la cantidad de horas extra que se haya invertido en la
+          limpieza de ésta.
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">
@@ -210,26 +201,53 @@ export default function HelloRoomContract({
         </p>
         <ul className="mb-4 text-sm break-words font-light list-disc ml-6">
           <li>
-            Un depósito de TRESCIENTOS EUROS (300 €) en concepto de FIANZA. Este
+            Un depósito de{" "}
+            <span className="font-semibold">TRESCIENTOS EUROS (300 €)</span> en
+            concepto de <span className="font-semibold">FIANZA</span>. Este
             importe será devuelto entre 30 y 45 días tras la finalización del
-            contrato, por parte del{" "}
-            <span className="font-medium">ARRENDADOR</span> al{" "}
-            <span className="font-medium">ARRENDATARIO</span>, mediante
+            contrato, por parte del ARRENDADOR al ARRENDATARIO, mediante
             transferencia bancaria y una vez revisado que la vivienda se
             encuentra en perfecto estado y se hayan liquidado todos los gastos
             de suministros.
+            <br />
+            <br /> El ARRENDATARIO correrá con los gastos bancarios que en su
+            caso se devenguen con la devolución de la fianza, y en especial
+            aquellos derivados del uso de otro método de devolución especial
+            (Western Unión, Ria, MoneyGram…etc.).
+            <br />
+            <br /> Para el caso de que se encuentren desperfectos en la revisión
+            que en su día se efectúe, así como recibos impagados por parte del
+            ARRENDATARIO, el ARRENDADOR podrá deducir dichos importes de la
+            cantidad a devolver del antes mencionado depósito.
           </li>
+          <br />
+
           <li>
-            La cantidad de DOSCIENTOS EUROS (200 €) en concepto de suministros
-            de agua y luz por cada período de CINCO MESES de contrato. Una vez
-            transcurrido dicho periodo, se calculará el importe exacto a abonar
-            por parte del <span className="font-medium">ARRENDATARIO</span> en
-            concepto de suministros, ajustando el importe abonado con el consumo
-            real efectuado por el arrendatario.
+            La cantidad de{" "}
+            <span className="font-semibold">DOSCIENTOS EUROS (200 €)</span> en
+            concepto de suministros de agua y luz por cada período de CINCO
+            MESES de contrato. Una vez transcurrido dicho periodo, se calculará
+            el importe exacto a abonar por parte del ARRENDATARIO en concepto de
+            suministros, ajustando el importe abonado con el consumo real
+            efectuado por el arrendatario.
+            <br />
+            <br />
+            En caso de que los gastos de suministros hayan sido superiores al
+            importe abonado de 200 €, estas cantidades serán repercutidas al
+            ARRENDATARIO por parte del ARRENDADOR.
           </li>
+          <br />
+
           <li>
-            La cantidad de OCHENTA EUROS (80 €) en concepto de TARIFA PLANA de
-            internet por los primeros cinco meses de contrato.
+            La cantidad de{" "}
+            <span className="font-semibold">OCHENTA EUROS (80 €)</span> en
+            concepto de TARIFA PLANA de internet por los primeros cinco meses de
+            contrato.
+            <br />
+            <br />
+            Para los contratos de 10 meses, a final de enero, junto a la renta
+            de febrero, se hará otra aportación para los siguientes 5 meses de
+            contrato para los suministros y wifi.
           </li>
         </ul>
 
@@ -237,18 +255,15 @@ export default function HelloRoomContract({
           SEXTA. - DERECHO DE ACCESO A LA VIVIENDA DEL ARRENDADOR.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
-          Las partes acuerdan expresamente la renuncia del{" "}
-          <span className="font-medium">ARRENDATARIO</span> a impedir que el{" "}
-          <span className="font-medium">ARRENDADOR</span> pueda acceder a las
-          zonas comunes de la vivienda y a las habitaciones que
-          circunstancialmente no se encuentren arrendadas en el momento del
-          acceso a la vivienda.
+          Las partes acuerdan expresamente la renuncia del ARRENDATARIO a
+          impedir que el ARRENDADOR pueda acceder a las zonas comunes de la
+          vivienda y a las habitaciones que circunstancialmente no se encuentren
+          arrendadas en el momento del acceso a la vivienda.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           En caso de que se vaya a efectuar una visita por parte del responsable
-          del <span className="font-medium">ARRENDADOR</span> a la vivienda,
-          ésta será comunicada siempre con al menos una hora de antelación al
-          arrendatario.
+          del ARRENDADOR a la vivienda, ésta será comunicada siempre con al
+          menos una hora de antelación al arrendatario.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           La violación de este derecho del arrendador por parte de cualquier
@@ -265,7 +280,7 @@ export default function HelloRoomContract({
         </h3>
         <p className="mb-4 text-sm break-words font-light">
           En caso de desistimiento por parte de{" "}
-          <span className="font-medium">El ARRENDATARIO</span>, éste vendrá
+          <span className="font-semibold">El ARRENDATARIO</span>, éste vendrá
           obligado al pago íntegro de todas las mensualidades convenidas hasta
           la finalización del Contrato, salvo que éste presente un nuevo
           inquilino, se firme un nuevo contrato y sea aceptado por el resto de
@@ -276,10 +291,9 @@ export default function HelloRoomContract({
           OCTAVA. - FUERZA MAYOR.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
-          En caso de fuerza mayor el{" "}
-          <span className="font-medium">ARRENDATARIO</span> no podrá exigir la
-          resolución, suspensión y/o modificación del contrato, ni la reducción
-          de la renta pactada.
+          En caso de fuerza mayor el ARRENDATARIO no podrá exigir la resolución,
+          suspensión y/o modificación del contrato, ni la reducción de la renta
+          pactada.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Entiéndase por fuerza mayor, a los efectos de este contrato, toda
@@ -289,9 +303,9 @@ export default function HelloRoomContract({
           terremotos, caída de rayos, situaciones de epidemia y pandemia.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          Se exime al <span className="font-medium">ARRENDADOR</span> de
-          cualquier responsabilidad derivada de las medidas adoptadas por la
-          autoridad competente que escapen de su ámbito de control.
+          Se exime al ARRENDADOR de cualquier responsabilidad derivada de las
+          medidas adoptadas por la autoridad competente que escapen de su ámbito
+          de control.
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">
@@ -310,29 +324,27 @@ export default function HelloRoomContract({
           DÉCIMA. - DEVOLUCIÓN DE LAS LLAVES POR PARTE DEL ARRENDATARIO.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
-          La parte <span className="font-medium">ARRENDATARIA</span> hará
+          La parte <span className="font-semibold">ARRENDATARIA</span> hará
           entrega de las llaves de la vivienda y de la habitación en la que se
           encuentra en la fecha de finalización del presente contrato, y con el
           mismo formato de entrega (con arandela y código de habitación).
         </p>
         <p className="mb-4 text-sm break-words font-light">
           De realizar la entrega más tarde, sin que hubiera ejercitado la
-          facultad de contratar una noche extra, el{" "}
-          <span className="font-medium">ARRENDATARIO</span> abonará al{" "}
-          <span className="font-medium">ARRENDADOR</span> la cantidad de 35 €
-          por cada día de retraso en la puesta a disposición de las llaves, en
-          concepto de cláusula penal, además de todos los gastos que directos e
-          indirectos que dicho retraso generen de cara a la recuperación de la
-          vivienda y de la habitación.
+          facultad de contratar una noche extra, el ARRENDATARIO abonará al{" "}
+          ARRENDADOR la cantidad de 35 € por cada día de retraso en la puesta a
+          disposición de las llaves, en concepto de cláusula penal, además de
+          todos los gastos que directos e indirectos que dicho retraso generen
+          de cara a la recuperación de la vivienda y de la habitación.
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">
           DECIMOPRIMERA. – EMPADRONAMIENTO.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
-          El <span className="font-medium">ARRENDATARIO</span> tendrá derecho a
-          empadronarse en la vivienda compartida, siempre y cuando, cumpla con
-          los requisitos exigidos en la normativa local de referencia.
+          El ARRENDATARIO tendrá derecho a empadronarse en la vivienda
+          compartida, siempre y cuando, cumpla con los requisitos exigidos en la
+          normativa local de referencia.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Los contratos de arrendamiento de habitación cuya duración sea
@@ -340,17 +352,14 @@ export default function HelloRoomContract({
           venir previsto por el Ayuntamiento de Valencia.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          Para el caso de que el{" "}
-          <span className="font-medium">ARRENDATARIO</span> esté interesado en
-          que sea HELLO FLAT MATE quien gestione la tramitación del
-          empadronamiento ante las autoridades, el{" "}
-          <span className="font-medium">ARRENDATARIO</span> deberá abonar un
-          suplemento de 150 €.
+          Para el caso de que el ARRENDATARIO esté interesado en que sea HELLO
+          FLAT MATE quien gestione la tramitación del empadronamiento ante las
+          autoridades, el ARRENDATARIO deberá abonar un suplemento de 150 €.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          En todo caso, una vez finalizado el arrendamiento, el{" "}
-          <span className="font-medium">ARRENDATARIO</span> se obliga a
-          presentar ante la OFICINA DEL PADRÓN MUNICIPAL la solicitud de Baja.
+          En todo caso, una vez finalizado el arrendamiento, el ARRENDATARIO se
+          obliga a presentar ante la OFICINA DEL PADRÓN MUNICIPAL la solicitud
+          de Baja.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Si no lo hiciera, y no hubiera abonado el suplemento previsto en
@@ -361,7 +370,7 @@ export default function HelloRoomContract({
           DECIMOSEGUNDA. - NORMAS DE CONVIVENCIA.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
-          La parte <span className="font-medium">ARRENDATARIA</span> se someterá
+          La parte <span className="font-semibold">ARRENDATARIA</span> se someterá
           durante toda la vigencia del contrato a las normas establecidas por la
           comunidad de propietarios, especialmente las relativas a la
           convivencia, las obligaciones recogidas en la Ley 49/1960, de 21 de
@@ -375,18 +384,15 @@ export default function HelloRoomContract({
           RESPECTO AL MANTENIMIENTO Y REPARACIONES.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
-          El <span className="font-medium">ARRENDADOR</span> realizará, sin
-          derecho por ello a elevar la renta al{" "}
-          <span className="font-medium">ARRENDATARIO</span>, las reparaciones
-          para conservar la vivienda en las condiciones oportunas de
-          habitabilidad para servir al uso convenido, salvo cuando el deterioro
-          o reparación sea imputable al arrendatario a tenor de lo dispuesto los
-          artículos 1.563 y 1.564 del Código Civil.
+          El ARRENDADOR realizará, sin derecho por ello a elevar la renta al{" "}
+          ARRENDATARIO, las reparaciones para conservar la vivienda en las
+          condiciones oportunas de habitabilidad para servir al uso convenido,
+          salvo cuando el deterioro o reparación sea imputable al arrendatario a
+          tenor de lo dispuesto los artículos 1.563 y 1.564 del Código Civil.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Las pequeñas reparaciones que exija el desgaste por el uso ordinario
-          de la vivienda correrán por cuenta del{" "}
-          <span className="font-medium">ARRENDATARIO</span>.
+          de la vivienda correrán por cuenta del ARRENDATARIO.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Se entienden como pequeñas reparaciones la sustitución de bombillas,
@@ -394,9 +400,9 @@ export default function HelloRoomContract({
           rociador de la manguera de la ducha, etc.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          Es obligación del <span className="font-medium">arrendatario</span> el
-          mantenimiento correcto y diligente tanto de la habitación alquilada
-          como del resto de dependencias de la vivienda.
+          Es obligación del arrendatario el mantenimiento correcto y diligente
+          tanto de la habitación alquilada como del resto de dependencias de la
+          vivienda.
         </p>
         <p className="mb-4 text-sm break-words font-light">
           El arrendatario no podrá hacer agujeros en las paredes o puertas, así
@@ -405,15 +411,55 @@ export default function HelloRoomContract({
         </p>
         <p className="mb-4 text-sm break-words font-light">
           Las reparaciones e incidencias serán abonadas por parte del{" "}
-          <span className="font-medium">ARRENDATARIO</span> al técnico encargado
-          en el momento de su intervención. En caso de que las mismas corran a
-          cargo del <span className="font-medium">ARRENDADOR</span>, éste se las
-          abonará al <span className="font-medium">ARRENDATARIO</span> mediante
-          transferencia bancaria.
+          ARRENDATARIO al técnico encargado en el momento de su intervención. En
+          caso de que las mismas corran a cargo del ARRENDADOR, éste se las
+          abonará al ARRENDATARIO mediante transferencia bancaria.
+        </p>
+
+        <h3 className="text-sm font-bold mb-2">
+          DECIMOCUARTA. – CONDICIONES DE EFECTIVIDAD DEL CONTRATO..
+        </h3>
+        <p className="mb-4 text-sm font-light">
+          El presente contrato de arrendamiento{" "}
+          <strong>
+            únicamente entrará en vigor y será válido cuando se cumplan de
+            manera simultánea las siguientes condiciones:
+          </strong>
+        </p>
+        <p className="mb-4 text-sm font-light">
+          Además, el ARRENDADOR podrá resolver de pleno derecho el contrato por
+          las siguientes causas:
+        </p>
+        <ul className="list-disc ml-6">
+          <li className="mb-2">
+            1) El ARRENDATARIO haya abonado las cantidades indicadas en la
+            cláusula quinta en concepto de fianza, depósito, tarifa plana de
+            internet y gastos de suministros.
+          </li>
+          <li className="mb-2">
+            2) El contrato haya sido firmado electrónicamente por ambas partes a
+            través de la plataforma habilitada por{" "}
+            <strong>Helloflatmate</strong>.
+          </li>
+          <li className="mb-2">
+            3) El ARRENDATARIO cumpla con los requisitos de perfil establecidos
+            por el ARRENDADOR,{" "}
+            <strong>
+              específicamente ser estudiante menor de 30 años de edad
+            </strong>
+            .
+          </li>
+        </ul>
+        <p className="mb-4 text-sm font-light">
+          <strong>
+            En caso de que el ARRENDATARIO no cumpla con alguno de estos
+            requisitos, el contrato será considerado nulo, sin generar derechos
+            ni obligaciones entre las partes.
+          </strong>
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">
-          DECIMOCUARTA. – INCUMPLIMIENTO DE OBLIGACIONES.
+          DECIMOQUINTA. – INCUMPLIMIENTO DE OBLIGACIONES.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
           El incumplimiento por cualquiera de las partes de las obligaciones
@@ -423,14 +469,13 @@ export default function HelloRoomContract({
           1.124 del Código Civil.
         </p>
         <p className="mb-4 text-sm break-words font-light">
-          Además, el <span className="font-medium">ARRENDADOR</span> podrá
-          resolver de pleno Derecho el contrato por las siguientes causas:
+          Además, el ARRENDADOR podrá resolver de pleno Derecho el contrato por
+          las siguientes causas:
         </p>
         <ul className="mb-4 text-sm break-words font-light list-disc ml-6">
           <li>
             La falta de pago de la renta o, en su caso, de cualquiera de las
-            cantidades cuyo pago haya asumido o corresponda al{" "}
-            <span className="font-medium">ARRENDATARIO</span>.
+            cantidades cuyo pago haya asumido o corresponda al ARRENDATARIO.
           </li>
           <li>La falta de pago del importe de la fianza.</li>
           <li>
@@ -449,7 +494,7 @@ export default function HelloRoomContract({
         </ul>
 
         <h3 className="text-sm font-bold mb-2 text-left">
-          DÉCIMOQUINTA. - LEGISLACIÓN APLICABLE.
+          DECIMOSEXTA. - LEGISLACIÓN APLICABLE.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
           En todo lo no previsto en el presente contrato, éste se regirá por lo
@@ -459,7 +504,7 @@ export default function HelloRoomContract({
         </p>
 
         <h3 className="text-sm font-bold mb-2 text-left">
-          DÉCIMOSEXTA. - SUMISIÓN.
+          DECIMOSEPTIMA. - SUMISIÓN.
         </h3>
         <p className="mb-4 text-sm break-words font-light">
           Los contratantes se someten expresamente a los Juzgados y Tribunales
@@ -495,7 +540,7 @@ export default function HelloRoomContract({
         </h2>
         <ol className="list-decimal ml-6 mb-4 text-sm break-words font-light">
           <li className="mb-4">
-            La parte <span className="font-medium">arrendataria</span> afirma
+            La parte <span className="font-semibold">arrendataria</span> afirma
             que ha sido informada y se someterá durante toda la vigencia del
             contrato a las normas establecidas por la comunidad de propietarios,
             especialmente las relativas a la convivencia vecinal.

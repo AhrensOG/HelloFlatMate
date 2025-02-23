@@ -194,7 +194,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-96 max-h-[90%] overflow-y-auto">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl max-h-[95%] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">Buscar Propiedad y Subir Documento</h2>
 
                 {/* Input para buscar propiedades */}
@@ -349,9 +349,9 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
                         onChange={(e) => setStatus(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
                     >
-                        <option value="PENDING">PENDING</option>
-                        <option value="APPROVED">APPROVED</option>
-                        <option value="REJECTED">REJECTED</option>
+                        <option value="PENDING">Pendiente</option>
+                        <option value="APPROVED">Aprobado</option>
+                        <option value="REJECTED">Rechazado</option>
                     </select>
                 </div>
                 {/* Input para subir el contrato */}

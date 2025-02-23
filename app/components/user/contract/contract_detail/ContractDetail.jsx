@@ -13,6 +13,7 @@ import PremiumContract from "./PremiunContract";
 import HelloRoomContract from "./HelloroomContract";
 import HelloColivingContract from "./HelloColivingContract";
 import HelloLandlordContract from "./HelloLandlordContract";
+import { isUserLogged } from "@/app/context/actions/isUserLogged";
 
 const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   const { state, dispatch } = useContext(Context);
@@ -25,6 +26,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        await isUserLogged(dispatch);
         const roomId = searchParams.get("r");
         const leaseOrderId = searchParams.get("lo");
 
@@ -111,13 +113,14 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
 
   // Property DATA
   const contractDate = setDate();
-  const landlordName = owner?.name + " " + owner?.lastName || "Javier García";
-  const landlordNIF = "B98358963";
-  const landlordStreet = property.street || "Gran Vía";
-  const landlordStreetNumber = property.streetNumber || "45";
-  const landlordDoorNumber = room ? room.serial : "-";
-  const landlordPostalCode = property.postalCode || "46021";
-  const numberOfRooms = property.roomsCount || 1;
+  const landlordName = owner?.name + " " + owner?.lastName || " ";
+  const landlordNIF = owner?.idNum || "-";
+  const landlordIBAN = owner?.IBAN || "-";
+  const landlordStreet = property.street || "-";
+  const landlordStreetNumber = property.streetNumber || "-";
+  const landlordDoorNumber = property.floor || "-";
+  const landlordPostalCode = property.postalCode || "-";
+  const numberOfRooms = property.rooms?.length || 1;
   const numberOfBathrooms = property.bathrooms || 1;
   const monthlyRent = room ? room.price : property.price;
   const roomNumber = room ? room.serial : "-";
@@ -125,19 +128,18 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
 
   // Client DATA
   const info = state?.user;
-  const tenantName = info?.name + " " + info?.lastName || "María López";
-  const tenantID = info?.idNum || "87654321B";
-  const tenantPhone = info?.phone || "600123456";
-  const tenantEmail = info?.email || "maria.lopez@example.com";
-  const tenantAddress =
-    info?.street + " " + info?.streetNumber || "Av. del Cid, 10";
-  const tenantStreet = info?.street || "Av. del Cid";
+  const tenantName = info?.name + " " + info?.lastName || "-";
+  const tenantID = info?.idNum || "-";
+  const tenantPhone = info?.phone || "-";
+  const tenantEmail = info?.email || "-";
+  const tenantAddress = info?.city + ", " + info?.country || "-";
+  const tenantStreet = info?.street + " " + info.streetNumber + ", CP " + info.postalCode || "-";
   const startDate = leaseOrder?.startDate
     ? parseDate(leaseOrder.startDate)
-    : "1 de septiembre de 2024";
+    : "-";
   const endDate = leaseOrder?.endDate
     ? parseDate(leaseOrder.endDate)
-    : "31 de agosto de 2025";
+    : "-";
 
   const handleCreatePDF = async (clientSignature) => {
     try {
@@ -145,6 +147,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
         contractDate,
         landlordName,
         landlordNIF,
+        landlordIBAN,
         landlordStreet,
         landlordStreetNumber,
         landlordDoorNumber,
@@ -162,6 +165,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
         endDate,
         monthlyRent,
         propertyCategory,
+        leaseOrderId: leaseOrder.id,
       };
       let dataContract;
       if (room) {
@@ -169,16 +173,18 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
           ownerId: property?.ownerId,
           clientId: state?.user?.id,
           roomId: room?.id,
+          leaseOrderId: leaseOrder.id,
         };
       } else {
         dataContract = {
           ownerId: property?.ownerId,
           clientId: state?.user?.id,
           propertyId: property?.id,
+          leaseOrderId: leaseOrder.id,
         };
       }
       const documentsFiles = state.reservationInfo?.nomina || [];
-      const ownerSignature = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Firmas%2FhelloflatmateSignature.png?alt=media&token=d2049b5a-fccf-4407-bfcd-cd5d73f462a2"
+      const ownerSignature = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Firmas%2FhelloflatmateSignature.png?alt=media&token=d2049b5a-fccf-4407-bfcd-cd5d73f462a2";
       await createContractPDF(
         dispatch,
         values,
@@ -295,6 +301,7 @@ const ContractDetail = ({ handleContinue, handleBack, owner, property }) => {
           contractDate={contractDate}
           landlordName={landlordName}
           landlordNIF={landlordNIF}
+          landlordIBAN={landlordIBAN}
           landlordStreet={landlordStreet}
           landlordStreetNumber={landlordStreetNumber}
           landlordDoorNumber={landlordDoorNumber}

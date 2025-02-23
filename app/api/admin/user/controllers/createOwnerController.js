@@ -34,16 +34,15 @@ export async function createOwner(data) {
 
         console.log("Usuario creado en Firebase:", userRecord);
 
-        // Crear registro en la base de datos con el UID de Firebase
         const owner = await Owner.create(
             {
-                id: userRecord.uid, // Usar el UID de Firebase como ID en la DB
+                id: userRecord.uid,
                 name: data.name,
                 lastName: data.lastName,
                 email: userRecord.email,
-                password: data.password, // (Opcional, podrías no almacenarla)
                 idNum: data.dni || null,
                 description: data.description || null,
+                IBAN: data.IBAN || null,
                 role: "OWNER",
             },
             { transaction }
@@ -51,8 +50,8 @@ export async function createOwner(data) {
 
         // Asociar propiedades si existen
         if (data.properties && Array.isArray(data.properties) && data.properties.length > 0) {
-            for (const property of data.properties) {
-                await Property.update({ ownerId: userRecord.uid }, { where: { id: property.id }, transaction });
+            for (const propertyId of data.properties) {
+                await Property.update({ ownerId: userRecord.uid }, { where: { id: propertyId }, transaction });
             }
         }
 

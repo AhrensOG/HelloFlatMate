@@ -28,7 +28,7 @@ const SUPPLY_TYPES_TRANSLATIONS = {
   INTERNET: "Internet",
   OTHERS: "Otros",
   AGENCY_FEES: "Tasa de la agencia",
-  CLEANUP: "Limpieza a fondo",
+  CLEANUP: "Limpieza Check-Out",
   DEPOSIT: "Depósito",
   GENERAL_SUPPLIES: "Aporte para suministros (agua, luz, gas)",
 };
@@ -60,21 +60,25 @@ export default function TransactionHistory({ redirect }) {
       );
 
       // Mapear rentPayments con las fechas correspondientes de leaseOrdersRoom
-      const rentPaymentsWithId = state.user.rentPayments.map((payment) => {
-        const leaseOrder = leaseOrdersMap[payment.leaseOrderId] || {};
-        return {
-          ...payment,
-          uniqueKey: uuidv4(),
-          startDate: leaseOrder.startDate || null,
-          endDate: leaseOrder.endDate || null,
-        };
-      });
+      const rentPaymentsWithId = state.user.rentPayments
+        .filter((payment) => payment.status === "APPROVED")
+        .map((payment) => {
+          const leaseOrder = leaseOrdersMap[payment.leaseOrderId] || {};
+          return {
+            ...payment,
+            uniqueKey: uuidv4(),
+            startDate: leaseOrder.startDate || null,
+            endDate: leaseOrder.endDate || null,
+          };
+        });
 
       // Mapear supplies con uniqueKey
-      const supplyPaymentsWithId = state.user.supplies.map((payment) => ({
-        ...payment,
-        uniqueKey: uuidv4(),
-      }));
+      const supplyPaymentsWithId = state.user.supplies
+        .filter((payment) => payment.status === "PAID")
+        .map((payment) => ({
+          ...payment,
+          uniqueKey: uuidv4(),
+        }));
 
       // Actualizar el estado
       setAllPayments({

@@ -2,8 +2,7 @@
 const { Model, DataTypes } = require("sequelize");
 const connection = require("../index");
 const roomInit = (sequelize, DataTypes) => {
-
-    class Room extends Model { }
+    class Room extends Model {}
 
     Room.init(
         {
@@ -36,7 +35,7 @@ const roomInit = (sequelize, DataTypes) => {
             description: {
                 type: DataTypes.ARRAY(DataTypes.STRING),
                 defaultValue: [],
-                allowNull: true
+                allowNull: true,
             },
             amountOwner: {
                 type: DataTypes.FLOAT,
@@ -53,7 +52,7 @@ const roomInit = (sequelize, DataTypes) => {
             isActive: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false,
-                allowNull: true
+                allowNull: true,
             },
             serial: {
                 type: DataTypes.STRING(100),
@@ -76,27 +75,27 @@ const roomInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             status: {
-                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED"),
+                type: DataTypes.ENUM("FREE", "RESERVED", "OCCUPIED", "DELETED"),
                 defaultValue: "FREE",
-                allowNull: true
+                allowNull: true,
             },
             calendar: {
-                type: DataTypes.ENUM('SIMPLE', 'FULL'),
+                type: DataTypes.ENUM("SIMPLE", "FULL"),
                 defaultValue: "SIMPLE",
                 allowNull: true,
             },
             bathroom: {
                 type: DataTypes.BOOLEAN,
-                defaultValue: false
+                defaultValue: false,
             },
             couple: {
                 type: DataTypes.BOOLEAN,
-                defaultValue: false
+                defaultValue: false,
             },
             tags: {
                 type: DataTypes.ARRAY(DataTypes.STRING),
-                allowNull: true
-            }
+                allowNull: true, 
+            },
         },
         {
             sequelize,
@@ -104,8 +103,8 @@ const roomInit = (sequelize, DataTypes) => {
             freezeTableName: true,
             timestamps: false,
         }
-    )
-    return Room
-}
+    );
+    return Room;
+};
 
-module.exports = roomInit(connection, DataTypes)
+module.exports = roomInit(connection, DataTypes);

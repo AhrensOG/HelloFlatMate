@@ -19,7 +19,7 @@ const supplyTypeMap = {
   EXPENSES: "Expensas",
   INTERNET: "Internet",
   AGENCY_FEES: "Tasa de la agencia",
-  CLEANUP: "Limpieza por finalización de contrato",
+  CLEANUP: "Limpieza Check-Out",
   DEPOSIT: "Depósito",
   GENERAL_SUPPLIES: "Suministros (agua, luz, gas)",
   OTHERS: "Otros",
@@ -144,6 +144,8 @@ export default function PaymentModal({ leaseOrder, onClose }) {
         ...values,
         propertyId: leaseOrder.propertyId,
         clientId: leaseOrder.clientId,
+        leaseOrderId: leaseOrder.id,
+        leaseOrderType: "ROOM",
       };
       await axios.post("/api/admin/supply/manualCreate", data);
       toast.success("Pago de suministros asignado!", { id: toastId });

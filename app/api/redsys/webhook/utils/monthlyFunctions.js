@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 
 // 🚀 Procesador de Pagos - Mensual
 async function processMonthlyPayment({
+  paymentId,
   paymentableId,
   leaseOrderId,
   paymentableType,
@@ -42,65 +43,24 @@ async function processMonthlyPayment({
       );
     }
 
-    // 2️⃣ Preparar Datos de Pago
-    const rentData = {
-      amount: Number(amount),
-      type: "MONTHLY",
-      paymentableId,
-      paymentableType,
-      clientId,
-      leaseOrderId,
-      leaseOrderType: paymentableType,
-      status: "APPROVED",
-      quotaNumber,
-      date: new Date(),
-      ownerId: foundRoom.property.ownerId,
-      paymentId: order || "",
-      description: `Pago mensual - ${month}`,
-    };
+    // 2️⃣ Actualizar Datos de Pago
+    const rentPayment = await RentPayment.findByPk(paymentId);
 
-    // 3️⃣ Crear Pago
-    const rentPayment = await RentPayment.create(rentData);
+    if (!rentPayment) {
+      throw new Error("No se encontró el pago correspondiente para actualizar");
+    }
 
-    // // 4️⃣ Obtener Historial de Pagos
-    // const allRentPayments = await RentPayment.findAll({
-    //   where: {
-    //     clientId,
-    //     leaseOrderId,
-    //     leaseOrderType: paymentableType,
-    //     paymentableId,
-    //     paymentableType,
-    //   },
-    //   order: [["quotaNumber", "DESC"]],
-    // });
+    rentPayment.status = "APPROVED";
+    rentPayment.date = new Date();
+    rentPayment.paymentId = order || "";
 
-    // const detailsPayments = allRentPayments.map((payment) => ({
-    //   amount: payment.amount,
-    //   date: payment.date,
-    //   status: payment.status,
-    //   id: payment.id,
-    //   quotaNumber: payment.quotaNumber,
-    // }));
+    await rentPayment.save();
 
-    // // 5️⃣ Generar PDF
-    // const pdfData = prepareMonthlyPdfData({
-    //   rentPayment,
-    //   client,
-    //   foundRoom,
-    //   foundLeaseOrder,
-    //   order,
-    //   detailsPayments,
-    //   month,
-    // });
-
-    // const pdfBytes = await billBuilder(pdfData);
-    // const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
-
-    // 6️⃣ Enviar Correo
+    // 3️⃣ Enviar Correo
     await sendMailFunction({
       to: client.email,
       subject: `Pago mensual ${foundRoom.serial}`,
-      html: baseTemplate(client.name, client.lastName, foundRoom.serial),
+      html: baseTemplate(client.name, client.lastName, foundRoom.serial, month),
       // attachments: [
       //   {
       //     content: pdfBase64,
@@ -124,7 +84,12 @@ async function processMonthlyPayment({
     );
   } catch (error) {
     console.error(`❌ Error en el proceso de pago mensual: ${error.message}`);
-    throw error;
+    return NextResponse.json(
+      {
+        message: `❌ Error en el proceso de pago mensual: ${error.message}`,
+      },
+      { status: 400 }
+    );
   }
 }
 

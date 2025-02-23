@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import ClientWrapper from "../components/ClientWrapper";
 import GlobalContext from "../context/GlobalContext";
 import Script from "next/script";
-import Head from "next/head";
 
 export const metadata = {
   title: "helloflatmate",
@@ -29,11 +28,11 @@ export default async function RootLayout({ children, params: { locale } }) {
 
   return (
     <html lang={locale}>
-      <Head>
+      <head>
         {/* Google Tag Manager */}
         <Script
           id="google-tag-manager"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -43,7 +42,7 @@ export default async function RootLayout({ children, params: { locale } }) {
           }}
         />
         {/* End Google Tag Manager */}
-      </Head>
+      </head>
       <body className={`${montserrat.className}`}>
         <noscript>
           <iframe

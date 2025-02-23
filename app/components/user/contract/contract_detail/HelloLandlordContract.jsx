@@ -6,6 +6,7 @@ export default function HelloLandlordContract({
   contractDate = "… de ……. de 202…..",
   landlordName = "………………………",
   landlordNIF = "………………………………………",
+  landlordIBAN = "ES………………………………………",
   landlordStreet = "……………………………",
   landlordStreetNumber = "……..",
   landlordDoorNumber = "……….ª",
@@ -33,20 +34,23 @@ export default function HelloLandlordContract({
           <strong>CONTRATO DE ARRENDAMIENTO DE ALOJAMIENTO</strong>
         </p>
         <p className="mb-4 text-sm font-light">
-          En la ciudad de Valencia, a {contractDate || "… de ……. de 202….."}
+          En la ciudad de Valencia, a{" "}
+          <span className="font-semibold">{contractDate}</span>
         </p>
         <h2 className="text-base font-bold mb-2">REUNIDOS</h2>
         <p className="mb-4 text-sm font-light">
-          De una parte, D./Dª {landlordName || "………………………"}, como parte
-          ARRENDADORA, siendo mayor de edad, con NIF{" "}
+          De una parte, <span className="font-semibold">D./Dª {landlordName || "………………………"}</span>,
+          como parte ARRENDADORA, siendo mayor de edad, con NIF{" "}
           {landlordNIF || "………………………………………"}, propietario/a en pleno dominio del
           inmueble sito en Valencia:
         </p>
         <p className="mb-4 text-sm font-light">
-          C/ {landlordStreet || "……………………………"} nº{" "}
-          {landlordStreetNumber || "…….."} - PUERTA{" "}
-          {landlordDoorNumber || "……….ª"}, Valencia{" "}
-          {landlordPostalCode || "46…………..."}.
+          <span className="font-semibold">
+            C/ {landlordStreet || "……………………………"} nº{" "}
+            {landlordStreetNumber || "…….."} - PUERTA{" "}
+            {landlordDoorNumber || "……….ª"}, Valencia{" "}
+            {landlordPostalCode || "46…………..."}.
+          </span>
         </p>
         <p className="mb-4 text-sm font-light">
           Dicho inmueble se halla amueblado y consta de {numberOfRooms || "….."}{" "}
@@ -58,13 +62,14 @@ export default function HelloLandlordContract({
           mandato expreso, únicamente la formalización de este contrato.
         </p>
         <p className="mb-4 text-sm font-light">
-          De otra parte, D./Dª {tenantName || "……………………………"}, mayor de edad, con
-          D.N.I o pasaporte{" "}
-          {tenantID || "……………"}, nº de teléfono {tenantPhone || "+……………………"},
-          email {tenantEmail || "………………………"}, y con domicilio en{" "}
+          De otra parte, <span className="font-semibold">D./Dª {tenantName || "……………………………"}</span>,
+          mayor de edad, con D.N.I o pasaporte {tenantID || "……………"}, nº de
+          teléfono +{tenantPhone || "+……………………"}, email{" "}
+          {tenantEmail || "………………………"}, y con domicilio en{" "}
           {tenantAddress || "………………………"}, C/ {tenantStreet || "……………………………………"}{" "}
           actuando como parte ARRENDATARIA, está interesado en arrendar la
-          habitación n.º {roomNumber || "R……"} del mencionado inmueble.
+          habitación n.º <span className="font-semibold">{roomNumber || "R……"}</span> del mencionado
+          inmueble.
         </p>
         <h2 className="text-base font-bold mb-2">INTERVIENEN</h2>
         <p className="mb-4 text-sm font-light">
@@ -73,12 +78,14 @@ export default function HelloLandlordContract({
           cuyo efecto acuerdan; Que, estando interesada la parte la ARRENDATARIA
           en el arrendamiento de la habitación indicada en el Expositivo
           anterior, y la ARRENDADORA en concedérselo, han convenido la
-          celebración del presente CONTRATO DE ARRENDAMIENTO DE HABITACIÓN EN
-          VIVIENDA COMPARTIDA, el cual se formaliza con sujeción al régimen
-          jurídico establecido en la Ley de Arrendamientos Urbanos de 24 de
-          noviembre de 1.994, así como el recogido en el Código Civil, el cual
-          llevan a cabo por medio del presente contrato y, con arreglo a las
-          siguientes:
+          celebración del presente{" "}
+          <span className="font-semibold">
+            CONTRATO DE ARRENDAMIENTO DE HABITACIÓN EN VIVIENDA COMPARTIDA
+          </span>
+          , el cual se formaliza con sujeción al régimen jurídico establecido en
+          la Ley de Arrendamientos Urbanos de 24 de noviembre de 1.994, así como
+          el recogido en el Código Civil, el cual llevan a cabo por medio del
+          presente contrato y, con arreglo a las siguientes:
         </p>
         <h2 className="text-base font-bold mb-2">CLÁUSULAS</h2>
         <h3 className="text-sm font-bold mb-2">
@@ -107,54 +114,54 @@ export default function HelloLandlordContract({
         </h3>
         <p className="mb-4 text-sm font-light">
           El presente contrato se acuerda que se extenderá por el período
-          comprendido del {startDate || "…/…/202…"} al {endDate || "…/…/202…"}.
-          Transcurrido dicho período, el contrato quedará resuelto sin necesidad
-          de requerimiento alguno y se dejará libre la habitación a las 9 a.m.
-          La expiración del tiempo pactado para el presente contrato de
-          arrendamiento producirá la automática extinción del contrato, quedando
-          obligadas los arrendatarios a dejar la habitación libre de enseres a
-          la referida fecha y a disposición del ARRENDADOR, y en las mismas
-          condiciones existentes en el momento de la ocupación. Para el caso de
-          que el ARRENDATARIO estuviera interesado en añadir una noche extra a
-          su estancia, ésta tendrá un coste de 35 €, y siempre estará
-          condicionada a la disponibilidad de la habitación y a la autorización
-          del ARRENDADOR.
+          comprendido del <span className="font-semibold">{startDate || "…/…/202…"}</span> al{" "}
+          <span className="font-semibold">{endDate || "…/…/202…"}</span>. Transcurrido dicho período,
+          el contrato quedará resuelto sin necesidad de requerimiento alguno y
+          se dejará libre la habitación a las 9 a.m. La expiración del tiempo
+          pactado para el presente contrato de arrendamiento producirá la
+          automática extinción del contrato, quedando obligadas los
+          arrendatarios a dejar la habitación libre de enseres a la referida
+          fecha y a disposición del ARRENDADOR, y en las mismas condiciones
+          existentes en el momento de la ocupación. Para el caso de que el
+          ARRENDATARIO estuviera interesado en añadir una noche extra a su
+          estancia, ésta tendrá un coste de <span className="font-semibold">35 €</span>, y siempre
+          estará condicionada a la disponibilidad de la habitación y a la
+          autorización del ARRENDADOR.
         </p>
-
         <h3 className="text-sm font-bold mb-2">CUARTA. - RENTA.</h3>
         <p className="mb-4 text-sm font-light">
           El arrendatario abonará al arrendador, en concepto de renta, la
-          cantidad de {monthlyRent || "…….."} € mensuales, siempre por
-          adelantado y dentro del período comprendido entre los días 20 y 25 de
-          cada mes. En dicho precio no se incluyen los gastos relativos a los
-          suministros de agua, luz e internet. Dicha renta se abonará mediante
-          transferencia bancaria o ingreso en la siguiente cuenta de EL
-          ARRENDADOR, indicando en el concepto el nombre del inquilino: IBAN
-          Arrendador: ES……………………………………………………………………… El incumplimiento reiterado
-          de la obligación de pago o notificación del justificante del pago en
-          el periodo fijado será motivo de resolución del contrato, dando
-          derecho al arrendador a solicitar el desahucio, siendo por cuenta del
-          ARRENDATARIO los gastos que estas acciones originen. El ARRENDATARIO
-          es conocedor y asume que en caso de impago de las rentas deberá
-          abandonar la vivienda, perdiendo las cantidades entregadas en concepto
-          de fianza así como suministros de agua, luz, gas e internet. Del mismo
-          modo, para el caso de que el arrendatario incumpla el plazo de pago de
-          la renta, el ARRENDADOR podrá sancionar al ARRENDATARIO por dicho
-          incumplimiento con 10€ por cada día de retraso en el pago.
+          cantidad de <span className="font-semibold">{monthlyRent || "…….."} €</span> mensuales,
+          siempre por adelantado y dentro del período comprendido entre los días
+          20 y 25 de cada mes. En dicho precio no se incluyen los gastos
+          relativos a los suministros de agua, luz e internet. Dicha renta se
+          abonará mediante transferencia bancaria o ingreso en la siguiente
+          cuenta de EL ARRENDADOR, indicando en el concepto el nombre del
+          inquilino: IBAN Arrendador:{" "}
+          <span className="font-semibold">{landlordIBAN || "ES…………………………………………"}</span> El
+          incumplimiento reiterado de la obligación de pago o notificación del
+          justificante del pago en el periodo fijado será motivo de resolución
+          del contrato, dando derecho al arrendador a solicitar el desahucio,
+          siendo por cuenta del ARRENDATARIO los gastos que estas acciones
+          originen. El ARRENDATARIO es conocedor y asume que en caso de impago
+          de las rentas deberá abandonar la vivienda, perdiendo las cantidades
+          entregadas en concepto de fianza así como suministros de agua, luz,
+          gas e internet. Del mismo modo, para el caso de que el arrendatario
+          incumpla el plazo de pago de la renta, el ARRENDADOR podrá sancionar
+          al ARRENDATARIO por dicho incumplimiento con 10€ por cada día de
+          retraso en el pago.
         </p>
-
         <p className="mb-4 text-sm font-light">
           El ARRENDATARIO estará obligado a abonar junto a la renta del último
-          mes de contrato, 50 € para la limpieza profunda de la vivienda. No
-          obstante, el ARRENDATARIO deberá dejar la habitación, así como las
-          zonas comunes totalmente limpias y sin enseres personales. En ese
-          sentido, el ARRENDATARIO se responsabiliza solidariamente junto a sus
-          compañeros a dejar la vivienda completamente limpia. En caso de que la
-          vivienda no quede en las condiciones establecidas se descontará del
-          depósito la cantidad de horas extra que se haya invertido en la
+          mes de contrato, <span className="font-semibold">50 €</span> para la limpieza profunda de la
+          vivienda. No obstante, el ARRENDATARIO deberá dejar la habitación, así
+          como las zonas comunes totalmente limpias y sin enseres personales. En
+          ese sentido, el ARRENDATARIO se responsabiliza solidariamente junto a
+          sus compañeros a dejar la vivienda completamente limpia. En caso de
+          que la vivienda no quede en las condiciones establecidas se descontará
+          del depósito la cantidad de horas extra que se haya invertido en la
           limpieza de ésta.
         </p>
-
         <h3 className="text-sm font-bold mb-2">
           QUINTA. - PRIMERA ENTREGA DE LLAVES.
         </h3>
@@ -163,12 +170,12 @@ export default function HelloLandlordContract({
           siguientes cantidades:
         </p>
         <p className="mb-4 text-sm font-light">
-          • Un depósito de TRESCIENTOS EUROS (300 €) en concepto de FIANZA. Este
-          importe será devuelto entre 30 y 45 días tras la finalización del
-          contrato, por parte del ARRENDADOR al ARRENDATARIO, mediante
-          transferencia bancaria y una vez revisado que la vivienda se encuentra
-          en perfecto estado y se hayan liquidado todos los gastos de
-          suministros.
+          • Un depósito de <span className="font-semibold">TRESCIENTOS EUROS (300 €)</span> en
+          concepto de <span className="font-semibold">FIANZA</span>. Este importe será devuelto entre
+          30 y 45 días tras la finalización del contrato, por parte del
+          ARRENDADOR al ARRENDATARIO, mediante transferencia bancaria y una vez
+          revisado que la vivienda se encuentra en perfecto estado y se hayan
+          liquidado todos los gastos de suministros.
         </p>
         <p className="mb-4 text-sm font-light">
           El ARRENDATARIO correrá con los gastos bancarios que en su caso se
@@ -183,11 +190,12 @@ export default function HelloLandlordContract({
           cantidad a devolver del antes mencionado depósito.
         </p>
         <p className="mb-4 text-sm font-light">
-          • La cantidad de DOSCIENTOS EUROS (200 €) en concepto de suministros
-          de agua y luz por cada período de CINCO MESES de contrato. Una vez
-          transcurrido dicho periodo, se calculará el importe exacto a abonar
-          por parte del ARRENDATARIO en concepto de suministros, ajustando el
-          importe abonado con el consumo real efectuado por el arrendatario.
+          • La cantidad de <span className="font-semibold">DOSCIENTOS EUROS (200 €)</span> en concepto
+          de suministros de agua y luz por cada período de CINCO MESES de
+          contrato. Una vez transcurrido dicho periodo, se calculará el importe
+          exacto a abonar por parte del ARRENDATARIO en concepto de suministros,
+          ajustando el importe abonado con el consumo real efectuado por el
+          arrendatario.
         </p>
         <p className="mb-4 text-sm font-light">
           En caso de que los gastos de suministros hayan sido superiores al
@@ -195,13 +203,12 @@ export default function HelloLandlordContract({
           ARRENDATARIO por parte del ARRENDADOR.
         </p>
         <p className="mb-4 text-sm font-light">
-          • La cantidad de OCHENTA EUROS (80 €) en concepto de TARIFA PLANA de
-          internet por los primeros cinco meses de contrato. Para los contratos
-          de 10 meses, a final de enero, junto a la renta de febrero, se hará
-          otra aportación para los siguientes 5 meses de contrato para los
-          suministros y wifi.
+          • La cantidad de <span className="font-semibold">OCHENTA EUROS (80 €)</span> en concepto de
+          TARIFA PLANA de internet por los primeros cinco meses de contrato.
+          Para los contratos de 10 meses, a final de enero, junto a la renta de
+          febrero, se hará otra aportación para los siguientes 5 meses de
+          contrato para los suministros y wifi.
         </p>
-
         <h3 className="text-sm font-bold mb-2">
           SEXTA. - DERECHO DE ACCESO A LA VIVIENDA DEL ARRENDADOR.
         </h3>
@@ -235,7 +242,6 @@ export default function HelloLandlordContract({
           inquilino, se firme un nuevo contrato y sea aceptado por el resto de
           arrendatarios que ocupan la vivienda.
         </p>
-
         <h3 className="text-sm font-bold mb-2">OCTAVA. - FUERZA MAYOR.</h3>
         <p className="mb-4 text-sm font-light">
           En caso de fuerza mayor, el ARRENDATARIO no podrá exigir la
@@ -252,7 +258,6 @@ export default function HelloLandlordContract({
           medidas adoptadas por la autoridad competente que escapen de su ámbito
           de control.
         </p>
-
         <h3 className="text-sm font-bold mb-2">
           NOVENA. – CESIÓN Y SUBARRIENDO.
         </h3>
@@ -264,7 +269,6 @@ export default function HelloLandlordContract({
           intransferible. El incumplimiento de esta cláusula será causa de
           resolución del contrato.
         </p>
-
         <h3 className="text-sm font-bold mb-2">
           DÉCIMA. - DEVOLUCIÓN DE LAS LLAVES POR PARTE DEL ARRENDATARIO.
         </h3>
@@ -282,7 +286,6 @@ export default function HelloLandlordContract({
           todos los gastos directos e indirectos que dicho retraso genere para
           la recuperación de la vivienda y de la habitación.
         </p>
-
         <h3 className="text-sm font-bold mb-2">
           DECIMOPRIMERA. – EMPADRONAMIENTO.
         </h3>
@@ -305,7 +308,6 @@ export default function HelloLandlordContract({
           de baja. Si no lo hiciera, y no hubiera abonado el suplemento previsto
           en concepto de gestión, se descontarán del depósito 50 €.
         </p>
-
         <h3 className="text-sm font-bold mb-2">
           DECIMOSEGUNDA. - NORMAS DE CONVIVENCIA.
         </h3>
@@ -317,7 +319,6 @@ export default function HelloLandlordContract({
           Horizontal, y particularmente las normas incluidas en el ANEXO I del
           presente contrato, del que forma parte inseparable.
         </p>
-
         <h3 className="text-sm font-bold mb-2">
           DECIMOTERCERA. - OBLIGACIONES DEL ARRENDADOR Y ARRENDATARIO CON
           RESPECTO AL MANTENIMIENTO Y REPARACIONES.
@@ -351,7 +352,49 @@ export default function HelloLandlordContract({
         </p>
 
         <h3 className="text-sm font-bold mb-2">
-          DECIMOCUARTA. – INCUMPLIMIENTO DE OBLIGACIONES.
+          DECIMOCUARTA. – CONDICIONES DE EFECTIVIDAD DEL CONTRATO.
+        </h3>
+        <p className="mb-4 text-sm font-light">
+          El presente contrato de arrendamiento{" "}
+          <span className="font-semibold">
+            únicamente entrará en vigor y será válido cuando se cumplan de
+            manera simultánea las siguientes condiciones:
+          </span>
+        </p>
+        <p className="mb-4 text-sm font-light">
+          Además, el ARRENDADOR podrá resolver de pleno derecho el contrato por
+          las siguientes causas:
+        </p>
+        <ul className="list-disc ml-6">
+          <li className="mb-2">
+            1) El ARRENDATARIO haya abonado las cantidades indicadas en la
+            cláusula quinta en concepto de fianza, depósito, tarifa plana de
+            internet y gastos de suministros.
+          </li>
+          <li className="mb-2">
+            2) El contrato haya sido firmado electrónicamente por ambas partes a
+            través de la plataforma habilitada por{" "}
+            <span className="font-semibold">Helloflatmate</span>.
+          </li>
+          <li className="mb-2">
+            3) El ARRENDATARIO cumpla con los requisitos de perfil establecidos
+            por el ARRENDADOR,{" "}
+            <span className="font-semibold">
+              específicamente ser estudiante menor de 30 años de edad
+            </span>
+            .
+          </li>
+        </ul>
+        <p className="mb-4 text-sm font-light">
+          <span className="font-semibold">
+            En caso de que el ARRENDATARIO no cumpla con alguno de estos
+            requisitos, el contrato será considerado nulo, sin generar derechos
+            ni obligaciones entre las partes.
+          </span>
+        </p>
+
+        <h3 className="text-sm font-bold mb-2">
+          DECIMOQUINTA. – INCUMPLIMIENTO DE OBLIGACIONES.
         </h3>
         <p className="mb-4 text-sm font-light">
           El incumplimiento por cualquiera de las partes de las obligaciones
@@ -386,9 +429,8 @@ export default function HelloLandlordContract({
             convivencia acompañadas como ANEXO I de este contrato.
           </li>
         </ul>
-
         <h3 className="text-sm font-bold mb-2">
-          DECIMOQUINTA. - LEGISLACIÓN APLICABLE.
+          DECIMOSEXTA. - LEGISLACIÓN APLICABLE.
         </h3>
         <p className="mb-4 text-sm font-light">
           En todo lo no previsto en el presente contrato, éste se regirá por lo
@@ -396,15 +438,14 @@ export default function HelloLandlordContract({
           Arrendamientos Urbanos, y supletoriamente por lo dispuesto en el
           Código Civil.
         </p>
-
-        <h3 className="text-sm font-bold mb-2">DECIMOSEXTA. - SUMISIÓN.</h3>
+        <h3 className="text-sm font-bold mb-2">DECIMOSEPTIMA. - SUMISIÓN.</h3>
         <p className="mb-4 text-sm font-light">
           Los contratantes se someten expresamente a los Juzgados y Tribunales
           de la ciudad de Valencia para todas aquellas cuestiones litigiosas que
           pudieran derivarse del presente contrato, por ser el lugar donde se
           encuentra la habitación arrendada.
         </p>
-        <p className="mb-4 text-sm font-light">
+        {/* <p className="mb-4 text-sm font-light">
           Y con el carácter expresado en la intervención, firman el presente
           contrato, en el lugar y fecha indicados.
         </p>
@@ -415,15 +456,14 @@ export default function HelloLandlordContract({
           </p>
           <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
             Firma ARRENDADORA:{" "}
-            {/* <Image
+            <Image
               src={"/contract/signature.png"}
               width={200}
               height={100}
               alt="Owner Signature"
-            /> */}
+            />
           </p>
-        </div>
-
+        </div> */}
         <h3 className="text-sm font-bold mb-2">
           ANEXO I – NORMAS DE CONVIVENCIA
         </h3>
@@ -579,7 +619,6 @@ export default function HelloLandlordContract({
             desperfectos.
           </li>
         </ol>
-
         <div className="pt-5 space-y-2">
           <label className="flex items-center space-x-2">
             <input
@@ -588,7 +627,7 @@ export default function HelloLandlordContract({
               onChange={(e) => setIsChecked(e.target.checked)}
               className="form-checkbox"
             />
-            <span>
+            <span className="font-semibold">
               Habiendo leído el contrato acepto los términos y condiciones
             </span>
           </label>

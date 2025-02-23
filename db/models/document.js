@@ -36,7 +36,15 @@ const documentInit = (sequelize, DataTypes) => {
                 type: DataTypes.ENUM("PENDING", "APPROVED", "REJECTED"),
                 allowNull: false,
                 defaultValue: "PENDING"
-            }
+            },
+            leaseOrderId: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            },
+            leaseOrderType: {
+                type: DataTypes.ENUM('PROPERTY', 'ROOM'),
+                allowNull: true
+            },
         },
         {
             sequelize,
