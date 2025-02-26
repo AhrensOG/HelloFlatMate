@@ -125,7 +125,7 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     return (
         <div className="h-screen flex flex-col p-4 gap-4">
             <div className="space-y-6">
-                <h2 className="text-2xl font-bold">Usuarioss</h2>
+                <h2 className="text-2xl font-bold">Usuarios</h2>
                 <div className="w-full flex gap-4">
                     <input
                         type="text"
