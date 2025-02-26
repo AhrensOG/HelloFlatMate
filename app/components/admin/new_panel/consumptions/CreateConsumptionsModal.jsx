@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
     type: Yup.string().oneOf(["Supply", "Others"], "Selecciona una opción válida").required("El tipo es obligatorio."),
 });
 
-export default function CreateConsumptionsModal({ isOpen, onClose, users }) {
+export default function CreateConsumptionsModal({ isOpen, onClose, users, mutate }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchValue, setSearchValue] = useState("");
@@ -58,9 +58,9 @@ export default function CreateConsumptionsModal({ isOpen, onClose, users }) {
                 leaseOrderId: values.leaseOrder,
             });
             toast.success("Datos guardados correctamente.", { id: toastId });
+            await mutate()
         } catch (error) {
             console.log(error);
-
             toast.info("Error al guardar los datos.", { id: toastId });
         }
     };
@@ -120,8 +120,8 @@ export default function CreateConsumptionsModal({ isOpen, onClose, users }) {
                                 <label className="text-xs font-light">Tipo</label>
                                 <Field as="select" name="type" className={modalStyles.select}>
                                     <option value="">Seleccionar Tipo</option>
-                                    <option value="Supply">Supply</option>
-                                    <option value="Others">Others</option>
+                                    <option value="Supply">Suministros</option>
+                                    <option value="Others">Otro</option>
                                 </Field>
                                 <ErrorMessage name="type" component="div" style={{ color: "red" }} />
                             </div>

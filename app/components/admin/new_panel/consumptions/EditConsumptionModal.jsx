@@ -81,8 +81,8 @@ export default function EditConsumptionModal({ isOpen, onClose, consumption, upd
                             <div className="mb-4">
                                 <label className="text-xs font-light">Tipo</label>
                                 <Field as="select" name="type" className={modalStyles.select}>
-                                    <option value="Supply">Supply</option>
-                                    <option value="Others">Others</option>
+                                    <option value="Supply">Suministros</option>
+                                    <option value="Others">Otro</option>
                                 </Field>
                                 <ErrorMessage name="type" component="div" style={{ color: "red" }} />
                             </div>

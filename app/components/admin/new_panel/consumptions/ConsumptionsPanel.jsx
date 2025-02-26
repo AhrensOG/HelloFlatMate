@@ -9,13 +9,17 @@ import EditConsumptionModal from "./EditConsumptionModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
+const TYPE_LABELS = {
+    SUPPLY: "Suministros",
+    OHER: "Otro"
+} 
+
 export default function ConsumptionsPanel({ data, users }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [consumptions, setConsumptions] = useState(data);
     const [createIsOpen, setCreateIsOpen] = useState(false);
     const [editIsOpen, setEditIsOpen] = useState(false);
     const [selectedConsumption, setSelectedConsumption] = useState(null);
-    console.log(data);
 
     const {
         data: swrData,
@@ -23,7 +27,7 @@ export default function ConsumptionsPanel({ data, users }) {
         mutate,
     } = useSWR("/api/admin/consumptions", fetcher, {
         fallbackData: data,
-        refreshInterval: 60000,
+        refreshInterval: 600000,
     });
 
     const handleDelete = async (id) => {
@@ -70,7 +74,7 @@ export default function ConsumptionsPanel({ data, users }) {
         );
     };
 
-    let filteredConsumptions = consumptions?.filter((consumption) => {
+    let filteredConsumptions = (swrData || [])?.filter((consumption) => {
         const searchTerm = searchQuery.toLowerCase();
         const user = consumption?.client?.name?.toLowerCase() + " " + consumption?.client?.lastName?.toLowerCase() || "";
         const type = consumption?.type?.toLowerCase() || "";
@@ -79,13 +83,14 @@ export default function ConsumptionsPanel({ data, users }) {
         return user.includes(searchTerm) || type.includes(searchTerm) || id.includes(searchTerm);
     });
 
-    const handleModify = (data) => {
-        filteredConsumptions = filteredConsumptions.map((consumption) => {
-            if (data.id === consumption.id) {
-                return { ...consumption, type: data.type, amount: data.amount };
-            }
-            return consumption;
-        });
+    const handleModify = async (data) => {
+        // filteredConsumptions = filteredConsumptions.map((consumption) => {
+        //     if (data.id === consumption.id) {
+        //         return { ...consumption, type: data.type, amount: data.amount };
+        //     }
+        //     return consumption;
+        // });
+        await mutate()
     };
 
     return (
@@ -101,7 +106,7 @@ export default function ConsumptionsPanel({ data, users }) {
                         className="border rounded px-3 py-2 w-[450px]"
                     />
 
-                    <button onClick={() => setIsOpenCreate(true)} className="bg-[#0C1660] text-white px-3 py-3 rounded ml-5">
+                    <button onClick={() => setCreateIsOpen(true)} className="bg-[#0C1660] text-white px-3 py-3 rounded ml-5">
                         Crear Consumo
                     </button>
                 </div>
@@ -125,7 +130,7 @@ export default function ConsumptionsPanel({ data, users }) {
                                     <td className="border p-2 text-gray-700 text-center">{consumption?.id}</td>
                                     <td className="border p-2 text-gray-700 text-left">{`${consumption?.client?.name} ${consumption?.client?.lastName}`}</td>
                                     <td className="border p-2 text-gray-700 text-center">{consumption?.amount}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{consumption?.type}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{TYPE_LABELS[consumption?.type]}</td>
                                     <td className="border p-2 text-gray-700 text-center">{formatDateToDDMMYYYY(consumption?.date)}</td>
                                     <td className="border p-2 text-gray-700 text-center">
                                         <div className="flex gap-2 items-center justify-around">
@@ -159,7 +164,7 @@ export default function ConsumptionsPanel({ data, users }) {
                     </tbody>
                 </table>
             </div>
-            {createIsOpen && <CreateConsumptionsModal isOpen={createIsOpen} onClose={() => setCreateIsOpen(false)} users={users} />}
+            {createIsOpen && <CreateConsumptionsModal isOpen={createIsOpen} onClose={() => setCreateIsOpen(false)} users={users} mutate={mutate} />}
             {editIsOpen && (
                 <EditConsumptionModal
                     isOpen={editIsOpen}
