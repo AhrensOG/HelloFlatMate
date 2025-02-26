@@ -18,6 +18,8 @@ const SUPPLY_TYPE_LABELS = {
 };
 
 export default function PaysModal({ data, onClose }) {
+    console.log(data);
+
     const [pays, setPays] = useState([]);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState("Estado");
@@ -157,7 +159,11 @@ export default function PaysModal({ data, onClose }) {
 
         // Filtra los grupos según el estado seleccionado
         if (status !== "ALL") {
-            groupedPays = groupedPays.map((group) => group.filter((item) => status === "PAID" ? (item.status === "PAID" || item.status === "APPROVED" ) : item.status === status)).filter((group) => group.length > 0); // Filtra grupos vacíos
+            groupedPays = groupedPays
+                .map((group) =>
+                    group.filter((item) => (status === "PAID" ? item.status === "PAID" || item.status === "APPROVED" : item.status === status))
+                )
+                .filter((group) => group.length > 0); // Filtra grupos vacíos
         }
 
         setPays(groupedPays.length > 0 ? groupedPays : []); // Asegúrate de que sea un array
