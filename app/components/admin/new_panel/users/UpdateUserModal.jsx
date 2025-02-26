@@ -82,6 +82,7 @@ export default function UpdateUserModal({ onClose, user }) {
                                 <Field
                                     id="dni"
                                     name="dni"
+                                    autoComplete="new-password"
                                     placeholder="Ingrese el DNI o Pasaporte"
                                     className="border p-2 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 />
@@ -110,13 +111,14 @@ export default function UpdateUserModal({ onClose, user }) {
                                 <Field
                                     id="password"
                                     name="password"
+                                    autoComplete="new-password"
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Ingrese la nueva contraseña"
                                     className="border p-2 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 />
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-10 text-gray-500 hover:text-gray-700"
+                                    className="absolute right-3 top-8 text-gray-500 hover:text-gray-700"
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
                                     {showPassword ? "Ocultar" : "Mostrar"}
