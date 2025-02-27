@@ -2,8 +2,6 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
 export default function OrdersModal({ data, onClose }) {
-    console.log(data);
-
     const [orders, setOrders] = useState(data);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState("Estado"); // Estado inicial
