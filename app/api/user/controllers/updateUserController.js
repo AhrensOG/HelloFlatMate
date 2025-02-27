@@ -4,29 +4,6 @@ import { NextResponse } from "next/server";
 export async function updateClient(data) {
     if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
     if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    // if (!data.name || data.name.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre" }, { status: 400 });
-    // if (!data.lastName || data.lastName.trim().length < 1) return NextResponse.json({ error: "Se requiere el apellido" }, { status: 400 });
-    // if (!data.idNum || data.idNum.trim().length < 1) return NextResponse.json({ error: "Se requiere el DNI" }, { status: 400 });
-    // // if (typeof data.age !== 'number' || data.age < 1 || data.age > 120 || data.age < 18) return NextResponse.json({ error: "Se requiere la edad o es incorrecta" }, { status: 400 });
-    // if (!data.phone) return NextResponse.json({ error: "Se requiere el teléfono" }, { status: 400 });
-    // if (!data.city || data.city.trim().length < 1) return NextResponse.json({ error: "Se requiere la ciudad" }, { status: 400 });
-    // if (!data.street || data.street.trim().length < 1) return NextResponse.json({ error: "Se requiere la calle" }, { status: 400 });
-    // if (!data.streetNumber || data.streetNumber.trim().length < 1) return NextResponse.json({ error: "Se requiere el número" }, { status: 400 });
-    // if (!data.postalCode || data.postalCode.trim().length < 1) return NextResponse.json({ error: "Se requiere el Código Postal" }, { status: 400 });
-    // if (!data.birthDate || data.birthDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de nacimiento" }, { status: 400 });
-    // if (!data.country || data.country.trim().length < 1) return NextResponse.json({ error: "Se requiere el nacionalidad" }, { status: 400 });
-
-    // // Validar nuevos campos
-    // if (!data.emergencyName && data.emergencyName.trim().length < 1) return NextResponse.json({ error: "Se requiere el nombre de emergencia" }, { status: 400 });
-    // if (!data.emergencyPhone) return NextResponse.json({ error: "Se requiere el teléfono de emergencia" }, { status: 400 });
-    // if (!data.emergencyEmail && data.emergencyEmail.trim().length < 1) return NextResponse.json({ error: "Se requiere el email de emergencia" }, { status: 400 });
-    // if (data.howMetUs && data.howMetUs.trim().length < 1) return NextResponse.json({ error: "Se requiere la información de cómo nos conociste" }, { status: 400 });
-    // if (data.destinationUniversity && data.destinationUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de destino" }, { status: 400 });
-    // if (data.homeUniversity && data.homeUniversity.trim().length < 1) return NextResponse.json({ error: "Se requiere la universidad de origen" }, { status: 400 });
-    // if (data.arrivalDate && data.arrivalDate.trim().length < 1) return NextResponse.json({ error: "Se requiere la fecha de llegada" }, { status: 400 });
-    // if (data.arrivalTime && data.arrivalTime.trim().length < 1) return NextResponse.json({ error: "Se requiere la hora de llegada" }, { status: 400 });
-    // if (!data.genre || data.genre.trim().length < 1) return NextResponse.json({ error: "Se requiere el género" }, { status: 400 });
-
 
     // Iniciar transacción
     const transaction = await Client.sequelize.transaction();
@@ -36,34 +13,33 @@ export async function updateClient(data) {
             await transaction.rollback();
             return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
         }
+        console.log(data)
+        const sanitize = (value) => (value && value.trim() !== "" ? value.trim() : null);
 
-        // Actualizar campos existentes
-        user.name = data.name || user.name;
-        user.lastName = data.lastName || user.lastName;
-        user.idNum = data.idNum || user.idNum;
-        user.phone = data.phone || user.phone;
-        user.city = data.city || user.city;
-        user.street = data.street || user.street;
-        user.streetNumber = data.streetNumber || user.streetNumber;
-        user.postalCode = data.postalCode || user.postalCode;
-        user.birthDate = formatedDate(data.birthDate) || user.birthDate;
-        user.country = data.country || user.country;
+        user.name = sanitize(data.name) ?? user.name;
+        user.lastName = sanitize(data.lastName) ?? user.lastName;
+        user.idNum = sanitize(data.idNum) ?? user.idNum;
+        user.phone = sanitize(data.phone) ?? user.phone;
+        user.city = sanitize(data.city) ?? user.city;
+        user.street = sanitize(data.street) ?? user.street;
+        user.streetNumber = sanitize(data.streetNumber) ?? user.streetNumber;
+        user.postalCode = sanitize(data.postalCode) ?? user.postalCode;
+        user.birthDate = sanitize(data.birthDate) ? formatDate(data.birthDate) : null;
+        user.country = sanitize(data.country) ?? user.country;
 
-        // Actualizar nuevos campos
-        user.emergencyName = data.emergencyName || user.emergencyName;
-        user.emergencyPhone = data.emergencyPhone || user.emergencyPhone;
-        user.emergencyEmail = data.emergencyEmail || user.emergencyEmail;
-        user.howMetUs = data.howMetUs || user.howMetUs;
-        user.destinationUniversity = data.destinationUniversity || user.destinationUniversity;
-        user.homeUniversity = data.homeUniversity || user.homeUniversity;
-        user.arrivalDate = data.arrivalDate ? new Date(data.arrivalDate) : user.arrivalDate;
-        user.arrivalTime = data.arrivalTime ? data.arrivalTime : user.arrivalTime;
-        user.genre = data.genre || user.genre || "OTHER";
-        user.age = data.age || user.age;
-        user.reasonForValencia = data.reasonForValencia || user.reasonForValencia;
-        user.reasonForValenciaOther = data.reasonForValenciaOther || user.reasonForValenciaOther;
-        user.personalReview = data.personalReview || user.personalReview;
-
+        user.emergencyName = sanitize(data.emergencyName) ?? user.emergencyName;
+        user.emergencyPhone = sanitize(data.emergencyPhone) ?? user.emergencyPhone;
+        user.emergencyEmail = sanitize(data.emergencyEmail) ?? user.emergencyEmail;
+        user.howMetUs = sanitize(data.howMetUs) ?? user.howMetUs;
+        user.destinationUniversity = sanitize(data.destinationUniversity) ?? user.destinationUniversity;
+        user.homeUniversity = sanitize(data.homeUniversity) ?? user.homeUniversity;
+        user.arrivalDate = sanitize(data.arrivalDate) ? formatDate(data.arrivalDate) : null;
+        user.arrivalTime = sanitize(data.arrivalTime) ?? user.arrivalTime;
+        user.genre = sanitize(data.genre) ?? (user.genre || "OTHER");
+        user.age = sanitize(data.age) ?? user.age;
+        user.reasonForValencia = sanitize(data.reasonForValencia) ?? user.reasonForValencia;
+        user.reasonForValenciaOther = sanitize(data.reasonForValenciaOther) ?? user.reasonForValenciaOther;
+        user.personalReview = sanitize(data.personalReview) ?? user.personalReview;
 
         await user.save({ transaction });
 
@@ -77,13 +53,11 @@ export async function updateClient(data) {
     }
 }
 
-
-const formatedDate = (date) => {
+const formatDate = (date) => {
+    if (!date.includes("/")) return null;
     const [day, month, year] = date.split("/");
-
-    const newDate = `${year}-${month}-${day}`;
-    return newDate;
-}
+    return `${year}-${month}-${day}`;
+};
 
 export async function updateSignarute(data) {
 

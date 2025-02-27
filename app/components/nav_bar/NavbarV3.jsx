@@ -138,7 +138,7 @@ export default function NavbarV3({ fixed = false }) {
                         <button className="flex items-center gap-2 font-bold text-base">
                             {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
                         </button>
-                        <div className="absolute right-0 w-48 bg-white shadow-lg rounded-md hidden group-hover:block shadow-reservation-list">
+                        <div className="absolute right-0 w-48 bg-white rounded-md hidden group-hover:block shadow-reservation-list">
                             {renderMenuOptions()}
                             <button
                                 onClick={() => logOut()}
