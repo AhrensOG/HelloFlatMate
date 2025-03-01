@@ -773,6 +773,7 @@
     },
     "user_payment_history": {
         "desc": "Pago mensual",
+        "supply_desc": "Pago",
         "desc_res": "Pago (Reserva)",
         "months": {
             "1": "Enero",
@@ -816,6 +817,26 @@
             "room_code": "Codigo de alojamiento:",
             "close": "Cerrar",
             "pay_now": "Pagar ahora"
+        },
+        "new_panel": {
+            "tab": {
+                "pending": "Pendientes",
+                "history": "Realizados"
+            }
+        }
+    },
+    "supplies": {
+        "supply_names": {
+            "water": "Agua",
+            "gas": "Gas",
+            "electricity": "Electricidad",
+            "expenses": "Expensas",
+            "internet": "Wifi",
+            "agency_fees": "Tasa de la agencia",
+            "cleanup": "Limpieza check-out",
+            "others": "Otros",
+            "deposit": "Depósito",
+            "general_supplies": "Suministros"
         }
     },
     "forms": {

@@ -85,12 +85,12 @@ export default function UpdateClient() {
 
     return (
         initialValues && (
-            <motion.main
+            <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full mx-auto p-6 bg-white">
+                className="w-full p-6 bg-white">
                 <h1 className="text-xl font-semibold text-gray-800 mb-4">
                     Información personal
                 </h1>
@@ -568,7 +568,7 @@ export default function UpdateClient() {
                         </Form>
                     )}
                 </Formik>
-            </motion.main>
+            </motion.div>
         )
     );
 }

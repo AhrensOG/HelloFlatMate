@@ -38,7 +38,6 @@ const ProfileProgressBar = () => {
                 user.genre,
                 user.country,
                 user.reasonForValencia,
-                user.reasonForValenciaOther,
                 user.personalReview,
             ];
 
@@ -55,9 +54,9 @@ const ProfileProgressBar = () => {
     }, [state]);
 
     return (
-        <div className="h-[102px] bg-[#f7f7f7] grid place-items-center w-full">
-            <div className="w-full p-4 max-w-screen-xl">
-                <p className="text-center text-gray-700">
+        <div className="h-[86px] bg-[#f7f7f7] grid place-items-center w-full px-4">
+            <div className="w-full pt-4 max-w-screen-xl">
+                <p className="text-center text-gray-700 font-bold">
                     ¡Rellena la información de tu perfil!
                 </p>
 

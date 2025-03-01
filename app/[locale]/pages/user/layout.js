@@ -15,7 +15,7 @@ const UserDashboardLayout = ({ children }) => {
             return <ProfileProgressBar />;
         } else if (pathname.includes("/pages/user/payments")) {
             return (
-                <div className="flex w-full justify-start items-end h-[102px] bg-[#f7f7f7] border-b-2 border-gray-300">
+                <div className="flex w-full justify-start items-end h-[86px] bg-[#f7f7f7] border-b-2 border-gray-300">
                     <span className="p-6 text-xl font-bold">Pagos</span>
                 </div>
             );
@@ -32,9 +32,9 @@ const UserDashboardLayout = ({ children }) => {
             {renderProgressBar()}
 
             <div className="flex justify-center items-start grow bg-[#f7f7f7]">
-                <div className="flex grow max-w-screen-xl w-full">
+                <div className="flex grow max-w-screen-xl w-full gap-8 mx-4">
                     <Sidebar />
-                    <main className="grow p-8 pb-0 px-4">{children}</main>
+                    <main className="grow mt-4">{children}</main>
                 </div>
             </div>
         </div>

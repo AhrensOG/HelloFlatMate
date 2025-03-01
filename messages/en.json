@@ -771,6 +771,7 @@
     },
     "user_payment_history": {
         "desc": "Monthly payment",
+        "supply_desc": "Payment",
         "desc_res": "Payment (Reservation)",
         "months": {
             "1": "January",
@@ -814,6 +815,26 @@
             "room_code": "Accommodation Code:",
             "close": "Close",
             "pay_now": "Pay Now"
+        },
+        "new_panel": {
+            "tab": {
+                "pending": "Pending Payments",
+                "history": "History Payments"
+            }
+        }
+    },
+    "supplies": {
+        "supply_names": {
+            "water": "Water",
+            "gas": "Gas",
+            "electricity": "Electricity",
+            "expenses": "Expenses",
+            "internet": "Wifi",
+            "agency_fees": "Agency fees",
+            "cleanup": "Check-out cleaning",
+            "others": "Others",
+            "deposit": "Deposit",
+            "general_supplies": "Supplies"
         }
     },
     "last_room_page": { 
