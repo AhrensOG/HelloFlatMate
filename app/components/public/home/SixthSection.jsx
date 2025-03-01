@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import HTMLReactParser from "html-react-parser";
+import Link from "next/link";
 
 export default function SixthSection() {
     const router = useRouter();
@@ -11,25 +12,25 @@ export default function SixthSection() {
         {
             title: t("home_sixth_sect_1_title"),
             description: t("home_sixth_sect_1_desc"),
-            imageUrl: "/home/new_home/apartments.jpg", // Ruta de ejemplo para la imagen
+            imageUrl: "/home/new_home/landlord.png",
             link: "/hellolandlord",
         },
         {
             title: t("home_sixth_sect_2_title"),
             description: t("home_sixth_sect_2_desc"),
-            imageUrl: "/home/new_home/privateRoom.jpg",
+            imageUrl: "/home/new_home/hellorooms.png",
             link: "/alquiler-habitaciones-valencia",
         },
         {
             title: t("home_sixth_sect_3_title"),
             description: t("home_sixth_sect_3_desc"),
-            imageUrl: "/home/new_home/studio.jpg",
+            imageUrl: "/home/new_home/hellostudio.png",
             link: "/hellostudio",
         },
         {
             title: t("home_sixth_sect_4_title"),
             description: t("home_sixth_sect_4_desc"),
-            imageUrl: "/home/new_home/sharedRoom.jpg",
+            imageUrl: "/home/new_home/hellocoliving.png",
             link: "/coliving-valencia",
         },
     ];
@@ -43,8 +44,8 @@ export default function SixthSection() {
                 </h2>
                 <div className="flex flex-wrap justify-center items-stretch gap-8">
                     {alojamientos.map((alojamiento, index) => (
-                        <div
-                            onClick={() => router.push(alojamiento.link)}
+                        <Link
+                            href={alojamiento.link}
                             key={index}
                             className="bg-white rounded-lg shadow-lg p-4 border-2 border-gray-200 max-w-64 w-full space-y-4 hover:scale-[1.025] hover:shadow-reservation-list transition duration-300 cursor-pointer"
                         >
@@ -55,7 +56,7 @@ export default function SixthSection() {
                                 <span className="bg-violet-300 px-3 py-2 rounded-full text-xs text-white font-semibold">{alojamiento.title}</span>
                                 <p className="mt-2 text-gray-600 text-sm">{alojamiento.description}</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
