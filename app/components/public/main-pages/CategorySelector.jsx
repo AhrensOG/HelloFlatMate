@@ -104,11 +104,11 @@ const CategorySelector = ({
 
     const getRentalPeriods = (propiedades) => {
         const fechasUnicas = new Set();
-        const fechaActual = new Date(); // Obtener la fecha actual
+        const fechaActual = new Date(2025, 0, 31);
 
         propiedades.forEach((propiedad) => {
             // Verificar si la propiedad es de tipo HELLO_ROOM, HELLO_COLIVING o HELLO_LANDLORD
-            if (propiedad.category === "HELLO_ROOM" || propiedad.category === "HELLO_COLIVING" || propiedad.category === "HELLO_LANDLORD") {
+            if (propiedad.category === "HELLO_ROOM" || propiedad.category === "HELLO_COLIVING" || propiedad.category === "HELLO_LANDLORD" || propiedad.category === "HELLO_STUDIO" ) {
                 // Acceder al array rooms y mapear sobre él
                 propiedad.rooms.forEach((room) => {
                     // Acceder a rentalPeriods y formatear las fechas
