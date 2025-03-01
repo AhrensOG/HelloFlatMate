@@ -50,7 +50,7 @@ export async function PATCH(req) {
                 return NextResponse.json({ error: "La contraseña debe tener al menos 6 caracteres." }, { status: 400 });
             default:
                 console.error("Error al actualizar contraseña:", error);
-                return NextResponse.json({ error: "Error inesperado al actualizar la contraseña." }, { status: 500 });
+                return NextResponse.json({ error: "Error inesperado al actualizar la contraseña.", error_message: error  }, { status: 500 });
         }
     }
 }

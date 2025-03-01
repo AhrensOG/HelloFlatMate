@@ -68,7 +68,7 @@ export async function POST(req) {
                     { status: 429 }
                 );
             default:
-                return NextResponse.json({ error: "Error inesperado. Inténtalo nuevamente." }, { status: 500 });
+                return NextResponse.json({ error: "Error inesperado. Inténtalo nuevamente.", error_message: error  }, { status: 500 });
         }
     }
 }
