@@ -36,13 +36,11 @@ export const reducer = (state, action) => {
                 ...state,
                 toDos: action.payload,
             };
-        case "SAVE_NOTIFICATIONS": {
+        case "ADD_NOTIFICATION":
             return {
                 ...state,
-                notifications: action.payload,
+                notifications: [...state.notifications, action.payload], // Agrega sin sobrescribir
             };
-        }
-
         default:
             return { ...state };
     }

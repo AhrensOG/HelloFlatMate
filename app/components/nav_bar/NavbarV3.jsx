@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
 import { useTranslations } from "next-intl";
-import { getSocket, disconnectSocket } from "@/app/socket";
 
 export default function NavbarV3({ fixed = false }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,25 +30,6 @@ export default function NavbarV3({ fixed = false }) {
             setLocale(savedLocale);
         }
     }, []);
-
-    useEffect(() => {
-        if (state.user?.id && !socket) {
-            setSocket(getSocket(state.user.id));
-        }
-    }, [state?.user?.id]);
-
-    useEffect(() => {
-        if (socket) {
-            if (!isSocketConnected) {
-                socket.emit("userConnected", state.user.id, () => {
-                    setIsSocketConnected(true);
-                });
-            }
-            socket.on("newNotification", (noti) => {
-                console.log(noti);
-            });
-        }
-    }, [socket]);
 
     const renderMenuOptions = () => {
         switch (user?.role) {
@@ -146,6 +126,7 @@ export default function NavbarV3({ fixed = false }) {
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
+                {console.log(state)}
                 <Link
                     href={`/${locale?.toLowerCase()}/ultimas-habitaciones`}
                     target="_blank"
