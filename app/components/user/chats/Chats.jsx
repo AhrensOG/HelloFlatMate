@@ -53,6 +53,7 @@ export default function Chat() {
 
     return (
         <div>
+            {console.log(chats)}
             {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
             {groupChats &&
                 groupChats.map((chat) => {
@@ -92,7 +93,13 @@ export default function Chat() {
                                     name={chat.relatedModel?.serial ? `${chat.relatedModel?.serial} - Privado` : "Unknown"}
                                     image={"/profile/profile.png"}
                                     lastMessage={chat.messages[chat.messages.length - 1]}
-                                    action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
+                                    action={() =>
+                                        router.push(
+                                            `/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}&receiverId=${
+                                                chat?.participants?.filter((u) => u.participantId !== user.id)[0]?.participantId
+                                            }`
+                                        )
+                                    }
                                     notReadCount={
                                         chat.messages.filter(
                                             (message) =>
@@ -120,7 +127,13 @@ export default function Chat() {
                                     }
                                     image={"/profile/profile.png"}
                                     lastMessage={chat.messages[chat.messages.length - 1]}
-                                    action={() => router.push(`/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}`)}
+                                    action={() =>
+                                        router.push(
+                                            `/pages/user/chats/chat?type=priv&chat=${chat.id}&userId=${user.id}&receiverId=${
+                                                chat?.participants?.filter((u) => u.participantId !== user.id)[0]?.participantId
+                                            }`
+                                        )
+                                    }
                                     notReadCount={
                                         chat.messages.filter(
                                             (message) =>

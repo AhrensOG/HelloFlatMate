@@ -16,6 +16,7 @@ export default function Chat() {
     const [typeChat, setTypeChat] = useState(false);
     const [haveChattSupport, setHaveChattSupport] = useState(false);
     const [userId, setUserId] = useState(false);
+    const [receiverId, setReceiverId] = useState(false);
     const [chatId, setChatId] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -42,6 +43,7 @@ export default function Chat() {
             const res = await axios.post("/api/chat", {
                 type: "SUPPORT",
                 receiverId: clientId || userId,
+                senderId: state?.user?.id,
             });
             // Asumiendo que la respuesta contiene el ID del nuevo chat
             setChatId(res.data.chat.id);
@@ -66,12 +68,14 @@ export default function Chat() {
             const haveChat = searchParams.get("bool") === "true"; // Convertir a booleano
             const chat = searchParams.get("chat");
             const user = client || searchParams.get("userId") || state.user?.id;
+            const receiverId = searchParams.get("receiverId");
 
             setClientId(client);
             setTypeChat(type);
             setHaveChattSupport(haveChat);
             setChatId(chat);
             setUserId(user);
+            setReceiverId(receiverId);
         }
     }, []);
 
@@ -102,7 +106,7 @@ export default function Chat() {
                 setTransport(socket.io.engine.transport.name);
 
                 // Unir al usuario a la sala de chat
-                socket.emit("joinChat", chatId.toString(), () => {
+                socket.emit("joinChat", chatId.toString(), userId.toString(), () => {
                     setIsConnectedToRoom(true);
                 });
 
@@ -212,6 +216,7 @@ export default function Chat() {
                 senderId: userId,
                 time: new Date().toLocaleTimeString(),
                 userName: state?.user?.name + " " + state?.user?.lastName,
+                receiverId: receiverId || "",
             };
 
             socket.emit("sendMessage", newMessage);
