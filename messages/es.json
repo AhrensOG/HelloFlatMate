@@ -752,7 +752,7 @@
             },
             "error": {
                 "info": "Hubo un problema al procesar tu pago con Redsys.",
-                "error": "Error al iniciar el checkout de Redsys:"
+                "error": "Error al iniciar el proceso de pago."
             },
             "contract": {
                 "signed": "Contrato firmado",

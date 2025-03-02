@@ -10,7 +10,7 @@ import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
 import { useTranslations } from "next-intl";
 
-export default function NavbarV3({ fixed = false }) {
+export default function NavbarV3({ fixed = false, borderBottom = true }) {
     const [isOpen, setIsOpen] = useState(false);
     const { state } = useContext(Context);
     const user = state?.user;
@@ -105,9 +105,11 @@ export default function NavbarV3({ fixed = false }) {
 
     return (
         <nav
-            className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-b border-[#c7c7c7] bg-white ${
+            className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-[#c7c7c7] bg-white ${
                 fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
-            } `}
+            } ${
+                borderBottom ? "border-b" : "border-none"
+            }`}
         >
             {/* Icono de menú hamburguesa a la izquierda */}
             <div className="md:hidden flex justify-center items-center">

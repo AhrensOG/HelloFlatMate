@@ -27,11 +27,16 @@ const UserDashboardLayout = ({ children }) => {
 
     return (
         <div className={`min-h-screen flex flex-col ${montserrat.className}`}>
-            <NavbarV3 />
+            <NavbarV3 borderBottom={false} />
 
             {renderProgressBar()}
 
-            <div className="flex justify-center items-start grow bg-[#f7f7f7]">
+            <div
+                className={`${
+                    pathname.includes("/pages/user/reservations")
+                        ? "bg-white pt-10"
+                        : ""
+                } flex justify-center items-start grow bg-[#f7f7f7]`}>
                 <div className="flex grow max-w-screen-xl w-full gap-8 mx-4">
                     <Sidebar />
                     <main className="grow mt-4">{children}</main>

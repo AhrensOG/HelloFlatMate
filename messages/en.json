@@ -741,11 +741,11 @@
         "dont_have_rooms": "You don't have any reservations yet",
         "card": {
             "info": {
-                "loading": "Redirecting to Stripe checkout..."
+                "loading": "Redirecting to payment..."
             },
             "error": {
                 "info": "There was a problem processing your payment. Please try again.",
-                "error": "Error starting Stripe checkout:"
+                "error": "Error starting payment process. Please try again"
             },
             "contract": {
                 "signed": "Contract Signed",

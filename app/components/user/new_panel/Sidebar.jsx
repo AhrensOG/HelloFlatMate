@@ -29,7 +29,7 @@ const Sidebar = () => {
         },
         {
             name: "Reservas",
-            href: "/pages/user/my-reservations",
+            href: "/pages/user/reservations",
             icon: <CalendarDaysIcon className="size-6" />,
         },
         {
