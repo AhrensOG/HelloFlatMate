@@ -11,7 +11,6 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-// Función para generar un código de orden único
 function generateDsOrder(leaseOrderId) {
     const baseStr = String(leaseOrderId);
     const timePart = Date.now().toString().slice(-4);
@@ -24,7 +23,7 @@ function generateDsOrder(leaseOrderId) {
 }
 
 const ReservationCard = ({ data, user }) => {
-    // const t = useTranslations("user_history.card");
+    const t = useTranslations("user_history.card");
 
     const [redsysData, setRedsysData] = useState(null);
     const formRef = useRef(null);
@@ -64,7 +63,7 @@ const ReservationCard = ({ data, user }) => {
     const getStatusBadge = () => {
         if (data.status === "IN_PROGRESS") {
             return (
-                <span className="flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
+                <span className="max-w-32 flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
                     <ClockIcon className="w-4 h-4" /> En progreso
                 </span>
             );
@@ -75,13 +74,13 @@ const ReservationCard = ({ data, user }) => {
             !data.inReview
         ) {
             return (
-                <span className="flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
+                <span className="max-w-32 flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
                     <PencilIcon className="w-4 h-4" /> Incompleta
                 </span>
             );
         } else {
             return (
-                <span className="flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
+                <span className="max-w-32 flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
                     <CheckCircleIcon className="w-4 h-4" /> Completa
                 </span>
             );
@@ -134,7 +133,6 @@ const ReservationCard = ({ data, user }) => {
         }
     };
 
-    // Formulario oculto para Redsys
     const redsysForm = redsysData && (
         <form
             ref={formRef}
@@ -167,7 +165,7 @@ const ReservationCard = ({ data, user }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
                 className="w-full bg-white shadow-md border border-gray-200 rounded-lg mt-6 p-6 flex flex-col md:flex-row gap-6">
-                {/* Imagen de la habitación */}
+
                 <div className="w-full md:w-2/5">
                     <div className="relative w-full h-[208px] rounded-lg overflow-hidden">
                         <Image
@@ -184,10 +182,9 @@ const ReservationCard = ({ data, user }) => {
                     </div>
                 </div>
 
-                {/* Información de la reserva */}
                 <div className="flex flex-col justify-between w-full md:w-3/5">
-                    <div>{getStatusBadge()}</div>
                     <div>
+                        <div>{getStatusBadge()}</div>
                         <h3 className="text-xl font-semibold text-gray-900">
                             {data.room?.name || "Habitación sin nombre"}
                         </h3>
@@ -207,11 +204,11 @@ const ReservationCard = ({ data, user }) => {
                             Código: {data.room?.serial || "N/A"}
                         </p>
                     </div>
-                    {/* Botón de acción: Si el estado es PENDING, mostramos el botón de pago */}
+
                     {data.status === "PENDING" ? (
                         <button
                             onClick={handleRedsysCheckout}
-                            className="mt-4 bg-[#440cac] text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition">
+                            className="mt-4 bg-[#440cac] text-center text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition">
                             Pagar mi reserva
                         </button>
                     ) : data.status === "APPROVED" &&
@@ -219,8 +216,8 @@ const ReservationCard = ({ data, user }) => {
                       !data.isSigned &&
                       !data.inReview ? (
                         <Link
-                            href={`/pages/user/contractv2?p=${data?.propertyId}?r=${data.room?.id}&lo=${data.id}`}
-                            className="mt-4 bg-[#440cac] text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition">
+                            href={`/pages/user/contractv2?p=${data?.propertyId}&r=${data.room?.id}&lo=${data.id}`}
+                            className="mt-4 bg-[#440cac] text-center text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition">
                             Firmar contrato
                         </Link>
                     ) : null}

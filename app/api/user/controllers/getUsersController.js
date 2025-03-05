@@ -45,7 +45,7 @@ export async function getUserById(id) {
           ],
         },
         // { model: ToDo, as: "toDos" },
-        // { model: Document, as: "documents" },
+        { model: Document, as: "documents" },
         { model: Supply, as: "supplies" },
         // { model: Contract, as: "contracts" },
         // { model: ChatParticipant, as: "chats" },

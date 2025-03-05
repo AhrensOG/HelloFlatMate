@@ -35,7 +35,6 @@ const orderPriority = [
     "CLEANUP",
 ];
 
-// 📌 Función para asignar estilos según el estado del pago
 const getStatusStyles = (status, paid) => {
     if (paid)
         return {
@@ -157,8 +156,6 @@ const PaymentsV2 = () => {
                     };
                 })
                 .filter(Boolean);
-            console.log(monthlyPayments);
-            console.log(state.user?.rentPayments);
 
             const supplyPayments = (state.user?.supplies || [])
                 .filter((sup) => normalizedStatus.includes(sup.status))
@@ -198,7 +195,6 @@ const PaymentsV2 = () => {
             });
         };
 
-        // 🔹 Ahora el estado "COMPLETED" funcionará para ambos tipos de pagos
         setPaymentsToShow({
             pending: processPayments("PENDING"),
             completed: processPayments("COMPLETED"),
@@ -220,7 +216,6 @@ const PaymentsV2 = () => {
                 <h1 className="text-xl font-semibold text-gray-800 mb-4">
                     Pagos
                 </h1>
-                {/* 📌 Tabs de "Pendientes" y "Realizados" */}
 
                 <div className="flex border-b">
                     {["pending", "completed"].map((tab) => (

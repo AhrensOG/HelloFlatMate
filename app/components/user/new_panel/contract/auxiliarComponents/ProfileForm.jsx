@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
 import axios from "axios";
 import { Context } from "@/app/context/GlobalContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import CountrySelect from "@/app/components/public/main-pages/auxiliarComponents/CountrySelect";
@@ -27,11 +27,14 @@ const howMetUsOptions = [
     { value: "Otros portales web", label: "Otros portales web" },
 ];
 
-export default function UpdateClient() {
+export default function ProfileForm() {
     const { state, dispatch } = useContext(Context);
     const [initialValues, setInitialValues] = useState(null);
     const router = useRouter();
     const t = useTranslations("forms.update_client");
+
+    const searchParams = useSearchParams();
+    const queryString = searchParams.toString();
 
     useEffect(() => {
         if (state?.user?.id) {
@@ -73,13 +76,18 @@ export default function UpdateClient() {
         const toastId = toast.loading("Guardando...");
         try {
             await axios.put("/api/user", { ...values, id: state?.user?.id });
+            await isUserLogged(dispatch);
+            router.push(`/pages/user/contractv2/docs?${queryString}`);
             toast.success("Información actualizada correctamente", {
                 id: toastId,
+                description: "¡Seras redirigido al siguiente paso!",
             });
-            await isUserLogged(dispatch);
         } catch (error) {
             console.error("Error actualizando datos:", error);
-            toast.error("Error al actualizar la información", { id: toastId });
+            toast.info("Error al actualizar la información", {
+                id: toastId,
+                description: "Intenta nuevamente o contacta a nuestro soporte.",
+            });
         }
     };
 
@@ -101,7 +109,6 @@ export default function UpdateClient() {
                     enableReinitialize>
                     {({ setFieldValue, values }) => (
                         <Form>
-                            {/* Nombre y Apellido */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Nombre
@@ -125,7 +132,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Email */}
                             <div className="mb-6 flex flex-col border bg-gray-100 border-gray-200 p-3 gap-2 rounded-sm">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Email
@@ -138,7 +144,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* ID / Passport */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     ID / Passport
@@ -150,7 +155,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Teléfono con código de país */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Teléfono (con código de país)
@@ -216,7 +220,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Fecha de nacimiento*/}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Fecha de nacimiento
@@ -228,7 +231,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Género */}
                             <div className="mb-6 flex flex-col border border-gray-300 py-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100 bg-white">
                                 <label className="text-[10px] px-3 font-semibold text-gray-600 uppercase">
                                     Género
@@ -246,7 +248,6 @@ export default function UpdateClient() {
                                 </Field>
                             </div>
 
-                            {/* Nacionalidad */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Nacionalidad
@@ -265,7 +266,6 @@ export default function UpdateClient() {
                                 </Field>
                             </div>
 
-                            {/* Ciudad */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Ciudad
@@ -277,7 +277,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Dirección Calle */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Dirección (calle)
@@ -289,7 +288,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Dirección Numero de calle */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Número de dirección
@@ -301,7 +299,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Código postal */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Postal Code
@@ -313,7 +310,6 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Contacto de emergencia */}
                             <h2 className="text-lg font-semibold text-gray-800 my-6">
                                 Contacto de emergencia
                             </h2>
@@ -405,12 +401,10 @@ export default function UpdateClient() {
                                 />
                             </div>
 
-                            {/* Datos Adicionales */}
                             <h2 className="text-lg font-semibold text-gray-800 my-6">
                                 Datos Adicionales
                             </h2>
 
-                            {/* Razón para Valencia */}
                             <div className="mb-6 flex flex-col border border-gray-300 py-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="px-3 text-[10px] font-semibold text-gray-600 uppercase">
                                     ¿Por qué vienes a Valencia?
@@ -563,7 +557,7 @@ export default function UpdateClient() {
                             <button
                                 type="submit"
                                 className="mt-4 w-full bg-[#440cac] text-white py-3 rounded-sm font-semibold hover:bg-[#440cac]/80 transition-colors">
-                                Guardar Cambios
+                                Guardar y continuar
                             </button>
                         </Form>
                     )}

@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import ReservationCard from "./auxiliarComponents/ReservationCard";
 import { Context } from "@/app/context/GlobalContext";
+import Link from "next/link";
 
-const ReservationsPage = () => {
+const ReservationsV2 = () => {
     const { state } = useContext(Context);
     const activeReservations = state?.user?.leaseOrdersRoom || [];
 
-    // Filtrar según criterios:
     const inReviewReservations = activeReservations.filter(
         (order) =>
             order.status === "IN_PROGRESS" &&
@@ -51,7 +51,6 @@ const ReservationsPage = () => {
                 </h1>
             </div>
 
-            {/* SECCIÓN: PENDIENTE DE FIRMA */}
             {pendingSignatureReservations.length > 0 && (
                 <div className="w-full max-w-screen-lg mt-8">
                     <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -81,7 +80,6 @@ const ReservationsPage = () => {
                 </div>
             )}
 
-            {/* SECCIÓN: EN PROGRESO */}
             {pendingReservations.length > 0 && (
                 <div className="w-full max-w-screen-lg mt-8">
                     <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -111,7 +109,6 @@ const ReservationsPage = () => {
                 </div>
             )}
 
-            {/* SECCIÓN: EN REVISIÓN */}
             {inReviewReservations.length > 0 && (
                 <div className="w-full max-w-screen-lg mt-6">
                     <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -125,7 +122,7 @@ const ReservationsPage = () => {
                         <InformationCircleIcon className="w-6 h-6 text-yellow-800" />
                         <p className="text-sm">
                             <strong>Tu reserva está en revisión.</strong>{" "}
-                            Estamos verificando tus documentos y detalles;
+                            Estamos verificando tu solicitúd;
                             pronto recibirás una actualización.
                         </p>
                     </motion.div>
@@ -141,7 +138,6 @@ const ReservationsPage = () => {
                 </div>
             )}
 
-            {/* SECCIÓN: COMPLETAS */}
             {completedReservations.length > 0 && (
                 <div className="w-full max-w-screen-lg mt-8">
                     <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -170,7 +166,6 @@ const ReservationsPage = () => {
                 </div>
             )}
 
-            {/* Si no hay reservas en ninguna categoría */}
             {pendingReservations.length === 0 &&
                 inReviewReservations.length === 0 &&
                 pendingSignatureReservations.length === 0 &&
@@ -180,18 +175,17 @@ const ReservationsPage = () => {
                     </p>
                 )}
 
-            {/* Mensaje final */}
             <p className="text-gray-600 text-sm text-center mt-6">
                 ¿Tienes alguna pregunta sobre el proceso de reserva?{" "}
-                <a
+                <Link
                     href="#"
                     className="text-[#440cac] font-semibold hover:underline">
                     Escríbenos
-                </a>{" "}
+                </Link>{" "}
                 cuando quieras.
             </p>
         </div>
     );
 };
 
-export default ReservationsPage;
+export default ReservationsV2;

@@ -1,8 +1,8 @@
-import ReservationsPage from "@/app/components/user/new_panel/reservations/ReservationsPage";
+import ReservationsV2 from "@/app/components/user/new_panel/reservations/ReservationsV2";
 import React from "react";
 
 const UserReservationsPage = () => {
-    return <ReservationsPage/>
+    return <ReservationsV2/>
 };
 
 export default UserReservationsPage;

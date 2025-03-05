@@ -6,6 +6,7 @@ import { montserrat } from "@/font";
 import React from "react";
 import { usePathname } from "next/navigation";
 import ProfileProgressBar from "@/app/components/user/new_panel/profile/auxiliarComponents/ProfileProgressBar";
+import ContractProgressBar from "@/app/components/user/new_panel/contract/auxiliarComponents/ContractProgressBar";
 
 const UserDashboardLayout = ({ children }) => {
     const pathname = usePathname();
@@ -21,6 +22,8 @@ const UserDashboardLayout = ({ children }) => {
             );
         } else if (pathname.includes("/pages/user/reservations")) {
             return null;
+        } else if (pathname.includes("/pages/user/contractv2")) {
+            return <ContractProgressBar />;
         }
         return null;
     };
@@ -35,6 +38,8 @@ const UserDashboardLayout = ({ children }) => {
                 className={`${
                     pathname.includes("/pages/user/reservations")
                         ? "bg-white pt-10"
+                        : pathname.includes("/pages/user/contractv2")
+                        ? "bg-white"
                         : ""
                 } flex justify-center items-start grow bg-[#f7f7f7]`}>
                 <div className="flex grow max-w-screen-xl w-full gap-8 mx-4">

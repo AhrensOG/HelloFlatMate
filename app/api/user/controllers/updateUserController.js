@@ -13,7 +13,6 @@ export async function updateClient(data) {
             await transaction.rollback();
             return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
         }
-        console.log(data)
         const sanitize = (value) => (value && value.trim() !== "" ? value.trim() : null);
 
         user.name = sanitize(data.name) ?? user.name;
@@ -24,7 +23,7 @@ export async function updateClient(data) {
         user.street = sanitize(data.street) ?? user.street;
         user.streetNumber = sanitize(data.streetNumber) ?? user.streetNumber;
         user.postalCode = sanitize(data.postalCode) ?? user.postalCode;
-        user.birthDate = sanitize(data.birthDate) ? formatDate(data.birthDate) : null;
+        user.birthDate = sanitize(data.birthDate) ?? formatDate(data.birthDate);
         user.country = sanitize(data.country) ?? user.country;
 
         user.emergencyName = sanitize(data.emergencyName) ?? user.emergencyName;
@@ -33,14 +32,14 @@ export async function updateClient(data) {
         user.howMetUs = sanitize(data.howMetUs) ?? user.howMetUs;
         user.destinationUniversity = sanitize(data.destinationUniversity) ?? user.destinationUniversity;
         user.homeUniversity = sanitize(data.homeUniversity) ?? user.homeUniversity;
-        user.arrivalDate = sanitize(data.arrivalDate) ? formatDate(data.arrivalDate) : null;
+        user.arrivalDate = sanitize(data.arrivalDate) ?? formatDate(data.arrivalDate);
         user.arrivalTime = sanitize(data.arrivalTime) ?? user.arrivalTime;
         user.genre = sanitize(data.genre) ?? (user.genre || "OTHER");
         user.age = sanitize(data.age) ?? user.age;
         user.reasonForValencia = sanitize(data.reasonForValencia) ?? user.reasonForValencia;
         user.reasonForValenciaOther = sanitize(data.reasonForValenciaOther) ?? user.reasonForValenciaOther;
         user.personalReview = sanitize(data.personalReview) ?? user.personalReview;
-
+        
         await user.save({ transaction });
 
         // Confirmar transacción
