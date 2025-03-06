@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
 import { useTranslations } from "next-intl";
+import { getNotificationSocket, disconnectNotificationSocket } from "@/app/socket";
 
 export default function NavbarV3({ fixed = false }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +32,49 @@ export default function NavbarV3({ fixed = false }) {
         }
     }, []);
 
+    useEffect(() => {
+        if (state?.user?.id) {
+            if (!socket || !socket.connected) {
+                console.log("🔌 Conectando socket de notificaciones...");
+                const newSocket = getNotificationSocket(state.user.id);
+                setSocket(newSocket);
+
+                newSocket.on("connect", () => {
+                    console.log(`✅ Conectado a Socket.IO con ID: ${newSocket.id}`);
+                    setIsSocketConnected(true);
+                });
+
+                newSocket.emit("userConnected", state.user.id, () => {
+                    console.log("👤 Usuario conectado al socket");
+                });
+
+                const handleNotification = (notification) => {
+                    console.log("📩 Nueva notificación recibida:", notification);
+                };
+
+                newSocket.on("newNotification", handleNotification);
+
+                return () => {
+                    console.log("❌ Desconectando socket...");
+                    newSocket.off("newNotification", handleNotification);
+                    newSocket.off("connect");
+                    disconnectNotificationSocket();
+                    setIsSocketConnected(false);
+                    setSocket(null);
+                };
+            }
+        } else {
+            if (socket) {
+                console.log("🔴 Usuario no autenticado. Desconectando socket...");
+                disconnectNotificationSocket();
+                setIsSocketConnected(false);
+                setSocket(null);
+            }
+        }
+    }, [state.user]);
+
     const renderMenuOptions = () => {
-        switch (user?.role) {
+        switch (state?.user?.role) {
             case "ADMIN":
                 return (
                     <>
@@ -126,7 +168,6 @@ export default function NavbarV3({ fixed = false }) {
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
-                {console.log(state)}
                 <Link
                     href={`/${locale?.toLowerCase()}/ultimas-habitaciones`}
                     target="_blank"

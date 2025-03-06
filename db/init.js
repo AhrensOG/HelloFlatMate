@@ -22,6 +22,7 @@ const RentPayment = require("./models/rentPayment");
 const Consumption = require("./models/consumption");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 const SearchRequest = require("./models/searchRequest");
+const Notification = require("./models/notification");
 
 (async () => {
     try {
@@ -461,4 +462,5 @@ module.exports = {
     RentPayment,
     SearchRequest,
     Consumption,
+    Notification,
 };

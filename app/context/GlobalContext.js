@@ -1,8 +1,8 @@
 "use client";
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, { createContext, useEffect, useReducer, useRef } from "react";
 import { reducer } from "./reducer";
 import { isUserLogged } from "./actions/isUserLogged";
-import { getSocket, disconnectSocket } from "@/app/socket";
+import { disconnectNotificationSocket, getNotificationSocket } from "../socket";
 
 export const Context = createContext();
 
@@ -13,7 +13,9 @@ const initialState = {
 
 const GlobalContext = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const [socket, setSocket] = useState(null);
+    const socketRef = useRef(null);
+    const isListeningRef = useRef(false);
+    const isConnectedRef = useRef(false); // 🔥 Nueva referencia para evitar doble conexión
 
     useEffect(() => {
         const getData = async () => {
@@ -26,43 +28,40 @@ const GlobalContext = ({ children }) => {
         getData();
     }, []);
 
-    // Conectar socket cuando el usuario está autenticado
-    useEffect(() => {
-        if (state.user?.id) {
-            if (!socket) {
-                console.log("Intentando conectar socket...");
-                const newSocket = getSocket(state.user.id);
-                setSocket(newSocket);
-            }
-        } else {
-            if (socket) {
-                console.log("Desconectando socket por cierre de sesión...");
-                disconnectSocket();
-                setSocket(null);
-            }
-        }
-    }, [state.user]);
+    // useEffect(() => {
+    //     if (state?.user?.id && !isConnectedRef.current) {
+    //         console.log("🔌 Conectando socket...");
+    //         socketRef.current = getNotificationSocket(state?.user.id);
 
-    // Escuchar eventos del socket solo si está conectado
-    useEffect(() => {
-        if (socket && socket.connected) {
-            console.log("Socket conectado, escuchando eventos...");
+    //         socketRef.current.emit("userConnected", state.user.id, () => {
+    //             console.log("👤 Usuario conectado al socket");
+    //             isConnectedRef.current = true; // 🔥 Marca como conectado
+    //         });
 
-            const handleNewNotification = (notification) => {
-                console.log("Nueva notificación recibida:", notification);
-                dispatch({ type: "ADD_NOTIFICATION", payload: notification });
-            };
+    //         if (!isListeningRef.current) {
+    //             isListeningRef.current = true;
 
-            socket.on("newNotification", (not) => {
-                handleNewNotification(not);
-            });
+    //             const handleNewNotification = (notification) => {
+    //                 console.log("📩 Nueva notificación recibida:", notification);
+    //                 dispatch({ type: "ADD_NOTIFICATION", payload: notification });
+    //             };
 
-            return () => {
-                console.log("Eliminando listeners de notificaciones...");
-                socket.off("newNotification", handleNewNotification);
-            };
-        }
-    }, [socket]);
+    //             socketRef.current.on("newNotification", handleNewNotification);
+
+    //             return () => {
+    //                 console.log("🛑 Eliminando listeners de notificaciones...");
+    //                 socketRef.current.off("newNotification", handleNewNotification);
+    //                 isListeningRef.current = false;
+    //             };
+    //         }
+    //     } else if (!state.user?.id) {
+    //         console.log("🔴 Usuario no autenticado. Desconectando socket...");
+    //         disconnectNotificationSocket();
+    //         socketRef.current = null;
+    //         isConnectedRef.current = false; // 🔥 Reinicia la conexión
+    //         isListeningRef.current = false;
+    //     }
+    // }, [state?.user?.id]);
 
     return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>;
 };

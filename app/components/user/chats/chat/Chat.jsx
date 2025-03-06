@@ -4,10 +4,11 @@ import MessageInput from "./MessageInput";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { disconnectSocket, getSocket } from "@/app/socket";
+import { disconnectChatSocket, getChatSocket } from "@/app/socket";
 import { Context } from "@/app/context/GlobalContext";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import { toast } from "sonner";
+import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
 
 export default function Chat() {
     const searchParams = useSearchParams();
@@ -92,77 +93,85 @@ export default function Chat() {
 
     useEffect(() => {
         if (state.user?.id && !socket) {
-            setSocket(getSocket(state.user.id));
+            setSocket(getChatSocket(state.user.id));
         }
     }, [state?.user?.id]);
 
     // Configuración de conexión al socket
     useEffect(() => {
-        if (socket && chatId) {
+        if (chatId && userId) {
             const usuarioId = searchParams.get("userId") || searchParams.get("id");
+            console.log(`💬 Conectando al chat ${chatId}...`);
+            const chatSocket = getChatSocket(chatId);
+            setSocket(chatSocket);
 
             const handleSocketConnect = () => {
+                console.log(`✅ Chat ${chatId} conectado con ID: ${chatSocket.id}`);
                 setIsConnected(true);
-                setTransport(socket.io.engine.transport.name);
+                setTransport(chatSocket.io.engine.transport.name);
 
                 // Unir al usuario a la sala de chat
-                socket.emit("joinChat", chatId.toString(), userId.toString(), () => {
+                chatSocket.emit("joinChat", chatId.toString(), userId.toString(), () => {
                     setIsConnectedToRoom(true);
-                });
-
-                // Escuchar el evento de mensajes entrantes
-                socket.on("newMessage", (message) => {
-                    if (message && message.senderId) {
-                        const isSender = message.senderId == userId;
-
-                        setMessages((prevMessages) => [...prevMessages, { ...message, type: isSender ? "sender" : "receiver" }]);
-                        if (isSender) {
-                            saveMessage({
-                                chatId,
-                                body: message.text,
-                                userId: usuarioId,
-                                type: "TEXT",
-                            });
-                        }
-                    }
+                    console.log(`✅ Usuario unido a la sala del chat ${chatId}`);
                 });
             };
 
-            //Escuchar el evento de files
-            socket.on("newFile", (message) => {
+            const handleNewMessage = (message) => {
                 if (message && message.senderId) {
                     const isSender = message.senderId == userId;
-
                     setMessages((prevMessages) => [...prevMessages, { ...message, type: isSender ? "sender" : "receiver" }]);
+
+                    if (isSender) {
+                        saveMessage({
+                            chatId,
+                            body: message.text,
+                            userId: usuarioId,
+                            type: "TEXT",
+                        });
+                    }
+                }
+            };
+
+            const handleNewFile = (message) => {
+                if (message && message.senderId) {
+                    const isSender = message.senderId == userId;
+                    setMessages((prevMessages) => [...prevMessages, { ...message, type: isSender ? "sender" : "receiver" }]);
+
                     if (isSender) {
                         handleFileUpload(message);
                     }
                 }
-            });
+            };
 
             const handleSocketDisconnect = () => {
-                console.log("Desconectado del servidor");
+                console.log("❌ Desconectado del servidor");
                 setIsConnected(false);
                 setTransport("N/A");
             };
 
             // Verificar si el socket ya está conectado
-            if (socket.connected) {
+            if (chatSocket.connected) {
                 handleSocketConnect(); // Llamar directamente si ya está conectado
             }
 
             // Configurar eventos del socket
-            socket.on("connect", handleSocketConnect);
-            socket.on("disconnect", handleSocketDisconnect);
+            chatSocket.on("connect", handleSocketConnect);
+            chatSocket.on("disconnect", handleSocketDisconnect);
+            chatSocket.on("newMessage", handleNewMessage);
+            chatSocket.on("newFile", handleNewFile);
 
             return () => {
-                // Limpiar eventos al desmontar el componente
-                socket.off("connect", handleSocketConnect);
-                socket.off("disconnect", handleSocketDisconnect);
-                disconnectSocket();
+                console.log(`🚪 Saliendo del chat ${chatId}, desconectando socket...`);
+                chatSocket.off("connect", handleSocketConnect);
+                chatSocket.off("disconnect", handleSocketDisconnect);
+                chatSocket.off("newMessage", handleNewMessage);
+                chatSocket.off("newFile", handleNewFile);
+                disconnectChatSocket(chatId);
+                setSocket(null);
             };
         }
-    }, [socket, chatId]);
+    }, [chatId, userId]);
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -292,7 +301,7 @@ export default function Chat() {
     return (
         <div className="flex flex-col min-h-screen">
             <header className="px-2">
-                <NavBar />
+                <NavbarV3 />
             </header>
 
             <main className="flex flex-col justify-between items-center flex-grow w-full">

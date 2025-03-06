@@ -26,7 +26,23 @@ const notificationInit = (sequelize, DataTypes) => {
                 defaultValue: false,
             },
             type: {
-                type: DataTypes.ENUM("CHAT"),
+                type: DataTypes.ENUM("CHAT", "OTHER"),
+            },
+            userId: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            typeUser: {
+                type: DataTypes.ENUM("CLIENT", "OWNER", "ADMIN", "SUPPORT", "WORKER"),
+                allowNull: false,
+            },
+            chatId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            date: {
+                type: DataTypes.DATE,
+                allowNull: false,
             },
         },
         {

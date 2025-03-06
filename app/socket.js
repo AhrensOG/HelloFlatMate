@@ -1,58 +1,84 @@
 import { io } from "socket.io-client";
 
 const isBrowser = typeof window !== "undefined";
-let socket;
 
-export const getSocket = () => {
-  if (isBrowser && !socket) {
-    // Conecta al servidor de chat
-    // Obtener la URL del servidor de Socket.IO desde las variables de entorno
-    const socketServerUrl =
-      process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:4000";
+let notificationSocket = null; // 🔔 Socket de notificaciones
+let chatSockets = {}; // 💬 Múltiples sockets de chat
 
-    socket = io(socketServerUrl, {
-      transports: ["websocket", "polling"],
-      reconnectionAttempts: 5,
-      timeout: 10000,
-      upgrade: true,
-    });
+// 🔔 Obtener el socket de notificaciones (global, solo uno)
+export const getNotificationSocket = (userId) => {
+    if (isBrowser && !notificationSocket) {
+        console.log("🔔 Conectando socket de notificaciones...");
+        const socketServerUrl = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:4000";
 
-    // Eventos de conexión/desconexión
-    socket.on("connect", () => {
-      console.log("Connected to socket server with ID:", socket.id);
-    });
+        notificationSocket = io(socketServerUrl, {
+            transports: ["websocket", "polling"],
+            reconnectionAttempts: 5,
+            timeout: 10000,
+            upgrade: true,
+            query: { type: "notification", userId }, // Se especifica el tipo de socket
+        });
 
-    socket.on("disconnect", () => {
-      console.log("Disconnected from socket server");
-    });
+        notificationSocket.on("connect", () => {
+            console.log("✅ Notificaciones conectadas con ID:", notificationSocket.id);
+        });
 
-    // Manejar errores de conexión
-    socket.on("connect_error", (error) => {
-      console.error("Connection error:", error);
-    });
+        notificationSocket.on("disconnect", () => {
+            console.log("🔴 Socket de notificaciones desconectado.");
+        });
+    }
 
-    // Manejar intentos de reconexión
-    socket.on("reconnect_attempt", () => {
-      console.log("Attempting to reconnect...");
-    });
-
-    socket.on("reconnect_error", (error) => {
-      console.error("Reconnection error:", error);
-    });
-
-    socket.on("reconnect_failed", () => {
-      console.error("Reconnection failed");
-    });
-  }
-
-  return socket;
+    return notificationSocket;
 };
 
-// Función para desconectar el socket
-export const disconnectSocket = () => {
-  if (socket) {
-    socket.disconnect();
-    socket = null; // Limpiar la referencia para evitar reconexiones accidentales
-    console.log("Socket disconnected");
-  }
+// 💬 Obtener un socket específico para un chat
+export const getChatSocket = (roomId) => {
+    if (isBrowser && !chatSockets[roomId]) {
+        console.log(`💬 Conectando socket de chat para la sala ${roomId}...`);
+        const socketServerUrl = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:4000";
+
+        chatSockets[roomId] = io(socketServerUrl, {
+            transports: ["websocket", "polling"],
+            reconnectionAttempts: 5,
+            timeout: 10000,
+            upgrade: true,
+            query: { type: "chat", roomId }, // Cada chat tiene un roomId único
+        });
+
+        chatSockets[roomId].on("connect", () => {
+            console.log(`✅ Chat ${roomId} conectado con ID:`, chatSockets[roomId].id);
+        });
+
+        chatSockets[roomId].on("disconnect", () => {
+            console.log(`🔴 Socket de chat ${roomId} desconectado.`);
+            delete chatSockets[roomId]; // Eliminar la referencia al socket cuando se desconecta
+        });
+    }
+
+    return chatSockets[roomId];
+};
+
+// 🔴 Desconectar un socket de chat específico
+export const disconnectChatSocket = (roomId) => {
+    if (chatSockets[roomId]) {
+        console.log(`🚪 Desconectando socket de chat ${roomId}...`);
+        chatSockets[roomId].disconnect();
+        delete chatSockets[roomId]; // Eliminar la referencia al socket
+    }
+};
+
+// 🔴 Desconectar todos los sockets de chat
+export const disconnectAllChatSockets = () => {
+    Object.keys(chatSockets).forEach((roomId) => {
+        disconnectChatSocket(roomId);
+    });
+};
+
+// 🔴 Desconectar el socket de notificaciones
+export const disconnectNotificationSocket = () => {
+    if (notificationSocket) {
+        console.log("🔴 Desconectando socket de notificaciones...");
+        notificationSocket.disconnect();
+        notificationSocket = null;
+    }
 };
