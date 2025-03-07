@@ -38,7 +38,8 @@ export default function ContractProgressBar() {
 
     const [personalFraction, setPersonalFraction] = useState(0);
     const [isDocsComplete, setIsDocsComplete] = useState(false);
-    const [isPaymentsComplete, setIsPaymentsComplete] = useState(false);
+    // Para pagos se usará un número de 0 a 1 (0 = 0%, 1 = 100% completado)
+    const [isPaymentsComplete, setIsPaymentsComplete] = useState(0);
     const [isSignatureComplete, setIsSignatureComplete] = useState(false);
 
     const [fillPercent, setFillPercent] = useState(0);
@@ -81,6 +82,7 @@ export default function ContractProgressBar() {
         const fraction = filledCount / totalPersonal;
         setPersonalFraction(fraction);
 
+        // Verificar si los documentos están completos
         let docsComplete = false;
         if (Array.isArray(user.documents) && leaseOrderId) {
             docsComplete = user.documents.some(
@@ -91,14 +93,38 @@ export default function ContractProgressBar() {
         }
         setIsDocsComplete(docsComplete);
 
-        setIsPaymentsComplete(false);
+        // Calcular el progreso de pagos:
+        // Buscar en state.user.supplies aquellos con leaseOrderId igual a lo y con tipos permitidos.
+        const allowedTypes = [
+            "DEPOSIT",
+            "AGENCY_FEES",
+            "INTERNET",
+            "GENERAL_SUPPLIES",
+        ];
+        let paymentsFraction = 0;
+        if (Array.isArray(user.supplies) && leaseOrderId) {
+            const supplies = user.supplies.filter(
+                (sup) =>
+                    String(sup.leaseOrderId) === leaseOrderId &&
+                    allowedTypes.includes(sup.type)
+            );
+            const totalPayments = supplies.length;
+            const paidPayments = supplies.filter(
+                (sup) => sup.status === "PAID"
+            ).length;
+            paymentsFraction =
+                totalPayments > 0 ? paidPayments / totalPayments : 0;
+        }
+        setIsPaymentsComplete(paymentsFraction);
+
+        // Dejar la firma como pendiente (o agregar la lógica necesaria)
         setIsSignatureComplete(false);
     }, [state.user, leaseOrderId]);
 
     useEffect(() => {
         const personalPoints = personalFraction * 25;
         const docPoints = isDocsComplete ? 25 : 0;
-        const payPoints = isPaymentsComplete ? 25 : 0;
+        const payPoints = isPaymentsComplete * 25;
         const signPoints = isSignatureComplete ? 25 : 0;
 
         const total = personalPoints + docPoints + payPoints + signPoints;
@@ -144,7 +170,7 @@ export default function ContractProgressBar() {
                         } else if (step.key === "documents") {
                             isDone = isDocsComplete;
                         } else if (step.key === "payments") {
-                            isDone = isPaymentsComplete;
+                            isDone = isPaymentsComplete === 1;
                         } else if (step.key === "signature") {
                             isDone = isSignatureComplete;
                         }
