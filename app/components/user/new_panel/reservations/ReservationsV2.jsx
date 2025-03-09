@@ -46,7 +46,7 @@ const ReservationsV2 = () => {
         <div className="w-full flex flex-col items-center px-0 md:px-6 pb-10 bg-white">
             {/* Título principal */}
             <div className="w-full flex flex-col justify-start items-start">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h1 className="text-xl font-semibold text-gray-900 mb-2">
                     Todas las reservas
                 </h1>
             </div>

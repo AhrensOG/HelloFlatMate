@@ -63,7 +63,10 @@ const getStatusStyles = (status, paid) => {
 const PaymentsV2 = () => {
     const { state } = useContext(Context);
     const [selectedTab, setSelectedTab] = useState("pending");
-    const [paymentsToShow, setPaymentsToShow] = useState([]);
+    const [paymentsToShow, setPaymentsToShow] = useState({
+        pending: [],
+        completed: [],
+    });
     const [showModal, setShowModal] = useState(false);
     const [selectedPayment, setSelectedPayment] = useState(null);
     const t = useTranslations("user_payment_history");
@@ -118,7 +121,7 @@ const PaymentsV2 = () => {
                     : ["PENDING"];
 
             const monthlyPayments = (state.user?.rentPayments || [])
-                ?.filter((payment) => normalizedStatus.includes(payment.status))
+                .filter((payment) => normalizedStatus.includes(payment.status))
                 .map((payment) => {
                     const matchedOrder = activeLeaseOrders.find(
                         (order) => order.id === payment.leaseOrderId
@@ -199,7 +202,18 @@ const PaymentsV2 = () => {
             pending: processPayments("PENDING"),
             completed: processPayments("COMPLETED"),
         });
-    }, [state.user, t]);
+    }, [state.user, t, t_supply]);
+
+    const groupPaymentsByLeaseOrder = (payments) => {
+        return payments.reduce((groups, payment) => {
+            const serial = payment.order?.room?.serial || "Sin Orden";
+            if (!groups[serial]) {
+                groups[serial] = [];
+            }
+            groups[serial].push(payment);
+            return groups;
+        }, {});
+    };
 
     const handlePaymentClick = (payment) => {
         if (payment.paid) {
@@ -234,7 +248,6 @@ const PaymentsV2 = () => {
                     ))}
                 </div>
 
-                {/* 📌 Secciones dinámicas para pagos */}
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={selectedTab}
@@ -244,38 +257,53 @@ const PaymentsV2 = () => {
                         transition={{ duration: 0.3 }}
                         className="mt-4">
                         {paymentsToShow[selectedTab]?.length > 0 ? (
-                            paymentsToShow[selectedTab].map(
-                                (payment, index) => {
-                                    const { bg, icon } = getStatusStyles(
-                                        payment.status,
-                                        payment.paid
-                                    );
-
-                                    return (
-                                        <button
-                                            key={index}
-                                            onClick={() =>
-                                                handlePaymentClick(payment)
-                                            }
-                                            className="p-4 border rounded-lg shadow-sm shadow-gray-100 bg-white hover:shadow-md transition text-left w-full flex justify-between items-center mb-2">
-                                            <div className="flex items-center gap-3">
-                                                {icon}
-                                                <h2 className="text-lg font-semibold">
-                                                    {payment.description}
-                                                </h2>
-                                            </div>
-                                            <span
-                                                className={`px-4 py-1 text-sm font-semibold rounded-full ${bg}`}>
-                                                {payment.paid
-                                                    ? t("paid")
-                                                    : t(
-                                                          `status.${payment.status.toLowerCase()}`
-                                                      )}
-                                            </span>
-                                        </button>
-                                    );
-                                }
-                            )
+                            Object.entries(
+                                groupPaymentsByLeaseOrder(
+                                    paymentsToShow[selectedTab]
+                                )
+                            ).map(([serial, payments]) => (
+                                <div key={serial} className="mb-6 border grid place-items-center">
+                                    <h2 className="text-sm text-[#440cac] p-2 font-bold w-full border-b">
+                                        Orden: {serial}
+                                    </h2>
+                                    <div className="p-2 bg-white w-full">
+                                        {payments.map((payment, index) => {
+                                            const { bg, icon } =
+                                                getStatusStyles(
+                                                    payment.status,
+                                                    payment.paid
+                                                );
+                                            return (
+                                                <button
+                                                    key={index}
+                                                    onClick={() =>
+                                                        handlePaymentClick(
+                                                            payment
+                                                        )
+                                                    }
+                                                    className="w-full flex justify-between items-center p-4 bg-helloflatmate rounded-lg border border-gray-200 hover:shadow-lg transition-all mb-3">
+                                                    <div className="flex items-center gap-4">
+                                                        {icon}
+                                                        <h3 className="text-lg font-medium text-gray-800">
+                                                            {
+                                                                payment.description
+                                                            }
+                                                        </h3>
+                                                    </div>
+                                                    <span
+                                                        className={`px-4 py-1 text-sm font-bold rounded-full ${bg}`}>
+                                                        {payment.paid
+                                                            ? t("paid")
+                                                            : t(
+                                                                  `status.${payment.status.toLowerCase()}`
+                                                              )}
+                                                    </span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            ))
                         ) : (
                             <p className="text-gray-500 text-center">
                                 {t("not_pend_pay")}

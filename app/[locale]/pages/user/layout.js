@@ -29,6 +29,8 @@ const UserDashboardLayout = ({ children }) => {
                     <ContractProgressBar />
                 </Suspense>
             );
+        } else if (pathname.includes("/pages/user/history")) {
+            return null;
         }
         return null;
     };
@@ -41,7 +43,7 @@ const UserDashboardLayout = ({ children }) => {
 
             <div
                 className={`${
-                    pathname.includes("/pages/user/reservations")
+                    pathname.includes("/pages/user/reservations") || pathname.includes("/pages/user/history") 
                         ? "bg-white pt-10"
                         : pathname.includes("/pages/user/contractv2")
                         ? "bg-white"

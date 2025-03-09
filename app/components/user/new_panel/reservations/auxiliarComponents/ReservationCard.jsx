@@ -78,6 +78,12 @@ const ReservationCard = ({ data, user }) => {
                     <PencilIcon className="w-4 h-4" /> Incompleta
                 </span>
             );
+        } else if (data.status === "FINISHED") {
+            return (
+                <span className="max-w-32 flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
+                    <CheckCircleIcon className="w-4 h-4" /> Finalizada
+                </span>
+            );
         } else {
             return (
                 <span className="max-w-32 flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
@@ -165,7 +171,6 @@ const ReservationCard = ({ data, user }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
                 className="w-full bg-white shadow-md border border-gray-200 rounded-lg mt-6 p-6 flex flex-col md:flex-row gap-6">
-
                 <div className="w-full md:w-2/5">
                     <div className="relative w-full h-[208px] rounded-lg overflow-hidden">
                         <Image
