@@ -3,24 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function getAllPayments() {
   // Obtener todos los pagos de suministro
-  const supplies = await Supply.findAll({
-    include: [
-      {
-        model: Client,
-        as: "client",
-      },
-    ],
-  });
+  const supplies = await Supply.findAll({attributes:["id", "date", "type", "status", "name", "amount", "paymentId", "leaseOrderId", "leaseOrderType"]});
 
   // Obtener todos los pagos de alquiler
-  const rentPayments = await RentPayment.findAll({
-    include: [
-      {
-        model: Client,
-        as: "client",
-      },
-    ],
-  });
+  const rentPayments = await RentPayment.findAll({attributes:["id", "date", "type", "status", "quotaNumber", "description", "amount", "paymentId", "leaseOrderId", "leaseOrderType"]});
 
   // Combinar ambos arrays
   const payments = [...supplies, ...rentPayments].map((payment) => ({
