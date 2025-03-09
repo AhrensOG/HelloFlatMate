@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ContractDetailV2 from "./auxiliarComponents/ContractDetailV2";
+import ContractDetailV2Fallback from "../auxiliarComponents/fallbacks/ContractDetailV2Fallback";
 
 const SignatureV2 = () => {
     return (
@@ -14,7 +15,9 @@ const SignatureV2 = () => {
                 sección del documento y, cuando estés listo, proceder a
                 firmarlo.
             </p>
-            <ContractDetailV2 />
+            <Suspense fallback={<ContractDetailV2Fallback />}>
+                <ContractDetailV2 />
+            </Suspense>
         </div>
     );
 };

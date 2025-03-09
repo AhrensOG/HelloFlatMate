@@ -15,8 +15,6 @@ export default function DocsV2() {
     if (!state?.user) return null;
 
     const searchParams = useSearchParams();
-    const propertyId = searchParams.get("p");
-    const roomId = searchParams.get("r");
     const leaseOrderId = searchParams.get("lo");
     const queryString = searchParams.toString();
 

@@ -3,10 +3,11 @@
 import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
 import Sidebar from "@/app/components/user/new_panel/Sidebar";
 import { montserrat } from "@/font";
-import React from "react";
+import React, { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import ProfileProgressBar from "@/app/components/user/new_panel/profile/auxiliarComponents/ProfileProgressBar";
 import ContractProgressBar from "@/app/components/user/new_panel/contract/auxiliarComponents/ContractProgressBar";
+import ContractProgressBarFallback from "@/app/components/user/new_panel/contract/auxiliarComponents/fallbacks/ContractProgressBarFallback";
 
 const UserDashboardLayout = ({ children }) => {
     const pathname = usePathname();
@@ -23,7 +24,11 @@ const UserDashboardLayout = ({ children }) => {
         } else if (pathname.includes("/pages/user/reservations")) {
             return null;
         } else if (pathname.includes("/pages/user/contractv2")) {
-            return <ContractProgressBar />;
+            return (
+                <Suspense fallback={<ContractProgressBarFallback />}>
+                    <ContractProgressBar />
+                </Suspense>
+            );
         }
         return null;
     };

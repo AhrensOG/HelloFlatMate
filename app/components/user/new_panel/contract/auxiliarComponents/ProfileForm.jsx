@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Field, Form, Formik, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { Field, Form, Formik } from "formik";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
 import axios from "axios";
@@ -14,7 +13,6 @@ import CountrySelect from "@/app/components/public/main-pages/auxiliarComponents
 import { useTranslations } from "next-intl";
 import { isUserLogged } from "@/app/context/actions/isUserLogged";
 
-// Opciones para el campo howMetUs
 const howMetUsOptions = [
     { value: "", label: "Seleccione una opción" },
     { value: "Recomendado por amigos", label: "Recomendado por amigos" },

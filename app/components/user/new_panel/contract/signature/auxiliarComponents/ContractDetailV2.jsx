@@ -13,6 +13,7 @@ import HelloColivingContractV2 from "./HelloColivingContractV2";
 import HelloLandlordContractV2 from "./HelloLandlordContractV2";
 import SignaturePadV2 from "./SignaturePadV2";
 import { isUserLogged } from "@/app/context/actions/isUserLogged";
+import ContractDetailV2Fallback from "../../auxiliarComponents/fallbacks/ContractDetailV2Fallback";
 
 const ContractDetailV2 = () => {
     const { state, dispatch } = useContext(Context);
@@ -201,7 +202,7 @@ const ContractDetailV2 = () => {
         }
     };
 
-    if (!state.user) return null;
+    if (!state.user) return <ContractDetailV2Fallback />;
 
     return (
         <motion.section
@@ -334,19 +335,20 @@ const ContractDetailV2 = () => {
                     He leído y acepto los términos del contrato
                 </label>
             </div>
-
-            <div className="w-full">
-                <button
-                    disabled={!isChecked}
-                    onClick={() => setSignatureModal(true)}
-                    className={`w-full py-3 font-semibold transition-colors ${
-                        isChecked
-                            ? "bg-[#440cac] text-white hover:bg-[#440cac]/80 cursor-pointer"
-                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}>
-                    Firmar contrato
-                </button>
-            </div>
+            {state.user && (
+                <div className="w-full">
+                    <button
+                        disabled={!isChecked}
+                        onClick={() => setSignatureModal(true)}
+                        className={`w-full py-3 font-semibold transition-colors ${
+                            isChecked
+                                ? "bg-[#440cac] text-white hover:bg-[#440cac]/80 cursor-pointer"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        }`}>
+                        Firmar contrato
+                    </button>
+                </div>
+            )}
 
             <AnimatePresence
                 mode="wait"

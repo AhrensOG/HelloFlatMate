@@ -1,20 +1,17 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Field, Form, Formik, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { Field, Form, Formik } from "formik";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
 import axios from "axios";
 import { Context } from "@/app/context/GlobalContext";
-import { useRouter } from "next/navigation";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import CountrySelect from "@/app/components/public/main-pages/auxiliarComponents/CountrySelect";
 import { useTranslations } from "next-intl";
 import { isUserLogged } from "@/app/context/actions/isUserLogged";
 
-// Opciones para el campo howMetUs
 const howMetUsOptions = [
     { value: "", label: "Seleccione una opción" },
     { value: "Recomendado por amigos", label: "Recomendado por amigos" },
@@ -30,7 +27,6 @@ const howMetUsOptions = [
 export default function ProfileV2() {
     const { state, dispatch } = useContext(Context);
     const [initialValues, setInitialValues] = useState(null);
-    const router = useRouter();
     const t = useTranslations("forms.update_client");
 
     useEffect(() => {

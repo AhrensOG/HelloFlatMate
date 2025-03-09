@@ -25,7 +25,6 @@ export default function Payments() {
     const router = useRouter();
 
     const searchParams = useSearchParams();
-    const queryString = searchParams.toString();
     const propertyId = searchParams.get("p");
     const roomId = searchParams.get("r");
     const leaseOrderId = searchParams.get("lo");
