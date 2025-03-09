@@ -78,7 +78,6 @@ export default function ContractProgressBar() {
         const filledCount = personalFields.filter(
             (field) => field && String(field).trim() !== ""
         ).length;
-
         const fraction = filledCount / totalPersonal;
         setPersonalFraction(fraction);
 
@@ -86,15 +85,13 @@ export default function ContractProgressBar() {
         let docsComplete = false;
         if (Array.isArray(user.documents) && leaseOrderId) {
             docsComplete = user.documents.some(
-                (doc) =>
-                    doc.documentableId === user.id &&
-                    String(doc.leaseOrderId) === leaseOrderId
+                (doc) => String(doc.leaseOrderId) === leaseOrderId
             );
         }
         setIsDocsComplete(docsComplete);
 
         // Calcular el progreso de pagos:
-        // Buscar en state.user.supplies aquellos con leaseOrderId igual a lo y con tipos permitidos.
+        // Buscar en state.user.supplies aquellos con leaseOrderId igual a leaseOrderId y con tipos permitidos.
         const allowedTypes = [
             "DEPOSIT",
             "AGENCY_FEES",
@@ -117,8 +114,14 @@ export default function ContractProgressBar() {
         }
         setIsPaymentsComplete(paymentsFraction);
 
-        // Dejar la firma como pendiente (o agregar la lógica necesaria)
-        setIsSignatureComplete(false);
+        // Actualizar isSignatureComplete según si existe un contrato en state.user.contracts
+        let signatureComplete = false;
+        if (Array.isArray(user.contracts) && leaseOrderId) {
+            signatureComplete = user.contracts.some(
+                (contract) => String(contract.leaseOrderId) === leaseOrderId
+            );
+        }
+        setIsSignatureComplete(signatureComplete);
     }, [state.user, leaseOrderId]);
 
     useEffect(() => {

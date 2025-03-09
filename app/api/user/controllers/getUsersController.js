@@ -40,17 +40,18 @@ export async function getUserById(id) {
             {
               model: Room,
               as: "room",
-              include: [{ model: Property, as: "property" }],
+              attributes: ["id", "serial", "images", "price"],
+              include: [{ model: Property, as: "property", include:[{model: Room, as: "rooms", attributes: ["id"]}], attributes: ["id", "serial", "images", "street", "streetNumber", "postalCode", "floor", "bathrooms", "category", "ownerId"] }],
             },
           ],
         },
         // { model: ToDo, as: "toDos" },
-        { model: Document, as: "documents" },
-        { model: Supply, as: "supplies" },
-        // { model: Contract, as: "contracts" },
+        { model: Document, as: "documents", attributes: ["id", "name", "type", "urls", "status", "leaseOrderId"] },
+        { model: Supply, as: "supplies", attributes: ["id", "paymentId", "name","type","amount","date","status","paymentDate","leaseOrderId","propertyId","clientId"] },
+        { model: Contract, as: "contracts", attributes: ["id", "leaseOrderId", "url"] },
         // { model: ChatParticipant, as: "chats" },
         // { model: Payment, as: "payments" },
-        { model: RentPayment, as: "rentPayments" },
+        { model: RentPayment, as: "rentPayments", attributes: ["id", "amount", "date","status","type","quotaNumber","paymentableId","leaseOrderId","paymentId", "description"] },
       ],
     });
 
