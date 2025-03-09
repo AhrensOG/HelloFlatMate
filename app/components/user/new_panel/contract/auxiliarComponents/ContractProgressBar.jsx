@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -139,6 +139,21 @@ export default function ContractProgressBar() {
         isSignatureComplete,
     ]);
 
+    // Función para determinar si un step está habilitado según el progreso:
+    const isStepEnabled = (stepKey) => {
+        if (stepKey === "personal") return true;
+        if (stepKey === "documents") return personalFraction === 1;
+        if (stepKey === "payments")
+            return personalFraction === 1 && isDocsComplete;
+        if (stepKey === "signature")
+            return (
+                personalFraction === 1 &&
+                isDocsComplete &&
+                isPaymentsComplete === 1
+            );
+        return false;
+    };
+
     return (
         <div className="w-full h-[86px] px-4 grid place-items-center">
             <div className="pt-4 relative h-full w-full max-w-screen-xl flex flex-col items-center">
@@ -167,6 +182,7 @@ export default function ContractProgressBar() {
                 {/* Etiquetas con links debajo */}
                 <div className="flex w-full justify-between pt-1">
                     {steps.map((step) => {
+                        const enabled = isStepEnabled(step.key);
                         let isDone = false;
                         if (step.key === "personal") {
                             isDone = personalFraction >= 1;
@@ -178,10 +194,9 @@ export default function ContractProgressBar() {
                             isDone = isSignatureComplete;
                         }
 
-                        // Reconstruir URL con la query
                         const linkWithQuery = `${step.basePath}?${queryString}`;
 
-                        return (
+                        return enabled ? (
                             <Link
                                 key={step.key}
                                 href={linkWithQuery}
@@ -190,6 +205,12 @@ export default function ContractProgressBar() {
                                 }`}>
                                 {step.label}
                             </Link>
+                        ) : (
+                            <span
+                                key={step.key}
+                                className="block w-1/4 text-center text-sm font-medium text-gray-400">
+                                {step.label}
+                            </span>
                         );
                     })}
                 </div>

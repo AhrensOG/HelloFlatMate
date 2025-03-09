@@ -20,7 +20,7 @@ const SuccessV2 = () => {
                 <Link
                     href="/pages/user/reservations"
                     className="inline-block bg-[#440cac] text-white font-semibold py-3 px-6 rounded hover:bg-[#5a1fb8] transition-colors">
-                    Ir a mi perfil
+                    Ir a reservas
                 </Link>
             </div>
         </div>
