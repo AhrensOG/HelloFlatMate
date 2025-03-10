@@ -24,7 +24,6 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     const [isPaysModal, setIsPaysModal] = useState(false);
     const [pays, setPays] = useState(null);
     const [ordersUser, setOrdersUser] = useState(null);
-    console.log(allUsers)
     // Usar SWR para obtener las órdenes
     const {
         data: swrData,
@@ -34,8 +33,13 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
         fallbackData: allUsers,
         refreshInterval: 120000,
     });
-    const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(swrData, allLeaseOrders)
-    const users = [...usersWithLeaseOrderDataInPayment.clients, ...usersWithLeaseOrderDataInPayment.admins, ...usersWithLeaseOrderDataInPayment.owners, ...usersWithLeaseOrderDataInPayment.workers];
+    const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(swrData, allLeaseOrders);
+    const users = [
+        ...usersWithLeaseOrderDataInPayment.clients,
+        ...usersWithLeaseOrderDataInPayment.admins,
+        ...usersWithLeaseOrderDataInPayment.owners,
+        ...usersWithLeaseOrderDataInPayment.workers,
+    ];
     // Filtrar ó rdenes
     const filteredUsers = (users || []).filter((user) => {
         const clientName = user.name || "";

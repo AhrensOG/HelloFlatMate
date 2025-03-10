@@ -17,7 +17,7 @@ const SignaturePadV2 = ({ setModal, createContractPDF }) => {
         const signatureData = sigCanvas.current.toData();
 
         const minimumStrokes = 1;
-        const minimumPoints = 50;
+        const minimumPoints = 25;
 
         if (signatureData.length < minimumStrokes) {
             return false;
