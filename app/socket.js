@@ -7,6 +7,7 @@ let chatSockets = {}; // 💬 Múltiples sockets de chat
 
 // 🔔 Obtener el socket de notificaciones (global, solo uno)
 export const getNotificationSocket = (userId) => {
+    const userIdToString = userId;
     if (isBrowser && !notificationSocket) {
         console.log("🔔 Conectando socket de notificaciones...");
         const socketServerUrl = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:4000";
@@ -16,15 +17,15 @@ export const getNotificationSocket = (userId) => {
             reconnectionAttempts: 5,
             timeout: 10000,
             upgrade: true,
-            query: { type: "notification", userId }, // Se especifica el tipo de socket
+            query: { type: "notification", userId: userIdToString }, // Se especifica el tipo de socket
         });
 
         notificationSocket.on("connect", () => {
-            console.log("✅ Notificaciones conectadas con ID:", notificationSocket.id);
+            // console.log("✅ Notificaciones conectadas con ID:", notificationSocket.id);
         });
 
         notificationSocket.on("disconnect", () => {
-            console.log("🔴 Socket de notificaciones desconectado.");
+            // console.log("🔴 Socket de notificaciones desconectado.");
         });
     }
 
@@ -46,11 +47,11 @@ export const getChatSocket = (roomId) => {
         });
 
         chatSockets[roomId].on("connect", () => {
-            console.log(`✅ Chat ${roomId} conectado con ID:`, chatSockets[roomId].id);
+            // console.log(`✅ Chat ${roomId} conectado con ID:`, chatSockets[roomId].id);
         });
 
         chatSockets[roomId].on("disconnect", () => {
-            console.log(`🔴 Socket de chat ${roomId} desconectado.`);
+            // console.log(`🔴 Socket de chat ${roomId} desconectado.`);
             delete chatSockets[roomId]; // Eliminar la referencia al socket cuando se desconecta
         });
     }
@@ -61,7 +62,7 @@ export const getChatSocket = (roomId) => {
 // 🔴 Desconectar un socket de chat específico
 export const disconnectChatSocket = (roomId) => {
     if (chatSockets[roomId]) {
-        console.log(`🚪 Desconectando socket de chat ${roomId}...`);
+        // console.log(`🚪 Desconectando socket de chat ${roomId}...`);
         chatSockets[roomId].disconnect();
         delete chatSockets[roomId]; // Eliminar la referencia al socket
     }
@@ -77,7 +78,7 @@ export const disconnectAllChatSockets = () => {
 // 🔴 Desconectar el socket de notificaciones
 export const disconnectNotificationSocket = () => {
     if (notificationSocket) {
-        console.log("🔴 Desconectando socket de notificaciones...");
+        // console.log("🔴 Desconectando socket de notificaciones...");
         notificationSocket.disconnect();
         notificationSocket = null;
     }

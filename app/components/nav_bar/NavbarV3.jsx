@@ -32,46 +32,46 @@ export default function NavbarV3({ fixed = false }) {
         }
     }, []);
 
-    useEffect(() => {
-        if (state?.user?.id) {
-            if (!socket || !socket.connected) {
-                console.log("🔌 Conectando socket de notificaciones...");
-                const newSocket = getNotificationSocket(state.user.id);
-                setSocket(newSocket);
+    // useEffect(() => {
+    //     if (state?.user?.id) {
+    //         if (!socket || !socket.connected) {
+    //             console.log("🔌 Conectando socket de notificaciones...");
+    //             const newSocket = getNotificationSocket(state.user.id);
+    //             setSocket(newSocket);
 
-                newSocket.on("connect", () => {
-                    console.log(`✅ Conectado a Socket.IO con ID: ${newSocket.id}`);
-                    setIsSocketConnected(true);
-                });
+    //             newSocket.on("connect", () => {
+    //                 console.log(`✅ Conectado a Socket.IO con ID: ${newSocket.id}`);
+    //                 setIsSocketConnected(true);
+    //             });
 
-                newSocket.emit("userConnected", state.user.id, () => {
-                    console.log("👤 Usuario conectado al socket");
-                });
+    //             newSocket.emit("userConnected", state.user.id, () => {
+    //                 console.log("👤 Usuario conectado al socket");
+    //             });
 
-                const handleNotification = (notification) => {
-                    console.log("📩 Nueva notificación recibida:", notification);
-                };
+    //             const handleNotification = (notification) => {
+    //                 console.log("📩 Nueva notificación recibida:", notification);
+    //             };
 
-                newSocket.on("newNotification", handleNotification);
+    //             newSocket.on("newNotification", handleNotification);
 
-                return () => {
-                    console.log("❌ Desconectando socket...");
-                    newSocket.off("newNotification", handleNotification);
-                    newSocket.off("connect");
-                    disconnectNotificationSocket();
-                    setIsSocketConnected(false);
-                    setSocket(null);
-                };
-            }
-        } else {
-            if (socket) {
-                console.log("🔴 Usuario no autenticado. Desconectando socket...");
-                disconnectNotificationSocket();
-                setIsSocketConnected(false);
-                setSocket(null);
-            }
-        }
-    }, [state.user]);
+    //             return () => {
+    //                 console.log("❌ Desconectando socket...");
+    //                 newSocket.off("newNotification", handleNotification);
+    //                 newSocket.off("connect");
+    //                 disconnectNotificationSocket();
+    //                 setIsSocketConnected(false);
+    //                 setSocket(null);
+    //             };
+    //         }
+    //     } else {
+    //         if (socket) {
+    //             console.log("🔴 Usuario no autenticado. Desconectando socket...");
+    //             disconnectNotificationSocket();
+    //             setIsSocketConnected(false);
+    //             setSocket(null);
+    //         }
+    //     }
+    // }, [state.user]);
 
     const renderMenuOptions = () => {
         switch (state?.user?.role) {
