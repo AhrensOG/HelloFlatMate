@@ -321,32 +321,34 @@ const ContractDetailV2 = () => {
             )}
 
             {/* Checkbox para habilitar el botón */}
-            <div className="flex items-center gap-2">
-                <input
-                    type="checkbox"
-                    id="termsCheckbox"
-                    checked={isChecked}
-                    onChange={(e) => setIsChecked(e.target.checked)}
-                    className="cursor-pointer"
-                />
-                <label
-                    htmlFor="termsCheckbox"
-                    className="text-sm text-gray-700 cursor-pointer">
-                    He leído y acepto los términos del contrato
-                </label>
-            </div>
-            {state.user && (
-                <div className="w-full">
-                    <button
-                        disabled={!isChecked}
-                        onClick={() => setSignatureModal(true)}
-                        className={`w-full py-3 font-semibold transition-colors ${
-                            isChecked
-                                ? "bg-[#440cac] text-white hover:bg-[#440cac]/80 cursor-pointer"
-                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        }`}>
-                        Firmar contrato
-                    </button>
+            {state.user && propertyCategory && (
+                <div>
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            id="termsCheckbox"
+                            checked={isChecked}
+                            onChange={(e) => setIsChecked(e.target.checked)}
+                            className="cursor-pointer"
+                        />
+                        <label
+                            htmlFor="termsCheckbox"
+                            className="text-sm text-gray-700 cursor-pointer">
+                            He leído y acepto los términos del contrato
+                        </label>
+                    </div>
+                    <div className="w-full">
+                        <button
+                            disabled={!isChecked}
+                            onClick={() => setSignatureModal(true)}
+                            className={`w-full py-3 font-semibold transition-colors ${
+                                isChecked
+                                    ? "bg-[#440cac] text-white hover:bg-[#440cac]/80 cursor-pointer"
+                                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            }`}>
+                            Firmar contrato
+                        </button>
+                    </div>
                 </div>
             )}
 
