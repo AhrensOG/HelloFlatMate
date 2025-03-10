@@ -33,7 +33,7 @@ export const getNotificationSocket = (userId) => {
 };
 
 // 💬 Obtener un socket específico para un chat
-export const getChatSocket = (roomId) => {
+export const getChatSocket = (roomId, userId) => {
     if (isBrowser && !chatSockets[roomId]) {
         console.log(`💬 Conectando socket de chat para la sala ${roomId}...`);
         const socketServerUrl = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:4000";
@@ -43,7 +43,7 @@ export const getChatSocket = (roomId) => {
             reconnectionAttempts: 5,
             timeout: 10000,
             upgrade: true,
-            query: { type: "chat", roomId }, // Cada chat tiene un roomId único
+            query: { type: "chat", roomId, userId }, // Cada chat tiene un roomId único
         });
 
         chatSockets[roomId].on("connect", () => {

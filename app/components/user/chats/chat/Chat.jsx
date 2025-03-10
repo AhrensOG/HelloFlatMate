@@ -102,7 +102,7 @@ export default function Chat() {
         if (chatId && userId) {
             const usuarioId = searchParams.get("userId") || searchParams.get("id");
             console.log(`💬 Conectando al chat ${chatId}...`);
-            const chatSocket = getChatSocket(chatId);
+            const chatSocket = getChatSocket(chatId, userId);
             setSocket(chatSocket);
 
             const handleSocketConnect = () => {

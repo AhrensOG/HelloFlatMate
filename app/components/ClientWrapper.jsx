@@ -33,21 +33,19 @@ export default function ClientWrapper({ children, locale, messages }) {
     let isSocketConnected = false;
 
     if (socket && !isSocketConnected) {
-        console.log(isSocketConnected);
-
         socket.on("connect", () => {
             console.log(`✅ Conectado a Socket.IO con ID: ${socket.id}`);
             isSocketConnected = true;
         });
         socket.emit("userConnected", userData?.userId);
+
+        socket.on("newNotification", () => {
+            console.log("🔔 Nueva notificacion");
+        });
     } else {
         console.log("🔴 Socket de notificaciones desconectado.");
         disconnectNotificationSocket();
     }
-
-    socket.on("newNotification", () => {
-        console.log("🔔 Nueva notificacion");
-    });
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages} timeZone="Europe/Madrid">
