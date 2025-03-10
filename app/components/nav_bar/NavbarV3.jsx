@@ -62,25 +62,25 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 return (
                     <>
                         <Link
-                            href="/pages/user/profile"
+                            href="/pages/user/profilev2"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_1")}
                         </Link>
                         <Link
-                            href="/pages/user/my-bedrooms"
+                            href="/pages/user/reservations"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_2")}
                         </Link>
                         <Link
-                            href="/pages/user/my-reservations"
+                            href="/pages/user/history"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_3")}
                         </Link>
                         <Link
-                            href="/pages/user/history/payments"
+                            href="/pages/user/payments"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_4")}

@@ -113,8 +113,8 @@ const ReservationCard = ({ data, user }) => {
                     userEmail: user?.email || "",
                     merchantName: `Alojamiento ${room.serial}`,
                     merchantDescription: `Reserva - Alojamiento ${room.serial} (${user?.name} ${user?.lastName})`,
-                    merchantUrlOk: `/pages/user/success/${property.id}?type=reserve&r=${room.id}&lo=${data.id}`,
-                    merchantUrlkO: `/pages/user/my-reservations`,
+                    merchantUrlOk: `/pages/user/contractv2?p=${property.id}&r=${room.id}&lo=${data.id}`,
+                    merchantUrlkO: `/pages/user/reservations`,
                 },
             };
 
