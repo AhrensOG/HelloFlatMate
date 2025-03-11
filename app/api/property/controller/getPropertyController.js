@@ -3,13 +3,11 @@ import {
   Document,
   LeaseOrderProperty,
   LeaseOrderRoom,
-  Owner,
   Property,
   RentalItem,
   RentalPeriod,
   Room,
 } from "@/db/init";
-import leaseOrderProperty from "@/db/models/leaseOrderProperty";
 import { NextResponse } from "next/server";
 import { Op } from "sequelize";
 
@@ -69,14 +67,6 @@ export async function getPropertyById(id) {
             {
               model: LeaseOrderRoom,
               as: "leaseOrdersRoom",
-              include: {
-                model: Client,
-                as: "client",
-                include: {
-                  model: Document,
-                  as: "documents",
-                },
-              },
             },
             {
               model: RentalItem,
@@ -87,26 +77,6 @@ export async function getPropertyById(id) {
               },
             },
           ],
-        },
-        {
-          model: LeaseOrderProperty,
-          as: "leaseOrdersProperty",
-          include: {
-            model: Client,
-            as: "client",
-            include: {
-              model: Document,
-              as: "documents",
-            },
-          },
-        },
-        {
-          model: RentalItem,
-          as: "rentalItems",
-          include: {
-            model: RentalPeriod,
-            as: "rentalPeriod",
-          },
         },
       ],
     });

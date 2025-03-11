@@ -70,27 +70,13 @@ const SignaturePadV2 = ({ setModal, createContractPDF }) => {
                             Reintentar
                         </button>
                     </div>
-                    <div className="block sm:hidden">
+                    <div className="block">
                         <SignatureCanvas
                             ref={sigCanvas}
                             penColor="black"
                             canvasProps={{
-                                width: 250,
-                                height: 125,
                                 className:
-                                    "border-2 border-gray-300 rounded-md",
-                            }}
-                        />
-                    </div>
-                    <div className="hidden sm:block">
-                        <SignatureCanvas
-                            ref={sigCanvas}
-                            penColor="black"
-                            canvasProps={{
-                                width: 400,
-                                height: 250,
-                                className:
-                                    "border-2 border-gray-300 rounded-md",
+                                    "border-2 border-gray-300 rounded-md w-[325px] h-[200px] sm:w-[400px] sm:h-[250px]",
                             }}
                         />
                     </div>

@@ -100,13 +100,31 @@ export default function ContractProgressBar() {
         ];
         let paymentsFraction = 0;
         if (Array.isArray(user.supplies) && leaseOrderId) {
-            const supplies = user.supplies.filter(
+            let supplies = user.supplies.filter(
                 (sup) =>
                     String(sup.leaseOrderId) === leaseOrderId &&
                     allowedTypes.includes(sup.type)
             );
-            const totalPayments = supplies.length;
-            const paidPayments = supplies.filter(
+
+            let uniqueSupplies = {};
+
+            supplies.forEach((sup) => {
+                if (!uniqueSupplies[sup.type]) {
+                    uniqueSupplies[sup.type] = sup;
+                } else {
+                    if (
+                        sup.status === "PAID" &&
+                        uniqueSupplies[sup.type].status !== "PAID"
+                    ) {
+                        uniqueSupplies[sup.type] = sup;
+                    }
+                }
+            });
+
+            const filteredSupplies = Object.values(uniqueSupplies);
+
+            const totalPayments = filteredSupplies.length;
+            const paidPayments = filteredSupplies.filter(
                 (sup) => sup.status === "PAID"
             ).length;
             paymentsFraction =
@@ -202,13 +220,15 @@ export default function ContractProgressBar() {
                                 href={linkWithQuery}
                                 className={`block w-1/4 text-center text-sm font-medium transition-colors duration-300 ${
                                     isDone ? "text-green-600" : "text-gray-600"
-                                }`}>
+                                }`}
+                            >
                                 {step.label}
                             </Link>
                         ) : (
                             <span
                                 key={step.key}
-                                className="block w-1/4 text-center text-sm font-medium text-gray-400">
+                                className="block w-1/4 text-center text-sm font-medium text-gray-400"
+                            >
                                 {step.label}
                             </span>
                         );
