@@ -85,9 +85,17 @@ const SuppliesV2 = () => {
 
     return (
         <div className="space-y-8 bg-white p-6">
-            <h1 className="text-xl font-semibold text-gray-800 mb-4">
-                Suministros
-            </h1>
+            <div>
+                <h1 className="text-xl font-semibold text-gray-800 mb-2">
+                    Suministros
+                </h1>
+                <p className="text-gray-600 mb-6 text-sm">
+                    En esta sección puedes ver los aportes y consumos de
+                    suministros de tu habitación. Aquí se muestran los montos
+                    pagados, los consumos registrados y la diferencia restante
+                    por cada periodo.
+                </p>
+            </div>
             {Object.keys(groupedData).length > 0 ? (
                 Object.keys(groupedData).map((serial) => (
                     <motion.div
