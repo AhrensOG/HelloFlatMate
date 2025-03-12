@@ -55,7 +55,7 @@ export default function RoomsPanel({ data }) {
     const handleOnsave = async (data) => {
         try {
             toast.loading("Guardando cambios...");
-            const response = await axios.put(`/api/admin/room?id=${selectedRoom.id}`, data);
+            const response = await axios.put(`/api/admin/room/new_panel?id=${selectedRoom.id}`, data);
             toast.dismiss();
             toast.success("Cambios guardados");
             mutate();

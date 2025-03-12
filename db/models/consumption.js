@@ -21,8 +21,12 @@ const consumptionInit = (sequelize, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: false,
             },
+            url: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             type: {
-                type: DataTypes.ENUM("SUPPLY", "OTHERS"),
+                type: DataTypes.ENUM("GENERAL_SUPPLIES", "INTERNET", "WATER", "GAS", "ELECTRICITY", "OTHER"),
                 allowNull: false,
             },
         },

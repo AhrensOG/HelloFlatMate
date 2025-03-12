@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-// Estilos generales del modal
 const modalStyles = {
     overlay: "fixed inset-0 flex items-center justify-center z-50",
     overlayBackground: "fixed inset-0 bg-black bg-opacity-50 z-40",
@@ -25,7 +24,6 @@ const modalStyles = {
     tagRemoveButton: "cursor-pointer",
 };
 
-// Esquema de validación con Yup, adaptado para las propiedades de la habitación
 const validationSchema = Yup.object().shape({
     floor: Yup.number()
         .nullable()
@@ -41,26 +39,10 @@ const validationSchema = Yup.object().shape({
 
 export default function RoomEditModal({ isOpen, onClose, data, onSave }) {
     const [newTag, setNewTag] = useState("");
-
-    // Inicializa el estado 'tags' con los datos existentes o un array vacío
     const [tags, setTags] = useState(data?.tags || []);
-
-    const handleAddTag = (event) => {
-        if (event.key === "Enter" && newTag.trim() !== "") {
-            setTags([...tags, newTag.trim()]);
-            setNewTag("");
-            event.preventDefault(); // Evita que el formulario se envíe al presionar Enter
-        }
-    };
-
-    const handleRemoveTag = (tagToRemove) => {
-        setTags(tags.filter((tag) => tag !== tagToRemove));
-    };
 
     const formik = useFormik({
         initialValues: {
-            floor: data?.floor || "",
-            door: data?.door || "",
             price: data?.price || "",
             name: data?.name || "",
             isActive: data?.isActive,
@@ -68,9 +50,8 @@ export default function RoomEditModal({ isOpen, onClose, data, onSave }) {
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            // Aquí puedes preparar los datos para enviar a tu función 'onSave'
-            onSave({ ...data, ...values }); // Envía los valores actualizados junto con el ID y el estado local 'tags'
-            onClose(); // Cierra el modal después de guardar
+            onSave({ ...data, ...values });
+            onClose();
         },
     });
 
@@ -86,52 +67,6 @@ export default function RoomEditModal({ isOpen, onClose, data, onSave }) {
                 <h2 className={modalStyles.title}>Editar Habitación</h2>
 
                 <form onSubmit={formik.handleSubmit} className={modalStyles.form}>
-                    {/* ID - Solo visualización */}
-                    <div className={modalStyles.inputGroup}>
-                        <label htmlFor="id" className={modalStyles.label}>
-                            ID:
-                        </label>
-                        <input type="text" id="id" value={data?.id} className={modalStyles.input} readOnly />
-                    </div>
-                    {/* Serial - Solo visualización */}
-                    <div className={modalStyles.inputGroup}>
-                        <label htmlFor="serial" className={modalStyles.label}>
-                            Serial:
-                        </label>
-                        <input type="text" id="serial" value={data?.serial} className={modalStyles.input} readOnly />
-                    </div>
-                    {/* Input para floor */}
-                    <div className={modalStyles.inputGroup}>
-                        <label htmlFor="floor" className={modalStyles.label}>
-                            Piso:
-                        </label>
-                        <input
-                            type="number"
-                            id="floor"
-                            name="floor"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.floor}
-                            className={`${modalStyles.input} ${formik.touched.floor && formik.errors.floor ? "border-red-500" : ""}`}
-                        />
-                        {formik.touched.floor && formik.errors.floor && <div className={modalStyles.error}>{formik.errors.floor}</div>}
-                    </div>
-                    {/* Input para door */}
-                    <div className={modalStyles.inputGroup}>
-                        <label htmlFor="door" className={modalStyles.label}>
-                            Puerta:
-                        </label>
-                        <input
-                            type="text"
-                            id="door"
-                            name="door"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.door}
-                            className={`${modalStyles.input} ${formik.touched.door && formik.errors.door ? "border-red-500" : ""}`}
-                        />
-                        {formik.touched.door && formik.errors.door && <div className={modalStyles.error}>{formik.errors.door}</div>}
-                    </div>
                     {/* Input para price */}
                     <div className={modalStyles.inputGroup}>
                         <label htmlFor="price" className={modalStyles.label}>

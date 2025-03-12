@@ -18,25 +18,21 @@ const modalStyles = {
 
 const validationSchema = Yup.object().shape({
     price: Yup.number().required("El precio es obligatorio.").positive("Debe ser un número positivo."),
-    type: Yup.string().oneOf(["Supply", "Others"], "Selecciona una opción válida").required("El tipo es obligatorio."),
 });
 
-export default function EditConsumptionModal({ isOpen, onClose, consumption, update }) {
+export default function EditConsumptionModal({ isOpen, onClose, consumption, mutate }) {
     if (!isOpen || !consumption) return null;
 
     const handleSubmit = async (values) => {
         const toastId = toast.loading("Guardando...");
         try {
-            const response = await axios.put(`/api/admin/consumptions`, {
+            await axios.put(`/api/admin/consumptions`, {
                 amount: values.price,
                 type: values.type.toUpperCase(),
                 id: consumption.id,
             });
+            await mutate()
             toast.success("Datos actualizados correctamente.", { id: toastId });
-            if (response.status === 200) {
-                update({ id: consumption.id, amount: values.price, type: values.type.toUpperCase() });
-                onClose();
-            }
         } catch (error) {
             toast.info("Error al actualizar los datos.", { id: toastId });
         }
@@ -81,8 +77,12 @@ export default function EditConsumptionModal({ isOpen, onClose, consumption, upd
                             <div className="mb-4">
                                 <label className="text-xs font-light">Tipo</label>
                                 <Field as="select" name="type" className={modalStyles.select}>
-                                    <option value="Supply">Suministros</option>
-                                    <option value="Others">Otro</option>
+                                    <option value="GENERAL_SUPPLIES">Suministros</option>
+                                    <option value="INTERNET">Wifi</option>
+                                    <option value="WATER">Agua</option>
+                                    <option value="GAS">Gas</option>
+                                    <option value="ELECTRICITY">Electricidad</option>
+                                    <option value="OTHER">Otro</option>
                                 </Field>
                                 <ErrorMessage name="type" component="div" style={{ color: "red" }} />
                             </div>
