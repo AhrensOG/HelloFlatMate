@@ -9,10 +9,10 @@ import { ChevronDownIcon, PencilIcon, TrashIcon, WrenchIcon } from "@heroicons/r
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const TYPOLOGY_LABELS = {
-    "MIXED": "Mixto",
-    "ONLY_WOMEN": "Solo chicas",
-    "ONLY_MEN": "Solo chicos",
-}
+    MIXED: "Mixto",
+    ONLY_WOMEN: "Solo chicas",
+    ONLY_MEN: "Solo chicos",
+};
 
 export default function RoomsPanel({ data }) {
     const [searchQuery, setSearchQuery] = useState("");
@@ -20,7 +20,6 @@ export default function RoomsPanel({ data }) {
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [selectedStatusFilter, setSelectedStatusFilter] = useState("Estado");
-    
 
     const {
         data: swrData,
@@ -40,7 +39,7 @@ export default function RoomsPanel({ data }) {
         const matchesSearch = [room.id, room.serial, room.name, room.zone, room.type]
             .map((field) => field?.toString().toLowerCase())
             .some((field) => field?.includes(searchQuery.toLowerCase()));
-    
+
         const matchesStatus =
             selectedStatusFilter === "all"
                 ? true
@@ -53,14 +52,23 @@ export default function RoomsPanel({ data }) {
         return matchesSearch && matchesStatus;
     });
 
-
-    const handleOnsave = () => {
-        setIsOpen(false);
+    const handleOnsave = async (data) => {
+        try {
+            toast.loading("Guardando cambios...");
+            const response = await axios.put(`/api/admin/room?id=${selectedRoom.id}`, data);
+            toast.dismiss();
+            toast.success("Cambios guardados");
+            mutate();
+            setIsOpen(false);
+        } catch (e) {
+            toast.info("Error al guardar los cambios");
+            throw e;
+        }
     };
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`/api/admin/room`, { data: id });
+            const response = await axios.delete(`/api/admin/room?`, { data: id });
             if (response.status === 204) {
                 // Handle successful deletion without parsing
                 const updatedData = swrData.filter((item) => item.id !== id);
@@ -128,40 +136,38 @@ export default function RoomsPanel({ data }) {
                             <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700 relative">
                                 <div className="w-full h-full flex items-center justify-center gap-1">
                                     ¿Activo?
-                                    <button
-                                        onClick={() => setDropdownOpen(!isDropdownOpen)}
-                                    >
+                                    <button onClick={() => setDropdownOpen(!isDropdownOpen)}>
                                         <ChevronDownIcon className="size-4" />
                                     </button>
                                     {isDropdownOpen && (
                                         <div className="absolute left-0 top-9 mt-1 w-full bg-white border rounded shadow-lg z-10">
-                                        <button
-                                            onClick={() => {
-                                                setSelectedStatusFilter("all")
-                                                setDropdownOpen(false)
-                                            }}
-                                            className="block w-full text-left p-2 hover:bg-gray-100"
-                                        >
-                                            Todos
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setSelectedStatusFilter("active")
-                                                setDropdownOpen(false)
-                                            }}
-                                            className="block w-full text-left p-2 hover:bg-gray-100"
-                                        >
-                                            Activo
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setSelectedStatusFilter("inactive")
-                                                setDropdownOpen(false)
-                                            }}
-                                            className="block w-full text-left p-2 hover:bg-gray-100"
-                                        >
-                                            Inactivo
-                                        </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedStatusFilter("all");
+                                                    setDropdownOpen(false);
+                                                }}
+                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                            >
+                                                Todos
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedStatusFilter("active");
+                                                    setDropdownOpen(false);
+                                                }}
+                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                            >
+                                                Activo
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedStatusFilter("inactive");
+                                                    setDropdownOpen(false);
+                                                }}
+                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                            >
+                                                Inactivo
+                                            </button>
                                         </div>
                                     )}
                                 </div>
@@ -190,7 +196,7 @@ export default function RoomsPanel({ data }) {
                                                     handleOpenModal(room);
                                                 }}
                                             >
-                                                <PencilIcon title="Edición rapida" className="size-6 text-green-500"/>
+                                                <PencilIcon title="Edición rapida" className="size-6 text-green-500" />
                                             </button>
                                             <button
                                                 onClick={(e) => {
