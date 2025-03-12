@@ -135,10 +135,16 @@ export default function ConsumptionsPanel({ data, users }) {
                                 Tipo
                             </th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
+                                Periodo
+                            </th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
                                 Factura
                             </th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
-                                Fecha
+                                Desde
+                            </th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
+                                Hasta
                             </th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
                                 Acciones
@@ -166,6 +172,9 @@ export default function ConsumptionsPanel({ data, users }) {
                                         {TYPE_LABELS[consumption?.type]}
                                     </td>
                                     <td className="border p-2 text-gray-700 text-center">
+                                        {consumption.period || "No definido"}
+                                    </td>
+                                    <td className="border p-2 text-gray-700 text-center">
                                         {consumption.url ? (
                                             <Link
                                                 href={consumption.url}
@@ -180,7 +189,12 @@ export default function ConsumptionsPanel({ data, users }) {
                                     </td>
                                     <td className="border p-2 text-gray-700 text-center">
                                         {formatDateToDDMMYYYY(
-                                            consumption?.date
+                                            consumption?.startDate
+                                        )}
+                                    </td>
+                                    <td className="border p-2 text-gray-700 text-center">
+                                        {formatDateToDDMMYYYY(
+                                            consumption?.endDate
                                         )}
                                     </td>
                                     <td className="border p-2 text-gray-700 text-center">

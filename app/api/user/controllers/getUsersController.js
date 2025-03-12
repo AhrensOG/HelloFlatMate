@@ -11,9 +11,9 @@ import {
   Room,
   Contract,
   ChatParticipant,
-  Payment,
   Worker,
   RentPayment,
+  Consumption,
 } from "@/db/init";
 import { NextResponse } from "next/server";
 
@@ -28,11 +28,6 @@ export async function getUserById(id) {
 
     user = await Client.findByPk(id, {
       include: [
-        // {
-        //   model: LeaseOrderProperty,
-        //   as: "leaseOrdersProperty",
-        //   include: [{ model: Property, as: "property" }],
-        // },
         {
           model: LeaseOrderRoom,
           as: "leaseOrdersRoom",
@@ -50,8 +45,8 @@ export async function getUserById(id) {
         { model: Supply, as: "supplies", attributes: ["id", "paymentId", "name","type","amount","date","status","paymentDate","leaseOrderId","propertyId","clientId"] },
         { model: Contract, as: "contracts", attributes: ["id", "leaseOrderId", "url"] },
         // { model: ChatParticipant, as: "chats" },
-        // { model: Payment, as: "payments" },
         { model: RentPayment, as: "rentPayments", attributes: ["id", "amount", "date","status","type","quotaNumber","paymentableId","leaseOrderId","paymentId", "description"] },
+        { model: Consumption, as: "consumptions", attributes: ["amount", "url", "type", "period", "leaseOrderRoomId", "startDate", "endDate"] },
       ],
     });
 

@@ -23,6 +23,9 @@ export async function createConsumption(data) {
             leaseOrderRoomId: data.leaseOrderId,
             amount: data.amount,
             url: data.url || null,
+            period: data.period || null,
+            startDate: data.startDate || null,
+            endDate: data.endDate || null,
             clientId: data.clientId,
             type: data.type,
         });

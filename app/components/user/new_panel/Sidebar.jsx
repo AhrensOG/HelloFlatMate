@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
     ArrowRightStartOnRectangleIcon,
+    BoltIcon,
     CalendarDaysIcon,
     CreditCardIcon,
     ReceiptRefundIcon,
@@ -37,10 +38,15 @@ const Sidebar = () => {
             href: "/pages/user/history",
             icon: <ReceiptRefundIcon className="size-6" />,
         },
+        {
+            name: "Suministros",
+            href: "/pages/user/supplies",
+            icon: <BoltIcon className="size-6" />,
+        },
     ];
 
     return (
-        <aside className="hidden h-full max-h-[550px] sticky top-8 max-w-80 w-full rounded-xl border bg-white text-gray-800 shadow-sm md:flex flex-col my-4 py-4">
+        <aside className="hidden h-full max-h-[650px] sticky top-8 max-w-80 w-full rounded-xl border bg-white text-gray-800 shadow-sm md:flex flex-col my-4 py-4">
             <div className="flex flex-col items-center mb-8">
                 <div className="bg-gray-100 grid place-items-center rounded-full">
                     <svg

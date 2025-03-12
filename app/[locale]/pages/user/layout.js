@@ -31,6 +31,12 @@ const UserDashboardLayout = ({ children }) => {
             );
         } else if (pathname.includes("/pages/user/history")) {
             return null;
+        } else if (pathname.includes("/pages/user/supplies")) {
+            return (
+                <div className="flex w-full justify-start items-end h-[86px] bg-[#f7f7f7] border-b-2 border-gray-300">
+                    <span className="p-6 text-xl font-bold">Suministros</span>
+                </div>
+            );
         }
         return null;
     };
@@ -43,12 +49,14 @@ const UserDashboardLayout = ({ children }) => {
 
             <div
                 className={`${
-                    pathname.includes("/pages/user/reservations") || pathname.includes("/pages/user/history") 
+                    pathname.includes("/pages/user/reservations") ||
+                    pathname.includes("/pages/user/history")
                         ? "bg-white pt-10"
                         : pathname.includes("/pages/user/contractv2")
                         ? "bg-white"
                         : ""
-                } flex justify-center items-start grow bg-[#f7f7f7]`}>
+                } flex justify-center items-start grow bg-[#f7f7f7]`}
+            >
                 <div className="flex grow max-w-screen-xl w-full gap-8 mx-4">
                     <Sidebar />
                     <main className="grow mt-4">{children}</main>

@@ -25,6 +25,18 @@ const consumptionInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            period: {
+                type: DataTypes.ENUM("1Q", "2Q"),
+                allowNull: true,
+            },
+            startDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
+            endDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
             type: {
                 type: DataTypes.ENUM("GENERAL_SUPPLIES", "INTERNET", "WATER", "GAS", "ELECTRICITY", "OTHER"),
                 allowNull: false,

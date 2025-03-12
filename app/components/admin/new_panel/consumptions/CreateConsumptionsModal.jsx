@@ -61,8 +61,11 @@ export default function CreateConsumptionsModal({ isOpen, onClose, users, mutate
                 amount: values.price,
                 type: values.type.toUpperCase(),
                 url: files.length > 0 ? files[0].url : null,
+                period: values.period,
                 clientId: selectedUser.id,
                 leaseOrderId: values.leaseOrder,
+                startDate: values.startDate,
+                endDate: values.endDate,
             });
     
             toast.success("Datos guardados correctamente.", { id: toastId });
@@ -81,7 +84,7 @@ export default function CreateConsumptionsModal({ isOpen, onClose, users, mutate
                 <h2 className={modalStyles.title}>Crear Nuevo Registro</h2>
 
                 <Formik 
-                    initialValues={{ leaseOrder: "", price: "", type: "", bill: null }} 
+                    initialValues={{ leaseOrder: "", price: "", type: "", bill: null, period: "", startDate: "", endDate: "" }} 
                     validationSchema={validationSchema} 
                     onSubmit={handleSubmit}
                 >
@@ -141,6 +144,25 @@ export default function CreateConsumptionsModal({ isOpen, onClose, users, mutate
                                     <option value="OTHER">Otro</option>
                                 </Field>
                                 <ErrorMessage name="type" component="div" style={{ color: "red" }} />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="text-xs font-light">Periodo</label>
+                                <Field as="select" name="period" className={modalStyles.select}>
+                                    <option value="">Seleccionar periodo</option>
+                                    <option value="1Q">1Q</option>
+                                    <option value="2Q">2Q</option>
+                                </Field>
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="text-xs font-light">Desde</label>
+                                <Field type="date" name="startDate" className={modalStyles.input} />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="text-xs font-light">Hasta</label>
+                                <Field type="date" name="endDate" className={modalStyles.input} />
                             </div>
 
                             <div className="mb-4">
