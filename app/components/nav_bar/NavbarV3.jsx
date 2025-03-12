@@ -8,14 +8,16 @@ import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
+import NotificationIcon from "./notifications/NotificationIcon";
 import { useTranslations } from "next-intl";
-import { getNotificationSocket, disconnectNotificationSocket } from "@/app/socket";
+import NotificationsModal from "./notifications/NotificationsModal";
+import axios from "axios";
 
 export default function NavbarV3({ fixed = false }) {
     const [isOpen, setIsOpen] = useState(false);
     const { state } = useContext(Context);
-    const [socket, setSocket] = useState(null);
-    const [isSocketConnected, setIsSocketConnected] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [notifModalIsOpen, setNotifModalIsOpen] = useState(false);
 
     const user = state?.user;
     const t = useTranslations("nav_bar");
@@ -32,46 +34,20 @@ export default function NavbarV3({ fixed = false }) {
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (state?.user?.id) {
-    //         if (!socket || !socket.connected) {
-    //             console.log("🔌 Conectando socket de notificaciones...");
-    //             const newSocket = getNotificationSocket(state.user.id);
-    //             setSocket(newSocket);
-
-    //             newSocket.on("connect", () => {
-    //                 console.log(`✅ Conectado a Socket.IO con ID: ${newSocket.id}`);
-    //                 setIsSocketConnected(true);
-    //             });
-
-    //             newSocket.emit("userConnected", state.user.id, () => {
-    //                 console.log("👤 Usuario conectado al socket");
-    //             });
-
-    //             const handleNotification = (notification) => {
-    //                 console.log("📩 Nueva notificación recibida:", notification);
-    //             };
-
-    //             newSocket.on("newNotification", handleNotification);
-
-    //             return () => {
-    //                 console.log("❌ Desconectando socket...");
-    //                 newSocket.off("newNotification", handleNotification);
-    //                 newSocket.off("connect");
-    //                 disconnectNotificationSocket();
-    //                 setIsSocketConnected(false);
-    //                 setSocket(null);
-    //             };
-    //         }
-    //     } else {
-    //         if (socket) {
-    //             console.log("🔴 Usuario no autenticado. Desconectando socket...");
-    //             disconnectNotificationSocket();
-    //             setIsSocketConnected(false);
-    //             setSocket(null);
-    //         }
-    //     }
-    // }, [state.user]);
+    useEffect(() => {
+        const fetchNotif = async () => {
+            try {
+                const res = await axios.get(`/api/notification?id=${user.id}`);
+                setNotifications(res.data);
+                console.log(res.data);
+            } catch (error) {
+                console.error("Error al obtener notificaciones:", error);
+            }
+        };
+        if (user?.id) {
+            fetchNotif();
+        }
+    }, [user]);
 
     const renderMenuOptions = () => {
         switch (state?.user?.role) {
@@ -209,6 +185,21 @@ export default function NavbarV3({ fixed = false }) {
                     </div>
                 )}
                 <Dropdown p={0} />
+                {user && (
+                    <>
+                        <NotificationIcon
+                            onClick={() => setNotifModalIsOpen(!notifModalIsOpen)}
+                            count={notifications?.unreadCount || 0} // 👈 Asegura que no sea undefined
+                        />
+                        {notifModalIsOpen && (
+                            <NotificationsModal
+                                data={notifications?.notifications || []} // 👈 Garantiza que sea un array
+                                userId={user?.id}
+                                unreadCount={notifications?.unreadCount || 0}
+                            />
+                        )}
+                    </>
+                )}
             </div>
 
             {/* Menú móvil con animación */}

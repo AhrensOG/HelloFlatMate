@@ -128,6 +128,7 @@ export default function Chat() {
                             body: message.text,
                             userId: usuarioId,
                             type: "TEXT",
+                            isRead: true,
                         });
                     }
                 }
@@ -210,6 +211,16 @@ export default function Chat() {
             console.log(error);
         }
     };
+
+    const markMessageAsRead = async (messages) => {
+        try {
+            const res = await axios.patch("/api/message", { messages });
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         if (messages.length > 0 && chatId && userId) {
             markAsRead();
@@ -266,6 +277,7 @@ export default function Chat() {
                 body: message.image,
                 userId: message.senderId,
                 type: "IMAGE",
+                isRead: true,
             });
         } catch (err) {
             console.error("Error al procesar el archivo:", err);
@@ -305,8 +317,6 @@ export default function Chat() {
             </header>
 
             <main className="flex flex-col justify-between items-center flex-grow w-full">
-                {console.log(messages)}
-
                 <Suspense fallback={<div>Loading...</div>}>
                     <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} />
                 </Suspense>
