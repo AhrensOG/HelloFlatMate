@@ -1,5 +1,5 @@
 import { createNotification } from "./controller/createNotification";
-import { getNotificationsByUser } from "./controller/getNotificationController";
+import { getAllNotificationsByUser, getNotificationsByUser } from "./controller/getNotificationController";
 import { markGroupNotificationsAsRead } from "./controller/updateNotificationsController";
 
 export async function POST(req) {
@@ -20,6 +20,9 @@ export async function GET(req) {
         const offsetNumber = offset ? parseInt(offset) : 0;
 
         return await getNotificationsByUser(id, limitNumber, offsetNumber);
+    }
+    if (id && type === "all") {
+        return await getAllNotificationsByUser(id);
     }
     if (id) {
         return await getNotificationsByUser(id);
