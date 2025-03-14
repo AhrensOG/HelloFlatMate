@@ -9,7 +9,7 @@ const countryList = countries
   }))
   .sort((a, b) => a.name.localeCompare(b.name));
 
-const CountrySelect = ({ value, onChange }) => {
+const CountrySelect = ({ value, onChange, containerCustomClass = "", spanCustomClass = "" }) => {
   const [isOpen, setIsOpen] = useState(false); // Controla el estado del menú
   const [selectedValue, setSelectedValue] = useState(value || ""); // Valor seleccionado
   const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
@@ -30,9 +30,9 @@ const CountrySelect = ({ value, onChange }) => {
       {/* Campo de selección */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={`border rounded-md px-3 py-2 bg-white ${isOpen && "ring-1 ring-blue-300"} outline-none cursor-pointer flex justify-between items-center`}
+        className={`${containerCustomClass} border rounded-md px-3 py-2 bg-white ${isOpen && "ring-1 ring-blue-300"} outline-none cursor-pointer flex justify-between items-center`}
       >
-        <span className="text-gray-700 text-base">
+        <span className={` ${spanCustomClass} text-gray-700 text-base`}>
           {selectedValue || "Selecciona tu nacionalidad"}
         </span>
       </div>

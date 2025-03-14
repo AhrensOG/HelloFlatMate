@@ -9,7 +9,7 @@ export default function SecondaryNavbar({ fixed = false }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(false);
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -40,11 +40,11 @@ export default function SecondaryNavbar({ fixed = false }) {
       <div className="hidden md:flex items-center gap-5">
         {/* <button className="border py-3 px-5 font-bold text-lg border-black">Soy un propietario</button> */}
         <Link
-          href="/lastrooms"
+          href="/ultimas-habitaciones"
           target="_blank"
           className="font-bold text-base text-black border border-black p-2 px-5"
         >
-          last rooms
+          Last rooms
         </Link>
         <Link
           href="/como-funciona"
@@ -74,7 +74,7 @@ export default function SecondaryNavbar({ fixed = false }) {
             target="_blank"
             className="font-bold text-base text-black"
           >
-            Inicio
+            Iniciar sesión
           </Link>
         </div>
         {/* <Link href="#" target="_blank" className="font-bold text-lg">
@@ -85,8 +85,22 @@ export default function SecondaryNavbar({ fixed = false }) {
 
       {/* Menú desplegable solo para móvil (no se abrirá) */}
       {isOpen && (
-        <div className="absolute top-16 left-0 right-0 bg-transparent shadow-lg rounded-md p-4 md:hidden">
+        <div className="bg-white absolute top-16 left-0 right-0 bg-transparent shadow-lg rounded-md p-4 md:hidden">
           {/* <button className="border py-3 px-5 font-bold text-lg border-black w-full">Soy un propietario</button> */}
+          <Link
+          href="/"
+            target="_blank"
+            className="block font-bold text-lg mt-2"
+          >
+            Inicio
+          </Link>
+          <Link
+          href="/ultimas-habitaciones"
+            target="_blank"
+            className="block font-bold text-lg mt-2"
+          >
+            Last rooms
+          </Link>
           <Link
             href="#"
             target="_blank"
@@ -101,13 +115,13 @@ export default function SecondaryNavbar({ fixed = false }) {
           >
             Términos y condiciones
           </Link>
-          <div className="flex flex-col mt-2">
+          <div className="flex flex-col gap-2 mt-2">
             <Link href="#" target="_blank" className="block font-bold text-lg">
               Registro
             </Link>
-            <span className="block font-bold text-lg my-1">|</span>
+            <span className="hidden font-bold text-lg my-1 sm:block">|</span>
             <Link href="#" target="_blank" className="block font-bold text-lg">
-              Inicio
+              Iniciar sesión
             </Link>
           </div>
           <Dropdown p={0} />

@@ -72,13 +72,13 @@ const hellocolivingContractTemplate = ({
   \n
   QUINTA. – PRIMERA ENTREGA DE LLAVES.\n
   Que previamente a la entrega de llaves, el inquilino deberá abonar las siguientes cantidades:\n
-  ● Un depósito de QUINIENTOS EUROS (500 €) en concepto de FIANZA. Este importe será devuelto entre 30 y 45 días tras la finalización del contrato, por parte del ARRENDADOR al ARRENDATARIO, mediante transferencia bancaria y una vez revisado que la vivienda se encuentra en perfecto estado y se hayan liquidado todos los gastos de suministros.\n
+  - Un depósito de QUINIENTOS EUROS (500 €) en concepto de FIANZA. Este importe será devuelto entre 30 y 45 días tras la finalización del contrato, por parte del ARRENDADOR al ARRENDATARIO, mediante transferencia bancaria y una vez revisado que la vivienda se encuentra en perfecto estado y se hayan liquidado todos los gastos de suministros.\n
   \n
   El ARRENDATARIO correrá con los gastos bancarios que en su caso se devenguen con la devolución de la fianza, y en especial aquellos derivados del uso de otro método de devolución especial (Western Unión, Ria, MoneyGram…etc.).\n
   \n
   Para el caso de que se encuentren desperfectos en la revisión que en su día se efectúe, así como recibos impagados por parte del ARRENDATARIO, el ARRENDADOR podrá deducir dichos importes de la cantidad a devolver del antes mencionado depósito.\n
   \n
-  ● La cantidad de DOSCIENTOS EUROS (200 €) POR PERSONA en concepto de suministros de agua y luz por cada período de CINCO MESES de contrato. Una vez transcurrido dicho periodo, se calculará el importe exacto a abonar por parte del ARRENDATARIO en concepto de suministros, ajustando el importe abonado con el consumo real efectuado por el arrendatario.\n
+  - La cantidad de DOSCIENTOS EUROS (200 €) POR PERSONA en concepto de suministros de agua y luz por cada período de CINCO MESES de contrato. Una vez transcurrido dicho periodo, se calculará el importe exacto a abonar por parte del ARRENDATARIO en concepto de suministros, ajustando el importe abonado con el consumo real efectuado por el arrendatario.\n
   \n
   En caso de que los gastos de suministros hayan sido superiores al importe abonado de 200 € POR PERSONA, estas cantidades serán repercutidas al ARRENDATARIO por parte del ARRENDADOR.\n
   \n
@@ -171,9 +171,9 @@ const hellocolivingContractTemplate = ({
   \n
   Para el caso de que esta circunstancia sea denunciada por el resto de los arrendatarios de la vivienda o de los vecinos, quedará facultado el arrendador para resolver el presente contrato con la pérdida de la fianza abonada por el arrendatario:\n
   \n
-  ⮚ Primer aviso por molestias vecinales (0€)\n
-  ⮚ Segundo aviso (200€) ampliación de fianza.\n
-  ⮚ Tercer aviso expulsión de la vivienda con pérdida de las aportaciones de fianza, suministros y wifi.\n
+  - Primer aviso por molestias vecinales (0€)\n
+  - Segundo aviso (200€) ampliación de fianza.\n
+  - Tercer aviso expulsión de la vivienda con pérdida de las aportaciones de fianza, suministros y wifi.\n
   \n
   d. El arrendatario da su consentimiento expreso de poder compartir las zonas comunes de la vivienda con personas de distinto género, etnia, nacionalidad o religión.\n
   \n
