@@ -28,24 +28,24 @@ function getDecodedCookie(cookieName) {
 }
 
 export default function ClientWrapper({ children, locale, messages }) {
-    // const userData = getDecodedCookie("auth_token");
-    // const socket = getNotificationSocket(userData?.userId);
-    // let isSocketConnected = false;
+    const userData = getDecodedCookie("auth_token");
+    const socket = getNotificationSocket(userData?.userId);
+    let isSocketConnected = false;
 
-    // if (socket && !isSocketConnected) {
-    //     socket.on("connect", () => {
-    //         console.log(`✅ Conectado a Socket.IO con ID: ${socket.id}`);
-    //         isSocketConnected = true;
-    //     });
-    //     socket.emit("userConnected", userData?.userId);
+    if (socket && !isSocketConnected) {
+        socket.on("connect", () => {
+            console.log(`✅ Conectado a Socket.IO con ID: ${socket.id}`);
+            isSocketConnected = true;
+        });
+        socket.emit("userConnected", userData?.userId);
 
-    //     socket.on("newNotification", () => {
-    //         console.log("🔔 Nueva notificacion");
-    //     });
-    // } else {
-    //     console.log("🔴 Socket de notificaciones desconectado.");
-    //     disconnectNotificationSocket();
-    // }
+        socket.on("newNotification", () => {
+            console.log("🔔 Nueva notificacion");
+        });
+    } else {
+        console.log("🔴 Socket de notificaciones desconectado.");
+        disconnectNotificationSocket();
+    }
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages} timeZone="Europe/Madrid">
