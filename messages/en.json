@@ -8,7 +8,7 @@
         "owner_link_1": "My Properties",
         "owner_link_2": "Earnings",
         "user_link_1": "Profile",
-        "user_link_2": "Dashboard",
+        "user_link_2": "Reservations",
         "user_link_3": "History",
         "user_link_4": "Payments",
         "worker_link_1": "Tasks",
@@ -741,11 +741,11 @@
         "dont_have_rooms": "You don't have any reservations yet",
         "card": {
             "info": {
-                "loading": "Redirecting to Stripe checkout..."
+                "loading": "Redirecting to payment..."
             },
             "error": {
                 "info": "There was a problem processing your payment. Please try again.",
-                "error": "Error starting Stripe checkout:"
+                "error": "Error starting payment process. Please try again"
             },
             "contract": {
                 "signed": "Contract Signed",
@@ -771,6 +771,7 @@
     },
     "user_payment_history": {
         "desc": "Monthly payment",
+        "supply_desc": "Payment",
         "desc_res": "Payment (Reservation)",
         "months": {
             "1": "January",
@@ -814,6 +815,26 @@
             "room_code": "Accommodation Code:",
             "close": "Close",
             "pay_now": "Pay Now"
+        },
+        "new_panel": {
+            "tab": {
+                "pending": "Pending Payments",
+                "history": "History Payments"
+            }
+        }
+    },
+    "supplies": {
+        "supply_names": {
+            "water": "Water",
+            "gas": "Gas",
+            "electricity": "Electricity",
+            "expenses": "Expenses",
+            "internet": "Wifi",
+            "agency_fees": "Agency fees",
+            "cleanup": "Check-out cleaning",
+            "others": "Others",
+            "deposit": "Deposit",
+            "general_supplies": "Supplies"
         }
     },
     "last_room_page": { 

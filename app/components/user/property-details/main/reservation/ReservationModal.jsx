@@ -110,7 +110,7 @@ export default function ReservationModal({ callback, data, category, calendarTyp
                 description: "Seras redirigido.",
             });
             setTimeout(() => setIsSubmitting(false), 1000);
-            setTimeout(() => router.push("/pages/user/my-reservations"), 1000);
+            setTimeout(() => router.push("/pages/user/reservations"), 1000);
         } catch (error) {
             toast.info(`Error al procesar la reserva`, {
                 id: toastId,

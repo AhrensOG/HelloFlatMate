@@ -13,7 +13,7 @@ import { useTranslations } from "next-intl";
 import NotificationsModal from "./notifications/NotificationsModal";
 import axios from "axios";
 
-export default function NavbarV3({ fixed = false }) {
+export default function NavbarV3({ fixed = false, borderBottom = true }) {
     const [isOpen, setIsOpen] = useState(false);
     const { state } = useContext(Context);
     const [notifications, setNotifications] = useState([]);
@@ -83,25 +83,25 @@ export default function NavbarV3({ fixed = false }) {
                 return (
                     <>
                         <Link
-                            href="/pages/user/profile"
+                            href="/pages/user/profilev2"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_1")}
                         </Link>
                         <Link
-                            href="/pages/user/my-bedrooms"
+                            href="/pages/user/reservations"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_2")}
                         </Link>
                         <Link
-                            href="/pages/user/my-reservations"
+                            href="/pages/user/history"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_3")}
                         </Link>
                         <Link
-                            href="/pages/user/history/payments"
+                            href="/pages/user/payments"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_4")}
@@ -126,9 +126,11 @@ export default function NavbarV3({ fixed = false }) {
 
     return (
         <nav
-            className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-b border-[#c7c7c7] bg-white ${
+            className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-[#c7c7c7] bg-white ${
                 fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
-            } `}
+            } ${
+                borderBottom ? "border-b" : "border-none"
+            }`}
         >
             {/* Icono de menú hamburguesa a la izquierda */}
             <div className="md:hidden flex justify-center items-center">
@@ -163,7 +165,7 @@ export default function NavbarV3({ fixed = false }) {
                         <button className="flex items-center gap-2 font-bold text-base">
                             {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
                         </button>
-                        <div className="absolute right-0 w-48 bg-white shadow-lg rounded-md hidden group-hover:block shadow-reservation-list">
+                        <div className="absolute right-0 w-48 bg-white rounded-md hidden group-hover:block shadow-reservation-list">
                             {renderMenuOptions()}
                             <button
                                 onClick={() => logOut()}

@@ -8,7 +8,7 @@
         "owner_link_1": "Mis Propiedades",
         "owner_link_2": "Ganancias",
         "user_link_1": "Perfil",
-        "user_link_2": "Panel",
+        "user_link_2": "Reservas",
         "user_link_3": "Histórico",
         "user_link_4": "Pagos",
         "worker_link_1": "Tareas",
@@ -752,7 +752,7 @@
             },
             "error": {
                 "info": "Hubo un problema al procesar tu pago con Redsys.",
-                "error": "Error al iniciar el checkout de Redsys:"
+                "error": "Error al iniciar el proceso de pago."
             },
             "contract": {
                 "signed": "Contrato firmado",
@@ -778,6 +778,7 @@
     },
     "user_payment_history": {
         "desc": "Pago mensual",
+        "supply_desc": "Pago",
         "desc_res": "Pago (Reserva)",
         "months": {
             "1": "Enero",
@@ -821,6 +822,26 @@
             "room_code": "Codigo de alojamiento:",
             "close": "Cerrar",
             "pay_now": "Pagar ahora"
+        },
+        "new_panel": {
+            "tab": {
+                "pending": "Pendientes",
+                "history": "Realizados"
+            }
+        }
+    },
+    "supplies": {
+        "supply_names": {
+            "water": "Agua",
+            "gas": "Gas",
+            "electricity": "Electricidad",
+            "expenses": "Expensas",
+            "internet": "Wifi",
+            "agency_fees": "Tasa de la agencia",
+            "cleanup": "Limpieza check-out",
+            "others": "Otros",
+            "deposit": "Depósito",
+            "general_supplies": "Suministros"
         }
     },
     "forms": {
