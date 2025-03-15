@@ -28,6 +28,7 @@ export default function Chat() {
     const [messages, setMessages] = useState([]);
     const [socket, setSocket] = useState(false);
     const [isConnectedToRoom, setIsConnectedToRoom] = useState(false);
+    const [hasMarkedAsRead, setHasMarkedAsRead] = useState(false); // ✅ Evita bucles
 
     //Funcion para pasar de arrayBuffer a file
     const arrayBufferToFile = (arrayBuffer, fileName, mimeType = "application/octet-stream") => {
@@ -49,7 +50,7 @@ export default function Chat() {
             // Asumiendo que la respuesta contiene el ID del nuevo chat
             setChatId(res.data.chat.id);
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 
@@ -58,7 +59,7 @@ export default function Chat() {
         try {
             await axios.patch(`/api/chat?id=${chatId}&type=act`);
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 
@@ -101,19 +102,16 @@ export default function Chat() {
     useEffect(() => {
         if (chatId && userId) {
             const usuarioId = searchParams.get("userId") || searchParams.get("id");
-            console.log(`💬 Conectando al chat ${chatId}...`);
             const chatSocket = getChatSocket(chatId, userId);
             setSocket(chatSocket);
 
             const handleSocketConnect = () => {
-                console.log(`✅ Chat ${chatId} conectado con ID: ${chatSocket.id}`);
                 setIsConnected(true);
                 setTransport(chatSocket.io.engine.transport.name);
 
                 // Unir al usuario a la sala de chat
                 chatSocket.emit("joinChat", chatId.toString(), userId.toString(), () => {
                     setIsConnectedToRoom(true);
-                    console.log(`✅ Usuario unido a la sala del chat ${chatId}`);
                 });
             };
 
@@ -146,7 +144,6 @@ export default function Chat() {
             };
 
             const handleSocketDisconnect = () => {
-                console.log("❌ Desconectado del servidor");
                 setIsConnected(false);
                 setTransport("N/A");
             };
@@ -163,7 +160,6 @@ export default function Chat() {
             chatSocket.on("newFile", handleNewFile);
 
             return () => {
-                console.log(`🚪 Saliendo del chat ${chatId}, desconectando socket...`);
                 chatSocket.off("connect", handleSocketConnect);
                 chatSocket.off("disconnect", handleSocketDisconnect);
                 chatSocket.off("newMessage", handleNewMessage);
@@ -180,7 +176,7 @@ export default function Chat() {
                 const res = await axios.get(`/api/message?chatId=${chatId}`);
                 setMessages(res.data.messages);
             } catch (err) {
-                console.log(err);
+                throw err;
             }
         };
 
@@ -192,40 +188,29 @@ export default function Chat() {
         }
     }, [clientId, state?.user?.id, chatId]);
 
-    //Funcion apra marcar los mensajes como leidos
     const markAsRead = async () => {
-        try {
-            const unreadMessages = messages.filter((message) => !message.read && (message.senderId !== userId || message.userId !== userId));
-            if (unreadMessages.length > 0) {
-                await markMessageAsRead(unreadMessages.map((message) => message.id));
-                setMessages((prevMessages) =>
-                    prevMessages.map((message) => {
-                        if (!message.read && message.senderId !== userId) {
-                            return { ...message, read: true };
-                        }
-                        return message;
-                    })
-                );
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        if (!chatId || !userId || hasMarkedAsRead) return; // ✅ Evita reejecución
 
-    const markMessageAsRead = async (messages) => {
+        const unreadMessages = messages.filter((msg) => !msg.isRead && msg.senderId !== userId);
+        if (unreadMessages.length === 0) return;
+
         try {
-            const res = await axios.patch("/api/message", { messages });
-            console.log(res);
+            await axios.patch("/api/message", { messages: unreadMessages.map((msg) => msg.id) });
+            setMessages((prevMessages) =>
+                prevMessages.map((msg) => (unreadMessages.some((unread) => unread.id === msg.id) ? { ...msg, isRead: true } : msg))
+            );
+
+            setHasMarkedAsRead(true); // ✅ Solo se ejecutará una vez
         } catch (error) {
-            console.log(error);
+            console.error("❌ Error al marcar mensajes como leídos:", error);
         }
     };
 
     useEffect(() => {
-        if (messages.length > 0 && chatId && userId) {
+        if (messages.length > 0) {
             markAsRead();
         }
-    }, [messages, chatId, userId]);
+    }, [messages]); // ✅ Solo se ejecuta cuando los mensajes cambian
 
     // Función para enviar mensaje
     const sendMessage = (message) => {
@@ -289,9 +274,8 @@ export default function Chat() {
     const saveMessage = async (data) => {
         try {
             const res = await axios.post("/api/message", data);
-            console.log(res);
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 

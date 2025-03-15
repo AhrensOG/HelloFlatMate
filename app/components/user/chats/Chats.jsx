@@ -53,7 +53,7 @@ export default function Chat() {
 
     return (
         <div>
-            {console.log(chats)}
+            {console.log(state)}
             {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
             {groupChats &&
                 groupChats.map((chat) => {

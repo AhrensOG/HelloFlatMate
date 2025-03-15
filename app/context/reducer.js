@@ -36,11 +36,31 @@ export const reducer = (state, action) => {
                 ...state,
                 toDos: action.payload,
             };
-        case "ADD_NOTIFICATION":
+        case "SET_NOTIFICATIONS":
             return {
                 ...state,
-                notifications: [...state.notifications, action.payload], // Agrega sin sobrescribir
+                notifications: action.payload, // Sobrescribe el estado con las nuevas notificaciones
             };
+        case "ADD_NOTIFICATION":
+            // Evita duplicados basándose en el `id`
+            const isDuplicate = state.notifications.some((notif) => notif.id === action.payload.id);
+            if (isDuplicate) return state;
+
+            return {
+                ...state,
+                notifications: [action.payload, ...state.notifications], // Agrega al inicio
+            };
+        case "SET_UNREAD_COUNT":
+            return {
+                ...state,
+                unreadCount: action.payload,
+            };
+        case "UPDATE_UNREAD_COUNT":
+            return {
+                ...state,
+                unreadCount: action.payload, // Asegura que el nuevo estado se asigna correctamente
+            };
+
         default:
             return { ...state };
     }

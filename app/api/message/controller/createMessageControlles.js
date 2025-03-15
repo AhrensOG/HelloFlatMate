@@ -2,7 +2,6 @@ import { Admin, Chat, ChatParticipant, Client, Message, Owner } from "@/db/init"
 import { NextResponse } from "next/server";
 
 export async function createMessage(data) {
-
     if (!data) {
         return NextResponse.json({ error: "No data provided" }, { status: 400 });
     }
@@ -48,15 +47,20 @@ export async function createMessage(data) {
                 return NextResponse.json({ error: "User not part of chat" }, { status: 404 });
             }
 
-            const message = await Message.create({
-                chatId: data.chatId,
-                body: data.body,
-                userId: data.userId,
-                userName: user.name + " " + user.lastName,
-                date: new Date(),
-                userType: user.role,
-                type: data.type,
-            });
+            const message = await Message.create(
+                {
+                    chatId: data.chatId,
+                    body: data.body,
+                    userId: data.userId,
+                    userName: user.name + " " + user.lastName,
+                    date: new Date(),
+                    userType: user.role,
+                    type: data.type,
+                    isRead: data.isRead || false,
+                },
+                { transaction }
+            );
+            await transaction.commit();
             return NextResponse.json({ message }, { status: 200 });
         } catch (error) {
             throw error;
