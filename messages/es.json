@@ -424,15 +424,7 @@
                     "label": "¿Por qué vienes a Valencia?",
                     "placeholder": "Selecciona una opción",
                     "error": "Selecciona una razón",
-                    "options": [
-                        "Por estudios",
-                        "Por trabajo",
-                        "Soy nómada digital",
-                        "Por turismo",
-                        "Aprender el idioma",
-                        "A vivir",
-                        "Otro"
-                    ]
+                    "options": ["Por estudios", "Por trabajo", "Soy nómada digital", "Por turismo", "Aprender el idioma", "A vivir", "Otro"]
                 },
                 "reasonForValenciaOther": {
                     "label": "Cuéntanos más",
@@ -670,14 +662,15 @@
                 "email": "Correo de Emergencia"
             },
             "modal_change_pass": {
-                "title": "Cambiar Contraseña",
-                "label_old_pass": "Contraseña Actual",
-                "label_new_pass": "Contraseña Nueva",
-                "show_off": "Ocultar",
+                "title": "Cambiar contraseña",
+                "label_old_pass": "Contraseña actual",
+                "label_new_pass": "Nueva contraseña",
+                "conf_pass": "Confirmar nueva contraseña",
                 "show_on": "Mostrar",
-                "conf_pass": "Confirmar Contraseña",
+                "show_off": "Ocultar",
                 "cancel": "Cancelar",
-                "ok": "Cambiar"
+                "ok": "Guardar cambios",
+                "info_social": "Este usuario ha iniciado sesión con Google o Facebook. Puedes establecer una nueva contraseña para iniciar sesión también por correo electrónico."
             },
             "error": {
                 "pass_not_match": "Las contraseñas no coinciden",
@@ -831,7 +824,7 @@
             }
         }
     },
-    "last_room_page": { 
+    "last_room_page": {
         "h1": "Últimas habitaciones en alquiler en Valencia para estudiantes",
         "p_1": " ¿Buscas una habitación en Valencia? Descubre las (strong)últimas habitaciones en alquiler en Valencia(/strong) con (strong)helloflatmate(/strong). Habitaciones modernas, totalmente equipadas y en (strong)pisos compartidos(/strong) bien ubicados, ideales para estudiantes y jóvenes profesionales. <br /> <br /> No dejes pasar esta oportunidad: ¡reserva tu habitación antes de que se agoten!",
         "span_1": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",

@@ -24,39 +24,43 @@ export default function ProfileInfo({ action, image, name, lastName, email, data
     const t = useTranslations("user_profile.profile_info");
 
     const handleChangePassword = async () => {
+        const user = auth.currentUser;
+        const provider = user.providerData[0]?.providerId;
+
         if (newPassword !== confirmPassword) {
-            toast.info(t("pass_not_match"));
-            return;
+            return toast.info(t("pass_not_match"));
         }
+
         const toastId = toast.loading(t("loading.loading"));
 
         try {
-            await changePassword(newPassword);
-            toast.success(t("success.pass_changed"), {
-                id: toastId,
-            });
+            // Si tiene proveedor "password", pedir la actual
+            if (provider === "password") {
+                const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                await reauthenticateWithCredential(user, credential);
+            }
 
+            // Cambiar o asignar contraseña (sirve para todos los casos)
+            await updatePassword(user, newPassword);
+
+            toast.success(t("success.pass_changed"), { id: toastId });
             setShowChangePasswordModal(false);
         } catch (error) {
-            toast.error(
-                error.code === "auth/wrong-password" || error.code === "auth/invalid-credential"
-                    ? t("error.incorrect_pass")
-                    : t("error.error_change_pass"),
-                {
-                    id: toastId,
-                }
-            );
+            console.error("❌ Error al cambiar contraseña:", error);
+
+            let msg = t("error.error_change_pass");
+
+            if (error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") {
+                msg = t("error.incorrect_pass");
+            } else if (error.code === "auth/requires-recent-login") {
+                msg = "⚠️ Tu sesión ha expirado. Inicia sesión nuevamente para poder cambiar la contraseña.";
+            }
+
+            toast.error(msg, { id: toastId });
         }
     };
 
     const handleModal = () => {
-        const user = auth.currentUser;
-        const provider = user.providerData[0]?.providerId;
-
-        if (provider !== "password") {
-            return toast.info("No puedes cambiar la contraseña de un usuario que se registró con Google o Facebook");
-        }
-
         setShowChangePasswordModal(true);
     };
 

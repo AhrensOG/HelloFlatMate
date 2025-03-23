@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { auth } from "@/app/firebase/config";
 
 export default function ChangePasswordModal({
     currentPassword,
@@ -13,29 +14,35 @@ export default function ChangePasswordModal({
     confirmPassword,
     setShowConfirmPassword,
     setConfirmPassword,
-    showChangePasswordModal,
     setShowChangePasswordModal,
     handleSave,
 }) {
     const t = useTranslations("user_profile.profile_info");
+    const provider = auth.currentUser?.providerData[0]?.providerId;
+    const isEmailPassword = provider === "password";
+
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-screen-md">
                 <h2 className="text-lg font-bold mb-4">{t("modal_change_pass.title")}</h2>
 
-                {/* Contraseña actual */}
-                <div className="relative mb-4">
-                    <input
-                        type={showCurrentPassword ? "text" : "password"}
-                        placeholder={t("modal_change_pass.label_old_pass")}
-                        className="border p-2 w-full"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                    />
-                    <button onClick={() => setShowCurrentPassword(!showCurrentPassword)} className="absolute right-2 top-2 text-sm text-gray-500">
-                        {showCurrentPassword ? t("modal_change_pass.show_off") : t("modal_change_pass.show_on")}
-                    </button>
-                </div>
+                {!isEmailPassword && <p className="text-sm text-gray-600 mb-4">{t("modal_change_pass.info_social")}</p>}
+
+                {/* Contraseña actual solo si el proveedor es "password" */}
+                {isEmailPassword && (
+                    <div className="relative mb-4">
+                        <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            placeholder={t("modal_change_pass.label_old_pass")}
+                            className="border p-2 w-full"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                        />
+                        <button onClick={() => setShowCurrentPassword(!showCurrentPassword)} className="absolute right-2 top-2 text-sm text-gray-500">
+                            {showCurrentPassword ? t("modal_change_pass.show_off") : t("modal_change_pass.show_on")}
+                        </button>
+                    </div>
+                )}
 
                 {/* Nueva contraseña */}
                 <div className="relative mb-4">
@@ -65,7 +72,7 @@ export default function ChangePasswordModal({
                     </button>
                 </div>
 
-                <div className="flex justify-end gap-4">
+                <div className="flex justify-end gap-4 mt-4">
                     <button onClick={() => setShowChangePasswordModal(false)} className="text-gray-500">
                         {t("modal_change_pass.cancel")}
                     </button>
