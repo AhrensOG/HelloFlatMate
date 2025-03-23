@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { auth } from "@/app/firebase/config";
 import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
 import { useTranslations } from "next-intl";
+import ChangePasswordModal from "./ChangePasswordModal";
+import { changePassword } from "@/app/firebase/changePassword";
 
 export default function ProfileInfo({ action, image, name, lastName, email, data }) {
     const router = useRouter();
@@ -26,15 +28,10 @@ export default function ProfileInfo({ action, image, name, lastName, email, data
             toast.info(t("pass_not_match"));
             return;
         }
-
-        const user = auth.currentUser;
-        const credential = EmailAuthProvider.credential(user.email, currentPassword);
-
         const toastId = toast.loading(t("loading.loading"));
 
         try {
-            await reauthenticateWithCredential(user, credential);
-            await updatePassword(user, newPassword);
+            await changePassword(newPassword);
             toast.success(t("success.pass_changed"), {
                 id: toastId,
             });
@@ -50,6 +47,17 @@ export default function ProfileInfo({ action, image, name, lastName, email, data
                 }
             );
         }
+    };
+
+    const handleModal = () => {
+        const user = auth.currentUser;
+        const provider = user.providerData[0]?.providerId;
+
+        if (provider !== "password") {
+            return toast.info("No puedes cambiar la contraseña de un usuario que se registró con Google o Facebook");
+        }
+
+        setShowChangePasswordModal(true);
     };
 
     return (
@@ -71,7 +79,7 @@ export default function ProfileInfo({ action, image, name, lastName, email, data
 
             {/* Imagen de perfil */}
             <ProfilePicture image={image} />
-            <button onClick={() => setShowChangePasswordModal(true)} className="text-blue-500 font-medium">
+            <button onClick={handleModal} className="text-blue-500 font-medium">
                 {t("btn_change_pass")}
             </button>
 
@@ -122,68 +130,22 @@ export default function ProfileInfo({ action, image, name, lastName, email, data
 
             {/* Modal para cambiar contraseña */}
             {showChangePasswordModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-screen-md">
-                        <h2 className="text-lg font-bold mb-4">{t("modal_change_pass.title")}</h2>
-
-                        {/* Contraseña actual */}
-                        <div className="relative mb-4">
-                            <input
-                                type={showCurrentPassword ? "text" : "password"}
-                                placeholder={t("modal_change_pass.label_old_pass")}
-                                className="border p-2 w-full"
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
-                            />
-                            <button
-                                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                className="absolute right-2 top-2 text-sm text-gray-500"
-                            >
-                                {showCurrentPassword ? t("modal_change_pass.show_off") : t("modal_change_pass.show_on")}
-                            </button>
-                        </div>
-
-                        {/* Nueva contraseña */}
-                        <div className="relative mb-4">
-                            <input
-                                type={showNewPassword ? "text" : "password"}
-                                placeholder={t("modal_change_pass.label_new_pass")}
-                                className="border p-2 w-full"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            />
-                            <button onClick={() => setShowNewPassword(!showNewPassword)} className="absolute right-2 top-2 text-sm text-gray-500">
-                                {showNewPassword ? t("modal_change_pass.show_off") : t("modal_change_pass.show_on")}
-                            </button>
-                        </div>
-
-                        {/* Confirmar nueva contraseña */}
-                        <div className="relative mb-4">
-                            <input
-                                type={showConfirmPassword ? "text" : "password"}
-                                placeholder={t("modal_change_pass.conf_pass")}
-                                className="border p-2 w-full"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
-                            <button
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-2 top-2 text-sm text-gray-500"
-                            >
-                                {showConfirmPassword ? t("modal_change_pass.show_off") : t("modal_change_pass.show_on")}
-                            </button>
-                        </div>
-
-                        <div className="flex justify-end gap-4">
-                            <button onClick={() => setShowChangePasswordModal(false)} className="text-gray-500">
-                                {t("modal_change_pass.cancel")}
-                            </button>
-                            <button onClick={handleChangePassword} className="bg-blue-500 text-white px-4 py-2 rounded">
-                                {t("modal_change_pass.ok")}
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <ChangePasswordModal
+                    currentPassword={currentPassword}
+                    setCurrentPassword={setCurrentPassword}
+                    newPassword={newPassword}
+                    setNewPassword={setNewPassword}
+                    showCurrentPassword={showCurrentPassword}
+                    setShowCurrentPassword={setShowCurrentPassword}
+                    showNewPassword={showNewPassword}
+                    setShowNewPassword={setShowNewPassword}
+                    showConfirmPassword={showConfirmPassword}
+                    confirmPassword={confirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    setShowConfirmPassword={setShowConfirmPassword}
+                    setShowChangePasswordModal={setShowChangePasswordModal}
+                    handleSave={handleChangePassword}
+                />
             )}
         </motion.main>
     );
