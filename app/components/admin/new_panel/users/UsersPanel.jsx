@@ -24,7 +24,6 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     const [isPaysModal, setIsPaysModal] = useState(false);
     const [pays, setPays] = useState(null);
     const [ordersUser, setOrdersUser] = useState(null);
-    console.log(allUsers)
     // Usar SWR para obtener las órdenes
     const {
         data: swrData,

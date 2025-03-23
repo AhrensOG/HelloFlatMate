@@ -134,7 +134,7 @@ const UserModal = ({ user, onClose }) => {
             {signature ? (
               <Image src={signature} width={100} height={100} alt="signature" />
             ) : (
-              <p>No hay firma</p>
+              <span>No hay firma</span>
             )}
           </p>
           <hr className="my-4" />
