@@ -118,7 +118,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 return (
                     <>
                         <Link
-                            href="/worker/tasks"
+                            href="/pages/worker-panel/home"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("worker_link_1")}
@@ -194,7 +194,9 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 {/* Notificaciones */}
                 {user && (
                     <>
-                        {unreadCount && <NotificationIcon onClick={() => setNotifModalIsOpen(!notifModalIsOpen)} count={unreadCount} />}
+                        {(unreadCount !== null || unreadCount !== undefined) && (
+                            <NotificationIcon onClick={() => setNotifModalIsOpen(!notifModalIsOpen)} count={unreadCount} />
+                        )}
                         {notifModalIsOpen && (
                             <NotificationsModal data={notifications} userId={user?.id} unreadCount={unreadCount} setUnreadCount={setUnreadCount} />
                         )}

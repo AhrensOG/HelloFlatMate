@@ -221,7 +221,8 @@ export default function Chat() {
                 senderId: userId,
                 time: new Date().toLocaleTimeString(),
                 userName: state?.user?.name + " " + state?.user?.lastName,
-                receiverId: receiverId || "",
+                receiverId: typeChat === "group" ? null : receiverId,
+                typeChat: typeChat,
             };
 
             socket.emit("sendMessage", newMessage);
@@ -274,6 +275,7 @@ export default function Chat() {
     const saveMessage = async (data) => {
         try {
             const res = await axios.post("/api/message", data);
+            console.log(res);
         } catch (error) {
             throw error;
         }
@@ -296,13 +298,14 @@ export default function Chat() {
 
     return (
         <div className="flex flex-col min-h-screen">
+            {console.log(messages, typeChat)}
             <header className="px-2">
                 <NavbarV3 />
             </header>
 
             <main className="flex flex-col justify-between items-center flex-grow w-full">
                 <Suspense fallback={<div>Loading...</div>}>
-                    <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} />
+                    <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} isGroup={typeChat === "group"} />
                 </Suspense>
                 <MessageInput onSendMessage={sendMessage} onSendFile={sendFile} />
             </main>

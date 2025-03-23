@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 export default function ChatsCard({ name, image, action = null, id, lastMessage, typeChat, notReadCount }) {
-
     const router = useRouter();
 
     return (
