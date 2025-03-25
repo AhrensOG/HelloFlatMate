@@ -10,6 +10,7 @@ import {
     UserIcon,
 } from "@heroicons/react/24/outline";
 import formatDateToDDMMYYYY from "@/app/components/admin/new_panel/utils/formatDate";
+import PaymentRequestModal from "./PaymentRequestModal";
 
 const STATUS_LABEL = {
     IN_PROCESS: "En Proceso",
@@ -35,6 +36,7 @@ const PAYMENT_LABELS = {
 const TenantCard = ({ order, isOld = false }) => {
     const client = order.client;
     const [showPayments, setShowPayments] = useState(false);
+    const [showRequestModal, setShowRequestModal] = useState(false);
 
     const cardBorder = isOld ? "border-gray-200" : "border-[#440cac]";
     const headingColor = "text-[#440cac]";
@@ -165,6 +167,30 @@ const TenantCard = ({ order, isOld = false }) => {
                             Ver contrato {i + 1}
                         </a>
                     ))}
+                </div>
+            )}
+
+            {order.category === "HELLO_LANDLORD" && (
+                <div className="border-t border-gray-100 py-4">
+                    <button
+                        onClick={() => setShowRequestModal(true)}
+                        className="text-xs md:text-base mt-2 text-[#440cac] underline w-fit transition hover:opacity-80"
+                    >
+                        Solicitar pago a {client.name}
+                    </button>
+
+                    <AnimatePresence>
+                        {showRequestModal && (
+                            <PaymentRequestModal
+                                isOpen={showRequestModal}
+                                onClose={() => setShowRequestModal(false)}
+                                clientName={client.name}
+                                clientId={client.id}
+                                roomSerial={order.roomSerial}
+                                leaseOrderId={order.id}
+                            />
+                        )}
+                    </AnimatePresence>
                 </div>
             )}
 

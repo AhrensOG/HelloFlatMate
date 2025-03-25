@@ -96,9 +96,11 @@ const MyTenants = () => {
                                                             (order, i) => (
                                                                 <TenantCard
                                                                     key={i}
-                                                                    order={
-                                                                        order
-                                                                    }
+                                                                    order={{
+                                                                        ...order,
+                                                                        category: property.category,
+                                                                        roomSerial: room.serial
+                                                                    }}
                                                                 />
                                                             )
                                                         )}
@@ -117,9 +119,11 @@ const MyTenants = () => {
                                                             (order, i) => (
                                                                 <TenantCard
                                                                     key={i}
-                                                                    order={
-                                                                        order
-                                                                    }
+                                                                    order={{
+                                                                        ...order,
+                                                                        category: property.category,
+                                                                        roomSerial: room.serial
+                                                                    }}
                                                                     isOld
                                                                 />
                                                             )
