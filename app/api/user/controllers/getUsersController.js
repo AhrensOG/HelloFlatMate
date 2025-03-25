@@ -58,16 +58,10 @@ export async function getUserById(id) {
 
     if (!user) {
       user = await Owner.findByPk(id, {
+        attributes: ["id", "name", "lastName", "email", "idNum", "IBAN", "role"],
         include: [
-          {
-            model: LeaseOrderProperty,
-            as: "leaseOrdersProperty",
-            include: [{ model: Property, as: "property" }],
-          },
           { model: LeaseOrderRoom, as: "leaseOrdersRoom" },
           { model: Property, as: "properties" },
-          { model: ToDo, as: "toDos" },
-          { model: Document, as: "documents" },
           { model: ChatParticipant, as: "chats" },
         ],
       });

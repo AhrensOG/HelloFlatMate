@@ -9,16 +9,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export default function NavbarV3({ fixed = false, borderBottom = true }) {
     const [isOpen, setIsOpen] = useState(false);
     const { state } = useContext(Context);
     const user = state?.user;
     const t = useTranslations("nav_bar");
+    const router = useRouter();
 
     const [locale, setLocale] = useState("es");
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handleLogOut = async () => {
+        await logOut();
+        router.push("/pages/auth");
     };
 
     useEffect(() => {
@@ -45,16 +52,22 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 return (
                     <>
                         <Link
-                            href="/owner/properties"
+                            href="/pages/owner/profile"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("owner_link_1")}
                         </Link>
                         <Link
-                            href="/owner/earnings"
+                            href="/pages/owner/dashboard"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("owner_link_2")}
+                        </Link>
+                        <Link
+                            href="/pages/owner/my-tenantsv2"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            {t("owner_link_3")}
                         </Link>
                     </>
                 );
@@ -107,43 +120,63 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
         <nav
             className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-[#c7c7c7] bg-white ${
                 fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
-            } ${
-                borderBottom ? "border-b" : "border-none"
-            }`}
+            } ${borderBottom ? "border-b" : "border-none"}`}
         >
             {/* Icono de menú hamburguesa a la izquierda */}
             <div className="md:hidden flex justify-center items-center">
                 <button onClick={toggleMenu} aria-label="Toggle menu">
-                    {isOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+                    {isOpen ? (
+                        <XMarkIcon className="h-6 w-6" />
+                    ) : (
+                        <Bars3Icon className="h-6 w-6" />
+                    )}
                 </button>
             </div>
 
             {/* Logo */}
             <Link href={`/`}>
-                <Image src="/home/new_home/Helloflatmate.png" width={150} height={47.45} alt="logo" />
+                <Image
+                    src="/home/new_home/Helloflatmate.png"
+                    width={150}
+                    height={47.45}
+                    alt="logo"
+                />
             </Link>
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
-                <Link href={`/${locale?.toLowerCase()}/ultimas-habitaciones`} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
+                <Link
+                    href={`/${locale?.toLowerCase()}/ultimas-habitaciones`}
+                    target="_blank"
+                    className="font-bold text-base border border-black py-1 p-2 px-5"
+                >
                     Last rooms
                 </Link>
-                <Link href={`/${locale?.toLowerCase()}/como-funciona`} target="_blank" className="font-bold text-base">
+                <Link
+                    href={`/${locale?.toLowerCase()}/como-funciona`}
+                    target="_blank"
+                    className="font-bold text-base"
+                >
                     {t("link_how_it_works")}
                 </Link>
-                <Link href={`/${locale?.toLowerCase()}/terminos-y-condiciones`} target="_blank" className="font-bold text-base">
+                <Link
+                    href={`/${locale?.toLowerCase()}/terminos-y-condiciones`}
+                    target="_blank"
+                    className="font-bold text-base"
+                >
                     {t("link_terms_and_conditions")}
                 </Link>
 
                 {user ? (
                     <div className="relative group">
                         <button className="flex items-center gap-2 font-bold text-base">
-                            {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
+                            {user.name}{" "}
+                            <ChevronDownIcon className="size-4 text-gray-500" />
                         </button>
-                        <div className="absolute right-0 w-48 bg-white rounded-md hidden group-hover:block shadow-reservation-list">
+                        <div className="absolute right-0 w-48 bg-white shadow-md rounded-md hidden group-hover:block">
                             {renderMenuOptions()}
                             <button
-                                onClick={() => logOut()}
+                                onClick={() => handleLogOut()}
                                 className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500 w-full text-start"
                             >
                                 {t("logout")}
@@ -152,11 +185,17 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                     </div>
                 ) : (
                     <div className="flex gap-1">
-                        <Link href={`/${locale?.toLowerCase()}/pages/auth?register=true`} className="font-bold text-base">
+                        <Link
+                            href={`/${locale?.toLowerCase()}/pages/auth?register=true`}
+                            className="font-bold text-base"
+                        >
                             {t("link_register")}
                         </Link>
                         <span className="font-bold text-base">|</span>
-                        <Link href={`/${locale?.toLowerCase()}/pages/auth`} className="font-bold text-base">
+                        <Link
+                            href={`/${locale?.toLowerCase()}/pages/auth`}
+                            className="font-bold text-base"
+                        >
                             {t("link_login")}
                         </Link>
                     </div>
@@ -200,7 +239,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                                 <>
                                     {renderMenuOptions()}
                                     <button
-                                        onClick={() => logOut()}
+                                        onClick={() => handleLogOut()}
                                         className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                                     >
                                         {t("logout")}
