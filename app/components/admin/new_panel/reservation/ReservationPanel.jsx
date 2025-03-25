@@ -27,7 +27,7 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
         refreshInterval: 60000,
     });
 
-    const orders = (swrData || []).filter((lo) => lo.status === "PENDING" || lo.status === "APPROVED");
+    const orders = (swrData || []).filter((lo) => lo.status !== "REJECTED");
 
     // Filtrar órdenes por la búsqueda de texto y por fecha
     const filteredOrders = (orders || []).filter((lo) => {
@@ -36,6 +36,7 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
         const clientLastName = lo.client?.lastName || "";
         const clientEmail = lo.client?.email || "";
         const startDate = lo.startDate ? lo.startDate : ""; // Formateamos la fecha
+        const fullname = `${clientName} ${clientLastName}`;
 
         let statusEs = "";
         if (lo.status === "PENDING") statusEs = "pendiente";
@@ -46,8 +47,7 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
         // Filtrar por la búsqueda de texto
         const matchesSearchQuery =
             roomSerial.toLowerCase().includes(searchString) ||
-            clientName.toLowerCase().includes(searchString) ||
-            clientLastName.toLowerCase().includes(searchString) ||
+            fullname.toLowerCase().includes(searchString) ||
             clientEmail.toLowerCase().includes(searchString) ||
             statusEs.toLowerCase().includes(searchString);
 

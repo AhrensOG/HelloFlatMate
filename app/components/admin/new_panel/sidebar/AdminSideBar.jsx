@@ -58,15 +58,20 @@ const AdminSideBar = ({ onSelect }) => {
                 animate={{ width: isOpen ? "180px" : "56px" }} // Suavizar transición
                 exit={{ width: "56px" }}
                 transition={{ duration: 0.4, ease: "easeInOut" }} // Transición suave
-                onMouseEnter={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}>
+                onMouseOver={() => setIsOpen(true)}
+                onMouseOut={() => setIsOpen(false)}
+            >
                 {/* Logo Fixed */}
-                <div className="relative w-full overflow-hidden pb-6 p-1.5">
-                    <div className="relative w-32 h-10">
+                <div className="relative w-full pb-6 p-1.5">
+                    <div
+                        className="relative w-32 h-10"
+                        onMouseOver={(e) => e.stopPropagation()}
+                    >
                         <Image
                             src="/home/new_home/newLogo.png"
                             fill
                             alt="helloflatmate"
+                            priority
                         />
                     </div>
                 </div>
@@ -80,7 +85,8 @@ const AdminSideBar = ({ onSelect }) => {
                             initial={{ opacity: 0, x: -100 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.2 }}
-                            onClick={() => onSelect(item.name)}>
+                            onClick={() => onSelect(item.name)}
+                        >
                             {/* Icon */}
                             <div className="w-6 h-6 text-[#440cac] transition-colors duration-300">
                                 {item.icon}
@@ -92,7 +98,8 @@ const AdminSideBar = ({ onSelect }) => {
                                     !isOpen
                                         ? "opacity-0 w-0"
                                         : "opacity-100 w-auto"
-                                }`}>
+                                }`}
+                            >
                                 {item.name}
                             </motion.span>
                         </motion.div>
@@ -105,7 +112,8 @@ const AdminSideBar = ({ onSelect }) => {
                         onClick={async () => {
                             await logOut();
                             router.push("/pages/auth");
-                        }}>
+                        }}
+                    >
                         {/* Icon */}
                         <div className="w-6 h-6 text-[#440cac] transition-colors duration-300">
                             <ArrowRightStartOnRectangleIcon className="w-6 h-6" />
@@ -115,7 +123,8 @@ const AdminSideBar = ({ onSelect }) => {
                         <motion.span
                             className={`ml-4 text-gray-500 whitespace-nowrap font-bold transition-all duration-300 group-hover:text-[#5ce0e5] ${
                                 !isOpen ? "opacity-0 w-0" : "opacity-100 w-auto"
-                            }`}>
+                            }`}
+                        >
                             Cerrar Sesión
                         </motion.span>
                     </motion.div>
