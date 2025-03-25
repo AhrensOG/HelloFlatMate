@@ -38,6 +38,7 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
         const roomSerial = lo.room?.serial || "";
         const clientName = lo.client?.name || "";
         const clientLastName = lo.client?.lastName || "";
+        const fullname = `${clientName} ${clientLastName}`;
         const clientEmail = lo.client?.email || "";
 
         let statusEs = "";
@@ -48,8 +49,7 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
 
         return (
             roomSerial.toLowerCase().includes(searchString) ||
-            clientName.toLowerCase().includes(searchString) ||
-            clientLastName.toLowerCase().includes(searchString) ||
+            fullname.toLowerCase().includes(searchString) ||
             clientEmail.toLowerCase().includes(searchString) ||
             statusEs.toLowerCase().includes(searchString)
         );
