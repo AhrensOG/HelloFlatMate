@@ -14,13 +14,15 @@ export async function getAllConsumption() {
                     model: LeaseOrderRoom,
                     as: "leaseOrderRoom",
                     attributes: ["id"],
-                    include: [{ model: Room, as: "room", attributes: ["serial"] }],
+                    include: [
+                        { model: Room, as: "room", attributes: ["serial"] },
+                    ],
                 },
             ],
         });
         return NextResponse.json(consumptions, { status: 200 });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return NextResponse.json(error, { status: 500 });
     }
 }

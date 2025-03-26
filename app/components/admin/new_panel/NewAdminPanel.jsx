@@ -28,7 +28,7 @@ const NewAdminPanel = ({ data }) => {
                     <UsersPanel
                         allUsers={data.allUsers}
                         properties={data.optionSerials}
-                        orders={[...data.leaseOrdersApproved, ...data.allLeaseOrders]}
+                        orders={[...data.allLeaseOrders]}
                         allLeaseOrders={data.allLeaseOrders}
                     />
                 );

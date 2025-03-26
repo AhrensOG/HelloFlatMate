@@ -81,10 +81,10 @@ export default function DocumentsPanel({ data, users }) {
     // Filtra los documentos basados en el texto de búsqueda
     const filteredDocuments = documents?.filter((doc) => {
         const searchTerm = searchQuery.toLowerCase();
-        const name = doc.client.name?.toLowerCase() || "";
+        const fullname = `${doc.client.name} ${doc.client.lastName}`.toLowerCase() || "";
         const email = doc.client.email?.toLowerCase() || "";
 
-        return name.includes(searchTerm) || email.includes(searchTerm);
+        return fullname.includes(searchTerm) || email.includes(searchTerm);
     });
 
     return (

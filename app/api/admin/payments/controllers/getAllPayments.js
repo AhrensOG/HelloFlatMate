@@ -2,11 +2,36 @@ import { RentPayment, Supply, Room, Client, LeaseOrderRoom } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllPayments() {
-  // Obtener todos los pagos de suministro
-  const supplies = await Supply.findAll({attributes:["id", "date", "type", "status", "name", "amount", "paymentId", "leaseOrderId", "leaseOrderType"]});
+    // Obtener todos los pagos de suministro
+    const supplies = await Supply.findAll({
+        attributes: [
+            "id",
+            "date",
+            "type",
+            "status",
+            "name",
+            "amount",
+            "paymentId",
+            "leaseOrderId",
+            "leaseOrderType",
+        ],
+    });
 
-  // Obtener todos los pagos de alquiler
-  const rentPayments = await RentPayment.findAll({attributes:["id", "date", "type", "status", "quotaNumber", "description", "amount", "paymentId", "leaseOrderId", "leaseOrderType"]});
+    // Obtener todos los pagos de alquiler
+    const rentPayments = await RentPayment.findAll({
+        attributes: [
+            "id",
+            "date",
+            "type",
+            "status",
+            "quotaNumber",
+            "description",
+            "amount",
+            "paymentId",
+            "leaseOrderId",
+            "leaseOrderType",
+        ],
+    });
 
     // Combinar ambos arrays
     const payments = [...supplies, ...rentPayments].map((payment) => ({
@@ -44,7 +69,9 @@ export async function getAllPayments() {
     // Mapear la información de leaseOrder en los pagos
     payments.forEach((payment) => {
         if (payment.leaseOrderId) {
-            const leaseOrder = leaseOrders.find((order) => order.id === payment.leaseOrderId);
+            const leaseOrder = leaseOrders.find(
+                (order) => order.id === payment.leaseOrderId
+            );
             if (leaseOrder) {
                 payment.leaseOrderInfo = {
                     startDate: leaseOrder.startDate,
@@ -63,5 +90,13 @@ export async function getAllPayments() {
 
     payments.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    return NextResponse.json(payments);
+    return NextResponse.json(payments, {
+        headers: {
+            "Cache-Control":
+                "no-store, no-cache, must-revalidate, proxy-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+            "Surrogate-Control": "no-store",
+        },
+    });
 }
