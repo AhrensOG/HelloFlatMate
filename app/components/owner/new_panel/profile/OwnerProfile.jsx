@@ -5,6 +5,7 @@ import { Field, Form, Formik } from "formik";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Context } from "@/app/context/GlobalContext";
+import ChangePasswordModal from "@/app/components/lib/auth/ChangePasswordModal";
 
 export default function OwnerProfile() {
     const { state, dispatch } = useContext(Context);
@@ -107,6 +108,7 @@ export default function OwnerProfile() {
                         </Form>
                     )}
                 </Formik>
+                <ChangePasswordModal />
             </motion.div>
         )
     );
