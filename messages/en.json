@@ -418,15 +418,7 @@
                     "label": "Why are you coming to Valencia?",
                     "placeholder": "Select an option",
                     "error": "Please select a reason",
-                    "options": [
-                        "For studies",
-                        "For work",
-                        "I'm a digital nomad",
-                        "For tourism",
-                        "To learn the language",
-                        "To live",
-                        "Other"
-                    ]
+                    "options": ["For studies", "For work", "I'm a digital nomad", "For tourism", "To learn the language", "To live", "Other"]
                 },
                 "reasonForValenciaOther": {
                     "label": "Tell us more",
@@ -838,7 +830,7 @@
             "general_supplies": "Supplies"
         }
     },
-    "last_room_page": { 
+    "last_room_page": {
         "h1": "Last rooms for rent in Valencia for students",
         "p_1": "Are you looking for a room in Valencia? Discover the (strong)last rooms for rent in Valencia(/strong) with (strong)helloflatmate(/strong). Modern rooms, fully equipped and in (strong)well-located shared apartments(/strong), ideal for students and young professionals. <br /> <br /> Don't miss this opportunity: book your room before they run out!",
         "span_1": "No properties matching your preferences were found. But don't worry! Here are other options you might be interested in:",
@@ -913,6 +905,251 @@
                 "li_3": "Enjoy a comfortable and hassle-free experience."
             },
             "strong": "Don't miss out! Your perfect room in Valencia is waiting for you."
+        }
+    },
+    "user_profile_v2": {
+        "responses": {
+            "success": "Information updated successfully",
+            "loading": "Saving...",
+            "error": "Error updating information"
+        },
+        "how_met_us_options": {
+            "lb_1": "Select an option",
+            "vl_2": "Recommended by friends",
+            "lb_2": "Recommended by friends",
+            "vl_3": "Recommended by the University",
+            "lb_3": "Recommended by the University",
+            "vl_4": "HelloFlatmate website",
+            "lb_4": "HelloFlatmate website",
+            "vl_5": "Idealista",
+            "lb_5": "Idealista",
+            "vl_6": "Other websites",
+            "lb_6": "Other websites"
+        },
+        "inf_per": {
+            "h1": "Personal Information",
+            "name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email",
+            "id": "ID / Passport",
+            "phone": "Phone (with country code)",
+            "birth_date": "Date of Birth",
+            "gender": "Gender",
+            "options": {
+                "default": "Select an option",
+                "male": "Male",
+                "female": "Female",
+                "other": "Other"
+            },
+            "nationality": "Nationality",
+            "city": "City",
+            "address": "Address (street)",
+            "number": "Address Number",
+            "postal_code": "Postal Code",
+            "emergency_contact": {
+                "h2": "Emergency Contact",
+                "name": "Emergency Name",
+                "phone": "Emergency Phone",
+                "email": "Emergency Email"
+            },
+            "additional_info": {
+                "h2": "Additional Information",
+                "reason": "Why are you coming to Valencia?",
+                "options_1": {
+                    "default": "Select an option",
+                    "study": "For studies",
+                    "job": "For work",
+                    "digital_nomad": "I am a digital nomad",
+                    "tourism": "For tourism",
+                    "language": "To learn the language",
+                    "live": "To live",
+                    "other": "Other"
+                },
+                "tell_you_reason": "Tell us your reason",
+                "tell_about_yourself": "Tell us about yourself",
+                "how_met_us": "How did you find us?",
+                "check_in_date": "Check-in Date",
+                "check_in_hour": "Check-in Hour",
+                "origin_university": "Home University",
+                "destiny_university": "Destination University"
+            },
+            "save": "Save Changes",
+            "select_country": "Select your nationality",
+            "placeholders": {
+                "city": " E.g. Valencia",
+                "address": "E.g. Calle los Leones",
+                "number": "E.g. 99",
+                "postal_code": "E.g. 46022",
+                "emergency_name": "Emergency Name",
+                "emergency_email": "Emergency Email",
+                "personal_review": "Share with us your interests, hobbies, and what kind of tenant you are.",
+                "home_university": "E.g. University of your Country",
+                "away_university": "E.g. University of Valencia"
+            }
+        },
+        "change_password": {
+            "verif": {
+                "required": "Required",
+                "min_6": "Password must be at least 6 characters",
+                "not_match": "Passwords do not match",
+                "loading": "Updating password...",
+                "succes": "Password updated successfully",
+                "error": "An error occurred while changing the password",
+                "wrong_pass": "The current password is incorrect",
+                "btn_1": "Change password",
+                "text_1": "This change only applies if your account was created with an email and password. If you registered with Google, this change will not affect your login method. In that case, you can manage your password directly from your Google account.",
+                "lb_1": "I have read and understand this information",
+                "place_1": "Current password",
+                "place_2": "New password",
+                "place_3": "Confirm password",
+                "cancel": "Cancel",
+                "save": "Save"
+            }
+        },
+        "sidebar": {
+            "links": {
+                "profile": "Profile",
+                "payments": "Payments",
+                "reservations": "Reservations",
+                "history": "History",
+                "supplies": "Supplies"
+            },
+            "btn_logout": "Log out"
+        },
+        "reservations": {
+            "title": "All Reservations",
+            "pending_sign": "Pending Signature",
+            "p_1": "(strong)Your reservation is pending signature.(/strong) Upload the documentation and sign the contract to complete the process.",
+            "in_progress": "In Progress",
+            "p_2": "(strong>Ready to take the next step!(/strong) Pay for your reservation to proceed with the remaining steps and move forward with your booking.",
+            "in_review": "Under Review",
+            "p_3": "(strong)Your reservation is under review.(/strong) We are verifying your request; you will receive an update soon.",
+            "completed": "Completed",
+            "p_4": "(strong)All set!(/strong) Your reservation is confirmed and complete.",
+            "no_reservations": "You have no active reservations at the moment.",
+            "question": "Do you have any questions about the reservation process?",
+            "write_us": "Write to us",
+            "write_us_1": "whenever you want."
+        },
+        "supplies": {
+            "water": "Water",
+            "gas": "Gas",
+            "electricity": "Electricity",
+            "expenses": "Expenses",
+            "internet": "Wi-Fi",
+            "agency_fees": "Agency Fees",
+            "cleanup": "Check-out Cleaning",
+            "others": "Others",
+            "deposit": "Deposit",
+            "general_supplies": "Supplies",
+            "h1": "Supplies",
+            "p_1": "In this section, you can view the contributions and consumption of supplies for your room. It shows the amounts paid, the recorded consumption, and the remaining balance for each period.",
+            "code": "Code: ",
+            "period": "Period",
+            "h4": "Supplies Contributions",
+            "p_2": "No contributions available.",
+            "h4_2": "Consumptions",
+            "from": "From: ",
+            "to": "To: ",
+            "show_bill": "View bill",
+            "p_3": "No consumption recorded.",
+            "h4_3": "Difference",
+            "p_4": "No information available to show."
+        },
+        "history": {
+            "reservations_end": "Completed Reservations",
+            "p_1": "Your completed reservations are shown below.",
+            "p_2": "You have no completed reservations at the moment.",
+            "p_3": "Do you need help with your history?",
+            "p_3_link": "Contact us"
+        },
+        "progress_bar": {
+            "p_1": "Fill out your profile information!",
+            "p_2": "Progress"
+        }
+    },
+    "worker_panel": {
+        "tasks": {
+            "h2_1": "Tasks",
+            "clean": "Cleaning",
+            "repair": "Repair",
+            "p_1": "No tasks available.",
+            "cards": {
+                "in_progress": "In Progress",
+                "completed": "Completed",
+                "pending": "Pending"
+            },
+            "search_bar": {
+                "placeholder": "Search...."
+            },
+            "task_details": {
+                "responses_1": {
+                    "loading": "Saving...",
+                    "success": "Saved successfully!",
+                    "error": "An error occurred!"
+                },
+                "responses_2": {
+                    "loading": "Assigning...",
+                    "success": "Assigned successfully!",
+                    "error": "An error occurred!"
+                },
+                "claim_task": "Claim Task",
+                "desc_sec": {
+                    "title": "Description",
+                    "op_1": "The tenant will be present",
+                    "op_2": "The tenant will not be present"
+                },
+                "tenant_note": {
+                    "title": "Tenant's Note"
+                },
+                "loc_sec": {
+                    "h3": "Location",
+                    "p": "Room Location"
+                },
+                "btns": {
+                    "finish": "Finish Task",
+                    "problem": "Report Problem"
+                },
+                "modal": {
+                    "title": "Task Report",
+                    "h2_1": "Report Problem",
+                    "h2_2": "Did you complete the task successfully?",
+                    "btn_cancel": "Cancel",
+                    "btn_confirm": "Confirm"
+                }
+            },
+            "card_simple": {
+                "in_progress": "In Progress",
+                "completed": "Completed",
+                "pending": "Pending"
+            },
+            "my_tasks": "My Tasks",
+            "no_tasks": "No tasks to show.",
+            "history": "Task History",
+            "side_modal": {
+                "p_1": "Monday, July 1, 2024 at 09:12",
+                "p_2": "New apartments are available in the area",
+                "ul": {
+                    "li_1": "Avenida 123",
+                    "li_2": "Calle 123"
+                }
+            }
+        },
+        "profile": {
+            "title": "Maintenance Profile",
+            "title_2": "My Profile",
+            "items": {
+                "title_1": "Full Name",
+                "title_2": "Job",
+                "body_2": "Maintenance"
+            },
+            "history": "Task History"
+        },
+        "bottom_nav": {
+            "home": "Home",
+            "tasks": "Tasks",
+            "chats": "Messages",
+            "profile": "My Profile"
         }
     }
 }

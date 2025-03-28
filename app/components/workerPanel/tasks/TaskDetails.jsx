@@ -1,6 +1,6 @@
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
- 
+
 import { AnimatePresence, motion } from "framer-motion";
 import TitleSection from "../TitleSection";
 import DescriptionSection from "./task_details/DescriptionSection";
@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
 import { Context } from "@/app/context/GlobalContext";
+import { useTranslations } from "next-intl";
 
 export default function TaskDetails({ section }) {
     const searchParams = useSearchParams();
@@ -25,6 +26,8 @@ export default function TaskDetails({ section }) {
     const [task, setTask] = useState();
     const [type, setType] = useState("");
     const [status, setStatus] = useState("");
+
+    const t = useTranslations("worker_panel.tasks.task_details");
 
     useEffect(() => {
         if (state?.user) {
@@ -49,14 +52,13 @@ export default function TaskDetails({ section }) {
     }, [user, id]);
 
     const handleShowModal = (comment, status) => {
-
         setShowModal(!showModal);
 
         if (status === "COMPLETED" || status === "PENDING") {
             toast.promise(handleFinishTask(comment, status), {
-                loading: "Guardando...",
-                success: "¡Guardado exitosamente!",
-                error: "¡Ocurrió un error!",
+                loading: t("responses_1.loading"),
+                success: t("responses_1.success"),
+                error: t("responses_1.error"),
             });
         }
 
@@ -142,15 +144,15 @@ export default function TaskDetails({ section }) {
                                     <button
                                         onClick={() => {
                                             toast.promise(claimTask(), {
-                                                loading: "Asignando...",
-                                                success: "¡Asignado exitosamente!",
-                                                error: "¡Ocurrio un error!",
+                                                loading: t("responses_2.loading"),
+                                                success: t("responses_2.success"),
+                                                error: t("responses_2.error"),
                                             });
                                         }}
                                         className="w-full h-12 bg-[#0C1660] text-[#F7FAFA] text-base font-bold rounded-lg lg:w-[20rem]"
                                         type="button"
                                     >
-                                        Aceptar tarea
+                                        {t("claim_task")}
                                     </button>
                                 </div>
                             )}

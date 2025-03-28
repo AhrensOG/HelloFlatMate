@@ -13,22 +13,23 @@ import { useTranslations } from "next-intl";
 import { isUserLogged } from "@/app/context/actions/isUserLogged";
 import ChangePasswordModal from "@/app/components/lib/auth/ChangePasswordModal";
 
-const howMetUsOptions = [
-    { value: "", label: "Seleccione una opción" },
-    { value: "Recomendado por amigos", label: "Recomendado por amigos" },
-    {
-        value: "Recomendado por la Universidad",
-        label: "Recomendado por la Universidad",
-    },
-    { value: "Página web helloflatmate", label: "Página web helloflatmate" },
-    { value: "Idealista", label: "Idealista" },
-    { value: "Otros portales web", label: "Otros portales web" },
-];
-
 export default function ProfileV2() {
     const { state, dispatch } = useContext(Context);
     const [initialValues, setInitialValues] = useState(null);
-    const t = useTranslations("forms.update_client");
+    const t = useTranslations("user_profile_v2");
+    const t_place = useTranslations("user_profile_v2.inf_per.placeholders");
+
+    const howMetUsOptions = [
+        { value: "", label: t("how_met_us_options.lb_1") },
+        { value: t("how_met_us_options.vl_2"), label: t("how_met_us_options.lb_2") },
+        {
+            value: t("how_met_us_options.vl_2"),
+            label: t("how_met_us_options.lb_2"),
+        },
+        { value: t("how_met_us_options.vl_3"), label: t("how_met_us_options.lb_3") },
+        { value: t("how_met_us_options.vl_4"), label: t("how_met_us_options.lb_4") },
+        { value: t("how_met_us_options.vl_5"), label: t("how_met_us_options.lb_5") },
+    ];
 
     useEffect(() => {
         if (state?.user?.id) {
@@ -45,17 +46,13 @@ export default function ProfileV2() {
                 street: user.street || "",
                 streetNumber: user.streetNumber || "",
                 postalCode: user.postalCode || "",
-                birthDate: user?.birthDate
-                    ? new Date(user.birthDate).toISOString().split("T")[0]
-                    : "",
+                birthDate: user?.birthDate ? new Date(user.birthDate).toISOString().split("T")[0] : "",
                 emergencyName: user.emergencyName || "",
                 emergencyEmail: user.emergencyEmail || "",
                 howMetUs: user.howMetUs || "",
                 destinationUniversity: user.destinationUniversity || "",
                 homeUniversity: user.homeUniversity || "",
-                arrivalDate: user?.arrivalDate
-                    ? new Date(user.arrivalDate).toISOString().split("T")[0]
-                    : "",
+                arrivalDate: user?.arrivalDate ? new Date(user.arrivalDate).toISOString().split("T")[0] : "",
                 arrivalTime: user?.arrivalTime ? user.arrivalTime : "",
                 genre: user.genre || "",
                 country: user.country || "",
@@ -67,16 +64,16 @@ export default function ProfileV2() {
     }, [state]);
 
     const handleSubmit = async (values) => {
-        const toastId = toast.loading("Guardando...");
+        const toastId = toast.loading(t("responses.loading"));
         try {
             await axios.put("/api/user", { ...values, id: state?.user?.id });
-            toast.success("Información actualizada correctamente", {
+            toast.success(t("responses.success"), {
                 id: toastId,
             });
             await isUserLogged(dispatch);
         } catch (error) {
             console.error("Error actualizando datos:", error);
-            toast.info("Error al actualizar la información", { id: toastId });
+            toast.info(t("responses.loading"), { id: toastId });
         }
     };
 
@@ -89,22 +86,14 @@ export default function ProfileV2() {
                 transition={{ duration: 0.5 }}
                 className="w-full p-6 bg-white"
             >
-                <h1 className="text-xl font-semibold text-gray-800 mb-4">
-                    Información personal
-                </h1>
+                <h1 className="text-xl font-semibold text-gray-800 mb-4">{t("inf_per.h1")}</h1>
 
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={handleSubmit}
-                    enableReinitialize
-                >
+                <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize>
                     {({ setFieldValue, values }) => (
                         <Form>
                             {/* Nombre y Apellido */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Nombre
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.name")}</label>
                                 <Field
                                     name="name"
                                     type="text"
@@ -114,51 +103,28 @@ export default function ProfileV2() {
                             </div>
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Apellido
-                                </label>
-                                <Field
-                                    name="lastName"
-                                    type="text"
-                                    className="border-none font-bold text-gray-900 focus:outline-none"
-                                />
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.last_name")}</label>
+                                <Field name="lastName" type="text" className="border-none font-bold text-gray-900 focus:outline-none" />
                             </div>
 
                             {/* Email */}
                             <div className="mb-6 flex flex-col border bg-gray-100 border-gray-200 p-3 gap-2 rounded-sm">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Email
-                                </label>
-                                <Field
-                                    name="email"
-                                    type="email"
-                                    disabled
-                                    className="border-none font-bold text-gray-500 focus:outline-none"
-                                />
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.email")}</label>
+                                <Field name="email" type="email" disabled className="border-none font-bold text-gray-500 focus:outline-none" />
                             </div>
 
                             {/* ID / Passport */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    ID / Passport
-                                </label>
-                                <Field
-                                    name="idNum"
-                                    type="text"
-                                    className="border-none font-bold text-gray-900 focus:outline-none"
-                                />
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.id")}</label>
+                                <Field name="idNum" type="text" className="border-none font-bold text-gray-900 focus:outline-none" />
                             </div>
 
                             {/* Teléfono con código de país */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Teléfono (con código de país)
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.phone")}</label>
                                 <PhoneInput
                                     value={values.phone}
-                                    onChange={(value) =>
-                                        setFieldValue("phone", value)
-                                    }
+                                    onChange={(value) => setFieldValue("phone", value)}
                                     inputProps={{ required: true }}
                                     enableSearch={true}
                                     disableSearchIcon={true}
@@ -195,8 +161,7 @@ export default function ProfileV2() {
                                     dropdownStyle={{
                                         paddingRight: "8px",
                                         backgroundColor: "#ffffff",
-                                        boxShadow:
-                                            "2px 4px 8px rgba(0, 0, 0, 0.1)",
+                                        boxShadow: "2px 4px 8px rgba(0, 0, 0, 0.1)",
                                         maxHeight: "150px",
                                         overflowY: "auto",
                                         textAlign: "start",
@@ -217,47 +182,33 @@ export default function ProfileV2() {
 
                             {/* Fecha de nacimiento*/}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Fecha de nacimiento
-                                </label>
-                                <Field
-                                    name="birthDate"
-                                    type="date"
-                                    className="border-none font-bold text-gray-900 focus:outline-none"
-                                />
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.birth_date")}</label>
+                                <Field name="birthDate" type="date" className="border-none font-bold text-gray-900 focus:outline-none" />
                             </div>
 
                             {/* Género */}
                             <div className="mb-6 flex flex-col border border-gray-300 py-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100 bg-white">
-                                <label className="text-[10px] px-3 font-semibold text-gray-600 uppercase">
-                                    Género
-                                </label>
+                                <label className="text-[10px] px-3 font-semibold text-gray-600 uppercase">{t("inf_per.gender")}</label>
                                 <Field
                                     as="select"
                                     name="genre"
                                     className="appearance-none px-3 w-full bg-transparent border-none font-bold text-gray-900 focus:outline-none cursor-pointer"
                                 >
-                                    <option value="">
-                                        Selecciona una opción
-                                    </option>
-                                    <option value="MALE">Hombre</option>
-                                    <option value="FEMALE">Mujer</option>
-                                    <option value="OTHER">Otro</option>
+                                    <option value="">{t("inf_per.options.default")}</option>
+                                    <option value="MALE">{t("inf_per.options.male")}</option>
+                                    <option value="FEMALE">{t("inf_per.options.female")}</option>
+                                    <option value="OTHER">{t("inf_per.options.other")}</option>
                                 </Field>
                             </div>
 
                             {/* Nacionalidad */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Nacionalidad
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.nationality")}</label>
                                 <Field name="country">
                                     {({ field }) => (
                                         <CountrySelect
                                             value={field.value}
-                                            onChange={(value) =>
-                                                setFieldValue("country", value)
-                                            }
+                                            onChange={(value) => setFieldValue("country", value)}
                                             containerCustomClass="border-none ring-0 px-0"
                                             spanCustomClass="font-semibold text-gray-900"
                                         />
@@ -267,77 +218,57 @@ export default function ProfileV2() {
 
                             {/* Ciudad */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Ciudad
-                                </label>
-                                <Field
-                                    name="city"
-                                    placeholder="Ej: Valencia"
-                                    className="border-none font-bold text-gray-900 focus:outline-none"
-                                />
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.city")}</label>
+                                <Field name="city" placeholder={t_place("city")} className="border-none font-bold text-gray-900 focus:outline-none" />
                             </div>
 
                             {/* Dirección Calle */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Dirección (calle)
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.address")}</label>
                                 <Field
                                     name="street"
-                                    placeholder="Ej: Calle los Leones"
+                                    placeholder={t_place("address")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
 
                             {/* Dirección Numero de calle */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Número de dirección
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.number")}</label>
                                 <Field
                                     name="streetNumber"
-                                    placeholder="Ej: 99"
+                                    placeholder={t_place("number")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
 
                             {/* Código postal */}
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Postal Code
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.postal_code")}</label>
                                 <Field
                                     name="postalCode"
-                                    placeholder="Ej: 46022"
+                                    placeholder={t_place("postal_code")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
 
                             {/* Contacto de emergencia */}
-                            <h2 className="text-lg font-semibold text-gray-800 my-6">
-                                Contacto de emergencia
-                            </h2>
+                            <h2 className="text-lg font-semibold text-gray-800 my-6">{t("inf_per.emergency_contact.h2")}</h2>
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Nombre de emergencia
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.emergency_contact.name")}</label>
                                 <Field
                                     name="emergencyName"
-                                    placeholder="Nombre emergencia"
+                                    placeholder={t_place("emergency_name")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Teléfono de emergencia
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.emergency_contact.phone")}</label>
                                 <PhoneInput
                                     value={values.emergencyPhone}
-                                    onChange={(value) =>
-                                        setFieldValue("emergencyPhone", value)
-                                    }
+                                    onChange={(value) => setFieldValue("emergencyPhone", value)}
                                     inputProps={{ required: true }}
                                     enableSearch={true}
                                     disableSearchIcon={true}
@@ -374,8 +305,7 @@ export default function ProfileV2() {
                                     dropdownStyle={{
                                         paddingRight: "8px",
                                         backgroundColor: "#ffffff",
-                                        boxShadow:
-                                            "2px 4px 8px rgba(0, 0, 0, 0.1)",
+                                        boxShadow: "2px 4px 8px rgba(0, 0, 0, 0.1)",
                                         maxHeight: "150px",
                                         overflowY: "auto",
                                         textAlign: "start",
@@ -395,25 +325,21 @@ export default function ProfileV2() {
                             </div>
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
-                                <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Email de emergencia
-                                </label>
+                                <label className="text-[10px] font-semibold text-gray-600 uppercase">{t("inf_per.emergency_contact.email")}</label>
                                 <Field
                                     name="emergencyEmail"
-                                    placeholder="Email emergencia"
+                                    placeholder={t_place("emergency_email")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
 
                             {/* Datos Adicionales */}
-                            <h2 className="text-lg font-semibold text-gray-800 my-6">
-                                Datos Adicionales
-                            </h2>
+                            <h2 className="text-lg font-semibold text-gray-800 my-6">{t("inf_per.additional_info.h2")}</h2>
 
                             {/* Razón para Valencia */}
                             <div className="mb-6 flex flex-col border border-gray-300 py-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="px-3 text-[10px] font-semibold text-gray-600 uppercase">
-                                    ¿Por qué vienes a Valencia?
+                                    {t("inf_per.additional_info.reason")}
                                 </label>
                                 <Field
                                     as="select"
@@ -421,39 +347,21 @@ export default function ProfileV2() {
                                     className="appearance-none px-3 bg-white border-none font-bold text-gray-900 focus:outline-none"
                                     onChange={(e) => {
                                         const value = e.target.value;
-                                        setFieldValue(
-                                            "reasonForValencia",
-                                            value
-                                        );
+                                        setFieldValue("reasonForValencia", value);
                                         if (value !== "Otro") {
-                                            setFieldValue(
-                                                "reasonForValenciaOther",
-                                                ""
-                                            );
+                                            setFieldValue("reasonForValenciaOther", "");
                                         }
                                     }}
                                     value={values.reasonForValencia}
                                 >
-                                    <option value="">
-                                        Selecciona una opción
-                                    </option>
-                                    <option value="Por estudios">
-                                        Por estudios
-                                    </option>
-                                    <option value="Por trabajo">
-                                        Por trabajo
-                                    </option>
-                                    <option value="Soy nomada digital">
-                                        Soy nomada digital
-                                    </option>
-                                    <option value="Por turismo">
-                                        Por turismo
-                                    </option>
-                                    <option value="Aprender el idioma">
-                                        Aprender el idioma
-                                    </option>
-                                    <option value="A vivir">A vivir</option>
-                                    <option value="Otro">Otro</option>
+                                    <option value="">{t("inf_per.additional_info.options_1.default")}</option>
+                                    <option value="Por estudios">{t("inf_per.additional_info.options_1.study")}</option>
+                                    <option value="Por trabajo">{t("inf_per.additional_info.options_1.job")}</option>
+                                    <option value="Soy nomada digital">{t("inf_per.additional_info.options_1.digital_nomad")}</option>
+                                    <option value="Por turismo">{t("inf_per.additional_info.options_1.tourism")}</option>
+                                    <option value="Aprender el idioma">{t("inf_per.additional_info.options_1.language")}</option>
+                                    <option value="A vivir">{t("inf_per.additional_info.options_1.live")}</option>
+                                    <option value="Otro">{t("inf_per.additional_info.options_1.other")}</option>
                                 </Field>
                             </div>
 
@@ -475,7 +383,7 @@ export default function ProfileV2() {
                                     >
                                         <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                             <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                                Cuéntanos tu razón
+                                                {t("inf_per.additional_info.tell_you_reason")}
                                             </label>
                                             <Field
                                                 as="textarea"
@@ -490,19 +398,19 @@ export default function ProfileV2() {
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Cúentanos sobre ti
+                                    {t("inf_per.additional_info.tell_about_yourself")}
                                 </label>
                                 <Field
                                     name="personalReview"
                                     as="textarea"
-                                    placeholder="Comparte con nosotros tus intereses, pasatiempos y qué tipo de inquilino eres."
+                                    placeholder={t_place("personal_review")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
 
                             <div className="mb-6 flex flex-col border border-gray-300 py-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="px-3 text-[10px] font-semibold text-gray-600 uppercase">
-                                    ¿Cómo nos conociste?
+                                    {t("inf_per.additional_info.how_met_us")}
                                 </label>
                                 <Field
                                     as="select"
@@ -510,10 +418,7 @@ export default function ProfileV2() {
                                     className="appearance-none px-3 bg-white border-none font-bold text-gray-900 focus:outline-none"
                                 >
                                     {howMetUsOptions.map((option) => (
-                                        <option
-                                            key={option.value}
-                                            value={option.value}
-                                        >
+                                        <option key={option.value} value={option.value}>
                                             {option.label}
                                         </option>
                                     ))}
@@ -522,44 +427,36 @@ export default function ProfileV2() {
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Fecha de check-in
+                                    {t("inf_per.additional_info.check_in_date")}
                                 </label>
-                                <Field
-                                    name="arrivalDate"
-                                    type="date"
-                                    className="border-none font-bold text-gray-900 focus:outline-none"
-                                />
+                                <Field name="arrivalDate" type="date" className="border-none font-bold text-gray-900 focus:outline-none" />
                             </div>
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Hora de check-in
+                                    {t("inf_per.additional_info.check_in_hour")}
                                 </label>
-                                <Field
-                                    name="arrivalTime"
-                                    type="time"
-                                    className="border-none font-bold text-gray-900 focus:outline-none"
-                                />
+                                <Field name="arrivalTime" type="time" className="border-none font-bold text-gray-900 focus:outline-none" />
                             </div>
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Universidad de origen
+                                    {t("inf_per.additional_info.origin_university")}
                                 </label>
                                 <Field
                                     name="homeUniversity"
-                                    placeholder="Ej: Universidad de tu país"
+                                    placeholder={t_place("home_university")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
-                                    Universidad de destino
+                                    {t("inf_per.additional_info.destiny_university")}
                                 </label>
                                 <Field
                                     name="destinationUniversity"
-                                    placeholder="Ej: Universidad de Valencia"
+                                    placeholder={t_place("away_university")}
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
@@ -568,7 +465,7 @@ export default function ProfileV2() {
                                 type="submit"
                                 className="mt-4 w-full bg-[#440cac] text-white py-3 rounded-sm font-semibold hover:bg-[#440cac]/80 transition-colors"
                             >
-                                Guardar Cambios
+                                {t("inf_per.save")}
                             </button>
                         </Form>
                     )}

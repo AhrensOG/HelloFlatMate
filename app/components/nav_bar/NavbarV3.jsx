@@ -104,7 +104,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 return (
                     <>
                         <Link
-                            href="/worker/tasks"
+                            href="/pages/worker-panel/tasks"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("worker_link_1")}
@@ -125,22 +125,13 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
             {/* Icono de menú hamburguesa a la izquierda */}
             <div className="md:hidden flex justify-center items-center">
                 <button onClick={toggleMenu} aria-label="Toggle menu">
-                    {isOpen ? (
-                        <XMarkIcon className="h-6 w-6" />
-                    ) : (
-                        <Bars3Icon className="h-6 w-6" />
-                    )}
+                    {isOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
                 </button>
             </div>
 
             {/* Logo */}
             <Link href={`/`}>
-                <Image
-                    src="/home/new_home/Helloflatmate.png"
-                    width={150}
-                    height={47.45}
-                    alt="logo"
-                />
+                <Image src="/home/new_home/Helloflatmate.png" width={150} height={47.45} alt="logo" />
             </Link>
 
             {/* Menú de escritorio */}
@@ -152,26 +143,17 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 >
                     Last rooms
                 </Link>
-                <Link
-                    href={`/${locale?.toLowerCase()}/como-funciona`}
-                    target="_blank"
-                    className="font-bold text-base"
-                >
+                <Link href={`/${locale?.toLowerCase()}/como-funciona`} target="_blank" className="font-bold text-base">
                     {t("link_how_it_works")}
                 </Link>
-                <Link
-                    href={`/${locale?.toLowerCase()}/terminos-y-condiciones`}
-                    target="_blank"
-                    className="font-bold text-base"
-                >
+                <Link href={`/${locale?.toLowerCase()}/terminos-y-condiciones`} target="_blank" className="font-bold text-base">
                     {t("link_terms_and_conditions")}
                 </Link>
 
                 {user ? (
                     <div className="relative group">
                         <button className="flex items-center gap-2 font-bold text-base">
-                            {user.name}{" "}
-                            <ChevronDownIcon className="size-4 text-gray-500" />
+                            {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
                         </button>
                         <div className="absolute right-0 w-48 bg-white shadow-md rounded-md hidden group-hover:block">
                             {renderMenuOptions()}
@@ -185,17 +167,11 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                     </div>
                 ) : (
                     <div className="flex gap-1">
-                        <Link
-                            href={`/${locale?.toLowerCase()}/pages/auth?register=true`}
-                            className="font-bold text-base"
-                        >
+                        <Link href={`/${locale?.toLowerCase()}/pages/auth?register=true`} className="font-bold text-base">
                             {t("link_register")}
                         </Link>
                         <span className="font-bold text-base">|</span>
-                        <Link
-                            href={`/${locale?.toLowerCase()}/pages/auth`}
-                            className="font-bold text-base"
-                        >
+                        <Link href={`/${locale?.toLowerCase()}/pages/auth`} className="font-bold text-base">
                             {t("link_login")}
                         </Link>
                     </div>
