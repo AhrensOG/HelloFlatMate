@@ -84,6 +84,45 @@ export const createContractPDF = async (
   }
 };
 
+export const createContractPDFV2 = async (
+  values,
+  dataContract,
+  clientSignatureUrl,
+  ownerSignatureUrl,
+) => {
+  try {
+    const contractInfo = { values, clientSignatureUrl, ownerSignatureUrl };
+
+    const res = await axios.post(`/api/pdf_creator`, contractInfo, {
+      responseType: "blob",
+    });
+    const pdfBlob = new Blob([res.data], { type: "application/pdf" });
+    const now = new Date();
+    const formattedDate = now.toISOString().slice(0, 10); // Format YYYY-MM-DD
+    const timestamp = Date.now(); // Genera un timestamp único
+    const fileName = `contract_${formattedDate}_${timestamp}.pdf`;
+    const data = await uploadContractPDF(pdfBlob, fileName, "Contratos");
+
+    if (data) {
+      await axios.patch("/api/user", {
+        id: dataContract.clientId,
+        signature: clientSignatureUrl,
+      });
+      await loadContract({
+        category: values.propertyCategory,
+        ownerId: dataContract.ownerId,
+        clientId: dataContract.clientId,
+        name: data.name,
+        url: data.url,
+        ...dataContract,
+      });
+    }
+
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const getAllProperties = async (dispatch) => {
   try {
     const properties = await axios.get("/api/property");

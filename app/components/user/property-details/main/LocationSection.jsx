@@ -45,6 +45,7 @@ export default function LocationSection({ street, streetNumber, postalCode, city
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY,
         libraries,
         mapIds: [process.env.NEXT_PUBLIC_MAP_ID], // Aquí añades tu Map ID
+        version: "beta"
     });
 
     useEffect(() => {

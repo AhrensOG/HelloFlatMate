@@ -70,7 +70,7 @@ export default function CreateConsumptionsModal({
             if (values.bill) {
                 files = await uploadFiles([values.bill], "Consumos");
             }
-
+    
             await axios.post("/api/admin/consumptions", {
                 amount: values.price,
                 type: values.type.toUpperCase(),
@@ -81,7 +81,7 @@ export default function CreateConsumptionsModal({
                 startDate: values.startDate,
                 endDate: values.endDate,
             });
-
+    
             toast.success("Datos guardados correctamente.", { id: toastId });
             await mutate();
         } catch (error) {
@@ -89,6 +89,7 @@ export default function CreateConsumptionsModal({
             toast.info("Error al guardar los datos.", { id: toastId });
         }
     };
+    
 
     return (
         <div className={modalStyles.overlay} onClick={onClose}>
@@ -272,6 +273,34 @@ export default function CreateConsumptionsModal({
                                             event.currentTarget.files[0]
                                         )
                                     }
+                                />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="text-xs font-light">Periodo</label>
+                                <Field as="select" name="period" className={modalStyles.select}>
+                                    <option value="">Seleccionar periodo</option>
+                                    <option value="1Q">1Q</option>
+                                    <option value="2Q">2Q</option>
+                                </Field>
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="text-xs font-light">Desde</label>
+                                <Field type="date" name="startDate" className={modalStyles.input} />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="text-xs font-light">Hasta</label>
+                                <Field type="date" name="endDate" className={modalStyles.input} />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="text-xs font-light">Factura</label>
+                                <input
+                                    type="file"
+                                    className={modalStyles.fileInput}
+                                    onChange={(event) => setFieldValue("bill", event.currentTarget.files[0])}
                                 />
                             </div>
 

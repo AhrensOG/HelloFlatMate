@@ -28,7 +28,7 @@ export default function Footer_1() {
                         <Link href="/cookies" target="_blank" className="font-normal text-base">
                             {t("link_cookies_policy")}
                         </Link>
-                        <Link href="/terminos-condiciones" target="_blank" className="font-normal text-base">
+                        <Link href="/terminos-y-condiciones" target="_blank" className="font-normal text-base">
                             {t("link_terms_and_conditions")}
                         </Link>
                     </article>

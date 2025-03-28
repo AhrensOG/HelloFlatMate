@@ -1,4 +1,3 @@
- 
 import SideModal from "./SideModal";
 import { useContext, useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
@@ -11,144 +10,135 @@ import BottomNavBar from "../bottomNavBar/BottomNavBar";
 import TaskCardSimple from "./TaskCardSimple";
 import { useRouter } from "next/navigation";
 import { Context } from "@/app/context/GlobalContext";
+import { useTranslations } from "next-intl";
 
 export default function WorkerHome({ section }) {
-  const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const router = useRouter();
-  const { state } = useContext(Context);
-  const [user, setUser] = useState(state?.user);
-
-  const [newTasks, setNewTasks] = useState([]);
-  const [oldTasks, setOldTasks] = useState([]);
-  const [searchNewTasks, setSearchNewTasks] = useState("");
-  const [searchOldTasks, setSearchOldTasks] = useState("");
-  const [filteredNewTasks, setFilteredNewTasks] = useState([]);
-  const [filteredOldTasks, setFilteredOldTasks] = useState([]);
-
-  const handleSearchNewTasks = (search) => {
-    setSearchNewTasks(search.toLowerCase());
-    filterNewTasks(search.toLowerCase());
-  };
-
-  const handleSearchOldTasks = (search) => {
-    setSearchOldTasks(search.toLowerCase());
-    filterOldTasks(search.toLowerCase());
-  };
-
-  const filterNewTasks = (search) => {
-    if (!search) {
-      setFilteredNewTasks(newTasks);
-    } else {
-      setFilteredNewTasks(
-        newTasks.filter((task) => task.title.toLowerCase().includes(search))
-      );
-    }
-  };
-
-  const filterOldTasks = (search) => {
-    if (!search) {
-      setFilteredOldTasks(oldTasks);
-    } else {
-      setFilteredOldTasks(
-        oldTasks.filter((task) => task.title.toLowerCase().includes(search))
-      );
-    }
-  };
-
-  // Actualiza el usuario cuando cambie el estado global
-  useEffect(() => {
-    setUser(state?.user);
-  }, [state?.user]);
-
-  // Realiza la petición a la API cuando el usuario esté disponible
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await axios.get(`/api/to_do?userId=${user.id}`);
-        const tasks = res.data;
-        setNewTasks(tasks.filter((task) => task.status === "PENDING"));
-        setOldTasks(tasks.filter((task) => task.status !== "PENDING"));
-        // Establecer las tareas filtradas inicialmente
-        setFilteredNewTasks(tasks.filter((task) => task.status === "PENDING"));
-        setFilteredOldTasks(tasks.filter((task) => task.status !== "PENDING"));
-      } catch (err) {
-        console.log(err);
-      }
+    const [showModal, setShowModal] = useState(false);
+    const handleShowModal = () => {
+        setShowModal(!showModal);
     };
 
-    if (user) {
-      fetchTasks();
-    }
-  }, [user]); // Incluye `user` como dependencia
+    const router = useRouter();
+    const { state } = useContext(Context);
+    const [user, setUser] = useState(state?.user);
 
-  if (!user || (!newTasks && !oldTasks)) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen ">
-        <header className="w-full">
-          <UserSerivceNavBar />
-        </header>
-        <main className="w-full grow grid place-items-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-        </main>
-      </div>
-    );
-  }
+    const [newTasks, setNewTasks] = useState([]);
+    const [oldTasks, setOldTasks] = useState([]);
+    const [searchNewTasks, setSearchNewTasks] = useState("");
+    const [searchOldTasks, setSearchOldTasks] = useState("");
+    const [filteredNewTasks, setFilteredNewTasks] = useState([]);
+    const [filteredOldTasks, setFilteredOldTasks] = useState([]);
 
-  return (
-    <AnimatePresence>
-      <motion.div
-        className={`  flex flex-col h-screen relative gap-4`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <header>
-          <UserSerivceNavBar />
-        </header>
-        <main className="flex-grow mb-16">
-          <section
-            className={`  relative flex flex-col gap-4 m-3 lg:flex-row lg:justify-around`}
-          >
-            <div className="flex flex-col gap-4 lg:w-[45%]">
-              <SearchBar data={searchNewTasks} setData={handleSearchNewTasks} />
-              <TodayTaskSection data={filteredNewTasks} />
+    const t = useTranslations("worker_panel.tasks");
+
+    const handleSearchNewTasks = (search) => {
+        setSearchNewTasks(search.toLowerCase());
+        filterNewTasks(search.toLowerCase());
+    };
+
+    const handleSearchOldTasks = (search) => {
+        setSearchOldTasks(search.toLowerCase());
+        filterOldTasks(search.toLowerCase());
+    };
+
+    const filterNewTasks = (search) => {
+        if (!search) {
+            setFilteredNewTasks(newTasks);
+        } else {
+            setFilteredNewTasks(newTasks.filter((task) => task.title.toLowerCase().includes(search)));
+        }
+    };
+
+    const filterOldTasks = (search) => {
+        if (!search) {
+            setFilteredOldTasks(oldTasks);
+        } else {
+            setFilteredOldTasks(oldTasks.filter((task) => task.title.toLowerCase().includes(search)));
+        }
+    };
+
+    // Actualiza el usuario cuando cambie el estado global
+    useEffect(() => {
+        setUser(state?.user);
+    }, [state?.user]);
+
+    // Realiza la petición a la API cuando el usuario esté disponible
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const res = await axios.get(`/api/to_do?userId=${user.id}`);
+                const tasks = res.data;
+                setNewTasks(tasks.filter((task) => task.status === "PENDING"));
+                setOldTasks(tasks.filter((task) => task.status !== "PENDING"));
+                // Establecer las tareas filtradas inicialmente
+                setFilteredNewTasks(tasks.filter((task) => task.status === "PENDING"));
+                setFilteredOldTasks(tasks.filter((task) => task.status !== "PENDING"));
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        if (user) {
+            fetchTasks();
+        }
+    }, [user]); // Incluye `user` como dependencia
+
+    if (!user || (!newTasks && !oldTasks)) {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen ">
+                <header className="w-full">
+                    <UserSerivceNavBar />
+                </header>
+                <main className="w-full grow grid place-items-center">
+                    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+                </main>
             </div>
-            <section className="flex flex-col gap-4 lg:w-[45%]">
-              <SearchBar data={searchOldTasks} setData={handleSearchOldTasks} />
-              <h2 className="font-bold text-2xl text-[#121417]">
-                Historial de tareas
-              </h2>
-              {filteredOldTasks.length > 0 ? (
-                filteredOldTasks?.map((item) => (
-                  <TaskCardSimple
-                    key={item?.id}
-                    action={() =>
-                      router.push(
-                        "/pages/worker-panel/tasks/details?id=" + item?.id
-                      )
-                    }
-                    type={item?.type?.toLowerCase()}
-                    status={item?.status?.toLowerCase()}
-                    title={item?.title}
-                  />
-                ))
-              ) : (
-                <div className="flex justify-center items-center">
-                  <p className="text-[#121417]">No hay tareas para mostrar</p>
-                </div>
-              )}
-            </section>
-          </section>
-        </main>
-        <footer className="fixed bottom-0 left-0 w-full bg-white">
-          <BottomNavBar section={section} />
-        </footer>
-      </motion.div>
-    </AnimatePresence>
-  );
+        );
+    }
+
+    return (
+        <AnimatePresence>
+            <motion.div
+                className={`  flex flex-col h-screen relative gap-4`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+            >
+                <header>
+                    <UserSerivceNavBar />
+                </header>
+                <main className="flex-grow mb-16">
+                    <section className={`  relative flex flex-col gap-4 m-3 lg:flex-row lg:justify-around`}>
+                        <div className="flex flex-col gap-4 lg:w-[45%]">
+                            <SearchBar data={searchNewTasks} setData={handleSearchNewTasks} />
+                            <TodayTaskSection data={filteredNewTasks} />
+                        </div>
+                        <section className="flex flex-col gap-4 lg:w-[45%]">
+                            <SearchBar data={searchOldTasks} setData={handleSearchOldTasks} />
+                            <h2 className="font-bold text-2xl text-[#121417]">{t("history")}</h2>
+                            {filteredOldTasks.length > 0 ? (
+                                filteredOldTasks?.map((item) => (
+                                    <TaskCardSimple
+                                        key={item?.id}
+                                        action={() => router.push("/pages/worker-panel/tasks/details?id=" + item?.id)}
+                                        type={item?.type?.toLowerCase()}
+                                        status={item?.status?.toLowerCase()}
+                                        title={item?.title}
+                                    />
+                                ))
+                            ) : (
+                                <div className="flex justify-center items-center">
+                                    <p className="text-[#121417]">{t("no_tasks")}</p>
+                                </div>
+                            )}
+                        </section>
+                    </section>
+                </main>
+                <footer className="fixed bottom-0 left-0 w-full bg-white">
+                    <BottomNavBar section={section} />
+                </footer>
+            </motion.div>
+        </AnimatePresence>
+    );
 }

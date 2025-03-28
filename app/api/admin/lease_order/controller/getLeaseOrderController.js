@@ -3,26 +3,6 @@ import { Admin, Client, Contract, Document, LeaseOrderProperty, LeaseOrderRoom, 
 
 export async function getAllLeaseOrders() {
     try {
-        //Obtener todas las ordene
-        // const LeaseOrdersProperty = await LeaseOrderProperty.findAll({
-        //   include: [
-        //     {
-        //       model: Property,
-        //       as: "property",
-        //       attributes: ["id", "serial", "category", "ownerId"],
-        //     },
-        //     {
-        //       model: Client,
-        //       as: "client",
-        //       attributes: ["id", "name", "lastName", "email"],
-        //       include: [
-        //         { model: Supply, as: "supplies" },
-        //         { model: Payment, as: "payments" },
-        //         { model: RentPayment, as: "rentPayments" },
-        //       ],
-        //     },
-        //   ],
-        // });
         const LeaseOrdersRoom = await LeaseOrderRoom.findAll({
             include: [
                 {
