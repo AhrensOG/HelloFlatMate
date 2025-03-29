@@ -16,10 +16,7 @@ export async function getChatById(id) {
     if (!id) return NextResponse.json({ error: "No id provided" }, { status: 400 });
     try {
         const chat = await Chat.findByPk(id, {
-            include: [
-                { model: Message, as: "messages" },
-                { model: ChatParticipant, as: "participants" },
-            ],
+            include: [{ model: ChatParticipant, as: "participants" }],
         });
         if (!chat) return NextResponse.json({ error: "Chat not found" }, { status: 404 });
         return NextResponse.json(chat, { status: 200 });

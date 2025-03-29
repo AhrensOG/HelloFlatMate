@@ -14,12 +14,13 @@ import NotificationsModal from "./notifications/NotificationsModal";
 import axios from "axios";
 
 export default function NavbarV3({ fixed = false, borderBottom = true }) {
+    const { state, dispatch } = useContext(Context);
     const [isOpen, setIsOpen] = useState(false);
-    const { state } = useContext(Context);
-    const [notifications, setNotifications] = useState([]);
-    const [notifModalIsOpen, setNotifModalIsOpen] = useState(false);
-
     const user = state?.user;
+    const [notifModalIsOpen, setNotifModalIsOpen] = useState(false);
+    const notifications = state?.notifications || [];
+    const [unreadCount, setUnreadCount] = useState(state?.unreadCount || null);
+
     const t = useTranslations("nav_bar");
 
     const [locale, setLocale] = useState("es");
@@ -35,19 +36,24 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
     }, []);
 
     useEffect(() => {
-        const fetchNotif = async () => {
+        if (!user?.id) return;
+
+        const fetchNotifications = async () => {
             try {
                 const res = await axios.get(`/api/notification?id=${user.id}`);
-                setNotifications(res.data);
-                console.log(res.data);
+                dispatch({ type: "SET_NOTIFICATIONS", payload: res.data.notifications });
+                dispatch({ type: "SET_UNREAD_COUNT", payload: res.data.unreadCount });
             } catch (error) {
-                console.error("Error al obtener notificaciones:", error);
+                throw new Error(error);
             }
         };
-        if (user?.id) {
-            fetchNotif();
-        }
-    }, [user]);
+
+        fetchNotifications();
+    }, [user?.id, dispatch]);
+
+    useEffect(() => {
+        setUnreadCount(state.unreadCount);
+    }, [state.unreadCount]);
 
     const renderMenuOptions = () => {
         switch (state?.user?.role) {
@@ -112,7 +118,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 return (
                     <>
                         <Link
-                            href="/worker/tasks"
+                            href="/pages/worker-panel/home"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("worker_link_1")}
@@ -128,9 +134,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
         <nav
             className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-[#c7c7c7] bg-white ${
                 fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
-            } ${
-                borderBottom ? "border-b" : "border-none"
-            }`}
+            } ${borderBottom ? "border-b" : "border-none"}`}
         >
             {/* Icono de menú hamburguesa a la izquierda */}
             <div className="md:hidden flex justify-center items-center">
@@ -187,18 +191,14 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                     </div>
                 )}
                 <Dropdown p={0} />
+                {/* Notificaciones */}
                 {user && (
                     <>
-                        <NotificationIcon
-                            onClick={() => setNotifModalIsOpen(!notifModalIsOpen)}
-                            count={notifications?.unreadCount || 0} // 👈 Asegura que no sea undefined
-                        />
+                        {(unreadCount !== null || unreadCount !== undefined) && (
+                            <NotificationIcon onClick={() => setNotifModalIsOpen(!notifModalIsOpen)} count={unreadCount} />
+                        )}
                         {notifModalIsOpen && (
-                            <NotificationsModal
-                                data={notifications?.notifications || []} // 👈 Garantiza que sea un array
-                                userId={user?.id}
-                                unreadCount={notifications?.unreadCount || 0}
-                            />
+                            <NotificationsModal data={notifications} userId={user?.id} unreadCount={unreadCount} setUnreadCount={setUnreadCount} />
                         )}
                     </>
                 )}

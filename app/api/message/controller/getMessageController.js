@@ -26,8 +26,9 @@ export async function getMessageByChat(id) {
     try {
         const messages = await Message.findAll({
             where: {
-                chatId: id
-            }
+                chatId: id,
+            },
+            order: [["date", "ASC"]],
         });
         return NextResponse.json({ messages });
     } catch (error) {
@@ -40,8 +41,8 @@ export async function getMessageByUser(id) {
     try {
         const messages = await Message.findAll({
             where: {
-                userId: id
-            }
+                userId: id,
+            },
         });
         return NextResponse.json({ messages });
     } catch (error) {

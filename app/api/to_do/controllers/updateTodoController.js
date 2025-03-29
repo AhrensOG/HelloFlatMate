@@ -38,8 +38,6 @@ export async function changeStatus(data) {
 }
 
 export async function asignToWorker(data) {
-    console.log(data);
-
     if (!data) {
         return NextResponse.json({ message: "Bad request need data" }, { status: 400 });
     }
@@ -62,6 +60,7 @@ export async function asignToWorker(data) {
                 return NextResponse.json({ message: "To do not found" }, { status: 404 });
             }
             todo.workerId = data.workerId;
+            todo.status = "IN_PROGRESS";
             await todo.save();
             const chat = await Chat.create({
                 type: "PRIVATE",

@@ -1,6 +1,6 @@
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
- 
+
 import { AnimatePresence, motion } from "framer-motion";
 import TitleSection from "../TitleSection";
 import DescriptionSection from "./task_details/DescriptionSection";
@@ -49,7 +49,6 @@ export default function TaskDetails({ section }) {
     }, [user, id]);
 
     const handleShowModal = (comment, status) => {
-
         setShowModal(!showModal);
 
         if (status === "COMPLETED" || status === "PENDING") {
@@ -75,6 +74,9 @@ export default function TaskDetails({ section }) {
                 status: status,
                 comment: comment,
             });
+            if (res.status === 200) {
+                setTask((prevTask) => ({ ...prevTask, status: "COMPLETED" })); // 🔄 Actualiza todo el objeto task
+            }
             return res;
         } catch (err) {
             console.log(err);
@@ -89,6 +91,9 @@ export default function TaskDetails({ section }) {
                 workerId: user?.id,
                 userId: task.userId,
             });
+            if (res.status === 200) {
+                setTask((prevTask) => ({ ...prevTask, status: "IN_PROGRESS", workerId: user?.id })); // 🔄 Actualiza todo el objeto task
+            }
         } catch (err) {
             console.log(err);
             throw err;
@@ -136,7 +141,8 @@ export default function TaskDetails({ section }) {
                                 <TenatnsNote body={task?.clientMessage || ""} />
                             </div>
                             <LocationSection />
-                            {status === "PENDING" && task.workerId !== null && <Buttons action={handleModal} />}
+                            {task.status === "IN_PROGRESS" && task.workerId !== null && <Buttons action={handleModal} />}
+
                             {task.workerId === null && (
                                 <div className="w-full flex justify-center">
                                     <button
@@ -144,7 +150,7 @@ export default function TaskDetails({ section }) {
                                             toast.promise(claimTask(), {
                                                 loading: "Asignando...",
                                                 success: "¡Asignado exitosamente!",
-                                                error: "¡Ocurrio un error!",
+                                                error: "¡Ocurrió un error!",
                                             });
                                         }}
                                         className="w-full h-12 bg-[#0C1660] text-[#F7FAFA] text-base font-bold rounded-lg lg:w-[20rem]"

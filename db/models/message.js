@@ -31,7 +31,7 @@ const messageInit = (sequelize, DataTypes) => {
                 defaultValue: "TEXT",
             },
             userName: {
-                type: DataTypes.STRING(100),
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             userId: {

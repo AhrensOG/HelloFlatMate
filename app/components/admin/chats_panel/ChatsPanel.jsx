@@ -92,7 +92,7 @@ export default function ChatsPanel({ data }) {
                   className="w-full p-6 rounded-lg shadow-lg transform transition duration-300 hover:bg-gray-200 bg-gray-100 text-[#0E155F] relative"
                 >
                   <h3 className="font-bold text-lg">
-                    {lastMessage ? lastMessage.userName : "Chat sin mensajes"}
+                    {lastMessage ? lastMessage.userName : `Chat sin mensajes - ID: ${chat.id}`}
                   </h3>
                   <p className="mt-2">
                     {lastMessage
@@ -194,7 +194,7 @@ export default function ChatsPanel({ data }) {
                   className="w-full p-6 rounded-lg shadow-lg transform transition duration-300 hover:bg-gray-200 bg-gray-100 text-[#0E155F]"
                 >
                   <h3 className="font-bold text-lg">
-                    {lastMessage ? lastMessage.userName : "Chat sin mensajes"}
+                    {lastMessage ? lastMessage.userName : `Chat sin mensajes - ID: ${chat.id}`}
                   </h3>
                   <p className="mt-2">
                     {lastMessage
@@ -261,7 +261,7 @@ export default function ChatsPanel({ data }) {
                   className="w-full p-6 rounded-lg shadow-lg transform transition duration-300 hover:bg-gray-200 bg-gray-100 text-[#0E155F]"
                 >
                   <h3 className="font-bold text-lg">
-                    {lastMessage ? lastMessage.userName : "Chat sin mensajes"}
+                    {lastMessage ? lastMessage.userName : `Chat sin mensajes - ID: ${chat.id}`}
                   </h3>
                   <p className="mt-2">
                     {lastMessage

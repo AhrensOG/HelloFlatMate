@@ -1,12 +1,13 @@
 "use client";
 
 import { NextIntlClientProvider } from "next-intl";
-import GlobalContext from "../context/GlobalContext";
+import GlobalContext, { Context } from "../context/GlobalContext";
 import { Toaster } from "sonner";
 import { disconnectNotificationSocket, getNotificationSocket } from "../socket";
+import { useContext, useEffect } from "react";
 
 function getDecodedCookie(cookieName) {
-    if (typeof document === "undefined") return null; // Evitar errores en SSR
+    if (typeof document === "undefined") return null;
 
     const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
         const [key, value] = cookie.split("=");
@@ -16,7 +17,6 @@ function getDecodedCookie(cookieName) {
 
     if (cookies[cookieName]) {
         try {
-            // Decodificar Base64 y parsear a JSON
             const decodedString = atob(decodeURIComponent(cookies[cookieName]));
             return JSON.parse(decodedString);
         } catch (error) {
@@ -28,24 +28,37 @@ function getDecodedCookie(cookieName) {
 }
 
 export default function ClientWrapper({ children, locale, messages }) {
+    const { state, dispatch } = useContext(Context);
     const userData = getDecodedCookie("auth_token");
-    const socket = getNotificationSocket(userData?.userId);
-    let isSocketConnected = false;
 
-    if (socket && !isSocketConnected) {
-        socket.on("connect", () => {
-            console.log(`✅ Conectado a Socket.IO con ID: ${socket.id}`);
-            isSocketConnected = true;
-        });
-        socket.emit("userConnected", userData?.userId);
+    useEffect(() => {
+        if (!userData?.userId) return;
 
-        socket.on("newNotification", () => {
-            console.log("🔔 Nueva notificacion");
-        });
-    } else {
-        console.log("🔴 Socket de notificaciones desconectado.");
-        disconnectNotificationSocket();
-    }
+        const socket = getNotificationSocket(userData?.userId);
+        let isSocketConnected = false;
+
+        if (socket && !isSocketConnected) {
+            socket.on("connect", () => {
+                isSocketConnected = true;
+            });
+
+            socket.emit("userConnected", userData?.userId);
+
+            socket.on("newNotification", (notif) => {
+                dispatch({ type: "ADD_NOTIFICATION", payload: notif });
+
+                // Asegurar que unreadCount se actualiza en base al valor actual del estado
+                dispatch((prevState) => ({
+                    type: "UPDATE_UNREAD_COUNT",
+                    payload: prevState.unreadCount + 1,
+                }));
+            });
+
+            return () => {
+                disconnectNotificationSocket();
+            };
+        }
+    }, [userData?.userId, dispatch]);
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages} timeZone="Europe/Madrid">

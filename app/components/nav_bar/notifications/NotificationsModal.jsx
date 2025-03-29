@@ -1,10 +1,12 @@
 import axios from "axios";
 import NotificationCard from "./NotificationCard";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import { Context } from "@/app/context/GlobalContext";
 
 export default function NotificationsModal({ data = [], userId, unreadCount }) {
+    const { state, dispatch } = useContext(Context);
     const [notifications, setNotifications] = useState(data || []);
     const [offset, setOffset] = useState(20);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -24,7 +26,7 @@ export default function NotificationsModal({ data = [], userId, unreadCount }) {
             });
 
             setUnreadCountState((prev) => Math.max(0, prev - notifNotRead.length)); // Asegura que no sea negativo
-            console.log("📨 Notificaciones marcadas como leídas:", notifNotRead.length);
+            dispatch({ type: "UPDATE_UNREAD_COUNT", payload: unreadCountState - notifNotRead.length });
         } catch (error) {
             console.error("Error marking notifications as read:", error);
         }
