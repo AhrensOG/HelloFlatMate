@@ -9,10 +9,12 @@ export default function UpdateUserModal({ onClose, user }) {
 
     const handleUpdateUser = async (values) => {
         const toastId = toast.loading("Actualizando...");
+        const changeRol = values.rol !== user.role;
         try {
             await axios.patch(`/api/admin/user/update`, {
                 userId: user.id,
-                rol: user.role,
+                rol: values.rol,
+                changeRol,
                 ...values,
             });
             toast.success("¡Datos actualizados con éxito!", { id: toastId });
@@ -35,6 +37,7 @@ export default function UpdateUserModal({ onClose, user }) {
                         email: user.email || "",
                         password: "",
                         IBAN: user.IBAN || "",
+                        rol: user.role || "", // Inicializa el rol con el valor actual
                     }}
                     validationSchema={Yup.object({
                         name: Yup.string().required("Nombre es obligatorio"),
@@ -43,10 +46,11 @@ export default function UpdateUserModal({ onClose, user }) {
                         email: Yup.string().email("Correo electrónico inválido").optional(),
                         password: Yup.string().optional(),
                         IBAN: Yup.string().optional(),
+                        rol: Yup.string().required("Rol es obligatorio"), // Validación para el rol
                     })}
                     onSubmit={handleUpdateUser}
                 >
-                    {({ values }) => (
+                    {({ values, setFieldValue }) => (
                         <Form className="flex flex-col gap-4">
                             {/* Nombre */}
                             <div>
@@ -126,7 +130,7 @@ export default function UpdateUserModal({ onClose, user }) {
                             </div>
 
                             {/* IBAN */}
-                            {user.rol === "OWNER" && (
+                            {(user.role === "OWNER" || values.rol === "OWNER") && (
                                 <div>
                                     <label htmlFor="IBAN" className="block text-sm font-medium text-gray-700">
                                         IBAN
@@ -139,6 +143,24 @@ export default function UpdateUserModal({ onClose, user }) {
                                     />
                                 </div>
                             )}
+
+                            {/* Select para rol */}
+                            <div>
+                                <label htmlFor="rol" className="block text-sm font-medium text-gray-700">
+                                    Rol
+                                </label>
+                                <Field
+                                    as="select"
+                                    id="rol"
+                                    name="rol"
+                                    className="border p-2 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                >
+                                    <option value="OWNER">Owner</option>
+                                    <option value="WORKER">Worker</option>
+                                    <option value="ADMIN">Admin</option>
+                                    <option value="CLIENT">Client</option>
+                                </Field>
+                            </div>
 
                             <div className="flex justify-end gap-2">
                                 <button type="button" className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400" onClick={onClose}>
