@@ -12,6 +12,7 @@ import NotificationIcon from "./notifications/NotificationIcon";
 import { useTranslations } from "next-intl";
 import NotificationsModal from "./notifications/NotificationsModal";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function NavbarV3({ fixed = false, borderBottom = true }) {
     const { state, dispatch } = useContext(Context);
@@ -22,10 +23,16 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
     const [unreadCount, setUnreadCount] = useState(state?.unreadCount || null);
 
     const t = useTranslations("nav_bar");
+    const router = useRouter();
 
     const [locale, setLocale] = useState("es");
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handleLogOut = async () => {
+        await logOut();
+        router.push("/pages/auth");
     };
 
     useEffect(() => {
@@ -72,16 +79,22 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 return (
                     <>
                         <Link
-                            href="/owner/properties"
+                            href="/pages/owner/profile"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("owner_link_1")}
                         </Link>
                         <Link
-                            href="/owner/earnings"
+                            href="/pages/owner/dashboard"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("owner_link_2")}
+                        </Link>
+                        <Link
+                            href="/pages/owner/my-tenantsv2"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            {t("owner_link_3")}
                         </Link>
                     </>
                 );
@@ -118,7 +131,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 return (
                     <>
                         <Link
-                            href="/pages/worker-panel/home"
+                            href="/pages/worker-panel/tasks"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("worker_link_1")}
@@ -169,10 +182,10 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                         <button className="flex items-center gap-2 font-bold text-base">
                             {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
                         </button>
-                        <div className="absolute right-0 w-48 bg-white rounded-md hidden group-hover:block shadow-reservation-list">
+                        <div className="absolute right-0 w-48 bg-white shadow-md rounded-md hidden group-hover:block">
                             {renderMenuOptions()}
                             <button
-                                onClick={() => logOut()}
+                                onClick={() => handleLogOut()}
                                 className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500 w-full text-start"
                             >
                                 {t("logout")}
@@ -240,7 +253,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                                 <>
                                     {renderMenuOptions()}
                                     <button
-                                        onClick={() => logOut()}
+                                        onClick={() => handleLogOut()}
                                         className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                                     >
                                         {t("logout")}

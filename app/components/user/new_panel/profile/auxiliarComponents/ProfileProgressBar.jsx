@@ -3,10 +3,12 @@
 import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/GlobalContext";
+import { useTranslations } from "next-intl";
 
 const ProfileProgressBar = () => {
     const { state } = useContext(Context);
     const [progress, setProgress] = useState(0);
+    const t = useTranslations("user_profile_v2.progress_bar");
 
     useEffect(() => {
         if (state?.user) {
@@ -23,17 +25,13 @@ const ProfileProgressBar = () => {
                 user.street,
                 user.streetNumber,
                 user.postalCode,
-                user.birthDate
-                    ? new Date(user.birthDate).toISOString().split("T")[0]
-                    : "",
+                user.birthDate ? new Date(user.birthDate).toISOString().split("T")[0] : "",
                 user.emergencyName,
                 user.emergencyEmail,
                 user.howMetUs,
                 user.destinationUniversity,
                 user.homeUniversity,
-                user.arrivalDate
-                    ? new Date(user.arrivalDate).toISOString().split("T")[0]
-                    : "",
+                user.arrivalDate ? new Date(user.arrivalDate).toISOString().split("T")[0] : "",
                 user.arrivalTime,
                 user.genre,
                 user.country,
@@ -41,13 +39,9 @@ const ProfileProgressBar = () => {
                 user.personalReview,
             ];
 
-            const filledFields = requiredFields.filter(
-                (field) => field && field.trim() !== ""
-            );
+            const filledFields = requiredFields.filter((field) => field && field.trim() !== "");
 
-            const percentage = Math.round(
-                (filledFields.length / requiredFields.length) * 100
-            );
+            const percentage = Math.round((filledFields.length / requiredFields.length) * 100);
 
             setProgress(percentage);
         }
@@ -56,9 +50,7 @@ const ProfileProgressBar = () => {
     return (
         <div className="h-[86px] bg-[#f7f7f7] grid place-items-center w-full px-4">
             <div className="w-full pt-4 max-w-screen-xl">
-                <p className="text-center text-gray-700 font-bold">
-                    ¡Rellena la información de tu perfil!
-                </p>
+                <p className="text-center text-gray-700 font-bold">{t("p_1")}</p>
 
                 <div className="relative w-full mt-2">
                     <div className="h-2.5 bg-gray-300 w-full rounded-full"></div>
@@ -67,11 +59,12 @@ const ProfileProgressBar = () => {
                         initial={{ width: "0%" }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        style={{ maxWidth: "100%" }}></motion.div>
+                        style={{ maxWidth: "100%" }}
+                    ></motion.div>
                 </div>
 
                 <p className="text-center text-green-600 font-semibold mt-1">
-                    {progress}% Progreso
+                    {progress}% {t("p_2")}
                 </p>
             </div>
         </div>

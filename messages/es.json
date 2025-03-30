@@ -5,8 +5,9 @@
         "link_register": "Registro",
         "link_login": "Inicio",
         "admin_link_1": "Administración",
-        "owner_link_1": "Mis Propiedades",
-        "owner_link_2": "Ganancias",
+        "owner_link_1": "Perfil",
+        "owner_link_2": "Panel",
+        "owner_link_3": "Mis inquilinos",
         "user_link_1": "Perfil",
         "user_link_2": "Reservas",
         "user_link_3": "Histórico",
@@ -424,15 +425,7 @@
                     "label": "¿Por qué vienes a Valencia?",
                     "placeholder": "Selecciona una opción",
                     "error": "Selecciona una razón",
-                    "options": [
-                        "Por estudios",
-                        "Por trabajo",
-                        "Soy nómada digital",
-                        "Por turismo",
-                        "Aprender el idioma",
-                        "A vivir",
-                        "Otro"
-                    ]
+                    "options": ["Por estudios", "Por trabajo", "Soy nómada digital", "Por turismo", "Aprender el idioma", "A vivir", "Otro"]
                 },
                 "reasonForValenciaOther": {
                     "label": "Cuéntanos más",
@@ -852,7 +845,7 @@
             }
         }
     },
-    "last_room_page": { 
+    "last_room_page": {
         "h1": "Últimas habitaciones en alquiler en Valencia para estudiantes",
         "p_1": " ¿Buscas una habitación en Valencia? Descubre las (strong)últimas habitaciones en alquiler en Valencia(/strong) con (strong)helloflatmate(/strong). Habitaciones modernas, totalmente equipadas y en (strong)pisos compartidos(/strong) bien ubicados, ideales para estudiantes y jóvenes profesionales. <br /> <br /> No dejes pasar esta oportunidad: ¡reserva tu habitación antes de que se agoten!",
         "span_1": "No se encontraron propiedades que coincidan con tus preferencias. ¡Pero no te preocupes! Aquí tienes otras opciones que podrían interesarte:",
@@ -927,6 +920,250 @@
                 "li_3": "Disfruta de una experiencia cómoda y sin complicaciones."
             },
             "strong": "¡No te quedes sin la tuya! Tu habitación perfecta en Valencia te está esperando."
+        }
+    },
+    "user_profile_v2": {
+        "responses": {
+            "success": "Información actualizada correctamente",
+            "loading": "Guardando...",
+            "error": "Error al actualizar la información"
+        },
+        "how_met_us_options": {
+            "lb_1": "Seleccione una opción",
+            "vl_2": "Recomendado por amigos",
+            "lb_2": "Recomendado por amigos",
+            "vl_3": "Recomendado por la Universidad",
+            "lb_3": "Recomendado por la Universidad",
+            "vl_4": "Página web helloflatmate",
+            "lb_4": "Página web helloflatmate",
+            "vl_5": "Idealista",
+            "lb_5": "Idealista",
+            "vl_6": "Otros portales web",
+            "lb_6": "Otros portales web"
+        },
+        "inf_per": {
+            "h1": "Información personal",
+            "name": "Nombre",
+            "last_name": "Apellido",
+            "email": "Email",
+            "id": "ID / Passport",
+            "phone": "Telefono (con código de país)",
+            "birth_date": "Fecha de nacimiento",
+            "gender": "Genero",
+            "options": {
+                "default": "Seleccione una opcion",
+                "male": "Masculino",
+                "female": "Femenino",
+                "other": "Otro"
+            },
+            "nationality": "Nacionalidad",
+            "city": "Ciudad",
+            "address": "Dirección (calle)",
+            "number": "Número de Dirección",
+            "postal_code": "Código Postal",
+            "emergency_contact": {
+                "h2": "Contacto de Emergencia",
+                "name": "Nombre de Emergencia",
+                "phone": "Teléfono de Emergencia",
+                "email": "Email de Emergencia"
+            },
+            "additional_info": {
+                "h2": "Datos Adicionales",
+                "reason": "¿Por qué vienes a Valencia?",
+                "options_1": {
+                    "default": "Seleccione una opcion",
+                    "study": "Por estudios",
+                    "job": "Por trabajo",
+                    "digital_nomad": "Soy nómada digital",
+                    "tourism": "Por turismo",
+                    "language": "Aprender el idioma",
+                    "live": "A vivir",
+                    "other": "Otro"
+                },
+                "tell_you_reason": "Cuentanos tu razón",
+                "tell_about_yourself": "Cuéntanos sobre ti",
+                "how_met_us": "¿Como nos conociste?",
+                "check_in_date": "Fecha de check-in",
+                "check_in_hour": "Hora de check-in",
+                "origin_university": "Universidad de origen",
+                "destiny_university": "Universidad de destino"
+            },
+            "save": "Guardar Cambios",
+            "select_country": "Selecciona tu nacionalidad",
+            "placeholders": {
+                "city": " Ej: Valencia",
+                "address": "Ej: Calle los Leones",
+                "number": "Ej: 99",
+                "postal_code": "Ej: 46022",
+                "emergency_name": "Nombre de emergencia",
+                "emergency_email": "Email de emergencia",
+                "personal_review": "Comparte con nosotros tus intereses, pasatiempos y qué tipo de inquilino eres.",
+                "home_university": "Ej: Universidad de tu Pais",
+                "away_university": "Ej: Universidad de Valencia"
+            }
+        },
+        "change_password": {
+            "verif": {
+                "required": "Requerido",
+                "min_6": "La contraseña debe tener al menos 6 caracteres",
+                "not_match": "Las contraseñas no coinciden",
+                "loading": "Actualizando contraseña...",
+                "succes": "Contraseña actualizada con éxito",
+                "error": "Ocurrió un error al cambiar la contraseña",
+                "wrong_pass": "La contraseña actual es incorrecta",
+                "btn_1": "Cambiar contraseña",
+                "text_1": "Este cambio solo aplica si tu cuenta fue creada con correo electrónico y contraseña. Si te registraste con Google, este cambio no afectará tu método de inicio de sesión. En ese caso, puedes gestionar tu contraseña directamente desde tu cuenta de Google.",
+                "lb_1": "He leído y entiendo esta información",
+                "place_1": "Contraseña actual",
+                "place_2": "Nueva contraseña",
+                "place_3": "Confirmar contraseña",
+                "cancel": "Cancelar",
+                "save": "Guardar"
+            }
+        },
+        "sidebar": {
+            "links": {
+                "profile": "Perfil",
+                "payments": "Pagos",
+                "reservations": "Reservas",
+                "history": "Historico",
+                "supplies": "Suministros"
+            },
+            "btn_logout": "Cerrar sesión"
+        },
+        "reservations": {
+            "title": "Todas las reservas",
+            "pending_sign": "Pendiente de firma",
+            "p_1": "(strong)Tu reserva está pendiente de firma.(/strong) Sube la documentación y firma el contrato para finalizar el proceso.",
+            "in_progress": "En progreso",
+            "p_2": "(strong)¡Listo para dar el siguiente paso!(/strong) Paga tu reserva para luego continuar con los pasos restantes y avanzar en tu reserva.",
+            "in_review": "En revisión",
+            "p_3": "(strong)Tu reserva está en revisión.(/strong) Estamos verificando tu solicitúd; pronto recibirás una actualización.",
+            "completed": "Completadas",
+            "p_4": "(strong)¡Todo listo!(/strong) Tu reserva está confirmada y completa.",
+            "no_reservations": "No tienes reservas activas en este momento.",
+            "question": "¿Tienes alguna pregunta sobre el proceso de reserva?",
+            "write_us": "Escríbenos",
+            "write_us_1": "cuando quieras."
+        },
+        "supplies": {
+            "water": "Agua",
+            "gas": "Gas",
+            "electricity": "Luz",
+            "expenses": "Expensas",
+            "internet": "Wifi",
+            "agency_fees": "Tasa de la agencia",
+            "cleanup": "Limpieza check-out",
+            "others": "Otros",
+            "deposit": "Depósito",
+            "general_supplies": "Suministros",
+            "h1": "Suministros",
+            "p_1": "En esta sección puedes ver los aportes y consumos de suministros de tu habitación. Aquí se muestran los montos pagados, los consumos registrados y la diferencia restante por cada periodo.",
+            "code": "Código: ",
+            "period": "Periodo",
+            "h4": "Aportes para suministros",
+            "p_2": "No hay aportes disponibles.",
+            "h4_2": "Consumos",
+            "from": "Desde: ",
+            "to": "Hasta: ",
+            "show_bill": "Ver factura",
+            "p_3": "No hay consumos registrados.",
+            "h4_3": "Diferencia",
+            "p_4": "No hay información disponible para mostrar."
+        },
+        "history": {
+            "reservations_end": "Reservas Finalizadas",
+            "p_1": "Tus reservas finalizadas se muestran a continuación.",
+            "p_2": "No tienes reservas finalizadas en este momento.",
+            "p_3": "¿Necesitas ayuda con tu historial?",
+            "p_3_link": "Contáctanos"
+        },
+        "progress_bar": {
+            "p_1": "¡Rellena la información de tu perfil!",
+            "p_2": "Progreso"
+        }
+    },
+    "worker_panel": {
+        "tasks": {
+            "h2_1": "Tareas",
+            "clean": "Limpieza",
+            "repair": "Reparación",
+            "p_1": "No hay tareas disponibles.",
+            "cards": {
+                "in_progress": "En progreso",
+                "completed": "Completado",
+                "pending": "Pendiente"
+            },
+            "search_bar": {
+                "placeholder": "Buscar...."
+            },
+            "task_details": {
+                "responses_1": {
+                    "loading": "Guardando...",
+                    "success": "¡Guardado exitosamente!",
+                    "error": "¡Ocurrió un error!"
+                },
+                "responses_2": {
+                    "loading": "Asignando...",
+                    "success": "¡Asignado exitosamente!",
+                    "error": "¡Ocurrio un error!"
+                },
+                "claim_task": "Aceptar tarea",
+                "desc_sec": {
+                    "title": "Descripción",
+                    "op_1": "El inquilino estara presente",
+                    "op_2": "El inquilino no estara presente"
+                },
+                "tenant_note": {
+                    "title": "Nota del inquilino"
+                },
+                "loc_sec": {
+                    "h3": "Ubicación",
+                    "p": "Ubicacion de la habitacion"
+                },
+                "btns": {
+                    "finish": "Terminar Tarea",
+                    "problem": "Reportar Problema"
+                },
+                "modal": {
+                    "title": "Reporte de la Tarea",
+                    "h2_1": "Reportar problema",
+                    "h2_2": "¿Completaste la tarea con éxito?",
+                    "btn_cancel": "Cancelar",
+                    "btn_confirm": "Confirmar"
+                }
+            },
+            "card_simple": {
+                "in_progress": "En progreso",
+                "completed": "Completado",
+                "pending": "Pendiente"
+            },
+            "my_tasks": "Mis Tareas",
+            "no_tasks": "No hay tareas para mostrar.",
+            "history": "Historial de tareas",
+            "side_modal": {
+                "p_1": "lunes 1 de julio 2024 a las 09:12",
+                "p_2": "Hay nuevos departamentos disponibles en la zona",
+                "ul": {
+                    "li_1": "Avenida 123",
+                    "li_2": "Calle 123"
+                }
+            }
+        },
+        "profile": {
+            "title": "Perfil de Mantenimiento",
+            "title_2": "Mi Perfil",
+            "items": {
+                "title_1": "Nombre completo",
+                "title_2": "Trabajo",
+                "body_2": "Mantenimiento"
+            }
+        },
+        "bottom_nav": {
+            "home": "Inicio",
+            "tasks": "Tareas",
+            "chats": "Mensajes",
+            "profile": "Mi Perfil"
         }
     }
 }

@@ -14,7 +14,12 @@ import { addLeaseOrderToPayments } from "../utils/addLeaseOrderToPayments";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function UsersPanel({ allUsers = [], properties = [], orders = [], allLeaseOrders = [] }) {
+export default function UsersPanel({
+    allUsers = [],
+    properties = [],
+    orders = [],
+    allLeaseOrders = [],
+}) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -33,7 +38,10 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
         fallbackData: allUsers,
         refreshInterval: 120000,
     });
-    const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(swrData, allLeaseOrders);
+    const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(
+        swrData,
+        allLeaseOrders
+    );
     const users = [
         ...usersWithLeaseOrderDataInPayment.clients,
         ...usersWithLeaseOrderDataInPayment.admins,
@@ -45,6 +53,7 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
         const clientName = user.name || "";
         const clientLastName = user.lastName || "";
         const clientEmail = user.email || "";
+        const fullname = `${clientName} ${clientLastName}`;
 
         let roleEs = "";
         if (user.role === "CLIENT") roleEs = "cliente";
@@ -55,8 +64,7 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
         const searchString = searchQuery.toLowerCase();
 
         return (
-            clientName.toLowerCase().includes(searchString) ||
-            clientLastName.toLowerCase().includes(searchString) ||
+            fullname.toLowerCase().includes(searchString) ||
             clientEmail.toLowerCase().includes(searchString) ||
             roleEs.toLowerCase().includes(searchString)
         );
@@ -91,7 +99,9 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
     };
 
     const handleOpenModalOrders = (user) => {
-        const ordersFiltered = orders.filter((order) => order.clientId === user.id);
+        const ordersFiltered = orders.filter(
+            (order) => order.clientId === user.id
+        );
 
         setOrdersUser(ordersFiltered);
         setIsOpenOrdesModal(true);
@@ -156,11 +166,30 @@ export default function UsersPanel({ allUsers = [], properties = [], orders = []
                 handleOpenPaysModal={handleOpenModalPays}
             />
 
-            {isOpen && <UserModal user={selectedUser} onClose={handleCloseModal} />}
-            {isOpenCreatUserModal && <CreateUserModal action={handleCloseModalCreate} options_1={properties} />}
-            {isOpenEdit && <UpdateUserModal user={selectedUser} onClose={handleCloseModalEdit} />}
-            {isOpenOrdesModal && <OrdersModal data={ordersUser} onClose={handleCloseModalOrders} />}
-            {isPaysModal && <PaysModal data={pays} onClose={handleCloseModalPays} />}
+            {isOpen && (
+                <UserModal user={selectedUser} onClose={handleCloseModal} />
+            )}
+            {isOpenCreatUserModal && (
+                <CreateUserModal
+                    action={handleCloseModalCreate}
+                    options_1={properties}
+                />
+            )}
+            {isOpenEdit && (
+                <UpdateUserModal
+                    user={selectedUser}
+                    onClose={handleCloseModalEdit}
+                />
+            )}
+            {isOpenOrdesModal && (
+                <OrdersModal
+                    data={ordersUser}
+                    onClose={handleCloseModalOrders}
+                />
+            )}
+            {isPaysModal && (
+                <PaysModal data={pays} onClose={handleCloseModalPays} />
+            )}
         </div>
     );
 }

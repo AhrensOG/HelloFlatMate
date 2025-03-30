@@ -1,6 +1,4 @@
 import TitleAdminPanel from "../shared/TitleAdminPanel";
- 
-import TableArticle from "../dashboard/TableArticle";
 import Link from "next/link";
 
 export default function PropertiesPanel({ data , role }) {
@@ -16,11 +14,6 @@ export default function PropertiesPanel({ data , role }) {
       >
         Nueva Propiedad
       </Link>
-      )}
-      {data.properties?.length > 0 && role === "ADMIN" && (
-        <TableArticle data={data} />)}
-      {data.properties?.length > 0 && role === "OWNER" &&(
-        <TableArticle data={data} role={role}/>
       )}
     </main>
   );

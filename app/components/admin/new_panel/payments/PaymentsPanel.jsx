@@ -39,12 +39,46 @@ const PaymentsPanel = ({ payments, users }) => {
 
         const matchesStatus =
             selectedStatusFilter === "Estado" ||
-            (selectedStatusFilter === "APPROVED" && ["APPROVED", "PAID"].includes(payment.status)) ||
-            (selectedStatusFilter === "PAID" && ["APPROVED", "PAID"].includes(payment.status)) ||
+            (selectedStatusFilter === "APPROVED" &&
+                ["APPROVED", "PAID"].includes(payment.status)) ||
+            (selectedStatusFilter === "PAID" &&
+                ["APPROVED", "PAID"].includes(payment.status)) ||
             payment.status === selectedStatusFilter;
 
         return matchesStatus;
     });
+
+    const closeEditPayment = () => {
+        setSelectedPayment(null);
+        setShowEditPaymentModal(false);
+    };
+
+    const openEditPayment = (payment) => {
+        setSelectedPayment(payment);
+        setShowEditPaymentModal(true);
+    };
+
+    const deletePayment = async (payment) => {
+        const toastId = toast.loading("Eliminando cobro...");
+        try {
+            if (payment.type === "RESERVATION" || payment.type === "MONTHLY") {
+                await axios.delete(
+                    `/api/admin/payments/rentPayments?id=${payment.id}`
+                );
+            } else {
+                await axios.delete(
+                    `/api/admin/payments/supplyPayments?id=${payment.id}`
+                );
+            }
+            await mutate();
+            toast.success("Cobro eliminado correctamente", { id: toastId });
+        } catch (error) {
+            toast.info("Error al eliminar el cobro", {
+                description: "Intenta nuevamente o contacta con soporte",
+                id: toastId,
+            });
+        }
+    };
 
     return (
         <div className="h-screen flex flex-col p-4 gap-4">
@@ -71,7 +105,9 @@ const PaymentsPanel = ({ payments, users }) => {
                                     className="p-2 cursor-pointer hover:bg-gray-100"
                                     onClick={() => {
                                         setSelectedUser(user);
-                                        setSearchQuery(`${user.name} ${user.lastName}`);
+                                        setSearchQuery(
+                                            `${user.name} ${user.lastName}`
+                                        );
                                     }}
                                 >
                                     {user.name} {user.lastName} - {user.email}
@@ -90,29 +126,26 @@ const PaymentsPanel = ({ payments, users }) => {
 
             <PaymentsTable
                 payments={filteredPayments}
-                openEditPayment={(payment) => {
-                    setSelectedPayment(payment);
-                    setShowEditPaymentModal(true);
-                }}
-                deletePayment={async (payment) => {
-                    const toastId = toast.loading("Eliminando cobro...");
-                    try {
-                        await axios.delete(`/api/admin/payments?id=${payment.id}`);
-                        await mutate();
-                        toast.success("Cobro eliminado correctamente", { id: toastId });
-                    } catch (error) {
-                        toast.info("Error al eliminar el cobro", {
-                            description: "Intenta nuevamente o contacta con soporte",
-                            id: toastId,
-                        });
-                    }
-                }}
+                openEditPayment={openEditPayment}
+                deletePayment={deletePayment}
                 setSelectedStatusFilter={setSelectedStatusFilter}
                 selectedStatusFilter={selectedStatusFilter}
             />
 
-            {showCreatePaymentModal && <CreatePaymentModal users={users} onClose={() => setShowCreatePaymentModal(false)} mutate={mutate} />}
-            {showEditPaymentModal && <EditPaymentModal payment={selectedPayment} onClose={() => setShowEditPaymentModal(false)} mutate={mutate} />}
+            {showCreatePaymentModal && (
+                <CreatePaymentModal
+                    users={users}
+                    onClose={() => setShowCreatePaymentModal(false)}
+                    mutate={mutate}
+                />
+            )}
+            {showEditPaymentModal && (
+                <EditPaymentModal
+                    payment={selectedPayment}
+                    onClose={closeEditPayment}
+                    mutate={mutate}
+                />
+            )}
         </div>
     );
 };
