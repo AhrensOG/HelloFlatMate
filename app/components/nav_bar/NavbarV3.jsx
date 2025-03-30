@@ -8,13 +8,20 @@ import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
+import NotificationIcon from "./notifications/NotificationIcon";
 import { useTranslations } from "next-intl";
+import NotificationsModal from "./notifications/NotificationsModal";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export default function NavbarV3({ fixed = false, borderBottom = true }) {
+    const { state, dispatch } = useContext(Context);
     const [isOpen, setIsOpen] = useState(false);
-    const { state } = useContext(Context);
     const user = state?.user;
+    const [notifModalIsOpen, setNotifModalIsOpen] = useState(false);
+    const notifications = state?.notifications || [];
+    const [unreadCount, setUnreadCount] = useState(state?.unreadCount || null);
+
     const t = useTranslations("nav_bar");
     const router = useRouter();
 
@@ -35,13 +42,33 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
         }
     }, []);
 
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const fetchNotifications = async () => {
+            try {
+                const res = await axios.get(`/api/notification?id=${user.id}`);
+                dispatch({ type: "SET_NOTIFICATIONS", payload: res.data.notifications });
+                dispatch({ type: "SET_UNREAD_COUNT", payload: res.data.unreadCount });
+            } catch (error) {
+                throw new Error(error);
+            }
+        };
+
+        fetchNotifications();
+    }, [user?.id, dispatch]);
+
+    useEffect(() => {
+        setUnreadCount(state.unreadCount);
+    }, [state.unreadCount]);
+
     const renderMenuOptions = () => {
-        switch (user?.role) {
+        switch (state?.user?.role) {
             case "ADMIN":
                 return (
                     <>
                         <Link
-                            href={`/pages/admin/properties`}
+                            href={`/pages/admin/new-panel`}
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("admin_link_1")}
@@ -68,6 +95,12 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("owner_link_3")}
+                        </Link>
+                        <Link
+                            href="/pages/owner/chats"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            Chats
                         </Link>
                     </>
                 );
@@ -97,6 +130,18 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_4")}
+                        </Link>
+                        <Link
+                            href="/pages/user/supplies"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            {t("user_link_5")}
+                        </Link>
+                        <Link
+                            href="/pages/user/chats"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            Chats
                         </Link>
                     </>
                 );
@@ -177,6 +222,17 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                     </div>
                 )}
                 <Dropdown p={0} />
+                {/* Notificaciones */}
+                {user && (
+                    <>
+                        {(unreadCount !== null || unreadCount !== undefined) && (
+                            <NotificationIcon onClick={() => setNotifModalIsOpen(!notifModalIsOpen)} count={unreadCount} />
+                        )}
+                        {notifModalIsOpen && (
+                            <NotificationsModal data={notifications} userId={user?.id} unreadCount={unreadCount} setUnreadCount={setUnreadCount} />
+                        )}
+                    </>
+                )}
             </div>
 
             {/* Menú móvil con animación */}

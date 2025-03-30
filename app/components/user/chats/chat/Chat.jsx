@@ -1,21 +1,21 @@
-import NavBar from "@/app/components/nav_bar/NavBar";
 import MessageContainer from "./MessageContainer";
 import MessageInput from "./MessageInput";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { disconnectSocket, getSocket } from "@/app/socket";
+import { disconnectChatSocket, getChatSocket } from "@/app/socket";
 import { Context } from "@/app/context/GlobalContext";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import { toast } from "sonner";
 
-export default function Chat() {
+export default function Chat({ adminPage = false }) {
     const searchParams = useSearchParams();
 
     const [clientId, setClientId] = useState(false);
     const [typeChat, setTypeChat] = useState(false);
     const [haveChattSupport, setHaveChattSupport] = useState(false);
     const [userId, setUserId] = useState(false);
+    const [receiverId, setReceiverId] = useState(false);
     const [chatId, setChatId] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -26,6 +26,7 @@ export default function Chat() {
     const [messages, setMessages] = useState([]);
     const [socket, setSocket] = useState(false);
     const [isConnectedToRoom, setIsConnectedToRoom] = useState(false);
+    const [hasMarkedAsRead, setHasMarkedAsRead] = useState(false); // ✅ Evita bucles
 
     //Funcion para pasar de arrayBuffer a file
     const arrayBufferToFile = (arrayBuffer, fileName, mimeType = "application/octet-stream") => {
@@ -42,6 +43,7 @@ export default function Chat() {
             const res = await axios.post("/api/chat", {
                 type: "SUPPORT",
                 receiverId: clientId || userId,
+                senderId: state?.user?.id,
             });
             // Asumiendo que la respuesta contiene el ID del nuevo chat
             setChatId(res.data.chat.id);
@@ -66,12 +68,14 @@ export default function Chat() {
             const haveChat = searchParams.get("bool") === "true"; // Convertir a booleano
             const chat = searchParams.get("chat");
             const user = client || searchParams.get("userId") || state.user?.id;
+            const receiverId = searchParams.get("receiverId");
 
             setClientId(client);
             setTypeChat(type);
             setHaveChattSupport(haveChat);
             setChatId(chat);
             setUserId(user);
+            setReceiverId(receiverId);
         }
     }, []);
 
@@ -88,77 +92,81 @@ export default function Chat() {
 
     useEffect(() => {
         if (state.user?.id && !socket) {
-            setSocket(getSocket(state.user.id));
+            setSocket(getChatSocket(state.user.id));
         }
     }, [state?.user?.id]);
 
     // Configuración de conexión al socket
     useEffect(() => {
-        if (socket && chatId) {
+        if (chatId && userId) {
             const usuarioId = searchParams.get("userId") || searchParams.get("id");
+            const chatSocket = getChatSocket(chatId, userId);
+            setSocket(chatSocket);
 
             const handleSocketConnect = () => {
                 setIsConnected(true);
-                setTransport(socket.io.engine.transport.name);
+                setTransport(chatSocket.io.engine.transport.name);
 
                 // Unir al usuario a la sala de chat
-                socket.emit("joinChat", chatId.toString(), () => {
+                chatSocket.emit("joinChat", chatId.toString(), userId.toString(), () => {
                     setIsConnectedToRoom(true);
-                });
-
-                // Escuchar el evento de mensajes entrantes
-                socket.on("newMessage", (message) => {
-                    if (message && message.senderId) {
-                        const isSender = message.senderId == userId;
-
-                        setMessages((prevMessages) => [...prevMessages, { ...message, type: isSender ? "sender" : "receiver" }]);
-                        if (isSender) {
-                            saveMessage({
-                                chatId,
-                                body: message.text,
-                                userId: usuarioId,
-                                type: "TEXT",
-                            });
-                        }
-                    }
                 });
             };
 
-            //Escuchar el evento de files
-            socket.on("newFile", (message) => {
+            const handleNewMessage = (message) => {
                 if (message && message.senderId) {
                     const isSender = message.senderId == userId;
-
                     setMessages((prevMessages) => [...prevMessages, { ...message, type: isSender ? "sender" : "receiver" }]);
+
+                    if (isSender) {
+                        saveMessage({
+                            chatId,
+                            body: message.text,
+                            userId: usuarioId,
+                            type: "TEXT",
+                            isRead: true,
+                        });
+                    }
+                }
+            };
+
+            const handleNewFile = (message) => {
+                if (message && message.senderId) {
+                    const isSender = message.senderId == userId;
+                    setMessages((prevMessages) => [...prevMessages, { ...message, type: isSender ? "sender" : "receiver" }]);
+
                     if (isSender) {
                         handleFileUpload(message);
                     }
                 }
-            });
+            };
 
             const handleSocketDisconnect = () => {
-                console.log("Desconectado del servidor");
                 setIsConnected(false);
                 setTransport("N/A");
             };
 
             // Verificar si el socket ya está conectado
-            if (socket.connected) {
+            if (chatSocket.connected) {
                 handleSocketConnect(); // Llamar directamente si ya está conectado
             }
 
             // Configurar eventos del socket
-            socket.on("connect", handleSocketConnect);
-            socket.on("disconnect", handleSocketDisconnect);
+            chatSocket.on("connect", handleSocketConnect);
+            chatSocket.on("disconnect", handleSocketDisconnect);
+            chatSocket.on("newMessage", handleNewMessage);
+            chatSocket.on("newFile", handleNewFile);
 
             return () => {
-                // Limpiar eventos al desmontar el componente
-                socket.off("connect", handleSocketConnect);
-                socket.off("disconnect", handleSocketDisconnect);
-                disconnectSocket();
+                chatSocket.off("connect", handleSocketConnect);
+                chatSocket.off("disconnect", handleSocketDisconnect);
+                chatSocket.off("newMessage", handleNewMessage);
+                chatSocket.off("newFile", handleNewFile);
+                disconnectChatSocket(chatId);
+                setSocket(null);
             };
         }
-    }, [socket, chatId]);
+    }, [chatId, userId]);
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -178,30 +186,29 @@ export default function Chat() {
         }
     }, [clientId, state?.user?.id, chatId]);
 
-    //Funcion apra marcar los mensajes como leidos
     const markAsRead = async () => {
+        if (!chatId || !userId || hasMarkedAsRead) return; // ✅ Evita reejecución
+
+        const unreadMessages = messages.filter((msg) => !msg.isRead && msg.senderId !== userId);
+        if (unreadMessages.length === 0) return;
+
         try {
-            const unreadMessages = messages.filter((message) => !message.read && (message.senderId !== userId || message.userId !== userId));
-            if (unreadMessages.length > 0) {
-                await markMessageAsRead(unreadMessages.map((message) => message.id));
-                setMessages((prevMessages) =>
-                    prevMessages.map((message) => {
-                        if (!message.read && message.senderId !== userId) {
-                            return { ...message, read: true };
-                        }
-                        return message;
-                    })
-                );
-            }
+            await axios.patch("/api/message", { messages: unreadMessages.map((msg) => msg.id) });
+            setMessages((prevMessages) =>
+                prevMessages.map((msg) => (unreadMessages.some((unread) => unread.id === msg.id) ? { ...msg, isRead: true } : msg))
+            );
+
+            setHasMarkedAsRead(true); // ✅ Solo se ejecutará una vez
         } catch (error) {
-            console.log(error);
+            console.error("❌ Error al marcar mensajes como leídos:", error);
         }
     };
+
     useEffect(() => {
-        if (messages.length > 0 && chatId && userId) {
+        if (messages.length > 0) {
             markAsRead();
         }
-    }, [messages, chatId, userId]);
+    }, [messages]); // ✅ Solo se ejecuta cuando los mensajes cambian
 
     // Función para enviar mensaje
     const sendMessage = (message) => {
@@ -212,6 +219,8 @@ export default function Chat() {
                 senderId: userId,
                 time: new Date().toLocaleTimeString(),
                 userName: state?.user?.name + " " + state?.user?.lastName,
+                receiverId: typeChat === "group" ? null : receiverId,
+                typeChat: typeChat,
             };
 
             socket.emit("sendMessage", newMessage);
@@ -252,6 +261,7 @@ export default function Chat() {
                 body: message.image,
                 userId: message.senderId,
                 type: "IMAGE",
+                isRead: true,
             });
         } catch (err) {
             console.error("Error al procesar el archivo:", err);
@@ -262,8 +272,7 @@ export default function Chat() {
 
     const saveMessage = async (data) => {
         try {
-            const res = await axios.post("/api/message", data);
-            console.log(res);
+            await axios.post("/api/message", data);
         } catch (error) {
             console.log(error);
         }
@@ -271,30 +280,41 @@ export default function Chat() {
 
     if (!socket || !chatId) {
         return (
-            <div className="flex flex-col min-h-screen">
-                <header className="px-2">
-                    <NavBar />
-                </header>
-                <main className="flex flex-col justify-between items-center flex-grow w-full">
-                    <div className="flex items-center justify-center flex-1 absolute inset-0">
-                        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-                    </div>
+            <div className="flex flex-col h-full w-full animate-pulse">
+                {/* Mensajes */}
+                <main className="flex-grow overflow-y-auto px-4 py-6 space-y-4 bg-white">
+                    {[...Array(6)].map((_, i) => (
+                        <div
+                            key={i}
+                            className={`w-full flex ${
+                                i % 2 === 0 ? "justify-start" : "justify-end"
+                            }`}
+                        >
+                            <div className="bg-gray-200 rounded-lg px-4 py-3 max-w-[60%]">
+                                <div className="h-4 bg-gray-300 rounded w-32 mb-1"></div>
+                                <div className="h-3 bg-gray-300 rounded w-24"></div>
+                            </div>
+                        </div>
+                    ))}
                 </main>
+
+                {/* Input inferior */}
+                <div className="rounded-xl border-t px-4 py-4 flex gap-2 items-center bg-white">
+                    <div className="flex-grow">
+                        <div className="w-full h-16 bg-gray-200 rounded-md" />
+                    </div>
+                    <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                    <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col min-h-screen">
-            <header className="px-2">
-                <NavBar />
-            </header>
-
-            <main className="flex flex-col justify-between items-center flex-grow w-full">
-                {console.log(messages)}
-
-                <Suspense fallback={<div>Loading...</div>}>
-                    <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} />
+        <div className={`flex flex-col h-full ${adminPage ? "" : "max-h-[690px]"} overflow-hidden`}>
+            <main className="flex flex-col justify-between items-center gorw h-full w-full">
+                <Suspense fallback={<div></div>}>
+                    <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} isGroup={typeChat === "group"} />
                 </Suspense>
                 <MessageInput onSendMessage={sendMessage} onSendFile={sendFile} />
             </main>

@@ -27,6 +27,7 @@ const publicApiPaths = [
     "/api/redsys/checkout",
     "/api/redsys/webhook",
     "/api/cron",
+    "/api/notification",
 ];
 
 const publicPaths = [
@@ -108,9 +109,7 @@ export async function middleware(request) {
 
     // ✅ Rutas públicas
     const isPublicApi = publicApiPaths.includes(pathname);
-    const isPublicPage = publicPaths.some((publicPath) => 
-        pathWithoutLocale.startsWith(publicPath)
-      );
+    const isPublicPage = publicPaths.some((publicPath) => pathWithoutLocale.startsWith(publicPath));
 
     if (isPublicApi || isPublicPage || pathname === `/${locale}/pages/auth`) {
         console.log(`✅ Acceso permitido a ruta pública: ${pathname}${search}`);

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRightStartOnRectangleIcon, BoltIcon, CalendarDaysIcon, CreditCardIcon, ReceiptRefundIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, BoltIcon, CalendarDaysIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, ReceiptRefundIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
@@ -38,10 +38,15 @@ const Sidebar = () => {
             href: "/pages/user/supplies",
             icon: <BoltIcon className="size-6" />,
         },
+        {
+            name: "Chats",
+            href: "/pages/user/chats",
+            icon: <ChatBubbleBottomCenterIcon className="size-6" />,
+        },
     ];
 
     return (
-        <aside className="hidden h-full max-h-[650px] sticky top-8 max-w-80 w-full rounded-xl border bg-white text-gray-800 shadow-sm md:flex flex-col my-4 py-4">
+        <aside className="hidden h-full max-h-[750px] sticky top-8 max-w-80 w-full rounded-xl border bg-white text-gray-800 shadow-sm md:flex flex-col my-4 py-4">
             <div className="flex flex-col items-center mb-8">
                 <div className="bg-gray-100 grid place-items-center rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="105px" height="105px">

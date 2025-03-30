@@ -47,7 +47,6 @@ export async function getAllLeaseOrders() {
                     ],
                     include: [
                         { model: Supply, as: "supplies" },
-                        { model: Payment, as: "payments" },
                         { model: RentPayment, as: "rentPayments" },
                         { model: Document, as: "documents" },
                         { model: Contract, as: "contracts" },
@@ -56,9 +55,7 @@ export async function getAllLeaseOrders() {
             ],
             order: [["date", "DESC"]],
         });
-        // const mapPropertyOrders = LeaseOrdersProperty.map((order) => {
-        //   return { ...order.dataValues, type: "property" };
-        // });
+
         const mapRoomOrders = LeaseOrdersRoom.map((order) => {
             return { ...order.dataValues, type: "room" };
         });

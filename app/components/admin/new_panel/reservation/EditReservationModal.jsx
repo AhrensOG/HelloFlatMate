@@ -12,9 +12,7 @@ export default function EditReservationModal({ leaseOrder, onClose, fetch }) {
         leaseOrderId: leaseOrder.id,
       };
       await axios.put(`/api/admin/lease_order`, data);
-      // await fetch();
       toast.success("Orden actualizada correctamente!", { id: toastId });
-      // onClose();
     } catch (error) {
       toast.info("Ocurrió un error al actualizar", { id: toastId });
       console.log(error);
@@ -116,7 +114,7 @@ export default function EditReservationModal({ leaseOrder, onClose, fetch }) {
                 {/* <option value="READY_TO_SIGN">Listo para firmar</option> */}
                 <option value="APPROVED">Aprobado</option>
                 <option value="REJECTED">Rechazado</option>
-                {/* <option value="IN_PROGRESS">En progreso</option> */}
+                <option value="IN_PROGRESS">En progreso</option>
                 <option value="CANCELED">Cancelado</option>
                 <option value="FINISHED">Finalizado</option>
               </Field>

@@ -77,6 +77,9 @@ export default function TaskDetails({ section }) {
                 status: status,
                 comment: comment,
             });
+            if (res.status === 200) {
+                setTask((prevTask) => ({ ...prevTask, status: "COMPLETED" })); // 🔄 Actualiza todo el objeto task
+            }
             return res;
         } catch (err) {
             console.log(err);
@@ -91,6 +94,9 @@ export default function TaskDetails({ section }) {
                 workerId: user?.id,
                 userId: task.userId,
             });
+            if (res.status === 200) {
+                setTask((prevTask) => ({ ...prevTask, status: "IN_PROGRESS", workerId: user?.id })); // 🔄 Actualiza todo el objeto task
+            }
         } catch (err) {
             console.log(err);
             throw err;
@@ -138,7 +144,8 @@ export default function TaskDetails({ section }) {
                                 <TenatnsNote body={task?.clientMessage || ""} />
                             </div>
                             <LocationSection />
-                            {status === "PENDING" && task.workerId !== null && <Buttons action={handleModal} />}
+                            {task.status === "IN_PROGRESS" && task.workerId !== null && <Buttons action={handleModal} />}
+
                             {task.workerId === null && (
                                 <div className="w-full flex justify-center">
                                     <button

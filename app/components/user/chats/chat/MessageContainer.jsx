@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Message from "./Message";
 
-export default function MessageContainer({ messages, socketId, isUploading }) {
+export default function MessageContainer({ messages, socketId, isUploading, isGroup }) {
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -31,6 +31,7 @@ export default function MessageContainer({ messages, socketId, isUploading }) {
                             typeFile={msg.type}
                             isUploading={msg.isUploading || false}
                             hasFailed={msg.hasFailed || false}
+                            typeChat={isGroup ? "group" : "supp"}
                         />
                     ))}
                     {/* Mostrar previsualización mientras se carga */}

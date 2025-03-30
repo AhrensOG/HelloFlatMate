@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 import { getUserById } from "../../user/controllers/getUsersController";
 
 // Función para codificar role y accessToken en un solo token
-function encodeToken(role, accessToken) {
-    const tokenPayload = JSON.stringify({ role, accessToken });
+function encodeToken(role, accessToken, userId) {
+    const tokenPayload = JSON.stringify({ role, accessToken, userId });
     return Buffer.from(tokenPayload).toString("base64");
 }
 
@@ -17,7 +17,7 @@ const login = async (req) => {
 
         if (user) {
             // Codificar el role y accessToken en un solo token
-            const authToken = encodeToken(user.role, body.accessToken);
+            const authToken = encodeToken(user.role, body.accessToken, user.id);
 
             // Establecer la cookie con el token codificado
             const cookieStore = cookies();
@@ -53,7 +53,7 @@ const login = async (req) => {
             return NextResponse.json(newUser, { status: 200 });
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 };

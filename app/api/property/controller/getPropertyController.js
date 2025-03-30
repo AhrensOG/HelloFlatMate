@@ -41,10 +41,6 @@ export async function getAllProperties() {
             as: "rentalPeriod",
           },
         },
-        {
-          model: LeaseOrderProperty,
-          as: "leaseOrdersProperty",
-        },
       ],
     });
     return NextResponse.json(properties, { status: 200 });

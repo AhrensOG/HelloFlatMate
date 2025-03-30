@@ -2,6 +2,8 @@ import { Message } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function markMessageAsRead(messagesId) {
+    console.log("📨 Marcando mensajes como leídos:", messagesId);
+
     if (!messagesId || messagesId.length === 0) {
         return NextResponse.json({ error: "No messages to update" }, { status: 400 });
     }
