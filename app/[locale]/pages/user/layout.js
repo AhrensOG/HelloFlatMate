@@ -8,8 +8,10 @@ import { usePathname } from "next/navigation";
 import ProfileProgressBar from "@/app/components/user/new_panel/profile/auxiliarComponents/ProfileProgressBar";
 import ContractProgressBar from "@/app/components/user/new_panel/contract/auxiliarComponents/ContractProgressBar";
 import ContractProgressBarFallback from "@/app/components/user/new_panel/contract/auxiliarComponents/fallbacks/ContractProgressBarFallback";
+import { useTranslations } from "next-intl";
 
 const UserDashboardLayout = ({ children }) => {
+    const t = useTranslations("user_profile_v2");
     const pathname = usePathname();
 
     const renderProgressBar = () => {
@@ -18,7 +20,7 @@ const UserDashboardLayout = ({ children }) => {
         } else if (pathname.includes("/pages/user/payments")) {
             return (
                 <div className="flex w-full justify-start items-end h-[86px] bg-[#f7f7f7] border-b-2 border-gray-300">
-                    <span className="p-6 text-xl font-bold">Pagos</span>
+                    <span className="p-6 text-xl font-bold">{t("title_1")}</span>
                 </div>
             );
         } else if (pathname.includes("/pages/user/reservations")) {
@@ -34,7 +36,7 @@ const UserDashboardLayout = ({ children }) => {
         } else if (pathname.includes("/pages/user/supplies")) {
             return (
                 <div className="flex w-full justify-start items-end h-[86px] bg-[#f7f7f7] border-b-2 border-gray-300">
-                    <span className="p-6 text-xl font-bold">Suministros</span>
+                    <span className="p-6 text-xl font-bold">{t("title_2")}</span>
                 </div>
             );
         }
@@ -49,8 +51,7 @@ const UserDashboardLayout = ({ children }) => {
 
             <div
                 className={`${
-                    pathname.includes("/pages/user/reservations") ||
-                    pathname.includes("/pages/user/history")
+                    pathname.includes("/pages/user/reservations") || pathname.includes("/pages/user/history")
                         ? "bg-white pt-10"
                         : pathname.includes("/pages/user/contractv2")
                         ? "bg-white"

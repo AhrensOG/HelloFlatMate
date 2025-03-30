@@ -2,15 +2,10 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdOutlinePayments } from "react-icons/md";
 import { TbTools } from "react-icons/tb";
-import {
-    ClipboardDocumentListIcon,
-    DevicePhoneMobileIcon,
-    DocumentTextIcon,
-    EnvelopeIcon,
-    UserIcon,
-} from "@heroicons/react/24/outline";
+import { ClipboardDocumentListIcon, DevicePhoneMobileIcon, DocumentTextIcon, EnvelopeIcon, UserIcon } from "@heroicons/react/24/outline";
 import formatDateToDDMMYYYY from "@/app/components/admin/new_panel/utils/formatDate";
 import PaymentRequestModal from "./PaymentRequestModal";
+import { useTranslations } from "next-intl";
 
 const STATUS_LABEL = {
     IN_PROCESS: "En Proceso",
@@ -34,6 +29,29 @@ const PAYMENT_LABELS = {
 };
 
 const TenantCard = ({ order, isOld = false }) => {
+    const t = useTranslations("owner_panel.tenants_card");
+
+    const STATUS_LABEL = {
+        IN_PROCESS: t("status_label.in_process"),
+        PENDING: t("status_label.pending"),
+        APPROVED: t("status_label.approved"),
+        FINISHED: t("status_label.finished"),
+    };
+
+    const PAYMENT_LABELS = {
+        MONTHLY: t("payment_label.monthly"),
+        RESERVATION: t("payment_label.reservation"),
+        DEPOSIT: t("payment_label.deposit"),
+        AGENCY_FEES: t("payment_label.agency_fees"),
+        CLEANUP: t("payment_label.cleanup"),
+        GENERAL_SUPPLIES: t("payment_label.general_supplies"),
+        INTERNET: t("payment_label.internet"),
+        OTHERS: t("payment_label.others"),
+        APPROVED: t("payment_label.approved"),
+        PAID: t("payment_label.paid"),
+        PENDING: t("payment_label.pending"),
+    };
+
     const client = order.client;
     const [showPayments, setShowPayments] = useState(false);
     const [showRequestModal, setShowRequestModal] = useState(false);
@@ -41,38 +59,30 @@ const TenantCard = ({ order, isOld = false }) => {
     const cardBorder = isOld ? "border-gray-200" : "border-[#440cac]";
     const headingColor = "text-[#440cac]";
 
-    const documents =
-        client.documents?.filter((doc) => doc.leaseOrderId === order.id) || [];
+    const documents = client.documents?.filter((doc) => doc.leaseOrderId === order.id) || [];
 
-    const contracts =
-        client.contracts?.filter((c) => c.leaseOrderId === order.id) || [];
+    const contracts = client.contracts?.filter((c) => c.leaseOrderId === order.id) || [];
 
-    const rentPayments =
-        client.rentPayments?.filter((p) => p.leaseOrderId === order.id) || [];
+    const rentPayments = client.rentPayments?.filter((p) => p.leaseOrderId === order.id) || [];
 
-    const supplies =
-        client.supplies?.filter((s) => s.leaseOrderId === order.id) || [];
+    const supplies = client.supplies?.filter((s) => s.leaseOrderId === order.id) || [];
 
     return (
-        <div
-            className={`w-full md:w-[48%] p-4 rounded-lg border ${cardBorder} bg-white shadow-sm flex flex-col gap-2`}
-        >
+        <div className={`w-full md:w-[48%] p-4 rounded-lg border ${cardBorder} bg-white shadow-sm flex flex-col gap-2`}>
             {/* Info básica */}
             <div className="flex flex-col gap-1">
-                <p
-                    className={`font-semibold text-md md:text-lg ${headingColor}`}
-                >
+                <p className={`font-semibold text-md md:text-lg ${headingColor}`}>
                     {client.name} {client.lastName}
                 </p>
                 <p className="text-xs md:text-base text-gray-600">
-                    Orden: {STATUS_LABEL[order.status]}
+                    {t("basic_info.order")} {STATUS_LABEL[order.status]}
                 </p>
                 <p className="text-xs md:text-base text-gray-600">
-                    Email: {client.email}
+                    {t("basic_info.email")} {client.email}
                 </p>
                 {client.phone && (
                     <p className="text-xs md:text-base text-gray-600">
-                        Tel: +{client.phone}
+                        {t("basic_info.phone")} +{client.phone}
                     </p>
                 )}
             </div>
@@ -80,26 +90,22 @@ const TenantCard = ({ order, isOld = false }) => {
             {/* Fechas y precio */}
             <div className="text-xs md:text-base text-gray-500">
                 <p>
-                    <strong>Desde: </strong>
+                    <strong>{t("price_dates.from")}</strong>
                     {formatDateToDDMMYYYY(order.startDate)}
                 </p>
                 <p>
-                    <strong>Hasta: </strong>
+                    <strong>{t("price_dates.to")}</strong>
                     {formatDateToDDMMYYYY(order.endDate)}
                 </p>
                 <p>
-                    <strong>Precio: </strong> {order.price} €
+                    <strong>{t("price_dates.price")}</strong> {order.price} €
                 </p>
             </div>
 
             {/* Emergencia */}
-            {(client.emergencyName ||
-                client.emergencyPhone ||
-                client.emergencyEmail) && (
+            {(client.emergencyName || client.emergencyPhone || client.emergencyEmail) && (
                 <div className="border-t border-gray-100 py-4 space-y-2">
-                    <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">
-                        Contacto de emergencia
-                    </p>
+                    <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">{t("emergency.p_1")}</p>
                     {client.emergencyName && (
                         <p className="text-xs md:text-base text-gray-600 flex items-center gap-1">
                             <UserIcon className="text-[#440cac] size-5" />
@@ -108,8 +114,7 @@ const TenantCard = ({ order, isOld = false }) => {
                     )}
                     {client.emergencyPhone && (
                         <p className="text-xs md:text-base text-gray-600 flex items-center gap-1">
-                            <DevicePhoneMobileIcon className="text-[#440cac] size-5" />
-                            +{client.emergencyPhone}
+                            <DevicePhoneMobileIcon className="text-[#440cac] size-5" />+{client.emergencyPhone}
                         </p>
                     )}
                     {client.emergencyEmail && (
@@ -124,9 +129,7 @@ const TenantCard = ({ order, isOld = false }) => {
             {/* Documentos */}
             {documents.length > 0 && (
                 <div className="border-t border-gray-100 py-4">
-                    <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">
-                        Documentos
-                    </p>
+                    <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">{t("documents.p_1")}</p>
                     {documents.map((doc, i) => (
                         <div key={i} className="mb-1">
                             <p className="text-xs md:text-base text-gray-600 flex items-center gap-1">
@@ -134,14 +137,8 @@ const TenantCard = ({ order, isOld = false }) => {
                                 {doc.name}
                             </p>
                             {doc.urls.map((url, j) => (
-                                <a
-                                    key={j}
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-base text-[#440cac] underline"
-                                >
-                                    Ver documento {j + 1}
+                                <a key={j} href={url} target="_blank" rel="noopener noreferrer" className="text-base text-[#440cac] underline">
+                                    {t("documents.view")} {j + 1}
                                 </a>
                             ))}
                         </div>
@@ -152,9 +149,7 @@ const TenantCard = ({ order, isOld = false }) => {
             {/* Contratos */}
             {contracts.length > 0 && (
                 <div className="border-t border-gray-100 py-4">
-                    <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">
-                        Contratos firmados
-                    </p>
+                    <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">{t("contracts.p_1")}</p>
                     {contracts.map((contract, i) => (
                         <a
                             key={i}
@@ -164,7 +159,7 @@ const TenantCard = ({ order, isOld = false }) => {
                             className="text-base text-[#440cac] underline flex items-center gap-1"
                         >
                             <ClipboardDocumentListIcon className="text-[#440cac] size-5" />
-                            Ver contrato {i + 1}
+                            {t("contracts.view")} {i + 1}
                         </a>
                     ))}
                 </div>
@@ -176,7 +171,7 @@ const TenantCard = ({ order, isOld = false }) => {
                         onClick={() => setShowRequestModal(true)}
                         className="text-xs md:text-base mt-2 text-[#440cac] underline w-fit transition hover:opacity-80"
                     >
-                        Solicitar pago a {client.name}
+                        {t("contracts.request_payment")} {client.name}
                     </button>
 
                     <AnimatePresence>
@@ -195,15 +190,13 @@ const TenantCard = ({ order, isOld = false }) => {
             )}
 
             <div className="border-t border-gray-100 py-4">
-                <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">
-                    Todos los pagos
-                </p>
+                <p className="text-xs md:text-base font-semibold text-gray-600 mb-1">{t("contracts.p_2")}</p>
                 {/* Toggle botón */}
                 <button
                     onClick={() => setShowPayments((prev) => !prev)}
                     className="text-sm md:text-base text-[#440cac] underline w-fit transition hover:opacity-80"
                 >
-                    {showPayments ? "Ocultar pagos" : "Ver pagos"}
+                    {showPayments ? t("contracts.hide_payments") : t("contracts.show_payments")}
                 </button>
 
                 <AnimatePresence initial={false}>
@@ -221,60 +214,34 @@ const TenantCard = ({ order, isOld = false }) => {
                                 <div className="mb-3">
                                     <h4 className="flex items-center gap-1 text-xs md:text-base font-semibold text-gray-700 mb-1">
                                         <MdOutlinePayments className="text-[#440cac]" />
-                                        Pagos de renta
+                                        {t("rent_payments.h4")}
                                     </h4>
                                     <div className="flex flex-col gap-2">
                                         {rentPayments.map((payment, i) => (
-                                            <div
-                                                key={i}
-                                                className="text-xs md:text-base text-gray-600 bg-gray-50 rounded-md px-3 py-2 shadow-sm"
-                                            >
+                                            <div key={i} className="text-xs md:text-base text-gray-600 bg-gray-50 rounded-md px-3 py-2 shadow-sm">
                                                 <p>
-                                                    <strong>
-                                                        {payment.description}
-                                                    </strong>
+                                                    <strong>{payment.description}</strong>
                                                 </p>
                                                 <p>
-                                                    <strong>
-                                                        {payment.amount} €
-                                                    </strong>
-                                                    (
-                                                    {
-                                                        PAYMENT_LABELS[
-                                                            payment.type
-                                                        ]
-                                                    }
-                                                    )
+                                                    <strong>{payment.amount} €</strong>({PAYMENT_LABELS[payment.type]})
                                                 </p>
                                                 <p>
-                                                    <strong>Fecha: </strong>
-                                                    {formatDateToDDMMYYYY(
-                                                        payment.date
-                                                    )}
+                                                    <strong>{t("rent_payments.date")}</strong>
+                                                    {formatDateToDDMMYYYY(payment.date)}
                                                 </p>
                                                 <p>
-                                                    <strong>Estado: </strong>
+                                                    <strong>{t("rent_payments.status")}</strong>
                                                     <span
                                                         className={`${
-                                                            payment.status ===
-                                                            "APPROVED"
-                                                                ? "text-green-700"
-                                                                : "text-yellow-700"
+                                                            payment.status === "APPROVED" ? "text-green-700" : "text-yellow-700"
                                                         } font-bold`}
                                                     >
-                                                        {
-                                                            PAYMENT_LABELS[
-                                                                payment.status
-                                                            ]
-                                                        }
+                                                        {PAYMENT_LABELS[payment.status]}
                                                     </span>
                                                 </p>
                                                 {payment.paymentId && (
                                                     <p>
-                                                        <strong>
-                                                            ID de pago:
-                                                        </strong>{" "}
-                                                        {payment.paymentId}
+                                                        <strong>{t("rent_payments.id_payment")}</strong> {payment.paymentId}
                                                     </p>
                                                 )}
                                             </div>
@@ -288,48 +255,34 @@ const TenantCard = ({ order, isOld = false }) => {
                                 <div>
                                     <h4 className="flex items-center gap-1 text-xs md:text-base font-semibold text-gray-700 mb-1">
                                         <TbTools className="text-[#440cac]" />
-                                        Suministros y extras
+                                        {t("supplies.h4")}
                                     </h4>
                                     <div className="flex flex-col gap-2">
                                         {supplies.map((supply, i) => (
-                                            <div
-                                                key={i}
-                                                className="text-xs md:text-base text-gray-600 bg-gray-50 rounded-md px-3 py-2 shadow-sm"
-                                            >
+                                            <div key={i} className="text-xs md:text-base text-gray-600 bg-gray-50 rounded-md px-3 py-2 shadow-sm">
                                                 <p>
-                                                    <strong>Concepto: </strong>
+                                                    <strong>{t("supplies.concept")}</strong>
                                                     {supply.name}
                                                 </p>
                                                 <p>
-                                                    <strong>Monto: </strong>
+                                                    <strong>{t("supplies.amount")}</strong>
                                                     {supply.amount} €
                                                 </p>
                                                 <p>
-                                                    <strong>Fecha: </strong>
-                                                    {formatDateToDDMMYYYY(
-                                                        supply.date
-                                                    )}
+                                                    <strong>{t("supplies.date")}</strong>
+                                                    {formatDateToDDMMYYYY(supply.date)}
                                                 </p>
                                                 <p>
-                                                    <strong>Estado: </strong>
+                                                    <strong>{t("supplies.status")}</strong>
                                                     <span
                                                         className={`
-                                                            ${
-                                                                supply.status ===
-                                                                "PAID"
-                                                                    ? "text-green-700"
-                                                                    : "text-blue-700"
-                                                            } font-bold`}
+                                                            ${supply.status === "PAID" ? "text-green-700" : "text-blue-700"} font-bold`}
                                                     >
-                                                        {
-                                                            PAYMENT_LABELS[
-                                                                supply.status
-                                                            ]
-                                                        }
+                                                        {PAYMENT_LABELS[supply.status]}
                                                     </span>
                                                 </p>
                                                 <p>
-                                                    <strong>ID pago: </strong>
+                                                    <strong>{t("supplies.id_payment")}</strong>
                                                     {supply.paymentId || "-"}
                                                 </p>
                                             </div>

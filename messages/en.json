@@ -908,6 +908,8 @@
         }
     },
     "user_profile_v2": {
+        "title_1": "Payments",
+        "title_2": "Supplies",
         "responses": {
             "success": "Information updated successfully",
             "loading": "Saving...",
@@ -1150,6 +1152,220 @@
             "tasks": "Tasks",
             "chats": "Messages",
             "profile": "My Profile"
+        }
+    },
+    "owner_panel": {
+        "title_1": "Dashboard",
+        "title_2": "Profile",
+        "title_3": "My Tenants",
+        "sidebar": {
+            "links": {
+                "name_1": "Panel",
+                "name_2": "Profile",
+                "name_3": "My Tenants"
+            },
+            "btn_logout": "Log Out"
+        },
+        "profile": {
+            "title": " Personal Information",
+            "title_2": "My Profile",
+            "name": " Name",
+            "last_name": " Last Name",
+            "email": " Email",
+            "id": "ID / Passport",
+            "advise_btn": {
+                "t_1": "Payments"
+            }
+        },
+        "my_tenants": {
+            "title": "My Tenants",
+            "no_tenants": "No tenants registered.",
+            "serial": "Serial:",
+            "room": "Room",
+            "current_tenant": "Current Tenants",
+            "old_tenant": "Previous Tenants"
+        },
+        "tenants_card": {
+            "status_label": {
+                "in_process": "In Process",
+                "pending": "Pending",
+                "finished": "Completed",
+                "approved": "Approved"
+            },
+            "payment_label": {
+                "monthly": "Monthly",
+                "reservation": "Reservation",
+                "deposit": "Deposit",
+                "agency_fees": "Agency Fees",
+                "general_supplies": "General Supplies (water, electricity, gas)",
+                "cleanup": "Checkout Cleaning",
+                "internet": "WIFI",
+                "others": "Others",
+                "approved": "Approved",
+                "pending": "Pending",
+                "paid": "Paid"
+            },
+            "basic_info": {
+                "order": "Order:",
+                "email": "Email:",
+                "phone": "Phone:"
+            },
+            "price_dates": {
+                "from": "From: ",
+                "to": "To: ",
+                "price": "Price: "
+            },
+            "emergency": {
+                "p_1": "Emergency Contact"
+            },
+            "documents": {
+                "p_1": "Documents",
+                "view": "View Document"
+            },
+            "contracts": {
+                "p_1": "Contracts",
+                "view": "View Contract",
+                "request_payment": "Request Payment to ",
+                "p_2": "All Payments",
+                "hide_payments": "Hide Payments",
+                "show_payments": "Show Payments"
+            },
+            "rent_payments": {
+                "h4": "Rent Payments",
+                "id_payment": "Payment ID:",
+                "date": "Date: ",
+                "status": "Status: "
+            },
+            "supplies": {
+                "h4": "Supplies and Extras",
+                "concept": "Concept: ",
+                "amount": "Amount: ",
+                "date": "Date: ",
+                "status": "Status: ",
+                "id_payment": "Payment ID: "
+            }
+        },
+        "payment_request": {
+            "verifications": {
+                "required_1": "Amount Required",
+                "min_1": "Must be greater than 0",
+                "required_2": "Concept Required",
+                "max_1": "Max 100 characters"
+            },
+            "loading": "Processing Payment...",
+            "success": "Request Sent Successfully",
+            "success_desc": "Remember to refresh the page to see changes",
+            "error": "Error Requesting Payment",
+            "h2_1": "Request Payment",
+            "form": {
+                "lb_1": "Tenant",
+                "lb_2": "Order - Room",
+                "lb_3": "Amount",
+                "lb_4": "Concept / Title",
+                "submit": "Submit Request"
+            }
+        },
+        "dashboard": {
+            "type_labels": {
+                "monthly": "Monthly",
+                "reservation": "Reservation",
+                "deposit": "Deposit",
+                "agency_fees": "Agency Fees",
+                "general_supplies": "General Supplies (water, electricity, gas)",
+                "cleanup": "Checkout Cleaning",
+                "internet": "WIFI",
+                "others": "Others"
+            },
+            "title": "Monthly Performance of Your Properties",
+            "p_1": "No income registered.",
+            "bar_chart": {
+                "name_1": "Actual Income",
+                "name_2": "Projection"
+            },
+            "p_2": "Projection:",
+            "hide": "Hide",
+            "show": "View Details",
+            "income_details": " Income Details:",
+            "p_3": "Tenant:",
+            "p_4": "Concept:",
+            "p_5": "Type:",
+            "p_6": "Date:",
+            "p_7": "Amount:"
+        },
+        "wallet": {
+            "span_1": "Wallet Balance: ",
+            "span_2": "Total Services: "
+        },
+        "owner_tenant_detail": {
+            "toast": {
+                "text_1": "Are you sure you want to create this payment request?",
+                "lb_1": "Confirm",
+                "loading": "Creating Request...",
+                "success": "Payment Request Created Successfully!",
+                "error": "Error Creating Payment Request"
+            },
+            "t_1": "Details",
+            "btn_1": "Request Payment",
+            "form": {
+                "h2_1": "Create Payment Request",
+                "lb_1": "Title",
+                "lb_2": "Reference (Optional)",
+                "lb_3": "Type",
+                "options": {
+                    "water": "Water",
+                    "electricity": "Electricity",
+                    "gas": "Gas",
+                    "expenses": "Expenses",
+                    "internet": "Internet",
+                    "others": "Others"
+                },
+                "lb_4": "Amount",
+                "lb_5": "Expiration Date",
+                "submit": "Create"
+            },
+            "auxiliar_comp": {
+                "contact_card": {
+                    "toast": {
+                        "success": "Copied to clipboard",
+                        "info_1": "The",
+                        "info_2": "is invalid or missing"
+                    },
+                    "btn_1": "Phone Number"
+                },
+                "show_trans_hist": {
+                    "show": "View"
+                }
+            },
+            "stay_sec": {
+                "nan": "Invalid Dates",
+                "h2": "Stay",
+                "t_1": "Check-In",
+                "t_2": "Check-Out",
+                "t_3": "Contract",
+                "months": "Months"
+            },
+            "trans_sec": {
+                "title": "Transactions",
+                "t_1": "History"
+            }
+        },
+        "owner_tenants": {
+            "title": "My Tenants",
+            "tenant_card": {
+                "details": "Details"
+            }
+        },
+        "expired_contracts": {
+            "title": "Expired Contracts"
+        },
+        "documents_panel": {
+            "t_1": "Active Contract"
+        },
+        "payment_card": {
+            "h2": "Payment Received"
+        },
+        "payment": {
+            "title": "Payment History"
         }
     }
 }
