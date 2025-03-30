@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { Admin, Client, LeaseOrderProperty, LeaseOrderRoom, Owner, Property, Room, Chat, ChatParticipant, RentalPeriod, RentalItem } from "@/db/init";
-import { createGroupChat, createPrivateChat } from "@/app/api/admin/chat/controller/createChatController";
+import { Client, LeaseOrderRoom, Property, Room, Chat, ChatParticipant, RentalPeriod, RentalItem } from "@/db/init";
 import { sequelize } from "@/db/models/comment";
 import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
 
@@ -55,7 +54,6 @@ export async function updateStatusLeaseOrder(data) {
                 {
                     model: Chat,
                     as: "chats",
-                    as: "chats",
                 },
             ],
             transaction,
@@ -87,33 +85,34 @@ export async function updateStatusLeaseOrder(data) {
             await property.save({ transaction });
 
             // Crear chat con el dueño
-            const chatPrivate = await createPrivateChat({
+            const chatPrivate = await Chat.create({
                 type: "PRIVATE",
                 ownerId: property.ownerId,
-                receiverId: leaseOrderRoom.clientId,
+                isActive: true,
                 relatedType: "ROOM",
                 relatedId: room.id,
             });
 
-            const createParticipant = await ChatParticipant.create({
+            await ChatParticipant.create({
                 participantId: leaseOrderRoom.clientId,
-                chatId: chatPrivate.id,
                 participantType: "CLIENT",
-            });
-            const createOwnerParticipant = await ChatParticipant.create({
-                participantId: property.ownerId,
                 chatId: chatPrivate.id,
+            });
+            await ChatParticipant.create({
+                participantId: property.ownerId,
                 participantType: "OWNER",
+                chatId: chatPrivate.id,
             });
 
-            const createGroupParticipant = await ChatParticipant.create({
+            const groupChatId = property.chats?.find((chat) => chat.type === "GROUP");
+            await ChatParticipant.create({
                 participantId: leaseOrderRoom.clientId,
-                chatId: property.chats.find((chat) => chat.type === "GROUP").id,
+                chatId: groupChatId.id,
                 participantType: "CLIENT",
             });
 
             const mailInfo = {
-                to: client.email, subject: "¡Aprobamos tu pre-reserva!", text: `Te informamos que hemos aceptado la pre-reserva del alojamiento ${room.serial}. Por favor verifica tu perfil y desde la seccion "Historico" podras continuar con el proceso.` 
+                to: client.email, subject: "¡Aprobamos tu pre-reserva!", text: `Te informamos que hemos aceptado la pre-reserva del alojamiento ${room.serial}. Por favor verifica tu perfil y desde la seccion "Reservas" podras continuar con el proceso.` 
             };
 
             await sendMailFunction(mailInfo);
