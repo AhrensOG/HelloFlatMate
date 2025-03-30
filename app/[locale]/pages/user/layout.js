@@ -37,6 +37,8 @@ const UserDashboardLayout = ({ children }) => {
                     <span className="p-6 text-xl font-bold">Suministros</span>
                 </div>
             );
+        } else if (pathname.includes("/pages/user/chats")) {
+            return null;
         }
         return null;
     };
@@ -50,7 +52,8 @@ const UserDashboardLayout = ({ children }) => {
             <div
                 className={`${
                     pathname.includes("/pages/user/reservations") ||
-                    pathname.includes("/pages/user/history")
+                    pathname.includes("/pages/user/history") ||
+                    pathname.includes("/pages/user/chats")
                         ? "bg-white pt-10"
                         : pathname.includes("/pages/user/contractv2")
                         ? "bg-white"

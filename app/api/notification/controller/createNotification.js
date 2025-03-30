@@ -2,8 +2,6 @@ import { Admin, Client, Notification, Owner, Worker } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function createNotification(data) {
-    console.log(data);
-
     try {
         if (!data) {
             return NextResponse.json({ error: "Missing data" }, { status: 400 });

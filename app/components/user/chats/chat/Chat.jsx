@@ -1,4 +1,3 @@
-import NavBar from "@/app/components/nav_bar/NavBar";
 import MessageContainer from "./MessageContainer";
 import MessageInput from "./MessageInput";
 import { useSearchParams } from "next/navigation";
@@ -8,9 +7,8 @@ import { disconnectChatSocket, getChatSocket } from "@/app/socket";
 import { Context } from "@/app/context/GlobalContext";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import { toast } from "sonner";
-import NavbarV3 from "@/app/components/nav_bar/NavbarV3";
 
-export default function Chat() {
+export default function Chat({ adminPage = false }) {
     const searchParams = useSearchParams();
 
     const [clientId, setClientId] = useState(false);
@@ -50,7 +48,7 @@ export default function Chat() {
             // Asumiendo que la respuesta contiene el ID del nuevo chat
             setChatId(res.data.chat.id);
         } catch (error) {
-            throw error;
+            console.log(error);
         }
     };
 
@@ -59,7 +57,7 @@ export default function Chat() {
         try {
             await axios.patch(`/api/chat?id=${chatId}&type=act`);
         } catch (error) {
-            throw error;
+            console.log(error);
         }
     };
 
@@ -176,7 +174,7 @@ export default function Chat() {
                 const res = await axios.get(`/api/message?chatId=${chatId}`);
                 setMessages(res.data.messages);
             } catch (err) {
-                throw err;
+                console.log(err);
             }
         };
 
@@ -274,37 +272,48 @@ export default function Chat() {
 
     const saveMessage = async (data) => {
         try {
-            const res = await axios.post("/api/message", data);
-            console.log(res);
+            await axios.post("/api/message", data);
         } catch (error) {
-            throw error;
+            console.log(error);
         }
     };
 
     if (!socket || !chatId) {
         return (
-            <div className="flex flex-col min-h-screen">
-                <header className="px-2">
-                    <NavBar />
-                </header>
-                <main className="flex flex-col justify-between items-center flex-grow w-full">
-                    <div className="flex items-center justify-center flex-1 absolute inset-0">
-                        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-                    </div>
+            <div className="flex flex-col h-full w-full animate-pulse">
+                {/* Mensajes */}
+                <main className="flex-grow overflow-y-auto px-4 py-6 space-y-4 bg-white">
+                    {[...Array(6)].map((_, i) => (
+                        <div
+                            key={i}
+                            className={`w-full flex ${
+                                i % 2 === 0 ? "justify-start" : "justify-end"
+                            }`}
+                        >
+                            <div className="bg-gray-200 rounded-lg px-4 py-3 max-w-[60%]">
+                                <div className="h-4 bg-gray-300 rounded w-32 mb-1"></div>
+                                <div className="h-3 bg-gray-300 rounded w-24"></div>
+                            </div>
+                        </div>
+                    ))}
                 </main>
+
+                {/* Input inferior */}
+                <div className="rounded-xl border-t px-4 py-4 flex gap-2 items-center bg-white">
+                    <div className="flex-grow">
+                        <div className="w-full h-16 bg-gray-200 rounded-md" />
+                    </div>
+                    <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                    <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col min-h-screen">
-            {console.log(messages, typeChat)}
-            <header className="px-2">
-                <NavbarV3 />
-            </header>
-
-            <main className="flex flex-col justify-between items-center flex-grow w-full">
-                <Suspense fallback={<div>Loading...</div>}>
+        <div className={`flex flex-col h-full ${adminPage ? "" : "max-h-[690px]"} overflow-hidden`}>
+            <main className="flex flex-col justify-between items-center gorw h-full w-full">
+                <Suspense fallback={<div></div>}>
                     <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} isGroup={typeChat === "group"} />
                 </Suspense>
                 <MessageInput onSendMessage={sendMessage} onSendFile={sendFile} />

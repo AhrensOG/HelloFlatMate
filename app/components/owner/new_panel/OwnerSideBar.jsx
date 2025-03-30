@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
     ArrowRightStartOnRectangleIcon,
+    ChatBubbleBottomCenterIcon,
     Squares2X2Icon,
     UserGroupIcon,
     UserIcon,
@@ -30,6 +31,11 @@ const OwnerSidebar = () => {
             name: "Mis inquilinos",
             href: "/pages/owner/my-tenantsv2",
             icon: <UserGroupIcon className="size-6" />,
+        },
+        {
+            name: "Chats",
+            href: "/pages/owner/chats",
+            icon: <ChatBubbleBottomCenterIcon className="size-6" />,
         },
     ];
 
