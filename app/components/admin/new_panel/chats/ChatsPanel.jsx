@@ -86,39 +86,57 @@ export default function ChatsPanel({ data = [], users = [], properties = [] }) {
         }
     };
 
-    const filteredChats = (chats || []).filter((chat) => {
-        const query = searchQuery.toLowerCase();
+    const filteredChats = (chats || [])
+        .filter((chat) => {
+            const query = searchQuery.toLowerCase();
 
-        const type = chat.type?.toLowerCase() || "";
+            const type = chat.type?.toLowerCase() || "";
 
-        const serial =
-            chat.type === "GROUP"
-                ? chat.property?.serial?.toLowerCase() || ""
-                : chat.room?.serial?.toLowerCase() || "";
+            const serial =
+                chat.type === "GROUP"
+                    ? chat.property?.serial?.toLowerCase() || ""
+                    : chat.room?.serial?.toLowerCase() || "";
 
-        const owner = chat.participants.find(
-            (p) => p.participantType === "OWNER"
-        )?.owner;
-        const ownerName = `${owner?.name || ""} ${
-            owner?.lastName || ""
-        }`.toLowerCase();
+            const owner = chat.participants.find(
+                (p) => p.participantType === "OWNER"
+            )?.owner;
+            const ownerName = `${owner?.name || ""} ${
+                owner?.lastName || ""
+            }`.toLowerCase();
 
-        const clients = chat.participants
-            .filter((p) => p.participantType === "CLIENT")
-            .map((c) =>
-                `${c.client?.name || ""} ${
-                    c.client?.lastName || ""
-                }`.toLowerCase()
-            )
-            .join(" ");
+            const clients = chat.participants
+                .filter((p) => p.participantType === "CLIENT")
+                .map((c) =>
+                    `${c.client?.name || ""} ${
+                        c.client?.lastName || ""
+                    }`.toLowerCase()
+                )
+                .join(" ");
 
-        return (
-            type.includes(query) ||
-            serial.includes(query) ||
-            ownerName.includes(query) ||
-            clients.includes(query)
-        );
-    });
+            return (
+                type.includes(query) ||
+                serial.includes(query) ||
+                ownerName.includes(query) ||
+                clients.includes(query)
+            );
+        })
+        .sort((a, b) => {
+            const hasMessagesA = a.messages?.length > 0;
+            const hasMessagesB = b.messages?.length > 0;
+
+            if (hasMessagesA && !hasMessagesB) return -1;
+            if (!hasMessagesA && hasMessagesB) return 1;
+            if (!hasMessagesA && !hasMessagesB) return 0;
+
+            const lastDateA = new Date(
+                a.messages[a.messages?.length - 1].date
+            ).getTime();
+            const lastDateB = new Date(
+                b.messages[b.messages?.length - 1].date
+            ).getTime();
+
+            return lastDateB - lastDateA;
+        });
 
     return (
         <div className="h-screen flex flex-col p-4 gap-4">
