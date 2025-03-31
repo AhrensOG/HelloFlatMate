@@ -72,7 +72,7 @@ export default function Chat({ ownerPage = false }) {
                         <ChatsCard
                             key={chat.id}
                             name={`${chat.relatedModel?.serial} - Grupo`}
-                            image="/profile/profile.png"
+                            image="/chat/people.png"
                             lastMessage={chat.messages[chat.messages.length - 1]}
                             action={() => router.push(`/pages/${ownerPage ? "owner" : "user"}/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`)}
                             notReadCount={
@@ -102,7 +102,7 @@ export default function Chat({ ownerPage = false }) {
                                 <ChatsCard
                                     key={chat.id}
                                     name={chat.relatedModel?.serial ? `${chat.relatedModel?.serial} - Privado` : "Unknown"}
-                                    image={"/profile/profile.png"}
+                                    image={"/chat/singleuser.png"}
                                     lastMessage={chat.messages[chat.messages.length - 1]}
                                     action={() =>
                                         router.push(
@@ -136,7 +136,7 @@ export default function Chat({ ownerPage = false }) {
                                               }`
                                             : "Unknown"
                                     }
-                                    image={"/profile/profile.png"}
+                                    image={"/chat/singleuser.png"}
                                     lastMessage={chat.messages[chat.messages.length - 1]}
                                     action={() =>
                                         router.push(
