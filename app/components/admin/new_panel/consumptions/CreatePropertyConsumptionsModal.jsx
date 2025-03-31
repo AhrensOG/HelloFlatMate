@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -25,39 +27,34 @@ const modalStyles = {
 };
 
 const validationSchema = Yup.object().shape({
-    leaseOrder: Yup.string().required("Seleccionar una orden es obligatorio."),
     price: Yup.number()
-        .required("El precio es obligatorio.")
+        .required("El importe es obligatorio.")
         .positive("Debe ser un número positivo."),
 });
 
-export default function CreateConsumptionsModal({
+export default function CreatePropertyConsumptionsModal({
     onClose,
-    users,
+    properties,
     mutate,
 }) {
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchValue, setSearchValue] = useState("");
+    const [filteredProps, setFilteredProps] = useState([]);
+    const [selectedProperty, setSelectedProperty] = useState(null);
 
-    const handleUserSearch = (e) => {
-        const query = e.target.value.toLowerCase();
-        setSearchValue(query);
-        if (!query) return setFilteredUsers([]);
-        setFilteredUsers(
-            users.filter(
-                (user) =>
-                    user.name.toLowerCase().includes(query) ||
-                    user.email.toLowerCase().includes(query) ||
-                    user.id.toString().includes(query)
-            )
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setSearchValue(value);
+        if (!value) return setFilteredProps([]);
+        const results = properties.filter((p) =>
+            (p.serial || "").toLowerCase().includes(value.toLowerCase())
         );
+        setFilteredProps(results);
     };
 
-    const handleUserSelect = (user) => {
-        setSelectedUser(user);
-        setSearchValue(`${user.name} - ${user.email}`);
-        setFilteredUsers([]);
+    const handleSelectProperty = (property) => {
+        setSelectedProperty(property);
+        setSearchValue(property.serial || `ID ${property.id}`);
+        setFilteredProps([]);
     };
 
     const handleSubmit = async (values) => {
@@ -67,22 +64,21 @@ export default function CreateConsumptionsModal({
             if (values.bill) {
                 files = await uploadFiles([values.bill], "Consumos");
             }
-
-            await axios.post("/api/admin/consumptions", {
+            const body = {
+                propertyId: selectedProperty.id,
                 amount: values.price,
                 type: values.type.toUpperCase(),
                 url: files.length > 0 ? files[0].url : null,
                 period: values.period,
-                clientId: selectedUser.id,
-                leaseOrderId: values.leaseOrder,
                 startDate: values.startDate,
                 endDate: values.endDate,
-            });
+            };
 
+            await axios.post("/api/admin/consumptions/property", body);
             toast.success("Datos guardados correctamente.", { id: toastId });
             await mutate();
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.info("Error al guardar los datos.", { id: toastId });
         }
     };
@@ -96,86 +92,66 @@ export default function CreateConsumptionsModal({
                 <button onClick={onClose} className={modalStyles.closeButton}>
                     X
                 </button>
-                <h2 className={modalStyles.title}>Crear Nuevo Registro</h2>
+                <h2 className={modalStyles.title}>
+                    Crear Consumo por Propiedad
+                </h2>
 
                 <Formik
                     initialValues={{
-                        leaseOrder: "",
                         price: "",
                         type: "",
-                        bill: null,
                         period: "",
                         startDate: "",
                         endDate: "",
+                        bill: null,
                     }}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
+                    enableReinitialize
                 >
                     {({ setFieldValue }) => (
                         <Form>
+                            {/* Buscar propiedad */}
                             <div className="mb-4 relative">
                                 <label className="text-xs font-light">
-                                    Buscar Usuario
+                                    Buscar Propiedad
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder="Buscar por nombre, email o ID"
-                                    className={modalStyles.input}
                                     value={searchValue}
-                                    onChange={handleUserSearch}
+                                    onChange={handleSearch}
+                                    placeholder="Escribe el serial..."
+                                    className={modalStyles.input}
                                 />
-                                {filteredUsers.length > 0 && (
+                                {filteredProps.length > 0 && (
                                     <ul className={modalStyles.userList}>
-                                        {filteredUsers.map((user) => (
+                                        {filteredProps.map((property) => (
                                             <li
-                                                key={user.id}
+                                                key={property.id}
                                                 className={modalStyles.userItem}
                                                 onClick={() =>
-                                                    handleUserSelect(user)
+                                                    handleSelectProperty(
+                                                        property
+                                                    )
                                                 }
                                             >
-                                                {user.name} - {user.email}
+                                                {property.serial ||
+                                                    `ID ${property.id}`}
                                             </li>
                                         ))}
                                     </ul>
                                 )}
+                                {!selectedProperty && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        Debes seleccionar una propiedad
+                                    </p>
+                                )}
                             </div>
 
+                            {/* Importe */}
                             <div className="mb-4">
                                 <label className="text-xs font-light">
-                                    Orden de Alquiler
-                                </label>
-                                <Field
-                                    as="select"
-                                    name="leaseOrder"
-                                    className={modalStyles.select}
-                                >
-                                    <option value="">Seleccionar Orden</option>
-                                    {selectedUser &&
-                                        selectedUser.leaseOrdersRoom
-                                            .filter(
-                                                (order) =>
-                                                    order.status !== "REJECTED"
-                                            )
-                                            .map((order) => (
-                                                <option
-                                                    key={order.id}
-                                                    value={order.id}
-                                                >
-                                                    {order.room?.serial}
-                                                </option>
-                                            ))}
-                                </Field>
-                                <ErrorMessage
-                                    name="leaseOrder"
-                                    component="div"
-                                    style={{ color: "red" }}
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="text-xs font-light">
-                                    Precio
+                                    Importe (€)
                                 </label>
                                 <Field
                                     type="number"
@@ -185,10 +161,11 @@ export default function CreateConsumptionsModal({
                                 <ErrorMessage
                                     name="price"
                                     component="div"
-                                    style={{ color: "red" }}
+                                    className="text-red-500 text-sm mt-1"
                                 />
                             </div>
 
+                            {/* Tipo */}
                             <div className="mb-4">
                                 <label className="text-xs font-light">
                                     Tipo
@@ -198,7 +175,7 @@ export default function CreateConsumptionsModal({
                                     name="type"
                                     className={modalStyles.select}
                                 >
-                                    <option value="">Seleccionar Tipo</option>
+                                    <option value="">Seleccionar tipo</option>
                                     <option value="GENERAL_SUPPLIES">
                                         Suministros
                                     </option>
@@ -213,10 +190,11 @@ export default function CreateConsumptionsModal({
                                 <ErrorMessage
                                     name="type"
                                     component="div"
-                                    style={{ color: "red" }}
+                                    className="text-red-500 text-sm mt-1"
                                 />
                             </div>
 
+                            {/* Periodo */}
                             <div className="mb-4">
                                 <label className="text-xs font-light">
                                     Periodo
@@ -232,8 +210,14 @@ export default function CreateConsumptionsModal({
                                     <option value="1Q">1Q</option>
                                     <option value="2Q">2Q</option>
                                 </Field>
+                                <ErrorMessage
+                                    name="period"
+                                    component="div"
+                                    className="text-red-500 text-sm mt-1"
+                                />
                             </div>
 
+                            {/* Fecha Desde */}
                             <div className="mb-4">
                                 <label className="text-xs font-light">
                                     Desde
@@ -243,8 +227,14 @@ export default function CreateConsumptionsModal({
                                     name="startDate"
                                     className={modalStyles.input}
                                 />
+                                <ErrorMessage
+                                    name="startDate"
+                                    component="div"
+                                    className="text-red-500 text-sm mt-1"
+                                />
                             </div>
 
+                            {/* Fecha Hasta */}
                             <div className="mb-4">
                                 <label className="text-xs font-light">
                                     Hasta
@@ -254,8 +244,14 @@ export default function CreateConsumptionsModal({
                                     name="endDate"
                                     className={modalStyles.input}
                                 />
+                                <ErrorMessage
+                                    name="endDate"
+                                    component="div"
+                                    className="text-red-500 text-sm mt-1"
+                                />
                             </div>
 
+                            {/* Factura */}
                             <div className="mb-4">
                                 <label className="text-xs font-light">
                                     Factura
@@ -272,11 +268,12 @@ export default function CreateConsumptionsModal({
                                 />
                             </div>
 
+                            {/* Botones */}
                             <div className={modalStyles.buttonContainer}>
                                 <button
                                     type="button"
-                                    className={modalStyles.cancelButton}
                                     onClick={onClose}
+                                    className={modalStyles.cancelButton}
                                 >
                                     Cancelar
                                 </button>

@@ -7,6 +7,7 @@ import CreateConsumptionsModal from "./CreateConsumptionsModal";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 import EditConsumptionModal from "./EditConsumptionModal";
 import Link from "next/link";
+import CreatePropertyConsumptionsModal from "./CreatePropertyConsumptionsModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -19,9 +20,10 @@ const TYPE_LABELS = {
     OTHER: "Otro",
 };
 
-export default function ConsumptionsPanel({ data, users }) {
+export default function ConsumptionsPanel({ data, users, properties }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [createIsOpen, setCreateIsOpen] = useState(false);
+    const [createPropertyIsOpen, setCreatePropertyIsOpen] = useState(false);
     const [editIsOpen, setEditIsOpen] = useState(false);
     const [selectedConsumption, setSelectedConsumption] = useState(null);
 
@@ -35,50 +37,21 @@ export default function ConsumptionsPanel({ data, users }) {
     });
 
     const handleDelete = async (id) => {
+        const toastId = toast.loading("Eliminando...");
         try {
             await axios.delete(`/api/admin/consumptions?id=${id}`);
             const updatedData = swrData.filter((item) => item.id !== id);
             mutate(updatedData);
+            toast.success("Consumo eliminado con éxito", { id: toastId });
         } catch (error) {
-            throw error;
+            console.log(error);
+            toast.info("Error al eliminar el consumo", { id: toastId });
         }
     };
 
     const handleEdit = (consumption) => {
         setSelectedConsumption(consumption);
         setEditIsOpen(true);
-    };
-
-    const deleteToast = (consumption) => {
-        toast(
-            <div className="flex items-center mx-auto gap-2 flex-col">
-                <p>Estas seguro que deseas eliminar el consumo?</p>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => {
-                            toast.promise(handleDelete(consumption.id), {
-                                loading: "Eliminando...",
-                                success: "Consumo eliminado",
-                                info: "Error al eliminar el consumo",
-                            });
-                            toast.dismiss();
-                        }}
-                        className="bg-red-500 text-white px-2 py-1 rounded"
-                    >
-                        Si
-                    </button>
-                    <button
-                        onClick={() => toast.dismiss()}
-                        className="bg-green-500 text-white px-2 py-1 rounded"
-                    >
-                        No
-                    </button>
-                </div>
-            </div>,
-            {
-                position: "top-center",
-            }
-        );
     };
 
     let filteredConsumptions = (swrData || [])?.filter((consumption) => {
@@ -114,7 +87,13 @@ export default function ConsumptionsPanel({ data, users }) {
                         onClick={() => setCreateIsOpen(true)}
                         className="bg-[#0C1660] text-white px-3 py-3 rounded ml-5"
                     >
-                        Crear Consumo
+                        Crear consumo (Room)
+                    </button>
+                    <button
+                        onClick={() => setCreatePropertyIsOpen(true)}
+                        className="bg-[#0C1660] text-white px-3 py-3 rounded ml-5"
+                    >
+                        Crear consumo (Piso)
                     </button>
                 </div>
             </div>
@@ -198,10 +177,12 @@ export default function ConsumptionsPanel({ data, users }) {
                                         )}
                                     </td>
                                     <td className="border p-2 text-gray-700 text-center">
-                                        <div className="flex gap-2 items-center justify-around">
+                                        <div
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="flex gap-2 items-center justify-around"
+                                        >
                                             <button
                                                 onClick={(e) => {
-                                                    e.stopPropagation();
                                                     handleEdit(consumption);
                                                 }}
                                             >
@@ -212,8 +193,16 @@ export default function ConsumptionsPanel({ data, users }) {
                                             </button>
                                             <button
                                                 onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    deleteToast(consumption);
+                                                    toast("Borrar consumo", {
+                                                        action: {
+                                                            label: "Confirmar",
+                                                            onClick: () => {
+                                                                handleDelete(
+                                                                    consumption.id
+                                                                );
+                                                            },
+                                                        },
+                                                    });
                                                 }}
                                             >
                                                 <TrashIcon
@@ -240,9 +229,15 @@ export default function ConsumptionsPanel({ data, users }) {
             </div>
             {createIsOpen && (
                 <CreateConsumptionsModal
-                    isOpen={createIsOpen}
                     onClose={() => setCreateIsOpen(false)}
                     users={users}
+                    mutate={mutate}
+                />
+            )}
+            {createPropertyIsOpen && (
+                <CreatePropertyConsumptionsModal
+                    onClose={() => setCreatePropertyIsOpen(false)}
+                    properties={properties}
                     mutate={mutate}
                 />
             )}
