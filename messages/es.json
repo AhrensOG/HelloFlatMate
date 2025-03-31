@@ -758,15 +758,44 @@
                 "btn": "Continuar con el proceso",
                 "btn_2": "Continuar"
             },
-            "code": "Codigo",
+            "code": "Código",
             "income": "Ingreso:",
             "out": "Salida:",
-            "month": "/mes",
+            "month": "mes",
             "detail_payment": {
                 "title": "Detalles de tu pago",
                 "total_pay": "El monto total a pagar es de",
                 "after_pay": "Después de realizar el pago, serás redirigido automáticamente para firmar tu contrato digital.",
                 "make_pay": "Realizar Pago"
+            },
+            "reservation_status": {
+                "IN_PROGRESS": "En progreso",
+                "INCOMPLETE": "Incompleto",
+                "FINISHED": "Finalizado",
+                "COMPLETE": "Completo"
+            },
+            "short_months": {
+                "1": "Ene",
+                "2": "Feb",
+                "3": "Mar",
+                "4": "Abr",
+                "5": "May",
+                "6": "Jun",
+                "7": "Jul",
+                "8": "Ago",
+                "9": "Sep",
+                "10": "Oct",
+                "11": "Nov",
+                "12": "Dic"
+            },
+            "short_days": {
+                "1": "Lun",
+                "2": "Mar",
+                "3": "Mie",
+                "4": "Jue",
+                "5": "Vie",
+                "6": "Sab",
+                "7": "Dom"
             }
         }
     },
@@ -1197,14 +1226,14 @@
             "no_tenants": "No hay inquilinos registrados.",
             "serial": "Serial:",
             "room": "Habitacion",
-            "current_tenant": "Inquilinos actuales",
-            "old_tenant": "Inquilinos anteriores"
+            "current_tenants": "Inquilinos actuales",
+            "old_tenants": "Inquilinos anteriores"
         },
         "tenants_card": {
             "status_label": {
                 "in_process": "En proceso",
                 "pending": "Pendiente",
-                "finished": "Finalizada",
+                "finished": "Finalizado",
                 "approved": "Aprobado"
             },
             "payment_label": {
@@ -1221,7 +1250,7 @@
                 "paid": "Pagado"
             },
             "basic_info": {
-                "order": "Orden:",
+                "order": "Contrato:",
                 "email": "Email:",
                 "phone": "Tel:"
             },
@@ -1291,6 +1320,8 @@
                 "internet": "WIFI",
                 "others": "Otros"
             },
+            "total_earnings": "Rendimiento total",
+            "monthly_earnings": "Rendimiento",
             "title": "Rendimiento mensual de tus propiedades",
             "p_1": "No hay ingresos registrados.",
             "bar_chart": {
@@ -1305,7 +1336,7 @@
             "p_4": "Concepto:",
             "p_5": "Tipo:",
             "p_6": "Fecha:",
-            "p_7": "Monto:"
+            "p_7": "Importe:"
         },
         "wallet": {
             "span_1": "Balance de la billetera: ",

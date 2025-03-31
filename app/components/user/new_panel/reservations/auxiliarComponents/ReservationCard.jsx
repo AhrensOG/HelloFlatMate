@@ -21,7 +21,6 @@ function generateDsOrder(leaseOrderId) {
     }
     return dsOrder;
 }
-
 const ReservationCard = ({ data, user }) => {
     const t = useTranslations("user_history.card");
 
@@ -34,21 +33,8 @@ const ReservationCard = ({ data, user }) => {
             if (isNaN(date.getTime())) {
                 throw new Error("Fecha inválida");
             }
-            const days = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
-            const months = [
-                "ene",
-                "feb",
-                "mar",
-                "abr",
-                "may",
-                "jun",
-                "jul",
-                "ago",
-                "sep",
-                "oct",
-                "nov",
-                "dic",
-            ];
+            const days = [t("short_days.7"), t("short_days.1"), t("short_days.2"), t("short_days.3"), t("short_days.4"), t("short_days.5"), t("short_days.6")];
+            const months = [t("short_months.1"), t("short_months.2"), t("short_months.3"), t("short_months.4"), t("short_months.5"), t("short_months.6"), t("short_months.7"), t("short_months.8"), t("short_months.9"), t("short_months.10"), t("short_months.11"), t("short_months.12")];
             const dayOfWeek = days[date.getUTCDay()];
             const day = date.getUTCDate().toString().padStart(2, "0");
             const month = months[date.getUTCMonth()];
@@ -64,7 +50,7 @@ const ReservationCard = ({ data, user }) => {
         if (data.status === "IN_PROGRESS") {
             return (
                 <span className="max-w-32 flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
-                    <ClockIcon className="w-4 h-4" /> En progreso
+                    <ClockIcon className="w-4 h-4" /> {t("reservation_status.IN_PROGRESS")}
                 </span>
             );
         } else if (
@@ -75,19 +61,19 @@ const ReservationCard = ({ data, user }) => {
         ) {
             return (
                 <span className="max-w-32 flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
-                    <PencilIcon className="w-4 h-4" /> Incompleta
+                    <PencilIcon className="w-4 h-4" /> {t("reservation_status.INCOMPLETE")}
                 </span>
             );
         } else if (data.status === "FINISHED") {
             return (
                 <span className="max-w-32 flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
-                    <CheckCircleIcon className="w-4 h-4" /> Finalizada
+                    <CheckCircleIcon className="w-4 h-4" /> {t("reservation_status.FINISHED")}
                 </span>
             );
         } else {
             return (
                 <span className="max-w-32 flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
-                    <CheckCircleIcon className="w-4 h-4" /> Completa
+                    <CheckCircleIcon className="w-4 h-4" /> {t("reservation_status.COMPLETE")}
                 </span>
             );
         }
@@ -145,7 +131,8 @@ const ReservationCard = ({ data, user }) => {
             name="redsysForm"
             action={redsysData.redsysUrl}
             method="POST"
-            style={{ display: "none" }}>
+            style={{ display: "none" }}
+        >
             <input
                 type="hidden"
                 name="Ds_SignatureVersion"
@@ -170,8 +157,9 @@ const ReservationCard = ({ data, user }) => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
-                className="w-full bg-white shadow-md border border-gray-200 rounded-lg mt-6 p-6 flex flex-col md:flex-row gap-6">
-                <div className="w-full md:w-2/5">
+                className="w-full bg-white shadow-md border border-gray-200 rounded-lg mt-6 p-6 flex flex-col md:flex-row gap-6"
+            >
+                {/* <div className="w-full md:w-2/5">
                     <div className="relative w-full h-[208px] rounded-lg overflow-hidden">
                         <Image
                             src={
@@ -185,35 +173,41 @@ const ReservationCard = ({ data, user }) => {
                             priority
                         />
                     </div>
-                </div>
+                </div> */}
 
-                <div className="flex flex-col justify-between w-full md:w-3/5">
+                <div className="flex flex-col justify-between w-full">
                     <div>
                         <div>{getStatusBadge()}</div>
                         <h3 className="text-xl font-semibold text-gray-900">
-                            {data.room?.name || "Habitación sin nombre"}
+                            {t("code")}:{" "}
+                            {data.room?.serial || "Habitación sin nombre"}
                         </h3>
                         <p className="text-gray-800 font-bold text-xl">
                             {data.room?.price
                                 ? `${data.room.price} €`
                                 : "Precio no disponible"}{" "}
                             <span className="text-base text-gray-500">
-                                / mes
+                                / {t("month")}
                             </span>
+                        </p>
+                        <p className="text-gray-600 text-sm">
+                            {data.room?.property?.street +
+                                " " +
+                                data.room?.property?.streetNumber +
+                                ", " +
+                                data.room?.property?.postalCode || "N/A"}
                         </p>
                         <p className="text-gray-600 text-sm">
                             {formatDate(data.startDate)} -{" "}
                             {formatDate(data.endDate)}
-                        </p>
-                        <p className="text-gray-600 text-sm">
-                            Código: {data.room?.serial || "N/A"}
                         </p>
                     </div>
 
                     {data.status === "PENDING" ? (
                         <button
                             onClick={handleRedsysCheckout}
-                            className="mt-4 bg-[#440cac] text-center text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition">
+                            className="mt-4 bg-[#440cac] text-center text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition"
+                        >
                             Pagar mi reserva
                         </button>
                     ) : data.status === "APPROVED" &&
@@ -222,7 +216,8 @@ const ReservationCard = ({ data, user }) => {
                       !data.inReview ? (
                         <Link
                             href={`/pages/user/contractv2?p=${data?.propertyId}&r=${data.room?.id}&lo=${data.id}`}
-                            className="mt-4 bg-[#440cac] text-center text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition">
+                            className="mt-4 bg-[#440cac] text-center text-white font-semibold py-2 px-4 rounded-md hover:bg-[#440cac]/80 transition"
+                        >
                             Firmar contrato
                         </Link>
                     ) : null}

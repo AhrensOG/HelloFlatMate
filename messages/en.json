@@ -744,7 +744,7 @@
             "contract": {
                 "signed": "Contract Signed",
                 "signed_info": "Your request has been approved and the contract is signed!",
-                "in_revision": "Under Review",
+                "in_revision": "Under Review", 
                 "in_revision_info": "Your request is under review. We will notify you when it's finished!"
             },
             "continue": {
@@ -754,12 +754,41 @@
             "code": "Code",
             "income": "Check-in:",
             "out": "Check-out:",
-            "month": "/month",
+            "month": "month",
             "detail_payment": {
                 "title": "Payment Details",
                 "total_pay": "The total amount to pay is",
                 "after_pay": "After making the payment, you will be automatically redirected to sign your digital contract.",
                 "make_pay": "Make Payment"
+            },
+            "reservation_status": {
+                "IN_PROGRESS": "In progress",
+                "INCOMPLETE": "Incomplete",
+                "FINISHED": "Finished",
+                "COMPLETE": "Complete"
+            },
+            "short_months": {
+                "1": "Jan",
+                "2": "Feb",
+                "3": "Mar",
+                "4": "Apr",
+                "5": "May",
+                "6": "Jun",
+                "7": "Jul",
+                "8": "Aug",
+                "9": "Sep",
+                "10": "Oct",
+                "11": "Nov",
+                "12": "Dec"
+            },
+            "short_days": {
+                "1": "Mon",
+                "2": "Tue",
+                "3": "Wed",
+                "4": "Thu",
+                "5": "Fri",
+                "6": "Sat",
+                "7": "Sun"
             }
         }
     },
@@ -1183,8 +1212,8 @@
             "no_tenants": "No tenants registered.",
             "serial": "Serial:",
             "room": "Room",
-            "current_tenant": "Current Tenants",
-            "old_tenant": "Previous Tenants"
+            "current_tenants": "Current Tenants",
+            "old_tenants": "Previous Tenants"
         },
         "tenants_card": {
             "status_label": {
@@ -1207,7 +1236,7 @@
                 "paid": "Paid"
             },
             "basic_info": {
-                "order": "Order:",
+                "order": "Contract:",
                 "email": "Email:",
                 "phone": "Phone:"
             },
@@ -1277,6 +1306,8 @@
                 "internet": "WIFI",
                 "others": "Others"
             },
+            "total_earnings": "Total performance",
+            "monthly_earnings": "Performance",
             "title": "Monthly Performance of Your Properties",
             "p_1": "No income registered.",
             "bar_chart": {
@@ -1291,7 +1322,7 @@
             "p_4": "Concept:",
             "p_5": "Type:",
             "p_6": "Date:",
-            "p_7": "Amount:"
+            "p_7": "Import:"
         },
         "wallet": {
             "span_1": "Wallet Balance: ",

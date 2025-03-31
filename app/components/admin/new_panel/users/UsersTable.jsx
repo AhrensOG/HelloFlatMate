@@ -27,7 +27,7 @@ const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handl
                         onClick={() => handleOpenModal(user)}
                     >
                         {/* <td className="border p-2 text-gray-700 text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-20">{user.id}</td> */}
-                        <td className="border p-2 text-gray-700 text-center">{`${user.name} ${user.lastName}`}</td>
+                        <td className="border p-2 text-gray-700 text-start">{`${user.name} ${user.lastName}`}</td>
                         <td className="border p-2 text-gray-700 text-center">
                             {user.email}
                         </td>

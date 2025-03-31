@@ -7,27 +7,6 @@ import formatDateToDDMMYYYY from "@/app/components/admin/new_panel/utils/formatD
 import PaymentRequestModal from "./PaymentRequestModal";
 import { useTranslations } from "next-intl";
 
-const STATUS_LABEL = {
-    IN_PROCESS: "En Proceso",
-    PENDING: "Pendiente",
-    APPROVED: "Aprobada",
-    FINISHED: "Finalizada",
-};
-
-const PAYMENT_LABELS = {
-    MONTHLY: "Mensual",
-    RESERVATION: "Reserva",
-    DEPOSIT: "Depósito",
-    AGENCY_FEES: "Tasa de la agencia",
-    CLEANUP: "Limpieza check-out",
-    GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
-    INTERNET: "WIFI",
-    OTHERS: "Otros",
-    APPROVED: "Pagado",
-    PAID: "Pagado",
-    PENDING: "Pendiente",
-};
-
 const TenantCard = ({ order, isOld = false }) => {
     const t = useTranslations("owner_panel.tenants_card");
 

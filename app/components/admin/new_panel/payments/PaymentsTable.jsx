@@ -103,7 +103,7 @@ const PaymentsTable = ({
               key={`${payment.id}${payment.type}`}
               className="hover:bg-gray-100 even:bg-gray-50 transition-cursor cursor-pointer"
             >
-              <td className="border p-2 text-gray-700 text-center">
+              <td className="border p-2 text-gray-700 text-start">
                 {payment.user?.name + " " + payment.user?.lastName || "-"}
               </td>
               <td className="border p-2 text-gray-700 text-center">
