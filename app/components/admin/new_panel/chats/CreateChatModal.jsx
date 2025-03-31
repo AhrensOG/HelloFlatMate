@@ -12,6 +12,11 @@ const validationSchema = Yup.object().shape({
     ownerId: Yup.string().required("Propietario requerido"),
 });
 
+const TYPE_LABEL = {
+    PROPERTY: "Propiedad",
+    ROOM: "Room",
+};
+
 export default function CreateChatModal({
     properties = [],
     users = [],
@@ -145,7 +150,7 @@ export default function CreateChatModal({
                                                           opt.type ===
                                                               values.relatedType
                                                   )?.serial
-                                              } (${values.relatedType})`
+                                              } (${TYPE_LABEL[values.relatedType]})`
                                             : "Seleccionar..."}
                                     </div>
 
@@ -183,7 +188,7 @@ export default function CreateChatModal({
                                                             className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
                                                         >
                                                             {item.serial} (
-                                                            {item.type})
+                                                            {TYPE_LABEL[item.type]})
                                                         </div>
                                                     )
                                                 )}

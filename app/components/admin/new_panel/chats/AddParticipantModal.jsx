@@ -16,6 +16,11 @@ const ROLE_LABEL = {
     CLIENT: "Cliente",
 };
 
+const CHAT_TYPE_LABEL = {
+    GROUP: "Grupal",
+    PRIVATE: "Privado",
+};
+
 export default function AddParticipantModal({
     onClose,
     onSubmit,
@@ -54,7 +59,7 @@ export default function AddParticipantModal({
     const getChatLabel = (chat) => {
         const serial =
             chat.type === "GROUP" ? chat.property?.serial : chat.room?.serial;
-        return `${serial || "Sin serial"} - ${chat.type} - ID: ${chat.id}`;
+        return `${serial || "Sin serial"} - ${CHAT_TYPE_LABEL[chat.type]} - ID: ${chat.id}`;
     };
 
     return (
