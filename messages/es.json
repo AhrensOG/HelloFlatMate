@@ -924,6 +924,8 @@
         }
     },
     "user_profile_v2": {
+        "title_1": "Pagos",
+        "title_2": "Suministros",
         "responses": {
             "success": "Información actualizada correctamente",
             "loading": "Guardando...",
@@ -1165,6 +1167,220 @@
             "tasks": "Tareas",
             "chats": "Mensajes",
             "profile": "Mi Perfil"
+        }
+    },
+    "owner_panel": {
+        "title_1": "Dashboard",
+        "title_2": "Perfil",
+        "title_3": "Mis Inquilinos",
+        "sidebar": {
+            "links": {
+                "name_1": "Panel",
+                "name_2": "Perfil",
+                "name_3": "Mis Inquilinos"
+            },
+            "btn_logout": "Cerrar sesión"
+        },
+        "profile": {
+            "title": " Información personal",
+            "title_2": "Mi Perfil",
+            "name": " Nombre",
+            "last_name": " Apellido",
+            "email": " Correo",
+            "id": "ID / Passport",
+            "advise_btn": {
+                "t_1": "Pagos"
+            }
+        },
+        "my_tenants": {
+            "title": "Mis Inquilinos",
+            "no_tenants": "No hay inquilinos registrados.",
+            "serial": "Serial:",
+            "room": "Habitacion",
+            "current_tenant": "Inquilinos actuales",
+            "old_tenant": "Inquilinos anteriores"
+        },
+        "tenants_card": {
+            "status_label": {
+                "in_process": "En proceso",
+                "pending": "Pendiente",
+                "finished": "Finalizada",
+                "approved": "Aprobado"
+            },
+            "payment_label": {
+                "monthly": "Mensual",
+                "reservation": "Reserva",
+                "deposit": "Deposito",
+                "agency_fees": "Tasa de la agencia",
+                "general_supplies": "Suministros generales (agua, luz, gas)",
+                "cleanup": "Limpieza check-out",
+                "internet": "WIFI",
+                "others": "Otros",
+                "approved": "Aprobado",
+                "pending": "Pendiente",
+                "paid": "Pagado"
+            },
+            "basic_info": {
+                "order": "Orden:",
+                "email": "Email:",
+                "phone": "Tel:"
+            },
+            "price_dates": {
+                "from": "Desde: ",
+                "to": "Hasta: ",
+                "price": "Precio: "
+            },
+            "emergency": {
+                "p_1": "Contacto de emergencia"
+            },
+            "documents": {
+                "p_1": "Documentos",
+                "view": "Ver documento"
+            },
+            "contracts": {
+                "p_1": "Contratos",
+                "view": "Ver contrato",
+                "request_payment": "Solicitar pago a ",
+                "p_2": "Todos los pagos",
+                "hide_payments": "Ocultar pagos",
+                "show_payments": "Ver pagos"
+            },
+            "rent_payments": {
+                "h4": "Pagos de renta",
+                "id_payment": "ID de pago:",
+                "date": "Fecha: ",
+                "status": "Estado: "
+            },
+            "supplies": {
+                "h4": "Suministros y extras",
+                "concept": "Concepto: ",
+                "amount": "Monto: ",
+                "date": "Fecha: ",
+                "status": "Estado: ",
+                "id_payment": "ID pago: "
+            }
+        },
+        "payment_request": {
+            "verifications": {
+                "required_1": "Importe requerido",
+                "min_1": "Debe ser mayor a 0",
+                "required_2": "Concepto requerido",
+                "max_1": "Maximo 100 caracteres"
+            },
+            "loading": "Solicitando pago...",
+            "success": "Solicitud enviada con éxito",
+            "success_desc": "Recuerda actualizar la pagina para ver los cambios",
+            "error": "Error al solicitar el pago",
+            "h2_1": "Solicitar pago",
+            "form": {
+                "lb_1": "Inquilino",
+                "lb_2": "Orden - Habitacion",
+                "lb_3": "Importe",
+                "lb_4": "Concepto / Título",
+                "submit": "Enviar solicitud"
+            }
+        },
+        "dashboard": {
+            "type_labels": {
+                "monthly": "Mensual",
+                "reservation": "Reserva",
+                "deposit": "Deposito",
+                "agency_fees": "Tasa de la agencia",
+                "general_supplies": "Suministros generales (agua, luz, gas)",
+                "cleanup": "Limpieza check-out",
+                "internet": "WIFI",
+                "others": "Otros"
+            },
+            "title": "Rendimiento mensual de tus propiedades",
+            "p_1": "No hay ingresos registrados.",
+            "bar_chart": {
+                "name_1": "Ingresos reales",
+                "name_2": "Proyección"
+            },
+            "p_2": "Proyección:",
+            "hide": "Ocultar",
+            "show": "Ver detalle",
+            "income_details": " Detalle de ingresos:",
+            "p_3": "Inquilino:",
+            "p_4": "Concepto:",
+            "p_5": "Tipo:",
+            "p_6": "Fecha:",
+            "p_7": "Monto:"
+        },
+        "wallet": {
+            "span_1": "Balance de la billetera: ",
+            "span_2": "Servicios totales: "
+        },
+        "owner_tenant_detail": {
+            "toast": {
+                "text_1": "¿Estás seguro de que deseas crear esta solicitud de pago?",
+                "lb_1": "Confirmar",
+                "loading": "Creando solicitud...",
+                "success": "Solicitud de pago creada correctamente!",
+                "error": "Error al crear la solicitud de pago"
+            },
+            "t_1": "Detalle",
+            "btn_1": "Solicitar pago",
+            "form": {
+                "h2_1": "Crear solicitud de pago",
+                "lb_1": "Titulo",
+                "lb_2": "Referencia (Opcional)",
+                "lb_3": "Tipo",
+                "options": {
+                    "water": "Agua",
+                    "electricity": "Electricidad",
+                    "gas": "Gas",
+                    "expenses": "Expensas",
+                    "internet": "Internet",
+                    "others": "Otros"
+                },
+                "lb_4": "Monto",
+                "lb_5": "Fecha de expiración",
+                "submit": "Crear"
+            },
+            "auxiliar_comp": {
+                "contact_card": {
+                    "toast": {
+                        "success": "copiado al portapapeles",
+                        "info_1": "El",
+                        "info_2": "no es válido o está ausente"
+                    },
+                    "btn_1": "número de teléfono"
+                },
+                "show_trans_hist": {
+                    "show": "Ver"
+                }
+            },
+            "stay_sec": {
+                "nan": "Fechas inválidas",
+                "h2": "Estadía",
+                "t_1": "Ingreso",
+                "t_2": "Salida",
+                "t_3": "Contrato",
+                "months": "Meses"
+            },
+            "trans_sec": {
+                "title": "Transacciones",
+                "t_1": "Historial"
+            }
+        },
+        "owner_tenants": {
+            "title": "Mis inquilinos",
+            "tenant_card": {
+                "details": "Detalles"
+            }
+        },
+        "expired_contracts": {
+            "title": "Contratos vencidos"
+        },
+        "documents_panel": {
+            "t_1": "Contrato activo"
+        },
+        "payment_card": {
+            "h2": "Pago recibido"
+        },
+        "payment": {
+            "title": "Historial de pagos"
         }
     }
 }
