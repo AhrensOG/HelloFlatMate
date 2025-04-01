@@ -65,21 +65,44 @@ export default function ProfileForm() {
                 country: user.country || "",
                 personalReview: user.personalReview || "",
                 reasonForValencia: user.reasonForValencia || "",
-                reasonForValenciaOther: user.reasonForValenciaOther || "",
+                reasonForValenciaOther: user.reasonForValenciaOther || "-",
             });
         }
     }, [state]);
 
     const handleSubmit = async (values) => {
         const toastId = toast.loading("Guardando...");
+
+        const missingFields = Object.entries(values).filter(
+            ([key, value]) =>
+                value === null ||
+                value === undefined ||
+                value === "" ||
+                (typeof value === "string" && value.trim() === "")
+        );
+        
+        console.log(values)
+        console.log(missingFields)
+        if (missingFields.length > 0) {
+            toast.info(
+                "Todos los campos son obligatorios. Por favor, completalos.",
+                {
+                    id: toastId,
+                }
+            );
+            return;
+        }
+
         try {
             await axios.put("/api/user", { ...values, id: state?.user?.id });
             await isUserLogged(dispatch);
-            router.push(`/pages/user/contractv2/docs?${queryString}`);
+
             toast.success("Información actualizada correctamente", {
                 id: toastId,
-                description: "¡Seras redirigido al siguiente paso!",
+                description: "¡Serás redirigido al siguiente paso!",
             });
+
+            router.push(`/pages/user/contractv2/docs?${queryString}`);
         } catch (error) {
             console.error("Error actualizando datos:", error);
             toast.info("Error al actualizar la información", {
@@ -96,7 +119,8 @@ export default function ProfileForm() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full p-6 bg-white">
+                className="w-full p-6 bg-white"
+            >
                 <h1 className="text-xl font-semibold text-gray-800 mb-4">
                     Información personal
                 </h1>
@@ -104,7 +128,8 @@ export default function ProfileForm() {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
-                    enableReinitialize>
+                    enableReinitialize
+                >
                     {({ setFieldValue, values }) => (
                         <Form>
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
@@ -236,7 +261,8 @@ export default function ProfileForm() {
                                 <Field
                                     as="select"
                                     name="genre"
-                                    className="appearance-none px-3 w-full bg-transparent border-none font-bold text-gray-900 focus:outline-none cursor-pointer">
+                                    className="appearance-none px-3 w-full bg-transparent border-none font-bold text-gray-900 focus:outline-none cursor-pointer"
+                                >
                                     <option value="">
                                         Selecciona una opción
                                     </option>
@@ -424,7 +450,8 @@ export default function ProfileForm() {
                                             );
                                         }
                                     }}
-                                    value={values.reasonForValencia}>
+                                    value={values.reasonForValencia}
+                                >
                                     <option value="">
                                         Selecciona una opción
                                     </option>
@@ -462,7 +489,8 @@ export default function ProfileForm() {
                                             duration: 0.3,
                                             ease: "easeInOut",
                                         }}
-                                        className="overflow-hidden">
+                                        className="overflow-hidden"
+                                    >
                                         <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                             <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                                 Cuéntanos tu razón
@@ -497,11 +525,13 @@ export default function ProfileForm() {
                                 <Field
                                     as="select"
                                     name="howMetUs"
-                                    className="appearance-none px-3 bg-white border-none font-bold text-gray-900 focus:outline-none">
+                                    className="appearance-none px-3 bg-white border-none font-bold text-gray-900 focus:outline-none"
+                                >
                                     {howMetUsOptions.map((option) => (
                                         <option
                                             key={option.value}
-                                            value={option.value}>
+                                            value={option.value}
+                                        >
                                             {option.label}
                                         </option>
                                     ))}
@@ -554,7 +584,8 @@ export default function ProfileForm() {
 
                             <button
                                 type="submit"
-                                className="mt-4 w-full bg-[#440cac] text-white py-3 rounded-sm font-semibold hover:bg-[#440cac]/80 transition-colors">
+                                className="mt-4 w-full bg-[#440cac] text-white py-3 rounded-sm font-semibold hover:bg-[#440cac]/80 transition-colors"
+                            >
                                 Guardar y continuar
                             </button>
                         </Form>
