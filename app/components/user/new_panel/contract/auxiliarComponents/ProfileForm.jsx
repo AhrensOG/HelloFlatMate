@@ -81,8 +81,6 @@ export default function ProfileForm() {
                 (typeof value === "string" && value.trim() === "")
         );
         
-        console.log(values)
-        console.log(missingFields)
         if (missingFields.length > 0) {
             toast.info(
                 "Todos los campos son obligatorios. Por favor, completalos.",
