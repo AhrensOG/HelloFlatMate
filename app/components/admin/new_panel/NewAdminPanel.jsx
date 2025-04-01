@@ -12,6 +12,7 @@ import RentalPeriodsPanel from "./rental_periods/RentalPeriodsPanel";
 import PropertiesPanel from "./properties/PropertiesPanel";
 import ConsumptionsPanel from "./consumptions/ConsumptionsPanel";
 import ChatsPanel from "./chats/ChatsPanel";
+import IncidencesPanel from "./incidences/IncidencesPanel";
 
 const NewAdminPanel = ({ data }) => {
     const router = useRouter();
@@ -47,6 +48,8 @@ const NewAdminPanel = ({ data }) => {
                 return <ConsumptionsPanel data={data.consumptions} users={data.allUsers?.clients} properties={data.optionSerials} />;
             case "chats":
                 return <ChatsPanel data={data.chats} users={data.allUsers} properties={data.optionSerials} />;
+            case "incidencias":
+                return <IncidencesPanel />;
             default:
                 return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
         }

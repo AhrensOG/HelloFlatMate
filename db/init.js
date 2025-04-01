@@ -23,6 +23,7 @@ const Consumption = require("./models/consumption");
 const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } = require("./textData");
 const SearchRequest = require("./models/searchRequest");
 const Notification = require("./models/notification");
+const Incidence = require("./models/incidence");
 
 (async () => {
     try {
@@ -35,6 +36,7 @@ const Notification = require("./models/notification");
         Owner.hasMany(Contract, { as: "contracts", foreignKey: "ownerId" });
         Owner.hasMany(Payment, { as: "payments", foreignKey: "ownerId" });
         Owner.hasMany(RentPayment, { as: "rentPayments", foreignKey: "ownerId" });
+        Owner.hasMany(Incidence, { as: "incidences", foreignKey: "ownerId" });
 
         //PROPERTY
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
@@ -43,6 +45,7 @@ const Notification = require("./models/notification");
         Property.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
         Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
+        Property.hasMany(Incidence, { as: "incidences", foreignKey: "propertyId" });
 
         //Room
         Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
@@ -108,6 +111,10 @@ const Notification = require("./models/notification");
 
         //SearchRequest
         SearchRequest.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+
+        //Incidences
+        Incidence.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
+        Incidence.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
 
         //Relaciones polimorficas
         //Client
@@ -463,4 +470,5 @@ module.exports = {
     SearchRequest,
     Consumption,
     Notification,
+    Incidence,
 };
