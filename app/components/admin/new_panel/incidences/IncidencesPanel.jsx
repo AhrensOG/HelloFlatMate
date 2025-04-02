@@ -63,6 +63,7 @@ const IncidencesPanel = () => {
             await fetch(`/api/admin/incidences/${id}`, {
                 method: "DELETE",
             });
+            await mutate()
             toast.success("Incidencia eliminada exitosamente", { id: toastId });
         } catch (error) {
             console.error("Error al eliminar la incidencia:", error);
