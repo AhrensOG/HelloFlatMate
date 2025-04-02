@@ -20,6 +20,7 @@ const IncidencesPanel = () => {
         data: incidencesData,
         error,
         isLoading,
+        mutate,
     } = useSWR("/api/admin/incidences", fetcher, {
         refreshInterval: 5 * 60 * 1000,
     });
@@ -82,7 +83,7 @@ const IncidencesPanel = () => {
     return (
         <div className="h-screen flex flex-col p-4 gap-4">
             <div className="space-y-6">
-                <h2 className="text-2xl font-bold">Chats</h2>
+                <h2 className="text-2xl font-bold">Incidencias</h2>
 
                 <div className="w-full flex gap-4">
                     <input
