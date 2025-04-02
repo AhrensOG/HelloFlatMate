@@ -95,7 +95,7 @@ export default function Chat({ ownerPage = false }) {
     ?.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
   return (
-    <div className="flex flex-col gap-2 h-full sm:max-h-[750px] overflow-hidden overflow-y-auto">
+    <div className="w-full flex flex-col gap-2 h-full overflow-hidden overflow-y-auto">
       {groupChats.map((chat) =>
         renderChatCard(
           chat,

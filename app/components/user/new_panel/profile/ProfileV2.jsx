@@ -22,10 +22,6 @@ export default function ProfileV2() {
     const howMetUsOptions = [
         { value: "", label: t("how_met_us_options.lb_1") },
         { value: t("how_met_us_options.vl_2"), label: t("how_met_us_options.lb_2") },
-        {
-            value: t("how_met_us_options.vl_2"),
-            label: t("how_met_us_options.lb_2"),
-        },
         { value: t("how_met_us_options.vl_3"), label: t("how_met_us_options.lb_3") },
         { value: t("how_met_us_options.vl_4"), label: t("how_met_us_options.lb_4") },
         { value: t("how_met_us_options.vl_5"), label: t("how_met_us_options.lb_5") },

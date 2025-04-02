@@ -21,7 +21,7 @@ export default function ChatsCard({ name, image, action = null, id, lastMessage,
                 {" "}
                 {/* Use flex-1 to allow truncation */}
                 <h3 className="font-semibold text-sm">{typeChat === "GROUP" ? "Grupo - " + name : name || ""}</h3>
-                <p className="font-normal text-xs text-[#919191] truncate">{lastMessage?.body || "No hay mensajes"}</p>
+                <p className="font-normal text-xs text-[#919191] truncate">{lastMessage?.body?.slice(0, 20) ? lastMessage?.body?.slice(0, 20)  + "..." : "No hay mensajes" || "No hay mensajes"}</p>
             </div>
             <div className="flex flex-col h-full justify-around items-end">
                 {notReadCount > 0 && (
