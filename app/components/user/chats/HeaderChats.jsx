@@ -13,13 +13,7 @@ export default function HeaderChats() {
       transition={{ duration: 0.8 }}
       className="flex justify-between items-center px-2 py-3"
     >
-      <button onClick={() => router.back()} className="h-7 w-7 " type="button">
-        <ChevronLeftIcon />
-      </button>
       <h1 className="font-bold text-xl">Chats</h1>
-      <button className="h-7 w-7" type="button">
-        <QuestionMarkCircleIcon />
-      </button>
     </motion.section>
   );
 }

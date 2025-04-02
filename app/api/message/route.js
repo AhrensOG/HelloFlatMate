@@ -22,6 +22,6 @@ export async function GET(req) {
 
 export async function PATCH(req) {
     const data = await req.json();
-    const result = await markMessageAsRead(data);
+    const result = await markMessageAsRead(data.messages);
     return result;
 }

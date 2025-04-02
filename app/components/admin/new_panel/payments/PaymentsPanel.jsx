@@ -98,7 +98,7 @@ const PaymentsPanel = ({ payments, users }) => {
                         className="border rounded px-3 py-2 w-96 appearance-none"
                     />
                     {searchQuery && (
-                        <ul className="absolute top-12 bg-white border rounded w-96 shadow-md max-h-40 overflow-y-auto z-10">
+                        <ul className="absolute top-12 bg-white border rounded w-96 shadow-md max-h-[600px] overflow-y-auto z-10">
                             {filteredUsers.map((user) => (
                                 <li
                                     key={user.id}

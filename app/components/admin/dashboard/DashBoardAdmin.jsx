@@ -1,11 +1,7 @@
  
 import TitleAdminPanel from "../shared/TitleAdminPanel";
 import ButtonsDashBoardAdmin from "./ButtonsDashBoardAdmin";
-import BarArticle from "./BarArticle";
-import PieArticle from "./PieArticle";
-import LineGraphic from "../graphics/LineGraphic";
 import { useRouter } from "next/navigation";
-import TableArticle from "./TableArticle";
 import CascadeUpdate from "./CascadeUpdate";
 import { useState } from "react";
 export default function DashBoardAdmin({ data }) {
@@ -26,8 +22,8 @@ export default function DashBoardAdmin({ data }) {
         <ButtonsDashBoardAdmin />
       </section>
       <section className="w-full flex flex-col justify-center items-center gap-5">
-        <BarArticle />
-        <PieArticle />
+        {/* <BarArticle /> */}
+        {/* <PieArticle /> */}
         <article className="flex w-full flex-col justify-center items-center gap-2">
           <div className="w-full">
             <div className="flex gap-1 justify-start items-center">
@@ -37,7 +33,7 @@ export default function DashBoardAdmin({ data }) {
               </h2>
             </div>
           </div>
-          <LineGraphic />
+          {/* <LineGraphic /> */}
         </article>
         {/* <TableArticle data={data} /> */}
       </section>

@@ -8,17 +8,31 @@ import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
+import NotificationIcon from "./notifications/NotificationIcon";
 import { useTranslations } from "next-intl";
+import NotificationsModal from "./notifications/NotificationsModal";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export default function NavbarV3({ fixed = false }) {
+export default function NavbarV3({ fixed = false, borderBottom = true }) {
+    const { state, dispatch } = useContext(Context);
     const [isOpen, setIsOpen] = useState(false);
-    const { state } = useContext(Context);
     const user = state?.user;
+    const [notifModalIsOpen, setNotifModalIsOpen] = useState(false);
+    const notifications = state?.notifications || [];
+    const [unreadCount, setUnreadCount] = useState(state?.unreadCount || null);
+
     const t = useTranslations("nav_bar");
+    const router = useRouter();
 
     const [locale, setLocale] = useState("es");
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handleLogOut = async () => {
+        await logOut();
+        router.push("/pages/auth");
     };
 
     useEffect(() => {
@@ -28,13 +42,33 @@ export default function NavbarV3({ fixed = false }) {
         }
     }, []);
 
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const fetchNotifications = async () => {
+            try {
+                const res = await axios.get(`/api/notification?id=${user.id}`);
+                dispatch({ type: "SET_NOTIFICATIONS", payload: res.data.notifications });
+                dispatch({ type: "SET_UNREAD_COUNT", payload: res.data.unreadCount });
+            } catch (error) {
+                throw new Error(error);
+            }
+        };
+
+        fetchNotifications();
+    }, [user?.id, dispatch]);
+
+    useEffect(() => {
+        setUnreadCount(state.unreadCount);
+    }, [state.unreadCount]);
+
     const renderMenuOptions = () => {
-        switch (user?.role) {
+        switch (state?.user?.role) {
             case "ADMIN":
                 return (
                     <>
                         <Link
-                            href={`/pages/admin/properties`}
+                            href={`/pages/admin/new-panel`}
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("admin_link_1")}
@@ -45,16 +79,28 @@ export default function NavbarV3({ fixed = false }) {
                 return (
                     <>
                         <Link
-                            href="/owner/properties"
+                            href="/pages/owner/profile"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("owner_link_1")}
                         </Link>
                         <Link
-                            href="/owner/earnings"
+                            href="/pages/owner/dashboard"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("owner_link_2")}
+                        </Link>
+                        <Link
+                            href="/pages/owner/my-tenantsv2"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            {t("owner_link_3")}
+                        </Link>
+                        <Link
+                            href="/pages/owner/chats"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            Chats
                         </Link>
                     </>
                 );
@@ -62,28 +108,40 @@ export default function NavbarV3({ fixed = false }) {
                 return (
                     <>
                         <Link
-                            href="/pages/user/profile"
+                            href="/pages/user/profilev2"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_1")}
                         </Link>
                         <Link
-                            href="/pages/user/my-bedrooms"
+                            href="/pages/user/reservations"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_2")}
                         </Link>
                         <Link
-                            href="/pages/user/my-reservations"
+                            href="/pages/user/history"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_3")}
                         </Link>
                         <Link
-                            href="/pages/user/history/payments"
+                            href="/pages/user/payments"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("user_link_4")}
+                        </Link>
+                        <Link
+                            href="/pages/user/supplies"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            {t("user_link_5")}
+                        </Link>
+                        <Link
+                            href="/pages/user/chats"
+                            className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                        >
+                            Chats
                         </Link>
                     </>
                 );
@@ -91,7 +149,7 @@ export default function NavbarV3({ fixed = false }) {
                 return (
                     <>
                         <Link
-                            href="/worker/tasks"
+                            href="/pages/worker-panel/tasks"
                             className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                         >
                             {t("worker_link_1")}
@@ -105,9 +163,9 @@ export default function NavbarV3({ fixed = false }) {
 
     return (
         <nav
-            className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-b border-[#c7c7c7] bg-white ${
+            className={`flex items-center justify-between py-2 px-4 lg:px-10 z-30 border-[#c7c7c7] bg-white ${
                 fixed ? "fixed top-0 w-full h-16 z-20" : "relative"
-            } `}
+            } ${borderBottom ? "border-b" : "border-none"}`}
         >
             {/* Icono de menú hamburguesa a la izquierda */}
             <div className="md:hidden flex justify-center items-center">
@@ -123,7 +181,11 @@ export default function NavbarV3({ fixed = false }) {
 
             {/* Menú de escritorio */}
             <div className="hidden md:flex items-center gap-5">
-                <Link href={`/${locale?.toLowerCase()}/ultimas-habitaciones`} target="_blank" className="font-bold text-base border border-black py-1 p-2 px-5">
+                <Link
+                    href={`/${locale?.toLowerCase()}/ultimas-habitaciones`}
+                    target="_blank"
+                    className="font-bold text-base border border-black py-1 p-2 px-5"
+                >
                     Last rooms
                 </Link>
                 <Link href={`/${locale?.toLowerCase()}/como-funciona`} target="_blank" className="font-bold text-base">
@@ -138,10 +200,10 @@ export default function NavbarV3({ fixed = false }) {
                         <button className="flex items-center gap-2 font-bold text-base">
                             {user.name} <ChevronDownIcon className="size-4 text-gray-500" />
                         </button>
-                        <div className="absolute right-0 w-48 bg-white shadow-lg rounded-md hidden group-hover:block shadow-reservation-list">
+                        <div className="absolute right-0 w-48 bg-white shadow-md rounded-md hidden group-hover:block">
                             {renderMenuOptions()}
                             <button
-                                onClick={() => logOut()}
+                                onClick={() => handleLogOut()}
                                 className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500 w-full text-start"
                             >
                                 {t("logout")}
@@ -160,6 +222,17 @@ export default function NavbarV3({ fixed = false }) {
                     </div>
                 )}
                 <Dropdown p={0} />
+                {/* Notificaciones */}
+                {user && (
+                    <>
+                        {(unreadCount !== null || unreadCount !== undefined) && (
+                            <NotificationIcon onClick={() => setNotifModalIsOpen(!notifModalIsOpen)} count={unreadCount} />
+                        )}
+                        {notifModalIsOpen && (
+                            <NotificationsModal data={notifications} userId={user?.id} unreadCount={unreadCount} setUnreadCount={setUnreadCount} />
+                        )}
+                    </>
+                )}
             </div>
 
             {/* Menú móvil con animación */}
@@ -198,7 +271,7 @@ export default function NavbarV3({ fixed = false }) {
                                 <>
                                     {renderMenuOptions()}
                                     <button
-                                        onClick={() => logOut()}
+                                        onClick={() => handleLogOut()}
                                         className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500"
                                     >
                                         {t("logout")}

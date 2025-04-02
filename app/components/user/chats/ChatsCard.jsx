@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 export default function ChatsCard({ name, image, action = null, id, lastMessage, typeChat, notReadCount }) {
-
     const router = useRouter();
 
     return (
@@ -15,8 +14,8 @@ export default function ChatsCard({ name, image, action = null, id, lastMessage,
             exit={{ opacity: 0, x: 100 }}
             transition={{ duration: 0.8 }}
         >
-            <div className="relative w-[4.4rem] h-[4.4rem] rounded-full">
-                <Image className="rounded-full" src={image} fill alt="Ilustracion de chat" style={{ objectFit: "cover", objectPosition: "center" }} />
+            <div className="relative w-[4.4rem] h-[4.4rem]">
+                <Image src={image} fill alt="Ilustracion de chat" style={{ objectFit: "cover", objectPosition: "center" }} />
             </div>
             <div className="flex flex-col gap-1 flex-1">
                 {" "}

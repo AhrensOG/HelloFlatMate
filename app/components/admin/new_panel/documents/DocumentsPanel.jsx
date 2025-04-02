@@ -109,7 +109,7 @@ export default function DocumentsPanel({ data, users }) {
                     <thead className="sticky top-0 bg-white">
                         <tr>
                             <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th>
-                            <th className="border border-t-0 p-2 w-72 text-center font-semibold text-gray-700">Nombre</th>
+                            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Nombre</th>
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">Usuario</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Orden</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Tipo</th>

@@ -27,6 +27,7 @@ const FetchDataComponent = async () => {
             return {
                 serial: property.serial,
                 id: property.id,
+                rooms: property.rooms,
             };
         });
         const paymentsFetch = await axios.get(`${BASE_URL}/api/admin/payments`);
@@ -35,6 +36,7 @@ const FetchDataComponent = async () => {
         const documents = await axios.get(`${BASE_URL}/api/admin/document`);
         const rentalPeriods = await axios.get(`${BASE_URL}/api/admin/rental_period`);
         const consumptions = await axios.get(`${BASE_URL}/api/admin/consumptions`);
+        const chats = await axios.get(`${BASE_URL}/api/admin/chat`);
 
         data = {
             allLeaseOrders: loFetch.data,
@@ -49,6 +51,7 @@ const FetchDataComponent = async () => {
             documents: documents.data,
             rentalPeriods: rentalPeriods.data.rentalPeriods,
             consumptions: consumptions.data,
+            chats: chats.data,
         };
     } catch (err) {
         console.error("Error en SSR:", err);

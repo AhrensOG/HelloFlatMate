@@ -32,7 +32,6 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function CreateConsumptionsModal({
-    isOpen,
     onClose,
     users,
     mutate,
@@ -40,8 +39,6 @@ export default function CreateConsumptionsModal({
     const [selectedUser, setSelectedUser] = useState(null);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchValue, setSearchValue] = useState("");
-
-    if (!isOpen) return null;
 
     const handleUserSearch = (e) => {
         const query = e.target.value.toLowerCase();
@@ -202,9 +199,6 @@ export default function CreateConsumptionsModal({
                                     className={modalStyles.select}
                                 >
                                     <option value="">Seleccionar Tipo</option>
-                                    <option value="GENERAL_SUPPLIES">
-                                        Suministros
-                                    </option>
                                     <option value="INTERNET">Wifi</option>
                                     <option value="WATER">Agua</option>
                                     <option value="GAS">Gas</option>

@@ -147,17 +147,11 @@ export async function POST(request) {
     paymentType,
     roomId,
     leaseOrderId,
-    category,
     userEmail,
     price,
-    paymentableType,
     paymentableId,
     clientId,
-    leaseOrderType,
-    quotaNumber,
-    amount,
     month,
-    propertySerial,
   } = merchantDataString;
 
   // 🚀 6️⃣ Responder con éxito
@@ -176,10 +170,7 @@ export async function POST(request) {
         paymentId,
         paymentableId,
         leaseOrderId,
-        paymentableType,
         clientId,
-        amount,
-        quotaNumber,
         month,
         order,
         HFM_MAIL,

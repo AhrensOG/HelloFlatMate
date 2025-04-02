@@ -13,6 +13,8 @@ import {
     ClipboardDocumentIcon,
     CalendarDaysIcon,
     DocumentCurrencyEuroIcon,
+    ChatBubbleLeftRightIcon,
+    WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { logOut } from "@/app/firebase/logOut";
@@ -43,6 +45,14 @@ const AdminSideBar = ({ onSelect }) => {
         {
             name: "Consumos",
             icon: <DocumentCurrencyEuroIcon className="w-6 h-6" />,
+        },
+        {
+            name: "Chats",
+            icon: <ChatBubbleLeftRightIcon className="w-6 h-6" />,
+        },
+        {
+            name: "Incidencias",
+            icon: <WrenchScrewdriverIcon className="w-6 h-6" />,
         },
         // {
         //   name: "Cerrar sesión",

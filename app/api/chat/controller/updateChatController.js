@@ -2,7 +2,6 @@ import { Chat } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function activateChat(chatId) {
-
     if (!chatId) {
         return NextResponse.json({ error: "No chat id provided" }, { status: 400 });
     }

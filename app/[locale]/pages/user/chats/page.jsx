@@ -10,11 +10,11 @@ export default function ChatsPage() {
     const route = useRouter();
     return (
         <AnimatePresence>
-            <div className="m-2 flex flex-col gap-2 relative">
-                <BotIcon />
+            <div className="m-2 flex flex-col gap-2 relative w-full h-full">
+                {/* <BotIcon /> */}
                 <HeaderChats />
-                <SearchChat />
-                <Chat />;
+                {/* <SearchChat /> */}
+                <Chat />
             </div>
         </AnimatePresence>
     );
