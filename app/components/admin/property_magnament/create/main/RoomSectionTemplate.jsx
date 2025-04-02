@@ -46,23 +46,34 @@ export default function RoomSectionTemplate({
       </article>
       <article className="flex justify-evenly gap-2 w-full overflow-x-scroll scrollbar-thin">
         {data && data.length > 0 ? (
-          data.map((item, index) => (
-            <RoomInfoTemplate
-              info={item}
-              key={index}
-              img={
-                item.images ? item.images[0] : "/property-details/stock-1.svg"
-              }
-              name={item?.name}
-              bedNumber={item.numberBeds}
-              showModal={() => handleEditRoom(item)} // Pasa la habitación a editar al modal
-              onDelete={() => handleDeletRoom(item)}
-            />
-          ))
+          data
+            .slice() // Copiamos para no mutar el array original
+            .sort((a, b) => {
+              const extractFinalNumber = (serial) => {
+                if (!serial) return 0;
+                const match = serial.match(/(\d+)$/); // Busca un número al final del string
+                return match ? Number(match[1]) : 0;
+              };
+
+              return (
+                extractFinalNumber(a.serial) - extractFinalNumber(b.serial)
+              );
+            })
+            .map((item) => (
+              <RoomInfoTemplate
+                key={item.id}
+                info={item}
+                img={item.images?.[0] || "/property-details/stock-1.svg"}
+                name={item.name}
+                bedNumber={item.numberBeds}
+                showModal={() => handleEditRoom(item)}
+                onDelete={() => handleDeletRoom(item)}
+              />
+            ))
         ) : (
           <>
-            <RoomInfoTemplate showModal={handleShowModal} type={"empty"} />
-            <RoomInfoTemplate showModal={handleShowModal} type={"empty"} />
+            <RoomInfoTemplate showModal={handleShowModal} type="empty" />
+            <RoomInfoTemplate showModal={handleShowModal} type="empty" />
           </>
         )}
       </article>
