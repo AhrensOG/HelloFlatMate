@@ -59,8 +59,8 @@ const SuppliesV2 = () => {
 
                 const roomSerial = leaseOrder.room.serial;
                 if (!roomsData[roomSerial]) roomsData[roomSerial] = { consumptions: {}, supplies: {} };
-
-                const period = supply.name.includes("1Q") ? "1Q" : "2Q";
+                let period = "1Q"
+                if(supply.name.includes("2Q")) period = "2Q"
                 if (!roomsData[roomSerial].supplies[period]) roomsData[roomSerial].supplies[period] = [];
                 roomsData[roomSerial].supplies[period].push(supply);
             }

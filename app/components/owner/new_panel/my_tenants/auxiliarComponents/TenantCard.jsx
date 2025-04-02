@@ -47,10 +47,10 @@ const TenantCard = ({ order, isOld = false }) => {
     const supplies = client.supplies?.filter((s) => s.leaseOrderId === order.id) || [];
 
     return (
-        <div className={`w-full md:w-[48%] p-4 rounded-lg border ${cardBorder} bg-white shadow-sm flex flex-col gap-2`}>
+        <div className={`w-full lg:w-[48%] p-4 rounded-lg border ${cardBorder} bg-white shadow-sm flex flex-col gap-2`}>
             {/* Info básica */}
             <div className="flex flex-col gap-1">
-                <p className={`font-semibold text-md md:text-lg ${headingColor}`}>
+                <p className={`font-semibold text-base md:text-lg ${headingColor}`}>
                     {client.name} {client.lastName}
                 </p>
                 <p className="text-xs md:text-base text-gray-600">

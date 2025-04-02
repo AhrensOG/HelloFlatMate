@@ -1202,11 +1202,13 @@
         "title_1": "Dashboard",
         "title_2": "Perfil",
         "title_3": "Mis Inquilinos",
+        "title_4": "Suministros",
         "sidebar": {
             "links": {
                 "name_1": "Panel",
                 "name_2": "Perfil",
-                "name_3": "Mis Inquilinos"
+                "name_3": "Mis Inquilinos",
+                "name_4": "Suministros"
             },
             "btn_logout": "Cerrar sesión"
         },
@@ -1224,8 +1226,8 @@
         "my_tenants": {
             "title": "Mis Inquilinos",
             "no_tenants": "No hay inquilinos registrados.",
-            "serial": "Serial:",
-            "room": "Habitacion",
+            "serial": "Código",
+            "room": "Habitación",
             "current_tenants": "Inquilinos actuales",
             "old_tenants": "Inquilinos anteriores"
         },
@@ -1414,6 +1416,39 @@
         },
         "payment": {
             "title": "Historial de pagos"
+        },
+        "consumption_card": {
+          "title": "Consumos y suministros",
+          "no_data": "No hay consumos ni suministros registrados.",
+          "no_consumptions": "No hay consumos registrados.",
+          "no_supplies": "No hay suministros registrados.",
+          "quarter": "Período",
+          "supply_concept": "Concepto",
+          "supply_amount": "Importe total",
+          "supply_status": "Estado",
+          "consumption_type": "Tipo",
+          "consumption_amount": "Consumo",
+          "consumption_startDate": "Desde",
+          "consumption_endDate": "Hasta",
+          "bill_link": "Ver factura",
+          "balance": "Balance",
+          "paid": "Pagado",
+          "pending": "Pendiente",
+          "total_paid": "Total abonado",
+          "total_consumed": "Total consumido",
+          "difference": "Diferencia",
+          "other": "Otros",
+          "amount": "Importe",
+          "supply_types": {
+            "GENERAL_SUPPLIES": "Suministros",
+            "INTERNET": "Wifi"
+          },
+          "consumption_types": {
+            "ELECTRICITY": "Electricidad",
+            "GAS": "Gas",
+            "WATER": "Agua",
+            "OTHER": "Otros"
+          }
         }
     }
 }
