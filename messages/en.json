@@ -1188,11 +1188,13 @@
         "title_1": "Dashboard",
         "title_2": "Profile",
         "title_3": "My Tenants",
+        "title_4": "Supplies",
         "sidebar": {
             "links": {
                 "name_1": "Panel",
                 "name_2": "Profile",
-                "name_3": "My Tenants"
+                "name_3": "My Tenants",
+                "name_4": "Supplies"
             },
             "btn_logout": "Log Out"
         },
@@ -1210,7 +1212,7 @@
         "my_tenants": {
             "title": "My Tenants",
             "no_tenants": "No tenants registered.",
-            "serial": "Serial:",
+            "serial": "Code",
             "room": "Room",
             "current_tenants": "Current Tenants",
             "old_tenants": "Previous Tenants"

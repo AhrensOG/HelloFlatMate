@@ -167,13 +167,6 @@ const OwnerDashboard = () => {
                       {t("total_earnings")}: {totalYear.toFixed(2)} €
                     </p>
                   </div>
-                  <button
-                    onClick={() =>
-                      setExpandedYear(expandedYear === year ? null : year)
-                    }
-                    className="text-sm text-[#440cac] underline">
-                    {expandedYear === year ? t("hide") : t("show")}
-                  </button>
                 </div>
 
                 <AnimatePresence>
@@ -199,11 +192,6 @@ const OwnerDashboard = () => {
                                   {month}/{year} | {t("monthly_earnings")}:{" "}
                                   {monthTotal.toFixed(2)} €
                                 </p>
-                                <span className="text-sm text-[#440cac] underline">
-                                  {expandedMonths[year]?.[month]
-                                    ? t("hide")
-                                    : t("show")}
-                                </span>
                               </div>
 
                               <AnimatePresence>
@@ -239,13 +227,6 @@ const OwnerDashboard = () => {
                                             <p className="font-medium">
                                               {serial}: {propTotal.toFixed(2)} €
                                             </p>
-                                            <span className="text-sm text-[#440cac] underline">
-                                              {expandedProperties[year]?.[
-                                                month
-                                              ]?.[serial]
-                                                ? t("hide")
-                                                : t("show")}
-                                            </span>
                                           </div>
                                           <AnimatePresence>
                                             {expandedProperties[year]?.[
