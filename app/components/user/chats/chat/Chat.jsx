@@ -311,7 +311,7 @@ export default function Chat({ adminPage = false }) {
     }
 
     return (
-        <div className={`flex flex-col h-full ${adminPage ? "" : "max-h-[690px]"} overflow-hidden`}>
+        <div className={`flex flex-col h-full w-full ${adminPage ? "" : "md:max-h-[690px]"} overflow-hidden`}>
             <main className="flex flex-col justify-between items-center gorw h-full w-full">
                 <Suspense fallback={<div></div>}>
                     <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} isGroup={typeChat === "group"} />

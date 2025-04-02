@@ -13,8 +13,7 @@ export default function MessageContainer({ messages, socketId, isUploading, isGr
     return (
         <section
             ref={containerRef}
-            className="flex flex-col gap-2 w-full overflow-y-scroll grow p-4 bg-white rounded-md shadow-inner"
-            style={{ maxHeight: `calc(100vh - 181px)` }}
+            className="flex flex-col gap-2 w-full overflow-y-scroll grow p-4 bg-white rounded-md rounded-b-none border border-b-0 scrollbar-none md:scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
         >
             {messages.length === 0 && !isUploading ? (
                 <p className="font-normal text-xs text-[#919191] self-center">No hay mensajes aún</p>

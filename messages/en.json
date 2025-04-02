@@ -951,8 +951,8 @@
             "lb_2": "Recommended by friends",
             "vl_3": "Recommended by the University",
             "lb_3": "Recommended by the University",
-            "vl_4": "HelloFlatmate website",
-            "lb_4": "HelloFlatmate website",
+            "vl_4": "helloflatmate website",
+            "lb_4": "helloflatmate website",
             "vl_5": "Idealista",
             "lb_5": "Idealista",
             "vl_6": "Other websites",
@@ -1189,6 +1189,7 @@
         "title_2": "Profile",
         "title_3": "My Tenants",
         "title_4": "Supplies",
+        "title_5": "Chats",
         "sidebar": {
             "links": {
                 "name_1": "Panel",

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
-export default function Dropdown() {
+export default function Dropdown({ mobile = false }) {
     const router = useRouter();
     const pathname = usePathname(); // Obtén el pathname actual
     const [selectedLanguage, setSelectedLanguage] = useState("ES");
@@ -54,7 +54,7 @@ export default function Dropdown() {
             >
                 <div>
                     {["ES", "EN"].map((language) => (
-                        <MenuItem key={language}>
+                        <MenuItem key={ mobile ? `${language}-mobile` : language}>
                             <button
                                 type="button"
                                 onClick={() => handleLanguageChange(language)}

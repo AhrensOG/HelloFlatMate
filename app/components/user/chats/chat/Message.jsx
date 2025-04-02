@@ -4,8 +4,8 @@ import ImageModal from "./ImageModal";
 
 export default function Message({ type, body, image, time, name, typeChat, typeFile, isUploading, hasFailed }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const sender = "border border-[#D6D6DE] rounded-sender self-end";
-    const receiver = "bg-[#1C8CD6] rounded-receiver text-white self-start";
+    const sender = "border border-[#440cac] rounded-sender self-end";
+    const receiver = "bg-[#440cac] rounded-receiver text-white self-start";
 
     useEffect(() => {
         return () => {
@@ -28,12 +28,9 @@ export default function Message({ type, body, image, time, name, typeChat, typeF
             <article
                 className={`${
                     type === "sender" ? sender : receiver
-                } flex flex-col justify-between items-center gap-1 p-3 min-w-[5rem] max-w-[15rem] break-words relative ${
+                } flex flex-col justify-between items-center gap-2 p-3 min-w-[5rem] max-w-[15rem] break-words relative ${
                     isUploading ? "min-h-[9rem] w-[15rem]" : ""
-                }`}
-                style={{
-                    boxShadow: `-1px -1px 5px 0px #0000000D, 1px 1px 5px 0px #0000000D`,
-                }}
+                } shadow-sm hover:shadow-md duration-300` }
             >
                 {/* Spinner Overlay */}
                 {isUploading && (
@@ -50,7 +47,7 @@ export default function Message({ type, body, image, time, name, typeChat, typeF
                 )}
 
                 {/* Mostrar el nombre si el tipo es "group" */}
-                {typeChat === "group" && <p className="w-full text-start font-bold text-xs text-resolution-blue">{name}</p>}
+                {typeChat === "group" && <p className={`w-full text-start font-bold text-base ${type === "sender" ? "text-[#440cac]" : "text-white"}`}>{name}</p>}
 
                 {/* Mostrar imagen o texto según el contenido del mensaje */}
                 {image || typeFile === "IMAGE" ? (
@@ -64,10 +61,10 @@ export default function Message({ type, body, image, time, name, typeChat, typeF
                         />
                     </div>
                 ) : (
-                    <p className={`${type === "sender" ? "text-black" : ""} w-full text-wrap font-medium text-sm`}>{body}</p>
+                    <p className={`${type === "sender" ? "text-black" : ""} w-full text-wrap text-sm`}>{body}</p>
                 )}
 
-                <p className={`${type === "sender" ? "text-[#919191]" : ""} w-full text-end font-normal text-xs`}>{time}</p>
+                <p className={`${type === "sender" ? "text-[#440cac]" : ""} w-full text-end text-xs`}>{time}</p>
             </article>
 
             {/* Modal de la imagen */}

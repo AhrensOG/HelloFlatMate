@@ -54,17 +54,22 @@ const UserDashboardLayout = ({ children }) => {
             <div
                 className={`${
                     pathname.includes("/pages/user/reservations") ||
-                    pathname.includes("/pages/user/history") ||
-                    pathname.includes("/pages/user/chats")
+                    pathname.includes("/pages/user/history")
                         ? "bg-white pt-10"
                         : pathname.includes("/pages/user/contractv2")
                         ? "bg-white"
                         : ""
-                } flex justify-center items-start grow bg-[#f7f7f7]`}
+                } ${
+                  pathname.includes("/pages/user/chats")
+                      ? "bg-white md:pt-10"
+                      : pathname.includes("/pages/user/contractv2")
+                      ? "bg-white"
+                      : ""
+              } flex justify-center items-start grow bg-[#f7f7f7]`}
             >
-                <div className="flex grow max-w-screen-xl w-full gap-8 mx-4">
+                <div className={`flex grow max-w-screen-xl w-full gap-8 ${pathname.includes("/pages/user/chats/chat") ? "mx-0 md:mx-4 h-[calc(100vh-63.28px)] md:h-auto" : "mx-4" }`}>
                     <Sidebar />
-                    <main className="grow mt-4">{children}</main>
+                    <main className={`w-full flex grow ${pathname.includes("/pages/user/chats/chat") ? "h-[calc(100vh-63.28px)] sm:h-auto mt-0 md:mt-4" : "mt-4" }`}>{children}</main>
                 </div>
             </div>
         </div>
