@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import TenantCard from "./auxiliarComponents/TenantCard";
 import { useTranslations } from "next-intl";
+import TenantConsumption from "./auxiliarComponents/TenantConsumption";
 
 const CATEGORY_LABEL = {
   HELLO_LANDLORD: "hellolandlord",
@@ -79,7 +80,9 @@ const MyTenants = () => {
         propertiesWithTenants.map((property) => {
           const isPropertyExpanded = expandedProperties[property.id];
           return (
-            <div key={property.id} className="mb-4 border bg-gray-50 rounded shadow cursor-pointer">
+            <div
+              key={property.id}
+              className="mb-4 border bg-gray-50 rounded shadow cursor-pointer">
               <div
                 className="p-4 cursor-pointer"
                 onClick={() => toggleProperty(property.id)}>
@@ -130,17 +133,28 @@ const MyTenants = () => {
                                 transition={{ duration: 0.3 }}
                                 className="mt-2 space-y-4">
                                 {tenantsToShow.length > 0 ? (
-                                  <div className="flex flex-wrap w-full gap-4">
+                                  <div className="w-full flex gap-4">
                                     {tenantsToShow.map((order, i) => (
-                                      <TenantCard
+                                      <div
                                         key={i}
-                                        order={{
-                                          ...order,
-                                          category: property.category,
-                                          roomSerial: room.serial,
-                                        }}
-                                        isOld={activeTab === "old"}
-                                      />
+                                        className="w-full flex flex-row flex-wrap justify-between items-start gap-4">
+                                        <TenantCard
+                                          order={{
+                                            ...order,
+                                            category: property.category,
+                                            roomSerial: room.serial,
+                                          }}
+                                          isOld={activeTab === "old"}
+                                        />
+                                        <TenantConsumption
+                                          order={{
+                                            ...order,
+                                            category: property.category,
+                                            roomSerial: room.serial,
+                                          }}
+                                          isOld={activeTab === "old"}
+                                        />
+                                      </div>
                                     ))}
                                   </div>
                                 ) : (
