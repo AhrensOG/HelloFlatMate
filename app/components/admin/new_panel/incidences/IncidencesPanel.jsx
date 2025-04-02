@@ -60,7 +60,7 @@ const IncidencesPanel = () => {
     const handleDeleteIncidence = async (id) => {
         const toastId = toast.loading("Eliminando...");
         try {
-            await fetch(`/api/admin/incidence/${id}`, {
+            await fetch(`/api/admin/incidences/${id}`, {
                 method: "DELETE",
             });
             toast.success("Incidencia eliminada exitosamente", { id: toastId });
