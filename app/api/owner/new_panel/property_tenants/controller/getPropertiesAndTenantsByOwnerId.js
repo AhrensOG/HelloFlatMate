@@ -1,5 +1,6 @@
 import {
     Client,
+    Consumption,
     Contract,
     Document,
     LeaseOrderRoom,
@@ -81,7 +82,6 @@ export async function getPropertiesAndTenantsByOwnerId(id) {
                                             "date",
                                             "status",
                                             "type",
-                                            "quotaNumber",
                                             "paymentId",
                                             "leaseOrderId",
                                             "description",
@@ -99,6 +99,19 @@ export async function getPropertiesAndTenantsByOwnerId(id) {
                                             "paymentId",
                                             "leaseOrderId",
                                         ],
+                                    },
+                                    {
+                                      model: Consumption,
+                                      as: "consumptions",
+                                      attributes: [
+                                        "amount",
+                                        "type",
+                                        "period",
+                                        "startDate",
+                                        "endDate",
+                                        "url",
+                                        "type",
+                                      ]
                                     },
                                 ],
                             },

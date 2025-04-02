@@ -1188,11 +1188,13 @@
         "title_1": "Dashboard",
         "title_2": "Profile",
         "title_3": "My Tenants",
+        "title_4": "Supplies",
         "sidebar": {
             "links": {
                 "name_1": "Panel",
                 "name_2": "Profile",
-                "name_3": "My Tenants"
+                "name_3": "My Tenants",
+                "name_4": "Supplies"
             },
             "btn_logout": "Log Out"
         },
@@ -1210,7 +1212,7 @@
         "my_tenants": {
             "title": "My Tenants",
             "no_tenants": "No tenants registered.",
-            "serial": "Serial:",
+            "serial": "Code",
             "room": "Room",
             "current_tenants": "Current Tenants",
             "old_tenants": "Previous Tenants"
@@ -1219,7 +1221,7 @@
             "status_label": {
                 "in_process": "In Process",
                 "pending": "Pending",
-                "finished": "Completed",
+                "finished": "Finished",
                 "approved": "Approved"
             },
             "payment_label": {
@@ -1400,6 +1402,39 @@
         },
         "payment": {
             "title": "Payment History"
+        },
+        "consumption_card": {
+          "title": "Consumptions and Supplies",
+          "no_data": "No consumptions or supplies recorded.",
+          "no_consumptions": "No consumptions recorded.",
+          "no_supplies": "No supplies recorded.",
+          "quarter": "Period",
+          "supply_concept": "Concept",
+          "supply_amount": "Total amount",
+          "supply_status": "Status",
+          "consumption_type": "Type",
+          "consumption_amount": "Consumption",
+          "consumption_startDate": "From",
+          "consumption_endDate": "To",
+          "bill_link": "View bill",
+          "balance": "Balance",
+          "paid": "Paid",
+          "pending": "Pending",
+          "total_paid": "Total paid",
+          "total_consumed": "Total consumed",
+          "difference": "Difference",
+          "other": "Others",
+          "amount": "Import",
+          "supply_types": {
+            "GENERAL_SUPPLIES": "Supplies",
+            "INTERNET": "Wifi"
+          },
+          "consumption_types": {
+            "ELECTRICITY": "Electricity",
+            "GAS": "Gas",
+            "WATER": "Water",
+            "OTHER": "Other"
+          }
         }
     }
 }
