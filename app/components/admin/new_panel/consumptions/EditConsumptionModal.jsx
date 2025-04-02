@@ -134,9 +134,6 @@ export default function EditConsumptionModal({
                                     name="type"
                                     className={modalStyles.select}
                                 >
-                                    <option value="GENERAL_SUPPLIES">
-                                        Suministros
-                                    </option>
                                     <option value="INTERNET">Wifi</option>
                                     <option value="WATER">Agua</option>
                                     <option value="GAS">Gas</option>

@@ -14,6 +14,7 @@ import {
   Worker,
   RentPayment,
   Consumption,
+  Incidence,
 } from "@/db/init";
 import { NextResponse } from "next/server";
 
@@ -60,9 +61,7 @@ export async function getUserById(id) {
       user = await Owner.findByPk(id, {
         attributes: ["id", "name", "lastName", "email", "idNum", "IBAN", "role"],
         include: [
-          { model: LeaseOrderRoom, as: "leaseOrdersRoom" },
-          { model: Property, as: "properties" },
-          { model: ChatParticipant, as: "chats" },
+          { model: Incidence, as: "incidences" }
         ],
       });
     }

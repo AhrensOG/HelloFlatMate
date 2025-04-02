@@ -176,9 +176,6 @@ export default function CreatePropertyConsumptionsModal({
                                     className={modalStyles.select}
                                 >
                                     <option value="">Seleccionar tipo</option>
-                                    <option value="GENERAL_SUPPLIES">
-                                        Suministros
-                                    </option>
                                     <option value="INTERNET">Wifi</option>
                                     <option value="WATER">Agua</option>
                                     <option value="GAS">Gas</option>

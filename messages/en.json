@@ -1314,15 +1314,17 @@
                 "name_1": "Actual Income",
                 "name_2": "Projection"
             },
-            "p_2": "Projection:",
+            "p_2": "Projection",
             "hide": "Hide",
             "show": "View Details",
-            "income_details": " Income Details:",
-            "p_3": "Tenant:",
-            "p_4": "Concept:",
-            "p_5": "Type:",
-            "p_6": "Date:",
-            "p_7": "Import:"
+            "income_details": " Income Details",
+            "p_3": "Tenant",
+            "p_4": "Concept",
+            "p_5": "Type",
+            "p_6": "Date",
+            "p_7": "Import",
+            "incidences": "Incidences",
+            "view_bill": "View bill"
         },
         "wallet": {
             "span_1": "Wallet Balance: ",

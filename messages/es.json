@@ -1328,15 +1328,17 @@
                 "name_1": "Ingresos reales",
                 "name_2": "Proyección"
             },
-            "p_2": "Proyección:",
+            "p_2": "Proyección",
             "hide": "Ocultar",
             "show": "Ver detalle",
-            "income_details": " Detalle de ingresos:",
-            "p_3": "Inquilino:",
-            "p_4": "Concepto:",
-            "p_5": "Tipo:",
-            "p_6": "Fecha:",
-            "p_7": "Importe:"
+            "income_details": "Detalle de ingresos:",
+            "p_3": "Inquilino",
+            "p_4": "Concepto",
+            "p_5": "Tipo",
+            "p_6": "Fecha",
+            "p_7": "Importe",
+            "incidences": "Incidencias",
+            "view_bill": "Ver factura"
         },
         "wallet": {
             "span_1": "Balance de la billetera: ",
