@@ -23,27 +23,27 @@ const ChangePasswordModal = () => {
         },
         validationSchema: Yup.object({
             currentPassword: Yup.string().required("Requerido"),
-            password: Yup.string().min(6, t("min_6")).required(t("required")),
+            password: Yup.string().min(6, t("verif.min_6")).required(t("verif.required")),
             confirmPassword: Yup.string()
-                .oneOf([Yup.ref("password"), null], t("not_match"))
-                .required(t("required")),
+                .oneOf([Yup.ref("password"), null], t("verif.not_match"))
+                .required(t("verif.required")),
         }),
         onSubmit: async (values) => {
-            const toastId = toast.loading(t("loading"));
+            const toastId = toast.loading(t("verif.loading"));
             try {
                 setLoading(true);
                 const user = auth.currentUser;
                 const credential = EmailAuthProvider.credential(user.email, values.currentPassword);
                 await reauthenticateWithCredential(user, credential);
                 await updatePassword(user, values.password);
-                toast.success(t("success"), {
+                toast.success(t("verif.success"), {
                     id: toastId,
                 });
                 formik.resetForm();
                 setIsOpen(false);
                 setIsConfirmed(false);
             } catch (error) {
-                toast.error(error.code === "auth/wrong-password" || error.code === "auth/invalid-credential" ? t("wrong_password") : t("error"), {
+                toast.error(error.code === "auth/wrong-password" || error.code === "auth/invalid-credential" ? t("verif.wrong_password") : t("verif.error"), {
                     id: toastId,
                 });
             } finally {
