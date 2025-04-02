@@ -43,7 +43,7 @@ const SeventhSection = () => {
     const items = [
         {
             title: t("home_seventh_sect_1_title"),
-            content: t("home_seventh_sect_1_desc"),
+            content: t("home_seventh_sect_1_desc"), 
         },
         {
             title: t("home_seventh_sect_2_title"),
