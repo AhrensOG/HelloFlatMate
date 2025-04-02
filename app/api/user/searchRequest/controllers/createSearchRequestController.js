@@ -89,9 +89,7 @@ export async function createSearchRequest(data) {
       to: process.env.HFM_MAIL,
       subject: `Solicitud de ayuda (búsqueda de alojamiento)`,
       html: `
-        <p>El usuario <strong>${client.name} ${
-        client.lastName
-      }</strong> ha solicitado ayuda para encontrar un alojamiento.</p>
+        <p>El usuario <strong>${client.name} ${client.lastName} - ( ${client.email} )</strong> ha solicitado ayuda para encontrar un alojamiento.</p>
         <p><strong>Detalles de la solicitud:</strong></p>
         <ul>
         <li><strong>Tipo de alojamiento:</strong> ${category || "No ingresado"}</li>
