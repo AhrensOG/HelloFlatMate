@@ -1,37 +1,30 @@
 "use client";
+
 import { Context } from "@/app/context/GlobalContext";
 import ChatsCard from "./ChatsCard";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext, useMemo, useState } from "react";
 import axios from "axios";
 
 export default function Chat({ ownerPage = false }) {
   const { state } = useContext(Context);
-  const [user, setUser] = useState(state?.user);
+  const user = state?.user;
   const [chats, setChats] = useState();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      setUser(state?.user);
-    }
-  }, [state]);
-
-  useEffect(() => {
+    if (!user) return;
     const fetchChats = async () => {
       try {
-        const { data } = await axios.get("/api/chat?userId=" + user?.id);
+        const { data } = await axios.get("/api/chat?userId=" + user.id);
         setChats(data.chats);
       } catch (error) {
         console.log(error);
       }
     };
 
-    // Llamar a fetchChats si el usuario está disponible y los chats aún no se han cargado
-    if (user && !chats) {
-      fetchChats();
-    }
-  }, [user, chats]); // Dependencias: se ejecutará cuando cambien `user` o `chats`
+    fetchChats();
+  }, [user]);
 
   if (!user || !chats) {
     return (
@@ -51,217 +44,107 @@ export default function Chat({ ownerPage = false }) {
     );
   }
 
-  // Determina el estado del chat de tipo SUPPORT
+  const getChatName = (chat) => {
+    const participant = chat.participants.find(
+      (u) => u.participantId !== user.id
+    );
+    return (
+      participant?.client?.name + " " + participant?.client?.lastName ||
+      participant?.admin?.name + " " + participant?.admin?.lastName ||
+      participant?.owner?.name + " " + participant?.owner?.lastName ||
+      "Unknown"
+    );
+  };
+
+  const getNotReadCount = (chat) =>
+    chat.messages.filter(
+      (msg) => !msg.isRead && (msg.senderId ?? msg.userId) !== user.id
+    ).length;
+
+  const renderChatCard = (chat, name, image, type, extraQuery = "") => {
+    const sortedMessages = [...chat.messages].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+
+    return (
+      <ChatsCard
+        key={chat.id}
+        name={name}
+        image={image}
+        lastMessage={sortedMessages[0]}
+        action={() =>
+          router.push(
+            `/pages/${
+              ownerPage ? "owner" : "user"
+            }/chats/chat?type=${type}&chat=${chat.id}&userId=${
+              user.id
+            }${extraQuery}`
+          )
+        }
+        notReadCount={getNotReadCount(chat)}
+      />
+    );
+  };
+
   const supportChat = chats.find((chat) => chat.type === "SUPPORT");
   const privateChats = chats.filter((chat) => chat.type === "PRIVATE");
   const groupChats = chats.filter((chat) => chat.type === "GROUP");
 
-  // Obtener el último mensaje del chat SUPPORT
-  const lastMessage = supportChat?.messages
-    .slice() // Hacemos una copia del array para no mutar el original
-    .sort((a, b) => new Date(b.date) - new Date(a.date))[0]; // Ordenamos los mensajes por fecha, de más reciente a más antiguo // Tomamos el primer elemento que será el más reciente
+  const lastSupportMessage = supportChat?.messages
+    ?.slice()
+    ?.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
   return (
     <div className="flex flex-col gap-2 h-full sm:max-h-[750px] overflow-hidden overflow-y-auto">
-      {/* Renderizar la tarjeta basada en el estado del chat GROUP */}
-      {groupChats &&
-        groupChats.map((chat) => {
-          return (
-            <ChatsCard
-              key={chat.id}
-              name={`${chat.relatedModel?.serial} - Grupo`}
-              image="/chat/people.png"
-              lastMessage={chat.messages[chat.messages.length - 1]}
-              action={() =>
-                router.push(
-                  `/pages/${
-                    ownerPage ? "owner" : "user"
-                  }/chats/chat?type=group&chat=${chat.id}&userId=${user.id}`
-                )
-              }
-              notReadCount={
-                chat.messages.filter(
-                  (message) =>
-                    !message.isRead &&
-                    (message.senderId
-                      ? message.senderId !== user.id
-                      : message.userId !== user.id)
-                ).length
-              }
-            />
-          );
-        })}
+      {groupChats.map((chat) =>
+        renderChatCard(
+          chat,
+          `${chat.relatedModel?.serial} - Grupo`,
+          "/chat/people.png",
+          "group"
+        )
+      )}
 
-      {/* Renderizar la tarjeta basada en el estado del chat SUPPORT */}
-      {privateChats &&
-        privateChats.map((chat) => {
-          // Encuentra el participante que sea de tipo "OWNER" y no sea el usuario actual
-          const participants = chat.participants.find((u) => {
-            if (user.role === "OWNER") {
-              return (
-                u.participantId !== user.id && u.participantType === "CLIENT"
-              );
-            } else {
-              return (
-                u.participantId !== user.id && u.participantType === "OWNER"
-              );
-            }
-          });
+      {privateChats.map((chat) => {
+        if (
+          chat.relatedModel?.category !== "HELLO_LANDLORD" ||
+          chat.relatedModel?.property?.category !== "HELLO_LANDLORD"
+        )
+          return null;
+        const name = chat.relatedId
+          ? `${chat.relatedModel?.serial} - Privado`
+          : getChatName(chat);
+        const receiverId =
+          chat.participants.find((u) => u.participantId !== user.id)
+            ?.participantId || "";
 
-          return (
-            <>
-              {chat.relatedId ? (
-                <ChatsCard
-                  key={chat.id}
-                  name={
-                    chat.relatedModel?.serial
-                      ? `${chat.relatedModel?.serial} - Privado`
-                      : "Unknown"
-                  }
-                  image={"/chat/singleuser.png"}
-                  lastMessage={chat.messages[chat.messages.length - 1]}
-                  action={() =>
-                    router.push(
-                      `/pages/${
-                        ownerPage ? "owner" : "user"
-                      }/chats/chat?type=priv&chat=${chat.id}&userId=${
-                        user.id
-                      }&receiverId=${
-                        chat?.participants?.filter(
-                          (u) => u.participantId !== user.id
-                        )[0]?.participantId
-                      }`
-                    )
-                  }
-                  notReadCount={
-                    chat.messages.filter(
-                      (message) =>
-                        !message.isRead &&
-                        (message.senderId
-                          ? message.senderId !== user.id
-                          : message.userId !== user.id)
-                    ).length
-                  }
-                />
-              ) : (
-                <ChatsCard
-                  key={chat.id}
-                  name={
-                    chat.participants.find((u) => u.participantId !== user.id)
-                      ?.client
-                      ? `${
-                          chat.participants.find(
-                            (u) => u.participantId !== user.id
-                          )?.client?.name
-                        } ${
-                          chat.participants.find(
-                            (u) => u.participantId !== user.id
-                          )?.client?.lastName
-                        }`
-                      : chat.participants.find(
-                          (u) => u.participantId !== user.id
-                        )?.admin
-                      ? `${
-                          chat.participants.find(
-                            (u) => u.participantId !== user.id
-                          )?.admin?.name
-                        } ${
-                          chat.participants.find(
-                            (u) => u.participantId !== user.id
-                          )?.admin?.lastName
-                        }`
-                      : chat.participants.find(
-                          (u) => u.participantId !== user.id
-                        )?.owner
-                      ? `${
-                          chat.participants.find(
-                            (u) => u.participantId !== user.id
-                          )?.owner?.name
-                        } ${
-                          chat.participants.find(
-                            (u) => u.participantId !== user.id
-                          )?.owner?.lastName
-                        }`
-                      : "Unknown"
-                  }
-                  image={"/chat/singleuser.png"}
-                  lastMessage={chat.messages[chat.messages.length - 1]}
-                  action={() =>
-                    router.push(
-                      `/pages/${
-                        ownerPage ? "owner" : "user"
-                      }/chats/chat?type=priv&chat=${chat.id}&userId=${
-                        user.id
-                      }&receiverId=${
-                        chat?.participants?.filter(
-                          (u) => u.participantId !== user.id
-                        )[0]?.participantId
-                      }`
-                    )
-                  }
-                  notReadCount={
-                    chat.messages.filter(
-                      (message) =>
-                        !message.isRead &&
-                        (message.senderId
-                          ? message.senderId !== user.id
-                          : message.userId !== user.id)
-                    ).length
-                  }
-                />
-              )}
-            </>
-          );
-        })}
+        return renderChatCard(
+          chat,
+          name,
+          "/chat/singleuser.png",
+          "priv",
+          `&receiverId=${receiverId}`
+        );
+      })}
+
       {!supportChat && (
-        <ChatsCard name={"Soporte"} image={"/chat/soporte.png"} id={user.id} />
+        <ChatsCard name="Soporte" image="/chat/soporte.png" id={user.id} />
       )}
-      {supportChat && !supportChat.isActive && (
+
+      {supportChat && (
         <ChatsCard
-          name={"Soporte"}
-          image={"/chat/soporte.png"}
-          lastMessage={lastMessage}
+          name="Soporte"
+          image="/chat/soporte.png"
+          lastMessage={lastSupportMessage}
           action={() =>
             router.push(
               `/pages/${
                 ownerPage ? "owner" : "user"
-              }/chats/chat?type=supp&chat=${supportChat.id}&bool=true&userId=${
-                user.id
-              }`
+              }/chats/chat?type=supp&chat=${supportChat.id}&userId=${user.id}` +
+                (supportChat.isActive ? "" : "&bool=true")
             )
           }
-          notReadCount={
-            supportChat.messages.filter(
-              (message) =>
-                !message.isRead &&
-                (message.senderId
-                  ? message.senderId !== user.id
-                  : message.userId !== user.id)
-            ).length
-          }
-        />
-      )}
-      {supportChat && supportChat.isActive && (
-        <ChatsCard
-          name={"Soporte"}
-          image={"/chat/soporte.png"}
-          lastMessage={lastMessage}
-          action={() =>
-            router.push(
-              `/pages/${
-                ownerPage ? "owner" : "user"
-              }/chats/chat?type=supp&chat=${supportChat.id}&userId=${user.id}`
-            )
-          }
-          notReadCount={
-            supportChat.messages.filter(
-              (message) =>
-                !message.isRead &&
-                (message.senderId
-                  ? message.senderId !== user.id
-                  : message.userId !== user.id)
-            ).length
-          }
+          notReadCount={getNotReadCount(supportChat)}
         />
       )}
     </div>
