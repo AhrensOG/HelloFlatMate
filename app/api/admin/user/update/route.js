@@ -5,7 +5,6 @@ import { updateRoleUser } from "../controllers/updateUserController";
 
 export async function PATCH(req) {
     const user = await req.json(); // Obtener los datos de la solicitud
-    console.log(user);
 
     if (!user.userId) {
         return NextResponse.json({ error: "Se requieren el ID del usuario" }, { status: 400 });
@@ -13,7 +12,7 @@ export async function PATCH(req) {
 
     try {
         // Actualizar la contraseña en Firebase Authentication
-        if (user.password.length > 0) {
+        if (user.password?.length > 0) {
             await authAdmin.updateUser(user.userId, { password: user.password });
         }
 
