@@ -184,10 +184,10 @@ export default function RoomsPanel({ data }) {
                                     <td className="border p-2 text-gray-700 text-center">{room.serial}</td>
                                     <td className="border p-2 text-gray-700 text-center">{room.name}</td>
                                     <td className="border p-2 text-gray-700 text-center"> €{room.price}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{room.property.zone}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{TYPOLOGY_LABELS[room.property.typology]}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{room.property?.zone}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{TYPOLOGY_LABELS[room.property?.typology]}</td>
                                     <td className="border p-2 text-gray-700 text-center">{room.isActive ? "Si" : "No"}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{`${room.property.street} ${room.property.streetNumber}, ${room.property.city}`}</td>
+                                    <td className="border p-2 text-gray-700 text-center">{`${room.property?.street} ${room.property?.streetNumber}, ${room.property?.city}`}</td>
                                     <td className="border p-2 text-gray-700 text-center">
                                         <div className="w-full h-full flex gap-2 items-center justify-around">
                                             <button
@@ -210,7 +210,7 @@ export default function RoomsPanel({ data }) {
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                 }}
-                                                href={`/pages/admin/update/${room.property.id}/${room.property.category}`}
+                                                href={`/pages/admin/update/${room.property?.id}/${room.property?.category}`}
                                                 target="_blank"
                                             >
                                                 <WrenchIcon title="Edición completa" className="size-6 text-blue-500" />
