@@ -337,7 +337,8 @@ export default function HelloColivingPage() {
                         (property) =>
                           property.category === "HELLO_ROOM" ||
                           property.category === "HELLO_LANDLORD" ||
-                          property.category === "HELLO_COLIVING"
+                          property.category === "HELLO_COLIVING" ||
+                          property.category === "HELLO_STUDIO"
                       )
                       .flatMap((property) =>
                         property.rooms

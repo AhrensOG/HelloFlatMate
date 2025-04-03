@@ -192,12 +192,12 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
 
       {/* Menú de escritorio */}
       <div className="hidden md:flex items-center gap-5">
-        <Link
+        {/* <Link
           href={`/${locale?.toLowerCase()}/ultimas-habitaciones`}
           target="_blank"
           className="font-bold text-base border border-black py-1 p-2 px-5">
           Last rooms
-        </Link>
+        </Link> */}
         <Link
           href={`/${locale?.toLowerCase()}/como-funciona`}
           target="_blank"
@@ -275,12 +275,12 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
               <div className="px-6">
                 <Dropdown mobile />
               </div>
-              <Link
+              {/* <Link
                 href="/ultimas-habitaciones"
                 target="_blank"
                 className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
                 Last rooms
-              </Link>
+              </Link> */}
               <Link
                 href={`/${locale?.toLowerCase()}/como-funciona`}
                 target="_blank"
