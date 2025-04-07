@@ -184,7 +184,7 @@ export async function newBillBuilder(data) {
     const detailsStartY = lineY - 40;
     const rowHeight = 35;
     const paddingVertical = 3;
-    const headers = ["Código", "Fecha", "Descripción", "Monto"];
+    const headers = ["Código", "Fecha", "Descripción", "Importe"];
     const availableWidth = width - margin * 2;
     // Distribución de anchos: Código: 80, Fecha: 80, Descripción: 215, Monto: lo restante
     const headerWidths = [80, 80, 215, availableWidth - (80 + 80 + 215)];
