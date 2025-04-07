@@ -11,6 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import PayModal from "./PayModal";
 import { useTranslations } from "next-intl";
+import axios from "axios";
 
 const SUPPLY_TYPE_LABELS = {
     WATER: "Agua",
@@ -160,31 +161,42 @@ const PaymentsV2 = () => {
                 })
                 .filter(Boolean);
 
-            const supplyPayments = (state.user?.supplies || [])
+                const supplyPayments = (state.user?.supplies || [])
                 .filter((sup) => normalizedStatus.includes(sup.status))
                 .map((sup) => {
-                    const matchedOrder = activeLeaseOrders.find(
-                        (o) => o.id === sup.leaseOrderId
-                    );
-                    return {
-                        id: sup.id,
-                        month: null,
-                        amount: sup.amount,
-                        status: sup.status,
-                        type: sup.type,
-                        quotaNumber: null,
-                        description: `${t("supply_desc")} - ${getSupplyName(
-                            sup.type
-                        )}`,
-                        supplyLabel: `${
-                            SUPPLY_TYPE_LABELS[sup.type] || sup.type
-                        }`,
-                        paid: statusFilter === "COMPLETED",
-                        orderType: sup.leaseOrderType,
-                        order: matchedOrder,
-                        paymentType: "SUPPLY",
-                    };
+                  const matchedOrder = activeLeaseOrders.find(
+                    (o) => o.id === sup.leaseOrderId
+                  );
+              
+                  // Determinar si se debe aplicar sufijo
+                  let quarterSuffix = "";
+                  const isQuarteredType = ["INTERNET", "GENERAL_SUPPLIES"].includes(sup.type);
+              
+                  if (isQuarteredType) {
+                    if (sup.name?.includes("2Q")) {
+                      quarterSuffix = " 2Q";
+                    } else {
+                      quarterSuffix = " 1Q"; // Default si no contiene ninguno
+                    }
+                  }
+              
+                  return {
+                    id: sup.id,
+                    month: null,
+                    amount: sup.amount,
+                    status: sup.status,
+                    type: sup.type,
+                    quotaNumber: null,
+                    description: `${t("supply_desc")} - ${getSupplyName(sup.type)}${quarterSuffix}`,
+                    supplyLabel: `${SUPPLY_TYPE_LABELS[sup.type] || sup.type}`,
+                    paid: statusFilter === "COMPLETED",
+                    orderType: sup.leaseOrderType,
+                    order: matchedOrder,
+                    paymentType: "SUPPLY",
+                  };
                 });
+              
+              
 
             return [...monthlyPayments, ...supplyPayments].sort((a, b) => {
                 const indexA = orderPriority.indexOf(a.type);
@@ -215,15 +227,19 @@ const PaymentsV2 = () => {
         }, {});
     };
 
-    const handlePaymentClick = (payment) => {
-        if (payment.paid) {
-            toast.info(t("toast.info"));
-        } else {
-            setSelectedPayment(payment);
-            setShowModal(true);
-        }
+    const handlePaymentClick = async (payment) => {
+      if (payment.paid) {
+          if (["RESERVATION", "MONTHLY"].includes(payment.type)) {
+              await downloadBillPDF(payment, state.user, "monthly_or_reservation");
+          } else {
+            await downloadBillPDF(payment, state.user, "supply");
+          }
+      } else {
+          setSelectedPayment(payment);
+          setShowModal(true);
+      }
     };
-
+    console.log(paymentsToShow)
     return (
         <div className="w-full flex flex-col items-center p-6 bg-white">
             <div className="w-full max-w-screen-xl">
@@ -327,3 +343,67 @@ const PaymentsV2 = () => {
 };
 
 export default PaymentsV2;
+
+const downloadBillPDF = async (payment, user, type) => {
+  const toastId = toast.loading("Procesando...");
+  try {
+      if (!user) {
+          toast.info("Debe iniciar sesión antes de descargar la factura.", {
+              id: toastId,
+          });
+          return;
+      }
+
+      const requiredFields = [
+          "name",
+          "lastName",
+          "idNum",
+          "street",
+          "streetNumber",
+          "city",
+          "postalCode",
+          "phone",
+          "email",
+      ];
+      const missingFields = requiredFields.filter((field) => !user[field]);
+
+      if (missingFields.length > 0) {
+          toast.info(
+              `Debes completar la información de tu perfil para poder descargar la factura.`,
+              {
+                  description: `¡Dirígete a 'Perfil' para hacerlo!`,
+                  id: toastId,
+              }
+          );
+          return;
+      }
+      
+      const pdfRes = await axios.post(
+          "/api/payment/create_bill?type=" + type,
+          {
+              userId: user.id,
+              paymentId: payment.id
+          },
+          {
+              responseType: "blob",
+          }
+      );
+
+      const url = window.URL.createObjectURL(
+          new Blob([pdfRes.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Factura_${payment.id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success("¡Factura descargada!", { id: toastId });
+  } catch (error) {
+      console.error(error);
+      toast.error("Hubo un problema al generar la factura.", {
+          id: toastId,
+      });
+  }
+};
