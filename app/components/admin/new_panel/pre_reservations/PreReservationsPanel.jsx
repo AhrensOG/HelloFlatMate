@@ -96,6 +96,18 @@ const PreReservationsPanel = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+      const toastId = toast.loading("Eliminando...");
+      try {
+        await axios.delete(`/api/admin/lease_order/pre_reservation_panel?id=${id}`);
+        await mutate();
+        toast.success("Pre-reserva eliminada correctamente", { id: toastId })
+      } catch (error) {
+        console.log(error)
+        toast.info("Ocurrio un error al eliminar la pre-reserva", { description: "Intenta nuevamente o contacta con el soporte", id: toastId })
+      }
+    }
+
     if (error) {
         return <SkeletonLoader error={error} />;
     }
@@ -120,6 +132,7 @@ const PreReservationsPanel = () => {
                 handleApprove={handleApprove}
                 handleReject={handleReject}
                 handleOpenModal={handleOpenModal}
+                handleDelete={handleDelete}
             />
 
             {isOpen && <OrderModal order={selectedOrder} onClose={handleCloseModal} />}
