@@ -108,7 +108,7 @@ export default function PropertyCard({
                       {formatDate(new Date(nextAvailableDate))}
                     </div>
                   ) : (
-                    "¡Disponible!"
+                    "¡Disponible ahora!"
                   );
                 })()}
               </span>
