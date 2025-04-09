@@ -1,11 +1,14 @@
-import React from "react";
+import React, { act } from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
+import { CheckIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 const PreReservationsTable = ({
   filteredOrders,
   handleApprove,
   handleReject,
   handleOpenModal,
+  handleDelete,
 }) => {
   return (
     <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
@@ -55,8 +58,7 @@ const PreReservationsTable = ({
             <tr
               key={lo.id}
               className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer"
-              onClick={() => handleOpenModal(lo)}
-            >
+              onClick={() => handleOpenModal(lo)}>
               <td className="border p-2 text-gray-700 text-center">{lo.id}</td>
               <td className="border p-2 text-gray-700 text-left">{`${lo.client?.name} ${lo.client?.lastName}`}</td>
               <td className="border p-2 text-gray-700 text-center">
@@ -86,29 +88,47 @@ const PreReservationsTable = ({
               <td
                 className={`${
                   lo.status === "IN_PROGRESS" ? "text-blue-700" : "text-red-700"
-                } border p-2 w-36 text-center`}
-              >
+                } border p-2 w-36 text-center`}>
                 {lo.status === "IN_PROGRESS" ? "En progreso" : "Rechazada"}
               </td>
               <td className="border p-2 text-gray-700 text-center">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleApprove(lo.id, lo.room?.id);
-                  }}
-                  className="bg-green-500 text-white px-2 py-1 mr-2 rounded"
-                >
-                  Aprobar
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleReject(lo.id, lo.room?.id);
-                  }}
-                  className="bg-red-500 text-white px-2 py-1 rounded"
-                >
-                  Rechazar
-                </button>
+                <div className="flex w-full h-full justify-around">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleApprove(lo.id, lo.room?.id);
+                    }}>
+                    <CheckIcon
+                      title="Aprobar"
+                      className="size-6 text-green-500"
+                    />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleReject(lo.id, lo.room?.id);
+                    }}>
+                    <XMarkIcon
+                      title="Rechazar"
+                      className="size-6 text-red-500"
+                    />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toast("Eliminar pre-reserva", {
+                        action: {
+                          label: "Confirmar",
+                          onClick: () => handleDelete(lo.id),
+                        },
+                      });
+                    }}>
+                    <TrashIcon
+                      title="Eliminar"
+                      className="size-6 text-yellow-500"
+                    />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
