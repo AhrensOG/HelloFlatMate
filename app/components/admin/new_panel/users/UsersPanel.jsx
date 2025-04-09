@@ -15,7 +15,6 @@ import { addLeaseOrderToPayments } from "../utils/addLeaseOrderToPayments";
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function UsersPanel({
-    allUsers = [],
     properties = [],
     orders = [],
     allLeaseOrders = [],
@@ -29,20 +28,21 @@ export default function UsersPanel({
     const [isPaysModal, setIsPaysModal] = useState(false);
     const [pays, setPays] = useState(null);
     const [ordersUser, setOrdersUser] = useState(null);
-    // Usar SWR para obtener las órdenes
+    
     const {
         data: swrData,
         error,
         mutate,
     } = useSWR("/api/admin/user", fetcher, {
-        fallbackData: allUsers,
-        refreshInterval: 120000,
+        refreshInterval: 180000,
     });
-    const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(
+
+
+    const usersWithLeaseOrderDataInPayment = swrData && addLeaseOrderToPayments(
         swrData,
         allLeaseOrders
     );
-    const users = [
+    const users = usersWithLeaseOrderDataInPayment && [
         ...usersWithLeaseOrderDataInPayment.clients,
         ...usersWithLeaseOrderDataInPayment.admins,
         ...usersWithLeaseOrderDataInPayment.owners,
@@ -120,22 +120,6 @@ export default function UsersPanel({
         setIsPaysModal(false);
     };
 
-    // Función para manejar la actualización de una reserva
-    const handleUpdateOrder = async (updatedOrder) => {
-        try {
-            await axios.put(`/api/admin/lease_order`, updatedOrder); // Llama a tu API para actualizar
-            toast.success("Orden actualizada correctamente!");
-            mutate(); // Actualiza los datos en caché
-            handleCloseModalEdit(); // Cierra el modal de edición
-        } catch (error) {
-            toast.error("Ocurrió un error al actualizar la orden.");
-        }
-    };
-
-    if (error) {
-        return <SkeletonLoader error={error} />;
-    }
-
     return (
         <div className="h-screen flex flex-col p-4 gap-4">
             <div className="space-y-6">
@@ -173,12 +157,14 @@ export default function UsersPanel({
                 <CreateUserModal
                     action={handleCloseModalCreate}
                     options_1={properties}
+                    mutate={mutate}
                 />
             )}
             {isOpenEdit && (
                 <UpdateUserModal
                     user={selectedUser}
                     onClose={handleCloseModalEdit}
+                    mutate={mutate}
                 />
             )}
             {isOpenOrdesModal && (

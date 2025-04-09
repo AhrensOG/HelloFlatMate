@@ -9,21 +9,19 @@ import CreateLeaseOrderModal from "../../create_lo_modal/CreateLeaseOrderModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function ReservationPanel({ leaseOrders = [], data }) { 
+export default function ReservationPanel({ data }) { 
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isOpenCreatOrderModal, setIsOpenCreatOrderModal] = useState(false);
-    const [selectedDateFilter, setSelectedDateFilter] = useState(""); // Nuevo estado para el filtro de fecha
+    const [selectedDateFilter, setSelectedDateFilter] = useState("");
 
-    // Usar SWR para obtener las órdenes
     const {
         data: swrData,
         error,
         mutate,
     } = useSWR("/api/admin/lease_order", fetcher, {
-        fallbackData: leaseOrders,
         refreshInterval: 60000,
     });
 
@@ -88,23 +86,6 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
         setIsOpenCreatOrderModal(true);
     };
 
-    // Función para manejar la actualización de una reserva
-    const handleUpdateOrder = async (updatedOrder) => {
-        try {
-            await axios.put(`/api/admin/lease_order`, updatedOrder); // Llama a tu API para actualizar
-            toast.success("Orden actualizada correctamente!");
-            mutate(); // Actualiza los datos en caché
-            handleCloseModalEdit(); // Cierra el modal de edición
-        } catch (error) {
-            console.error(error);
-            toast.error("Ocurrió un error al actualizar la orden.");
-        }
-    };
-
-    // useEffect(() => {
-
-    // })
-
     if (error) return <div>Error al cargar las reservas.</div>;
 
     return (
@@ -139,8 +120,8 @@ export default function ReservationPanel({ leaseOrders = [], data }) {
             />
 
             {isOpen && <OrderModalReservation data={selectedOrder} onClose={handleCloseModal} />}
-            {isOpenEdit && <EditReservationModal leaseOrder={selectedOrder} onClose={handleCloseModalEdit} onUpdate={handleUpdateOrder} />}
-            {isOpenCreatOrderModal && <CreateLeaseOrderModal onClose={() => setIsOpenCreatOrderModal(false)} data={data} />}
+            {isOpenEdit && <EditReservationModal leaseOrder={selectedOrder} onClose={handleCloseModalEdit} mutate={mutate} />}
+            {isOpenCreatOrderModal && <CreateLeaseOrderModal onClose={() => setIsOpenCreatOrderModal(false)} data={data} mutate={mutate} />}
         </div>
     );
 }

@@ -4,12 +4,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios"; // Para solicitudes HTTP
 
-export default function CreateUserModal({ action, reload, options_1 }) {
+export default function CreateUserModal({ action, options_1, mutate }) {
   const [showPassword, setShowPassword] = useState(false); // Mostrar/ocultar contraseña
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [options, setOptions] = useState(options_1);
 
   const handleCreateUser = async (values) => {
+    const toastId = toast.loading("Creando usuario...")
     try {
       const payload = {
         ...values,
@@ -20,13 +21,13 @@ export default function CreateUserModal({ action, reload, options_1 }) {
         values.rol === "OWNER"
           ? "/api/admin/user/create/owner"
           : "/api/admin/user/create";
-
+      await mutate()
       const response = await axios.post(endpoint, payload);
-
-      action(false); // Cerrar modal
+      toast.success("Usuario creado correctamente", { id: toastId })
+      action(false);
       return response.data.message; // Mensaje de éxito
     } catch (err) {
-      toast.info("Ocurrio un error al crear el usuario");
+      toast.info("Ocurrio un error al crear el usuario", { id: toastId });
       console.log(err);
       throw err;
     }
@@ -51,12 +52,7 @@ export default function CreateUserModal({ action, reload, options_1 }) {
         .required("Correo electrónico es obligatorio"),
       password: Yup.string().required("Contraseña es obligatoria"),
     }),
-    onSubmit: async (values) => {
-      toast.promise(handleCreateUser(values), {
-        loading: "Creando usuario...",
-        success: "Usuario creado correctamente",
-      });
-    },
+    onSubmit: handleCreateUser
   });
 
   const handleSelectProperty = (property) => {

@@ -20,7 +20,7 @@ const TYPE_LABELS = {
     OTHER: "Otro",
 };
 
-export default function ConsumptionsPanel({ data, users, properties }) {
+export default function ConsumptionsPanel({ users, properties }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [createIsOpen, setCreateIsOpen] = useState(false);
     const [createPropertyIsOpen, setCreatePropertyIsOpen] = useState(false);
@@ -32,7 +32,6 @@ export default function ConsumptionsPanel({ data, users, properties }) {
         error,
         mutate,
     } = useSWR("/api/admin/consumptions", fetcher, {
-        fallbackData: data,
         refreshInterval: 600000,
     });
 
@@ -53,22 +52,26 @@ export default function ConsumptionsPanel({ data, users, properties }) {
         setSelectedConsumption(consumption);
         setEditIsOpen(true);
     };
-
-    let filteredConsumptions = (swrData || [])?.filter((consumption) => {
-        const searchTerm = searchQuery.toLowerCase();
-        const user =
-            consumption?.client?.name?.toLowerCase() +
-                " " +
-                consumption?.client?.lastName?.toLowerCase() || "";
-        const type = consumption?.type?.toLowerCase() || "";
-        const id = consumption?.id?.toString() || "";
-
-        return (
-            user.includes(searchTerm) ||
-            type.includes(searchTerm) ||
-            id.includes(searchTerm)
-        );
+    
+    let filteredConsumptions = (swrData || []).filter((consumption) => {
+      const searchTerm = searchQuery.toLowerCase();
+      const user =
+        (consumption?.client?.name?.toLowerCase() || "") +
+        " " +
+        (consumption?.client?.lastName?.toLowerCase() || "");
+      const type = consumption?.type?.toLowerCase() || "";
+      const id = consumption?.id?.toString() || "";
+      const serial =
+        consumption?.leaseOrderRoom?.room?.serial?.toLowerCase() || "";
+    
+      return (
+        user.includes(searchTerm) ||
+        type.includes(searchTerm) ||
+        id.includes(searchTerm) ||
+        serial.includes(searchTerm)
+      );
     });
+    
 
     return (
         <div className="h-screen w-full flex flex-col p-4 gap-4">

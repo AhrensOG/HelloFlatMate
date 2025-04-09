@@ -13,11 +13,10 @@ const LABELS_TYPE = {
     CONTRACT: "Contrato",
 };
 
-export default function DocumentsPanel({ data, users }) { 
+export default function DocumentsPanel({ users }) { 
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedDocument, setSelectedDocument] = useState(null);
-    const [documents, setDocuments] = useState(data);
     const [isOpenCreate, setIsOpenCreate] = useState(false);
 
     const {
@@ -25,14 +24,9 @@ export default function DocumentsPanel({ data, users }) {
         error,
         mutate,
     } = useSWR("/api/admin/document", fetcher, {
-        fallbackData: data,
         refreshInterval: 60000,
     });
 
-    // Actualiza el estado de los documentos cuando swrData cambie
-    useEffect(() => {
-        setDocuments(swrData || data);
-    }, [swrData, data]);
 
     const handleOpenModal = (doc) => {
         setSelectedDocument(doc);
@@ -40,49 +34,22 @@ export default function DocumentsPanel({ data, users }) {
     };
 
     const handleDelete = async (id) => {
+      const toastId = toast.loading("Eliminando...")
         try {
             await axios.delete(`/api/admin/document?id=${id}`);
             const updatedData = swrData.filter((item) => item.id !== id);
-            mutate(updatedData);
+            await mutate(updatedData);
+            toast.success("Documento eliminado correctamente", { id: toastId })
         } catch (error) {
-            throw error;
+          console.log(error)
+          toast.info("Ocurrio un error al eliminar el documento", { description: "Intenta nuevamente o contacta con el soporte", id: toastId })
         }
     };
 
-    const deleteToast = (doc) => {
-        toast(
-            <div className="flex items-center mx-auto gap-2 flex-col">
-                <p>Estas seguro que deseas eliminar el documento?</p>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => {
-                            toast.promise(handleDelete(doc.id), {
-                                loading: "Eliminando...",
-                                success: "Documento eliminado",
-                                info: "Error al eliminar el documento",
-                            });
-                            toast.dismiss();
-                        }}
-                        className="bg-red-500 text-white px-2 py-1 rounded"
-                    >
-                        Si
-                    </button>
-                    <button onClick={() => toast.dismiss()} className="bg-green-500 text-white px-2 py-1 rounded">
-                        No
-                    </button>
-                </div>
-            </div>,
-            {
-                position: "top-center",
-            }
-        );
-    };
-
-    // Filtra los documentos basados en el texto de búsqueda
-    const filteredDocuments = documents?.filter((doc) => {
+    const filteredDocuments = (swrData || [])?.filter((doc) => {
         const searchTerm = searchQuery.toLowerCase();
-        const fullname = `${doc.client.name} ${doc.client.lastName}`.toLowerCase() || "";
-        const email = doc.client.email?.toLowerCase() || "";
+        const fullname = `${doc.client?.name} ${doc.client?.lastName}`.toLowerCase() || "";
+        const email = doc.client?.email?.toLowerCase() || "";
 
         return fullname.includes(searchTerm) || email.includes(searchTerm);
     });
@@ -150,7 +117,12 @@ export default function DocumentsPanel({ data, users }) {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    deleteToast(doc);
+                                                    toast("Eliminar document", {
+                                                      action: {
+                                                        label: "Confirmar",
+                                                        onClick: () => handleDelete(doc.id)
+                                                      }
+                                                    })
                                                 }}
                                             >
                                                 <TrashIcon title="Eliminar" className="size-6 text-red-500"/>
@@ -162,8 +134,8 @@ export default function DocumentsPanel({ data, users }) {
                     </tbody>
                 </table>
             </div>
-            {isOpen && <DocumentModal isOpen={isOpen} onClose={() => setIsOpen(false)} document={selectedDocument} />}
-            {isOpenCreate && <CreateDocumentModal isOpen={isOpenCreate} onClose={() => setIsOpenCreate(false)} users={users} mutate={mutate} />}
+            {isOpen && <DocumentModal onClose={() => setIsOpen(false)} document={selectedDocument} mutate={mutate} />}
+            {isOpenCreate && <CreateDocumentModal onClose={() => setIsOpenCreate(false)} users={users} mutate={mutate} />}
         </div>
     );
 }

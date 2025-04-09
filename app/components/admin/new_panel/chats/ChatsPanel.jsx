@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function ChatsPanel({ data = [], users = [], properties = [] }) {
+export default function ChatsPanel({ users = [], properties = [] }) {
     const [selectedChat, setSelectedChat] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [addModalOpen, setAddModalOpen] = useState(false);
@@ -22,7 +22,6 @@ export default function ChatsPanel({ data = [], users = [], properties = [] }) {
         mutate,
         error,
     } = useSWR("/api/admin/chat", fetcher, {
-        fallbackData: data,
         refreshInterval: 300000,
     });
 
@@ -97,15 +96,14 @@ export default function ChatsPanel({ data = [], users = [], properties = [] }) {
                     ? chat.property?.serial?.toLowerCase() || ""
                     : chat.room?.serial?.toLowerCase() || "";
 
-            const owner = chat.participants.find(
+            const owner = chat.participants?.find(
                 (p) => p.participantType === "OWNER"
             )?.owner;
             const ownerName = `${owner?.name || ""} ${
                 owner?.lastName || ""
             }`.toLowerCase();
 
-            const clients = chat.participants
-                .filter((p) => p.participantType === "CLIENT")
+            const clients = chat.participants?.filter((p) => p.participantType === "CLIENT")
                 .map((c) =>
                     `${c.client?.name || ""} ${
                         c.client?.lastName || ""

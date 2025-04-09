@@ -14,7 +14,7 @@ const TYPOLOGY_LABELS = {
     ONLY_MEN: "Solo chicos",
 };
 
-export default function RoomsPanel({ data }) {
+export default function RoomsPanel() {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -26,87 +26,120 @@ export default function RoomsPanel({ data }) {
         error,
         mutate,
     } = useSWR("/api/admin/room", fetcher, {
-        fallbackData: data,
         refreshInterval: 600000,
     });
+
+    const {
+      data: rentalPeriods,
+      error: rentalPeriodsError,
+      isLoading: rentalPeriodsLoading,
+  } = useSWR("/api/admin/rental_period", fetcher);
 
     const handleOpenModal = (room) => {
         setSelectedRoom(room);
         setIsOpen(true);
     };
 
-    const filteredData = swrData?.filter((room) => {
-        const matchesSearch = [room.id, room.serial, room.name, room.zone, room.type]
-            .map((field) => field?.toString().toLowerCase())
-            .some((field) => field?.includes(searchQuery.toLowerCase()));
-
-        const matchesStatus =
-            selectedStatusFilter === "all"
-                ? true
-                : selectedStatusFilter === "active"
-                ? room.isActive === true
-                : selectedStatusFilter === "inactive"
-                ? room.isActive === false
-                : true;
-
-        return matchesSearch && matchesStatus;
+    const filteredData = swrData
+    ?.filter((room) => {
+      const matchesSearch = [room.id, room.serial, room.name, room.zone, room.type]
+        .map((field) => field?.toString().toLowerCase())
+        .some((field) => field?.includes(searchQuery.toLowerCase()));
+  
+      const matchesStatus =
+        selectedStatusFilter === "all"
+          ? true
+          : selectedStatusFilter === "active"
+          ? room.isActive === true
+          : selectedStatusFilter === "inactive"
+          ? room.isActive === false
+          : true;
+  
+      return matchesSearch && matchesStatus;
+    })
+    ?.sort((a, b) => {
+      const parseSerial = (serial) => {
+        if (typeof serial !== "string") return { letter: "", number: -1 };
+  
+        const match = serial.match(/([A-Z])(\d+)$/i);
+        if (!match) return { letter: "", number: -1 };
+  
+        const [, letter, num] = match;
+        const parsedNum = parseInt(num, 10);
+        if (isNaN(parsedNum)) return { letter, number: -1 };
+  
+        return { letter, number: parsedNum };
+      };
+  
+      const aSerial = parseSerial(a.serial);
+      const bSerial = parseSerial(b.serial);
+  
+      // Si ambos tienen número válido
+      if (aSerial.number !== -1 && bSerial.number !== -1) {
+        if (aSerial.letter === bSerial.letter) {
+          return aSerial.number - bSerial.number; // mayor a menor
+        }
+        return aSerial.letter.localeCompare(bSerial.letter); // A vs R
+      }
+  
+      // Si uno no tiene número válido, lo mandamos al final
+      if (aSerial.number === -1) return 1;
+      if (bSerial.number === -1) return -1;
+  
+      return 0;
     });
+  
 
     const handleOnsave = async (data) => {
-        try {
-            toast.loading("Guardando cambios...");
-            const response = await axios.put(`/api/admin/room/new_panel?id=${selectedRoom.id}`, data);
-            toast.dismiss();
-            toast.success("Cambios guardados");
-            mutate();
-            setIsOpen(false);
-        } catch (e) {
-            toast.info("Error al guardar los cambios");
-            throw e;
+      const toastId = toast.loading("Guardando cambios...");
+      const { selectedRentalPeriodIds = [], ...roomData } = data;
+    
+      try {
+        await axios.put(`/api/admin/room/new_panel?id=${selectedRoom.id}`, roomData);
+    
+        if (selectedRentalPeriodIds.length > 0) {
+          const rentalItems = selectedRentalPeriodIds.map((rentalPeriodId) => ({
+            relatedId: selectedRoom.id,
+            relatedType: "ROOM",
+            rentalPeriodId,
+          }));
+    
+          await axios.post("/api/admin/rental_item", rentalItems);
+        }
+    
+        toast.success("Cambios guardados", { id: toastId });
+        await mutate();
+        setIsOpen(false);
+      } catch (e) {
+        toast.info("Error al guardar los cambios", { id: toastId });
+        throw e;
+      }
+    };
+
+    const handleDeleteRentalItem = async (id) => {
+      const toastId = toast.loading("Eliminando...");  
+      try {
+            await axios.delete(`/api/admin/rental_item?`, { data: id });
+            toast.success("Periodo de alquiler eliminado con éxito", { id: toastId });
+            await mutate();
+            setIsOpen(false)
+        } catch (error) {
+            console.error("Error deleting rental item:", error);
+            toast.info("Error al eliminar el periodo de alquiler", { id: toastId });
         }
     };
 
     const handleDelete = async (id) => {
+      const toastId = toast.loading("Eliminado habitación...")
         try {
-            const response = await axios.delete(`/api/admin/room?`, { data: id });
-            if (response.status === 204) {
-                // Handle successful deletion without parsing
-                const updatedData = swrData.filter((item) => item.id !== id);
-                mutate(updatedData);
-            }
+            await axios.delete(`/api/admin/room?`, { data: id });
+            const updatedData = swrData.filter((item) => item.id !== id);
+            await mutate(updatedData);
+            toast.success("Habitación eliminada correctamente", { id: toastId })
         } catch (error) {
             console.error("Error deleting item:", error);
-            throw error;
+            toast.info("Ocurrio un error al eliminar la habitación", { description: "Intenta nuevamente o contacta al soporte.", id: toastId })
         }
-    };
-
-    const deleteToast = (data) => {
-        toast(
-            <div className="flex items-center mx-auto gap-2 flex-col">
-                <p>Estas seguro que deseas eliminar la habitacion?</p>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => {
-                            toast.promise(handleDelete(data.id), {
-                                loading: "Eliminando...",
-                                success: "Habitacion eliminada",
-                                info: "Error al eliminar la habitacion",
-                            });
-                            toast.dismiss();
-                        }}
-                        className="bg-red-500 text-white px-2 py-1 rounded"
-                    >
-                        Si
-                    </button>
-                    <button onClick={() => toast.dismiss()} className="bg-green-500 text-white px-2 py-1 rounded">
-                        No
-                    </button>
-                </div>
-            </div>,
-            {
-                position: "top-center",
-            }
-        );
     };
 
     return (
@@ -128,6 +161,7 @@ export default function RoomsPanel({ data }) {
                     <thead className="sticky top-0 bg-white">
                         <tr>
                             {/* <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th> */}
+                            <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">Inquilino</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Código</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Nombre</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Precio</th>
@@ -177,51 +211,101 @@ export default function RoomsPanel({ data }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredData &&
-                            filteredData?.map((room) => (
-                                <tr key={room.id} className="hover:bg-gray-100 even:bg-gray-50 transition-colors">
-                                    {/* <td className="border p-2 text-gray-700 text-center">{room.id}</td> */}
-                                    <td className="border p-2 text-gray-700 text-center">{room.serial}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{room.name}</td>
-                                    <td className="border p-2 text-gray-700 text-center"> €{room.price}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{room.property?.zone}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{TYPOLOGY_LABELS[room.property?.typology]}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{room.isActive ? "Si" : "No"}</td>
-                                    <td className="border p-2 text-gray-700 text-center">{`${room.property?.street} ${room.property?.streetNumber}, ${room.property?.city}`}</td>
-                                    <td className="border p-2 text-gray-700 text-center">
-                                        <div className="w-full h-full flex gap-2 items-center justify-around">
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleOpenModal(room);
-                                                }}
-                                            >
-                                                <PencilIcon title="Edición rapida" className="size-6 text-green-500" />
-                                            </button>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    deleteToast(room);
-                                                }}
-                                            >
-                                                <TrashIcon title="Eliminar" className="size-6 text-red-500" />
-                                            </button>
-                                            <Link
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                }}
-                                                href={`/pages/admin/update/${room.property?.id}/${room.property?.category}`}
-                                                target="_blank"
-                                            >
-                                                <WrenchIcon title="Edición completa" className="size-6 text-blue-500" />
-                                            </Link>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                    {filteredData &&
+                        filteredData.map((room) => {
+                          const hasPendingOrInProgressOrder = room.leaseOrdersRoom?.some(
+                            (order) => order.status === "IN_PROGRESS" || order.status === "PENDING"
+                          );
+
+                          const order = room.leaseOrdersRoom?.length > 0 && room.leaseOrdersRoom?.find((order) => order.isActive);
+
+                          const rowClass = room.isActive
+                            ? hasPendingOrInProgressOrder
+                              ? "bg-yellow-100" // activo con orden pendiente o en progreso
+                              : "bg-green-100" // activo sin orden pendiente
+                            : "bg-red-50"; // inactivo
+
+                          return (
+                            <tr
+                              key={room.id}
+                              className={`${rowClass} hover:bg-gray-100 transition-colors cursor-pointer`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenModal(room);
+                              }}
+                            >
+                              {/* <td className="border p-2 text-gray-700 text-center">{room.id}</td> */}
+                              <td className="border p-2 text-gray-700 text-left break-words">
+                                {order && order.client ? `${order.client?.name} ${order.client?.lastName} - ${order.client?.email}` : "Sin inquilino"}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                {room.serial}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">{room.name}</td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                €{room.price}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                {room.property?.zone}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                {TYPOLOGY_LABELS[room.property?.typology]}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                {room.isActive ? "Si" : "No"}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                {`${room.property?.street} ${room.property?.streetNumber}, ${room.property?.city}`}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                <div className="w-full h-full flex gap-2 items-center justify-around">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleOpenModal(room);
+                                    }}
+                                  >
+                                    <PencilIcon
+                                      title="Edición rapida"
+                                      className="size-6 text-green-500"
+                                    />
+                                  </button>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toast("Eliminar habitación", {
+                                        action: {
+                                          label: "Confirmar",
+                                          onClick: () => handleDelete(room.id)
+                                        }
+                                      })
+                                    }}
+                                  >
+                                    <TrashIcon
+                                      title="Eliminar"
+                                      className="size-6 text-red-500"
+                                    />
+                                  </button>
+                                  <Link
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                    }}
+                                    href={`/pages/admin/update/${room.property?.id}/${room.property?.category}`}
+                                    target="_blank"
+                                  >
+                                    <WrenchIcon
+                                      title="Edición completa"
+                                      className="size-6 text-blue-500"
+                                    />
+                                  </Link>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                 </table>
-                {isOpen && <RoomEditModal isOpen={isOpen} onClose={() => setIsOpen(false)} data={selectedRoom} onSave={handleOnsave} />}
+                {isOpen && <RoomEditModal isOpen={isOpen} onClose={() => setIsOpen(false)} data={selectedRoom} onSave={handleOnsave} deleteRentalItem={handleDeleteRentalItem} rentalPeriodsData={{ rentalPeriods: rentalPeriods.rentalPeriods || [], rentalPeriodsError, rentalPeriodsLoading }} />}
             </div>
         </div>
     );

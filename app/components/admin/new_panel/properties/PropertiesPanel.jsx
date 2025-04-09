@@ -40,51 +40,29 @@ export default function PropertiesPanel({ data }) {
     };
 
     const handleOnsave = async (data) => {
-        const response = await axios.patch(`/api/admin/property?simple=true`, data);
+      const toastId = toast.loading("Actualizando propiedad");
+      try {  
+        await axios.patch(`/api/admin/property?simple=true`, data);
+        await mutate()
+        toast.success("Propiedad actualizada correctamente", { id: toastId })
         setIsOpen(false);
+      } catch (error) {
+        console.log(error)
+        toast.info("Ocurrió un error al actualizar la propiedad", { description: "Intenta nuevamente o contacta al soporte", id: toastId })
+      }
     };
 
     const handleDelete = async (id) => {
+      const toastId = toast.loading("Eliminando propiedad...");
         try {
-            const response = await axios.delete(`/api/admin/property?type=del&id=${id}`, { data: id });
-            if (response.status === 204) {
-                // Handle successful deletion without parsing
-                const updatedData = swrData.filter((item) => item.id !== id);
-                mutate(updatedData);
-            }
+            await axios.delete(`/api/admin/property?type=del&id=${id}`, { data: id });
+            const updatedData = swrData.filter((item) => item.id !== id);
+            await mutate(updatedData);
+            toast.success("Propiedad eliminada correctamente", { id: toastId })
         } catch (error) {
             console.error("Error deleting item:", error);
-            throw error;
+            toast.success("Ocurrió un error al eliminar la propiedad", { description: "Intenta nuevamente o contacta al soporte", id: toastId })
         }
-    };
-
-    const deleteToast = (data) => {
-        toast(
-            <div className="flex items-center mx-auto gap-2 flex-col">
-                <p>Estas seguro que deseas eliminar la propiedad?</p>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => {
-                            toast.promise(handleDelete(data.id), {
-                                loading: "Eliminando...",
-                                success: "Propiedad eliminada",
-                                info: "Error al eliminar el propiedad",
-                            });
-                            toast.dismiss();
-                        }}
-                        className="bg-red-500 text-white px-2 py-1 rounded"
-                    >
-                        Si
-                    </button>
-                    <button onClick={() => toast.dismiss()} className="bg-green-500 text-white px-2 py-1 rounded">
-                        No
-                    </button>
-                </div>
-            </div>,
-            {
-                position: "top-center",
-            }
-        );
     };
 
     return (
@@ -145,7 +123,12 @@ export default function PropertiesPanel({ data }) {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    deleteToast(property);
+                                                    toast("Eliminar propiedad", {
+                                                      action: {
+                                                        label: "Confirmar",
+                                                        onClick: () => handleDelete(property.id)
+                                                      }
+                                                    })
                                                 }}
                                                 className="h-full"
                                             >
@@ -167,7 +150,7 @@ export default function PropertiesPanel({ data }) {
                             ))}
                     </tbody>
                 </table>
-                {isOpen && <EditPropertyModal isOpen={isOpen} onClose={() => setIsOpen(false)} data={selectedProperty} onSave={handleOnsave} />}
+                {isOpen && <EditPropertyModal onClose={() => setIsOpen(false)} data={selectedProperty} onSave={handleOnsave} />}
             </div>
         </div>
     );

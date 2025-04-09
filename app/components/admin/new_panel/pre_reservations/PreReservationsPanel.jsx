@@ -9,7 +9,7 @@ import SkeletonLoader from "../SkeletonLoader";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-const PreReservationsPanel = ({ leaseOrders = [] }) => {
+const PreReservationsPanel = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -19,7 +19,6 @@ const PreReservationsPanel = ({ leaseOrders = [] }) => {
         error,
         mutate,
     } = useSWR("/api/admin/lease_order", fetcher, {
-        fallbackData: leaseOrders,
         refreshInterval: 60000,
     });
 

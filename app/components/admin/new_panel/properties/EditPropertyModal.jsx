@@ -20,39 +20,28 @@ const modalStyles = {
 };
 
 const validationSchema = Yup.object().shape({
-    nombre: Yup.string().required("El nombre es requerido"),
-    ciudad: Yup.string().required("La ciudad es requerida"),
-    zona: Yup.string().required("La zona es requerida"),
+    name: Yup.string().required("El name es requerido"),
+    city: Yup.string().required("La city es requerida"),
+    zone: Yup.string().required("La zone es requerida"),
     street: Yup.string().required("La calle es requerida"),
     streetNumber: Yup.string().required("El número de calle es requerido"),
     isActive: Yup.boolean(),
 });
 
-export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
+export default function EditPropertyModal({ onClose, data, onSave }) {
     const formik = useFormik({
         initialValues: {
-            nombre: data?.name || "",
-            ciudad: data?.city || "",
-            zona: data?.zone || "",
+            name: data?.name || "",
+            city: data?.city || "",
+            zone: data?.zone || "",
             isActive: Boolean(data?.isActive),
             street: data?.street || "",
             streetNumber: data?.streetNumber || "",
         },
         enableReinitialize: true,
         validationSchema,
-        onSubmit: (values) => {
-            toast.promise(onSave({ id: data.id, ...values }), {
-                loading: "Guardando...",
-                success: () => {
-                    toast.success("Propiedad guardada correctamente");
-                    onClose();
-                },
-                info: "Error al guardar la propiedad",
-            });
-        },
+        onSubmit: (values) => onSave({ id: data.id, ...values })
     });
-
-    if (!isOpen) return null;
 
     return (
         <div className={modalStyles.overlay}>
@@ -70,7 +59,7 @@ export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
                         </div>
                     ))}
 
-                    {Object.entries({ nombre: "Nombre", ciudad: "Ciudad", zona: "Zona", street: "Calle", streetNumber: "Número de calle" }).map(
+                    {Object.entries({ name: "name", city: "city", zone: "zone", street: "Calle", streetNumber: "Número de calle" }).map(
                         ([field, label]) => (
                             <div key={field} className={modalStyles.inputGroup}>
                                 <label className={modalStyles.label} htmlFor={field}>
@@ -92,7 +81,6 @@ export default function EditPropertyModal({ isOpen, onClose, data, onSave }) {
 
                     <div className={`flex flex-col gap-2 ${modalStyles.inputGroup} `}>
                         <label className={modalStyles.label}>Esta Activo?</label>
-                        {console.log(formik.values.isActive)}
 
                         <div className="flex gap-2">
                             <input

@@ -158,7 +158,7 @@ export default function OrderModalReservation({ data, onClose }) {
                             <h3 className="text-lg font-semibold mb-2">Contratos</h3>
                             {contracts?.length > 0 ? (
                                 contracts.map((contract) => (
-                                    <div key={contract.id}>
+                                    <div key={contract.id + "_contract"}>
                                         <Link href={`${contract.url}`} target="_blank">
                                             <p>{contract.name}</p>
                                         </Link>
@@ -172,17 +172,17 @@ export default function OrderModalReservation({ data, onClose }) {
                         <div className="space-y-1 text-">
                             <h3 className="text-lg font-semibold mb-2">Documentos</h3>
                             {documents?.length > 0 ? (
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-col gap-2">
                                     {/* Contenedor flex para los enlaces */}
                                     {documents.map((document) => (
-                                        <div key={document.id} className="flex-shrink-0">
+                                        <div key={document.id + "_document"} className="flex flex-col">
                                             {/* Cada enlace en un div */}
                                             {document.urls?.map((url) => (
                                                 <Link
                                                     href={url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    key={document.name + document.id}
+                                                    key={document.name + document.id + `${url}doc`}
                                                     className="text-blue-500 underline" // Añadir clase para estilo
                                                 >
                                                     {document.name}

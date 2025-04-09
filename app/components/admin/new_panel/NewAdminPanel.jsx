@@ -22,36 +22,35 @@ const NewAdminPanel = ({ data }) => {
     const renderSection = () => {
         switch (section) {
             case "pre-reservas":
-                return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
+                return <PreReservationsPanel />;
             case "reservas":
-                return <ReservationPanel leaseOrders={data.leaseOrdersApproved} data={{ clients: data.clients, properties: data.properties }} />;
+                return <ReservationPanel data={{ clients: data.clients, properties: data.properties }} />;
             case "usuarios":
                 return (
                     <UsersPanel
-                        allUsers={data.allUsers}
                         properties={data.optionSerials}
                         orders={[...data.allLeaseOrders]}
                         allLeaseOrders={data.allLeaseOrders}
                     />
                 );
             case "cobros":
-                return <PaymentsPanel payments={data.payments} users={data.allUsers?.clients || []} />;
+                return <PaymentsPanel users={data.allUsers?.clients || []} />;
             case "habitaciones":
-                return <RoomsPanel data={data.rooms} />;
+                return <RoomsPanel />;
             case "documentos":
-                return <DocumentsPanel data={data.documents} users={data.allUsers?.clients} />;
+                return <DocumentsPanel users={data.allUsers?.clients} />;
             case "periodos":
-                return <RentalPeriodsPanel data={data.rentalPeriods} />;
+                return <RentalPeriodsPanel />;
             case "propiedades":
                 return <PropertiesPanel data={data.properties} />;
             case "consumos":
-                return <ConsumptionsPanel data={data.consumptions} users={data.allUsers?.clients} properties={data.optionSerials} />;
+                return <ConsumptionsPanel users={data.allUsers?.clients} properties={data.optionSerials} />;
             case "chats":
-                return <ChatsPanel data={data.chats} users={data.allUsers} properties={data.optionSerials} />;
+                return <ChatsPanel users={data.allUsers} properties={data.optionSerials} />;
             case "incidencias":
                 return <IncidencesPanel />;
             default:
-                return <PreReservationsPanel leaseOrders={data.leaseOrders} />;
+                return <div/>;
         }
     };
 

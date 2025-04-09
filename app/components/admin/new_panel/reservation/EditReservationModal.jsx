@@ -2,7 +2,7 @@ import axios from "axios";
 import { Formik, Field, Form } from "formik";
 import { toast } from "sonner";
 
-export default function EditReservationModal({ leaseOrder, onClose, fetch }) {
+export default function EditReservationModal({ leaseOrder, onClose, mutate }) {
   const handleSubmit = async (values) => {
     const toastId = toast.loading("Actualizando...");
     try {
@@ -12,6 +12,7 @@ export default function EditReservationModal({ leaseOrder, onClose, fetch }) {
         leaseOrderId: leaseOrder.id,
       };
       await axios.put(`/api/admin/lease_order`, data);
+      await mutate()
       toast.success("Orden actualizada correctamente!", { id: toastId });
     } catch (error) {
       toast.info("Ocurrió un error al actualizar", { id: toastId });

@@ -1,17 +1,35 @@
-import { Property, Room } from "@/db/init";
+import { Client, LeaseOrderRoom, Property, RentalItem, RentalPeriod, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 import { Op } from "sequelize";
 
 export async function getAllRooms() { 
     try {
         const rooms = await Room.findAll({
-            attributes: ["id", "serial", "price", "name", "status", "couple", "floor", "door", "typology", "isActive"],
+            attributes: ["id", "serial", "price", "name", "status", "isActive"],
             include: [
                 {
                     model: Property,
-                    as: "property", // Esto es importante: Debe coincidir con el alias de la asociación
+                    as: "property",
                     attributes: ["id", "city", "street", "streetNumber", "zone", "ownerId", "typology", "category"],
                 },
+                {
+                  model: RentalItem,
+                  as: "rentalItems",
+                  attributes: ["id"],
+                  include: {
+                    model: RentalPeriod,
+                    as: "rentalPeriod",
+                    attributes:["startDate", "endDate"]
+                  },
+                },
+                {
+                  model: LeaseOrderRoom,
+                  as: "leaseOrdersRoom",
+                  attributes: ["status", "isActive"],
+                  include: [
+                    { model: Client, as: "client", attributes: ["name", "lastName", "email"] },  
+                  ]
+                }
             ],
             where: { status: { [Op.ne]: "DELETED" } },
         });
@@ -21,7 +39,7 @@ export async function getAllRooms() {
 
         return NextResponse.json(rooms, { status: 200 });
     } catch (error) {
-        console.error("Error al obtener las habitaciones:", error); // Muy importante para depurar
+        console.error("Error al obtener las habitaciones:", error);
         return NextResponse.json({ error: "Error al obtener las habitaciones" }, { status: 500 });
     }
 }
