@@ -108,7 +108,9 @@ export default function PropertyCard({
                       {formatDate(new Date(nextAvailableDate))}
                     </div>
                   ) : (
-                    "¡Disponible ahora!"
+                    <div className="flex gap-2">
+                      <ClockIcon className="size-4" /> ¡Disponible ahora!{" "}
+                    </div>
                   );
                 })()}
               </span>
