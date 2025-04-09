@@ -4,7 +4,7 @@ import axios from "axios";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import { toast } from "sonner";
 
-const DocumentModal = ({ document, onClose, onDocumentUpdate }) => {
+const DocumentModal = ({ document, onClose, mutate }) => {
     const [newFileName, setNewFileName] = useState(document.name);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -38,7 +38,7 @@ const DocumentModal = ({ document, onClose, onDocumentUpdate }) => {
                 let updateData = { id: document.id, urls: downloadURLs };
 
                 const response = await axios.patch(`/api/admin/document`, updateData);
-
+                await mutate()
                 if (response.status === 200) {
                     toast.success("Documento actualizado conxito!");
                 } else {

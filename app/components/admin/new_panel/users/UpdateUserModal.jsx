@@ -4,7 +4,7 @@ import axios from "axios";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-export default function UpdateUserModal({ onClose, user }) {
+export default function UpdateUserModal({ onClose, user, mutate }) {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleUpdateUser = async (values) => {
@@ -17,6 +17,7 @@ export default function UpdateUserModal({ onClose, user }) {
                 changeRol,
                 ...values,
             });
+            await mutate()
             toast.success("¡Datos actualizados con éxito!", { id: toastId });
             onClose();
         } catch (err) {

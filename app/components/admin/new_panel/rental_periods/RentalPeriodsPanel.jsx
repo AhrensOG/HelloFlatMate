@@ -9,7 +9,7 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function RentalPeriodsPanel({ data }) {
+export default function RentalPeriodsPanel() {
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [selectedPeriod, setSelectedPeriod] = useState(null);
@@ -20,7 +20,6 @@ export default function RentalPeriodsPanel({ data }) {
         error,
         mutate,
     } = useSWR("/api/admin/rental_period", fetcher, {
-        fallbackData: data,
         refreshInterval: 600000,
     });
 

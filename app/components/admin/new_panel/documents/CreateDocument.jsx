@@ -28,13 +28,11 @@ const validationSchema = Yup.object().shape({
     }),
 });
 
-export default function CreateDocumentModal({ isOpen, onClose, users }) {
+export default function CreateDocumentModal({ onClose, users, mutate }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     const [selectedLeaseOrder, setSelectedLeaseOrder] = useState(null);
-
-    if (!isOpen) return null;
 
     const handleUserSearch = (e) => {
         const query = e.target.value.toLowerCase();
@@ -76,6 +74,7 @@ export default function CreateDocumentModal({ isOpen, onClose, users }) {
                 leaseOrderId: values.leaseOrder,
                 leaseOrderType: "ROOM",
             });
+            await mutate();
             toast.success("Datos guardados correctamente.", { id: toastId });
             onClose();
         } catch (error) {

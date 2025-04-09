@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-const PaymentsPanel = ({ payments, users }) => {
+const PaymentsPanel = ({ users }) => {
     const [showCreatePaymentModal, setShowCreatePaymentModal] = useState(false);
     const [showEditPaymentModal, setShowEditPaymentModal] = useState(false);
     const [selectedPayment, setSelectedPayment] = useState(false);
@@ -21,7 +21,6 @@ const PaymentsPanel = ({ payments, users }) => {
         error,
         mutate,
     } = useSWR("/api/admin/payments", fetcher, {
-        fallbackData: payments,
         refreshInterval: 180000,
     });
 

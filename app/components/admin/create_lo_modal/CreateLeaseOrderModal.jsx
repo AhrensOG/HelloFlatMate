@@ -3,7 +3,7 @@ import axios from "axios";
 import { uploadContractPDF } from "@/app/firebase/uploadFiles";
 import { toast } from "sonner";
 
-export default function CreateLeaseOrderModal({ data, onClose }) {
+export default function CreateLeaseOrderModal({ data, onClose, mutate }) {
     const [propertiesData, setPropertiesData] = useState(data?.properties || []);
     const [usersData, setUsersData] = useState(data?.clients || []);
     const [rentalItemsData, setRentalItemsData] = useState([]);
@@ -117,6 +117,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
     }
 
     const createLeaseOrder = async () => {
+      const toastId = toast.loading("Creando orden...")
         try {
             const leaseOrderData = {
                 propertyId: selectedProperty.id,
@@ -133,63 +134,13 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
                 inReview: inReview, // Cambiar a la variable inReview
             };
             leaseOrderData.roomId = selectedRoom;
-            const res = await axios.post("/api/lease_order/manualCreate", leaseOrderData);
+            await axios.post("/api/lease_order/manualCreate", leaseOrderData);
+            await mutate()
+            toast.success("Orden creada correctamente", {id:toastId})
         } catch (error) {
             console.log(error);
-            throw error;
+            toast.info("Ocurrio un error al crear la orden", {description: `Error: ${error.response?.data?.message || "No definido"} | Intenta nuevamente o contacta con nuestro soporte.`, id:toastId})
         }
-    };
-
-    const uploadedContract = async () => {
-        try {
-            const uploadedContract = await uploadContractPDF(document, user.name + " " + user.lastName);
-            const res = await axios.post(
-                "/api/contract",
-                selectedRoom
-                    ? {
-                          propertyId: selectedProperty.id, // Usa selectedProperty
-                          roomId: selectedRoom,
-                          clientId: user.id,
-                          ownerId: selectedProperty.owner.id, // Usa selectedProperty
-                          name: uploadedContract.name,
-                          url: uploadedContract.url,
-                      }
-                    : {
-                          propertyId: selectedProperty.id, // Usa selectedProperty
-                          clientId: user.id,
-                          ownerId: selectedProperty.owner.id,
-                          name: uploadedContract.name,
-                          url: uploadedContract.url,
-                      }
-            );
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleSubmit = async () => {
-        try {
-            await createLeaseOrder();
-        } catch (error) {
-            toast.info("Ocurrio un error al crear la orden");
-            throw error;
-        }
-        // await uploadedContract();
-    };
-
-    const clearForm = () => {
-        setPropertySearch("");
-        setDocument("");
-        setStartDate("");
-        setEndDate("");
-        setUser("");
-        setSelectedRentalItem("");
-        setSelectedRoom("");
-        setSelectedProperty(null);
-        setFilteredProperties([]);
-        setFilteredUsers([]);
-        setRentalItemsData([]);
-        setRoomsData([]);
     };
 
     return (
@@ -369,12 +320,7 @@ export default function CreateLeaseOrderModal({ data, onClose }) {
 
                 <div className="flex justify-end">
                     <button
-                        onClick={() => {
-                            toast.promise(handleSubmit, {
-                                loading: "Cargando...",
-                                success: "Orden creada correctamente!",
-                            });
-                        }}
+                        onClick={createLeaseOrder}
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-blue-600"
                     >
                         Crear Orden de Alquiler

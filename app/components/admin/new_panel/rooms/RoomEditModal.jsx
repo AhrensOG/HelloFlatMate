@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import formatDateToDDMMYYYY from "../utils/formatDate";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 const modalStyles = {
     overlay: "fixed inset-0 flex items-center justify-center z-50",
@@ -25,11 +28,6 @@ const modalStyles = {
 };
 
 const validationSchema = Yup.object().shape({
-    floor: Yup.number()
-        .nullable()
-        .transform((_, originalValue) => (originalValue === "" ? null : Number(originalValue)))
-        .typeError("Debe ser un número"),
-    door: Yup.string().nullable(),
     price: Yup.number()
         .nullable()
         .transform((_, originalValue) => (originalValue === "" ? null : Number(originalValue)))
@@ -37,10 +35,9 @@ const validationSchema = Yup.object().shape({
     name: Yup.string().nullable(),
 });
 
-export default function RoomEditModal({ isOpen, onClose, data, onSave }) {
-    const [newTag, setNewTag] = useState("");
-    const [tags, setTags] = useState(data?.tags || []);
-
+export default function RoomEditModal({ onClose, data, onSave, deleteRentalItem, rentalPeriodsData }) {
+    const [selectedRentalPeriodIds, setSelectedRentalPeriodIds] = useState([]);
+    
     const formik = useFormik({
         initialValues: {
             price: data?.price || "",
@@ -50,12 +47,15 @@ export default function RoomEditModal({ isOpen, onClose, data, onSave }) {
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            onSave({ ...data, ...values });
-            onClose();
+          onSave({ ...data, ...values, selectedRentalPeriodIds });
         },
     });
 
-    if (!isOpen) return null;
+    const toggleRentalPeriod = (id) => {
+      setSelectedRentalPeriodIds((prev) =>
+        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      );
+    };
 
     return (
         <div className={modalStyles.overlay}>
@@ -67,22 +67,6 @@ export default function RoomEditModal({ isOpen, onClose, data, onSave }) {
                 <h2 className={modalStyles.title}>Editar Habitación</h2>
 
                 <form onSubmit={formik.handleSubmit} className={modalStyles.form}>
-                    {/* Input para price */}
-                    <div className={modalStyles.inputGroup}>
-                        <label htmlFor="price" className={modalStyles.label}>
-                            Precio:
-                        </label>
-                        <input
-                            type="number"
-                            id="price"
-                            name="price"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.price}
-                            className={`${modalStyles.input} ${formik.touched.price && formik.errors.price ? "border-red-500" : ""}`}
-                        />
-                        {formik.touched.price && formik.errors.price && <div className={modalStyles.error}>{formik.errors.price}</div>}
-                    </div>
                     {/* Input para name */}
                     <div className={modalStyles.inputGroup}>
                         <label htmlFor="name" className={modalStyles.label}>
@@ -99,6 +83,79 @@ export default function RoomEditModal({ isOpen, onClose, data, onSave }) {
                         />
                         {formik.touched.name && formik.errors.name && <div className={modalStyles.error}>{formik.errors.name}</div>}
                     </div>
+                        {/* Input para price */}
+                        <div className={modalStyles.inputGroup}>
+                            <label htmlFor="price" className={modalStyles.label}>
+                                Precio:
+                            </label>
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.price}
+                                className={`${modalStyles.input} ${formik.touched.price && formik.errors.price ? "border-red-500" : ""}`}
+                            />
+                            {formik.touched.price && formik.errors.price && <div className={modalStyles.error}>{formik.errors.price}</div>}
+                        </div>
+
+                        {/* Lista de Rental Items */}
+                        {data?.rentalItems?.length > 0 && (
+                          <div className={modalStyles.inputGroup}>
+                            <label className={modalStyles.label}>Fechas de Alquiler:</label>
+                            <ul className="text-sm text-gray-700 list-disc pl-5 space-y-1">
+                              {data.rentalItems.map((item) => {
+                                const start = new Date(item.rentalPeriod?.startDate);
+                                const end = new Date(item.rentalPeriod?.endDate);
+                                return (
+                                  <div key={item.id + "rental_item"} className="grid grid-cols-3">
+                                    <li className="col-span-2">
+                                      {formatDateToDDMMYYYY(start)} – {formatDateToDDMMYYYY(end)}
+                                    </li>
+                                    <button type="button" onClick={() => {
+                                      toast("Eliminar periodo de alquiler de la habitación", {
+                                        action: {
+                                          label: "Eliminar",
+                                          onClick: async () => {
+                                            await deleteRentalItem(item.id);
+                                          },
+                                        }
+                                      })
+                                    }}><TrashIcon className="size-4 text-red-600"/></button>
+                                  </div>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        )}
+
+                      {/* Crear de Rental Item */}
+                      {rentalPeriodsData?.rentalPeriods?.length > 0 && (
+                        <div className={modalStyles.inputGroup}>
+                          <label className={modalStyles.label}>Agregar periodos de alquiler:</label>
+                          <ul className="text-sm text-gray-700 space-y-2 max-h-40 overflow-y-auto">
+                            {rentalPeriodsData.rentalPeriods.map((period) => {
+                              const start = new Date(period.startDate);
+                              const end = new Date(period.endDate);
+                              const isSelected = selectedRentalPeriodIds.includes(period.id);
+                              return (
+                                <li
+                                  key={period.id}
+                                  onClick={() => toggleRentalPeriod(period.id)}
+                                  className={`flex items-center justify-between p-2 rounded cursor-pointer ${
+                                    isSelected ? "bg-blue-50" : "bg-gray-50"
+                                  } hover:bg-blue-50`}
+                                >
+                                  <span>ID: {period.id} - {formatDateToDDMMYYYY(start)} – {formatDateToDDMMYYYY(end)}</span>
+                                  {isSelected && <span className="text-blue-600 font-bold">✓</span>}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      )}
+
                     {/* Checkbox para isActive */}
                     <div className={modalStyles.inputGroup}>
                         <label htmlFor="isActive" className={modalStyles.label}>
