@@ -1,4 +1,4 @@
-import { RentalPeriod } from "@/db/init";
+import { RentalItem, RentalPeriod } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function deleteRentalPeriodById(id) {
@@ -11,17 +11,23 @@ export async function deleteRentalPeriodById(id) {
     try {
       const rentalPeriod = await RentalPeriod.findByPk(id);
       if (!rentalPeriod) {
+        await transaction.rollback();
         return NextResponse.json(
           { message: "Rental period not found" },
           { status: 404 }
         );
       }
 
+      await RentalItem.destroy({
+        where: { rentalPeriodId: id },
+        transaction,
+      });
+      
       await rentalPeriod.destroy({ transaction });
       await transaction.commit();
       return NextResponse.json({ rentalPeriod }, { status: 200 });
     } catch (error) {
-      transaction.rollback();
+      await transaction.rollback();
       return NextResponse.json(
         { message: "Error deleting rental period" },
         { status: 500 }
