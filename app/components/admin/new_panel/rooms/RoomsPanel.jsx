@@ -117,7 +117,6 @@ export default function RoomsPanel() {
       await axios.delete(`/api/admin/rental_item?`, { data: id });
       toast.success("Periodo de alquiler eliminado con éxito", { id: toastId });
       await mutate();
-      setIsOpen(false);
     } catch (error) {
       console.error("Error deleting rental item:", error);
       toast.info("Error al eliminar el periodo de alquiler", { id: toastId });
