@@ -23,6 +23,7 @@ export default function ReservationModal({ callback, data, category, calendarTyp
     const [dataReservation, setDataReservation] = useState(data);
     const [rentalPeriods, setRentalPeriods] = useState(data.rentalPeriods);
     const [clausesAccepted, setClausesAccepted] = useState(false);
+    const [clausesReaded, setClausesReaded] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const calculatePrice = (price, duration) => {
@@ -175,6 +176,8 @@ export default function ReservationModal({ callback, data, category, calendarTyp
                         handleReservationSubmit={handleReservationSubmit}
                         clausesAccepted={clausesAccepted}
                         setClausesAccepted={setClausesAccepted}
+                        clausesReaded={clausesReaded}
+                        setClausesReaded={setClausesReaded}
                         isSubmitting={isSubmitting}
                     />
                 </div>

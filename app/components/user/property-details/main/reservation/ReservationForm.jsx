@@ -29,8 +29,10 @@ const ReservationForm = ({
   handleReservationSubmit,
   clausesAccepted,
   setClausesAccepted,
+  clausesReaded,
+  setClausesReaded,
   isSubmitting,
-}) => { 
+}) => {
   return (
     <Formik
       initialValues={{
@@ -58,8 +60,7 @@ const ReservationForm = ({
         }
         return errors;
       }}
-      onSubmit={(values) => handleReservationSubmit(values)}
-    >
+      onSubmit={(values) => handleReservationSubmit(values)}>
       {({ handleSubmit, setFieldValue, values }) => (
         <Form className="space-y-6 w-full px-1">
           {/* Nombre y Apellido */}
@@ -171,8 +172,7 @@ const ReservationForm = ({
                   setFieldValue("reasonForValenciaOther", ""); // Resetea el campo "Otro"
                 }
               }}
-              value={values.reasonForValencia}
-            >
+              value={values.reasonForValencia}>
               <option value="">Selecciona una opción</option>
               <option value="Por estudios">Por estudios</option>
               <option value="Por trabajo">Por trabajo</option>
@@ -198,8 +198,7 @@ const ReservationForm = ({
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className=""
-              >
+                className="">
                 <label className="block text-sm font-medium text-gray-500 mb-2">
                   Cuéntanos sobre tí
                 </label>
@@ -298,19 +297,28 @@ const ReservationForm = ({
               <Link
                 href="/terminos-y-condiciones"
                 target="_blank"
-                className="text-blue-500 underline"
-              >
+                className="text-blue-500 underline">
                 términos, condiciones{" "}
               </Link>
               y
               <Link
                 href="/privacy-policy"
                 target="_blank"
-                className="text-blue-500 underline"
-              >
+                className="text-blue-500 underline">
                 {" "}
                 politicas de privacidad
               </Link>
+            </p>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              checked={clausesReaded}
+              onChange={() => setClausesReaded(!clausesReaded)}
+              className="mr-2 focus:ring-1 focus:ring-blue-300"
+            />
+            <p className="text-sm text-gray-500">
+              Confirmo que he leído las cláusulas del contrato
             </p>
           </div>
 
