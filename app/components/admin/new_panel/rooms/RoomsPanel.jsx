@@ -57,38 +57,7 @@ export default function RoomsPanel() {
   
       return matchesSearch && matchesStatus;
     })
-    ?.sort((a, b) => {
-      const parseSerial = (serial) => {
-        if (typeof serial !== "string") return { letter: "", number: -1 };
-  
-        const match = serial.match(/([A-Z])(\d+)$/i);
-        if (!match) return { letter: "", number: -1 };
-  
-        const [, letter, num] = match;
-        const parsedNum = parseInt(num, 10);
-        if (isNaN(parsedNum)) return { letter, number: -1 };
-  
-        return { letter, number: parsedNum };
-      };
-  
-      const aSerial = parseSerial(a.serial);
-      const bSerial = parseSerial(b.serial);
-  
-      // Si ambos tienen número válido
-      if (aSerial.number !== -1 && bSerial.number !== -1) {
-        if (aSerial.letter === bSerial.letter) {
-          return aSerial.number - bSerial.number; // mayor a menor
-        }
-        return aSerial.letter.localeCompare(bSerial.letter); // A vs R
-      }
-  
-      // Si uno no tiene número válido, lo mandamos al final
-      if (aSerial.number === -1) return 1;
-      if (bSerial.number === -1) return -1;
-  
-      return 0;
-    });
-  
+    ?.sort((a, b) => (a.serial || "").localeCompare(b.serial || ""));  
 
     const handleOnsave = async (data) => {
       const toastId = toast.loading("Guardando cambios...");
@@ -161,12 +130,9 @@ export default function RoomsPanel() {
                     <thead className="sticky top-0 bg-white">
                         <tr>
                             {/* <th className="border border-t-0 p-2 w-16 text-center font-semibold text-gray-700">ID</th> */}
-                            <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">Inquilino</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Código</th>
-                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Nombre</th>
                             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Precio</th>
-                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Zona</th>
-                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Tipo</th>
+                            <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">Inquilino</th>
                             <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700 relative">
                                 <div className="w-full h-full flex items-center justify-center gap-1">
                                     ¿Activo?
@@ -206,6 +172,8 @@ export default function RoomsPanel() {
                                     )}
                                 </div>
                             </th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Zona</th>
+                            <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">Tipo</th>
                             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-52">Direccion</th>
                             <th className="border border-t-0 p-2 w-40 text-center font-semibold text-gray-700">Acciones</th>
                         </tr>
@@ -235,24 +203,23 @@ export default function RoomsPanel() {
                               }}
                             >
                               {/* <td className="border p-2 text-gray-700 text-center">{room.id}</td> */}
+                              <td className="border p-2 text-gray-700 text-center">
+                                {room.serial}
+                              </td>
+                              <td className="border p-2 text-gray-700 text-center">
+                                €{room.price}
+                              </td>
                               <td className="border p-2 text-gray-700 text-left break-words">
                                 {order && order.client ? `${order.client?.name} ${order.client?.lastName} - ${order.client?.email}` : "Sin inquilino"}
                               </td>
                               <td className="border p-2 text-gray-700 text-center">
-                                {room.serial}
-                              </td>
-                              <td className="border p-2 text-gray-700 text-center">{room.name}</td>
-                              <td className="border p-2 text-gray-700 text-center">
-                                €{room.price}
+                                {room.isActive ? "Si" : "No"}
                               </td>
                               <td className="border p-2 text-gray-700 text-center">
                                 {room.property?.zone}
                               </td>
                               <td className="border p-2 text-gray-700 text-center">
                                 {TYPOLOGY_LABELS[room.property?.typology]}
-                              </td>
-                              <td className="border p-2 text-gray-700 text-center">
-                                {room.isActive ? "Si" : "No"}
                               </td>
                               <td className="border p-2 text-gray-700 text-center">
                                 {`${room.property?.street} ${room.property?.streetNumber}, ${room.property?.city}`}
