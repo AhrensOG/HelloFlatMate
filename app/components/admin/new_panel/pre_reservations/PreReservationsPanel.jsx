@@ -56,7 +56,7 @@ const PreReservationsPanel = () => {
 
     const handleApprove = async (id, roomId) => {
         const toastId = toast.loading("Procesando...");
-        try {
+        try { 
             const dataToSend = {
                 action: "PENDING",
                 leaseOrderId: id,

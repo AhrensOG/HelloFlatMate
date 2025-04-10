@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { Client, LeaseOrderRoom, Property, Room, Chat, ChatParticipant, RentalPeriod, RentalItem } from "@/db/init";
 import { sequelize } from "@/db/models/comment";
 import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
+import { preReservationTemplate } from "../utils/preReservationTemplate";
+
+const { HFM_MAIL } = process.env;
 
 export async function updateStatusLeaseOrder(data) {
     if (!data) return NextResponse.json({ message: "No data provided" }, { status: 400 });
@@ -111,11 +114,13 @@ export async function updateStatusLeaseOrder(data) {
                 participantType: "CLIENT",
             });
 
-            const mailInfo = {
-                to: client.email, subject: "¡Aprobamos tu pre-reserva!", text: `Te informamos que hemos aceptado la pre-reserva del alojamiento ${room.serial}. Por favor verifica tu perfil y desde la seccion "Reservas" podras continuar con el proceso.` 
-            };
+            await sendMailFunction({
+              to: client.email,
+              subject: `¡Tu pre-reserva está aprobada! Completa el proceso en tu cuenta`,
+              html: preReservationTemplate(client.name, client.lastName, room.serial),
+              cc: HFM_MAIL,
+            });
 
-            await sendMailFunction(mailInfo);
             await transaction.commit();
             return NextResponse.json({ message: "Lease order room PENDING" }, { status: 200 });
         } else if (data.action === "REJECTED") {
