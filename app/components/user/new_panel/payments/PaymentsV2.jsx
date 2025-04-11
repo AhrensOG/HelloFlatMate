@@ -12,6 +12,7 @@ import {
 import PayModal from "./PayModal";
 import { useTranslations } from "next-intl";
 import axios from "axios";
+import formatDateToDDMMYYYY from "@/app/components/admin/new_panel/utils/formatDate";
 
 const SUPPLY_TYPE_LABELS = {
   WATER: "Agua",
@@ -223,13 +224,24 @@ const PaymentsV2 = () => {
     });
   }, [state.user, t, t_supply]);
 
-  const groupPaymentsByLeaseOrder = (payments) => {
+  const groupPaymentsBySerialAndLeaseOrder = (payments) => {
     return payments.reduce((groups, payment) => {
       const serial = payment.order?.room?.serial || "Sin Orden";
+      const leaseOrder = payment.order;
+
+      if (!serial || !leaseOrder) return groups;
+
+      const leaseKey = `${formatDateToDDMMYYYY(leaseOrder.startDate)} - ${formatDateToDDMMYYYY(leaseOrder.endDate)}`;
+
       if (!groups[serial]) {
-        groups[serial] = [];
+        groups[serial] = {};
       }
-      groups[serial].push(payment);
+
+      if (!groups[serial][leaseKey]) {
+        groups[serial][leaseKey] = [];
+      }
+
+      groups[serial][leaseKey].push(payment);
       return groups;
     }, {});
   };
@@ -278,41 +290,49 @@ const PaymentsV2 = () => {
             className="mt-4">
             {paymentsToShow[selectedTab]?.length > 0 ? (
               Object.entries(
-                groupPaymentsByLeaseOrder(paymentsToShow[selectedTab])
-              ).map(([serial, payments]) => (
+                groupPaymentsBySerialAndLeaseOrder(paymentsToShow[selectedTab])
+              ).map(([serial, leaseOrders]) => (
                 <div
                   key={serial}
                   className="mb-6 border grid place-items-center">
                   <h2 className="text-sm text-[#440cac] p-2 font-bold w-full border-b">
-                    Orden: {serial}
+                    Habitación: {serial}
                   </h2>
-                  <div className="p-2 bg-white w-full">
-                    {payments.map((payment, index) => {
-                      const { bg, icon } = getStatusStyles(
-                        payment.status,
-                        payment.paid
-                      );
-                      return (
-                        <button
-                          key={index}
-                          onClick={() => handlePaymentClick(payment)}
-                          className="w-full flex justify-between items-center p-4 bg-helloflatmate rounded-lg border border-gray-200 hover:shadow-lg transition-all mb-3">
-                          <div className="flex items-center gap-4">
-                            {icon}
-                            <h3 className="text-lg font-medium text-gray-800">
-                              {payment.description}
-                            </h3>
-                          </div>
-                          <span
-                            className={`px-4 py-1 text-sm font-bold rounded-full ${bg}`}>
-                            {payment.paid
-                              ? t("paid")
-                              : t(`status.${payment.status.toLowerCase()}`)}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
+
+                  {Object.entries(leaseOrders).map(([leaseKey, payments]) => (
+                    <div
+                      key={leaseKey}
+                      className="p-2 bg-white w-full border-t">
+                      <h3 className="text-xs font-semibold text-gray-600 mb-2">
+                        Periodo: {leaseKey}
+                      </h3>
+                      {payments.map((payment, index) => {
+                        const { bg, icon } = getStatusStyles(
+                          payment.status,
+                          payment.paid
+                        );
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => handlePaymentClick(payment)}
+                            className="w-full flex justify-between items-center p-4 bg-helloflatmate rounded-lg border border-gray-200 hover:shadow-lg transition-all mb-3">
+                            <div className="flex items-center gap-4">
+                              {icon}
+                              <h3 className="text-lg font-medium text-gray-800">
+                                {payment.description}
+                              </h3>
+                            </div>
+                            <span
+                              className={`px-4 py-1 text-sm font-bold rounded-full ${bg}`}>
+                              {payment.paid
+                                ? t("paid")
+                                : t(`status.${payment.status.toLowerCase()}`)}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
                 </div>
               ))
             ) : (
