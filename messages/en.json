@@ -794,6 +794,7 @@
     },
     "user_payment_history": {
         "desc": "Monthly payment",
+        "desc_reservation": "Reservation payment",
         "supply_desc": "Payment",
         "desc_res": "Payment (Reservation)",
         "months": {

@@ -206,182 +206,101 @@ async function addSupplies(room, leaseOrder, client) {
 
     const isLongTerm = monthsDifference > 8;
     const startMonth = startDate.getUTCMonth() + 1;
-    // Si el contrato corto inicia entre febrero (2) y junio (6) → usar "2Q", sino "1Q"
-    const shortTermLabel = (startMonth >= 2 && startMonth <= 6) ? "2Q" : "1Q";
+    const shortTermLabel = startMonth >= 2 && startMonth <= 6 ? "2Q" : "1Q";
 
     const supplies = [];
 
-    if (room.property?.category === "HELLO_COLIVING") {
-      supplies.unshift({
-        name: "Depósito",
-        amount: 500,
+    const pushSupply = (supply) =>
+      supplies.push({
         date: currentDate,
         status: "PENDING",
         propertyId: room.propertyId,
         clientId: client.id,
-        type: "DEPOSIT",
         expirationDate: currentDate,
         leaseOrderId: leaseOrder.id,
         leaseOrderType: "ROOM",
+        ...supply,
+      });
+
+    if (room.property?.category === "HELLO_LANDLORD") {
+      pushSupply({ name: "Depósito", amount: 300, type: "DEPOSIT" });
+      pushSupply({
+        name: "Tasa de la agencia",
+        amount: 459.8,
+        type: "AGENCY_FEES",
+      });
+      pushSupply({
+        name: `Wifi ${shortTermLabel}`,
+        amount: 80,
+        type: "INTERNET",
+      });
+      pushSupply({
+        name: `Suministros ${shortTermLabel}`,
+        amount: 200,
+        type: "GENERAL_SUPPLIES",
       });
     } else {
-      supplies.unshift({
+      // Depósito
+      pushSupply({
         name: "Depósito",
-        amount: 300,
-        date: currentDate,
-        status: "PENDING",
-        propertyId: room.propertyId,
-        clientId: client.id,
+        amount: room.property?.category === "HELLO_COLIVING" ? 500 : 300,
         type: "DEPOSIT",
-        expirationDate: currentDate,
-        leaseOrderId: leaseOrder.id,
-        leaseOrderType: "ROOM",
       });
-    }
 
-    if (room.property?.category === "HELLO_COLIVING") {
-      if (isLongTerm) {
-        supplies.push({
-          name: "Suministros 1Q",
-          amount: 200,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "GENERAL_SUPPLIES",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
-        supplies.push({
-          name: "Suministros 2Q",
-          amount: 200,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "GENERAL_SUPPLIES",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
+      if (room.property?.category === "HELLO_COLIVING") {
+        if (isLongTerm) {
+          pushSupply({
+            name: "Suministros 1Q",
+            amount: 200,
+            type: "GENERAL_SUPPLIES",
+          });
+          pushSupply({
+            name: "Suministros 2Q",
+            amount: 200,
+            type: "GENERAL_SUPPLIES",
+          });
+        } else {
+          pushSupply({
+            name: `Suministros ${shortTermLabel}`,
+            amount: 200,
+            type: "GENERAL_SUPPLIES",
+          });
+        }
       } else {
-        supplies.push({
-          name: `Suministros ${shortTermLabel}`,
-          amount: 200,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "GENERAL_SUPPLIES",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
+        if (isLongTerm) {
+          pushSupply({ name: "Wifi 1Q", amount: 80, type: "INTERNET" });
+          pushSupply({
+            name: "Suministros 1Q",
+            amount: 200,
+            type: "GENERAL_SUPPLIES",
+          });
+          pushSupply({ name: "Wifi 2Q", amount: 80, type: "INTERNET" });
+          pushSupply({
+            name: "Suministros 2Q",
+            amount: 200,
+            type: "GENERAL_SUPPLIES",
+          });
+        } else {
+          pushSupply({
+            name: `Wifi ${shortTermLabel}`,
+            amount: 80,
+            type: "INTERNET",
+          });
+          pushSupply({
+            name: `Suministros ${shortTermLabel}`,
+            amount: 200,
+            type: "GENERAL_SUPPLIES",
+          });
+        }
       }
-    } else {
-      if (isLongTerm) {
-        supplies.push({
-          name: "Wifi 1Q",
-          amount: 80,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "INTERNET",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
-        supplies.push({
-          name: "Suministros 1Q",
-          amount: 200,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "GENERAL_SUPPLIES",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
-        supplies.push({
-          name: "Wifi 2Q",
-          amount: 80,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "INTERNET",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
-        supplies.push({
-          name: "Suministros 2Q",
-          amount: 200,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "GENERAL_SUPPLIES",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
-      } else {
-        // Contrato corto: se agrega un único suministro y wifi con terminación según el mes (si está entre feb y jun se asigna "2Q", sino "1Q")
-        supplies.push({
-          name: `Wifi ${shortTermLabel}`,
-          amount: 80,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "INTERNET",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
-        supplies.push({
-          name: `Suministros ${shortTermLabel}`,
-          amount: 200,
-          date: currentDate,
-          status: "PENDING",
-          propertyId: room.propertyId,
-          clientId: client.id,
-          type: "GENERAL_SUPPLIES",
-          expirationDate: currentDate,
-          leaseOrderId: leaseOrder.id,
-          leaseOrderType: "ROOM",
-        });
-      }
-    }
 
-    supplies.push({
-      name: "Tasa de la agencia",
-      amount: 459.8, // 380€ + IVA
-      date: currentDate,
-      status: "PENDING",
-      propertyId: room.propertyId,
-      clientId: client.id,
-      type: "AGENCY_FEES",
-      expirationDate: currentDate,
-      leaseOrderId: leaseOrder.id,
-      leaseOrderType: "ROOM",
-    });
-    supplies.push({
-      name: "Limpieza Check-Out",
-      amount: 50,
-      date: currentDate,
-      status: "PENDING",
-      propertyId: room.propertyId,
-      clientId: client.id,
-      type: "CLEANUP",
-      expirationDate: currentDate,
-      leaseOrderId: leaseOrder.id,
-      leaseOrderType: "ROOM",
-    });
+      pushSupply({
+        name: "Tasa de la agencia",
+        amount: 459.8,
+        type: "AGENCY_FEES",
+      });
+      pushSupply({ name: "Limpieza Check-Out", amount: 50, type: "CLEANUP" });
+    }
 
     await Supply.bulkCreate(supplies);
   } catch (error) {
@@ -391,6 +310,10 @@ async function addSupplies(room, leaseOrder, client) {
 
 async function addRentPayments(room, leaseOrder, client) {
   try {
+    if (room.property?.category === "HELLO_LANDLORD") {
+      return;
+    }
+
     const start = new Date(leaseOrder.startDate);
     const end = new Date(leaseOrder.endDate);
 
@@ -399,12 +322,17 @@ async function addRentPayments(room, leaseOrder, client) {
     const endYear = end.getUTCFullYear();
     const endMonth = end.getUTCMonth();
 
-    const monthsDifference = (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+    const monthsDifference =
+      (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
     const monthlyPaymentsCount = monthsDifference - 1;
 
     const payments = [];
 
-    for ( let monthOffset = 1; monthOffset <= monthlyPaymentsCount; monthOffset++ ) {
+    for (
+      let monthOffset = 1;
+      monthOffset <= monthlyPaymentsCount;
+      monthOffset++
+    ) {
       const paymentMonth = new Date(startYear, startMonth + monthOffset);
 
       payments.push({
