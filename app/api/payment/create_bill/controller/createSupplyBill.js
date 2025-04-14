@@ -3,10 +3,13 @@ import { NextResponse } from "next/server";
 import { newBillBuilder } from "./newBillBuilder";
 
 const formatDate = (date) => {
-  const newDate = new Date(date);
-  const year = newDate.getFullYear();
-  const month = String(newDate.getMonth() + 1).padStart(2, "0");
-  const day = String(newDate.getDate()).padStart(2, "0");
+  if (!date) return 'Invalid date';
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return 'Invalid date'; // Fecha inválida
+
+  const year = d.getUTCFullYear();
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
 
