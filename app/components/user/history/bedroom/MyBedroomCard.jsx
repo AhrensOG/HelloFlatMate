@@ -101,7 +101,7 @@ export default function MyBedroomCard({
                         {`${location.street}, ${location.postalCode ? location.postalCode : ""} ${location.city}`}
                     </h3>
                 </div>
-                <p className="text-[10px] font-normal text-[#828282]">{amenities.slice(0, 3).join(" - ")}</p>
+                {/* <p className="text-[10px] font-normal text-[#828282]">{amenities.slice(0, 3).join(" - ")}</p> */}
                 <p className="font-light text-sm flex justify-between">
                     {type === "HELLO_STUDIO" ? t("finish") : t("expiration")}
                     <span className={statusClasses.text}>

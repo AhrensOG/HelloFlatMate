@@ -1,5 +1,5 @@
 import { authAdmin } from "@/app/firebase/adminConfig";
-import { Admin, Client, Owner } from "@/db/init";
+import { Admin, Client, Owner, Worker } from "@/db/init";
 import { NextResponse } from "next/server";
 import { updateRoleUser } from "../controllers/updateUserController";
 
@@ -34,6 +34,8 @@ export async function PATCH(req) {
                     break;
                 case "OWNER":
                     selectUser = await Owner.findByPk(user.userId);
+                case "WORKER":
+                selectUser = await Worker.findByPk(user.userId);
                 default:
                     break;
             }

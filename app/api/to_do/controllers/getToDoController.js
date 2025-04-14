@@ -1,4 +1,4 @@
-import { Property, ToDo } from "@/db/init";
+import { Client, Property, ToDo } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function getAllToDos() {
@@ -18,10 +18,17 @@ export async function getToDoById(id) {
     if (!id) return NextResponse.json({ error: "No id provided" }, { status: 400 })
     try {
         const toDo = await ToDo.findByPk(id, {
-            include: {
+            include: [{
                 model: Property,
-                as: "property"
+                as: "property",
+                attributes: ["city", "street", "streetNumber", "postalCode", "serial", "id"],
+            },
+            {
+              model: Client,
+              as: "client",
+              attributes: ["name", "lastName", "email", "phone"]
             }
+          ]
         })
 
         if (!toDo) return NextResponse.json({ error: "To Do not found" }, { status: 404 })

@@ -23,9 +23,6 @@ export default function UserSerivceNavBar() {
                 />
             </div>
             <div className="flex items-center gap-2 w-[87px]">
-                <button onClick={() => handleRedirect("/pages/notification")} type="button">
-                    <Image src="/nav_bar/notification-logo.svg" width={34} height={34} alt="Boton para notificaciones" />
-                </button>
                 <Dropdown p-0 />
             </div>
         </nav>

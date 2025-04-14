@@ -1,176 +1,280 @@
-import { MapPinIcon } from "@heroicons/react/24/outline";
-import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
+"use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import TitleSection from "../TitleSection";
-import DescriptionSection from "./task_details/DescriptionSection";
-import TenatnsNote from "./task_details/TenatnsNote";
-import LocationSection from "./task_details/LocationSection";
-import Buttons from "./task_details/Buttons";
-import TaskModal from "./task_details/modal/TaskModal";
 import { useContext, useEffect, useState } from "react";
-import UserSerivceNavBar from "../nav_bar/UserServiceNavBar";
-import BottomNavBar from "../bottomNavBar/BottomNavBar";
 import { useSearchParams } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import axios from "axios";
 import { toast } from "sonner";
-import { Context } from "@/app/context/GlobalContext";
 import { useTranslations } from "next-intl";
 
+import { Context } from "@/app/context/GlobalContext";
+import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
+import Buttons from "./task_details/Buttons";
+import TaskModal from "./task_details/modal/TaskModal";
+import UserSerivceNavBar from "../nav_bar/UserServiceNavBar";
+import BottomNavBar from "../bottomNavBar/BottomNavBar";
+import LocationSection from "../../user/property-details/main/LocationSection";
+import {
+  HiOutlineCalendar,
+  HiOutlineExclamationCircle,
+  HiOutlineMapPin,
+} from "react-icons/hi2";
+import TaskInfoCard from "./task_details/TaskInfoCard";
+
 export default function TaskDetails({ section }) {
-    const searchParams = useSearchParams();
-    const id = searchParams.get("id");
-    const { state } = useContext(Context);
-    const [user, setUser] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const [task, setTask] = useState();
-    const [type, setType] = useState("");
-    const [status, setStatus] = useState("");
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const { state } = useContext(Context);
+  const t = useTranslations("worker_panel.tasks.task_details");
 
-    const t = useTranslations("worker_panel.tasks.task_details");
+  const [user, setUser] = useState(null);
+  const [task, setTask] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [type, setType] = useState("");
+  const [cancelReason, setCancelReason] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
-    useEffect(() => {
-        if (state?.user) {
-            setUser(state.user);
-        }
-    }, [state.user]);
+  useEffect(() => {
+    if (state?.user) setUser(state.user);
+  }, [state.user]);
 
-    useEffect(() => {
-        const fetchTask = async () => {
-            try {
-                const res = await axios.get(`/api/to_do?id=${id}`);
-                setTask(res.data);
-                setStatus(res.data.status);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-
-        if (user && id) {
-            fetchTask();
-        }
-    }, [user, id]);
-
-    const handleShowModal = (comment, status) => {
-        setShowModal(!showModal);
-
-        if (status === "COMPLETED" || status === "PENDING") {
-            toast.promise(handleFinishTask(comment, status), {
-                loading: t("responses_1.loading"),
-                success: t("responses_1.success"),
-                error: t("responses_1.error"),
-            });
-        }
-
-        setType(status);
-    };
-
-    const handleModal = (str) => {
-        setType(str);
-        setShowModal(!showModal);
-    };
-
-    const handleFinishTask = async (comment, status) => {
-        try {
-            const res = await axios.patch(`/api/to_do`, {
-                id: task.id,
-                status: status,
-                comment: comment,
-            });
-            if (res.status === 200) {
-                setTask((prevTask) => ({ ...prevTask, status: "COMPLETED" })); // 🔄 Actualiza todo el objeto task
-            }
-            return res;
-        } catch (err) {
-            console.log(err);
-            throw err;
-        }
-    };
-
-    const claimTask = async () => {
-        try {
-            const res = await axios.patch(`/api/to_do?type=asing`, {
-                id: task.id,
-                workerId: user?.id,
-                userId: task.userId,
-            });
-            if (res.status === 200) {
-                setTask((prevTask) => ({ ...prevTask, status: "IN_PROGRESS", workerId: user?.id })); // 🔄 Actualiza todo el objeto task
-            }
-        } catch (err) {
-            console.log(err);
-            throw err;
-        }
-    };
-
-    if (!user || !task) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-            </div>
-        );
+  const fetchTask = async () => {
+    try {
+      const res = await axios.get(`/api/to_do?id=${id}`);
+      setTask(res.data);
+    } catch (err) {
+      toast.error("No se pudo obtener la tarea.");
     }
+  };
 
+  useEffect(() => {
+    if (user && id) fetchTask();
+  }, [user, id]);
+
+  const formatDate = (dateStr) =>
+    new Date(dateStr).toLocaleString("es-ES", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+
+  const handleShowModal = async (comment, status) => {
+    setShowModal(false);
+    setType(status);
+    const toastId = toast.loading(t("responses_1.loading"));
+    try {
+      await axios.patch(`/api/to_do`, { id: task.id, status, comment });
+      await fetchTask();
+      toast.success(t("responses_1.success"), { id: toastId });
+    } catch {
+      toast.error(t("responses_1.error"), { id: toastId });
+    }
+  };
+
+  const handleModal = (status) => {
+    setType(status);
+    setShowModal(true);
+  };
+
+  const claimTask = async () => {
+    const toastId = toast.loading(t("responses_2.loading"));
+    try {
+      await axios.patch(`/api/to_do?type=asing`, {
+        id: task.id,
+        workerId: user?.id,
+        userId: task.userId,
+      });
+      await fetchTask();
+      toast.success(t("responses_2.success"), { id: toastId });
+    } catch {
+      toast.error(t("responses_2.error"), { id: toastId });
+    }
+  };
+
+  const cancelTask = async () => {
+    const toastId = toast.loading("Cancelando tarea...");
+    try {
+      await axios.patch(`/api/to_do`, {
+        id: task.id,
+        status: "CANCELLED",
+        cancellationReason: cancelReason,
+      });
+      await fetchTask();
+      setShowCancelModal(false);
+      toast.success("Tarea cancelada", { id: toastId });
+    } catch {
+      toast.error("No se pudo cancelar", { id: toastId });
+    }
+  };
+
+  if (!user || !task) {
     return (
-        <AnimatePresence>
-            <motion.div
-                className={`  flex flex-col h-screen`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8 }}
-            >
-                <header>
-                    <UserSerivceNavBar />
-                </header>
-                <main className="flex-grow">
-                    <motion.section
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className={`  flex flex-col gap-3 py-4 m-4 lg:gap-8 lg:justify-around `}
-                    >
-                        <TitleSection title={"Historial de tareas"} />
-                        <div className="flex flex-col gap-1">
-                            <div className="border bg-gris-español w-full"></div>
-                            <ApplicationCardHistory data={task} />
-                            <div className="border bg-gris-español w-full"></div>
-                        </div>
-
-                        <section className="flex flex-col justify-center items-center gap-6 lg:flex-row-reverse lg:flex-wrap">
-                            <div className="flex flex-col gap-4 lg:w-[45%] lg:justify-around">
-                                <DescriptionSection body={task?.isPresent} />
-                                <TenatnsNote body={task?.clientMessage || ""} />
-                            </div>
-                            <LocationSection />
-                            {task.status === "IN_PROGRESS" && task.workerId !== null && <Buttons action={handleModal} />}
-
-                            {task.workerId === null && (
-                                <div className="w-full flex justify-center">
-                                    <button
-                                        onClick={() => {
-                                            toast.promise(claimTask(), {
-                                                loading: t("responses_2.loading"),
-                                                success: t("responses_2.success"),
-                                                error: t("responses_2.error"),
-                                            });
-                                        }}
-                                        className="w-full h-12 bg-[#0C1660] text-[#F7FAFA] text-base font-bold rounded-lg lg:w-[20rem]"
-                                        type="button"
-                                    >
-                                        {t("claim_task")}
-                                    </button>
-                                </div>
-                            )}
-                        </section>
-                        {showModal && <TaskModal type={type} action={handleShowModal} showModal={setShowModal} />}
-                    </motion.section>
-                </main>
-                <footer className="sticky bottom-0">
-                    <BottomNavBar section={section} />
-                </footer>
-            </motion.div>
-        </AnimatePresence>
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-[#440cac] border-t-transparent border-solid rounded-full animate-spin"></div>
+      </div>
     );
+  }
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="flex flex-col min-h-screen bg-[#F7FAFA]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.8 }}>
+        <header>
+          <UserSerivceNavBar />
+        </header>
+
+        <main className="flex-grow">
+          <motion.section
+            className="flex flex-col gap-6 py-4 px-4 lg:px-8 max-w-5xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}>
+
+            <div className="bg-white border rounded-xl shadow-sm p-4 space-y-3">
+              <ApplicationCardHistory data={task} />
+
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 space-y-4 text-sm text-gray-800">
+                {/* Dirección */}
+                {task.property && (
+                  <div className="flex items-start gap-2">
+                    <HiOutlineMapPin className="text-[#0C1660]" size={18} />
+                    <div>
+                      <p className="font-semibold">Dirección</p>
+                      <p>
+                        {task.property.street} {task.property.streetNumber},{" "}
+                        {task.property.postalCode}, {task.property.city}, España
+                      </p>
+                      <p className="text-gray-500 text-xs mt-1">
+                        Código de propiedad: {task.property.serial}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Fechas */}
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-start gap-2">
+                    <HiOutlineCalendar className="text-[#0C1660]" size={18} />
+                    <div>
+                      <p className="font-semibold">Fechas</p>
+                      <p>
+                        <strong>Servicio creado el:</strong>{" "}
+                        {formatDate(task.creationDate)}
+                      </p>
+                      <p>
+                        <strong>Programado para:</strong>{" "}
+                        {formatDate(task.startDate)}
+                      </p>
+                      {task.endDate && (
+                        <p>
+                          <strong>Finalizado el:</strong>{" "}
+                          {formatDate(task.endDate)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cancelación */}
+                {task.cancellationReason && (
+                  <div className="flex items-start gap-2 text-red-700">
+                    <HiOutlineExclamationCircle
+                      className="text-red-700"
+                      size={18}
+                    />
+                    <p>
+                      <strong>Motivo de cancelación:</strong>{" "}
+                      {task.cancellationReason}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <section className="flex flex-col justify-center items-center gap-6 lg:flex-row-reverse lg:flex-wrap">
+              <TaskInfoCard task={task} />
+
+              <LocationSection
+                city={task.property.city}
+                country="España"
+                postalCode={task.property.postalCode}
+                street={task.property.street}
+                streetNumber={task.property.streetNumber}
+              />
+            </section>
+
+            {(task.status === "IN_PROGRESS" || task.status === "PENDING") &&
+              task.workerId !== null && <Buttons action={handleModal} />}
+
+            {task.workerId === null && (
+              <div className="w-full flex justify-center">
+                <button
+                  onClick={claimTask}
+                  className="w-full max-w-md h-12 bg-[#0C1660] text-white font-bold rounded-lg hover:bg-[#09104a] transition">
+                  {t("claim_task")}
+                </button>
+              </div>
+            )}
+
+            {(task.status === "PENDING" || task.status === "IN_PROGRESS") && (
+              <div className="w-full flex justify-center">
+                <button
+                  onClick={() => setShowCancelModal(true)}
+                  className="w-full max-w-md h-12 border border-red-500 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition">
+                  Cancelar tarea
+                </button>
+              </div>
+            )}
+          </motion.section>
+        </main>
+
+        {showModal && (
+          <TaskModal
+            type={type}
+            action={handleShowModal}
+            showModal={setShowModal}
+          />
+        )}
+
+        {showCancelModal && (
+          <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex justify-center items-center">
+            <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full space-y-4">
+              <h2 className="text-lg font-bold text-red-600">Cancelar tarea</h2>
+              <textarea
+                rows={3}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                placeholder="Motivo de cancelación"
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+              />
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setShowCancelModal(false)}
+                  className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition">
+                  Cerrar
+                </button>
+                <button
+                  onClick={cancelTask}
+                  disabled={cancelReason.trim() === ""}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                    cancelReason.trim()
+                      ? "bg-red-600 text-white hover:bg-red-700"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  }`}>
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <footer className="sticky bottom-0">
+          <BottomNavBar section={section} />
+        </footer>
+      </motion.div>
+    </AnimatePresence>
+  );
 }

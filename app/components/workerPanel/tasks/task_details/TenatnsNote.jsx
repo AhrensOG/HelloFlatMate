@@ -1,11 +1,16 @@
 import { useTranslations } from "next-intl";
 
 export default function TenatnsNote({ body }) {
-    const t = useTranslations("worker_panel.tasks.task_details.tenant_note");
-    return (
-        <article className="flex flex-col gap-2 mx-2">
-            <h3 className="font-semibold text-base text-black text-center">{t("title")}</h3>
-            <p className="text-[#0D171C] text-base font-normal w-80 bg-[#D9D9D9] rounded-lg p-2 break-words lg:self-center">{body}</p>
-        </article>
-    );
+  const t = useTranslations("worker_panel.tasks.task_details.tenant_note");
+
+  return (
+    <article className="w-full flex flex-col gap-3 p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+      <h3 className="text-base font-semibold text-[#0C1660] text-center">
+        {t("title")}
+      </h3>
+      <p className="text-sm text-gray-700 bg-[#F2F2F2] rounded-md px-4 py-2 break-words whitespace-pre-line">
+        {body || t("empty")}
+      </p>
+    </article>
+  );
 }

@@ -1045,7 +1045,8 @@
                 "payments": "Payments",
                 "reservations": "Reservations",
                 "history": "History",
-                "supplies": "Supplies"
+                "supplies": "Supplies",
+                "incidences": "Incidences"
             },
             "btn_logout": "Log out"
         },
@@ -1101,6 +1102,100 @@
             "p_2": "Progress"
         }
     },
+    "user_incidences": {
+      "title": "Requests",
+      "description_1": "In this section you can request a",
+      "description_2": "repair service",
+      "description_3": "if something is broken or not working properly in your accommodation. You can also request a",
+      "description_4": "cleaning service",
+      "description_5": "if you need the team to clean your room or property.",
+      "open_form": "Request a service",
+      "close_form": "Close form",
+      "validation": {
+        "order": "You must select a lease order",
+        "type": "Service type is required",
+        "date": "Please select a date",
+        "time": "Please select a time",
+        "message": "Message is required"
+      },
+      "toast": {
+        "loading": "Submitting...",
+        "invalid_order": "Invalid order",
+        "image_error": "Image upload failed",
+        "success": "Request sent successfully",
+        "submit_error": "There was an error sending the request",
+        "support": "Please try again or contact support"
+      },
+      "titles": {
+        "clean": "Cleaning service",
+        "repair": "Repair service"
+      },
+      "body": {
+        "clean": "Cleaning scheduled for",
+        "repair": "Repair scheduled for"
+      },
+      "form": {
+        "title": "Report an issue",
+        "select_order": "Select Room",
+        "select_order_placeholder": "Select order",
+        "no_orders": "You have no active orders to report an issue.",
+        "select_type": "Service type",
+        "select_type_placeholder": "Select",
+        "select_day": "Select a day",
+        "select_time": "Select a time",
+        "additional_message": "Additional message",
+        "message_placeholder": "Optional: details about the service you need...",
+        "upload_image": "Upload image",
+        "image_ready": "File ready to send ✅",
+        "is_present": "Tick this if you'll be present during the service.",
+        "submit": "Send request",
+        "dont_have_orders": "You don't have any orders to report an issue.",
+        "type_clean": "Cleaning",
+        "type_repair": "Repair"
+      },
+      "history": {
+        "title": "Request history",
+        "no_order": "No associated order",
+        "unknown": "Unknown"
+      },
+      "long_days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      },
+      "status": {
+      "IN_PROGRESS": "In progress",
+      "PENDING": "Pending",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+      },
+      "labels": {
+        "code": "Code",
+        "worker": "Worker",
+        "unassigned": "Unassigned",
+        "client_message": "Client message",
+        "is_present": "Will you be present?",
+        "yes": "Yes",
+        "no": "No",
+        "worker_comment": "Worker's comment",
+        "cancel_reason": "Cancellation reason",
+        "image": "Uploaded image"
+      },
+      "cancel": {
+        "start": "Cancel request",
+        "label": "Write the reason for cancellation:",
+        "placeholder": "E.g. The service is no longer needed...",
+        "confirm": "Confirm cancellation",
+        "abort": "Cancel",
+        "toast_success": "The request was successfully cancelled",
+        "toast_error": "There was an error cancelling the request",
+        "toast_support": "Please try again or contact support"
+      }
+    },
     "worker_panel": {
         "tasks": {
             "h2_1": "Tasks",
@@ -1110,7 +1205,8 @@
             "cards": {
                 "in_progress": "In Progress",
                 "completed": "Completed",
-                "pending": "Pending"
+                "pending": "Pending",
+                "cancelled": "Cancelled"
             },
             "search_bar": {
                 "placeholder": "Search...."

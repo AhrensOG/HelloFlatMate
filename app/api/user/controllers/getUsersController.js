@@ -41,13 +41,13 @@ export async function getUserById(id) {
             },
           ],
         },
-        // { model: ToDo, as: "toDos" },
         { model: Document, as: "documents", attributes: ["id", "name", "type", "urls", "status", "leaseOrderId"] },
         { model: Supply, as: "supplies", attributes: ["id", "paymentId", "name","type","amount","date","status","paymentDate","leaseOrderId","propertyId","clientId"] },
         { model: Contract, as: "contracts", attributes: ["id", "leaseOrderId", "url"] },
         // { model: ChatParticipant, as: "chats" },
         { model: RentPayment, as: "rentPayments", attributes: ["id", "amount", "date","status","type","quotaNumber","paymentableId","leaseOrderId","paymentId", "description"] },
         { model: Consumption, as: "consumptions", attributes: ["amount", "url", "type", "period", "leaseOrderRoomId", "startDate", "endDate"] },
+        { model: ToDo, as: "toDos", attributes: ["id", "title", "body", "status", "leaseOrderId", "clientMessage", "comment", "cancellationReason", "imageUrl", "isPresent"], include: [{ model: Worker, as: "worker", attributes: ["name", "lastName"] }] },
       ],
     });
 

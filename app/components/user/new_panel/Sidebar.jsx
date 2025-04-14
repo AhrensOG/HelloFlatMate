@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRightStartOnRectangleIcon, BoltIcon, CalendarDaysIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, ReceiptRefundIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, BoltIcon, CalendarDaysIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, ReceiptRefundIcon, UserIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
@@ -43,6 +43,11 @@ const Sidebar = () => {
             href: "/pages/user/chats",
             icon: <ChatBubbleBottomCenterIcon className="size-6" />,
         },
+        {
+          name: t("links.incidences"),
+          href: "/pages/user/incidences",
+          icon: <WrenchIcon className="size-6" />,
+      },
     ];
 
     return (

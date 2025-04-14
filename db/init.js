@@ -161,18 +161,12 @@ const Incidence = require("./models/incidence");
             as: "owner",
             foreignKey: "userId",
             constraints: false,
-            scope: {
-                typeUser: "OWNER",
-            },
         });
 
         ToDo.belongsTo(Client, {
             as: "client",
             foreignKey: "userId",
             constraints: false,
-            scope: {
-                typeUser: "CLIENT",
-            },
         });
 
         Client.hasMany(ToDo, {

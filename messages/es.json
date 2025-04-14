@@ -1060,7 +1060,8 @@
                 "payments": "Pagos",
                 "reservations": "Reservas",
                 "history": "Histórico",
-                "supplies": "Suministros"
+                "supplies": "Suministros",
+                "incidences": "Incidencias"
             },
             "btn_logout": "Cerrar sesión"
         },
@@ -1116,6 +1117,100 @@
             "p_2": "Progreso"
         }
     },
+    "user_incidences": {
+      "title": "Incidencias",
+      "description_1": "En este apartado podés solicitar una",
+      "description_2": "orden de reparación",
+      "description_3": "en caso de que haya algo roto o que no funcione correctamente en tu alojamiento. También podés solicitar una",
+      "description_4": "orden de limpieza",
+      "description_5": "si necesitás que el equipo realice una limpieza en tu habitación o propiedad.",
+      "open_form": "Solicitar incidencia",
+      "close_form": "Cerrar formulario",
+      "validation": {
+        "order": "Debes seleccionar una orden de alquiler",
+        "type": "El tipo de servicio es obligatorio",
+        "date": "Selecciona un día",
+        "time": "Selecciona un horario",
+        "message": "El mensaje es obligatorio"
+      },
+      "toast": {
+        "loading": "Solicitando...",
+        "invalid_order": "Orden inválida",
+        "image_error": "Error al subir imagen",
+        "success": "Solicitud enviada correctamente",
+        "submit_error": "Hubo un error al enviar la solicitud",
+        "support": "Intenta nuevamente o contacta con el soporte"
+      },
+      "titles": {
+        "clean": "Servicio de limpieza",
+        "repair": "Servicio de reparación"
+      },
+      "body": {
+        "clean": "Limpieza solicitada para el",
+        "repair": "Reparación solicitada para el"
+      },
+      "form": {
+        "title": "Solicitar incidencia",
+        "select_order": "Seleccionar Room",
+        "select_order_placeholder": "Seleccionar orden",
+        "no_orders": "No tienes órdenes activas para enviar una incidencia.",
+        "select_type": "Tipo de servicio",
+        "select_type_placeholder": "Seleccionar",
+        "select_day": "Selecciona un día",
+        "select_time": "Selecciona un horario",
+        "additional_message": "Mensaje adicional",
+        "message_placeholder": "Opcional: detalles sobre el servicio que necesitas...",
+        "upload_image": "Subir imagen",
+        "image_ready": "Archivo listo para enviar ✅",
+        "is_present": "Tílda la opción si estarás presente durante el servicio.",
+        "submit": "Enviar solicitud",
+        "dont_have_orders": "No tienes ordenes para enviar una incidencia.",
+        "type_clean": "Limpieza",
+        "type_repair": "Reparación"
+      },
+      "history": {
+        "title": "Historial de solicitudes",
+        "no_order": "Sin orden asociada",
+        "unknown": "Desconocido"
+      },
+      "long_days": {
+        "monday": "Lunes",
+        "tuesday": "Martes",
+        "wednesday": "Miércoles",
+        "thursday": "Jueves",
+        "friday": "Viernes",
+        "saturday": "Sábado",
+        "sunday": "Domingo"
+      },
+      "status": {
+      "IN_PROGRESS": "En progreso",
+      "PENDING": "Pendiente",
+      "COMPLETED": "Completado",
+      "CANCELLED": "Cancelado"
+      },
+      "labels": {
+        "code": "Código",
+        "worker": "Trabajador",
+        "unassigned": "No asignado",
+        "client_message": "Mensaje del cliente",
+        "is_present": "¿Estarás presente?",
+        "yes": "Sí",
+        "no": "No",
+        "worker_comment": "Comentario del trabajador",
+        "cancel_reason": "Motivo de cancelación",
+        "image": "Imagen enviada"
+      },
+      "cancel": {
+        "start": "Cancelar solicitud",
+        "label": "Escribe el motivo de cancelación:",
+        "placeholder": "Ej. Ya no es necesario el servicio...",
+        "confirm": "Confirmar cancelación",
+        "abort": "Cancelar",
+        "toast_success": "La orden se ha cancelado correctamente",
+        "toast_error": "Ocurrió un error al cancelar la orden",
+        "toast_support": "Intenta nuevamente o contacta con nuestro soporte"
+      }
+    },
     "worker_panel": {
         "tasks": {
             "h2_1": "Tareas",
@@ -1125,7 +1220,8 @@
             "cards": {
                 "in_progress": "En progreso",
                 "completed": "Completado",
-                "pending": "Pendiente"
+                "pending": "Pendiente",
+                "cancelled": "Cancelado"
             },
             "search_bar": {
                 "placeholder": "Buscar...."

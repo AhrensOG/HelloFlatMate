@@ -8,7 +8,7 @@ export async function changeStatus(data) {
     if (!data.id || data.id <= 0) {
         return NextResponse.json({ message: "Bad request" }, { status: 400 });
     }
-    if (!data.status || data.status.trim() === "" || (data.status !== "COMPLETED" && data.status !== "PENDING")) {
+    if (!data.status || data.status.trim() === "") {
         return NextResponse.json({ message: "Bad request" }, { status: 400 });
     }
 
@@ -22,6 +22,7 @@ export async function changeStatus(data) {
             }
             todo.status = data.status;
             todo.comment = data.comment;
+            todo.cancellationReason = data.cancellationReason || null;
             if (data.status === "COMPLETED") {
                 todo.endDate = new Date();
             }
@@ -61,6 +62,7 @@ export async function asignToWorker(data) {
             }
             todo.workerId = data.workerId;
             todo.status = "IN_PROGRESS";
+            todo.cancellationReason = null;
             await todo.save();
             const chat = await Chat.create({
                 type: "PRIVATE",

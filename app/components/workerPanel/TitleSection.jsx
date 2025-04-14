@@ -5,7 +5,7 @@ export default function TitleSection({ title }) {
   const route = useRouter();
   return (
     <section className="flex justify-center items-center mb-4 w-full">
-      <button
+      {/* <button
         onClick={() => {
           route.back();
         }}
@@ -13,7 +13,7 @@ export default function TitleSection({ title }) {
         className="w-6 h-6 opacity-70 ml-4"
       >
         <ArrowLeftIcon />
-      </button>
+      </button> */}
       <h2 className=" text-[#000000CC] font-bold text-xl mx-auto">{title}</h2>
     </section>
   );

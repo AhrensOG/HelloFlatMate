@@ -38,7 +38,7 @@ const toDoInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             status: {
-                type: DataTypes.ENUM("PENDING", "IN_PROGRESS", "COMPLETED"),
+                type: DataTypes.ENUM("PENDING", "IN_PROGRESS", "COMPLETED", "CANCELLED"),
                 allowNull: false,
             },
             comment: {
@@ -61,7 +61,19 @@ const toDoInit = (sequelize, DataTypes) => {
             typeUser: {
                 type: DataTypes.ENUM("CLIENT", "OWNER"),
                 allowNull: false,
-            }
+            },
+            leaseOrderId: {
+              type: DataTypes.INTEGER,
+              allowNull: true
+            },
+            cancellationReason: {
+              type: DataTypes.STRING(1000),
+              allowNull: true,
+            },
+            imageUrl: {
+              type: DataTypes.STRING(),
+              allowNull: true,
+            },
         },
         {
             sequelize,
