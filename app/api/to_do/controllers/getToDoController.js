@@ -5,7 +5,8 @@ export async function getAllToDos() {
     const toDos = await ToDo.findAll({
         include: {
             model: Property,
-            as: "property"
+            as: "property",
+            attributes: ["city", "street", "streetNumber", "postalCode", "serial", "id"],
         }
     });
     if (toDos) {

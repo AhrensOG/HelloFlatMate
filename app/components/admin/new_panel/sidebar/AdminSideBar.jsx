@@ -16,6 +16,7 @@ import {
     ChatBubbleLeftRightIcon,
     WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
+import { GrUserWorker } from "react-icons/gr"
 import Image from "next/image";
 import { logOut } from "@/app/firebase/logOut";
 import { useRouter } from "next/navigation";
@@ -54,6 +55,10 @@ const AdminSideBar = ({ onSelect }) => {
             name: "Incidencias",
             icon: <WrenchScrewdriverIcon className="w-6 h-6" />,
         },
+        {
+          name: "Mantenimiento",
+          icon: <GrUserWorker className="w-6 h-6" />,
+      },
         // {
         //   name: "Cerrar sesión",
         //   icon: <ArrowRightStartOnRectangleIcon className="w-6 h-6" />,
@@ -63,9 +68,9 @@ const AdminSideBar = ({ onSelect }) => {
     return (
         <AnimatePresence>
             <motion.div
-                className="h-screen bg-white shadow-lg flex flex-col overflow-hidden border-r drop-shadow-xl rounded-r-xl relative min-w-14 max-w-[180px]"
+                className="h-screen bg-white shadow-lg flex flex-col overflow-hidden border-r drop-shadow-xl rounded-r-xl relative min-w-14 max-w-[200px]"
                 initial={{ width: "56px" }}
-                animate={{ width: isOpen ? "180px" : "56px" }} // Suavizar transición
+                animate={{ width: isOpen ? "200px" : "56px" }} // Suavizar transición
                 exit={{ width: "56px" }}
                 transition={{ duration: 0.4, ease: "easeInOut" }} // Transición suave
                 onMouseOver={() => setIsOpen(true)}

@@ -68,7 +68,7 @@ const OwnerDashboard = () => {
               };
 
             yearMap[year][month][property.serial].payments.push({
-              amount: payment.amount,
+              amount: room.amountOwner || payment.amount,
               date: formatDateToDDMMYYYY(payment.date),
               concept: payment.description || payment.name,
               clientName: `${client.name} ${client.lastName}`,
