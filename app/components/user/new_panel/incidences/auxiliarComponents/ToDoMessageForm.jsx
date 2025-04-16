@@ -19,7 +19,7 @@ const ToDoMessageForm = ({ toDoId, userId, onMessageSent }) => {
     if (!message.trim() && !file) return;
 
     if (!state.user) {
-      toast.info("Incia sesion antes de continuar!")
+      toast.info("Incia sesion antes de continuar!");
       return;
     }
 
@@ -62,26 +62,30 @@ const ToDoMessageForm = ({ toDoId, userId, onMessageSent }) => {
         placeholder={t("messages.placeholder")}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="w-full border border-gray-300 rounded-md p-2 text-sm"
+        className="w-full border border-gray-300 rounded-md p-2 text-sm outline-none"
       />
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setFile(e.target.files[0])}
-        className="text-sm text-gray-600"
-      />
-
-      <button
-        onClick={handleSubmit}
-        disabled={sending || (!message.trim() && !file)}
-        className={`px-4 py-2 text-sm rounded-lg font-medium transition ${
-          message.trim() || file
-            ? "bg-[#440cac] text-white hover:bg-[#361089]"
-            : "bg-gray-200 text-gray-400 cursor-not-allowed"
-        }`}>
-        {t("messages.send")}
-      </button>
+      <div className="flex gap-2">
+        <button
+          onClick={handleSubmit}
+          disabled={sending || (!message.trim() && !file)}
+          className={`px-4 py-2 text-sm rounded-lg font-medium transition ${
+            message.trim() || file
+              ? "bg-[#440cac] text-white hover:bg-[#361089]"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+          }`}>
+          {t("messages.send")}
+        </button>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setFile(e.target.files[0])}
+          className="block text-sm text-[#440cac]
+    file:border-0 file:bg-[#440cac] file:text-white
+    file:font-semibold file:px-4 file:py-2
+    file:rounded-md file:cursor-pointer
+    hover:file:bg-[#361089] transition"
+        />
+      </div>
     </div>
   );
 };

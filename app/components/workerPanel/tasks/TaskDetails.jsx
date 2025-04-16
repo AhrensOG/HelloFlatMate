@@ -8,20 +8,13 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
 import { Context } from "@/app/context/GlobalContext";
-import ApplicationCardHistory from "../../user/history/application/ApplicationCardHistory";
-import Buttons from "./task_details/Buttons";
+
 import TaskModal from "./task_details/modal/TaskModal";
 import UserSerivceNavBar from "../nav_bar/UserServiceNavBar";
 import BottomNavBar from "../bottomNavBar/BottomNavBar";
-import LocationSection from "../../user/property-details/main/LocationSection";
-import {
-  HiOutlineCalendar,
-  HiOutlineExclamationCircle,
-  HiOutlineMapPin,
-} from "react-icons/hi2";
-import TaskInfoCard from "./task_details/TaskInfoCard";
 import TaskInfoSection from "./task_details/TaskInfoSection";
 import ToDoMessagesSection from "./task_details/ToDoMessagesSection";
+import TaskManagementPanel from "./task_details/TaskManagementPanel";
 
 export default function TaskDetails({ section }) {
   const searchParams = useSearchParams();
@@ -138,8 +131,29 @@ export default function TaskDetails({ section }) {
 
             <ToDoMessagesSection toDoId={task.id} currentUser={user} />
 
+            <TaskManagementPanel
+              taskId={task.id}
+              currentTask={task}
+              onUpdate={fetchTask}
+            />
+
             {(task.status === "IN_PROGRESS" || task.status === "PENDING") &&
-              task.workerId !== null && <Buttons action={handleModal} />}
+              task.workerId && (
+                <div className="flex gap-4 justify-between">
+                  <button
+                    onClick={() => handleModal("finish")}
+                    className="w-full h-12 bg-[#440cac] text-[#F7FAFA] text-base fonte-bold rounded-lg lg:w-[15rem]"
+                    type="button">
+                    {t("btns.finish")}
+                  </button>
+                  <button
+                    onClick={() => handleModal("problem")}
+                    className="w-full h-12 bg-[#DCD8D8] text-black text-base fonte-bold rounded-lg lg:w-[15rem]"
+                    type="button">
+                    {t("btns.problem")}
+                  </button>
+                </div>
+              )}
 
             {task.workerId === null && (
               <div className="w-full flex justify-center">
@@ -172,7 +186,7 @@ export default function TaskDetails({ section }) {
         )}
 
         {showCancelModal && (
-          <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex justify-center items-center">
+          <div className="px-2 fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex justify-center items-center">
             <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full space-y-4">
               <h2 className="text-lg font-bold text-red-600">Cancelar tarea</h2>
               <textarea

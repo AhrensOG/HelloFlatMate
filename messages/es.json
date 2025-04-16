@@ -1257,7 +1257,12 @@
                 "pending": "Pendiente",
                 "cancelled": "Cancelado",
                 "no_date": "Aún sin definir",
-                "emergency": "¡Emergencia!"
+                "emergency": "¡Emergencia!",
+                "rescheduled": "Reprogramado",
+                "responsibility": "Responsabilidad",
+                "owner": "Propietario",
+                "client": "Inquilino",
+                "amount": "Importe"
             },
             "search_bar": {
                 "placeholder": "Buscar...."

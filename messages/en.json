@@ -1242,7 +1242,12 @@
                 "pending": "Pending",
                 "cancelled": "Cancelled",
                 "no_date": "Not date yet",
-                "emergency": "Emergency!"
+                "emergency": "Emergency!",
+                "rescheduled": "Repgrammed",
+                "responsibility": "Responsibility",
+                "owner": "Owner",
+                "client": "Tenant",
+                "amount": "Amount"
             },
             "search_bar": {
                 "placeholder": "Search...."

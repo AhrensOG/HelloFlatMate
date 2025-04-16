@@ -127,8 +127,8 @@ export default function TasksSection({ section }) {
               </h2>
             </div>
 
-            <div className="lg:flex lg:justify-between lg:items-start gap-6">
-              <div className="lg:w-[45%]">
+            <div className="flex flex-col  justify-center items-center mx-auto   gap-6">
+              <div className="w-full">
                 <SearchBar data={searchTerm} setData={setSearchTerm} />
               </div>
 

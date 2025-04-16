@@ -56,7 +56,7 @@ export default function ApplicationCardHistory({ data, action }) {
         </div>
       </div>
 
-      <div className="flex-grow">
+      <div className="flex-grow space-y-1">
         <h3 className="font-semibold text-[1rem] text-gray-800 flex items-center gap-2">
           {data?.title}
           {data?.emergency && (
@@ -71,6 +71,28 @@ export default function ApplicationCardHistory({ data, action }) {
 
         <p className="text-sm text-gray-600 line-clamp-2">{data?.body}</p>
 
+        {/* Extra Info */}
+        <div className="text-xs text-gray-600 space-y-1 mt-2">
+          {data?.reprogrammedStartDate && (
+            <p>
+              <strong>{t("rescheduled")}:</strong>{" "}
+              {formatDate(data.reprogrammedStartDate)}
+            </p>
+          )}
+          {data?.responsibility && (
+            <p>
+              <strong>{t("responsibility")}:</strong>{" "}
+              {data.responsibility === "OWNER" ? t("owner") : t("client")}
+            </p>
+          )}
+          {data?.amount !== null && data?.amount !== undefined && (
+            <p>
+              <strong>{t("amount")}:</strong> €{Number(data.amount).toFixed(2)}
+            </p>
+          )}
+        </div>
+
+        {/* Footer */}
         <div className="flex justify-between items-end mt-2">
           <span className="text-xs flex items-center gap-1 text-gray-500">
             <HiOutlineClock className="w-4 h-4" />
