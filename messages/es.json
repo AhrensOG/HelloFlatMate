@@ -1166,7 +1166,30 @@
         "submit": "Enviar solicitud",
         "dont_have_orders": "No tienes ordenes para enviar una incidencia.",
         "type_clean": "Limpieza",
-        "type_repair": "Reparación"
+        "type_repair": "Reparación",
+        "emergency": "¿Es una emergencia? (Marca solo si se necesita intervención urgente)",
+        "morning": "Mañana",
+        "afternoon": "Tarde",
+        "site_labels": {
+          "MY_ROOM": "Mi habitación",
+          "KITCHEN": "Cocina",
+          "LIVING_ROOM": "Salón",
+          "WC1": "Baño 1",
+          "WC2": "Baño 2",
+          "HALLWAY_COMMON_AREAS": "Pasillo / Áreas comunes",
+          "OTHERS": "Otros"
+        },
+        "type_labels": {
+          "ELECTRICITY": "Electricidad",
+          "CARPENTRY": "Carpintería",
+          "LOCKSMITHING": "Cerrajería",
+          "PLUMBING": "Fontanería",
+          "GLAZING": "Cristalería",
+          "WIFI": "Wi-Fi",
+          "APPLIANCES": "Electrodomésticos",
+          "FURNITURE": "Muebles",
+          "OTHERS": "Otros"
+        }
       },
       "history": {
         "title": "Historial de solicitudes",
@@ -1209,6 +1232,17 @@
         "toast_success": "La orden se ha cancelado correctamente",
         "toast_error": "Ocurrió un error al cancelar la orden",
         "toast_support": "Intenta nuevamente o contacta con nuestro soporte"
+      },
+      "messages": {
+        "title": "Mensajes",
+        "refresh": "Actualizar mensajes",
+        "empty": "Aún no hay mensajes en esta incidencia.",
+        "placeholder": "Escribe un mensaje...",
+        "sending": "Enviando mensaje...",
+        "sent": "Mensaje enviado correctamente",
+        "error": "Error al enviar el mensaje",
+        "send": "Enviar mensaje",
+        "video_link": "Ver video adjunto"
       }
     },
     "worker_panel": {

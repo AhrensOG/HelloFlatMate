@@ -47,7 +47,6 @@ export async function getUserById(id) {
         // { model: ChatParticipant, as: "chats" },
         { model: RentPayment, as: "rentPayments", attributes: ["id", "amount", "date","status","type","quotaNumber","paymentableId","leaseOrderId","paymentId", "description"] },
         { model: Consumption, as: "consumptions", attributes: ["amount", "url", "type", "period", "leaseOrderRoomId", "startDate", "endDate"] },
-        { model: ToDo, as: "toDos", attributes: ["id", "title", "body", "status", "leaseOrderId", "clientMessage", "comment", "cancellationReason", "imageUrl", "isPresent"], include: [{ model: Worker, as: "worker", attributes: ["name", "lastName"] }] },
       ],
     });
 

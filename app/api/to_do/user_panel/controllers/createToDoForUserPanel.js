@@ -11,7 +11,9 @@ export async function createToDoForUserPanel(data) {
     { key: "type", message: "No type provided" },
     { key: "clientId", message: "No client ID provided" },
     { key: "propertyId", message: "No property ID provided" },
-    { key: "startDate", message: "No start date provided" },
+    { key: "incidentSite", message: "No incident site provided" },
+    { key: "incidentType", message: "No incident type provided" },
+    { key: "preferredTimeSlot", message: "No preferred time slot provided" },
   ];
 
   for (const field of requiredFields) {
@@ -53,11 +55,14 @@ export async function createToDoForUserPanel(data) {
       status: "PENDING",
       creationDate: new Date(),
       typeUser: "CLIENT",
-      startDate: new Date(data.startDate),
+      preferredTimeSlot: data.preferredTimeSlot ?? null,
       clientMessage: data.clientMessage ?? null,
       isPresent: data.isPresent ?? false,
+      emergency: data.emergency ?? false,
       leaseOrderId: data.leaseOrderId ?? null,
-      imageUrl: data.imageUrl ?? null
+      imageUrl: data.imageUrl ?? null,
+      incidentSite: data.incidentSite,
+      incidentType: data.incidentType,
     });
 
     return NextResponse.json(toDo, { status: 200 });

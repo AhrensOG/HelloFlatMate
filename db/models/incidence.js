@@ -37,6 +37,19 @@ const incidenceInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            status: {
+                type: DataTypes.ENUM("PENDING", "APPROVED"),
+                defaultValue: "APPROVED",
+                allowNull: false,
+            },
+            paymentId: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            toDoId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            }  
         },
         {
             sequelize,

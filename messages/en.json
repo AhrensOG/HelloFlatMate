@@ -1151,7 +1151,30 @@
         "submit": "Send request",
         "dont_have_orders": "You don't have any orders to report an issue.",
         "type_clean": "Cleaning",
-        "type_repair": "Repair"
+        "type_repair": "Repair",
+        "emergency": "Is it an emergency? (check only if urgent intervention is needed)",
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "site_labels": {
+          "MY_ROOM": "My room",
+          "KITCHEN": "Kitchen",
+          "LIVING_ROOM": "Living room",
+          "WC1": "Bathroom 1",
+          "WC2": "Bathroom 2",
+          "HALLWAY_COMMON_AREAS": "Hallway / Common areas",
+          "OTHERS": "Others"
+        },
+        "type_labels": {
+          "ELECTRICITY": "Electricity",
+          "CARPENTRY": "Carpentry",
+          "LOCKSMITHING": "Locksmithing",
+          "PLUMBING": "Plumbing",
+          "GLAZING": "Glazing",
+          "WIFI": "Wi-Fi",
+          "APPLIANCES": "Appliances",
+          "FURNITURE": "Furniture",
+          "OTHERS": "Others"
+        }
       },
       "history": {
         "title": "Request history",
@@ -1194,6 +1217,17 @@
         "toast_success": "The request was successfully cancelled",
         "toast_error": "There was an error cancelling the request",
         "toast_support": "Please try again or contact support"
+      },
+      "messages": {
+        "title": "Messages",
+        "refresh": "Refresh messages",
+        "empty": "There are no messages in this issue yet.",
+        "placeholder": "Write a message...",
+        "sending": "Sending message...",
+        "sent": "Message sent successfully",
+        "error": "Error sending message",
+        "send": "Send message",
+        "video_link": "View attached video"
       }
     },
     "worker_panel": {

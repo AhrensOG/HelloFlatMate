@@ -24,6 +24,7 @@ const { propertyData, testAdminData, testClientData, testOwnerData, testRoom } =
 const SearchRequest = require("./models/searchRequest");
 const Notification = require("./models/notification");
 const Incidence = require("./models/incidence");
+const ToDoMessage = require("./models/toDoMessage");
 
 (async () => {
     try {
@@ -55,6 +56,11 @@ const Incidence = require("./models/incidence");
         ToDo.belongsTo(Worker, { as: "worker", foreignKey: "workerId" });
         ToDo.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
 
+        ToDo.hasMany(ToDoMessage, { foreignKey: "toDoId", as: "messages" });
+
+        // ToDoMessage model
+        ToDoMessage.belongsTo(ToDo, { foreignKey: "toDoId", as: "toDo" });
+        
         // LeaseOrderProperty
         LeaseOrderProperty.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
         LeaseOrderProperty.belongsTo(Property, { foreignKey: "propertyId", as: "property" }); // Usar el correcto foreignKey
@@ -465,4 +471,5 @@ module.exports = {
     Consumption,
     Notification,
     Incidence,
+    ToDoMessage,
 };
