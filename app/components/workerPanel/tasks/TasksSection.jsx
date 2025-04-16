@@ -61,10 +61,19 @@ export default function TasksSection({ section }) {
         (COMPLETED && task.status === "COMPLETED") ||
         (CANCELLED && task.status === "CANCELLED");
 
-      // Filtro por búsqueda
+      // Filtro por búsqueda (mejorado)
+      const search = searchTerm.trim().toLowerCase();
+      const serial = task?.property?.serial?.toLowerCase() || "";
+      const street = task?.property?.street?.toLowerCase() || "";
+      const city = task?.property?.city?.toLowerCase() || "";
+      const title = task?.title?.toLowerCase() || "";
+
       const matchesSearch =
-        !searchTerm ||
-        task.title.toLowerCase().includes(searchTerm.toLowerCase());
+        !search ||
+        title.includes(search) ||
+        serial.includes(search) ||
+        street.includes(search) ||
+        city.includes(search);
 
       return matchesType && matchesStatus && matchesSearch;
     });
@@ -128,29 +137,6 @@ export default function TasksSection({ section }) {
                   <label className="flex items-center gap-2">
                     <input
                       type="checkbox"
-                      checked={filters.CLEAN}
-                      onChange={(e) =>
-                        handleFilterChange("CLEAN", e.target.checked)
-                      }
-                    />
-                    {t("clean")}
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={filters.REPAIR}
-                      onChange={(e) =>
-                        handleFilterChange("REPAIR", e.target.checked)
-                      }
-                    />
-                    {t("repair")}
-                  </label>
-                </div>
-
-                <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
                       checked={filters.PENDING}
                       onChange={(e) =>
                         handleFilterChange("PENDING", e.target.checked)
@@ -204,14 +190,19 @@ export default function TasksSection({ section }) {
               ) : (
                 [...filteredTasks]
                   .sort((a, b) => {
+                    if (a.emergency && !b.emergency) return -1;
+                    if (!a.emergency && b.emergency) return 1;
+
                     const order = {
                       PENDING: 0,
                       IN_PROGRESS: 1,
                       COMPLETED: 2,
                       CANCELLED: 3,
                     };
+
                     return order[a.status] - order[b.status];
                   })
+
                   .map((task) => (
                     <div
                       key={task.id}

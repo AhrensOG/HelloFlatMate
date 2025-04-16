@@ -1255,7 +1255,9 @@
                 "in_progress": "En progreso",
                 "completed": "Completado",
                 "pending": "Pendiente",
-                "cancelled": "Cancelado"
+                "cancelled": "Cancelado",
+                "no_date": "Aún sin definir",
+                "emergency": "¡Emergencia!"
             },
             "search_bar": {
                 "placeholder": "Buscar...."

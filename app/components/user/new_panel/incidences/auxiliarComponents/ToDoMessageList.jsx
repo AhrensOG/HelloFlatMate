@@ -1,73 +1,84 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useContext } from "react";
+import { Context } from "@/app/context/GlobalContext";
 
 const ToDoMessageList = ({ messages, onRefetch }) => {
   const t = useTranslations("user_incidences");
+  const { state } = useContext(Context);
+
+  const isVideo = (url) =>
+    typeof url === "string" &&
+    (url.includes(".mp4") || url.includes(".webm") || url.includes(".mov"));
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h4 className="text-sm font-semibold text-gray-700">
-          {t("messages.title")}
-        </h4>
-        <button
-          onClick={onRefetch}
-          className="text-xs text-[#440cac] hover:underline">
-          {t("messages.refresh")}
-        </button>
+    <div className="space-y-4 max-h-[300px] overflow-y-auto border border-gray-200 p-3 pt-0 rounded-lg bg-white">
+      <div className="sticky top-0 z-10 bg-white py-2">
+        <div className="flex justify-between items-center border-b border-gray-100 pb-2">
+          <h4 className="text-sm font-semibold text-gray-700">
+            {t("messages.title")}
+          </h4>
+          <button
+            onClick={onRefetch}
+            className="text-xs text-[#440cac] hover:underline">
+            {t("messages.refresh")}
+          </button>
+        </div>
       </div>
 
-      <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
-        {!messages || messages.length === 0 ? (
-          <p className="text-sm text-gray-500">{t("messages.empty")}</p>
-        ) : (
-          messages.map((msg) => (
+      {!messages || messages.length === 0 ? (
+        <p className="text-sm text-gray-500">{t("messages.empty")}</p>
+      ) : (
+        messages.map((msg) => {
+          const isMe = msg.senderId === state?.user?.id;
+
+          return (
             <div
               key={msg.id}
-              className={`p-3 rounded-md text-sm max-w-[80%] ${
-                msg.senderType === "CLIENT"
-                  ? "bg-[#f3f0fa] text-gray-800 ml-auto"
-                  : "bg-gray-100 text-gray-700"
+              className={`max-w-[60%] p-3 rounded-md text-sm relative ${
+                isMe
+                  ? "ml-auto bg-[#f3f0fa] text-gray-800"
+                  : "mr-auto bg-gray-100 text-gray-700"
               }`}>
-              <div className="text-[11px] font-medium text-gray-500 mb-1">
+              <p className="font-medium text-[13px] text-[#440cac] mb-1">
                 {msg.senderName} {msg.senderLastName}
-              </div>
+              </p>
 
               {msg.body && <p className="whitespace-pre-wrap">{msg.body}</p>}
 
-              {msg.imageUrl &&
-                (msg.imageUrl.includes(".mp4") ||
-                msg.imageUrl.includes(".webm") ||
-                msg.imageUrl.includes(".mov") ? (
-                  <a
-                    href={msg.imageUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 block text-center text-sm text-[#440cac] underline">
-                    🎥 {t("messages.video_link")}
-                  </a>
-                ) : (
-                  <a
-                    href={msg.imageUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block mt-2">
-                    <img
-                      src={msg.imageUrl}
-                      alt="adjunto"
-                      className="rounded w-full max-w-xs object-cover border border-gray-200"
-                    />
-                  </a>
-                ))}
+              {msg.imageUrl && (
+                <div className="mt-2">
+                  {isVideo(msg.imageUrl) ? (
+                    <a
+                      href={msg.imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-blue-600 hover:underline text-xs text-center">
+                      🎥 {t("messages.video_link")}
+                    </a>
+                  ) : (
+                    <a
+                      href={msg.imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer">
+                      <img
+                        src={msg.imageUrl}
+                        alt="adjunto"
+                        className="rounded w-full max-w-xs object-cover"
+                      />
+                    </a>
+                  )}
+                </div>
+              )}
 
               <span className="block text-[11px] mt-1 text-gray-400 text-right">
                 {new Date(msg.createdAt).toLocaleString("es-ES")}
               </span>
             </div>
-          ))
-        )}
-      </div>
+          );
+        })
+      )}
     </div>
   );
 };

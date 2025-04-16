@@ -1,11 +1,15 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { HiOutlineClock } from "react-icons/hi2";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 export default function ApplicationCardHistory({ data, action }) {
   const t = useTranslations("worker_panel.tasks.cards");
 
   const formatDate = (dateString) => {
+    if (!dateString) return t("no_date");
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("es-ES", {
       day: "2-digit",
@@ -31,6 +35,8 @@ export default function ApplicationCardHistory({ data, action }) {
     CANCELLED: t("cancelled"),
   };
 
+  const fullAddress = `${data?.property?.serial} – ${data?.property?.street} ${data?.property?.streetNumber}, ${data?.property?.postalCode} · ${data?.property?.city}`;
+
   return (
     <div
       onClick={action}
@@ -51,9 +57,18 @@ export default function ApplicationCardHistory({ data, action }) {
       </div>
 
       <div className="flex-grow">
-        <h3 className="font-semibold text-[1rem] text-gray-800">
+        <h3 className="font-semibold text-[1rem] text-gray-800 flex items-center gap-2">
           {data?.title}
+          {data?.emergency && (
+            <span className="text-red-600 text-xs flex items-center gap-1 font-semibold bg-red-50 border border-red-200 px-2 py-0.5 rounded">
+              <FaExclamationTriangle className="text-sm" />
+              {t("emergency")}
+            </span>
+          )}
         </h3>
+
+        <p className="text-sm text-gray-800 font-medium">{fullAddress}</p>
+
         <p className="text-sm text-gray-600 line-clamp-2">{data?.body}</p>
 
         <div className="flex justify-between items-end mt-2">

@@ -33,7 +33,6 @@ const ToDoMessageForm = ({ toDoId, userId, onMessageSent }) => {
         if (uploaded instanceof Error) throw uploaded;
         imageUrl = uploaded[0].url;
       }
-
       await axios.post(`/api/to_do/messages`, {
         body: message,
         imageUrl,
@@ -50,7 +49,7 @@ const ToDoMessageForm = ({ toDoId, userId, onMessageSent }) => {
       if (onMessageSent) onMessageSent();
     } catch (err) {
       console.error(err);
-      toast.error(t("messages.error"), { id: toastId });
+      toast.info(t("messages.error"), { id: toastId });
     } finally {
       setSending(false);
     }

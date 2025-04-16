@@ -1240,7 +1240,9 @@
                 "in_progress": "In Progress",
                 "completed": "Completed",
                 "pending": "Pending",
-                "cancelled": "Cancelled"
+                "cancelled": "Cancelled",
+                "no_date": "Not date yet",
+                "emergency": "Emergency!"
             },
             "search_bar": {
                 "placeholder": "Search...."
