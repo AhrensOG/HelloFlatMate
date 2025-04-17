@@ -858,7 +858,8 @@
             "cleanup": "Check-out cleaning",
             "others": "Others",
             "deposit": "Deposit",
-            "general_supplies": "Supplies"
+            "general_supplies": "Supplies",
+            "maintenance": "Maintenance"
         }
     },
     "last_room_page": {
@@ -1353,8 +1354,9 @@
             "no_tenants": "No tenants registered.",
             "serial": "Code",
             "room": "Room",
-            "current_tenants": "Current Tenants",
-            "old_tenants": "Previous Tenants"
+            "current_tenants": "Current tenants",
+            "old_tenants": "Previous tenants",
+            "future_tenants": "Next tenants"
         },
         "tenants_card": {
             "status_label": {

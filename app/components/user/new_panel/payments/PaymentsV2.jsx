@@ -25,6 +25,7 @@ const SUPPLY_TYPE_LABELS = {
   OTHERS: "Otros",
   DEPOSIT: "Depósito",
   GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
+  MAINTENANCE: "Mantenimiento",
 };
 
 const orderPriority = [
@@ -35,6 +36,8 @@ const orderPriority = [
   "RESERVATION",
   "MONTHLY",
   "CLEANUP",
+  "MAINTENANCE",
+  "OTHERS",
 ];
 
 const getStatusStyles = (status, paid) => {
@@ -111,6 +114,7 @@ const PaymentsV2 = () => {
         OTHERS: t_supply("supply_names.others"),
         DEPOSIT: t_supply("supply_names.deposit"),
         GENERAL_SUPPLIES: t_supply("supply_names.general_supplies"),
+        MAINTENANCE: t_supply("supply_names.maintenance"),
       };
 
       return supplies[supplyType] || supplyType;

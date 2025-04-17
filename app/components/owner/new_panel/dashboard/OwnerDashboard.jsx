@@ -19,6 +19,13 @@ const getYearMonthKey = (dateStr) => {
   };
 };
 
+const formatDateToMMYYYY = (dateStr) => {
+  const date = new Date(dateStr);
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  return `${mm}/${yyyy}`;
+};
+
 const OwnerDashboard = () => {
   const t = useTranslations("owner_panel.dashboard");
   const { state } = useContext(Context);
@@ -56,24 +63,31 @@ const OwnerDashboard = () => {
       property.rooms.forEach((room) => {
         room.leaseOrdersRoom.forEach((order) => {
           const client = order.client;
-          (client.rentPayments || []).forEach((payment) => {
-            const { year, month } = getYearMonthKey(payment.date);
+          const periodKey = `${room.serial} | ${formatDateToMMYYYY(
+            order.startDate
+          )} - ${formatDateToMMYYYY(order.endDate)}`;
 
-            if (!yearMap[year]) yearMap[year] = {};
-            if (!yearMap[year][month]) yearMap[year][month] = {};
-            if (!yearMap[year][month][property.serial])
-              yearMap[year][month][property.serial] = {
-                payments: [],
-                incidences: [],
-              };
+          (client.rentPayments || [])
+            .filter((payment) => payment.leaseOrderId === order.id)
+            .forEach((payment) => {
+              const { year, month } = getYearMonthKey(payment.date);
 
-            yearMap[year][month][property.serial].payments.push({
-              amount: room.amountOwner || payment.amount,
-              date: formatDateToDDMMYYYY(payment.date),
-              concept: payment.description || payment.name,
-              clientName: `${client.name} ${client.lastName}`,
+              if (!yearMap[year]) yearMap[year] = {};
+              if (!yearMap[year][month]) yearMap[year][month] = {};
+              if (!yearMap[year][month][periodKey]) {
+                yearMap[year][month][periodKey] = {
+                  payments: [],
+                  incidences: [],
+                };
+              }
+
+              yearMap[year][month][periodKey].payments.push({
+                amount: room.amountOwner || payment.amount,
+                date: formatDateToDDMMYYYY(payment.date),
+                concept: payment.description || payment.name,
+                clientName: `${client.name} ${client.lastName}`,
+              });
             });
-          });
         });
       });
 
@@ -202,136 +216,141 @@ const OwnerDashboard = () => {
                                     exit={{ opacity: 0, height: 0 }}
                                     transition={{ duration: 0.2 }}
                                     className="pl-4">
-                                    {Object.keys(properties).map((serial) => {
-                                      const prop = properties[serial];
-                                      const propTotal =
-                                        prop.payments.reduce(
-                                          (a, c) => a + c.amount,
-                                          0
-                                        ) -
-                                        prop.incidences.reduce(
-                                          (a, c) => a + c.amount,
-                                          0
-                                        );
-                                      return (
-                                        <div key={serial} className="mb-2">
-                                          <div
-                                            className="flex justify-between items-center cursor-pointer bg-gray-100 p-2 rounded border"
-                                            onClick={() =>
-                                              toggleProperty(
-                                                year,
-                                                month,
-                                                serial
-                                              )
-                                            }>
-                                            <p className="font-medium">
-                                              {serial}: {propTotal.toFixed(2)} €
-                                            </p>
-                                          </div>
-                                          <AnimatePresence>
-                                            {expandedProperties[year]?.[
-                                              month
-                                            ]?.[serial] && (
-                                              <motion.div
-                                                initial={{
-                                                  opacity: 0,
-                                                  height: 0,
-                                                }}
-                                                animate={{
-                                                  opacity: 1,
-                                                  height: "auto",
-                                                }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="ml-4 mt-2 space-y-2">
-                                                {prop.payments.map(
-                                                  (entry, i) => (
-                                                    <div
-                                                      key={i}
-                                                      className="bg-white p-3 rounded border text-sm">
-                                                      <p>
-                                                        <strong>
-                                                          {t("p_3")}:
-                                                        </strong>{" "}
-                                                        {entry.clientName}
+                                    {Object.keys(properties).map(
+                                      (periodKey) => {
+                                        const prop = properties[periodKey];
+                                        const propTotal =
+                                          prop.payments.reduce(
+                                            (a, c) => a + c.amount,
+                                            0
+                                          ) -
+                                          prop.incidences.reduce(
+                                            (a, c) => a + c.amount,
+                                            0
+                                          );
+                                        return (
+                                          <div key={periodKey} className="mb-2">
+                                            <div
+                                              className="flex justify-between items-center cursor-pointer bg-gray-100 p-2 rounded border"
+                                              onClick={() =>
+                                                toggleProperty(
+                                                  year,
+                                                  month,
+                                                  periodKey
+                                                )
+                                              }>
+                                              <p className="font-medium">
+                                                {periodKey}:{" "}
+                                                {propTotal.toFixed(2)} €
+                                              </p>
+                                            </div>
+                                            <AnimatePresence>
+                                              {expandedProperties[year]?.[
+                                                month
+                                              ]?.[periodKey] && (
+                                                <motion.div
+                                                  initial={{
+                                                    opacity: 0,
+                                                    height: 0,
+                                                  }}
+                                                  animate={{
+                                                    opacity: 1,
+                                                    height: "auto",
+                                                  }}
+                                                  exit={{
+                                                    opacity: 0,
+                                                    height: 0,
+                                                  }}
+                                                  transition={{ duration: 0.2 }}
+                                                  className="ml-4 mt-2 space-y-2">
+                                                  {prop.payments.map(
+                                                    (entry, i) => (
+                                                      <div
+                                                        key={i}
+                                                        className="bg-white p-3 rounded border text-sm">
+                                                        <p>
+                                                          <strong>
+                                                            {t("p_3")}:
+                                                          </strong>{" "}
+                                                          {entry.clientName}
+                                                        </p>
+                                                        <p>
+                                                          <strong>
+                                                            {t("p_4")}:
+                                                          </strong>{" "}
+                                                          {entry.concept}
+                                                        </p>
+                                                        <p>
+                                                          <strong>
+                                                            {t("p_6")}:
+                                                          </strong>{" "}
+                                                          {entry.date}
+                                                        </p>
+                                                        <p>
+                                                          <strong>
+                                                            {t("p_7")}:
+                                                          </strong>{" "}
+                                                          {entry.amount.toFixed(
+                                                            2
+                                                          )}{" "}
+                                                          €
+                                                        </p>
+                                                      </div>
+                                                    )
+                                                  )}
+                                                  {prop.incidences.length >
+                                                    0 && (
+                                                    <div className="text-sm bg-red-50 border-red-300 border p-3 rounded">
+                                                      <p className="font-semibold text-red-600">
+                                                        {t("incidences")}
                                                       </p>
-                                                      <p>
-                                                        <strong>
-                                                          {t("p_4")}:
-                                                        </strong>{" "}
-                                                        {entry.concept}
-                                                      </p>
-                                                      <p>
-                                                        <strong>
-                                                          {t("p_6")}:
-                                                        </strong>{" "}
-                                                        {entry.date}
-                                                      </p>
-                                                      <p>
-                                                        <strong>
-                                                          {t("p_7")}:
-                                                        </strong>{" "}
-                                                        {entry.amount.toFixed(
-                                                          2
-                                                        )}{" "}
-                                                        €
-                                                      </p>
+                                                      {prop.incidences.map(
+                                                        (inc, i) => (
+                                                          <div
+                                                            key={i}
+                                                            className="mt-2">
+                                                            <p>
+                                                              <strong>
+                                                                {t("p_4")}:
+                                                              </strong>{" "}
+                                                              {inc.title}
+                                                            </p>
+                                                            <p>
+                                                              <strong>
+                                                                {t("p_6")}:
+                                                              </strong>{" "}
+                                                              {inc.date}
+                                                            </p>
+                                                            <p>
+                                                              <strong>
+                                                                {t("p_7")}:
+                                                              </strong>{" "}
+                                                              -
+                                                              {inc.amount.toFixed(
+                                                                2
+                                                              )}{" "}
+                                                              €
+                                                            </p>
+                                                            {inc.url && (
+                                                              <a
+                                                                href={inc.url}
+                                                                target="_blank"
+                                                                className="text-blue-500 text-xs underline">
+                                                                {t("view_bill")}
+                                                              </a>
+                                                            )}
+                                                          </div>
+                                                        )
+                                                      )}
                                                     </div>
-                                                  )
-                                                )}
-                                                {prop.incidences.length > 0 && (
-                                                  <div className="text-sm bg-red-50 border-red-300 border p-3 rounded">
-                                                    <p className="font-semibold text-red-600">
-                                                      {t("incidences")}
-                                                    </p>
-                                                    {prop.incidences.map(
-                                                      (inc, i) => (
-                                                        <div
-                                                          key={i}
-                                                          className="mt-2">
-                                                          <p>
-                                                            <strong>
-                                                              {t("p_4")}:
-                                                            </strong>{" "}
-                                                            {inc.title}
-                                                          </p>
-                                                          <p>
-                                                            <strong>
-                                                              {t("p_6")}:
-                                                            </strong>{" "}
-                                                            {inc.date}
-                                                          </p>
-                                                          <p>
-                                                            <strong>
-                                                              {t("p_7")}:
-                                                            </strong>{" "}
-                                                            -
-                                                            {inc.amount.toFixed(
-                                                              2
-                                                            )}{" "}
-                                                            €
-                                                          </p>
-                                                          {inc.url && (
-                                                            <a
-                                                              href={inc.url}
-                                                              target="_blank"
-                                                              className="text-blue-500 text-xs underline">
-                                                              {t(
-                                                                "view_bill"
-                                                              )}
-                                                            </a>
-                                                          )}
-                                                        </div>
-                                                      )
-                                                    )}
-                                                  </div>
-                                                )}
-                                              </motion.div>
-                                            )}
-                                          </AnimatePresence>
-                                        </div>
-                                      );
-                                    })}
+                                                  )}
+                                                </motion.div>
+                                              )}
+                                            </AnimatePresence>
+                                          </div>
+                                        );
+                                      }
+                                    )}
                                   </motion.div>
                                 )}
                               </AnimatePresence>

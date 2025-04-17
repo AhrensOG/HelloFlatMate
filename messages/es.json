@@ -865,7 +865,8 @@
             "cleanup": "Limpieza check-out",
             "others": "Otros",
             "deposit": "Depósito",
-            "general_supplies": "Suministros"
+            "general_supplies": "Suministros",
+            "maintenance": "Mantenimiento"
         }
     },
     "forms": {
@@ -1368,7 +1369,8 @@
             "serial": "Código",
             "room": "Habitación",
             "current_tenants": "Inquilinos actuales",
-            "old_tenants": "Inquilinos anteriores"
+            "old_tenants": "Inquilinos anteriores",
+            "future_tenants": "Proximos inquilinos"
         },
         "tenants_card": {
             "status_label": {
