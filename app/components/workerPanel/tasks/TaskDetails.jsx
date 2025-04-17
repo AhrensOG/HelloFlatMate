@@ -46,21 +46,61 @@ export default function TaskDetails({ section }) {
     if (user && id) fetchTask();
   }, [user, id]);
 
-  const formatDate = (dateStr) =>
-    new Date(dateStr).toLocaleString("es-ES", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-
-  const handleShowModal = async (comment, status) => {
+  const handleShowModal = async (comment, status, type) => {
     setShowModal(false);
     setType(status);
     const toastId = toast.loading(t("responses_1.loading"));
+
     try {
-      await axios.patch(`/api/to_do`, { id: task.id, status, comment });
+      const payload = {
+        id: task.id,
+        status,
+      };
+
+      if (type === "problem") {
+        payload.comment = comment;
+      } else if (type === "finish") {
+        payload.closingComments = comment;
+      }
+
+      // Actualizar la tarea
+      await axios.patch(`/api/to_do`, payload);
       await fetchTask();
+
+      // Si finaliza, y hay un monto válido y responsabilidad definida
+      if (
+        type === "finish" &&
+        task.amount !== null &&
+        task.amount !== undefined &&
+        task.amount > 0 &&
+        task.responsibility
+      ) {
+        const isClient = task.responsibility === "CLIENT";
+
+        const data = {
+          name: task.title || "Servicio de mantenimiento",
+          amount: task.amount,
+          status: "PENDING",
+          type: "MAINTENANCE",
+          responsibility: task.responsibility,
+          toDoId: task.id, // Necesario para OWNER
+        };
+
+        if (isClient) {
+          data.userId = task.userId;
+          data.leaseOrderId = task.leaseOrderId;
+        } else {
+          data.propertyId = task.propertyId;
+          data.title = task.title || "Mantenimiento finalizado";
+          data.description = "Incidencia creada tras la finalización del mantenimiento.";
+        }
+
+        await axios.post("/api/to_do/worker_panel", data);
+      }
+
       toast.success(t("responses_1.success"), { id: toastId });
-    } catch {
+    } catch (error) {
+      console.error("Error en handleShowModal", error);
       toast.error(t("responses_1.error"), { id: toastId });
     }
   };

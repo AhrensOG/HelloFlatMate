@@ -26,7 +26,7 @@ const incidenceInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             type: {
-                type: DataTypes.ENUM("OTHER"),
+                type: DataTypes.ENUM("OTHER", "MAINTENANCE"),
                 allowNull: false,
             },
             title: {

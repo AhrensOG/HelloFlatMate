@@ -137,7 +137,7 @@ const TaskManagementPanel = ({ taskId, currentTask, onUpdate }) => {
         />
         <textarea
           placeholder="Motivo de reprogramación"
-          className="w-full border rounded px-3 py-2 text-sm"
+          className="w-full border rounded px-3 py-2 text-sm outline-none"
           value={reprogramingComment}
           onChange={(e) => setReprogramingComment(e.target.value)}
           rows={3}
@@ -159,7 +159,7 @@ const TaskManagementPanel = ({ taskId, currentTask, onUpdate }) => {
           step="0.01"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2 number-input-no-appearance outline-none"
         />
         <button
           onClick={handleAssignAmount}

@@ -1481,7 +1481,15 @@
             "p_6": "Fecha",
             "p_7": "Importe",
             "incidences": "Incidencias",
-            "view_bill": "Ver factura"
+            "view_bill": "Ver factura",
+            "to_do_type": "Tipo de tarea",
+            "requested_by": "Solicitado por",
+            "responsibility": "Responsabilidad",
+            "location": "Sitio",
+            "repair_type": "Tipo de reparación",
+            "reason": "Problema",
+            "client": "Inquilino",
+            "owner": "Propietario"
         },
         "wallet": {
             "span_1": "Balance de la billetera: ",

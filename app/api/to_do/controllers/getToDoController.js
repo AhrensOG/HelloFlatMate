@@ -22,7 +22,7 @@ export async function getToDoById(id) {
             include: [{
                 model: Property,
                 as: "property",
-                attributes: ["city", "street", "streetNumber", "postalCode", "serial", "id"],
+                attributes: ["city", "street", "streetNumber", "postalCode", "serial", "id", "ownerId"],
             },
             {
               model: Client,

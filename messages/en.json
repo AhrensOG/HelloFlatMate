@@ -1467,7 +1467,15 @@
             "p_6": "Date",
             "p_7": "Import",
             "incidences": "Incidences",
-            "view_bill": "View bill"
+            "view_bill": "View bill",
+            "to_do_type": "Task type",
+            "requested_by": "Requested by",
+            "responsibility": "Responsibility",
+            "location": "Site",
+            "repair_type": "Repair type",
+            "reason": "Problem",
+            "client": "Tenant",
+            "owner": "Owner"
         },
         "wallet": {
             "span_1": "Wallet Balance: ",

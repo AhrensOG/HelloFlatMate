@@ -6,6 +6,8 @@ import { Context } from "@/app/context/GlobalContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import formatDateToDDMMYYYY from "@/app/components/admin/new_panel/utils/formatDate";
+import OwnerDashboardPaymentCard from "./auxiliarComponents/OwnerDashboardPaymentCard";
+import OwnerDashboardIncidenceCard from "./auxiliarComponents/OwnerDashboardIncidenceCard";
 
 const getYearMonthKey = (dateStr) => {
   const date = new Date(dateStr);
@@ -33,26 +35,31 @@ const OwnerDashboard = () => {
   const [expandedYear, setExpandedYear] = useState(null);
   const [expandedMonths, setExpandedMonths] = useState({});
   const [expandedProperties, setExpandedProperties] = useState({});
+  const [incidences, setIncidences] = useState([]);
 
   useEffect(() => {
     if (!state.user || state.user?.role !== "OWNER") return;
 
     const getData = async () => {
       try {
-        const { data } = await axios.get(
-          `/api/owner/new_panel/dashboard?ownerId=${state.user?.id}`
-        );
-        processEarnings(data);
+        const [propertiesRes, incidencesRes] = await Promise.all([
+          axios.get(`/api/owner/new_panel/dashboard?ownerId=${state.user?.id}`),
+          axios.get(
+            `/api/owner/new_panel/dashboard/incidences?ownerId=${state.user?.id}`
+          ),
+        ]);
+
+        setIncidences(incidencesRes.data);
+        processEarnings(propertiesRes.data, incidencesRes.data);
       } catch (error) {
-        console.error("Error al obtener propiedades:", error);
+        console.error("Error al obtener propiedades o incidencias:", error);
       }
     };
 
     getData();
   }, [state]);
 
-  const processEarnings = (properties) => {
-    const incidences = state.user?.incidences || [];
+  const processEarnings = (properties, incidences) => {
     const yearMap = {};
 
     properties.forEach((property) => {
@@ -96,18 +103,15 @@ const OwnerDashboard = () => {
 
         if (!yearMap[year]) yearMap[year] = {};
         if (!yearMap[year][month]) yearMap[year][month] = {};
-        if (!yearMap[year][month][property.serial])
+        if (!yearMap[year][month][property.serial]) {
           yearMap[year][month][property.serial] = {
             payments: [],
             incidences: [],
           };
+        }
 
         yearMap[year][month][property.serial].incidences.push({
-          title: incidence.title,
-          description: incidence.description,
-          date: formatDateToDDMMYYYY(incidence.date),
-          amount: incidence.amount,
-          url: incidence.url,
+          ...incidence,
         });
       });
     });
@@ -118,10 +122,7 @@ const OwnerDashboard = () => {
   const toggleMonth = (year, month) => {
     setExpandedMonths((prev) => ({
       ...prev,
-      [year]: {
-        ...prev[year],
-        [month]: !prev[year]?.[month],
-      },
+      [year]: { ...prev[year], [month]: !prev[year]?.[month] },
     }));
   };
 
@@ -265,37 +266,11 @@ const OwnerDashboard = () => {
                                                   className="ml-4 mt-2 space-y-2">
                                                   {prop.payments.map(
                                                     (entry, i) => (
-                                                      <div
+                                                      <OwnerDashboardPaymentCard
                                                         key={i}
-                                                        className="bg-white p-3 rounded border text-sm">
-                                                        <p>
-                                                          <strong>
-                                                            {t("p_3")}:
-                                                          </strong>{" "}
-                                                          {entry.clientName}
-                                                        </p>
-                                                        <p>
-                                                          <strong>
-                                                            {t("p_4")}:
-                                                          </strong>{" "}
-                                                          {entry.concept}
-                                                        </p>
-                                                        <p>
-                                                          <strong>
-                                                            {t("p_6")}:
-                                                          </strong>{" "}
-                                                          {entry.date}
-                                                        </p>
-                                                        <p>
-                                                          <strong>
-                                                            {t("p_7")}:
-                                                          </strong>{" "}
-                                                          {entry.amount.toFixed(
-                                                            2
-                                                          )}{" "}
-                                                          €
-                                                        </p>
-                                                      </div>
+                                                        entry={entry}
+                                                        t={t}
+                                                      />
                                                     )
                                                   )}
                                                   {prop.incidences.length >
@@ -306,40 +281,11 @@ const OwnerDashboard = () => {
                                                       </p>
                                                       {prop.incidences.map(
                                                         (inc, i) => (
-                                                          <div
+                                                          <OwnerDashboardIncidenceCard
                                                             key={i}
-                                                            className="mt-2">
-                                                            <p>
-                                                              <strong>
-                                                                {t("p_4")}:
-                                                              </strong>{" "}
-                                                              {inc.title}
-                                                            </p>
-                                                            <p>
-                                                              <strong>
-                                                                {t("p_6")}:
-                                                              </strong>{" "}
-                                                              {inc.date}
-                                                            </p>
-                                                            <p>
-                                                              <strong>
-                                                                {t("p_7")}:
-                                                              </strong>{" "}
-                                                              -
-                                                              {inc.amount.toFixed(
-                                                                2
-                                                              )}{" "}
-                                                              €
-                                                            </p>
-                                                            {inc.url && (
-                                                              <a
-                                                                href={inc.url}
-                                                                target="_blank"
-                                                                className="text-blue-500 text-xs underline">
-                                                                {t("view_bill")}
-                                                              </a>
-                                                            )}
-                                                          </div>
+                                                            inc={inc}
+                                                            t={t}
+                                                          />
                                                         )
                                                       )}
                                                     </div>
