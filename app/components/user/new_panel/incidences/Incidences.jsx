@@ -44,13 +44,9 @@ const Incidences = () => {
       const created = new Date(todo.creationDate);
       const start = new Date(order.startDate);
       const end = new Date(order.endDate);
+      const sameProperty = todo.propertyId === order.propertyId;
 
-      const sameRoom = todo.leaseOrderId === order.id;
-      const sameProperty = todo.property?.id === order.room?.propertyId;
-
-      return (
-        created >= start && created <= end && (sameRoom || sameProperty) // match directamente con la habitación o al menos con la propiedad
-      );
+      return created >= start && created <= end && sameProperty;
     });
   };
 
@@ -59,9 +55,12 @@ const Incidences = () => {
       const isMyRoom = todo.incidentSite === "MY_ROOM";
       const isMine = todo.userId === client.id;
       const matchesTab = todo.status === selectedTab;
-      const isInMyLease = isWithinLeasePeriod(todo);
 
-      return matchesTab && isInMyLease && (!isMyRoom || isMine);
+      if (!matchesTab) return false;
+      if (isMyRoom && isMine) return true;
+      if (!isMyRoom && isWithinLeasePeriod(todo)) return true;
+
+      return false;
     })
     .sort(
       (a, b) =>
