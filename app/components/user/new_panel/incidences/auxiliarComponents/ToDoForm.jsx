@@ -1,19 +1,15 @@
 "use client";
 
-import { useState, useContext } from "react";
 import { motion } from "framer-motion";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "sonner";
 import axios from "axios";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
-import { isUserLogged } from "@/app/context/actions/isUserLogged";
-import { Context } from "@/app/context/GlobalContext";
 import { useTranslations } from "next-intl";
 
-const ToDoForm = ({ leaseOrders = [], client }) => {
+const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
   const t = useTranslations("user_incidences");
-  const { dispatch } = useContext(Context);
 
   const siteLabels = {
     MY_ROOM: t("form.site_labels.MY_ROOM"),
@@ -103,7 +99,7 @@ const ToDoForm = ({ leaseOrders = [], client }) => {
     try {
       await axios.post("/api/to_do/user_panel", dataToSend);
       toast.success(t("toast.success"), { id: toastId });
-      await isUserLogged(dispatch);
+      await refetch()
       resetForm();
     } catch (error) {
       console.error(error);

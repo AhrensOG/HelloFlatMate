@@ -36,7 +36,7 @@ const ToDoMessageForm = ({ toDoId, userId, onMessageSent }) => {
       await axios.post(`/api/to_do/messages`, {
         body: message,
         imageUrl,
-        senderType: "CLIENT",
+        senderType: state?.user?.role || "Unknown",
         senderId: userId, // actualiza con user real si lo tenés
         senderName: state?.user?.name,
         senderLastName: state?.user?.lastName,

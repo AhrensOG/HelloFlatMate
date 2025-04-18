@@ -17,18 +17,18 @@ const Incidences = () => {
 
   const client = state.user;
 
+  const fetchToDos = async () => {
+    if (!client?.id) return;
+
+    try {
+      const res = await axios.get(`/api/to_do/user_panel?id=${client.id}`);
+      setToDos(res.data);
+    } catch (error) {
+      console.error("Error al obtener incidencias:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchToDos = async () => {
-      if (!client?.id) return;
-
-      try {
-        const res = await axios.get(`/api/to_do/user_panel?id=${client.id}`);
-        setToDos(res.data);
-      } catch (error) {
-        console.error("Error al obtener incidencias:", error);
-      }
-    };
-
     fetchToDos();
   }, [client?.id]);
 
@@ -40,14 +40,19 @@ const Incidences = () => {
   };
 
   const filteredToDos = toDos
-    .filter((todo) => todo.status === selectedTab)
+    .filter((todo) => {
+      const isMyRoom = todo.incidentSite === "MY_ROOM";
+      const isMine = todo.userId === client.id;
+      const matchesTab = todo.status === selectedTab;
+      return matchesTab && (!isMyRoom || isMine);
+    })
     .sort(
       (a, b) =>
         new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
     );
 
   return (
-    <div className="w-full space-y-8 bg-white p-6">
+    <div className="w-full space-y-8 bg-white p-6 contain-inline-size">
       {/* Header y Formulario */}
       <div>
         <h1 className="text-xl font-semibold text-gray-800 mb-2">
@@ -67,7 +72,7 @@ const Incidences = () => {
 
       {/* Formulario */}
       {showForm && (
-        <ToDoForm leaseOrders={client?.leaseOrdersRoom} client={client} />
+        <ToDoForm leaseOrders={client?.leaseOrdersRoom} client={client} refetch={fetchToDos} />
       )}
 
       {/* Tabs */}
@@ -96,17 +101,23 @@ const Incidences = () => {
               <p className="text-sm text-gray-500">{t("history.empty")}</p>
             ) : (
               filteredToDos.map((todo) => {
+                const isMine = todo.userId === client.id;
+
                 const leaseOrder = client.leaseOrdersRoom?.find(
                   (order) => order.id === todo.leaseOrderId
                 );
+
                 const period = leaseOrder
                   ? `${new Date(leaseOrder.startDate).toLocaleDateString(
                       "es-ES"
                     )} - ${new Date(leaseOrder.endDate).toLocaleDateString(
                       "es-ES"
                     )}`
-                  : t("history.no_order");
-                const serial = leaseOrder?.room?.serial || t("history.unknown");
+                  : "";
+
+                const serial = isMine
+                  ? leaseOrder?.room?.serial || t("history.unknown")
+                  : todo.property?.serial || t("history.unknown");
 
                 return (
                   <ToDoItem
@@ -114,6 +125,7 @@ const Incidences = () => {
                     todo={todo}
                     serial={serial}
                     period={period}
+                    refetch={fetchToDos}
                   />
                 );
               })

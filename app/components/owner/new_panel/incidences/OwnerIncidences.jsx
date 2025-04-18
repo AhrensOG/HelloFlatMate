@@ -29,19 +29,24 @@ const OwnerIncidences = () => {
 
   const labels = {
     site: {
-      LIVING_ROOM: t("labels.LIVING_ROOM"),
+      MY_ROOM: t("labels.MY_ROOM"),
       KITCHEN: t("labels.KITCHEN"),
+      LIVING_ROOM: t("labels.LIVING_ROOM"),
       WC1: t("labels.WC1"),
       WC2: t("labels.WC2"),
-      BEDROOM: t("labels.BEDROOM"),
-      OTHER: t("labels.OTHER"),
+      HALLWAY_COMMON_AREAS: t("labels.hallway_common_areas"),
+      OTHERS: t("labels.OTHERS"),
     },
     type: {
       ELECTRICITY: t("labels.ELECTRICITY"),
-      PLUMBING: t("labels.PLUMBING"),
       CARPENTRY: t("labels.CARPENTRY"),
+      LOCKSMITHING: t("labels.LOCKSMITHING"),
+      PLUMBING: t("labels.PLUMBING"),
+      GLAZING: t("labels.GLAZING"),
+      WIFI: t("labels.WIFI"),
       APPLIANCE: t("labels.APPLIANCE"),
-      OTHER: t("labels.OTHER"),
+      FURNITURE: t("labels.FURNITURE"),
+      OTHERS: t("labels.OTHERS"),
     },
     status: {
       PENDING: t("labels.PENDING"),

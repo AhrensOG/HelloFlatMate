@@ -58,7 +58,7 @@ export default function ApplicationCardHistory({ data, action }) {
 
       <div className="flex-grow space-y-1">
         <h3 className="font-semibold text-[1rem] text-gray-800 flex items-center gap-2">
-          {data?.title}
+          {`${data?.title} #${data?.id}`}
           {data?.emergency && (
             <span className="text-red-600 text-xs flex items-center gap-1 font-semibold bg-red-50 border border-red-200 px-2 py-0.5 rounded">
               <FaExclamationTriangle className="text-sm" />

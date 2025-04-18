@@ -148,7 +148,7 @@ export default function TaskDetails({ section }) {
       await axios.patch(`/api/to_do`, {
         id: task.id,
         status: "CANCELLED",
-        cancellationReason: cancelReason,
+        cancellationReason: "Técnico: " + cancelReason,
       });
       await fetchTask();
       setShowCancelModal(false);

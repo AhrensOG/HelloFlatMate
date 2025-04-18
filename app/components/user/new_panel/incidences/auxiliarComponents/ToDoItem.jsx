@@ -2,12 +2,18 @@
 
 import { useContext, useState } from "react";
 import { toast } from "sonner";
-import { HiOutlineUser } from "react-icons/hi2";
-import { LuClipboardList } from "react-icons/lu";
-import { AiOutlineCamera } from "react-icons/ai";
-import { FaUserClock } from "react-icons/fa";
+import {
+  HiMapPin,
+  HiEnvelope,
+  HiPhone,
+  HiUser,
+  HiChevronUp,
+  HiChevronDown,
+} from "react-icons/hi2";
+import { FaImage } from "react-icons/fa";
+import { FiTool } from "react-icons/fi";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import Image from "next/image";
 import { isUserLogged } from "@/app/context/actions/isUserLogged";
 import { Context } from "@/app/context/GlobalContext";
 import axios from "axios";
@@ -16,13 +22,63 @@ import { motion, AnimatePresence } from "framer-motion";
 import ToDoMessageList from "./ToDoMessageList";
 import ToDoMessageForm from "./ToDoMessageForm";
 
-const ToDoItem = ({ todo, serial, period }) => {
+const formatDateTime = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${day}/${month}/${year} - ${hours}:${minutes}hs`;
+};
+
+const ToDoItem = ({ todo, serial, period, refetch }) => {
   const t = useTranslations("user_incidences");
-  const { dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const [showCancelInput, setShowCancelInput] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [messages, setMessages] = useState(todo.messages || []);
+
+  const labels = {
+    preferred_time_slot: {
+      MORNING: t("labels.time_morning"),
+      AFTERNOON: t("labels.time_afternoon"),
+      FULL_DAY: t("labels.time_full_day"),
+    },
+    site: {
+      MY_ROOM: t("site_type_labels.site.my_room"),
+      KITCHEN: t("site_type_labels.site.kitchen"),
+      LIVING_ROOM: t("site_type_labels.site.living_room"),
+      WC1: t("site_type_labels.site.wc1"),
+      WC2: t("site_type_labels.site.wc2"),
+      HALLWAY_COMMON_AREAS: t("site_type_labels.site.hallway_common_areas"),
+      OTHERS: t("site_type_labels.site.others"),
+    },
+    type: {
+      ELECTRICITY: t("site_type_labels.type.electricity"),
+      CARPENTRY: t("site_type_labels.type.carpentry"),
+      LOCKSMITHING: t("site_type_labels.type.locksmithing"),
+      PLUMBING: t("site_type_labels.type.plumbing"),
+      GLAZING: t("site_type_labels.type.glazing"),
+      WIFI: t("site_type_labels.type.wifi"),
+      APPLIANCES: t("site_type_labels.type.appliances"),
+      FURNITURE: t("site_type_labels.type.furniture"),
+      OTHERS: t("site_type_labels.type.others"),
+    },
+    responsibility: {
+      OWNER: t("labels.responsibility_owner"),
+      TENANT: t("labels.responsibility_tenant"),
+      SHARED: t("labels.responsibility_shared"),
+    },
+    status: {
+      PENDING: t("status.PENDING"),
+      IN_PROGRESS: t("status.IN_PROGRESS"),
+      COMPLETED: t("status.COMPLETED"),
+      CANCELLED: t("status.CANCELLED"),
+    },
+  };
 
   const fetchMessages = async () => {
     try {
@@ -38,11 +94,12 @@ const ToDoItem = ({ todo, serial, period }) => {
     try {
       await axios.patch("/api/to_do/user_panel", {
         id: todo.id,
-        cancellationReason: cancelReason,
+        cancellationReason: "Inquilino: " + cancelReason,
       });
       setShowCancelInput(false);
       setCancelReason("");
-      await isUserLogged(dispatch);
+      await refetch();
+      // await isUserLogged(dispatch);
       toast.success(t("cancel.toast_success"), { id: toastId });
     } catch (error) {
       console.log(error);
@@ -53,124 +110,207 @@ const ToDoItem = ({ todo, serial, period }) => {
     }
   };
 
-  const statusColors = {
-    IN_PROGRESS: "text-[#440cac]",
-    PENDING: "text-yellow-600",
-    COMPLETED: "text-green-600",
-    CANCELLED: "text-gray-500",
-  };
-
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm space-y-4">
+      className="border border-gray-200 rounded-xl bg-white shadow-sm">
       {/* Header */}
       <div
-        className="flex items-center justify-between cursor-pointer"
+        className="flex items-center justify-between px-4 py-3 cursor-pointer"
         onClick={() => setExpanded(!expanded)}>
-        <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2">
-          <LuClipboardList className="text-[#440cac]" />
-          {todo.title}
-        </h3>
+        <div className="flex flex-col text-sm">
+          <span className="font-semibold">{todo.title + " # " + todo.id}</span>
+          <span className="text-xs text-gray-600">
+            {formatDateTime(todo.creationDate)}
+          </span>
+        </div>
         <div className="flex items-center gap-2">
+          <span
+            className={`text-xs px-2 py-1 rounded-full font-semibold ${
+              todo.status === "COMPLETED"
+                ? "bg-green-100 text-green-700"
+                : todo.status === "CANCELLED"
+                ? "bg-gray-100 text-gray-700"
+                : todo.status === "PENDING"
+                ? "bg-yellow-100 text-yellow-700"
+                : "bg-blue-100 text-blue-700"
+            }`}>
+            {labels.status[todo.status]}
+          </span>
           {todo.emergency && (
-            <span className="inline-block bg-red-100 text-red-700 text-xs font-semibold px-2 py-1 rounded-full">
+            <span className="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full font-semibold">
               {t("status.EMERGENCY")}
             </span>
           )}
-          <span className={`text-sm font-bold ${statusColors[todo.status]}`}>
-            {t(`status.${todo.status}`)}
-          </span>
+          {expanded ? <HiChevronUp size={18} /> : <HiChevronDown size={18} />}
         </div>
       </div>
 
+      {/* Body */}
       <AnimatePresence>
         {expanded && (
           <motion.div
-            key="expandedContent"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden space-y-4">
-            {/* Body */}
-            <p className="text-sm text-gray-600 break-words">{todo.body}</p>
+            transition={{ duration: 0.3 }}
+            className="bg-white px-4 pb-4 space-y-3 text-sm overflow-hidden">
+            {/* Dirección */}
+            {todo.property && (
+              <div className="flex items-start gap-2">
+                <HiMapPin size={16} className="mt-0.5 text-[#440CAC]" />
+                <span>
+                  {todo.property.street} {todo.property.streetNumber},{" "}
+                  {todo.property.city}
+                </span>
+              </div>
+            )}
 
-            {/* Info extra */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
-              <p className="break-words">
-                <span className="font-medium">{t("labels.code")}:</span>{" "}
-                {serial} – {period}
-              </p>
-              <p className="flex items-start justify-end gap-1">
-                <HiOutlineUser className="text-gray-400" />
-                <span className="font-medium">{t("labels.worker")}:</span>{" "}
-                {todo.worker
-                  ? `${todo.worker.name} ${todo.worker.lastName}`
-                  : t("labels.unassigned")}
-              </p>
+            {/* Descripción */}
+            <div className="border-t pt-3">
               <p>
-                <span className="font-medium">
-                  {t("labels.client_message")}:
-                </span>{" "}
-                {todo.clientMessage}
+                <strong>{t("todo_info.body")}:</strong> {todo.body}
               </p>
-              <p className="flex items-start justify-end gap-1">
-                <FaUserClock className="text-gray-400" />
-                <span className="font-medium">
-                  {t("labels.is_present")}
-                </span>{" "}
-                {todo.isPresent ? t("labels.yes") : t("labels.no")}
-              </p>
-              {todo.comment && (
-                <p className="col-span-full">
-                  <span className="font-medium">
-                    {t("labels.worker_comment")}:
-                  </span>{" "}
-                  {todo.comment}
+              {todo.amount > 0 && (
+                <p>
+                  <strong>{t("todo_info.amount")}:</strong>{" "}
+                  {todo.amount.toFixed(2)} €
                 </p>
               )}
-              {todo.cancellationReason && (
-                <p className="col-span-full text-red-500">
-                  <span className="font-medium">
-                    {t("labels.cancel_reason")}:
-                  </span>{" "}
-                  {todo.cancellationReason}
+               <p>
+                <strong>{t("todo_info.code")}:</strong> {serial} - {period}
+              </p>
+            </div>
+
+            {/* Cliente */}
+            <div className="border-t pt-3 space-y-1">
+              <h4 className="font-semibold flex items-center gap-2">
+                <HiUser size={16} className="text-[#440CAC]" />
+                {t("todo_info.client")} - {todo.client?.name}{" "}
+                {todo.client?.lastName}
+              </h4>
+              {todo.preferredTimeSlot && (
+                <p className="flex items-center gap-1">
+                  <ClockIcon className="size-5 text-[#440cac]" />
+                  <strong>{t("todo_info.preferred_time_slot")}:</strong>{" "}
+                  {labels.preferred_time_slot[todo.preferredTimeSlot]}
                 </p>
+              )}
+            </div>
+
+            {/* Reparación */}
+            <div className="border-t pt-3 space-y-1">
+              <h4 className="font-semibold flex items-center gap-2">
+                <FiTool size={16} className="text-[#440CAC]" />
+                {t("todo_info.repair")}
+              </h4>
+              {todo.incidentSite && (
+                <p>
+                  <strong>{t("todo_info.site")}:</strong>{" "}
+                  {labels.site[todo.incidentSite]}
+                </p>
+              )}
+              {todo.incidentType && (
+                <p>
+                  <strong>{t("todo_info.repair_type")}:</strong>{" "}
+                  {labels.type[todo.incidentType]}
+                </p>
+              )}
+              {todo.clientMessage && (
+                <div className="bg-gray-100 p-3 rounded-md text-sm text-gray-800 mt-2">
+                  <p className="font-semibold mb-1">
+                    💬 {t("todo_info.client_message")}
+                  </p>
+                  <p>{todo.clientMessage}</p>
+                </div>
+              )}
+              {todo.responsibility && (
+                <p>
+                  <strong>{t("todo_info.responsibility")}:</strong>{" "}
+                  {labels.responsibility[todo.responsibility]}
+                </p>
+              )}
+              <p>
+                <strong>{t("todo_info.client_present.title")}:</strong>{" "}
+                {todo.isPresent
+                  ? t("todo_info.client_present.yes")
+                  : t("todo_info.client_present.no")}
+              </p>
+              <p>
+                <strong>{t("todo_info.start_date")}:</strong>{" "}
+                {formatDateTime(todo.startDate)}
+              </p>
+
+              {todo.reprogrammed && (
+                <>
+                  <p className="text-yellow-700 font-semibold mt-2">
+                    🕒 {t("todo_info.reprogrammed")}
+                  </p>
+                  <p>
+                    <strong>{t("todo_info.new_start_date")}:</strong>{" "}
+                    {formatDateTime(todo.reprogrammedStartDate)}
+                  </p>
+                  <p>
+                    <strong>{t("todo_info.reprogramming_comment")}:</strong>{" "}
+                    {todo.reprogramingComment}
+                  </p>
+                </>
+              )}
+
+              {todo.comment && (
+                <div className="bg-gray-100 p-3 rounded-md text-sm text-gray-800 mt-2">
+                  <p className="font-semibold mb-1">
+                    🛠️ {t("todo_info.technical_message")}
+                  </p>
+                  <p>{todo.comment}</p>
+                </div>
+              )}
+
+              {todo.closingComments && (
+                <div className="bg-gray-100 p-3 rounded-md text-sm text-gray-800 mt-2">
+                  <p className="font-semibold mb-1">
+                    ✅ {t("todo_info.closing_message")}
+                  </p>
+                  <p>{todo.closingComments}</p>
+                </div>
+              )}
+
+              {todo.cancellationReason && (
+                <div className="bg-red-100 border border-red-300 p-3 rounded-md text-sm text-red-800 mt-2">
+                  <p className="font-semibold mb-1">
+                    ❌ {t("labels.CANCELLED")}
+                  </p>
+                  <p>{todo.cancellationReason}</p>
+                </div>
               )}
             </div>
 
             {/* Imagen */}
             {todo.imageUrl && (
-              <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                  <AiOutlineCamera className="text-[#440cac]" />
-                  {t("labels.image")}:
-                </span>
+              <div className="border-t pt-3 space-y-1">
+                <h4 className="font-semibold flex items-center gap-2">
+                  <FaImage size={16} className="text-[#440CAC]" />
+                  {t("todo_info.problem_picture")}
+                </h4>
                 <Link
                   href={todo.imageUrl}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative w-40 h-40 rounded-md overflow-hidden border border-gray-200 hover:shadow-md transition">
-                  <Image
-                    src={todo.imageUrl}
-                    alt="Evidencia"
-                    fill
-                    className="w-full h-auto object-cover rounded-md"
-                  />
+                  className="underline italic text-[#440CAC] text-sm">
+                  {t("todo_info.image_video")}
                 </Link>
               </div>
             )}
 
             {/* Mensajes */}
-            <div className="space-y-4">
+            <div className="pt-4 space-y-4">
               <ToDoMessageList messages={messages} onRefetch={fetchMessages} />
-              {(todo.status === "PENDING" || todo.status === "IN_PROGRESS") && (
+              {state?.user?.id && (todo.status === "PENDING" || todo.status === "IN_PROGRESS") && (
                 <ToDoMessageForm
                   toDoId={todo.id}
-                  userId={todo.userId}
+                  userId={state.user?.id}
                   onMessageSent={fetchMessages}
                 />
               )}

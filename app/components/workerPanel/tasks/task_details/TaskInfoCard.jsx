@@ -70,15 +70,16 @@ export default function TaskInfoCard({ task }) {
           <h3 className="text-[#0C1660] font-semibold text-sm flex items-center gap-2">
             <HiPhoto /> Imagen enviada
           </h3>
-          <Link href={task.imageUrl} target="_blank">
-            <div className="relative w-full h-60">
+          <Link href={task.imageUrl} target="_blank" className="italic text-[#440CAC] underline">
+            {/* <div className="relative w-full h-60">
               <Image
                 src={task.imageUrl}
                 alt="Imagen enviada"
                 fill
                 className="object-cover object-center"
               />
-            </div>
+            </div> */}
+            Ver imagen / video
           </Link>
         </div>
       )}

@@ -42,7 +42,7 @@ const ToDoMessageList = ({ messages, onRefetch }) => {
                   : "mr-auto bg-gray-100 text-gray-700"
               }`}>
               <p className="font-medium text-[13px] text-[#440cac] mb-1">
-                {msg.senderName} {msg.senderLastName}
+                {msg.senderName} {msg.senderLastName} - {msg.senderType === "WORKER" ? t("senderType_worker") : msg.senderType === "CLIENT" ? t("senderType_client") : "Unkown"}
               </p>
 
               {msg.body && <p className="whitespace-pre-wrap">{msg.body}</p>}
