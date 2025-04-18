@@ -39,12 +39,29 @@ const Incidences = () => {
     CANCELLED: t("tabs.CANCELLED"),
   };
 
+  const isWithinLeasePeriod = (todo) => {
+    return client.leaseOrdersRoom?.some((order) => {
+      const created = new Date(todo.creationDate);
+      const start = new Date(order.startDate);
+      const end = new Date(order.endDate);
+
+      const sameRoom = todo.leaseOrderId === order.id;
+      const sameProperty = todo.property?.id === order.room?.propertyId;
+
+      return (
+        created >= start && created <= end && (sameRoom || sameProperty) // match directamente con la habitación o al menos con la propiedad
+      );
+    });
+  };
+
   const filteredToDos = toDos
     .filter((todo) => {
       const isMyRoom = todo.incidentSite === "MY_ROOM";
       const isMine = todo.userId === client.id;
       const matchesTab = todo.status === selectedTab;
-      return matchesTab && (!isMyRoom || isMine);
+      const isInMyLease = isWithinLeasePeriod(todo);
+
+      return matchesTab && isInMyLease && (!isMyRoom || isMine);
     })
     .sort(
       (a, b) =>
@@ -72,7 +89,11 @@ const Incidences = () => {
 
       {/* Formulario */}
       {showForm && (
-        <ToDoForm leaseOrders={client?.leaseOrdersRoom} client={client} refetch={fetchToDos} />
+        <ToDoForm
+          leaseOrders={client?.leaseOrdersRoom}
+          client={client}
+          refetch={fetchToDos}
+        />
       )}
 
       {/* Tabs */}
