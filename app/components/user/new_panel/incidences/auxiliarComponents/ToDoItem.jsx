@@ -75,9 +75,16 @@ const ToDoItem = ({ todo, serial, period }) => {
           <LuClipboardList className="text-[#440cac]" />
           {todo.title}
         </h3>
-        <span className={`text-sm font-bold ${statusColors[todo.status]}`}>
-          {t(`status.${todo.status}`)}
-        </span>
+        <div className="flex items-center gap-2">
+          {todo.emergency && (
+            <span className="inline-block bg-red-100 text-red-700 text-xs font-semibold px-2 py-1 rounded-full">
+              {t("status.EMERGENCY")}
+            </span>
+          )}
+          <span className={`text-sm font-bold ${statusColors[todo.status]}`}>
+            {t(`status.${todo.status}`)}
+          </span>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -160,7 +167,13 @@ const ToDoItem = ({ todo, serial, period }) => {
             {/* Mensajes */}
             <div className="space-y-4">
               <ToDoMessageList messages={messages} onRefetch={fetchMessages} />
-              <ToDoMessageForm toDoId={todo.id} userId={todo.userId} onMessageSent={fetchMessages} />
+              {(todo.status === "PENDING" || todo.status === "IN_PROGRESS") && (
+                <ToDoMessageForm
+                  toDoId={todo.id}
+                  userId={todo.userId}
+                  onMessageSent={fetchMessages}
+                />
+              )}
             </div>
 
             {/* Cancelación */}

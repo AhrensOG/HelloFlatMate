@@ -64,7 +64,7 @@ const ToDoMessageForm = ({ toDoId, userId, onMessageSent }) => {
         onChange={(e) => setMessage(e.target.value)}
         className="w-full border border-gray-300 rounded-md p-2 text-sm outline-none"
       />
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <button
           onClick={handleSubmit}
           disabled={sending || (!message.trim() && !file)}

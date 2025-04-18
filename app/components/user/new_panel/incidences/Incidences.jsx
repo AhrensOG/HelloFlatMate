@@ -6,12 +6,14 @@ import { Context } from "@/app/context/GlobalContext";
 import { useTranslations } from "next-intl";
 import ToDoItem from "./auxiliarComponents/ToDoItem";
 import ToDoForm from "./auxiliarComponents/ToDoForm";
+import clsx from "clsx";
 
 const Incidences = () => {
   const t = useTranslations("user_incidences");
   const { state } = useContext(Context);
   const [showForm, setShowForm] = useState(false);
   const [toDos, setToDos] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("IN_PROGRESS");
 
   const client = state.user;
 
@@ -30,8 +32,23 @@ const Incidences = () => {
     fetchToDos();
   }, [client?.id]);
 
+  const statusTabs = {
+    IN_PROGRESS: t("tabs.IN_PROGRESS"),
+    PENDING: t("tabs.PENDING"),
+    COMPLETED: t("tabs.COMPLETED"),
+    CANCELLED: t("tabs.CANCELLED"),
+  };
+
+  const filteredToDos = toDos
+    .filter((todo) => todo.status === selectedTab)
+    .sort(
+      (a, b) =>
+        new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+    );
+
   return (
     <div className="w-full space-y-8 bg-white p-6">
+      {/* Header y Formulario */}
       <div>
         <h1 className="text-xl font-semibold text-gray-800 mb-2">
           {t("form.title")}
@@ -48,49 +65,61 @@ const Incidences = () => {
         </button>
       </div>
 
+      {/* Formulario */}
       {showForm && (
         <ToDoForm leaseOrders={client?.leaseOrdersRoom} client={client} />
       )}
 
+      {/* Tabs */}
       {toDos.length > 0 && (
-        <div className="space-y-6 mt-10">
-          <h2 className="text-lg font-semibold text-gray-800">
-            {t("history.title")}
-          </h2>
-          {toDos
-            .slice()
-            .sort((a, b) => {
-              const order = {
-                IN_PROGRESS: 0,
-                PENDING: 1,
-                COMPLETED: 2,
-                CANCELLED: 3,
-              };
-              return order[a.status] - order[b.status];
-            })
-            .map((todo) => {
-              const leaseOrder = client.leaseOrdersRoom?.find(
-                (order) => order.id === todo.leaseOrderId
-              );
-              const period = leaseOrder
-                ? `${new Date(leaseOrder.startDate).toLocaleDateString(
-                    "es-ES"
-                  )} - ${new Date(leaseOrder.endDate).toLocaleDateString(
-                    "es-ES"
-                  )}`
-                : t("history.no_order");
-              const serial = leaseOrder?.room?.serial || t("history.unknown");
+        <>
+          <div className="relative mb-4">
+            <div className="flex overflow-x-auto scrollbar-none gap-2 border-b pb-2 max-w-full px-1 sm:px-0 scrollbar-hide">
+              {Object.entries(statusTabs).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedTab(key)}
+                  className={clsx(
+                    "flex-shrink-0 px-3 py-2 text-[11px] sm:text-xs md:text-sm font-semibold uppercase whitespace-nowrap transition-all",
+                    selectedTab === key
+                      ? "border-b-2 border-blue-700 text-blue-700"
+                      : "text-gray-500 hover:text-gray-700"
+                  )}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* Lista de tareas */}
+          <div className="space-y-6 mt-4">
+            {filteredToDos.length === 0 ? (
+              <p className="text-sm text-gray-500">{t("history.empty")}</p>
+            ) : (
+              filteredToDos.map((todo) => {
+                const leaseOrder = client.leaseOrdersRoom?.find(
+                  (order) => order.id === todo.leaseOrderId
+                );
+                const period = leaseOrder
+                  ? `${new Date(leaseOrder.startDate).toLocaleDateString(
+                      "es-ES"
+                    )} - ${new Date(leaseOrder.endDate).toLocaleDateString(
+                      "es-ES"
+                    )}`
+                  : t("history.no_order");
+                const serial = leaseOrder?.room?.serial || t("history.unknown");
 
-              return (
-                <ToDoItem
-                  key={todo.id}
-                  todo={todo}
-                  serial={serial}
-                  period={period}
-                />
-              );
-            })}
-        </div>
+                return (
+                  <ToDoItem
+                    key={todo.id}
+                    todo={todo}
+                    serial={serial}
+                    period={period}
+                  />
+                );
+              })
+            )}
+          </div>
+        </>
       )}
     </div>
   );

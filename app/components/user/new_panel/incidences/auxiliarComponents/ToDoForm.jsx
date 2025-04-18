@@ -182,8 +182,12 @@ const ToDoForm = ({ leaseOrders = [], client }) => {
                 name="preferredTimeSlot"
                 className="w-full border rounded px-3 py-2">
                 <option value="">{t("form.select_type_placeholder")}</option>
-                <option value="MORNING">{t("form.morning")} (9:00 a 12:00)</option>
-                <option value="AFTERNOON">{t("form.afternoon")} (12:00 a 16:00)</option>
+                <option value="MORNING">
+                  {t("form.morning")} (9:00 a 12:00)
+                </option>
+                <option value="AFTERNOON">
+                  {t("form.afternoon")} (12:00 a 16:00)
+                </option>
               </Field>
               <ErrorMessage
                 name="preferredTimeSlot"
@@ -217,7 +221,7 @@ const ToDoForm = ({ leaseOrders = [], client }) => {
                   const file = e.target.files[0];
                   setFieldValue("imageFile", file);
                 }}
-                className="block text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-[#dcd4ef] file:bg-[#f3f0fa] file:text-[#440cac] hover:file:bg-[#e8e2f7] transition duration-200"
+                className="block text-sm text-[#440cac] file:border-0 file:bg-[#440cac] file:text-white file:font-semibold file:px-4 file:py-2 file:rounded-md file:cursor-pointer hover:file:bg-[#361089] transition"
               />
               {values.imageFile && (
                 <p className="text-xs text-green-600 mt-1">
@@ -236,7 +240,7 @@ const ToDoForm = ({ leaseOrders = [], client }) => {
                 type="checkbox"
                 name="emergency"
                 id="emergencyCheckbox"
-                className="w-5 h-5"
+                className="min-w-5 min-h-5"
               />
               <label htmlFor="emergencyCheckbox">{t("form.emergency")}</label>
             </div>
@@ -246,7 +250,7 @@ const ToDoForm = ({ leaseOrders = [], client }) => {
                 type="checkbox"
                 name="isPresent"
                 id="presentCheckbox"
-                className="w-5 h-5"
+                className="min-w-5 min-h-5"
               />
               <label htmlFor="presentCheckbox">{t("form.is_present")}</label>
             </div>

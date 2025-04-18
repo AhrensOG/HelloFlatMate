@@ -106,7 +106,6 @@ export default function Chat({ ownerPage = false }) {
       )}
 
       {privateChats.map((chat) => {
-        console.log(chat);
         if (
           !chat.relatedModel ||
           (chat.relatedModel.category !== "HELLO_LANDLORD" &&

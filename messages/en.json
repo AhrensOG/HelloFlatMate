@@ -1139,15 +1139,15 @@
       },
       "form": {
         "title": "Report an issue",
-        "select_order": "Select Room",
-        "select_order_placeholder": "Select order",
+        "select_order": "Select site",
+        "select_order_placeholder": "Select",
         "no_orders": "You have no active orders to report an issue.",
         "select_type": "Service type",
         "select_type_placeholder": "Select",
         "select_day": "Select a day",
         "select_time": "Select a time",
         "additional_message": "Additional message",
-        "message_placeholder": "Optional: details about the service you need...",
+        "message_placeholder": "Details about the service you need...",
         "upload_image": "Upload image",
         "image_ready": "File ready to send ✅",
         "is_present": "Tick this if you'll be present during the service.",
@@ -1182,7 +1182,8 @@
       "history": {
         "title": "Request history",
         "no_order": "No associated order",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "empty": "There are no issues."
       },
       "long_days": {
         "monday": "Monday",
@@ -1197,7 +1198,14 @@
       "IN_PROGRESS": "In progress",
       "PENDING": "Pending",
       "COMPLETED": "Completed",
-      "CANCELLED": "Cancelled"
+      "CANCELLED": "Cancelled",
+      "EMERGENCY": "Emergency"
+      },
+      "tabs": {
+        "IN_PROGRESS": "In progress",
+        "PENDING": "Pending",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled"
       },
       "labels": {
         "code": "Code",
@@ -1214,7 +1222,7 @@
       "cancel": {
         "start": "Cancel request",
         "label": "Write the reason for cancellation:",
-        "placeholder": "E.g. The service is no longer needed...",
+        "placeholder": "E.g. The service is no longer needed beacuse...",
         "confirm": "Confirm cancellation",
         "abort": "Cancel",
         "toast_success": "The request was successfully cancelled",
