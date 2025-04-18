@@ -52,6 +52,23 @@ export default function TaskDetails({ section }) {
     const toastId = toast.loading(t("responses_1.loading"));
 
     try {
+      if (
+        type === "finish" &&
+        (task.amount === null || task.amount === undefined || task.amount <= 0)
+      ) {
+        toast.error("Debe ingresar un monto antes de finalizar la tarea.", {
+          id: toastId,
+        });
+        return;
+      }
+
+      if (type === "finish" && !task.responsibility) {
+        toast.error("Debe asignar una responsabilidad antes de finalizar.", {
+          id: toastId,
+        });
+        return;
+      }
+
       const payload = {
         id: task.id,
         status,
@@ -80,10 +97,9 @@ export default function TaskDetails({ section }) {
         const data = {
           name: task.title || "Servicio de mantenimiento",
           amount: task.amount,
-          status: "PENDING",
           type: "MAINTENANCE",
           responsibility: task.responsibility,
-          toDoId: task.id, // Necesario para OWNER
+          toDoId: task.id,
         };
 
         if (isClient) {
@@ -92,7 +108,8 @@ export default function TaskDetails({ section }) {
         } else {
           data.propertyId = task.propertyId;
           data.title = task.title || "Mantenimiento finalizado";
-          data.description = "Incidencia creada tras la finalización del mantenimiento.";
+          data.description =
+            "Incidencia creada tras la finalización del mantenimiento.";
         }
 
         await axios.post("/api/to_do/worker_panel", data);

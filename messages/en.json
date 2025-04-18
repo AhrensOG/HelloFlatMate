@@ -8,6 +8,8 @@
         "owner_link_1": "Profile",
         "owner_link_2": "Dashboard",
         "owner_link_3": "My tenants",
+        "owner_link_4": "Payments",
+        "owner_link_5": "Incidences",
         "user_link_1": "Profile",
         "user_link_2": "Reservations",
         "user_link_3": "History",
@@ -1334,7 +1336,9 @@
                 "name_1": "Panel",
                 "name_2": "Profile",
                 "name_3": "My Tenants",
-                "name_4": "Supplies"
+                "name_4": "Supplies",
+                "name_5": "Payments",
+                "name_6": "Incidences"
             },
             "btn_logout": "Log Out"
         },
@@ -1437,6 +1441,95 @@
                 "lb_4": "Concept / Title",
                 "submit": "Submit Request"
             }
+        },
+        "incidences_panel": {
+          "title": "Incidences",
+          "description_1": "In this section you can review all the incidences generated for your properties and review the details of each of them, including the maintenance information.",
+          "description_2": "If an incidence was generated automatically by administration, it will be indicated.",
+          "no_incidences": "No incidences registered.",
+          "generated_by_admin": "Incidence generated from admin.",
+          "todo_info": {
+            "title": "Maintenance task information",
+            "body": "Description",
+            "amount": "Import",
+            "type": "Maintenance type",
+            "status": "Status",
+            "comment": "Reason",
+            "client": "Requested by",
+            "responsibility": "Responsibility",
+            "site": "Site",
+            "repair": "Repair",
+            "repair_type": "Repair type",
+            "emergency": "Emergency",
+            "preferred_time_slot": "Preferred time slot",
+            "reprogrammed": "Reprogrammed",
+            "new_start_date": "New start date",
+            "new_end_date": "New end date",
+            "reprogramming_comment": "Reprogramming reason",
+            "start_date": "Start date",
+            "end_date": "End date",
+            "technical_message": "Technical message",
+            "closing_message": "Closing message",
+            "client_message": "Tenant message",
+            "client_present": {
+              "title": "Will tenant be present?",
+              "yes": "Yes",
+              "no": "No"
+            },
+            "problem_picture": "Problem picture / video",
+            "image_video": "View Image / Video"
+          },
+          "labels": {
+            "LIVING_ROOM": "Living room",
+            "KITCHEN": "Kitchen",
+            "WC1": "Bathroom 1",
+            "WC2": "Bathroom 2",
+            "BEDROOM": "Bedroom",
+            "OTHER": "Other",
+            "ELECTRICITY": "Electricity",
+            "PLUMBING": "Plumbing",
+            "CARPENTRY": "Carpentry",
+            "APPLIANCE": "Appliances",
+            "PENDING": "Pending",
+            "COMPLETED": "Completed",
+            "CANCELLED": "Cancelled",
+            "OWNER": "Owner",
+            "CLIENT": "Tenant",
+            "MORNING": "Morning",
+            "AFTERNOON": "Afternoon",
+            "IN_PROGRESS":"In progress"
+          }
+        },
+        "payments_panel": {
+          "property": "Property",
+          "title": "Payments",
+          "pay_modal": {
+            "title": "Confirm Payment",
+            "amount": "Import",
+            "desc_1": "Description",
+            "room_code": "Property code:",
+            "pay_now": "Pay Now",
+            "close": "Cancel",
+            "toast": {
+              "loading": "Processing payment...",
+              "success": "Redirecting to payment system",
+              "error": "An error occurred while trying to make the payment"
+            }
+          },
+          "tab": {
+            "pending": "Pending",
+            "approved": "Paid"
+          },
+          "payment_card": {
+            "pay": "Pay",
+            "status": {
+              "pending": "Pending",
+              "approved": "Paid"
+            },
+            "view_incidence": "View detials of maintenance #"
+          },
+          "not_pend_pay": "No pending payments.",
+          "not_approved_pay": "No paid payments."
         },
         "dashboard": {
             "type_labels": {

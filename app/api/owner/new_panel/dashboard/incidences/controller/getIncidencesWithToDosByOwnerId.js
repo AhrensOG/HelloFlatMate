@@ -1,11 +1,25 @@
-import { Client, Incidence, ToDo } from "@/db/init";
+import { Client, Incidence, Property, ToDo } from "@/db/init";
 
 export async function getIncidencesWithToDosByOwnerId(ownerId) {
   try {
-    const incidences = await Incidence.findAll({
+    const rawIncidences = await Incidence.findAll({
       where: { ownerId },
-      raw: true,
+      include: [
+        {
+          model: Property,
+          as: "property",
+          attributes: [
+            "serial",
+            "street",
+            "streetNumber",
+            "postalCode",
+            "city",
+          ],
+        },
+      ],
     });
+
+    const incidences = rawIncidences.map((inc) => inc.get({ plain: true }));
 
     const toDoIds = incidences
       .filter((inc) => inc.toDoId)
@@ -14,16 +28,18 @@ export async function getIncidencesWithToDosByOwnerId(ownerId) {
     let toDosMap = {};
 
     if (toDoIds.length > 0) {
-      const toDos = await ToDo.findAll({
+      const rawToDos = await ToDo.findAll({
         where: { id: toDoIds },
         include: [
           {
             model: Client,
             as: "client",
-            attributes: ["name", "lastName", "phone", "email"]
-          }
-        ]
+            attributes: ["name", "lastName", "phone", "email"],
+          },
+        ],
       });
+
+      const toDos = rawToDos.map((todo) => todo.get({ plain: true }));
 
       toDosMap = toDos.reduce((acc, todo) => {
         acc[todo.id] = todo;
@@ -31,7 +47,6 @@ export async function getIncidencesWithToDosByOwnerId(ownerId) {
       }, {});
     }
 
-    // Agregar la propiedad .toDo si tiene toDoId
     const enrichedIncidences = incidences.map((inc) => ({
       ...inc,
       toDo: inc.toDoId ? toDosMap[inc.toDoId] || null : null,

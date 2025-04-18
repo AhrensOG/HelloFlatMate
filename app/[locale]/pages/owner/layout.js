@@ -48,7 +48,7 @@ const ownerDashboardLayout = ({ children }) => {
             <div className={`bg-white flex justify-center items-start grow`}>
                 <div className={`flex grow max-w-screen-xl w-full gap-8 ${pathname.includes("/pages/owner/chats/chat") ? "mx-0 md:mx-4 h-[calc(100vh-63.28px)] md:h-auto" : "mx-4" }`}>
                     <OwnerSidebar />
-                    <main className={`grow ${pathname.includes("/pages/owner/chats/chat") ? "h-[calc(100vh-63.28px)] sm:h-auto mt-0 md:mt-4" : "mt-4" }`}>{children}</main>
+                    <main className={`grow contain-inline-size ${pathname.includes("/pages/owner/chats/chat") ? "h-[calc(100vh-63.28px)] sm:h-auto mt-0 md:mt-4" : "mt-4" }`}>{children}</main>
                 </div>
             </div>
         </div>

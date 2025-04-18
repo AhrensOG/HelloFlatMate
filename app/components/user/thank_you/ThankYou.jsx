@@ -52,11 +52,11 @@ export default function ThankYou({
   // Función de redirección basada en el tipo de pago
   const handleCallback = () => {
     if (paymentType === "reserve") {
-      router.push(`/pages/user/contract/${id}?r=${roomId}&lo=${lo}`);
+      router.push(`/pages/user/reservations`);
     } else if (paymentType === "supply") {
       router.push("/pages/user/supplies/" + id);
     } else if (paymentType === "monthly") {
-      router.push("/pages/user/my-bedrooms");
+      router.push("/pages/user/reservations");
     } else {
       router.push("/");
     }
@@ -64,9 +64,9 @@ export default function ThankYou({
 
   return (
     <>
-      <div className="w-full flex justify-center h-[70vh]">
+      <div className="w-full flex justify-center h-full bg-white">
         <div className="flex flex-col items-center justify-center w-full max-w-screen-sm">
-          <div className="grow flex flex-col items-center justify-center gap-8 ">
+          <div className="flex flex-col items-center justify-center gap-8 ">
             <Image
               src={"/howitworks/verificado.gif"}
               width={130}

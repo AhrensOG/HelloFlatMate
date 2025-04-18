@@ -36,7 +36,7 @@ export async function createPaymentForOwner(data) {
       description:
         description ||
         "Esta incidencia fue generada tras finalizar una tarea de mantenimiento con responsabilidad asignada al propietario.",
-      status: "PENDING",
+      status: amount != null && amount > 0 ? "PENDING" : "APPROVED",
       paymentId: null,
       toDoId,
     });

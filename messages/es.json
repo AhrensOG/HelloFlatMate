@@ -8,6 +8,8 @@
         "owner_link_1": "Perfil",
         "owner_link_2": "Panel",
         "owner_link_3": "Mis inquilinos",
+        "owner_link_4": "Pagos",
+        "owner_link_5": "Incidencias",
         "user_link_1": "Perfil",
         "user_link_2": "Reservas",
         "user_link_3": "Histórico",
@@ -1348,7 +1350,9 @@
                 "name_1": "Panel",
                 "name_2": "Perfil",
                 "name_3": "Mis Inquilinos",
-                "name_4": "Suministros"
+                "name_4": "Suministros",
+                "name_5": "Pagos",
+                "name_6": "Incidencias"
             },
             "btn_logout": "Cerrar sesión"
         },
@@ -1451,6 +1455,95 @@
                 "lb_4": "Concepto / Título",
                 "submit": "Enviar solicitud"
             }
+        },
+        "incidences_panel": {
+          "title": "Incidencias",
+          "description_1": "En esta sección puedes revisar todas las incidencias generadas para tus propiedades y revisar los detalles de cada una de ellas, incluyendo la información de mantenimiento.",
+          "description_2": "Si una incidencia fue generada automaticamente por el administrador, se indicara.",
+          "no_incidences": "No hay incidencias registradas.",
+          "generated_by_admin": "Incidencia generada por Administración.",
+          "todo_info": {
+            "title": "Información de la incidencia",
+            "body": "Descripción",
+            "amount": "Importe",
+            "type": "Tipo de mantenimiento",
+            "status": "Estado",
+            "comment": "Motivo",
+            "client": "Solicitado por",
+            "responsibility": "Responsabilidad",
+            "site": "Sitio",
+            "repair": "Reparación",
+            "repair_type": "Tipo de reparación",
+            "emergency": "Emergencia",
+            "preferred_time_slot": "Preferencia horaria",
+            "reprogrammed": "Reprogramado",
+            "new_start_date": "Nueva fecha de inicio",
+            "new_end_date": "Nueva fecha de finalización",
+            "reprogramming_comment": "Motivo de reprogramación",
+            "start_date": "Fecha de inicio",
+            "end_date": "Fecha de finalización",
+            "technical_message": "Mensaje tecnico",
+            "closing_message": "Mensaje de finalización",
+            "client_message": "Mensaje del inquilino",
+            "client_present": {
+              "title": "¿Estara presente el inquilino?",
+              "yes": "Si",
+              "no": "No"
+            },
+            "problem_picture": "Imagen / video del problema",
+            "image_video": "Ver Imagen / Video"
+          },
+          "labels": {
+            "LIVING_ROOM": "Sala de estar",
+            "KITCHEN": "Cocina",
+            "WC1": "Baño 1",
+            "WC2": "Baño 2",
+            "BEDROOM": "Habitación",
+            "OTHER": "Otro",
+            "ELECTRICITY": "Electricidad",
+            "PLUMBING": "Fontanería",
+            "CARPENTRY": "Carpintería",
+            "APPLIANCE": "Electrodomesticos",
+            "PENDING": "Pendiente",
+            "COMPLETED": "Completado",
+            "CANCELLED": "Cancelado",
+            "OWNER": "Propietario",
+            "CLIENT": "Inquilino",
+            "MORNING": "Mañana",
+            "AFTERNOON": "Tarde",
+            "IN_PROGRESS":"En progreso"
+          }
+        },
+        "payments_panel": {
+          "property": "Propiedad",
+          "title": "Pagos",
+          "pay_modal": {
+            "title": "Confirmar pago",
+            "amount": "Importe",
+            "desc_1": "Descripción",
+            "room_code": "Código de propiedad",
+            "pay_now": "Pagar ahora",
+            "close": "Cancelar",
+            "toast": {
+              "loading": "Procesando el pago...",
+              "success": "Redirigiendo al sistema de pagos",
+              "error": "Ocurrio un error al intentar realizar el pago"
+            }
+          },
+          "tab": {
+            "pending": "Pendientes",
+            "approved": "Pagados"
+          },
+          "payment_card": {
+            "pay": "Pagar",
+            "status": {
+              "pending": "Pendiente",
+              "approved": "Pagado"
+            },
+            "view_incidence": "Ver detalles del mantenimiento #"
+          },
+          "not_pend_pay": "No hay pagos pendientes.",
+          "not_approved_pay": "No hay pagos realizados."
         },
         "dashboard": {
             "type_labels": {

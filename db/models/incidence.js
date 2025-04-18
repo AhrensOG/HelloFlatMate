@@ -46,6 +46,10 @@ const incidenceInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            paymentDate: {
+              type: DataTypes.DATE,
+              allowNull: true,
+            },
             toDoId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,

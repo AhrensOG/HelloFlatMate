@@ -22,7 +22,7 @@ export async function createPaymentForUser(data) {
       name: name,
       amount: amount,
       date: new Date(),
-      status: status,
+      status: amount != null && amount > 0 ? "PENDING" : "PAID",
       propertyId: leaseOrderRoom.propertyId,
       clientId: userId,
       type: type,

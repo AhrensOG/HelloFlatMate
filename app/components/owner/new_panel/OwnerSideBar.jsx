@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRightStartOnRectangleIcon, ChatBubbleBottomCenterIcon, Squares2X2Icon, UserGroupIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, Squares2X2Icon, UserGroupIcon, UserIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
@@ -27,6 +27,16 @@ const OwnerSidebar = () => {
             name: t("links.name_3"),
             href: "/pages/owner/my-tenantsv2",
             icon: <UserGroupIcon className="size-6" />,
+        },
+        {
+          name: t("links.name_5"),
+          href: "/pages/owner/payments",
+          icon: <CreditCardIcon className="size-6" />,
+        },
+        {
+          name: t("links.name_6"),
+          href: "/pages/owner/incidences",
+          icon: <WrenchIcon className="size-6" />,
         },
         {
             name: "Chats",
