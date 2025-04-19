@@ -52,17 +52,15 @@ export default function TaskDetails({ section }) {
     const toastId = toast.loading(t("responses_1.loading"));
 
     try {
-      if (
-        type === "finish" &&
-        (task.amount === null || task.amount === undefined || task.amount <= 0)
-      ) {
+      const isFinish = type === "finish";
+      if (isFinish && (!task.amount || task.amount <= 0)) {
         toast.error("Debe ingresar un monto antes de finalizar la tarea.", {
           id: toastId,
         });
         return;
       }
 
-      if (type === "finish" && !task.responsibility) {
+      if (isFinish && !task.responsibility) {
         toast.error("Debe asignar una responsabilidad antes de finalizar.", {
           id: toastId,
         });
@@ -72,26 +70,18 @@ export default function TaskDetails({ section }) {
       const payload = {
         id: task.id,
         status,
+        ...(type === "problem" && { comment }),
+        ...(isFinish && { closingComments: comment, actionType: "COMPLETE" }),
       };
 
-      if (type === "problem") {
-        payload.comment = comment;
-      } else if (type === "finish") {
-        payload.closingComments = comment;
-      }
+      const endpoint = isFinish
+        ? "/api/to_do/patch_to_do_and_send_email"
+        : "/api/to_do";
 
-      // Actualizar la tarea
-      await axios.patch(`/api/to_do`, payload);
+      await axios.patch(endpoint, payload);
       await fetchTask();
 
-      // Si finaliza, y hay un monto válido y responsabilidad definida
-      if (
-        type === "finish" &&
-        task.amount !== null &&
-        task.amount !== undefined &&
-        task.amount > 0 &&
-        task.responsibility
-      ) {
+      if (isFinish) {
         const isClient = task.responsibility === "CLIENT";
 
         const data = {
@@ -145,10 +135,11 @@ export default function TaskDetails({ section }) {
   const cancelTask = async () => {
     const toastId = toast.loading("Cancelando tarea...");
     try {
-      await axios.patch(`/api/to_do`, {
+      await axios.patch(`/api/to_do/patch_to_do_and_send_email`, {
         id: task.id,
         status: "CANCELLED",
         cancellationReason: "Técnico: " + cancelReason,
+        actionType: "CANCEL",
       });
       await fetchTask();
       setShowCancelModal(false);

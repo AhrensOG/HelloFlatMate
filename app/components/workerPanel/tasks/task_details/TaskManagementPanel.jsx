@@ -47,9 +47,10 @@ const TaskManagementPanel = ({ taskId, currentTask, onUpdate }) => {
     if (!startDate) return;
     const toastId = toast.loading("Asignando fecha...");
     try {
-      await axios.patch("/api/to_do", {
+      await axios.patch("/api/to_do/patch_to_do_and_send_email", {
         id: taskId,
         startDate: new Date(startDate),
+        actionType: "START"
       });
       toast.success("Fecha asignada correctamente", { id: toastId });
       onUpdate();
@@ -65,11 +66,12 @@ const TaskManagementPanel = ({ taskId, currentTask, onUpdate }) => {
     }
     const toastId = toast.loading("Reprogramando tarea...");
     try {
-      await axios.patch("/api/to_do", {
+      await axios.patch("/api/to_do/patch_to_do_and_send_email", {
         id: taskId,
         reprogrammed: true,
         reprogrammedStartDate: new Date(reprogrammedStartDate),
         reprogramingComment,
+        actionType: "REPROGRAM"
       });
       toast.success("Reprogramado correctamente", { id: toastId });
       onUpdate();
