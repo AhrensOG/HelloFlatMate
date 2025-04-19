@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { toast } from "sonner";
 import axios from "axios";
 import Link from "next/link";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 
-const EditIncidenceModal = ({ onClose, incidence, mutate }) => {
+const EditIncidenceModal = ({ onClose, incidence, toDos, mutate }) => {
+      const [toDoSearch, setToDoSearch] = useState("");
+      const [filteredToDos, setFilteredToDos] = useState([]);
+
     const handleSubmit = async (values) => {
         const toastId = toast.loading("Guardando cambios...");
         try {
@@ -29,6 +32,26 @@ const EditIncidenceModal = ({ onClose, incidence, mutate }) => {
                 id: toastId,
             });
         }
+    };
+
+    const handleToDoSearch = (e) => {
+      const query = e.target.value.toLowerCase();
+      setToDoSearch(query);
+    
+      if (!query) return setFilteredToDos([]);
+    
+      const filtered = toDos.filter((todo) => {
+        const label = `Tarea #${todo.id} - Propiedad asociada ID ${todo.propertyId} | Código ${todo.property.serial}`;
+        return label.toLowerCase().includes(query);
+      });
+    
+      setFilteredToDos(filtered);
+    };
+
+    const handleToDoSelect = (todo, setFieldValue) => {
+      setFieldValue("toDoId", todo.id);
+      setToDoSearch(`Tarea #${todo.id} - Propiedad asociada ID ${todo.propertyId} | Código ${todo.property.serial}`);
+      setFilteredToDos([]);
     };
 
     return (
@@ -60,6 +83,10 @@ const EditIncidenceModal = ({ onClose, incidence, mutate }) => {
                         date: incidence.date ? incidence.date.slice(0, 10) : "",
                         url: incidence.url || "",
                         bill: null,
+                        status: incidence.status || "",
+                        paymentId: incidence.paymentId || "",
+                        paymentDate: incidence.paymentDate || "",
+                        toDoId: incidence.toDoId || "",
                     }}
                     onSubmit={handleSubmit}
                 >
@@ -103,6 +130,23 @@ const EditIncidenceModal = ({ onClose, incidence, mutate }) => {
                                 >
                                     <option value="">Seleccionar tipo</option>
                                     <option value="OTHER">Otros</option>
+                                    <option value="MAINTENANCE">Mantenimiento</option>
+                                </Field>
+                            </div>
+
+                            {/* STATUS */}
+                            <div>
+                                <label className="text-xs font-light">
+                                    Estado
+                                </label>
+                                <Field
+                                    as="select"
+                                    name="status"
+                                    className="outline-none border p-2 w-full"
+                                >
+                                    <option value="">Seleccionar estado</option>
+                                    <option value="PENDING">Pendiente</option>
+                                    <option value="APPROVED">Pagado</option>
                                 </Field>
                             </div>
 
@@ -155,6 +199,56 @@ const EditIncidenceModal = ({ onClose, incidence, mutate }) => {
                                     name="date"
                                     className="outline-none border p-2 w-full"
                                 />
+                            </div>
+
+                            {/* Payment ID */}
+                            <div>
+                                <label className="text-xs font-light">
+                                    ID De Pago
+                                </label>
+                                <Field
+                                    type="text"
+                                    name="paymentId"
+                                    placeholder="ID de pago"
+                                    className="outline-none border p-2 w-full"
+                                />
+                            </div>
+
+                            {/* Payment Date */}
+                            <div>
+                                <label className="text-xs font-light">
+                                    Fecha de pago
+                                </label>
+                                <Field
+                                    type="date"
+                                    name="paymentDate"
+                                    className="outline-none border p-2 w-full"
+                                />
+                            </div>
+
+                            {/* ToDoId */}
+                            <div className="relative">
+                              <label className="text-xs font-light">Tarea relacionada {incidence.toDoId ? "- Tarea actual #" + incidence.toDoId : ""}</label>
+                              <input
+                                type="text"
+                                placeholder="Buscar por ID o código de propiedad"
+                                value={toDoSearch}
+                                onChange={handleToDoSearch}
+                                className="outline-none border p-2 w-full"
+                              />
+                              {filteredToDos.length > 0 && (
+                                <ul className="absolute top-full mt-1 w-full max-h-40 overflow-y-auto border bg-white z-10">
+                                  {filteredToDos.map((todo) => (
+                                    <li
+                                      key={todo.id}
+                                      className="p-2 cursor-pointer hover:bg-gray-100"
+                                      onClick={() => handleToDoSelect(todo, setFieldValue)}
+                                    >
+                                      Tarea #{todo.id} - Propiedad {todo.property.serial}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
 
                             {/* URL y File */}
