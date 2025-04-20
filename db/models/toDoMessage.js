@@ -14,7 +14,7 @@ const toDoMessageInit = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             senderType: {
-                type: DataTypes.ENUM("CLIENT", "WORKER"),
+                type: DataTypes.ENUM("CLIENT", "WORKER", "ADMIN", "OWNER"),
                 allowNull: false
             },
             senderId: {

@@ -12,6 +12,13 @@ const ToDoMessageList = ({ messages, onRefetch }) => {
     typeof url === "string" &&
     (url.includes(".mp4") || url.includes(".webm") || url.includes(".mov"));
 
+  const SENDER_TYPE_LABELS = {
+    WORKER: t("senderType_worker"),
+    CLIENT: t("senderType_client"),
+    ADMIN: t("senderType_admin"),
+    OWNER: t("senderType_owner"),
+  };
+
   return (
     <div className="space-y-4 max-h-[300px] overflow-y-auto border border-gray-200 p-3 pt-0 rounded-lg bg-white">
       <div className="sticky top-0 z-10 bg-white py-2">
@@ -42,7 +49,8 @@ const ToDoMessageList = ({ messages, onRefetch }) => {
                   : "mr-auto bg-gray-100 text-gray-700"
               }`}>
               <p className="font-medium text-[13px] text-[#440cac] mb-1">
-                {msg.senderName} {msg.senderLastName} - {msg.senderType === "WORKER" ? t("senderType_worker") : msg.senderType === "CLIENT" ? t("senderType_client") : "Unkown"}
+                {msg.senderName} {msg.senderLastName} -{" "}
+                {SENDER_TYPE_LABELS[msg.senderType] || "Unkown"}
               </p>
 
               {msg.body && <p className="whitespace-pre-wrap">{msg.body}</p>}

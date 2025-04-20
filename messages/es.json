@@ -1146,6 +1146,8 @@
       },
       "senderType_worker": "Técnico",
       "senderType_client": "Inquilino",
+      "senderType_admin": "Administrador",
+      "senderType_owner": "Propietario",
       "title": "Incidencias",
       "description_1": "En este apartado podés solicitar una",
       "description_2": "orden de reparación",

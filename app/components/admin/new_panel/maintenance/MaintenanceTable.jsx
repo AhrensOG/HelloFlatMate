@@ -88,8 +88,8 @@ const MaintenanceTable = ({ tasks, loading, error, onDelete, onEdit }) => {
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Cliente
             </th>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
-              Comentario
+            <th className="border border-t-0 p-2 max-w-60 text-center font-semibold text-gray-700">
+              Comentario (Inquilino)
             </th>
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Imagen
@@ -128,7 +128,7 @@ const MaintenanceTable = ({ tasks, loading, error, onDelete, onEdit }) => {
                   : "-"}
               </td>
               <td className="border p-2 text-center text-gray-700">
-                {task.property?.serial || "-"} ({task.property?.city})
+                {task.property?.serial || "-"}
               </td>
               <td className="border p-2 text-start text-gray-700">
                 {task.client?.name} {task.client?.lastName} <br />
@@ -136,8 +136,8 @@ const MaintenanceTable = ({ tasks, loading, error, onDelete, onEdit }) => {
                   {task.client?.email}
                 </span>
               </td>
-              <td className="border p-2 text-center text-gray-700">
-                {task.comment || "-"}
+              <td className="border p-2 text-center text-gray-700 truncate max-w-40">
+                {task.clientMessage || "-"}
               </td>
               <td className="border p-2 text-center text-gray-700">
                 {task.imageUrl ? (

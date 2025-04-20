@@ -1131,6 +1131,8 @@
       },
       "senderType_worker": "Technician",
       "senderType_client": "Tenant",
+      "senderType_admin": "Administrator",
+      "senderType_owner": "Owner",
       "title": "Requests",
       "description_1": "In this section you can request a",
       "description_2": "repair service",

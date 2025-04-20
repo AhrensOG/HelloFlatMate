@@ -26,7 +26,7 @@ export default function TaskInfoCard({ task }) {
       {task.client && (
         <div className="space-y-1">
           <h3 className="text-[#0C1660] font-semibold text-sm flex items-center gap-2">
-            <HiUser /> Cliente
+            <HiUser /> Inquilino
           </h3>
           <p className="text-sm text-gray-700">
             <strong>Nombre:</strong> {task.client.name} {task.client.lastName}

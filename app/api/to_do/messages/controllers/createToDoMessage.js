@@ -14,10 +14,6 @@ export async function createToDoMessage(data) {
     }
   }
 
-  if (!["CLIENT", "WORKER"].includes(data.senderType)) {
-    return NextResponse.json({ error: "Invalid sender type" }, { status: 400 });
-  }
-
   if (!data.body?.trim() && !data.imageUrl) {
     return NextResponse.json({ error: "Message must include text or image" }, { status: 400 });
   }
