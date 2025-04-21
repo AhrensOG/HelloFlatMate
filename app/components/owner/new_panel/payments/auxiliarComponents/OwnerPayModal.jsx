@@ -30,7 +30,7 @@ const OwnerPayModal = ({ incidence, owner, onClose }) => {
         merchantName: `${incidence.title} - ${propertySerial}`,
         merchantDescription: `${
           incidence.description || ""
-        } (${propertySerial} - ${owner.name} ${owner.lastName})`,
+        } (${propertySerial}`,
         merchantUrlOk: `/pages/owner/payments`,
         merchantUrlkO: `/pages/owner/payments`,
       },
