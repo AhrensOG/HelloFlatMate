@@ -25,6 +25,7 @@ const SearchRequest = require("./models/searchRequest");
 const Notification = require("./models/notification");
 const Incidence = require("./models/incidence");
 const ToDoMessage = require("./models/toDoMessage");
+const OwnerContract = require("./models/ownerContract");
 
 (async () => {
     try {
@@ -38,6 +39,7 @@ const ToDoMessage = require("./models/toDoMessage");
         Owner.hasMany(Payment, { as: "payments", foreignKey: "ownerId" });
         Owner.hasMany(RentPayment, { as: "rentPayments", foreignKey: "ownerId" });
         Owner.hasMany(Incidence, { as: "incidences", foreignKey: "ownerId" });
+        Owner.hasMany(OwnerContract, { foreignKey: "ownerId", as: "ownerContracts" });
 
         //PROPERTY
         Property.hasMany(Comment, { as: "comments", foreignKey: "propertyId" });
@@ -47,6 +49,7 @@ const ToDoMessage = require("./models/toDoMessage");
         Property.hasMany(LeaseOrderProperty, { as: "leaseOrdersProperty", foreignKey: "propertyId" });
         Property.hasMany(Supply, { as: "supplies", foreignKey: "propertyId" });
         Property.hasMany(Incidence, { as: "incidences", foreignKey: "propertyId" });
+        Property.hasMany(OwnerContract, { foreignKey: "propertyId", as: "ownerContracts" });
 
         //Room
         Room.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
@@ -121,6 +124,10 @@ const ToDoMessage = require("./models/toDoMessage");
         //Incidences
         Incidence.belongsTo(Property, { as: "property", foreignKey: "propertyId" });
         Incidence.belongsTo(Owner, { as: "owner", foreignKey: "ownerId" });
+
+        //OwnerContracts
+        OwnerContract.belongsTo(Owner, { foreignKey: "ownerId", as: "owner" });
+        OwnerContract.belongsTo(Property, { foreignKey: "propertyId", as: "property" });
 
         //Relaciones polimorficas
         //Client
@@ -472,4 +479,5 @@ module.exports = {
     Notification,
     Incidence,
     ToDoMessage,
+    OwnerContract,
 };

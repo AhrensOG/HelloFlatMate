@@ -20,6 +20,7 @@ import { GrUserWorker } from "react-icons/gr"
 import Image from "next/image";
 import { logOut } from "@/app/firebase/logOut";
 import { useRouter } from "next/navigation";
+import { TbContract } from "react-icons/tb";
 
 const AdminSideBar = ({ onSelect }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +59,11 @@ const AdminSideBar = ({ onSelect }) => {
         {
           name: "Mantenimiento",
           icon: <GrUserWorker className="w-6 h-6" />,
-      },
+        },
+        {
+          name: "Contratos",
+          icon: <TbContract className="w-6 h-6" />,
+        },
         // {
         //   name: "Cerrar sesión",
         //   icon: <ArrowRightStartOnRectangleIcon className="w-6 h-6" />,
