@@ -17,13 +17,15 @@ export async function PATCH(req) {
         }
 
         let selectUser;
-
+        const MODELS = { CLIENT: Client, OWNER: Owner, ADMIN: Admin, WORKER: Worker };
         if (user.changeRol) {
             const res = await updateRoleUser({ id: user.userId, role: user.rol });
-            selectUser = res.user;
-            console.log(await res.json());
+            const resJson = await res.json();
+            if (resJson?.user) {
+              const selectedModel = MODELS[resJson.user?.role];
+              selectUser = await selectedModel.findByPk(resJson.user?.id);
+            }
         }
-
         if (!selectUser) {
             switch (user.rol) {
                 case "ADMIN":
