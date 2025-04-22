@@ -93,16 +93,18 @@ export default function TaskDetails({ section }) {
         };
 
         if (isClient) {
-          data.userId = task.userId;
-          data.leaseOrderId = task.leaseOrderId;
+          if (task.incidentSite === "MY_ROOM") {
+            data.userId = task.userId;
+            data.leaseOrderId = task.leaseOrderId;
+            await axios.post("/api/to_do/worker_panel", data);
+          }
         } else {
           data.propertyId = task.propertyId;
           data.title = task.title || "Mantenimiento finalizado";
           data.description =
             "Incidencia creada tras la finalización del mantenimiento.";
+          await axios.post("/api/to_do/worker_panel", data);
         }
-
-        await axios.post("/api/to_do/worker_panel", data);
       }
 
       toast.success(t("responses_1.success"), { id: toastId });
