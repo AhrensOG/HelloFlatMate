@@ -39,6 +39,7 @@ export async function updateOwnerContract(data) {
         existingContract.category !== "HELLO_ROOM"
           ? data.rooms ?? existingContract.rooms
           : null,
+      hfm_retributions: data.hfm_retributions ?? existingContract.hfm_retributions,
     });
 
     return NextResponse.json(existingContract);

@@ -125,6 +125,7 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
             url: "",
             isSigned: false,
             file: null,
+            hfm_retributions: null,
           }}
           onSubmit={handleSubmit}>
           {({ setFieldValue, values }) => (
@@ -283,6 +284,18 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
                       step="0.01"
                       name="fixedMonthlyRentTotal"
                       placeholder="Total mensual con ocupación completa"
+                      className="w-full border p-2"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-light">
+                      Retribución para helloflatmate
+                    </label>
+                    <Field
+                      type="number"
+                      name="hfm_retributions"
+                      placeholder="Retribución para helloflatmate"
                       className="w-full border p-2"
                     />
                   </div>

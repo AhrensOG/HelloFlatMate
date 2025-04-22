@@ -27,6 +27,7 @@ export async function createOwnerContract(data) {
       notifiedAt: data.notifiedAt ?? null,
       createdBy: data.createdBy ?? null,
       rooms: data.category !== "HELLO_ROOM" ? data.rooms ?? null : null,
+      hfm_retributions: data.hfm_retributions ?? null,
     });
 
     return NextResponse.json(newContract, { status: 201 });

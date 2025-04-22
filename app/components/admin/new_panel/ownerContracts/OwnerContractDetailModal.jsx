@@ -139,6 +139,16 @@ const OwnerContractDetailModal = ({ contract, onClose }) => {
             </div>
           )}
 
+          {contract.hfm_retributions && (
+            <div>
+              <h3 className="font-semibold text-gray-600">Retribución para helloflatmate</h3>
+              <p className="text-gray-800 flex items-center gap-1">
+                <CurrencyEuroIcon className="h-5 w-5" />
+                {contract.hfm_retributions} €
+              </p>
+            </div>
+          )}
+
           {contract.includesPremiumServices && (
             <div className="sm:col-span-2">
               <h3 className="font-semibold text-gray-600">

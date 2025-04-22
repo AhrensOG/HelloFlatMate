@@ -100,6 +100,7 @@ const OwnerContractEditModal = ({ contract, onClose, mutate }) => {
             includesPremiumServices: contract.includesPremiumServices,
             url: contract.url || "",
             file: null,
+            hfm_retributions: contract.hfm_retributions || null,
           }}
           onSubmit={handleSubmit}>
           {({ setFieldValue, values }) => (
@@ -212,6 +213,17 @@ const OwnerContractEditModal = ({ contract, onClose, mutate }) => {
                       type="number"
                       step="0.01"
                       name="fixedMonthlyRentTotal"
+                      className="w-full border p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-light">
+                      Retribución para helloflatmate
+                    </label>
+                    <Field
+                      type="number"
+                      step="0.01"
+                      name="hfm_retributions"
                       className="w-full border p-2"
                     />
                   </div>
