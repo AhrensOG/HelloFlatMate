@@ -79,6 +79,7 @@ export async function createToDo(data) {
     // Campos adicionales que estás enviando
     workerId: data.workerId ?? null,
     propertyId: data.propertyId ?? null,
+    bill: data.bill ?? null,
   };
 
   try {

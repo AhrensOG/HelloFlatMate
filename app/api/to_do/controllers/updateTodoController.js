@@ -27,6 +27,7 @@ export async function changeStatus(data) {
             todo.reprogramingComment = data.reprogramingComment || todo.reprogramingComment
             todo.responsibility = data.responsibility || todo.responsibility
             todo.closingComments = data.closingComments || todo.closingComments
+            todo.bill = data.bill || todo.bill
 
             if (data.status === "COMPLETED") {
                 todo.endDate = new Date();

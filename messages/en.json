@@ -1256,7 +1256,9 @@
         "technical_message": "Technical comment",
         "closing_message": "Closing comment",
         "client_message": "Tenant's message",
-        "problem_picture": "Problem picture",
+        "problem_picture": "Problem picture / video",
+        "bill": "Bill",
+        "view_bill":"View bill",
         "image_video": "View image or video",
         "emergency": "Emergency"
       },
@@ -1564,7 +1566,9 @@
               "no": "No"
             },
             "problem_picture": "Problem picture / video",
-            "image_video": "View Image / Video"
+            "image_video": "View Image / Video",
+            "bill": "Bill",
+            "view_bill": "View bill"
           },
           "labels": {
             "MY_ROOM": "My room",

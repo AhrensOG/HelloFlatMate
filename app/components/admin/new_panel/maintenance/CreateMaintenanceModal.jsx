@@ -99,6 +99,7 @@ const CreateMaintenanceModal = ({
     const toastId = toast.loading("Creando tarea...");
     try {
       let imageUrl = null;
+      let bill = null;
       if (values.image) {
         const uploaded = await uploadFiles(
           [values.image],
@@ -107,9 +108,18 @@ const CreateMaintenanceModal = ({
         imageUrl = uploaded[0]?.url || null;
       }
 
+      if (values.billFile) {
+        const uploaded = await uploadFiles(
+          [values.billFile],
+          "Facturas_Tareas"
+        );
+        bill = uploaded[0]?.url || null;
+      }
+
       const payload = {
         ...values,
         imageUrl,
+        bill,
         type: "REPAIR",
         typeUser: "CLIENT",
       };
@@ -119,7 +129,10 @@ const CreateMaintenanceModal = ({
       toast.success("Tarea creada correctamente", { id: toastId });
       onClose();
     } catch (error) {
-      toast.error("Ocurrió un error al crear la tarea", { id: toastId, description: "Intenta nuevamente o contacta con el soporte." });
+      toast.error("Ocurrió un error al crear la tarea", {
+        id: toastId,
+        description: "Intenta nuevamente o contacta con el soporte.",
+      });
     }
   };
 
@@ -165,6 +178,7 @@ const CreateMaintenanceModal = ({
             workerId: "",
             propertyId: "",
             image: null,
+            billFile: null,
           }}
           onSubmit={handleSubmit}>
           {({ setFieldValue }) => (
@@ -388,10 +402,10 @@ const CreateMaintenanceModal = ({
                 ))}
               </Field>
 
-              <label className="flex gap-2 items-center">
+              {/* <label className="flex gap-2 items-center">
                 <Field type="checkbox" name="emergency" />
                 Marcar como urgente
-              </label>
+              </label> */}
 
               <Field
                 as="select"
@@ -494,6 +508,18 @@ const CreateMaintenanceModal = ({
                   type="file"
                   onChange={(e) =>
                     setFieldValue("image", e.currentTarget.files[0])
+                  }
+                  className="w-full border p-2"
+                />
+              </div>
+
+              {/* BillFile */}
+              <div>
+                <label className="text-xs font-light">Factura (opcional)</label>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setFieldValue("billFile", e.currentTarget.files[0])
                   }
                   className="w-full border p-2"
                 />

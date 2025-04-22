@@ -1271,7 +1271,9 @@
         "technical_message": "Comentario del técnico",
         "closing_message": "Comentario de cierre",
         "client_message": "Mensaje del inquilino",
-        "problem_picture": "Imagen del problema",
+        "problem_picture": "Imagen / video del problema",
+        "bill": "Factura",
+        "view_bill":"Ver factura",
         "image_video": "Ver imagen o video",
         "emergency": "Urgente"
       },
@@ -1578,7 +1580,9 @@
               "no": "No"
             },
             "problem_picture": "Imagen / video del problema",
-            "image_video": "Ver Imagen / Video"
+            "image_video": "Ver Imagen / Video",
+            "bill": "Factura",
+            "view_bill": "Ver factura"
           },
           "labels": {
             "MY_ROOM": "Mi habitación",

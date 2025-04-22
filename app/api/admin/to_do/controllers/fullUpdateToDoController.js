@@ -34,6 +34,7 @@ export async function fullUpdateToDo(data) {
       "responsibility",
       "amount",
       "workerId",
+      "bill"
     ];
 
     updatableFields.forEach((field) => {

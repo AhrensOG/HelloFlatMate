@@ -10,7 +10,7 @@ import {
   HiUser,
 } from "react-icons/hi2";
 import { FiTool, FiAlertCircle } from "react-icons/fi";
-import { FaImage } from "react-icons/fa";
+import { FaImage, FaMoneyBill } from "react-icons/fa";
 import clsx from "clsx";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -94,6 +94,22 @@ const ToDoCard = forwardRef(
                   {todo.property?.city}
                 </span>
               </div>
+
+              {/* Factura */}
+              {todo.bill && (
+                <div className="border-t pt-3 space-y-1">
+                  <h4 className="font-semibold flex items-center gap-2">
+                    <FaMoneyBill size={16} className="text-[#440CAC]" />
+                    {t("todo_info.bill")}
+                  </h4>
+                  <Link
+                    href={todo.imageUrl}
+                    target="_blank"
+                    className="underline italic text-[#440CAC] text-sm">
+                    {t("todo_info.view_bill")}
+                  </Link>
+                </div>
+              )}
 
               {/* Descripción */}
               <div className="border-t pt-3">

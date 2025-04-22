@@ -118,6 +118,10 @@ const toDoInit = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT,
                 allowNull: true,
             },
+            bill: {
+              type: DataTypes.STRING(),
+              allowNull: true,
+            }
         },
         {
             sequelize,

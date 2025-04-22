@@ -10,7 +10,7 @@ import {
   HiChevronUp,
   HiChevronDown,
 } from "react-icons/hi2";
-import { FaImage } from "react-icons/fa";
+import { FaImage, FaMoneyBill } from "react-icons/fa";
 import { FiTool } from "react-icons/fi";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -169,6 +169,22 @@ const ToDoItem = ({ todo, serial, period, refetch }) => {
               </div>
             )}
 
+            {/* Factura */}
+            {todo.bill && (
+              <div className="border-t pt-3 space-y-1">
+                <h4 className="font-semibold flex items-center gap-2">
+                  <FaMoneyBill size={16} className="text-[#440CAC]" />
+                  {t("todo_info.bill")}
+                </h4>
+                <Link
+                  href={todo.imageUrl}
+                  target="_blank"
+                  className="underline italic text-[#440CAC] text-sm">
+                  {t("todo_info.view_bill")}
+                </Link>
+              </div>
+            )}
+
             {/* Descripción */}
             <div className="border-t pt-3">
               <p>
@@ -180,7 +196,7 @@ const ToDoItem = ({ todo, serial, period, refetch }) => {
                   {todo.amount.toFixed(2)} €
                 </p>
               )}
-               <p>
+              <p>
                 <strong>{t("todo_info.code")}:</strong> {serial} - {period}
               </p>
             </div>
@@ -307,13 +323,15 @@ const ToDoItem = ({ todo, serial, period, refetch }) => {
             {/* Mensajes */}
             <div className="pt-4 space-y-4">
               <ToDoMessageList messages={messages} onRefetch={fetchMessages} />
-              {state?.user?.id && (todo.status === "PENDING" || todo.status === "IN_PROGRESS") && (
-                <ToDoMessageForm
-                  toDoId={todo.id}
-                  userId={state.user?.id}
-                  onMessageSent={fetchMessages}
-                />
-              )}
+              {state?.user?.id &&
+                (todo.status === "PENDING" ||
+                  todo.status === "IN_PROGRESS") && (
+                  <ToDoMessageForm
+                    toDoId={todo.id}
+                    userId={state.user?.id}
+                    onMessageSent={fetchMessages}
+                  />
+                )}
             </div>
 
             {/* Cancelación */}

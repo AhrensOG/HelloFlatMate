@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { toast } from "sonner";
 import axios from "axios";
-import formatDateToDDMMYYYY from "../utils/formatDate";
+import Link from "next/link";
+import { uploadFiles } from "@/app/firebase/uploadFiles";
 
 const EditMaintenanceModal = ({ task, workers, onClose, mutate }) => {
   const [workerSearch, setWorkerSearch] = useState("");
@@ -29,8 +30,18 @@ const EditMaintenanceModal = ({ task, workers, onClose, mutate }) => {
   const handleSubmit = async (values) => {
     const toastId = toast.loading("Actualizando tarea...");
     try {
+      let bill = null;
+      if (values.billFile) {
+        const uploaded = await uploadFiles(
+          [values.billFile],
+          "Facturas_Tareas"
+        );
+        bill = uploaded[0]?.url || null;
+      }
+
       const payload = {
         ...values,
+        bill,
       };
       await axios.put(`/api/admin/to_do?id=${task.id}`, payload);
       await mutate();
@@ -61,11 +72,12 @@ const EditMaintenanceModal = ({ task, workers, onClose, mutate }) => {
         <Formik
           initialValues={{
             ...task,
-            startDate: task.startDate?.slice(0, 16) || "",
-            endDate: task.endDate?.slice(0, 16) || "",
+            startDate: task.startDate?.slice(0, 16) || null,
+            endDate: task.endDate?.slice(0, 16) || null,
             reprogrammedStartDate:
-              task.reprogrammedStartDate?.slice(0, 16) || "",
-            reprogrammedEndDate: task.reprogrammedEndDate?.slice(0, 16) || "",
+              task.reprogrammedStartDate?.slice(0, 16) || null,
+            reprogrammedEndDate: task.reprogrammedEndDate?.slice(0, 16) || null,
+            billFile: null,
           }}
           onSubmit={handleSubmit}>
           {({ setFieldValue }) => (
@@ -204,10 +216,10 @@ const EditMaintenanceModal = ({ task, workers, onClose, mutate }) => {
                 <option value="FURNITURE">Mobiliario</option>
                 <option value="OTHERS">Otros</option>
               </Field>
-              <label className="flex gap-2 items-center">
+              {/* <label className="flex gap-2 items-center">
                 <Field type="checkbox" name="emergency" />
                 Marcar como urgente
-              </label>
+              </label> */}
               <Field
                 name="responsibility"
                 as="select"
@@ -295,6 +307,33 @@ const EditMaintenanceModal = ({ task, workers, onClose, mutate }) => {
                   className="w-full border p-2"
                 />
               </div>
+
+              {/* Factura */}
+              {task.bill && (
+                <div className="border-t pt-3 space-y-1 flex flex-col ">
+                  <label className="text-xs font-light">Factura actual</label>
+
+                  <Link
+                    href={task.bill}
+                    target="_blank"
+                    className="underline italic text-[#440CAC] text-sm w-20">
+                    Ver factura
+                  </Link>
+                </div>
+              )}
+
+              {/* BillFile */}
+              <div>
+                <label className="text-xs font-light">Factura (opcional)</label>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setFieldValue("billFile", e.currentTarget.files[0])
+                  }
+                  className="w-full border p-2"
+                />
+              </div>
+
               <button
                 type="submit"
                 className="bg-blue-500 text-white p-2 w-full">
