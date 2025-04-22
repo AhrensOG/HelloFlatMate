@@ -278,7 +278,7 @@ const MaintenanceDetailModal = ({ task, onClose }) => {
             </div>
           )}
 
-          {state.user?.id && state.user?.role === "ADMIN" && (
+          {state.user?.id && (
             <ToDoMessagesSection toDoId={task.id} currentUser={state.user} />
           )}
         </div>
