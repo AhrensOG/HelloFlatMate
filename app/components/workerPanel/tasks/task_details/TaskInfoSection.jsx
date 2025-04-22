@@ -8,11 +8,36 @@ import {
   HiOutlineCurrencyEuro,
   HiOutlineWrench,
   HiOutlineInformationCircle,
-  HiOutlineRefresh,
-  HiOutlineUserGroup,
 } from "react-icons/hi2";
 import TaskInfoCard from "./TaskInfoCard";
 import LocationSection from "@/app/components/user/property-details/main/LocationSection";
+
+const SITE_LABELS = {
+  MY_ROOM: "Mi habitación",
+  KITCHEN: "Cocina",
+  LIVING_ROOM: "Sala de estar",
+  WC1: "Baño 1",
+  WC2: "Baño 2",
+  HALLWAY_COMMON_AREAS: "Pasillo / Zonas comunes",
+  OTHERS: "Otros",
+}
+
+const TYPE_LABELS = {
+  ELECTRICITY: "Electricidad",
+  CARPENTRY: "Carpintería",
+  LOCKSMITHING: "Cerrajería",
+  PLUMBING: "Fontanería",
+  GLAZING: "Cristalería",
+  WIFI: "Wi-Fi",
+  APPLIANCES: "Electrodomésticos",
+  FURNITURE: "Muebles",
+  OTHERS: "Otros",
+}
+
+const PREFERRED_TIME_SLOT = {
+  MORNING: "Mañana",
+  AFTERNOON: "Tarde",
+}
 
 export default function TaskInfoSection({ task }) {
   const formatDate = (dateStr) =>
@@ -84,13 +109,13 @@ export default function TaskInfoSection({ task }) {
             <div>
               <p className="font-semibold">Incidencia</p>
               <p>
-                <strong>Tipo:</strong> {task.incidentType}
+                <strong>Tipo:</strong> { TYPE_LABELS[task.incidentType] || task.incidentType}
               </p>
               <p>
-                <strong>Zona:</strong> {task.incidentSite}
+                <strong>Zona:</strong> {SITE_LABELS[task.incidentSite] || task.incidentSite}
               </p>
               <p>
-                <strong>Horario preferido:</strong> {task.preferredTimeSlot}
+                <strong>Horario preferido:</strong> {PREFERRED_TIME_SLOT[task.preferredTimeSlot] || task.preferredTimeSlot}
               </p>
               {task.emergency && (
                 <p className="text-red-600 font-semibold mt-1">
@@ -107,7 +132,7 @@ export default function TaskInfoSection({ task }) {
               <p className="font-semibold">Coste</p>
               <p>
                 <strong>Importe asignado:</strong>{" "}
-                {task.amount === 0 ? "Sin cargo" : `${task.amount} €`}
+                {task.amount === 0 ? "Sin cargo" : `${task.amount === null ? "" : task.amount} €`}
               </p>
               {task.responsibility && (
                 <p>
