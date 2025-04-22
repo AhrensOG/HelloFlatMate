@@ -34,7 +34,7 @@ const OwnerIncidences = () => {
       LIVING_ROOM: t("labels.LIVING_ROOM"),
       WC1: t("labels.WC1"),
       WC2: t("labels.WC2"),
-      HALLWAY_COMMON_AREAS: t("labels.hallway_common_areas"),
+      HALLWAY_COMMON_AREAS: t("labels.HALLWAY_COMMON_AREAS"),
       OTHERS: t("labels.OTHERS"),
     },
     type: {

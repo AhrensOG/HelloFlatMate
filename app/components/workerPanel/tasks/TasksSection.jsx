@@ -190,19 +190,38 @@ export default function TasksSection({ section }) {
               ) : (
                 [...filteredTasks]
                   .sort((a, b) => {
-                    if (a.emergency && !b.emergency) return -1;
-                    if (!a.emergency && b.emergency) return 1;
-
-                    const order = {
+                    const STATUS_ORDER = {
                       PENDING: 0,
                       IN_PROGRESS: 1,
                       COMPLETED: 2,
                       CANCELLED: 3,
                     };
 
-                    return order[a.status] - order[b.status];
-                  })
+                    // 1. Emergency PENDING arriba del todo
+                    if (
+                      a.status === "PENDING" &&
+                      a.emergency &&
+                      !(b.status === "PENDING" && b.emergency)
+                    )
+                      return -1;
+                    if (
+                      b.status === "PENDING" &&
+                      b.emergency &&
+                      !(a.status === "PENDING" && a.emergency)
+                    )
+                      return 1;
 
+                    // 2. Orden por status
+                    const statusDiff =
+                      STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
+                    if (statusDiff !== 0) return statusDiff;
+
+                    // 3. Dentro del mismo status, ordenar por fecha (más nuevo arriba)
+                    return (
+                      new Date(b.creationDate).getTime() -
+                      new Date(a.creationDate).getTime()
+                    );
+                  })
                   .map((task) => (
                     <div
                       key={task.id}

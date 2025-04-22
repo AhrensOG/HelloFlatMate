@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 const OwnerIncidencesPage = () => {
   return (
     <Suspense fallback={<div></div>}>
-      <OwnerIncidences />;
+      <OwnerIncidences />
     </Suspense>
   );
 };
