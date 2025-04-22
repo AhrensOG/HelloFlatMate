@@ -1416,6 +1416,7 @@
         "title_3": "My Tenants",
         "title_4": "Supplies",
         "title_5": "Chats",
+        "title_6": "Contracts",
         "sidebar": {
             "links": {
                 "name_1": "Panel",
@@ -1423,7 +1424,8 @@
                 "name_3": "My Tenants",
                 "name_4": "Supplies",
                 "name_5": "Payments",
-                "name_6": "Incidences"
+                "name_6": "Incidences",
+                "name_7": "Contract"
             },
             "btn_logout": "Log Out"
         },
@@ -1570,7 +1572,7 @@
             "LIVING_ROOM": "Living room",
             "WC1": "Bathroom 1",
             "WC2": "Bathroom 2",
-            "HALHALLWAY_COMMON_AREAS": "Hallway / Common areas",
+            "HALLWAY_COMMON_AREAS": "Hallway / Common areas",
             "OTHERS": "Others",
 
             "ELECTRICITY": "Electricity",

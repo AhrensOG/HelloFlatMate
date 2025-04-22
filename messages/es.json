@@ -1430,6 +1430,7 @@
         "title_3": "Mis Inquilinos",
         "title_4": "Suministros",
         "title_5": "Chats",
+        "title_6": "Contratos",
         "sidebar": {
             "links": {
                 "name_1": "Panel",
@@ -1437,7 +1438,8 @@
                 "name_3": "Mis Inquilinos",
                 "name_4": "Suministros",
                 "name_5": "Pagos",
-                "name_6": "Incidencias"
+                "name_6": "Incidencias",
+                "name_7": "Contratos"
             },
             "btn_logout": "Cerrar sesión"
         },
@@ -1584,7 +1586,7 @@
             "LIVING_ROOM": "Sala de estar",
             "WC1": "Baño 1",
             "WC2": "Baño 2",
-            "HALHALLWAY_COMMON_AREAS": "Pasillo / Zonas comunes",
+            "HALLWAY_COMMON_AREAS": "Pasillo / Zonas comunes",
             "OTHERS": "Otros",
 
             "ELECTRICITY": "Electricidad",
