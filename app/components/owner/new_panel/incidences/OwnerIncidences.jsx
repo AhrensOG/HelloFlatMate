@@ -113,6 +113,26 @@ const OwnerIncidences = () => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const sortToDos = (todos) => {
+    const STATUS_ORDER = {
+      PENDING: 0,
+      IN_PROGRESS: 1,
+      COMPLETED: 2,
+      CANCELLED: 3,
+    };
+  
+    return [...todos].sort((a, b) => {
+      if (a.status === "PENDING" && a.emergency && !(b.status === "PENDING" && b.emergency)) return -1;
+      if (b.status === "PENDING" && b.emergency && !(a.status === "PENDING" && a.emergency)) return 1;
+  
+      // Luego por status
+      const statusDiff = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
+      if (statusDiff !== 0) return statusDiff;
+  
+      return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime();
+    });
+  };
+
   return (
     <div className="w-full space-y-8 bg-white pb-2">
       <header>
@@ -147,12 +167,12 @@ const OwnerIncidences = () => {
       </div>
 
       {Object.keys(grouped).length === 0 ? (
-        <p className="text-sm text-gray-500">{t("no_incidences")}</p>
+        <p className="text-sm text-gray-500">{t("no_incidences")};</p>
       ) : (
         Object.entries(grouped).map(([serial, list]) => (
           <div key={serial} className="space-y-4">
             <h2 className="text-lg font-bold border-b pb-1">{serial}</h2>
-            {list.map((todo) => (
+            {sortToDos(list).map((todo) => (
               <ToDoCard
                 key={todo.id}
                 ref={(el) => {
