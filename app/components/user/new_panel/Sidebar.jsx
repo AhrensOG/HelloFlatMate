@@ -12,6 +12,17 @@ const Sidebar = () => {
     const t = useTranslations("user_profile_v2.sidebar");
     const { state } = useContext(Context);
     const pathname = usePathname();
+
+    let shouldShowIncidences = false;
+
+    if (
+      state.user?.leaseOrdersRoom &&
+      Array.isArray(state.user.leaseOrdersRoom)
+    ) {
+      shouldShowIncidences = state.user.leaseOrdersRoom.some(
+        (order) => order.room?.property?.category !== "HELLO_LANDLORD"
+      );
+    }
     const links = [
         {
             name: t("links.profile"),
@@ -43,11 +54,15 @@ const Sidebar = () => {
             href: "/pages/user/chats",
             icon: <ChatBubbleBottomCenterIcon className="size-6" />,
         },
-        {
-          name: t("links.incidences"),
-          href: "/pages/user/incidences",
-          icon: <WrenchIcon className="size-6" />,
-      },
+        ...(shouldShowIncidences
+        ? [
+            {
+              name: t("links.incidences"),
+              href: "/pages/user/incidences",
+              icon: <WrenchIcon className="size-6" />,
+            },
+          ]
+        : []),
     ];
 
     return (

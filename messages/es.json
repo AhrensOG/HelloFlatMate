@@ -1144,6 +1144,7 @@
           "others": "Otros"
         }
       },
+      "show_incidence_form": "Actualmente no puedes reportar incidencias porque no tienes ninguna orden de arrendamiento activa que lo permita. Esto puede deberse a que tu reserva aún no ha comenzado, ya ha finalizado, o tu alojamiento no proporciona este servicio. Si crees que esto es un error, por favor contacta con el soporte.",
       "senderType_worker": "Técnico",
       "senderType_client": "Inquilino",
       "senderType_admin": "Administrador",
@@ -1192,7 +1193,7 @@
         "message_placeholder": "Detalles sobre el servicio que necesitas...",
         "upload_image": "Subir imagen",
         "image_ready": "Archivo listo para enviar ✅",
-        "is_present": "Tílda la opción si estarás presente durante el servicio.",
+        "is_present": "Marca esta opción si estarás presente durante el servicio de reparación. Si no la marcas, entenderemos que autorizas el ingreso al alojamiento en tu ausencia.",
         "submit": "Enviar solicitud",
         "dont_have_orders": "No tienes ordenes para enviar una incidencia.",
         "type_clean": "Limpieza",

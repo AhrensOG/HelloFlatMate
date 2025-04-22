@@ -17,6 +17,18 @@ const Incidences = () => {
 
   const client = state.user;
 
+  const now = new Date();
+
+  const canCreateIncidence = client?.leaseOrdersRoom?.some((order) => {
+    const propertyCategory = order.room?.property?.category;
+    const isNotLandlord = propertyCategory !== "HELLO_LANDLORD";
+    const isActive = order.isActive;
+    const start = new Date(order.startDate);
+    const end = new Date(order.endDate);
+
+    return isNotLandlord && isActive && now >= start && now <= end;
+  });
+
   const fetchToDos = async () => {
     if (!client?.id) return;
 
@@ -67,27 +79,39 @@ const Incidences = () => {
         new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
     );
 
-    const STATUS_ORDER = {
-      PENDING: 0,
-      IN_PROGRESS: 1,
-      COMPLETED: 2,
-      CANCELLED: 3,
-    };
-    
-    const sortToDos = (todos) => {
-      return [...todos].sort((a, b) => {
-        // Emergency PENDING first
-        if (a.status === "PENDING" && a.emergency && !(b.status === "PENDING" && b.emergency)) return -1;
-        if (b.status === "PENDING" && b.emergency && !(a.status === "PENDING" && a.emergency)) return 1;
-    
-        // By status
-        const statusDiff = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
-        if (statusDiff !== 0) return statusDiff;
-    
-        // By creationDate (most recent first)
-        return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime();
-      });
-    };
+  const STATUS_ORDER = {
+    PENDING: 0,
+    IN_PROGRESS: 1,
+    COMPLETED: 2,
+    CANCELLED: 3,
+  };
+
+  const sortToDos = (todos) => {
+    return [...todos].sort((a, b) => {
+      // Emergency PENDING first
+      if (
+        a.status === "PENDING" &&
+        a.emergency &&
+        !(b.status === "PENDING" && b.emergency)
+      )
+        return -1;
+      if (
+        b.status === "PENDING" &&
+        b.emergency &&
+        !(a.status === "PENDING" && a.emergency)
+      )
+        return 1;
+
+      // By status
+      const statusDiff = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
+      if (statusDiff !== 0) return statusDiff;
+
+      // By creationDate (most recent first)
+      return (
+        new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+      );
+    });
+  };
 
   return (
     <div className="w-full space-y-8 bg-white p-6 contain-inline-size">
@@ -103,9 +127,21 @@ const Incidences = () => {
         </p>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-[#440cac] text-white px-4 py-2 rounded-lg shadow hover:bg-[#361089] transition">
+          disabled={!canCreateIncidence}
+          className={clsx(
+            "px-4 py-2 rounded-lg shadow transition",
+            canCreateIncidence
+              ? "bg-[#440cac] text-white hover:bg-[#361089]"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          )}>
           {showForm ? t("close_form") : t("open_form")}
         </button>
+
+        {!canCreateIncidence && (
+          <p className="text-sm text-gray-600 mt-2 max-w-xl">
+            {t("show_incidence_form")}
+          </p>
+        )}
       </div>
 
       {/* Formulario */}

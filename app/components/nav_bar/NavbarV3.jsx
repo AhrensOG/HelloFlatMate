@@ -65,6 +65,34 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
     setUnreadCount(state.unreadCount);
   }, [state.unreadCount]);
 
+  const shouldShowIncidences = (() => {
+    if (!user?.role) return true;
+  
+    if (user.role === "CLIENT") {
+      if (!Array.isArray(user.leaseOrdersRoom) || user.leaseOrdersRoom.length === 0) {
+        return true;
+      }
+  
+      const allCategories = user.leaseOrdersRoom.map(
+        (order) => order.room?.property?.category
+      );
+  
+      return allCategories.some((cat) => cat !== "HELLO_LANDLORD");
+    }
+  
+    if (user.role === "OWNER") {
+      if (!Array.isArray(user.properties) || user.properties.length === 0) {
+        return true;
+      }
+  
+      const allCategories = user.properties.map((property) => property?.category);
+  
+      return allCategories.some((cat) => cat !== "HELLO_LANDLORD");
+    }
+  
+    return true;
+  })();
+
   const renderMenuOptions = () => {
     switch (state?.user?.role) {
       case "ADMIN":
@@ -105,12 +133,14 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
               className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
               {t("owner_link_4")}
             </Link>
-            <Link
-              onClick={() => toggleMenu()}
-              href="/pages/owner/incidences"
-              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
-              {t("owner_link_5")}
-            </Link>
+            {shouldShowIncidences && (
+              <Link
+                onClick={() => toggleMenu()}
+                href="/pages/owner/incidences"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
+                {t("owner_link_5")}
+              </Link>
+            )}
             <Link
               onClick={() => toggleMenu()}
               href="/pages/owner/chats"
@@ -152,12 +182,14 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
               className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
               {t("user_link_5")}
             </Link>
-            <Link
-              onClick={() => toggleMenu()}
-              href="/pages/user/incidences"
-              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
-              {t("user_link_6")}
-            </Link>
+            {shouldShowIncidences && (
+              <Link
+                onClick={() => toggleMenu()}
+                href="/pages/user/incidences"
+                className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
+                {t("user_link_6")}
+              </Link>
+            )}
             <Link
               onClick={() => toggleMenu()}
               href="/pages/user/chats"

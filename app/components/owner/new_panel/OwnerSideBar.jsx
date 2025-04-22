@@ -7,11 +7,24 @@ import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
 import { useTranslations } from "next-intl";
+import { TbContract } from "react-icons/tb";
 
 const OwnerSidebar = () => {
     const t = useTranslations("owner_panel.sidebar");
     const { state } = useContext(Context);
     const pathname = usePathname();
+
+    let shouldShowIncidences = false;
+
+    if (
+      state.user?.properties &&
+      Array.isArray(state.user.properties)
+    ) {
+      shouldShowIncidences = state.user.properties.some(
+        (property) => property?.category !== "HELLO_LANDLORD"
+      );
+    }
+
     const links = [
         {
             name: t("links.name_1"),
@@ -33,10 +46,19 @@ const OwnerSidebar = () => {
           href: "/pages/owner/payments",
           icon: <CreditCardIcon className="size-6" />,
         },
+        ...(shouldShowIncidences
+          ? [
+              {
+                name: t("links.name_6"),
+                href: "/pages/owner/incidences",
+                icon: <WrenchIcon className="size-6" />,
+              },
+            ]
+          : []),
         {
-          name: t("links.name_6"),
-          href: "/pages/owner/incidences",
-          icon: <WrenchIcon className="size-6" />,
+          name: t("links.name_7"),
+          href: "/pages/owner/contracts",
+          icon: <TbContract className="size-6" />,
         },
         {
             name: "Chats",
@@ -46,7 +68,7 @@ const OwnerSidebar = () => {
     ];
 
     return (
-        <aside className="hidden h-full max-h-[650px] sticky top-8 max-w-80 w-full rounded-xl border bg-white text-gray-800 shadow-sm md:flex flex-col my-4 py-4">
+        <aside className="hidden h-full max-h-[750px] sticky top-8 max-w-80 w-full rounded-xl border bg-white text-gray-800 shadow-sm md:flex flex-col my-4 py-4">
             <div className="flex flex-col items-center mb-8">
                 <div className="bg-gray-100 grid place-items-center rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="105px" height="105px">

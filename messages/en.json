@@ -1129,6 +1129,7 @@
           "others": "Others"
         }
       },
+      "show_incidence_form": "Currently you cannot report issues because you do not have an active rental order that allows this. This may be because your booking has not yet started, has already ended, or your accommodation does not provide this service. If you believe this is an error, please contact support.",
       "senderType_worker": "Technician",
       "senderType_client": "Tenant",
       "senderType_admin": "Administrator",
@@ -1177,7 +1178,7 @@
         "message_placeholder": "Details about the service you need...",
         "upload_image": "Upload image",
         "image_ready": "File ready to send ✅",
-        "is_present": "Tick this if you'll be present during the service.",
+        "is_present": "Check this option if you will be present during the repair service. If left unchecked, we will assume you authorise access to the accommodation in your absence.",
         "submit": "Send request",
         "dont_have_orders": "You don't have any orders to report an issue.",
         "type_clean": "Cleaning",

@@ -52,16 +52,31 @@ const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
     const toastId = toast.loading("Solicitando...");
 
     const now = new Date();
-    const selectedOrder = leaseOrders.find((order) => {
+
+    const validOrders = leaseOrders.filter((order) => {
       const start = new Date(order.startDate);
       const end = new Date(order.endDate);
-      return start <= now && now <= end;
+      return order.isActive && start <= now && now <= end;
     });
+
+    const selectedOrder =
+      validOrders.find(
+        (order) => order.room?.property?.category !== "HELLO_LANDLORD"
+      ) || validOrders[0];
 
     if (!selectedOrder) {
       toast.info("No se encontró una orden de alojamiento vigente.", {
         description:
           "Si crees que es un error por favor, contacta con nuestro soporte.",
+        id: toastId,
+      });
+      return;
+    }
+
+    if (selectedOrder.room?.property?.category === "HELLO_LANDLORD") {
+      toast.info("No puedes generar incidencias para esta propiedad.", {
+        description:
+          "Esta propiedad no ofrece este servicio. Si necesitas ayuda o crees que se trata de un error, contacta con soporte.",
         id: toastId,
       });
       return;
@@ -90,7 +105,7 @@ const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
       propertyId: selectedOrder.propertyId,
       clientMessage: values.clientMessage,
       isPresent: values.isPresent,
-      emergency: values.emergency,
+      emergency: false,
       incidentSite: values.incidentSite,
       incidentType: values.incidentType,
       imageUrl,
@@ -99,7 +114,7 @@ const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
     try {
       await axios.post("/api/to_do/user_panel", dataToSend);
       toast.success(t("toast.success"), { id: toastId });
-      await refetch()
+      await refetch();
       resetForm();
     } catch (error) {
       console.error(error);
@@ -231,7 +246,7 @@ const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
               />
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <Field
                 type="checkbox"
                 name="emergency"
@@ -239,7 +254,7 @@ const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
                 className="min-w-5 min-h-5"
               />
               <label htmlFor="emergencyCheckbox">{t("form.emergency")}</label>
-            </div>
+            </div> */}
 
             <div className="flex items-start gap-2">
               <Field
