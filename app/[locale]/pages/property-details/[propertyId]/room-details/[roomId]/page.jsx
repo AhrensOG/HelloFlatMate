@@ -125,16 +125,20 @@ export default function RoomDetails({ params }) {
             {/* MOBILE */}
             <div className="flex flex-col max-w-screen-sm sm:hidden w-full gap-2 ">
                 <header className="w-full space-y-4">
-                    <div className="w-full">
+                    <div className="w-full"> 
+                      {/* {allImages.length > 0 && (
+                            <SliderItem img={allImages[0]} height="h-[23rem]" />
+                        )} */}
                         {allImages.length > 0 ? (
                             <SliderDetails>
                                 {allImages.map((image, index) => {
-                                    return <SliderItem key={index} img={image} height="h-[23rem]" />;
+                                    return <SliderItem key={index+"mobile"} img={image} height="h-[23rem]" />;
                                 })}
                             </SliderDetails>
                         ) : (
                             <div className="h-[23rem] w-full bg-gray-200 animate-pulse" />
                         )}
+                        {/* {allImages.length > 0 && <SliderDetails images={allImages} />} */}
                     </div>
                     <div className="px-3">
                         <NavBarDetails callBack={() => router.back()} />
@@ -215,7 +219,7 @@ export default function RoomDetails({ params }) {
                             {allImages.length > 0 ? (
                                 <SliderDetails>
                                     {allImages.map((image, index) => {
-                                        return <SliderItem key={index} img={image} height="h-[30rem]" />;
+                                        return <SliderItem key={index+"mobile"} img={image} height="h-[30rem]" />;
                                     })}
                                 </SliderDetails>
                             ) : (
