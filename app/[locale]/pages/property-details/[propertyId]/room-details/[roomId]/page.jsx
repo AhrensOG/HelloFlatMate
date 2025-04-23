@@ -50,74 +50,44 @@ export default function RoomDetails({ params }) {
     const router = useRouter();
 
     const [showModal, setShowModal] = useState(false);
-    const [data, setData] = useState(state.properties ? state.properties.find((property) => propertyId === property.id) : null);
+    const [data, setData] = useState(null);
     const [roomData, setRoomData] = useState();
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [allImages, setAllImages] = useState([]);
     const [isLeaseOrderActive, setIsLeaseOrderActive] = useState(true);
 
     useEffect(() => {
-        if (!data) {
-            const fetchData = async () => {
-                try {
-                    const response = await axios.get(`/api/property?id=${propertyId}`);
-                    const propertyData = response.data.property;
-
-                    setData(propertyData);
-
-                    const roomData_1 = propertyData.rooms.find((room) => roomId == room.id);
-                    setRoomData(roomData_1);
-
-                    // Filtramos las habitaciones que no son la actual
-                    const filtered = propertyData.rooms.filter((room) => room.id !== Number(roomId));
-                    setFilteredRooms(filtered);
-
-                    // Verificar si la habitación tiene alguna leaseOrderRoom con estado "active"
-                    const activeLeaseOrder = roomData?.leaseOrdersRoom?.find((order) => order.isActive === true);
-
-                    // Guardar en el estado local si hay alguna leaseOrderRoom con estado "active"
-                    setIsLeaseOrderActive(activeLeaseOrder || false);
-
-                    // Obtenemos las imágenes de la propiedad y de la habitación actual
-                    const propertyImages = propertyData?.images || [];
-                    const roomImages = roomData_1?.images || [];
-
-                    // Combinamos ambos arrays de imágenes en uno solo
-                    const allImages = [...roomImages, ...propertyImages];
-
-                    // Aquí puedes hacer lo que necesites con el array de imágenes combinado (e.g., guardarlo en un estado)
-                    setAllImages(allImages);
-                } catch (error) {
-                    console.error("Error fetching property data:", error);
-                }
-            };
-
-            fetchData();
-        } else {
-            const roomData_1 = data.rooms.find((room) => roomId == room.id);
-            setRoomData(roomData_1);
-
-            // Filtramos las habitaciones que no son la actual
-            const filtered = data.rooms.filter((room) => room.id !== Number(roomId));
-            setFilteredRooms(filtered);
-
-            // Verificar si la habitación tiene alguna leaseOrderRoom con estado "active"
-            const activeLeaseOrder = roomData?.leaseOrdersRoom?.find((order) => order.isActive === true);
-
-            // Guardar en el estado local si hay alguna leaseOrderRoom con estado "active"
-            setIsLeaseOrderActive(activeLeaseOrder || false);
-
-            // Obtenemos las imágenes de la propiedad y de la habitación actual
-            const propertyImages = data?.images || [];
-            const roomImages = roomData_1?.images || [];
-
-            // Combinamos ambos arrays de imágenes en uno solo
-            const allImages = [...roomImages, ...propertyImages];
-
-            // Aquí puedes hacer lo que necesites con el array de imágenes combinado (e.g., guardarlo en un estado)
-            setAllImages(allImages);
-        }
-    }, []);
+      if (!data) {
+          const fetchData = async () => {
+              try {
+                  const response = await axios.get(`/api/property?id=${propertyId}`);
+                  const propertyData = response.data.property;
+  
+                  setData(propertyData);
+  
+                  const roomData_1 = propertyData.rooms.find((room) => roomId == room.id);
+                  setRoomData(roomData_1);
+  
+                  const filtered = propertyData.rooms.filter((room) => room.id !== Number(roomId));
+                  setFilteredRooms(filtered);
+  
+                  const propertyImages = propertyData?.images || [];
+                  const roomImages = roomData_1?.images || [];
+                  setAllImages([...roomImages, ...propertyImages]);
+  
+                  // 👇 Ahora usamos `roomData_1` directamente (que ya tenemos)
+                  const activeLeaseOrder = roomData_1?.leaseOrdersRoom?.find((order) => order.isActive === true);
+                  setIsLeaseOrderActive(activeLeaseOrder || false);
+  
+              } catch (error) {
+                  console.error("Error fetching property data:", error);
+              }
+          };
+  
+          fetchData();
+      }
+  }, []);
+  
 
     if (!data) {
         return (
@@ -225,28 +195,6 @@ export default function RoomDetails({ params }) {
                         ]}
                     />
                     {filteredRooms.length > 0 ? <RoomSection data={filteredRooms} title={t("other_rooms_title")} /> : null}
-                    {/* {showModal && (
-            <ReservationModal
-              calendarType={roomData?.calendar}
-              callback={handleShowModal}
-              category={data.category}
-              data={{
-                date: null,
-                startDate: null,
-                endDate: null,
-                price: roomData?.price,
-                propertyId: data.id,
-                clientId: state?.user?.id,
-                ownerId: data.ownerId,
-                roomId: roomData?.id,
-                propertyName: roomData?.name,
-                user: state?.user,
-                rentalPeriods: roomData?.rentalItems,
-                leaseOrdersProperty: roomData?.leaseOrdersRoom || null,
-                room: { roomData? },
-              }}
-            />
-          )} */}
                 </main>
                 <SeventhSection />
                 <Footer_1 />
