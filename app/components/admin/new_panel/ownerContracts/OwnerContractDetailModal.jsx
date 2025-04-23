@@ -4,7 +4,6 @@ import React from "react";
 import {
   DocumentTextIcon,
   CalendarIcon,
-  CurrencyEuroIcon,
   HomeModernIcon,
   UserIcon,
   CheckCircleIcon,
@@ -18,13 +17,6 @@ const STATUS_LABELS = {
   ACTIVE: "Activo",
   CANCELLED: "Cancelado",
   FINISHED: "Finalizado",
-};
-
-const CATEGORY_LABELS = {
-  HELLO_LANDLORD: "hellolandlord",
-  HELLO_ROOM: "helloroom",
-  HELLO_COLIVING: "hellocoliving",
-  HELLO_STUDIO: "hellostudio",
 };
 
 const OwnerContractDetailModal = ({ contract, onClose }) => {
@@ -66,13 +58,6 @@ const OwnerContractDetailModal = ({ contract, onClose }) => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-600">Categoría</h3>
-            <p className="text-gray-800">
-              {CATEGORY_LABELS[contract.category]}
-            </p>
-          </div>
-
-          <div>
             <h3 className="font-semibold text-gray-600">Estado</h3>
             <p className="text-gray-800">{STATUS_LABELS[contract.status]}</p>
           </div>
@@ -87,11 +72,6 @@ const OwnerContractDetailModal = ({ contract, onClose }) => {
               )}
               {contract.isSigned ? "Sí" : "No"}
             </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-gray-600">Duración</h3>
-            <p className="text-gray-800">{contract.durationMonths} meses</p>
           </div>
 
           <div>
@@ -112,59 +92,38 @@ const OwnerContractDetailModal = ({ contract, onClose }) => {
             </p>
           </div>
 
-          <div className="sm:col-span-2">
-            <h3 className="font-semibold text-gray-600">IBAN</h3>
-            <p className="text-gray-800">{contract.iban}</p>
-          </div>
+          {contract.signedAt && (
+            <div>
+              <h3 className="font-semibold text-gray-600">Fecha de firma</h3>
+              <p className="text-gray-800">
+                {new Date(contract.signedAt).toLocaleString("es-ES")}
+              </p>
+            </div>
+          )}
 
-          {contract.fixedMonthlyRentPerRoom && (
+          {contract.ownerFdoData && (
+            <div>
+              <h3 className="font-semibold text-gray-600">Fdo. Propietario</h3>
+              <p className="text-gray-800">{contract.ownerFdoData}</p>
+            </div>
+          )}
+
+          {contract.hfmFdoData && (
             <div>
               <h3 className="font-semibold text-gray-600">
-                Precio fijo por habitación
+                Fdo. HelloFlatmate
               </h3>
-              <p className="text-gray-800 flex items-center gap-1">
-                <CurrencyEuroIcon className="h-5 w-5" />
-                {contract.fixedMonthlyRentPerRoom} €
-              </p>
+              <p className="text-gray-800">{contract.hfmFdoData}</p>
             </div>
           )}
 
-          {contract.fixedMonthlyRentTotal && (
-            <div>
-              <h3 className="font-semibold text-gray-600">Total mensual</h3>
-              <p className="text-gray-800 flex items-center gap-1">
-                <CurrencyEuroIcon className="h-5 w-5" />
-                {contract.fixedMonthlyRentTotal} €
-              </p>
-            </div>
-          )}
-
-          {contract.hfm_retributions && (
-            <div>
-              <h3 className="font-semibold text-gray-600">Retribución para helloflatmate</h3>
-              <p className="text-gray-800 flex items-center gap-1">
-                <CurrencyEuroIcon className="h-5 w-5" />
-                {contract.hfm_retributions} €
-              </p>
-            </div>
-          )}
-
-          {contract.includesPremiumServices && (
+          {contract.originalPdfUrl && (
             <div className="sm:col-span-2">
               <h3 className="font-semibold text-gray-600">
-                Incluye servicios premium
-              </h3>
-              <p className="text-green-700 font-medium">Sí</p>
-            </div>
-          )}
-
-          {contract.url && (
-            <div className="sm:col-span-2">
-              <h3 className="font-semibold text-gray-600">
-                Contrato firmado (PDF)
+                Contrato original (PDF)
               </h3>
               <a
-                href={contract.url}
+                href={contract.originalPdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 underline flex items-center gap-1">
@@ -173,18 +132,18 @@ const OwnerContractDetailModal = ({ contract, onClose }) => {
             </div>
           )}
 
-          {Array.isArray(contract.rooms) && contract.rooms.length > 0 && (
+          {contract.signedPdfUrl && (
             <div className="sm:col-span-2">
               <h3 className="font-semibold text-gray-600">
-                Habitaciones y precios
+                Contrato firmado (PDF)
               </h3>
-              <ul className="list-disc pl-6">
-                {contract.rooms.map((room, index) => (
-                  <li key={index} className="text-gray-800">
-                    Habitación {room.roomNumber} - {room.price} €
-                  </li>
-                ))}
-              </ul>
+              <a
+                href={contract.signedPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline flex items-center gap-1">
+                <DocumentTextIcon className="h-5 w-5" /> Ver documento
+              </a>
             </div>
           )}
         </div>

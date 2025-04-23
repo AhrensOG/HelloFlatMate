@@ -13,16 +13,6 @@ const ownerContractInit = (sequelize, DataTypes) => {
         primaryKey: true,
       },
 
-      category: {
-        type: DataTypes.ENUM(
-          "HELLO_LANDLORD",
-          "HELLO_ROOM",
-          "HELLO_COLIVING",
-          "HELLO_STUDIO"
-        ),
-        allowNull: false,
-      },
-
       status: {
         type: DataTypes.ENUM(
           "PENDING",
@@ -50,61 +40,33 @@ const ownerContractInit = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
-      durationMonths: {
-        type: DataTypes.INTEGER,
+      originalPdfUrl: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
 
-      iban: {
+      signedPdfUrl: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
+      ownerSignature: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
+      ownerFdoData: {
         type: DataTypes.STRING,
         allowNull: true,
       },
 
-      rooms: {
-        type: DataTypes.JSON,
-        allowNull: true,
-      },
-
-      // Si es HELLO_ROOM
-      fixedMonthlyRentPerRoom: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
-      },
-
-      fixedMonthlyRentTotal: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
-      },
-
-      // Servicios Premium contratados
-      includesPremiumServices: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
-
-      // Datos administrativos
-      url: {
+      hfmFdoData: {
         type: DataTypes.STRING,
         allowNull: true,
       },
 
       signedAt: {
         type: DataTypes.DATE,
-        allowNull: true,
-      },
-
-      notifiedAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-
-      createdBy: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-
-      hfm_retributions: {
-        type: DataTypes.DECIMAL(10, 2),
         allowNull: true,
       },
     },

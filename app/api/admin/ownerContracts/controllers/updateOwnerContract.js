@@ -12,34 +12,17 @@ export async function updateOwnerContract(data) {
       );
     }
 
-    // Solo actualizamos los campos permitidos
+    // Actualizar campos relevantes
     await existingContract.update({
       status: data.status ?? existingContract.status,
       isSigned: data.isSigned ?? existingContract.isSigned,
       startDate: data.startDate ?? existingContract.startDate,
       endDate: data.endDate ?? existingContract.endDate,
-      durationMonths: data.durationMonths ?? existingContract.durationMonths,
-      iban: data.iban ?? existingContract.iban,
-      fixedMonthlyRentPerRoom:
-        existingContract.category === "HELLO_ROOM"
-          ? data.fixedMonthlyRentPerRoom ??
-            existingContract.fixedMonthlyRentPerRoom
-          : null,
-      fixedMonthlyRentTotal:
-        existingContract.category === "HELLO_ROOM"
-          ? data.fixedMonthlyRentTotal ?? existingContract.fixedMonthlyRentTotal
-          : null,
-      includesPremiumServices:
-        data.includesPremiumServices ??
-        existingContract.includesPremiumServices,
-      url: data.url ?? existingContract.url,
+      originalPdfUrl: data.originalPdfUrl ?? existingContract.originalPdfUrl,
+      signedPdfUrl: data.signedPdfUrl ?? existingContract.signedPdfUrl,
+      ownerFdoData: data.ownerFdoData ?? existingContract.ownerFdoData,
+      hfmFdoData: data.hfmFdoData ?? existingContract.hfmFdoData,
       signedAt: data.signedAt ?? existingContract.signedAt,
-      notifiedAt: data.notifiedAt ?? existingContract.notifiedAt,
-      rooms:
-        existingContract.category !== "HELLO_ROOM"
-          ? data.rooms ?? existingContract.rooms
-          : null,
-      hfm_retributions: data.hfm_retributions ?? existingContract.hfm_retributions,
     });
 
     return NextResponse.json(existingContract);

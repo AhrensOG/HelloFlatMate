@@ -7,6 +7,7 @@ import CreateOwnerContractModal from "./CreateOwnerContractModal";
 import OwnerContractsTable from "./OwnerContractsTable";
 import OwnerContractDetailModal from "./OwnerContractDetailModal";
 import OwnerContractEditModal from "./OwnerContractEditModal";
+import { toast } from "sonner";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -26,6 +27,21 @@ const OwnerContractsPanel = () => {
     isLoading,
     mutate,
   } = useSWR("/api/admin/ownerContracts", fetcher);
+
+  const handleDeleteOwnerContract = async (id) => {
+    const toastId = toast.loading("Eliminando contrato...");
+    try {
+      await axios.delete(`/api/admin/ownerContracts?id=${id}`);
+      await mutate();
+      toast.success("Contrato eliminado correctamente", { id: toastId });
+    } catch (err) {
+      console.log(err);
+      toast.info("Ocurrio un error al eliminar el contrato", {
+        id: toastId,
+        description: "Intenta nuevamente o contacta con el soporte",
+      });
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col p-4 gap-4">
@@ -49,7 +65,7 @@ const OwnerContractsPanel = () => {
       <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
         <OwnerContractsTable
           contracts={contracts}
-          onDelete={(id) => console.log(id)}
+          onDelete={(id) => handleDeleteOwnerContract(id)}
           onEdit={(contract) => {
             setSelectedContract(contract);
             setIsEditModalOpen(true);

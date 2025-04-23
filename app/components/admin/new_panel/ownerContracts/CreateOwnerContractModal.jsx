@@ -4,13 +4,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import { toast } from "sonner";
-import { PlusIcon } from "@heroicons/react/24/outline";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
-
-const CATEGORY_LABELS = {
-  HELLO_LANDLORD: "Contrato hellolandlord",
-  HELLO_ROOM: "Contrato helloroom",
-};
 
 const STATUS_LABELS = {
   PENDING: "Pendiente",
@@ -24,9 +18,6 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
   const [ownerSearch, setOwnerSearch] = useState("");
   const [filteredOwners, setFilteredOwners] = useState([]);
   const [selectedProperties, setSelectedProperties] = useState([]);
-  const [rooms, setRooms] = useState([]);
-  const [roomNumber, setRoomNumber] = useState("");
-  const [roomPrice, setRoomPrice] = useState("");
 
   const handleSearch = (query, list, keyFields, setFiltered) => {
     const lowerQuery = query.toLowerCase();
@@ -49,42 +40,51 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
     setFieldValue("propertyId", e.target.value);
   };
 
-  const handleAddRoom = () => {
-    if (!roomNumber || !roomPrice) return;
-    setRooms((prev) => [
-      ...prev,
-      { roomNumber: parseInt(roomNumber), price: parseFloat(roomPrice) },
-    ]);
-    setRoomNumber("");
-    setRoomPrice("");
-  };
-
-  const handleRemoveRoom = (index) => {
-    setRooms((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = async (values) => {
     const toastId = toast.loading("Creando contrato...");
     try {
-      let imageUrl = null;
+      let originalPdfUrl = null;
+      let signedPdfUrl = null;
+
+      const timestamp = Date.now();
+      const startDate = values.startDate;
+      const endDate = values.endDate;
+      const ownerFdoDataSanitized = values.ownerFdoData.replace(/\s+/g, "_");
+
+      const folderPath = `Contratos_Propietarios/${ownerFdoDataSanitized}/${startDate}-${endDate}`;
+
       if (values.file) {
-        const uploaded = await uploadFiles(
-          [values.file],
-          "Contratos_Propietarios"
-        );
-        imageUrl = uploaded[0]?.url || null;
+        const originalName = `${folderPath}/not_signed_${ownerFdoDataSanitized}_${timestamp}.pdf`;
+        const uploaded = await uploadFiles([values.file], originalName);
+        originalPdfUrl = uploaded[0]?.url || null;
+      }
+
+      if (values.fileSigned) {
+        const signedName = `${folderPath}/${ownerFdoDataSanitized}_${timestamp}.pdf`;
+        const uploaded = await uploadFiles([values.file], signedName);
+        signedPdfUrl = uploaded[0]?.url || null;
       }
 
       const payload = {
-        ...values,
-        url: imageUrl,
-        rooms: values.category !== "HELLO_ROOM" ? rooms : undefined,
+        ownerId: values.ownerId,
+        propertyId: values.propertyId,
+        status: values.status,
+        isSigned: values.isSigned,
+        startDate,
+        endDate,
+        originalPdfUrl,
+        signedPdfUrl,
+        ownerFdoData: values.ownerFdoData,
+        hfmFdoData: values.hfmFdoData,
+        signedAt: values.signedAt || null,
       };
+
       await axios.post("/api/admin/ownerContracts", payload);
       await mutate();
       toast.success("Contrato creado correctamente", { id: toastId });
       onClose();
     } catch (err) {
+      console.log(err);
       toast.error("Error al crear el contrato", {
         id: toastId,
         description: "Revisa los campos e intenta nuevamente.",
@@ -112,20 +112,15 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
           initialValues={{
             ownerId: "",
             propertyId: "",
-            category: "HELLO_LANDLORD",
             status: "PENDING",
             isSigned: false,
             startDate: "",
             endDate: "",
-            durationMonths: 12,
-            iban: "",
-            fixedMonthlyRentPerRoom: "",
-            fixedMonthlyRentTotal: "",
-            includesPremiumServices: false,
-            url: "",
-            isSigned: false,
             file: null,
-            hfm_retributions: null,
+            fileSigned: null,
+            ownerFdoData: "",
+            hfmFdoData: "Alberto Borrás López Administrador",
+            signedAt: "",
           }}
           onSubmit={handleSubmit}>
           {({ setFieldValue, values }) => (
@@ -181,27 +176,12 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
                 </div>
               )}
 
-              <div>
-                <label className="text-xs font-light">Tipo de contrato</label>
-                <Field
-                  as="select"
-                  name="category"
-                  className="w-full border p-2">
-                  <option value="">Contrato</option>
-                  {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
-                    <option key={key} value={key}>
-                      {label}
-                    </option>
-                  ))}
-                </Field>
-              </div>
-
+              {/* Status */}
               <div>
                 <label className="text-xs font-light">
                   Estado del contrato
                 </label>
                 <Field as="select" name="status" className="w-full border p-2">
-                  <option value="">Estado</option>
                   {Object.entries(STATUS_LABELS).map(([key, label]) => (
                     <option key={key} value={key}>
                       {label}
@@ -216,28 +196,7 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
                   name="isSigned"
                   className="border p-2 size-5"
                 />
-                <label className="text-sm font-light">¿Esta firmado?</label>
-              </div>
-
-              <div>
-                <label className="text-xs font-light">IBAN (Opcional)</label>
-                <Field
-                  type="text"
-                  name="iban"
-                  placeholder="IBAN"
-                  className="w-full border p-2"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-light">
-                  Duración del contrato (en meses)
-                </label>
-                <Field
-                  type="number"
-                  name="durationMonths"
-                  placeholder="Duración en meses"
-                  className="w-full border p-2"
-                />
+                <label className="text-sm font-light">¿Está firmado?</label>
               </div>
 
               <div>
@@ -260,111 +219,53 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
                 />
               </div>
 
-              {values.category === "HELLO_ROOM" ? (
-                <>
-                  <div>
-                    <label className="text-sm font-light">
-                      Renta mensual por habitación
-                    </label>
-                    <Field
-                      type="number"
-                      step="0.01"
-                      name="fixedMonthlyRentPerRoom"
-                      placeholder="Renta mensual por habitación (HELLO_ROOM)"
-                      className="w-full border p-2"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-light">
-                      Total mensual con ocupación completa
-                    </label>
-                    <Field
-                      type="number"
-                      step="0.01"
-                      name="fixedMonthlyRentTotal"
-                      placeholder="Total mensual con ocupación completa"
-                      className="w-full border p-2"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-light">
-                      Retribución para helloflatmate
-                    </label>
-                    <Field
-                      type="number"
-                      name="hfm_retributions"
-                      placeholder="Retribución para helloflatmate"
-                      className="w-full border p-2"
-                    />
-                  </div>
-                </>
-              ) : (
-                <div>
-                  <label className="text-sm font-light">
-                    Habitaciones del contrato
-                  </label>
-                  <div className="flex gap-2 items-end">
-                    <div className="flex flex-col w-full">
-                      <label className="text-sm font-light">
-                        Habitación Nº
-                      </label>
-
-                      <input
-                        type="number"
-                        placeholder="Room Nº"
-                        value={roomNumber}
-                        onChange={(e) => setRoomNumber(e.target.value)}
-                        className="border p-2 w-full"
-                      />
-                    </div>
-                    <div className="flex flex-col w-full">
-                      <label className="text-sm font-light">Precio</label>
-
-                      <input
-                        type="number"
-                        placeholder="Precio"
-                        value={roomPrice}
-                        onChange={(e) => setRoomPrice(e.target.value)}
-                        className="border p-2 w-full"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleAddRoom}
-                      className="text- px-4 rounded pb-2">
-                      <PlusIcon className="size-6 text-green-600" />
-                    </button>
-                  </div>
-                  {rooms.length > 0 && (
-                    <ul className="divide-y border rounded-lg mt-2">
-                      {rooms.map((room, index) => (
-                        <li
-                          key={index}
-                          className="p-2 flex justify-between text-sm font-light">
-                          Habitación {room.roomNumber} - {room.price} €
-                          <button
-                            type="button"
-                            className="text-red-500"
-                            onClick={() => handleRemoveRoom(index)}>
-                            Eliminar
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
+              <div>
+                <label className="text-sm font-light">
+                  Datos de firma del propietario
+                </label>
+                <Field
+                  type="text"
+                  name="ownerFdoData"
+                  placeholder="Ej. Juan Pérez González"
+                  className="w-full border p-2"
+                />
+              </div>
 
               <div>
                 <label className="text-sm font-light">
-                  Subir contrato firmado
+                  Datos de firma HelloFlatmate
+                </label>
+                <Field
+                  type="text"
+                  name="hfmFdoData"
+                  placeholder="Ej. Alberto Borrás López"
+                  className="w-full border p-2"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-light">
+                  Subir contrato original (PDF)
                 </label>
                 <input
                   type="file"
+                  accept="application/pdf"
                   onChange={(e) =>
                     setFieldValue("file", e.currentTarget.files[0])
+                  }
+                  className="w-full border p-2"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-light">
+                  Subir contrato firmado (PDF)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) =>
+                    setFieldValue("fileSigned", e.currentTarget.files[0])
                   }
                   className="w-full border p-2"
                 />

@@ -6,28 +6,14 @@ export async function createOwnerContract(data) {
     const newContract = await OwnerContract.create({
       ownerId: data.ownerId,
       propertyId: data.propertyId,
-      category: data.category,
       status: data.status ?? "PENDING",
       isSigned: data.isSigned ?? false,
       startDate: data.startDate,
       endDate: data.endDate,
-      durationMonths: data.durationMonths,
-      iban: data.iban ?? null,
-      fixedMonthlyRentPerRoom:
-        data.category === "HELLO_ROOM"
-          ? data.fixedMonthlyRentPerRoom ?? null
-          : null,
-      fixedMonthlyRentTotal:
-        data.category === "HELLO_ROOM"
-          ? data.fixedMonthlyRentTotal ?? null
-          : null,
-      includesPremiumServices: data.includesPremiumServices ?? false,
-      url: data.url ?? null,
+      originalPdfUrl: data.originalPdfUrl ?? null,
+      ownerFdoData: data.ownerFdoData ?? null,
+      hfmFdoData: data.hfmFdoData ?? null,
       signedAt: data.signedAt ?? null,
-      notifiedAt: data.notifiedAt ?? null,
-      createdBy: data.createdBy ?? null,
-      rooms: data.category !== "HELLO_ROOM" ? data.rooms ?? null : null,
-      hfm_retributions: data.hfm_retributions ?? null,
     });
 
     return NextResponse.json(newContract, { status: 201 });
