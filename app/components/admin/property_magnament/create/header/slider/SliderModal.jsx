@@ -14,35 +14,39 @@ export default function SliderModal({
 
   const uploadNewImages = async () => {
     try {
-      const filesToUpload = files
-        .filter((file) => file.fileData)
-        .map((file) => file.fileData);
+      const filesToUpload = files.filter((file) => file.fileData);
+      const uploadedImages = await uploadFiles(
+        filesToUpload.map((f) => f.fileData)
+      );
 
-      // Crear un set con las URLs actuales para comparación
+      if (uploadedImages instanceof Error) {
+        toast.error("Error al subir nuevas imágenes");
+        return;
+      }
+
       const fileUrls = new Set(files.map((file) => file.url));
-
-      // Imágenes eliminadas (están en initialImages pero no en files)
       const deletedImages = initialImages.filter((url) => !fileUrls.has(url));
-
-      // Imágenes restantes (siguen presentes en files)
       const remainingImages = initialImages.filter((url) => fileUrls.has(url));
 
-      // Si hay imágenes eliminadas, eliminarlas de Firebase Storage
       if (deletedImages.length > 0) {
-        await handleDeletedImages(deletedImages, remainingImages);
+        await deleteFilesFromURL(deletedImages);
       }
 
-      // Si hay nuevas imágenes, subirlas
-      if (filesToUpload.length > 0) {
-        const uploadedImages = await handleFileUpload(filesToUpload);
-        setNewImages([...remainingImages, ...uploadedImages]);
-      } else {
-        // Si no hay nuevas imágenes, actualizar solo con las imágenes restantes
-        setNewImages([...remainingImages]);
-      }
+      // 🔥 NUEVO: armar la lista ordenada visualmente con URLs definitivas
+      const finalOrderedImages = files.map((file) => {
+        if (file.fileData) {
+          const uploaded = uploadedImages.find((up) =>
+            up.name.includes(file.name)
+          );
+          return uploaded?.url;
+        } else {
+          return file.url;
+        }
+      });
 
+      setNewImages(finalOrderedImages);
       toast.success("Datos actualizados");
-      return showModal(false);
+      showModal(false);
     } catch (error) {
       console.error(
         "Error durante el proceso de carga/eliminación de imágenes:",
@@ -83,8 +87,7 @@ export default function SliderModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
-    >
+      className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white p-3 rounded-lg shadow-lg w-full m-3 overflow-auto h-auto">
         <h2 className="text-2xl mb-4">Archivos de Imágenes</h2>
         <ImageUploader
@@ -95,14 +98,12 @@ export default function SliderModal({
         <div className="flex justify-between w-full">
           <button
             onClick={() => showModal(false)}
-            className="text-black px-4 py-2 border border-[#0C1660] rounded-lg mt-4"
-          >
+            className="text-black px-4 py-2 border border-[#0C1660] rounded-lg mt-4">
             Cerrar
           </button>
           <button
             onClick={uploadNewImages}
-            className="bg-[#0C1660] text-white px-4 py-2 rounded-lg mt-4 ml-2"
-          >
+            className="bg-[#0C1660] text-white px-4 py-2 rounded-lg mt-4 ml-2">
             Guardar
           </button>
         </div>
