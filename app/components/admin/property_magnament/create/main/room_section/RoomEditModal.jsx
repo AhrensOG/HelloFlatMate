@@ -426,6 +426,23 @@ export default function RoomEditModal({ data, setData, showModal, selectedRoom, 
                         <label htmlFor="couple">No</label>
                     </div>
                 </div>
+                <div className="flex items-center gap-2 mt-4">
+                  <input
+                    type="checkbox"
+                    id="isActive"
+                    checked={dataRoom?.isActive || false}
+                    onChange={(e) =>
+                      setDataRoom((prev) => ({
+                        ...prev,
+                        isActive: e.target.checked,
+                      }))
+                    }
+                    className="size-4"
+                  />
+                  <label htmlFor="isActive" className="text-sm">
+                    ¿La habitación está activa?
+                  </label>
+                </div>
                 <div className="w-full">
                     <h3 className="block text-sm mb-1">Imagenes</h3>
                     <ImageUploader initialImages={initialImages} images={files} setImages={setFiles} />
