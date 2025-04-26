@@ -25,32 +25,32 @@ export default function RoomEditModal({ data, setData, showModal, selectedRoom, 
         setRentalPeriods(selectedRoom?.rentalItems);
     }, [selectedRoom?.rentalItems]);
 
-    const uploadNewImages = async () => {
-        const filesToUpload = files.filter((file) => file.fileData);
-        const fileUrls = new Set(files.map((file) => file.url));
-        const remainingImages = initialImages.filter((url) => fileUrls.has(url));
+    // const uploadNewImages = async () => {
+    //     const filesToUpload = files.filter((file) => file.fileData);
+    //     const fileUrls = new Set(files.map((file) => file.url));
+    //     const remainingImages = initialImages.filter((url) => fileUrls.has(url));
 
-        if (filesToUpload.length > 0) {
-            const uploadedImages = await handleFileUpload(filesToUpload);
-            return [...remainingImages, ...uploadedImages];
-        } else {
-            return remainingImages;
-        }
-    };
+    //     if (filesToUpload.length > 0) {
+    //         const uploadedImages = await handleFileUpload(filesToUpload);
+    //         return [...remainingImages, ...uploadedImages];
+    //     } else {
+    //         return remainingImages;
+    //     }
+    // };
 
-    const handleFileUpload = async (filesToUpload) => {
-        try {
-            const response = await uploadFiles(filesToUpload.map((file) => file.fileData));
-            if (response instanceof Error) {
-                throw response;
-            }
-            return response.map((file) => file.url);
-        } catch (error) {
-            console.error("Error al cargar archivos:", error);
-            toast.error("Error al cargar archivos");
-            throw error;
-        }
-    };
+    // const handleFileUpload = async (filesToUpload) => {
+    //     try {
+    //         const response = await uploadFiles(filesToUpload.map((file) => file.fileData));
+    //         if (response instanceof Error) {
+    //             throw response;
+    //         }
+    //         return response.map((file) => file.url);
+    //     } catch (error) {
+    //         console.error("Error al cargar archivos:", error);
+    //         toast.error("Error al cargar archivos");
+    //         throw error;
+    //     }
+    // };
 
     const isModified = (newData, originalData) => {
         const originalDataWithoutImage = { ...originalData };
@@ -108,14 +108,41 @@ export default function RoomEditModal({ data, setData, showModal, selectedRoom, 
             return toast.error("Por favor, especifique una cantidad de camas");
         }
 
-        // Subir nuevas imágenes si hay
-        const newImageUrls = await uploadNewImages();
-        newData.images = newImageUrls;
+        // // Subir nuevas imágenes si hay
+        // const newImageUrls = await uploadNewImages();
+        // newData.images = newImageUrls;
 
-        // Actualizar las URLs de las imágenes en dataRoom
+        // // Actualizar las URLs de las imágenes en dataRoom
+        // setDataRoom((prevDataRoom) => ({
+        //     ...prevDataRoom,
+        //     images: newImageUrls,
+        // }));
+
+        const filesToUpload = files.filter((file) => file.fileData); // Nuevas
+        const uploadedImages = await uploadFiles(filesToUpload.map((file) => file.fileData)); // Subir a Firebase
+        
+        if (uploadedImages instanceof Error) {
+          toast.error("Error al subir nuevas imágenes");
+          return;
+        }
+        
+        // Final: Reordenar imágenes respetando visual y mezclando nuevas URLs
+        const finalOrderedImages = files.map((file) => {
+          if (file.fileData) {
+            // Imagen recién subida → buscar su URL
+            const uploaded = uploadedImages.find((up) => up.name.includes(file.name));
+            return uploaded?.url;
+          } else {
+            // Imagen ya existente → conservar URL
+            return file.url;
+          }
+        });
+        
+        newData.images = finalOrderedImages;
+        
         setDataRoom((prevDataRoom) => ({
-            ...prevDataRoom,
-            images: newImageUrls,
+          ...prevDataRoom,
+          images: finalOrderedImages,
         }));
 
         setDataRoom((prevDataRoom) => ({
@@ -425,6 +452,23 @@ export default function RoomEditModal({ data, setData, showModal, selectedRoom, 
                         <input type="radio" name="couple" value="no" checked={dataRoom.couple === false} onChange={handleRadioChange} />
                         <label htmlFor="couple">No</label>
                     </div>
+                </div>
+                <div className="flex items-center gap-2 mt-4">
+                  <input
+                    type="checkbox"
+                    id="isActive"
+                    checked={dataRoom?.isActive || false}
+                    onChange={(e) =>
+                      setDataRoom((prev) => ({
+                        ...prev,
+                        isActive: e.target.checked,
+                      }))
+                    }
+                    className="size-4"
+                  />
+                  <label htmlFor="isActive" className="text-sm">
+                    ¿La habitación está activa?
+                  </label>
                 </div>
                 <div className="w-full">
                     <h3 className="block text-sm mb-1">Imagenes</h3>

@@ -1,77 +1,59 @@
-import React from "react";
-import Flicking, { ViewportSlot } from "@egjs/react-flicking";
-import { Pagination, AutoPlay, Arrow } from "@egjs/flicking-plugins";
-import "@egjs/react-flicking/dist/flicking.css";
-import "@egjs/react-flicking/dist/flicking-inline.css";
-import "@egjs/flicking-plugins/dist/pagination.css";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-export default function SliderDetails({ children, rounded = "" }) {
-  const plugins = [
-    // new Pagination({ type: "bullet" }),
-    new Arrow({ disabledClass: true }),
-    new AutoPlay({
-      duration: 2000,
-      direction: "NEXT",
-      stopOnHover: false,
-      animationDuration: 3500,
-    }),
-  ];
+export default function SliderDetails({
+  children,
+  rounded = "",
+  interval = 6000,
+}) {
+  const containerRef = useRef(null);
+  const [current, setCurrent] = useState(0);
+  const total = React.Children.count(children);
+
+  // Autoplay
+  useEffect(() => {
+    const autoplay = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % total);
+    }, interval);
+
+    return () => clearInterval(autoplay);
+  }, [total, interval]);
+
+  const handlePrev = () => {
+    setCurrent((prev) => (prev - 1 + total) % total);
+  };
+
+  const handleNext = () => {
+    setCurrent((prev) => (prev + 1) % total);
+  };
 
   return (
-    <Flicking plugins={plugins} circular={true} className={`${rounded}`}>
-      {React.Children.map(children, (child) => (
-        <div className="w-full rounded-2xl">
-          {React.cloneElement(child, { className: "w-full" })}
-        </div>
-      ))}
-      {/* <ViewportSlot>
-        <div className="flicking-pagination"></div>
-      </ViewportSlot> */}
-      <ViewportSlot>
-        <span
-          className="flicking-arrow-prev"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "10px",
-            transform: "translateY(-50%)",
-            width: "40px",
-            height: "40px",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            zIndex: 10,
-          }}
-        >
-          <ChevronLeftIcon className="size-4" />
-        </span>
-        <span
-          className="flicking-arrow-next"
-          style={{
-            position: "absolute",
-            top: "50%",
-            right: "10px",
-            transform: "translateY(-50%)",
-            width: "40px",
-            height: "40px",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            zIndex: 10,
-          }}
-        >
-          <ChevronRightIcon className="size-4" />
-        </span>
-      </ViewportSlot>
-    </Flicking>
+    <div
+      className={`relative w-full overflow-hidden ${rounded}`}
+      ref={containerRef}>
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${current * 100}%)` }}>
+        {React.Children.map(children, (child, index) => (
+          <div key={index} className="w-full flex-shrink-0">
+            {React.cloneElement(child, { isActive: index === current })}
+          </div>
+        ))}
+      </div>
+
+      {/* Flechas de navegación */}
+      <button
+        onClick={handlePrev}
+        className="absolute top-1/2 left-3 -translate-y-1/2 z-10 bg-black/50 text-white p-2 rounded-full">
+        <ChevronLeftIcon className="w-5 h-5" />
+      </button>
+
+      <button
+        onClick={handleNext}
+        className="absolute top-1/2 right-3 -translate-y-1/2 z-10 bg-black/50 text-white p-2 rounded-full">
+        <ChevronRightIcon className="w-5 h-5" />
+      </button>
+    </div>
   );
 }

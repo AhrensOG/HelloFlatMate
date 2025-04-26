@@ -1,18 +1,18 @@
-import React from "react";
 import Image from "next/image";
 
-const SliderItem = ({ img, rounded = "", height = "h-[12.5rem]" }) => {
+const SliderItem = ({ img, isActive = false }) => {
   return (
-    <div className={`w-full relative ${height}`}>
-      <div className="absolute w-full h-full z-10" />
-      <Image
-        className={`object-fill ${rounded}`}
-        src={img}
-        alt="slider-img"
-        unoptimized={true}
-        fill
-        priority
-      />
+    <div className="w-full aspect-[16/9] relative overflow-hidden bg-gray-100">
+      {isActive && (
+        <Image
+          src={img}
+          alt="slider-img"
+          width={1280}
+          height={720}
+          className="w-full h-full object-fill"
+          loading="eager"
+        />
+      )}
     </div>
   );
 };
