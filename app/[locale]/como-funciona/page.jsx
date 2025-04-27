@@ -105,49 +105,25 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
                 <div className="w-full max-w-screen-md flex flex-col justify-center items-center px-2 py-10">
                     <h1 className="text-center text-4xl font-extrabold mb-10 ml-24 max-w-96">{t("title")}</h1>
                     <div className="space-y-10">
-                        <div className={`flex gap-6 items-start bg-white p-6 rounded-lg shadow-sm`}>
+                        <div className={`flex flex-col sm:flex-row gap-6 items-center sm:items-start bg-white p-6 rounded-lg shadow-sm`}>
                             <Image src={"/howitworks/buscar.png"} width={100} height={100} alt={"Busca y elige tu hogar ideal"} />
 
                             {/* Contenido */}
                             <div className="flex-1">
                                 <h2 className="text-2xl font-bold mb-4 text-center">{t("step_1_title")}</h2>
                                 <p className="text-gray-700 mb-6 text-center">{t("step_1_text")}</p>
-
-                                {/* <div className="grid grid-cols-2 gap-4">
-                  {step.subpoints.map((point, index) => (
-                    <div key={index}>
-                      <h3 className="font-semibold text-gray-900">
-                        {point.title}
-                      </h3>
-                      <hr className="border-t border-gray-300 my-2" />
-                      <p className="text-gray-700">{point.description}</p>
-                    </div>
-                  ))}
-                </div> */}
                             </div>
                         </div>
-                        <div className={`flex gap-6 items-start bg-white p-6 rounded-lg shadow-sm`}>
+                        <div className={`flex flex-col sm:flex-row gap-6 items-center sm:items-start bg-white p-6 rounded-lg shadow-sm`}>
                             <Image src={"/howitworks/reserva.png"} width={100} height={100} alt={"Reserva tu alojamiento"} />
 
                             {/* Contenido */}
                             <div className="flex-1">
                                 <h2 className="text-2xl font-bold mb-4 text-center">{t("step_2_title")}</h2>
                                 <p className="text-gray-700 mb-6 text-center">{HTMLReactParser(formatedStrong(t("step_2_text")))}</p>
-
-                                {/* <div className="grid grid-cols-2 gap-4">
-                  {step.subpoints.map((point, index) => (
-                    <div key={index}>
-                      <h3 className="font-semibold text-gray-900">
-                        {point.title}
-                      </h3>
-                      <hr className="border-t border-gray-300 my-2" />
-                      <p className="text-gray-700">{point.description}</p>
-                    </div>
-                  ))}
-                </div> */}
                             </div>
                         </div>
-                        <div className={`flex gap-6 items-start bg-white p-6 rounded-lg shadow-sm`}>
+                        <div className={`flex flex-col sm:flex-row gap-6 items-center sm:items-start bg-white p-6 rounded-lg shadow-sm`}>
                             <Image src={"/howitworks/evento.png"} width={100} height={100} alt={"Organiza tu llegada a Valencia"} />
 
                             {/* Contenido */}
@@ -155,24 +131,11 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
                                 <h2 className="text-2xl font-bold mb-4 text-center">{t("step_3_title")}</h2>
                                 <h2 className="text-xl text-center font-bold mb-4 jus ">{t("step_3_title_2")}</h2>
                                 <p className="text-gray-700 mb-6 text-center">{HTMLReactParser(formatedStrong(t("step_3_text")))}</p>
-
-                                {/* <div className="grid grid-cols-2 gap-4">
-                  {step.subpoints.map((point, index) => (
-                    <div key={index}>
-                      <h3 className="font-semibold text-gray-900">
-                        {point.title}
-                      </h3>
-                      <hr className="border-t border-gray-300 my-2" />
-                      <p className="text-gray-700">{point.description}</p>
-                    </div>
-                  ))}
-                </div> */}
                             </div>
                         </div>
                     </div>
 
-                    <h2 className="text-center text-2xl mb-10 w-full ml-24">{HTMLReactParser(formatedStrong(t("title_final")))}</h2>
-                    {/* <OurWarranties /> */}
+                    <h2 className="text-center text-2xl mb-10 w-full">{HTMLReactParser(formatedStrong(t("title_final")))}</h2>
                 </div>
             </div>
             <SeventhSection />
@@ -180,35 +143,3 @@ Suministros y wifi (Que dependerán del tipo de alojamiento)
         </section>
     );
 }
-
-const OurWarranties = () => {
-    const warranties = [
-        {
-            icon: "/howitworks/blindaje.gif",
-            title: "Protección contra fraude",
-            description: "Si todo va bien, realizaremos la transferencia al propietario 48 horas después de la fecha de entrada.",
-        },
-        {
-            icon: "/howitworks/verificado.gif",
-            title: "Verificada por helloflatmate",
-            description: "Ofrecemos fotografías y vídeo reales de cada propiedad en lugar de usar materiales de terceros.",
-        },
-    ];
-
-    return (
-        <section className="py-12 bg-white w-full">
-            <div className="container mx-auto px-2 sm:px-0">
-                <h2 className="text-2xl font-bold mb-8">Nuestras garantías</h2>
-                <div className="grid md:grid-cols-3 gap-8">
-                    {warranties.map((warranty, index) => (
-                        <div key={index} className="flex flex-col items-start">
-                            <Image src={warranty.icon} width={100} height={100} alt={warranty.title} />
-                            <h3 className="mt-4 text-lg font-semibold">{warranty.title}</h3>
-                            <p className="mt-2 text-gray-600">{warranty.description}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};

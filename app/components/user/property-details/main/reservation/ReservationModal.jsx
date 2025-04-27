@@ -47,6 +47,7 @@ export default function ReservationModal({ callback, data, category, calendarTyp
                 day: "numeric",
                 month: "numeric",
                 year: "numeric",
+                timeZone: "Europe/Madrid",
             }).format(newDate);
         }
         return "";
