@@ -12,9 +12,12 @@ const PaymentsPanel = ({ users }) => {
     const [showCreatePaymentModal, setShowCreatePaymentModal] = useState(false);
     const [showEditPaymentModal, setShowEditPaymentModal] = useState(false);
     const [selectedPayment, setSelectedPayment] = useState(false);
-    const [selectedStatusFilter, setSelectedStatusFilter] = useState("Estado");
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState("ALL");
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedUser, setSelectedUser] = useState(null);
+
+    const [selectedTypeFilter, setSelectedTypeFilter] = useState("ALL");
+    const [selectedDescriptionFilter, setSelectedDescriptionFilter] = useState("ALL");
 
     const {
         data: swrData,
@@ -23,6 +26,18 @@ const PaymentsPanel = ({ users }) => {
     } = useSWR("/api/admin/payments", fetcher, {
         refreshInterval: 180000,
     });
+
+    const typesAvailable = [
+      ...new Set((swrData || []).map((p) => p.type).filter(Boolean)),
+    ];
+    
+    const descriptionsAvailable = [
+      ...new Set(
+        (swrData || [])
+          .map((p) => p.description || p.name)
+          .filter((desc) => desc && desc.trim() !== "")
+      ),
+    ];
 
     const filteredUsers = users.filter((user) => {
         const searchString = searchQuery.toLowerCase();
@@ -34,18 +49,24 @@ const PaymentsPanel = ({ users }) => {
     });
 
     const filteredPayments = (swrData || []).filter((payment) => {
-        if (selectedUser && payment.user.id !== selectedUser.id) return false;
-
-        const matchesStatus =
-            selectedStatusFilter === "Estado" ||
-            (selectedStatusFilter === "APPROVED" &&
-                ["APPROVED", "PAID"].includes(payment.status)) ||
-            (selectedStatusFilter === "PAID" &&
-                ["APPROVED", "PAID"].includes(payment.status)) ||
-            payment.status === selectedStatusFilter;
-
-        return matchesStatus;
-    });
+      if (selectedUser && payment.user.id !== selectedUser.id) return false;
+    
+      const matchesStatus =
+        !selectedStatusFilter || selectedStatusFilter === "ALL" ||
+        (selectedStatusFilter === "APPROVED" && ["APPROVED", "PAID"].includes(payment.status)) ||
+        (selectedStatusFilter === "PAID" && ["APPROVED", "PAID"].includes(payment.status)) ||
+        payment.status === selectedStatusFilter;
+    
+      const matchesType =
+        !selectedTypeFilter || selectedTypeFilter === "ALL" || payment.type === selectedTypeFilter;
+    
+      const matchesDescription =
+        !selectedDescriptionFilter || selectedDescriptionFilter === "ALL" ||
+        payment.description === selectedDescriptionFilter ||
+        payment.name === selectedDescriptionFilter;
+    
+      return matchesStatus && matchesType && matchesDescription;
+    });    
 
     const closeEditPayment = () => {
         setSelectedPayment(null);
@@ -124,12 +145,18 @@ const PaymentsPanel = ({ users }) => {
             </div>
 
             <PaymentsTable
-                payments={filteredPayments}
-                openEditPayment={openEditPayment}
-                deletePayment={deletePayment}
-                setSelectedStatusFilter={setSelectedStatusFilter}
-                selectedStatusFilter={selectedStatusFilter}
-            />
+  payments={filteredPayments}
+  openEditPayment={openEditPayment}
+  deletePayment={deletePayment}
+  selectedStatusFilter={selectedStatusFilter}
+  setSelectedStatusFilter={setSelectedStatusFilter}
+  selectedTypeFilter={selectedTypeFilter}
+  setSelectedTypeFilter={setSelectedTypeFilter}
+  selectedDescriptionFilter={selectedDescriptionFilter}
+  setSelectedDescriptionFilter={setSelectedDescriptionFilter}
+  typesAvailable={typesAvailable}
+  descriptionsAvailable={descriptionsAvailable}
+/>
 
             {showCreatePaymentModal && (
                 <CreatePaymentModal
