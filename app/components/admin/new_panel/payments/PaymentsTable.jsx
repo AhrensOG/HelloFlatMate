@@ -177,10 +177,11 @@ const PaymentsTable = ({
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Importe
             </th>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4 w-[8rem]">
-              <button
-                onClick={() => setDropdownOpen(!isDropdownOpen)}
-                className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
+            <th
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
+              className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4 w-[8rem]">
+              <button className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
                 {STATUS[selectedStatusFilter] || "Estado"}
                 <ChevronDownIcon className="size-4" />
               </button>
@@ -189,7 +190,10 @@ const PaymentsTable = ({
                   {["ALL", "PENDING", "APPROVED"].map((status) => (
                     <button
                       key={status}
-                      onClick={() => handleStatusChange(status)}
+                      onClick={() => {
+                        handleStatusChange(status);
+                        setDropdownOpen(false);
+                      }}
                       className="block w-full text-left p-2 hover:bg-gray-100">
                       {STATUS[status]}
                     </button>
@@ -197,10 +201,12 @@ const PaymentsTable = ({
                 </div>
               )}
             </th>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4">
-              <button
-                onClick={() => setTypeDropdownOpen(!isTypeDropdownOpen)}
-                className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
+
+            <th
+              onMouseEnter={() => setTypeDropdownOpen(true)}
+              onMouseLeave={() => setTypeDropdownOpen(false)}
+              className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4">
+              <button className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
                 {TYPE_LABELS[selectedTypeFilter] || "Tipo"}
                 <ChevronDownIcon className="size-4" />
               </button>
@@ -220,12 +226,11 @@ const PaymentsTable = ({
                 </div>
               )}
             </th>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4">
-              <button
-                onClick={() =>
-                  setDescriptionDropdownOpen(!isDescriptionDropdownOpen)
-                }
-                className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
+            <th
+              onMouseEnter={() => setDescriptionDropdownOpen(true)}
+              onMouseLeave={() => setDescriptionDropdownOpen(false)}
+              className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4">
+              <button className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
                 {selectedDescriptionFilter === "ALL"
                   ? "Todas"
                   : selectedDescriptionFilter || "Descripción"}

@@ -12,6 +12,7 @@ const TYPE_LABELS = {
   GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
   MONTHLY: "Mensual",
   RESERVATION: "Reserva",
+  MAINTENANCE: "Mantenimiento",
 };
 
 const EditPaymentModal = ({ payment, onClose, mutate }) => {
