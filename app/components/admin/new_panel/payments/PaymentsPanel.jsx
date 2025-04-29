@@ -43,6 +43,9 @@ const PaymentsPanel = () => {
         : "") +
       (selectedStatusFilter && selectedStatusFilter !== "ALL"
         ? `&status=${encodeURIComponent(selectedStatusFilter)}`
+        : "") +
+      (selectedTypeFilter && selectedTypeFilter !== "ALL"
+        ? `&type=${encodeURIComponent(selectedTypeFilter)}`
         : ""),
     fetcher,
     {

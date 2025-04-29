@@ -17,13 +17,35 @@ export async function getAllPayments({
     supplyWhere.status = "PENDING";
     rentWhere.status = "PENDING";
   } else if (status === "APPROVED" || status === "PAID") {
-    supplyWhere.status = "PAID"; // equivalente en Supply
-    rentWhere.status = "APPROVED"; // equivalente en RentPayment
+    supplyWhere.status = "PAID";
+    rentWhere.status = "APPROVED";
   }
 
+  // Filtro de tipo separado
+  const rentPaymentTypes = ["RESERVATION", "MONTHLY"];
+  const supplyPaymentTypes = [
+    "WATER",
+    "GAS",
+    "ELECTRICITY",
+    "EXPENSES",
+    "INTERNET",
+    "AGENCY_FEES",
+    "CLEANUP",
+    "OTHERS",
+    "DEPOSIT",
+    "GENERAL_SUPPLIES",
+    "MAINTENANCE",
+  ];
+
   if (type) {
-    supplyWhere.type = type;
-    rentWhere.type = type;
+    if (rentPaymentTypes.includes(type)) {
+      rentWhere.type = type;
+    } else if (supplyPaymentTypes.includes(type)) {
+      supplyWhere.type = type;
+    } else {
+      // Tipo inválido para ambos: no filtrar por tipo
+      console.warn(`Tipo desconocido: ${type}`);
+    }
   }
 
   // 2. Consultar con filtros
