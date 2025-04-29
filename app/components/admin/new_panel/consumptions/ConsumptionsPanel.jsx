@@ -20,7 +20,7 @@ const TYPE_LABELS = {
     OTHER: "Otro",
 };
 
-export default function ConsumptionsPanel({ users, properties }) {
+export default function ConsumptionsPanel() {
     const [searchQuery, setSearchQuery] = useState("");
     const [createIsOpen, setCreateIsOpen] = useState(false);
     const [createPropertyIsOpen, setCreatePropertyIsOpen] = useState(false);
@@ -34,6 +34,18 @@ export default function ConsumptionsPanel({ users, properties }) {
     } = useSWR("/api/admin/consumptions", fetcher, {
         refreshInterval: 600000,
     });
+
+    const {
+      data: usersData,
+  } = useSWR("/api/admin/user/consumptions_panel", fetcher, {
+      revalidateOnFocus: false
+  });
+
+  const {
+    data: propertiesData,
+} = useSWR("/api/admin/property/consumptions_panel", fetcher, {
+    revalidateOnFocus: false
+});
 
     const handleDelete = async (id) => {
         const toastId = toast.loading("Eliminando...");
@@ -233,14 +245,14 @@ export default function ConsumptionsPanel({ users, properties }) {
             {createIsOpen && (
                 <CreateConsumptionsModal
                     onClose={() => setCreateIsOpen(false)}
-                    users={users}
+                    users={usersData}
                     mutate={mutate}
                 />
             )}
             {createPropertyIsOpen && (
                 <CreatePropertyConsumptionsModal
                     onClose={() => setCreatePropertyIsOpen(false)}
-                    properties={properties}
+                    properties={propertiesData}
                     mutate={mutate}
                 />
             )}

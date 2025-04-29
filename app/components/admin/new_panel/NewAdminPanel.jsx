@@ -44,15 +44,15 @@ const NewAdminPanel = ({ data }) => {
             case "periodos":
                 return <RentalPeriodsPanel />;
             case "propiedades":
-                return <PropertiesPanel data={data.properties} />;
+                return <PropertiesPanel />;
             case "consumos":
-                return <ConsumptionsPanel users={data.allUsers?.clients} properties={data.optionSerials} />;
+                return <ConsumptionsPanel />;
             case "chats":
                 return <ChatsPanel users={data.allUsers} properties={data.optionSerials} />;
             case "incidencias":
                 return <IncidencesPanel />;
             case "mantenimiento":
-              return <MaintenancePanel />;
+                return <MaintenancePanel />;
             case "contratos": 
                 return <OwnerContractsPanel />
             default:

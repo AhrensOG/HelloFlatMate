@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
+import formatDateToDDMMYYYY from "../utils/formatDate";
 
 const modalStyles = {
     overlay:
@@ -162,7 +163,7 @@ export default function CreateConsumptionsModal({
                                                     key={order.id}
                                                     value={order.id}
                                                 >
-                                                    {order.room?.serial}
+                                                    {order.room?.serial} | {formatDateToDDMMYYYY(order.startDate)} - {formatDateToDDMMYYYY(order.endDate)}
                                                 </option>
                                             ))}
                                 </Field>
