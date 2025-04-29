@@ -7,6 +7,7 @@ const STATUS_LABELS = {
   APPROVED: { label: "Aprobado", color: "text-green-800" },
   CANCELED: { label: "Cancelado", color: "text-red-800" },
   FINISHED: { label: "Finalizado", color: "text-blue-800" },
+  IN_PROGRESS: { label: "En progreso", color: "text-indigo-800" },
 };
 
 const ReservationsTable = ({
@@ -37,7 +38,7 @@ const ReservationsTable = ({
       <table className="min-w-full border-collapse">
         <thead className="sticky top-0 bg-white">
           <tr>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
+            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-60">
               Usuario
             </th>
             <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
@@ -123,7 +124,7 @@ const ReservationsTable = ({
               key={lo.id}
               className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer"
               onClick={() => handleOpenModal(lo)}>
-              <td className="border p-2 text-gray-700 text-left">{`${lo.client?.name} ${lo.client?.lastName}`}</td>
+              <td className="border p-2 text-gray-700 text-left truncate max-w-60">{`${lo.client?.name} ${lo.client?.lastName}`}</td>
               <td className="border p-2 text-gray-700 text-center">
                 {lo.room?.serial}
               </td>

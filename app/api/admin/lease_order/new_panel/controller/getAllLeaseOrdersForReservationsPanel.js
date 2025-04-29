@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Op } from "sequelize"; // IMPORTANTE: importamos Op
 import {
   Client,
   Contract,
@@ -17,12 +18,13 @@ export async function getAllLeaseOrdersForReservationsPanel(
   try {
     const offset = (page - 1) * limit;
 
-    // Construimos el objeto where dinámicamente
     const whereConditions = {};
-    console.log(startDate);
-    console.log(status);
+
     if (startDate) {
-      whereConditions.startDate = startDate;
+      whereConditions.startDate = {
+        [Op.gte]: `${startDate}T00:00:00.000Z`,
+        [Op.lt]: `${startDate}T23:59:59.999Z`,
+      };
     }
 
     if (status) {
@@ -91,24 +93,13 @@ export async function getAllLeaseOrdersForReservationsPanel(
       type: "room",
     }));
 
-    return NextResponse.json(
-      {
-        leaseOrders: formattedOrders,
-        total,
-        page,
-        totalPages: Math.ceil(total / limit),
-        hasMore: offset + formattedOrders.length < total,
-      },
-      {
-        headers: {
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-          Pragma: "no-cache",
-          Expires: "0",
-          "Surrogate-Control": "no-store",
-        },
-      }
-    );
+    return NextResponse.json({
+      leaseOrders: formattedOrders,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      hasMore: offset + formattedOrders.length < total,
+    });
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

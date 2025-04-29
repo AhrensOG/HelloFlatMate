@@ -30,14 +30,10 @@ export default function ReservationPanel() {
     data: ordersData,
     error,
     mutate,
-  } = useSWR(
-    `/api/admin/lease_order/new_panel?${queryParams}`,
-    fetcher,
-    {
-      refreshInterval: 60000,
-      keepPreviousData: true,
-    }
-  );
+  } = useSWR(`/api/admin/lease_order/new_panel?${queryParams}`, fetcher, {
+    refreshInterval: 60000,
+    keepPreviousData: true,
+  });
 
   const { data: clientsData } = useSWR(
     "/api/admin/user/reservations_panel",
@@ -47,6 +43,12 @@ export default function ReservationPanel() {
 
   const { data: propertiesData } = useSWR(
     "/api/admin/property/reservations_panel",
+    fetcher,
+    { revalidateOnFocus: false }
+  );
+
+  const { data: availablePeriods } = useSWR(
+    "/api/admin/lease_order/new_panel/periods",
     fetcher,
     { revalidateOnFocus: false }
   );
@@ -77,7 +79,7 @@ export default function ReservationPanel() {
     return matchesSearchQuery;
   });
 
-  const availableDates = [...new Set(orders.map((lo) => lo.startDate || ""))];
+  const availableDates = [...(availablePeriods || [])];
 
   const handleOpenModal = (lo) => {
     setSelectedOrder(lo);
@@ -122,8 +124,7 @@ export default function ReservationPanel() {
 
           <button
             onClick={handleOpenModalCreateOrder}
-            className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
-          >
+            className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium">
             Crear Reserva
           </button>
         </div>
@@ -145,16 +146,14 @@ export default function ReservationPanel() {
         <button
           disabled={page <= 1}
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          className="border px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-        >
+          className="border px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
           Anterior
         </button>
         <span className="font-medium">{`Página ${page} de ${totalPages}`}</span>
         <button
           disabled={page >= totalPages}
           onClick={() => setPage((prev) => prev + 1)}
-          className="border px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-        >
+          className="border px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
           Siguiente
         </button>
       </div>
