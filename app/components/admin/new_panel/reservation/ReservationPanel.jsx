@@ -15,31 +15,51 @@ export default function ReservationPanel() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isOpenCreateOrderModal, setIsOpenCreateOrderModal] = useState(false);
   const [selectedDateFilter, setSelectedDateFilter] = useState("");
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
+  const [page, setPage] = useState(1);
+  const limit = 100;
+
+  const queryParams = new URLSearchParams({
+    page,
+    limit,
+    ...(selectedDateFilter && { startDate: selectedDateFilter }),
+    ...(selectedStatusFilter && { status: selectedStatusFilter }),
+  }).toString();
 
   const {
     data: ordersData,
     error,
     mutate,
-  } = useSWR("/api/admin/lease_order", fetcher, { refreshInterval: 60000 });
+  } = useSWR(
+    `/api/admin/lease_order/new_panel?${queryParams}`,
+    fetcher,
+    {
+      refreshInterval: 60000,
+      keepPreviousData: true,
+    }
+  );
+
   const { data: clientsData } = useSWR(
     "/api/admin/user/reservations_panel",
     fetcher,
     { revalidateOnFocus: false }
   );
+
   const { data: propertiesData } = useSWR(
     "/api/admin/property/reservations_panel",
     fetcher,
     { revalidateOnFocus: false }
   );
 
-  const orders = (ordersData || []).filter((lo) => lo.status !== "REJECTED");
+  const orders = (ordersData?.leaseOrders || []).filter(
+    (lo) => lo.status !== "REJECTED"
+  );
 
   const filteredOrders = orders.filter((lo) => {
     const roomSerial = lo.room?.serial || "";
     const clientName = lo.client?.name || "";
     const clientLastName = lo.client?.lastName || "";
     const clientEmail = lo.client?.email || "";
-    const startDate = lo.startDate || "";
     const fullname = `${clientName} ${clientLastName}`;
 
     let statusEs = "";
@@ -54,11 +74,7 @@ export default function ReservationPanel() {
       clientEmail.toLowerCase().includes(searchString) ||
       statusEs.toLowerCase().includes(searchString);
 
-    const matchesDateFilter = selectedDateFilter
-      ? startDate === selectedDateFilter
-      : true;
-
-    return matchesSearchQuery && matchesDateFilter;
+    return matchesSearchQuery;
   });
 
   const availableDates = [...new Set(orders.map((lo) => lo.startDate || ""))];
@@ -89,11 +105,13 @@ export default function ReservationPanel() {
 
   if (error) return <div>Error al cargar las reservas.</div>;
 
+  const totalPages = ordersData?.totalPages || 1;
+
   return (
     <div className="h-screen flex flex-col p-4 gap-4">
       <div className="space-y-6">
         <h2 className="text-2xl font-bold">Reservas</h2>
-        <div className="w-full flex gap-2">
+        <div className="w-full flex gap-2 items-center">
           <input
             type="text"
             placeholder="Buscar por código, nombre, apellido, email o estado..."
@@ -104,7 +122,8 @@ export default function ReservationPanel() {
 
           <button
             onClick={handleOpenModalCreateOrder}
-            className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium">
+            className="border border-resolution-blue px-5 py-2 max-w-[14rem] text-center w-auto rounded-md bg-resolution-blue text-white font-medium"
+          >
             Crear Reserva
           </button>
         </div>
@@ -117,8 +136,30 @@ export default function ReservationPanel() {
         availableDates={availableDates}
         selectedDateFilter={selectedDateFilter}
         setSelectedDateFilter={setSelectedDateFilter}
+        selectedStatusFilter={selectedStatusFilter}
+        setSelectedStatusFilter={setSelectedStatusFilter}
       />
 
+      {/* PAGINACIÓN */}
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <button
+          disabled={page <= 1}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          className="border px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        >
+          Anterior
+        </button>
+        <span className="font-medium">{`Página ${page} de ${totalPages}`}</span>
+        <button
+          disabled={page >= totalPages}
+          onClick={() => setPage((prev) => prev + 1)}
+          className="border px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        >
+          Siguiente
+        </button>
+      </div>
+
+      {/* Modales */}
       {isOpen && (
         <OrderModalReservation
           data={selectedOrder}
