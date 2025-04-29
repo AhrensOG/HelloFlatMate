@@ -26,7 +26,7 @@ const NewAdminPanel = ({ data }) => {
             case "pre-reservas":
                 return <PreReservationsPanel />;
             case "reservas":
-                return <ReservationPanel data={{ clients: data.clients, properties: data.properties }} />;
+                return <ReservationPanel />;
             case "usuarios":
                 return (
                     <UsersPanel
@@ -36,7 +36,7 @@ const NewAdminPanel = ({ data }) => {
                     />
                 );
             case "cobros":
-                return <PaymentsPanel users={data.allUsers?.clients || []} />;
+                return <PaymentsPanel />;
             case "habitaciones":
                 return <RoomsPanel />;
             case "documentos":
