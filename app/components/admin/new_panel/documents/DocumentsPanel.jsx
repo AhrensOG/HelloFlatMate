@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import DocumentModal from "./DocumentModal";
 import { toast } from "sonner";
@@ -13,7 +13,7 @@ const LABELS_TYPE = {
   CONTRACT: "Contrato",
 };
 
-export default function DocumentsPanel({ users }) {
+export default function DocumentsPanel() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
@@ -26,6 +26,14 @@ export default function DocumentsPanel({ users }) {
   } = useSWR("/api/admin/document", fetcher, {
     refreshInterval: 60000,
   });
+
+  const { data: users = [] } = useSWR(
+    "/api/admin/user/documents_panel",
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   const handleOpenModal = (doc) => {
     setSelectedDocument(doc);
@@ -41,14 +49,14 @@ export default function DocumentsPanel({ users }) {
       toast.success("Documento eliminado correctamente", { id: toastId });
     } catch (error) {
       console.log(error);
-      toast.info("Ocurrio un error al eliminar el documento", {
+      toast.info("Ocurrió un error al eliminar el documento", {
         description: "Intenta nuevamente o contacta con el soporte",
         id: toastId,
       });
     }
   };
 
-  const filteredDocuments = (swrData || [])?.filter((doc) => {
+  const filteredDocuments = (swrData || []).filter((doc) => {
     const searchTerm = searchQuery.toLowerCase();
     const fullname =
       `${doc.client?.name} ${doc.client?.lastName}`.toLowerCase() || "";
@@ -95,15 +103,14 @@ export default function DocumentsPanel({ users }) {
               <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
                 Tipo
               </th>
-              {/* <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">Estado</th> */}
               <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
                 Acciones
               </th>
             </tr>
           </thead>
           <tbody>
-            {filteredDocuments &&
-              filteredDocuments?.map((doc) => (
+            {filteredDocuments.length > 0 &&
+              filteredDocuments.map((doc) => (
                 <tr
                   key={`${doc.id}${doc.type}`}
                   className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer"
@@ -127,7 +134,6 @@ export default function DocumentsPanel({ users }) {
                   <td className="border p-2 text-gray-700 text-center">
                     {LABELS_TYPE[doc.type]}
                   </td>
-                  {/* <td className={`border p-2 w-36 text-center`}>{doc.status}</td> */}
                   <td className="border p-2 text-gray-700 text-center">
                     <div className="flex gap-2 items-center justify-around">
                       <button
@@ -143,7 +149,7 @@ export default function DocumentsPanel({ users }) {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          toast("Eliminar document", {
+                          toast("Eliminar documento", {
                             action: {
                               label: "Confirmar",
                               onClick: () => handleDelete(doc.id),
