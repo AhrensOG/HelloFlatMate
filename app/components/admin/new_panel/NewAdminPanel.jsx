@@ -48,7 +48,7 @@ const NewAdminPanel = ({ data }) => {
             case "consumos":
                 return <ConsumptionsPanel />;
             case "chats":
-                return <ChatsPanel users={data.allUsers} properties={data.optionSerials} />;
+                return <ChatsPanel />;
             case "incidencias":
                 return <IncidencesPanel />;
             case "mantenimiento":

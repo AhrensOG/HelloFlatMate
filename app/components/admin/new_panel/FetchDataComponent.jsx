@@ -19,8 +19,6 @@ const FetchDataComponent = async () => {
 
     try {
         const loFetch = await axios.get(`${BASE_URL}/api/admin/lease_order`);
-        const usersFetch = await axios.get(`${BASE_URL}/api/admin/user`);
-        const clientsFetch = await axios.get(`${BASE_URL}/api/admin/user?role=CLIENT`);
         const propertiesFetch = await axios.get(`${BASE_URL}/api/admin/property?simple=true`);
         const optionSerials = propertiesFetch.data?.map((property) => {
             return {
@@ -29,13 +27,9 @@ const FetchDataComponent = async () => {
                 rooms: property.rooms,
             };
         });
-        const usersWithLeaseOrderDataInPayment = addLeaseOrderToPayments(usersFetch.data, loFetch.data);
 
         data = {
             allLeaseOrders: loFetch.data,
-            allUsers: usersWithLeaseOrderDataInPayment,
-            clients: clientsFetch.data,
-            properties: propertiesFetch.data,
             optionSerials,
         };
     } catch (err) {
