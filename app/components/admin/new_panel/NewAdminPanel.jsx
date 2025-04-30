@@ -16,7 +16,7 @@ import IncidencesPanel from "./incidences/IncidencesPanel";
 import MaintenancePanel from "./maintenance/MaintenancePanel";
 import OwnerContractsPanel from "./ownerContracts/OwnerContractsPanel";
 
-const NewAdminPanel = ({ data }) => {
+const NewAdminPanel = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const section = searchParams.get("section") || "propiedades";
@@ -29,11 +29,7 @@ const NewAdminPanel = ({ data }) => {
                 return <ReservationPanel />;
             case "usuarios":
                 return (
-                    <UsersPanel
-                        properties={data.optionSerials}
-                        orders={[...data.allLeaseOrders]}
-                        allLeaseOrders={data.allLeaseOrders}
-                    />
+                    <UsersPanel />
                 );
             case "cobros":
                 return <PaymentsPanel />;

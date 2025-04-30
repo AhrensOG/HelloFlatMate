@@ -31,6 +31,7 @@ const UserModal = ({ user, onClose }) => {
     personalReview,
     arrivalDate,
     arrivalTime,
+    role,
   } = user || {};
 
   return (

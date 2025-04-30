@@ -14,35 +14,7 @@ function isEmpty(data) {
 }
 
 const FetchDataComponent = async () => {
-    let data = null;
-    let error = false;
-
-    try {
-        const loFetch = await axios.get(`${BASE_URL}/api/admin/lease_order`);
-        const propertiesFetch = await axios.get(`${BASE_URL}/api/admin/property?simple=true`);
-        const optionSerials = propertiesFetch.data?.map((property) => {
-            return {
-                serial: property.serial,
-                id: property.id,
-                rooms: property.rooms,
-            };
-        });
-
-        data = {
-            allLeaseOrders: loFetch.data,
-            optionSerials,
-        };
-    } catch (err) {
-        console.error("Error en SSR:", err);
-        error = true;
-        data = null;
-    }
-
-    if (error || isEmpty(data)) {
-        return <SkeletonLoader error={error} />;
-    }
-
-    return <NewAdminPanel data={data} />;
+    return <NewAdminPanel />;
 };
 
 export default FetchDataComponent;
