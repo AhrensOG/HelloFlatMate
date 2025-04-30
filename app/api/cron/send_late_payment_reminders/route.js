@@ -103,11 +103,11 @@ export async function GET() {
 
         // Descomentar para enviar correos reales
 
-        // await sendMailFunction({
-        //   to: client.email,
-        //   subject,
-        //   html,
-        // });
+        await sendMailFunction({
+          to: client.email,
+          subject,
+          html,
+        });
 
         resultados.push({
           emailDestino: client.email,
