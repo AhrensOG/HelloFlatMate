@@ -436,7 +436,7 @@ const OwnerContract = require("./models/ownerContract");
         Consumption.belongsTo(LeaseOrderRoom, { as: "leaseOrderRoom", foreignKey: "leaseOrderRoomId" });
 
         // await connection.drop({ cascade: true })
-        await connection.sync({ alter: true });
+        await connection.sync({ alter: false });
         console.log("Initializing DB");
 
         // DATA DE PRUEBA
