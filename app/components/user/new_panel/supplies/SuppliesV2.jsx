@@ -8,158 +8,196 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 const ICONS = {
-    WATER: <FaWater className="text-blue-500" />,
-    ELECTRICITY: <FaBolt className="text-yellow-500" />,
-    GAS: <FaFire className="text-red-500" />,
-    INTERNET: <FaWifi className="text-green-500" />,
-    GENERAL_SUPPLIES: <FaFileInvoice className="text-gray-500" />,
+  WATER: <FaWater className="text-blue-500" />,
+  ELECTRICITY: <FaBolt className="text-yellow-500" />,
+  GAS: <FaFire className="text-red-500" />,
+  INTERNET: <FaWifi className="text-green-500" />,
+  GENERAL_SUPPLIES: <FaFileInvoice className="text-gray-500" />,
 };
 
 const SuppliesV2 = () => {
-    const { state } = useContext(Context);
-    const user = state.user;
-    const [groupedData, setGroupedData] = useState({});
-    const t = useTranslations("user_profile_v2.supplies");
+  const { state } = useContext(Context);
+  const user = state.user;
+  const [groupedData, setGroupedData] = useState({});
+  const t = useTranslations("user_profile_v2.supplies");
 
-    const LABELS = {
-        WATER: t("water"),
-        ELECTRICITY: t("electricity"),
-        GAS: t("gas"),
-        INTERNET: t("internet"),
-        GENERAL_SUPPLIES: t("general_supplies"),
-        OTHER: t("others"),
-    };
+  const LABELS = {
+    WATER: t("water"),
+    ELECTRICITY: t("electricity"),
+    GAS: t("gas"),
+    INTERNET: t("internet"),
+    GENERAL_SUPPLIES: t("general_supplies"),
+    OTHER: t("others"),
+  };
 
-    useEffect(() => {
-        if (!user) return;
+  useEffect(() => {
+    if (!user) return;
 
-        const roomsData = {};
-        user.consumptions.forEach((consumption) => {
-            const { amount, url, type, period, leaseOrderRoomId, startDate, endDate } = consumption;
-            const leaseOrder = user.leaseOrdersRoom.find((order) => order.id === leaseOrderRoomId);
-            if (!leaseOrder) return;
+    const roomsData = {};
 
-            const roomSerial = leaseOrder.room.serial;
-            if (!roomsData[roomSerial]) roomsData[roomSerial] = { consumptions: {}, supplies: {} };
+    user.consumptions.forEach((consumption) => {
+      const {
+        amount,
+        url,
+        type,
+        period,
+        leaseOrderRoomId,
+        startDate,
+        endDate,
+      } = consumption;
+      const leaseOrder = user.leaseOrdersRoom.find(
+        (order) => order.id === leaseOrderRoomId
+      );
+      if (!leaseOrder) return;
 
-            if (!roomsData[roomSerial].consumptions[period]) roomsData[roomSerial].consumptions[period] = [];
-            roomsData[roomSerial].consumptions[period].push({
-                amount,
-                url,
-                type,
-                startDate,
-                endDate,
-            });
-        });
+      const periodKey = `${leaseOrder.room.serial} | ${formatDateToDDMMYYYY(
+        leaseOrder.startDate
+      )} - ${formatDateToDDMMYYYY(leaseOrder.endDate)}`;
 
-        user.supplies.forEach((supply) => {
-            if (["GENERAL_SUPPLIES", "INTERNET"].includes(supply.type)) {
-                const leaseOrder = user.leaseOrdersRoom.find((order) => order.id === supply.leaseOrderId);
-                if (!leaseOrder) return;
+      if (!roomsData[periodKey])
+        roomsData[periodKey] = { consumptions: {}, supplies: {} };
+      if (!roomsData[periodKey].consumptions[period])
+        roomsData[periodKey].consumptions[period] = [];
 
-                const roomSerial = leaseOrder.room.serial;
-                if (!roomsData[roomSerial]) roomsData[roomSerial] = { consumptions: {}, supplies: {} };
-                let period = "1Q"
-                if(supply.name.includes("2Q")) period = "2Q"
-                if (!roomsData[roomSerial].supplies[period]) roomsData[roomSerial].supplies[period] = [];
-                roomsData[roomSerial].supplies[period].push(supply);
-            }
-        });
+      roomsData[periodKey].consumptions[period].push({
+        amount,
+        url,
+        type,
+        startDate,
+        endDate,
+      });
+    });
 
-        setGroupedData(roomsData);
-    }, [user]);
+    user.supplies.forEach((supply) => {
+      if (["GENERAL_SUPPLIES", "INTERNET"].includes(supply.type)) {
+        const leaseOrder = user.leaseOrdersRoom.find(
+          (order) => order.id === supply.leaseOrderId
+        );
+        if (!leaseOrder) return;
 
-    return (
-        <div className="space-y-8 bg-white p-6">
-            <div>
-                <h1 className="text-xl font-semibold text-gray-800 mb-2">{t("h1")}</h1>
-                <p className="text-gray-600 mb-6 text-sm">{t("p_1")}</p>
-            </div>
-            {Object.keys(groupedData).length > 0 ? (
-                Object.keys(groupedData).map((serial) => (
-                    <motion.div
-                        key={serial}
-                        className="bg-white hover:shadow-md duration-300 rounded-xl p-8 border border-gray-200"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        <h2 className="text-lg font-semibold text-[#440cac] mb-4">
-                            {t("code")} {serial}
-                        </h2>
+        const periodKey = `${leaseOrder.room.serial} | ${formatDateToDDMMYYYY(
+          leaseOrder.startDate
+        )} - ${formatDateToDDMMYYYY(leaseOrder.endDate)}`;
 
-                        {Object.keys(groupedData[serial].supplies).map((period) => (
-                            <div key={period} className="mb-8 p-6 bg-gray-50 rounded-lg">
-                                <h3 className="font-semibold text-[#440cac] mb-4">
-                                    {t("period")} {period}
-                                </h3>
+        if (!roomsData[periodKey])
+          roomsData[periodKey] = { consumptions: {}, supplies: {} };
 
-                                <h4 className="font-semibold mb-2">{t("h4")}</h4>
-                                {groupedData[serial].supplies[period].length > 0 ? (
-                                    groupedData[serial].supplies[period].map((supply, idx) => (
-                                        <p key={idx} className="text-sm font-medium">
-                                            {supply.name}: €{supply.amount.toFixed(2)}
-                                        </p>
-                                    ))
-                                ) : (
-                                    <p className="text-sm text-gray-500">{t("p_2")}</p>
-                                )}
+        let period = "1Q";
+        if (supply.name.includes("2Q")) period = "2Q";
 
-                                <h4 className="font-semibold mt-6 mb-2">{t("h4_2")}</h4>
-                                {groupedData[serial].consumptions[period]?.length > 0 ? (
-                                    groupedData[serial].consumptions[period].map((consumption, idx) => (
-                                        <div key={idx} className="p-4 border rounded-lg flex items-center gap-4 bg-white shadow-sm mb-2">
-                                            {ICONS[consumption.type] || <FaFileInvoice className="text-gray-400" />}
-                                            <div>
-                                                <p className="text-sm font-semibold">{LABELS[consumption.type]}</p>
-                                                <p className="text-sm text-gray-600">
-                                                    {t("from")} {formatDateToDDMMYYYY(consumption.startDate)} - {t("to")}{" "}
-                                                    {formatDateToDDMMYYYY(consumption.endDate)}
-                                                </p>
-                                                <p className="font-bold text-[#440cac]">€{consumption.amount.toFixed(2)}</p>
-                                                {consumption.url && (
-                                                    <Link
-                                                        href={consumption.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-blue-600 text-sm underline"
-                                                    >
-                                                        {t("show_bill")}
-                                                    </Link>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500">{t("p_3")}</p>
-                                )}
+        if (!roomsData[periodKey].supplies[period])
+          roomsData[periodKey].supplies[period] = [];
+        roomsData[periodKey].supplies[period].push(supply);
+      }
+    });
 
-                                <h4 className="font-semibold mt-6 mb-2">{t("h4_3")}</h4>
-                                {groupedData[serial].supplies[period].map((supply) => {
-                                    const totalConsumption =
-                                        groupedData[serial].consumptions[period]
-                                            ?.filter(
-                                                (c) =>
-                                                    (c.type === "INTERNET" && supply.type === "INTERNET") ||
-                                                    (c.type !== "INTERNET" && supply.type === "GENERAL_SUPPLIES")
-                                            )
-                                            .reduce((acc, curr) => acc + curr.amount, 0) || 0;
+    setGroupedData(roomsData);
+  }, [user]);
 
-                                    return (
-                                        <p key={supply.name} className="text-sm font-semibold text-[#440cac]">
-                                            {supply.name}: €{(supply.amount - totalConsumption).toFixed(2)}
-                                        </p>
-                                    );
-                                })}
-                            </div>
-                        ))}
-                    </motion.div>
-                ))
-            ) : (
-                <div className="text-center text-gray-500 p-8">{t("p_4")}</div>
-            )}
-        </div>
-    );
+  return (
+    <div className="space-y-8 bg-white p-6">
+      <div>
+        <h1 className="text-xl font-semibold text-gray-800 mb-2">{t("h1")}</h1>
+        <p className="text-gray-600 mb-6 text-sm">{t("p_1")}</p>
+      </div>
+
+      {Object.keys(groupedData).length > 0 ? (
+        Object.entries(groupedData).map(([periodKey, data]) => (
+          <motion.div
+            key={periodKey}
+            className="bg-white hover:shadow-md duration-300 rounded-xl p-8 border border-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}>
+            <h2 className="text-lg font-semibold text-[#440cac] mb-4">
+              {t("code")} {periodKey}
+            </h2>
+
+            {Object.keys(data.supplies).map((period) => (
+              <div key={period} className="mb-8 p-6 bg-gray-50 rounded-lg">
+                <h3 className="font-semibold text-[#440cac] mb-4">
+                  {t("period")} {period}
+                </h3>
+
+                <h4 className="font-semibold mb-2">{t("h4")}</h4>
+                {data.supplies[period].length > 0 ? (
+                  data.supplies[period].map((supply, idx) => (
+                    <p key={idx} className="text-sm font-medium">
+                      {supply.name}: €{supply.amount.toFixed(2)}
+                    </p>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">{t("p_2")}</p>
+                )}
+
+                <h4 className="font-semibold mt-6 mb-2">{t("h4_2")}</h4>
+                {data.consumptions[period]?.length > 0 ? (
+                  data.consumptions[period].map((consumption, idx) => (
+                    <div
+                      key={idx}
+                      className="p-4 border rounded-lg flex items-center gap-4 bg-white shadow-sm mb-2">
+                      {ICONS[consumption.type] || (
+                        <FaFileInvoice className="text-gray-400" />
+                      )}
+                      <div>
+                        <p className="text-sm font-semibold">
+                          {LABELS[consumption.type]}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {t("from")}{" "}
+                          {formatDateToDDMMYYYY(consumption.startDate)} -{" "}
+                          {t("to")} {formatDateToDDMMYYYY(consumption.endDate)}
+                        </p>
+                        <p className="font-bold text-[#440cac]">
+                          €{consumption.amount.toFixed(2)}
+                        </p>
+                        {consumption.url && (
+                          <Link
+                            href={consumption.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 text-sm underline">
+                            {t("show_bill")}
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500">{t("p_3")}</p>
+                )}
+
+                <h4 className="font-semibold mt-6 mb-2">{t("h4_3")}</h4>
+                {data.supplies[period].map((supply) => {
+                  const totalConsumption =
+                    data.consumptions[period]
+                      ?.filter(
+                        (c) =>
+                          (c.type === "INTERNET" &&
+                            supply.type === "INTERNET") ||
+                          (c.type !== "INTERNET" &&
+                            supply.type === "GENERAL_SUPPLIES")
+                      )
+                      .reduce((acc, curr) => acc + curr.amount, 0) || 0;
+
+                  return (
+                    <p
+                      key={supply.name}
+                      className="text-sm font-semibold text-[#440cac]">
+                      {supply.name}: €
+                      {(supply.amount - totalConsumption).toFixed(2)}
+                    </p>
+                  );
+                })}
+              </div>
+            ))}
+          </motion.div>
+        ))
+      ) : (
+        <div className="text-center text-gray-500 p-8">{t("p_4")}</div>
+      )}
+    </div>
+  );
 };
 
 export default SuppliesV2;

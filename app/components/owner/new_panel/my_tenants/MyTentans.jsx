@@ -47,6 +47,11 @@ const MyTenants = () => {
     setExpandedRooms((prev) => ({ ...prev, [serial]: !prev[serial] }));
   };
 
+  const now = new Date();
+  const isFutureTenant = (order) => new Date(order.startDate) > now;
+  const isCurrentTenant = (order) =>
+    new Date(order.startDate) <= now && new Date(order.endDate) >= now;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -62,6 +67,15 @@ const MyTenants = () => {
               : "text-gray-700"
           }`}>
           {t("current_tenants")}
+        </button>
+        <button
+          onClick={() => setActiveTab("future")}
+          className={`px-4 pb-2 text-xl font-bold transition duration-300 ${
+            activeTab === "future"
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-700"
+          }`}>
+          {t("future_tenants")}
         </button>
         <button
           onClick={() => setActiveTab("old")}
@@ -107,14 +121,21 @@ const MyTenants = () => {
                     {property.rooms.map((room) => {
                       const isRoomExpanded = expandedRooms[room.serial];
                       const currentTenants = room.leaseOrdersRoom.filter(
-                        (order) => order.isActive
+                        (order) => order.isActive && isCurrentTenant(order)
+                      );
+                      const futureTenants = room.leaseOrdersRoom.filter(
+                        (order) => order.isActive && isFutureTenant(order)
                       );
                       const oldTenants = room.leaseOrdersRoom.filter(
                         (order) =>
                           !order.isActive && order.status !== "REJECTED"
                       );
                       const tenantsToShow =
-                        activeTab === "current" ? currentTenants : oldTenants;
+                        activeTab === "current"
+                          ? currentTenants
+                          : activeTab === "future"
+                          ? futureTenants
+                          : oldTenants;
                       return (
                         <div key={room.serial} className="mb-2">
                           <div

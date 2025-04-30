@@ -41,7 +41,6 @@ export async function getUserById(id) {
             },
           ],
         },
-        // { model: ToDo, as: "toDos" },
         { model: Document, as: "documents", attributes: ["id", "name", "type", "urls", "status", "leaseOrderId"] },
         { model: Supply, as: "supplies", attributes: ["id", "paymentId", "name","type","amount","date","status","paymentDate","leaseOrderId","propertyId","clientId"] },
         { model: Contract, as: "contracts", attributes: ["id", "leaseOrderId", "url"] },
@@ -61,8 +60,12 @@ export async function getUserById(id) {
       user = await Owner.findByPk(id, {
         attributes: ["id", "name", "lastName", "email", "idNum", "IBAN", "role"],
         include: [
-          { model: Incidence, as: "incidences" }
-        ],
+          {
+            model: Property,
+            as: "properties",
+            attributes: ["category"]
+          }
+        ]
       });
     }
 

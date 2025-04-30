@@ -26,7 +26,7 @@ const incidenceInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             type: {
-                type: DataTypes.ENUM("OTHER"),
+                type: DataTypes.ENUM("OTHER", "MAINTENANCE"),
                 allowNull: false,
             },
             title: {
@@ -37,6 +37,23 @@ const incidenceInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            status: {
+                type: DataTypes.ENUM("PENDING", "APPROVED"),
+                defaultValue: "APPROVED",
+                allowNull: false,
+            },
+            paymentId: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            paymentDate: {
+              type: DataTypes.DATE,
+              allowNull: true,
+            },
+            toDoId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            }  
         },
         {
             sequelize,

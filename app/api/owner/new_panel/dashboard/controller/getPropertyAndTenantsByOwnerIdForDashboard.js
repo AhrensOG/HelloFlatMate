@@ -25,7 +25,7 @@ export async function getPropertiesAndTenantsByOwnerIdForDashboard(id) {
             {
               model: LeaseOrderRoom,
               as: "leaseOrdersRoom",
-              attributes: ["id", "price", "isActive"],
+              attributes: ["id", "price", "isActive", "startDate", "endDate"],
               include: {
                 model: Client,
                 as: "client",

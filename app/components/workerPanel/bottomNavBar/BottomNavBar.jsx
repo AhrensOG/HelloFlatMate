@@ -18,22 +18,10 @@ const BottomNavBar = ({ section }) => {
             title: t("tasks"),
             link: "/pages/worker-panel/tasks",
         },
-        {
-            img: "/worker-panel/chat.svg",
-            alt: "Chat Icon",
-            title: t("chats"),
-            link: "/pages/user/chats",
-        },
-        {
-            img: "/worker-panel/profile.svg",
-            alt: "Profile Icon",
-            title: t("profile"),
-            link: "/pages/user/profile/service",
-        },
     ];
 
     return (
-        <div className="w-full h-full flex justify-center items-center">
+        <div className="bg-white w-full h-full flex justify-center items-center">
             <div className="p-2 pb-4 w-full h-full max-w-screen flex justify-around items-center border-t">
                 {buttonsList.map((b) => {
                     return (

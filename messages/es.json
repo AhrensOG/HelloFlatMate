@@ -8,11 +8,14 @@
         "owner_link_1": "Perfil",
         "owner_link_2": "Panel",
         "owner_link_3": "Mis inquilinos",
+        "owner_link_4": "Pagos",
+        "owner_link_5": "Incidencias",
         "user_link_1": "Perfil",
         "user_link_2": "Reservas",
         "user_link_3": "Histórico",
         "user_link_4": "Pagos",
         "user_link_5": "Suministros",
+        "user_link_6": "Incidencias",
         "worker_link_1": "Tareas",
         "logout": "Cerrar sesión",
         "items_nav_1": {
@@ -865,7 +868,8 @@
             "cleanup": "Limpieza check-out",
             "others": "Otros",
             "deposit": "Depósito",
-            "general_supplies": "Suministros"
+            "general_supplies": "Suministros",
+            "maintenance": "Mantenimiento"
         }
     },
     "forms": {
@@ -1060,7 +1064,8 @@
                 "payments": "Pagos",
                 "reservations": "Reservas",
                 "history": "Histórico",
-                "supplies": "Suministros"
+                "supplies": "Suministros",
+                "incidences": "Incidencias"
             },
             "btn_logout": "Cerrar sesión"
         },
@@ -1116,6 +1121,221 @@
             "p_2": "Progreso"
         }
     },
+    "user_incidences": {
+      "site_type_labels": {
+        "site": {
+          "my_room": "Mi habitación",
+          "kitchen": "Cocina",
+          "living_room": "Sala",
+          "wc1": "Baño 1",
+          "wc2": "Baño 2",
+          "hallway_common_areas": "Pasillo comunes",
+          "others": "Otros"
+        },
+        "type": {
+          "electricity": "Electricidad",
+          "carpentry": "Carpintería",
+          "locksmithing": "Cerrajería",
+          "plumbing": "Fontanería",
+          "glazing": "Cristalería",
+          "wifi": "Wi-Fi",
+          "appliances": "Electrodomésticos",
+          "furniture": "Muebles",
+          "others": "Otros"
+        }
+      },
+      "show_incidence_form": "Actualmente no puedes reportar incidencias porque no tienes ninguna orden de arrendamiento activa que lo permita. Esto puede deberse a que tu reserva aún no ha comenzado, ya ha finalizado, o tu alojamiento no proporciona este servicio. Si crees que esto es un error, por favor contacta con el soporte.",
+      "senderType_worker": "Técnico",
+      "senderType_client": "Inquilino",
+      "senderType_admin": "Administrador",
+      "senderType_owner": "Propietario",
+      "title": "Incidencias",
+      "description_1": "En este apartado podés solicitar una",
+      "description_2": "orden de reparación",
+      "description_3": "en caso de que haya algo roto o que no funcione correctamente en tu alojamiento. También podés solicitar una",
+      "description_4": "orden de limpieza",
+      "description_5": "si necesitás que el equipo realice una limpieza en tu habitación o propiedad.",
+      "open_form": "Reportar incidencia",
+      "close_form": "Cerrar formulario",
+      "validation": {
+        "order": "Debes seleccionar una orden de alquiler",
+        "type": "El tipo de servicio es obligatorio",
+        "date": "Selecciona un día",
+        "time": "Selecciona un horario",
+        "message": "El mensaje es obligatorio"
+      },
+      "toast": {
+        "loading": "Solicitando...",
+        "invalid_order": "Orden inválida",
+        "image_error": "Error al subir imagen",
+        "success": "Solicitud enviada correctamente",
+        "submit_error": "Hubo un error al enviar la solicitud",
+        "support": "Intenta nuevamente o contacta con el soporte"
+      },
+      "titles": {
+        "clean": "Servicio de limpieza",
+        "repair": "Servicio de reparación"
+      },
+      "body": {
+        "clean": "Limpieza solicitada para el",
+        "repair": "Reparación solicitada para el"
+      },
+      "form": {
+        "title": "Reportar incidencia",
+        "select_order": "Seleccionar sitio",
+        "select_order_placeholder": "Seleccionar orden",
+        "no_orders": "No tienes órdenes activas para enviar una incidencia.",
+        "select_type": "Tipo de servicio",
+        "select_type_placeholder": "Seleccionar",
+        "select_day": "Selecciona un día",
+        "select_time": "Selecciona un horario",
+        "additional_message": "Mensaje adicional",
+        "message_placeholder": "Detalles sobre el servicio que necesitas...",
+        "upload_image": "Subir imagen",
+        "image_ready": "Archivo listo para enviar ✅",
+        "is_present": "Marca esta opción si estarás presente durante el servicio de reparación. Si no la marcas, entenderemos que autorizas el ingreso al alojamiento en tu ausencia.",
+        "submit": "Enviar solicitud",
+        "dont_have_orders": "No tienes ordenes para enviar una incidencia.",
+        "type_clean": "Limpieza",
+        "type_repair": "Reparación",
+        "emergency": "¿Es una emergencia? (Marca solo si se necesita intervención urgente)",
+        "morning": "Mañana",
+        "afternoon": "Tarde",
+        "site_labels": {
+          "MY_ROOM": "Mi habitación",
+          "KITCHEN": "Cocina",
+          "LIVING_ROOM": "Sala de estar",
+          "WC1": "Baño 1",
+          "WC2": "Baño 2",
+          "HALLWAY_COMMON_AREAS": "Pasillo / Áreas comunes",
+          "OTHERS": "Otros"
+        },
+        "type_labels": {
+          "ELECTRICITY": "Electricidad",
+          "CARPENTRY": "Carpintería",
+          "LOCKSMITHING": "Cerrajería",
+          "PLUMBING": "Fontanería",
+          "GLAZING": "Cristalería",
+          "WIFI": "Wi-Fi",
+          "APPLIANCES": "Electrodomésticos",
+          "FURNITURE": "Muebles",
+          "OTHERS": "Otros"
+        }
+      },
+      "history": {
+        "title": "Historial de solicitudes",
+        "no_order": "Sin orden asociada",
+        "unknown": "Desconocido",
+        "empty": "No hay incidencias."
+      },
+      "long_days": {
+        "monday": "Lunes",
+        "tuesday": "Martes",
+        "wednesday": "Miércoles",
+        "thursday": "Jueves",
+        "friday": "Viernes",
+        "saturday": "Sábado",
+        "sunday": "Domingo"
+      },
+      "status": {
+      "IN_PROGRESS": "En progreso",
+      "PENDING": "Pendiente",
+      "COMPLETED": "Completado",
+      "CANCELLED": "Cancelado",
+      "EMERGENCY": "Emergencia"
+      },
+      "tabs": {
+        "IN_PROGRESS": "En progreso",
+        "PENDING": "Pendiente",
+        "COMPLETED": "Completado",
+        "CANCELLED": "Cancelado"
+      },
+      "todo_info": {
+        "code": "Código",
+        "body": "Descripción",
+        "amount": "Importe estimado",
+        "client": "Solicitado por",
+        "preferred_time_slot": "Franja horaria preferida",
+        "repair": "Reparación",
+        "site": "Lugar de la incidencia",
+        "repair_type": "Tipo de reparación",
+        "responsibility": "Responsabilidad",
+        "client_present": {
+          "title": "¿El Inquilino estará presente?",
+          "yes": "Sí",
+          "no": "No"
+        },
+        "start_date": "Fecha de inicio",
+        "reprogrammed": "Reprogramado",
+        "new_start_date": "Nueva fecha de inicio",
+        "reprogramming_comment": "Motivo de reprogramación",
+        "technical_message": "Comentario del técnico",
+        "closing_message": "Comentario de cierre",
+        "client_message": "Mensaje del inquilino",
+        "problem_picture": "Imagen / video del problema",
+        "bill": "Factura",
+        "view_bill":"Ver factura",
+        "image_video": "Ver imagen o video",
+        "emergency": "Urgente"
+      },
+      "labels": {
+        "code": "Código",
+        "worker": "Trabajador",
+        "unassigned": "No asignado",
+        "client_message": "Mensaje del inquilino",
+        "is_present": "¿Estarás presente?",
+        "yes": "Sí",
+        "no": "No",
+        "worker_comment": "Comentario del trabajador",
+        "cancel_reason": "Motivo de cancelación",
+        "image": "Imagen enviada",
+        "time_morning": "Mañana",
+        "time_afternoon": "Tarde",
+        "time_full_day": "Todo el día",
+        "site_kitchen": "Cocina",
+        "site_bathroom": "Baño",
+        "site_room": "Habitación",
+        "site_other": "Otro",
+        "type_electricity": "Electricidad",
+        "type_water": "Agua",
+        "type_appliance": "Electrodoméstico",
+        "type_other": "Otro",
+        "responsibility_owner": "Propietario",
+        "responsibility_tenant": "Inquilino",
+        "responsibility_shared": "Compartida",
+        "preferred_time_slot": "Franja horaria preferida",
+        "start_date": "Fecha de inicio",
+        "reprogrammed": "Reprogramado",
+        "new_start_date": "Nueva fecha",
+        "reprogramming_comment": "Motivo de reprogramación",
+        "amount": "Costo estimado",
+        "site": "Lugar de la incidencia",
+        "repair_type": "Tipo de reparación",
+        "responsibility": "Responsabilidad",
+        "CANCELLED": "Cancelado"
+      },
+      "cancel": {
+        "start": "Cancelar solicitud",
+        "label": "Escribe el motivo de cancelación:",
+        "placeholder": "Ej. Ya no es necesario el servicio porque...",
+        "confirm": "Confirmar cancelación",
+        "abort": "Cancelar",
+        "toast_success": "La orden se ha cancelado correctamente",
+        "toast_error": "Ocurrió un error al cancelar la orden",
+        "toast_support": "Intenta nuevamente o contacta con nuestro soporte"
+      },
+      "messages": {
+        "title": "Mensajes",
+        "refresh": "Actualizar mensajes",
+        "empty": "Aún no hay mensajes en esta incidencia.",
+        "placeholder": "Escribe un mensaje...",
+        "sending": "Enviando mensaje...",
+        "sent": "Mensaje enviado correctamente",
+        "error": "Error al enviar el mensaje",
+        "send": "Enviar mensaje",
+        "video_link": "Ver video adjunto"
+      }
+    },
     "worker_panel": {
         "tasks": {
             "h2_1": "Tareas",
@@ -1125,7 +1345,15 @@
             "cards": {
                 "in_progress": "En progreso",
                 "completed": "Completado",
-                "pending": "Pendiente"
+                "pending": "Pendiente",
+                "cancelled": "Cancelado",
+                "no_date": "Aún sin definir",
+                "emergency": "¡Emergencia!",
+                "rescheduled": "Reprogramado",
+                "responsibility": "Responsabilidad",
+                "owner": "Propietario",
+                "client": "Inquilino",
+                "amount": "Importe"
             },
             "search_bar": {
                 "placeholder": "Buscar...."
@@ -1205,12 +1433,16 @@
         "title_3": "Mis Inquilinos",
         "title_4": "Suministros",
         "title_5": "Chats",
+        "title_6": "Contratos",
         "sidebar": {
             "links": {
                 "name_1": "Panel",
                 "name_2": "Perfil",
                 "name_3": "Mis Inquilinos",
-                "name_4": "Suministros"
+                "name_4": "Suministros",
+                "name_5": "Pagos",
+                "name_6": "Incidencias",
+                "name_7": "Contratos"
             },
             "btn_logout": "Cerrar sesión"
         },
@@ -1231,7 +1463,8 @@
             "serial": "Código",
             "room": "Habitación",
             "current_tenants": "Inquilinos actuales",
-            "old_tenants": "Inquilinos anteriores"
+            "old_tenants": "Inquilinos anteriores",
+            "future_tenants": "Proximos inquilinos"
         },
         "tenants_card": {
             "status_label": {
@@ -1313,6 +1546,105 @@
                 "submit": "Enviar solicitud"
             }
         },
+        "incidences_panel": {
+          "title": "Incidencias",
+          "description_1": "En esta sección puedes revisar todas las incidencias generadas para tus propiedades y revisar los detalles de cada una de ellas, incluyendo la información de mantenimiento.",
+          "description_2": "Si una incidencia fue generada automaticamente por el administrador, se indicara.",
+          "no_incidences": "No hay incidencias registradas.",
+          "generated_by_admin": "Incidencia generada por Administración.",
+          "todo_info": {
+            "title": "Información de la incidencia",
+            "body": "Descripción",
+            "amount": "Importe",
+            "type": "Tipo de mantenimiento",
+            "status": "Estado",
+            "comment": "Motivo",
+            "client": "Solicitado por",
+            "responsibility": "Responsabilidad",
+            "site": "Sitio",
+            "repair": "Reparación",
+            "repair_type": "Tipo de reparación",
+            "emergency": "Emergencia",
+            "preferred_time_slot": "Preferencia horaria",
+            "reprogrammed": "Reprogramado",
+            "new_start_date": "Nueva fecha de inicio",
+            "new_end_date": "Nueva fecha de finalización",
+            "reprogramming_comment": "Motivo de reprogramación",
+            "start_date": "Fecha de inicio",
+            "end_date": "Fecha de finalización",
+            "technical_message": "Mensaje tecnico",
+            "closing_message": "Mensaje de finalización",
+            "client_message": "Mensaje del inquilino",
+            "client_present": {
+              "title": "¿Estara presente el inquilino?",
+              "yes": "Si",
+              "no": "No"
+            },
+            "problem_picture": "Imagen / video del problema",
+            "image_video": "Ver Imagen / Video",
+            "bill": "Factura",
+            "view_bill": "Ver factura"
+          },
+          "labels": {
+            "MY_ROOM": "Mi habitación",
+            "KITCHEN": "Cocina",
+            "LIVING_ROOM": "Sala de estar",
+            "WC1": "Baño 1",
+            "WC2": "Baño 2",
+            "HALLWAY_COMMON_AREAS": "Pasillo / Zonas comunes",
+            "OTHERS": "Otros",
+
+            "ELECTRICITY": "Electricidad",
+            "CARPENTRY": "Carpintería",
+            "LOCKSMITHING": "Cerrajería",
+            "PLUMBING": "Fontanería",
+            "GLAZING": "Cristalería",
+            "WIFI": "Wi-Fi",
+            "APPLIANCE": "Electrodomesticos",
+            "FURNITURE": "Muebles",
+            "OTHER": "Otro",
+
+            "PENDING": "Pendiente",
+            "COMPLETED": "Completado",
+            "CANCELLED": "Cancelado",
+            "OWNER": "Propietario",
+            "CLIENT": "Inquilino",
+            "MORNING": "Mañana",
+            "AFTERNOON": "Tarde",
+            "IN_PROGRESS":"En progreso"
+          }
+        },
+        "payments_panel": {
+          "property": "Propiedad",
+          "title": "Pagos",
+          "pay_modal": {
+            "title": "Confirmar pago",
+            "amount": "Importe",
+            "desc_1": "Descripción",
+            "room_code": "Código de propiedad",
+            "pay_now": "Pagar ahora",
+            "close": "Cancelar",
+            "toast": {
+              "loading": "Procesando el pago...",
+              "success": "Redirigiendo al sistema de pagos",
+              "error": "Ocurrio un error al intentar realizar el pago"
+            }
+          },
+          "tab": {
+            "pending": "Pendientes",
+            "approved": "Pagados"
+          },
+          "payment_card": {
+            "pay": "Pagar",
+            "status": {
+              "pending": "Pendiente",
+              "approved": "Pagado"
+            },
+            "view_incidence": "Ver detalles del mantenimiento #"
+          },
+          "not_pend_pay": "No hay pagos pendientes.",
+          "not_approved_pay": "No hay pagos realizados."
+        },
         "dashboard": {
             "type_labels": {
                 "monthly": "Mensual",
@@ -1342,7 +1674,15 @@
             "p_6": "Fecha",
             "p_7": "Importe",
             "incidences": "Incidencias",
-            "view_bill": "Ver factura"
+            "view_bill": "Ver factura",
+            "to_do_type": "Tipo de tarea",
+            "requested_by": "Solicitado por",
+            "responsibility": "Responsabilidad",
+            "location": "Sitio",
+            "repair_type": "Tipo de reparación",
+            "reason": "Problema",
+            "client": "Inquilino",
+            "owner": "Propietario"
         },
         "wallet": {
             "span_1": "Balance de la billetera: ",

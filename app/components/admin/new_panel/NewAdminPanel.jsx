@@ -13,6 +13,8 @@ import PropertiesPanel from "./properties/PropertiesPanel";
 import ConsumptionsPanel from "./consumptions/ConsumptionsPanel";
 import ChatsPanel from "./chats/ChatsPanel";
 import IncidencesPanel from "./incidences/IncidencesPanel";
+import MaintenancePanel from "./maintenance/MaintenancePanel";
+import OwnerContractsPanel from "./ownerContracts/OwnerContractsPanel";
 
 const NewAdminPanel = ({ data }) => {
     const router = useRouter();
@@ -49,6 +51,10 @@ const NewAdminPanel = ({ data }) => {
                 return <ChatsPanel users={data.allUsers} properties={data.optionSerials} />;
             case "incidencias":
                 return <IncidencesPanel />;
+            case "mantenimiento":
+              return <MaintenancePanel />;
+            case "contratos": 
+                return <OwnerContractsPanel />
             default:
                 return <div/>;
         }

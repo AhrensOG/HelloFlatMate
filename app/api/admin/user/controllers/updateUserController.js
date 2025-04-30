@@ -1,5 +1,4 @@
 import { Client, Owner, Admin, Worker } from "@/db/init";
-import { sequelize } from "@/db/models/comment";
 import { NextResponse } from "next/server";
 
 export async function updateClient(data) {
@@ -72,47 +71,47 @@ export async function updateAdmin(data) {
     }
 }
 
+const MODELS = { CLIENT: Client, OWNER: Owner, ADMIN: Admin, WORKER: Worker };
+
 export async function updateRoleUser(data) {
-    if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
-    if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
-    if (!data.role) return NextResponse.json({ error: "Se requiere el rol" }, { status: 400 });
+  if (!data) return NextResponse.json({ error: "Se requiere el body" }, { status: 400 });
+  if (!data.id) return NextResponse.json({ error: "Se requiere el id" }, { status: 400 });
+  if (!data.role || !MODELS[data.role]) return NextResponse.json({ error: "Rol no válido" }, { status: 400 });
 
-    const transaction = await sequelize.transaction();
+  const transaction = await Client.sequelize.transaction();
 
-    try {
-        let user = await Client.findByPk(data.id) || await Owner.findByPk(data.id) || await Admin.findByPk(data.id, { transaction }) || await Worker.findByPk(data.id, { transaction });
-        if (!user) {
-            await transaction.rollback();
-            return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        }
+  try {
+    const allModels = Object.values(MODELS);
+    let currentModel = null;
+    let user = null;
 
-        const userData = user.toJSON(); // Copia de los datos del usuario para crear uno nuevo más tarde
-
-        let newUser;
-        if (data.role === "ADMIN") {
-            newUser = await Admin.create({ ...userData, role: "ADMIN" }, { transaction });
-        } else if (data.role === "OWNER") {
-            newUser = await Owner.create({ ...userData, role: "OWNER" }, { transaction });
-        }
-        else if (data.role === "CLIENT") {
-            newUser = await Client.create({ ...userData, role: "CLIENT" }, { transaction });
-        } else if (data.role === "WORKER") {
-            newUser = await Worker.create({ ...userData, role: "WORKER" }, { transaction });
-        }
-        else {
-            await transaction.rollback();
-            return NextResponse.json({ error: "Rol no válido" }, { status: 400 });
-        }
-
-        await user.destroy({ transaction }); // Destruir el usuario original solo si la creación del nuevo fue exitosa
-
-        await transaction.commit();
-
-        return NextResponse.json({ message: "Rol actualizado", user: newUser }, { status: 200 });
-    } catch (error) {
-        await transaction.rollback();
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    for (const model of allModels) {
+      user = await model.findByPk(data.id, { transaction });
+      if (user) {
+        currentModel = model;
+        break;
+      }
     }
+
+    if (!user || !currentModel) {
+      await transaction.rollback();
+      return NextResponse.json({ error: "Usuario no encontradosssdasdsa d" }, { status: 404 });
+    }
+
+    const userData = user.toJSON();
+
+    // Eliminamos el usuario del modelo actual
+    await currentModel.destroy({ where: { id: data.id }, transaction });
+
+    // Creamos el usuario en el nuevo modelo (rol)
+    const NewModel = MODELS[data.role];
+    const newUser = await NewModel.create({ ...userData, role: data.role }, { transaction });
+    await transaction.commit();
+    return NextResponse.json({ message: "Rol actualizado", user: newUser }, { status: 200 });
+  } catch (error) {
+    if (transaction) await transaction.rollback();
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
 

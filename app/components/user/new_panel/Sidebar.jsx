@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRightStartOnRectangleIcon, BoltIcon, CalendarDaysIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, ReceiptRefundIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, BoltIcon, CalendarDaysIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, ReceiptRefundIcon, UserIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
@@ -12,6 +12,17 @@ const Sidebar = () => {
     const t = useTranslations("user_profile_v2.sidebar");
     const { state } = useContext(Context);
     const pathname = usePathname();
+
+    let shouldShowIncidences = false;
+
+    if (
+      state.user?.leaseOrdersRoom &&
+      Array.isArray(state.user.leaseOrdersRoom)
+    ) {
+      shouldShowIncidences = state.user.leaseOrdersRoom.some(
+        (order) => order.room?.property?.category !== "HELLO_LANDLORD"
+      );
+    }
     const links = [
         {
             name: t("links.profile"),
@@ -43,6 +54,15 @@ const Sidebar = () => {
             href: "/pages/user/chats",
             icon: <ChatBubbleBottomCenterIcon className="size-6" />,
         },
+        ...(shouldShowIncidences
+        ? [
+            {
+              name: t("links.incidences"),
+              href: "/pages/user/incidences",
+              icon: <WrenchIcon className="size-6" />,
+            },
+          ]
+        : []),
     ];
 
     return (

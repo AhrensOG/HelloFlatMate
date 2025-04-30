@@ -31,7 +31,8 @@ const supplyInit = (sequelize, DataTypes) => {
                     "CLEANUP",
                     "OTHERS",
                     "DEPOSIT",
-                    "GENERAL_SUPPLIES"
+                    "GENERAL_SUPPLIES",
+                    "MAINTENANCE"
                 ),
                 allowNull: false,
             },

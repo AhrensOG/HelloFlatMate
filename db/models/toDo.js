@@ -27,7 +27,7 @@ const toDoInit = (sequelize, DataTypes) => {
             },
             startDate: {
                 type: DataTypes.DATE,
-                allowNull: false,
+                allowNull: true,
             },
             endDate: {
                 type: DataTypes.DATE,
@@ -38,7 +38,7 @@ const toDoInit = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             status: {
-                type: DataTypes.ENUM("PENDING", "IN_PROGRESS", "COMPLETED"),
+                type: DataTypes.ENUM("PENDING", "IN_PROGRESS", "COMPLETED", "CANCELLED"),
                 allowNull: false,
             },
             comment: {
@@ -61,6 +61,66 @@ const toDoInit = (sequelize, DataTypes) => {
             typeUser: {
                 type: DataTypes.ENUM("CLIENT", "OWNER"),
                 allowNull: false,
+            },
+            leaseOrderId: {
+              type: DataTypes.INTEGER,
+              allowNull: true
+            },
+            cancellationReason: {
+              type: DataTypes.STRING(1000),
+              allowNull: true,
+            },
+            imageUrl: {
+              type: DataTypes.STRING(),
+              allowNull: true,
+            },
+            preferredTimeSlot: {
+              type: DataTypes.ENUM("MORNING", "AFTERNOON", "EVENING"),
+              allowNull: true,
+            },
+            incidentSite: {
+              type: DataTypes.ENUM("MY_ROOM", "KITCHEN", "LIVING_ROOM", "WC1", "WC2", "HALLWAY_COMMON_AREAS", "OTHERS"),
+              allowNull: true,
+            },
+            incidentType: {
+              type: DataTypes.ENUM("ELECTRICITY", "CARPENTRY", "LOCKSMITHING", "PLUMBING", "GLAZING", "WIFI", "APPLIANCES", "FURNITURE", "OTHERS"),
+              allowNull: true,
+            },
+            emergency: {
+              type: DataTypes.BOOLEAN,
+              allowNull: true,
+            },
+            reprogrammed: {
+              type: DataTypes.BOOLEAN,
+              allowNull: true,
+            },
+            reprogrammedStartDate: {
+              type: DataTypes.DATE,
+              allowNull: true,
+            },
+            reprogrammedEndDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
+            reprogramingComment: {
+              type: DataTypes.STRING(1000),
+              allowNull: true,
+            },
+            closingComments: {
+              type: DataTypes.STRING(1000),
+              allowNull: true,
+            },
+            responsibility: {
+              type: DataTypes.ENUM("CLIENT", "OWNER"),
+              allowNull: true,
+            },
+            amount: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+            },
+            bill: {
+              type: DataTypes.STRING(),
+              allowNull: true,
             }
         },
         {

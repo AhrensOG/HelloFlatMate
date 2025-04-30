@@ -1,5 +1,5 @@
 import { authAdmin } from "@/app/firebase/adminConfig";
-import { Admin, Client, Owner } from "@/db/init";
+import { Admin, Client, Owner, Worker } from "@/db/init";
 import { NextResponse } from "next/server";
 import { updateRoleUser } from "../controllers/updateUserController";
 
@@ -17,13 +17,15 @@ export async function PATCH(req) {
         }
 
         let selectUser;
-
+        const MODELS = { CLIENT: Client, OWNER: Owner, ADMIN: Admin, WORKER: Worker };
         if (user.changeRol) {
             const res = await updateRoleUser({ id: user.userId, role: user.rol });
-            selectUser = res.user;
-            console.log(await res.json());
+            const resJson = await res.json();
+            if (resJson?.user) {
+              const selectedModel = MODELS[resJson.user?.role];
+              selectUser = await selectedModel.findByPk(resJson.user?.id);
+            }
         }
-
         if (!selectUser) {
             switch (user.rol) {
                 case "ADMIN":
@@ -34,6 +36,8 @@ export async function PATCH(req) {
                     break;
                 case "OWNER":
                     selectUser = await Owner.findByPk(user.userId);
+                case "WORKER":
+                selectUser = await Worker.findByPk(user.userId);
                 default:
                     break;
             }

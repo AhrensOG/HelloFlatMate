@@ -96,7 +96,7 @@ export default function Services({ id }) {
             <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
           </div>
         ) : (
-          user.toDos.map((toDo) => (
+          user.toDos?.map((toDo) => (
             <ActionServiceCard
               title={toDo.title}
               body={`El personal de limpieza irá a tu apartamento el día ${

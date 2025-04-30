@@ -8,11 +8,14 @@
         "owner_link_1": "Profile",
         "owner_link_2": "Dashboard",
         "owner_link_3": "My tenants",
+        "owner_link_4": "Payments",
+        "owner_link_5": "Incidences",
         "user_link_1": "Profile",
         "user_link_2": "Reservations",
         "user_link_3": "History",
         "user_link_4": "Payments",
         "user_link_5": "Supplies",
+        "user_link_6": "Incidences",
         "worker_link_1": "Tasks",
         "logout": "Log Out",
         "items_nav_1": {
@@ -858,7 +861,8 @@
             "cleanup": "Check-out cleaning",
             "others": "Others",
             "deposit": "Deposit",
-            "general_supplies": "Supplies"
+            "general_supplies": "Supplies",
+            "maintenance": "Maintenance"
         }
     },
     "last_room_page": {
@@ -1045,7 +1049,8 @@
                 "payments": "Payments",
                 "reservations": "Reservations",
                 "history": "History",
-                "supplies": "Supplies"
+                "supplies": "Supplies",
+                "incidences": "Incidences"
             },
             "btn_logout": "Log out"
         },
@@ -1101,6 +1106,221 @@
             "p_2": "Progress"
         }
     },
+    "user_incidences": {
+      "site_type_labels": {
+        "site": {
+          "my_room": "My room",
+          "kitchen": "Kitchen",
+          "living_room": "Living room",
+          "wc1": "Bathroom 1",
+          "wc2": "Bathroom 2",
+          "hallway_common_areas": "Hallway / Common areas",
+          "others": "Others"
+        },
+        "type": {
+          "electricity": "Electricity",
+          "carpentry": "Carpentry",
+          "locksmithing": "Locksmithing",
+          "plumbing": "Plumbing",
+          "glazing": "Glazing",
+          "wifi": "Wi-Fi",
+          "appliances": "Appliances",
+          "furniture": "Furniture",
+          "others": "Others"
+        }
+      },
+      "show_incidence_form": "Currently you cannot report issues because you do not have an active rental order that allows this. This may be because your booking has not yet started, has already ended, or your accommodation does not provide this service. If you believe this is an error, please contact support.",
+      "senderType_worker": "Technician",
+      "senderType_client": "Tenant",
+      "senderType_admin": "Administrator",
+      "senderType_owner": "Owner",
+      "title": "Requests",
+      "description_1": "In this section you can request a",
+      "description_2": "repair service",
+      "description_3": "if something is broken or not working properly in your accommodation. You can also request a",
+      "description_4": "cleaning service",
+      "description_5": "if you need the team to clean your room or property.",
+      "open_form": "Request a service",
+      "close_form": "Close form",
+      "validation": {
+        "order": "You must select a lease order",
+        "type": "Service type is required",
+        "date": "Please select a date",
+        "time": "Please select a time",
+        "message": "Message is required"
+      },
+      "toast": {
+        "loading": "Submitting...",
+        "invalid_order": "Invalid order",
+        "image_error": "Image upload failed",
+        "success": "Request sent successfully",
+        "submit_error": "There was an error sending the request",
+        "support": "Please try again or contact support"
+      },
+      "titles": {
+        "clean": "Cleaning service",
+        "repair": "Repair service"
+      },
+      "body": {
+        "clean": "Cleaning scheduled for",
+        "repair": "Repair scheduled for"
+      },
+      "form": {
+        "title": "Report an issue",
+        "select_order": "Select site",
+        "select_order_placeholder": "Select",
+        "no_orders": "You have no active orders to report an issue.",
+        "select_type": "Service type",
+        "select_type_placeholder": "Select",
+        "select_day": "Select a day",
+        "select_time": "Select a time",
+        "additional_message": "Additional message",
+        "message_placeholder": "Details about the service you need...",
+        "upload_image": "Upload image",
+        "image_ready": "File ready to send ✅",
+        "is_present": "Check this option if you will be present during the repair service. If left unchecked, we will assume you authorise access to the accommodation in your absence.",
+        "submit": "Send request",
+        "dont_have_orders": "You don't have any orders to report an issue.",
+        "type_clean": "Cleaning",
+        "type_repair": "Repair",
+        "emergency": "Is it an emergency? (check only if urgent intervention is needed)",
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "site_labels": {
+          "MY_ROOM": "My room",
+          "KITCHEN": "Kitchen",
+          "LIVING_ROOM": "Living room",
+          "WC1": "Bathroom 1",
+          "WC2": "Bathroom 2",
+          "HALLWAY_COMMON_AREAS": "Hallway / Common areas",
+          "OTHERS": "Others"
+        },
+        "type_labels": {
+          "ELECTRICITY": "Electricity",
+          "CARPENTRY": "Carpentry",
+          "LOCKSMITHING": "Locksmithing",
+          "PLUMBING": "Plumbing",
+          "GLAZING": "Glazing",
+          "WIFI": "Wi-Fi",
+          "APPLIANCES": "Appliances",
+          "FURNITURE": "Furniture",
+          "OTHERS": "Others"
+        }
+      },
+      "history": {
+        "title": "Request history",
+        "no_order": "No associated order",
+        "unknown": "Unknown",
+        "empty": "There are no issues."
+      },
+      "long_days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      },
+      "status": {
+      "IN_PROGRESS": "In progress",
+      "PENDING": "Pending",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled",
+      "EMERGENCY": "Emergency"
+      },
+      "tabs": {
+        "IN_PROGRESS": "In progress",
+        "PENDING": "Pending",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled"
+      },
+      "todo_info": {
+        "code": "Code",
+        "body": "Description",
+        "amount": "Estimated amount",
+        "client": "Requested by",
+        "preferred_time_slot": "Preferred time slot",
+        "repair": "Repair",
+        "site": "Incident location",
+        "repair_type": "Repair type",
+        "responsibility": "Responsibility",
+        "client_present": {
+          "title": "Will the tenant be present?",
+          "yes": "Yes",
+          "no": "No"
+        },
+        "start_date": "Start date",
+        "reprogrammed": "Rescheduled",
+        "new_start_date": "New start date",
+        "reprogramming_comment": "Rescheduling reason",
+        "technical_message": "Technical comment",
+        "closing_message": "Closing comment",
+        "client_message": "Tenant's message",
+        "problem_picture": "Problem picture / video",
+        "bill": "Bill",
+        "view_bill":"View bill",
+        "image_video": "View image or video",
+        "emergency": "Emergency"
+      },
+      "labels": {
+        "code": "Code",
+        "worker": "Worker",
+        "unassigned": "Unassigned",
+        "client_message": "Tenant message",
+        "is_present": "Will you be present?",
+        "yes": "Yes",
+        "no": "No",
+        "worker_comment": "Worker's comment",
+        "cancel_reason": "Cancellation reason",
+        "image": "Uploaded image",
+        "time_morning": "Morning",
+        "time_afternoon": "Afternoon",
+        "time_full_day": "All day",
+        "site_kitchen": "Kitchen",
+        "site_bathroom": "Bathroom",
+        "site_room": "Room",
+        "site_other": "Other",
+        "type_electricity": "Electricity",
+        "type_water": "Water",
+        "type_appliance": "Appliance",
+        "type_other": "Other",
+        "responsibility_owner": "Owner",
+        "responsibility_tenant": "Tenant",
+        "responsibility_shared": "Shared",
+        "preferred_time_slot": "Preferred time slot",
+        "start_date": "Start date",
+        "reprogrammed": "Rescheduled",
+        "new_start_date": "New start date",
+        "reprogramming_comment": "Reschedule reason",
+        "amount": "Estimated cost",
+        "site": "Incident location",
+        "repair_type": "Repair type",
+        "responsibility": "Responsibility",
+        "CANCELLED": "Cancelled"
+      },
+      "cancel": {
+        "start": "Cancel request",
+        "label": "Write the reason for cancellation:",
+        "placeholder": "E.g. The service is no longer needed beacuse...",
+        "confirm": "Confirm cancellation",
+        "abort": "Cancel",
+        "toast_success": "The request was successfully cancelled",
+        "toast_error": "There was an error cancelling the request",
+        "toast_support": "Please try again or contact support"
+      },
+      "messages": {
+        "title": "Messages",
+        "refresh": "Refresh messages",
+        "empty": "There are no messages in this issue yet.",
+        "placeholder": "Write a message...",
+        "sending": "Sending message...",
+        "sent": "Message sent successfully",
+        "error": "Error sending message",
+        "send": "Send message",
+        "video_link": "View attached video"
+      }
+    },
     "worker_panel": {
         "tasks": {
             "h2_1": "Tasks",
@@ -1110,7 +1330,15 @@
             "cards": {
                 "in_progress": "In Progress",
                 "completed": "Completed",
-                "pending": "Pending"
+                "pending": "Pending",
+                "cancelled": "Cancelled",
+                "no_date": "Not date yet",
+                "emergency": "Emergency!",
+                "rescheduled": "Repgrammed",
+                "responsibility": "Responsibility",
+                "owner": "Owner",
+                "client": "Tenant",
+                "amount": "Amount"
             },
             "search_bar": {
                 "placeholder": "Search...."
@@ -1191,12 +1419,16 @@
         "title_3": "My Tenants",
         "title_4": "Supplies",
         "title_5": "Chats",
+        "title_6": "Contracts",
         "sidebar": {
             "links": {
                 "name_1": "Panel",
                 "name_2": "Profile",
                 "name_3": "My Tenants",
-                "name_4": "Supplies"
+                "name_4": "Supplies",
+                "name_5": "Payments",
+                "name_6": "Incidences",
+                "name_7": "Contract"
             },
             "btn_logout": "Log Out"
         },
@@ -1216,8 +1448,9 @@
             "no_tenants": "No tenants registered.",
             "serial": "Code",
             "room": "Room",
-            "current_tenants": "Current Tenants",
-            "old_tenants": "Previous Tenants"
+            "current_tenants": "Current tenants",
+            "old_tenants": "Previous tenants",
+            "future_tenants": "Next tenants"
         },
         "tenants_card": {
             "status_label": {
@@ -1299,6 +1532,105 @@
                 "submit": "Submit Request"
             }
         },
+        "incidences_panel": {
+          "title": "Incidences",
+          "description_1": "In this section you can review all the incidences generated for your properties and review the details of each of them, including the maintenance information.",
+          "description_2": "If an incidence was generated automatically by administration, it will be indicated.",
+          "no_incidences": "No incidences registered.",
+          "generated_by_admin": "Incidence generated from admin.",
+          "todo_info": {
+            "title": "Maintenance task information",
+            "body": "Description",
+            "amount": "Import",
+            "type": "Maintenance type",
+            "status": "Status",
+            "comment": "Reason",
+            "client": "Requested by",
+            "responsibility": "Responsibility",
+            "site": "Site",
+            "repair": "Repair",
+            "repair_type": "Repair type",
+            "emergency": "Emergency",
+            "preferred_time_slot": "Preferred time slot",
+            "reprogrammed": "Reprogrammed",
+            "new_start_date": "New start date",
+            "new_end_date": "New end date",
+            "reprogramming_comment": "Reprogramming reason",
+            "start_date": "Start date",
+            "end_date": "End date",
+            "technical_message": "Technical message",
+            "closing_message": "Closing message",
+            "client_message": "Tenant message",
+            "client_present": {
+              "title": "Will tenant be present?",
+              "yes": "Yes",
+              "no": "No"
+            },
+            "problem_picture": "Problem picture / video",
+            "image_video": "View Image / Video",
+            "bill": "Bill",
+            "view_bill": "View bill"
+          },
+          "labels": {
+            "MY_ROOM": "My room",
+            "KITCHEN": "Kitchen",
+            "LIVING_ROOM": "Living room",
+            "WC1": "Bathroom 1",
+            "WC2": "Bathroom 2",
+            "HALLWAY_COMMON_AREAS": "Hallway / Common areas",
+            "OTHERS": "Others",
+
+            "ELECTRICITY": "Electricity",
+            "CARPENTRY": "Carpentry",
+            "LOCKSMITHING": "Locksmithing",
+            "PLUMBING": "Plumbing",
+            "GLAZING": "Glazing",
+            "WIFI": "Wi-Fi",
+            "APPLIANCE": "Appliances",
+            "FURNITURE": "Furniture",
+            "OTHER": "Other",
+
+            "PENDING": "Pending",
+            "COMPLETED": "Completed",
+            "CANCELLED": "Cancelled",
+            "OWNER": "Owner",
+            "CLIENT": "Tenant",
+            "MORNING": "Morning",
+            "AFTERNOON": "Afternoon",
+            "IN_PROGRESS":"In progress"
+          }
+        },
+        "payments_panel": {
+          "property": "Property",
+          "title": "Payments",
+          "pay_modal": {
+            "title": "Confirm Payment",
+            "amount": "Import",
+            "desc_1": "Description",
+            "room_code": "Property code:",
+            "pay_now": "Pay Now",
+            "close": "Cancel",
+            "toast": {
+              "loading": "Processing payment...",
+              "success": "Redirecting to payment system",
+              "error": "An error occurred while trying to make the payment"
+            }
+          },
+          "tab": {
+            "pending": "Pending",
+            "approved": "Paid"
+          },
+          "payment_card": {
+            "pay": "Pay",
+            "status": {
+              "pending": "Pending",
+              "approved": "Paid"
+            },
+            "view_incidence": "View detials of maintenance #"
+          },
+          "not_pend_pay": "No pending payments.",
+          "not_approved_pay": "No paid payments."
+        },
         "dashboard": {
             "type_labels": {
                 "monthly": "Monthly",
@@ -1328,7 +1660,15 @@
             "p_6": "Date",
             "p_7": "Import",
             "incidences": "Incidences",
-            "view_bill": "View bill"
+            "view_bill": "View bill",
+            "to_do_type": "Task type",
+            "requested_by": "Requested by",
+            "responsibility": "Responsibility",
+            "location": "Site",
+            "repair_type": "Repair type",
+            "reason": "Problem",
+            "client": "Tenant",
+            "owner": "Owner"
         },
         "wallet": {
             "span_1": "Wallet Balance: ",

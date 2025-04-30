@@ -107,10 +107,12 @@ export default function Chat({ ownerPage = false }) {
 
       {privateChats.map((chat) => {
         if (
-          chat.relatedModel?.category !== "HELLO_LANDLORD" ||
-          chat.relatedModel?.property?.category !== "HELLO_LANDLORD"
-        )
+          !chat.relatedModel ||
+          (chat.relatedModel.category !== "HELLO_LANDLORD" &&
+            chat.relatedModel.property?.category !== "HELLO_LANDLORD")
+        ) {
           return null;
+        }
         const name = chat.relatedId
           ? `${chat.relatedModel?.serial} - Privado`
           : getChatName(chat);

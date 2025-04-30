@@ -6,13 +6,15 @@ import { toast } from "sonner";
 import axios from "axios";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 
-const TYPE_OPTIONS = [{ label: "Otros", value: "OTHER" }];
+const TYPE_OPTIONS = [{ label: "Otros", value: "OTHER" }, {label: "Mantenimiento", value: "MAINTENANCE"}];
 
-const CreateIncidenceModal = ({ owners, properties, onClose, mutate }) => {
+const CreateIncidenceModal = ({ owners, properties, toDos, onClose, mutate }) => {
     const [selectedOwner, setSelectedOwner] = useState(null);
     const [ownerSearch, setOwnerSearch] = useState("");
     const [filteredOwners, setFilteredOwners] = useState([]);
     const [ownerProperties, setOwnerProperties] = useState([]);
+    const [toDoSearch, setToDoSearch] = useState("");
+    const [filteredToDos, setFilteredToDos] = useState([]);
 
     const handleOwnerSearch = (e) => {
         const query = e.target.value.toLowerCase();
@@ -39,6 +41,26 @@ const CreateIncidenceModal = ({ owners, properties, onClose, mutate }) => {
         setOwnerProperties(filteredProperties);
     };
 
+    const handleToDoSearch = (e) => {
+      const query = e.target.value.toLowerCase();
+      setToDoSearch(query);
+    
+      if (!query) return setFilteredToDos([]);
+    
+      const filtered = toDos.filter((todo) => {
+        const label = `Tarea #${todo.id} - Propiedad asociada ID ${todo.propertyId} | Código ${todo.property.serial}`;
+        return label.toLowerCase().includes(query);
+      });
+    
+      setFilteredToDos(filtered);
+    };
+
+    const handleToDoSelect = (todo, setFieldValue) => {
+      setFieldValue("toDoId", todo.id);
+      setToDoSearch(`Tarea #${todo.id} - Propiedad asociada ID ${todo.propertyId} | Código ${todo.property.serial}`);
+      setFilteredToDos([]);
+    };
+
     const handlePropertySelect = (e, setFieldValue) => {
         const propertyId = e.target.value;
         setFieldValue("propertyId", propertyId);
@@ -53,7 +75,7 @@ const CreateIncidenceModal = ({ owners, properties, onClose, mutate }) => {
             }
 
             await axios.post("/api/admin/incidences", {
-                ...values,
+                ...values, 
                 url: files.length > 0 ? files[0].url : null,
             });
             await mutate();
@@ -95,6 +117,10 @@ const CreateIncidenceModal = ({ owners, properties, onClose, mutate }) => {
                         type: "",
                         title: "",
                         description: "",
+                        status: "",
+                        paymentId: "",
+                        paymentDate: "",
+                        toDoId: "",
                     }}
                     onSubmit={handleSubmit}
                 >
@@ -186,6 +212,22 @@ const CreateIncidenceModal = ({ owners, properties, onClose, mutate }) => {
                                 </Field>
                             </div>
 
+                            {/* STATUS */}
+                            <div>
+                                <label className="text-xs font-light">
+                                    Estado
+                                </label>
+                                <Field
+                                    as="select"
+                                    name="status"
+                                    className="outline-none border p-2 w-full"
+                                >
+                                    <option value="">Seleccionar estado</option>
+                                    <option value="PENDING">Pendiente</option>
+                                    <option value="APPROVED">Pagado</option>
+                                </Field>
+                            </div>
+
                             {/* Fecha */}
                             <div>
                                 <label className="text-xs font-light">
@@ -236,6 +278,57 @@ const CreateIncidenceModal = ({ owners, properties, onClose, mutate }) => {
                                     className="outline-none border p-2 w-full"
                                 />
                             </div>
+
+                            {/* Payment ID */}
+                            <div>
+                                <label className="text-xs font-light">
+                                    ID De Pago
+                                </label>
+                                <Field
+                                    type="text"
+                                    name="paymentId"
+                                    placeholder="ID de pago"
+                                    className="outline-none border p-2 w-full"
+                                />
+                            </div>
+
+                            {/* Payment Date */}
+                            <div>
+                                <label className="text-xs font-light">
+                                    Fecha de pago
+                                </label>
+                                <Field
+                                    type="date"
+                                    name="paymentDate"
+                                    className="outline-none border p-2 w-full"
+                                />
+                            </div>
+
+                            {/* ToDoId */}
+                            <div className="relative">
+                              <label className="text-xs font-light">Tarea relacionada (Opcional)</label>
+                              <input
+                                type="text"
+                                placeholder="Buscar por ID o código de propiedad"
+                                value={toDoSearch}
+                                onChange={handleToDoSearch}
+                                className="outline-none border p-2 w-full"
+                              />
+                              {filteredToDos.length > 0 && (
+                                <ul className="absolute top-full mt-1 w-full max-h-40 overflow-y-auto border bg-white z-10">
+                                  {filteredToDos.map((todo) => (
+                                    <li
+                                      key={todo.id}
+                                      className="p-2 cursor-pointer hover:bg-gray-100"
+                                      onClick={() => handleToDoSelect(todo, setFieldValue)}
+                                    >
+                                      Tarea #{todo.id} - Propiedad {todo.property.serial}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+
 
                             {/* Archivo bill */}
                             <div>

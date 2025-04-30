@@ -3,6 +3,7 @@ import CryptoJS from "crypto-js";
 import { processReservation } from "./utils/reservationFunctions";
 import { processMonthlyPayment } from "./utils/monthlyFunctions";
 import { processSupplyPayment } from "./utils/supplyFunctions";
+import { processIncidencePayment } from "./utils/incidenceFunctions";
 
 const { MERCHANT_KEY_BASE64, HFM_MAIL } = process.env;
 
@@ -141,6 +142,7 @@ export async function POST(request) {
   console.log("✅ Pago aprobado:", dsResponseCode);
 
   const {
+    incidenceId,
     paymentId,
     supplyId,
     order,
@@ -180,6 +182,12 @@ export async function POST(request) {
         order,
         supplyId,
         clientId,
+        HFM_MAIL,
+      });
+    case "incidence":
+      return await processIncidencePayment({
+        order,
+        incidenceId,
         HFM_MAIL,
       });
     default:

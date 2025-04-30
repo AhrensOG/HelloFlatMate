@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { LeaseOrderProperty, LeaseOrderRoom } from "@/db/init";
-import { sequelize } from "@/db/models/comment";
+import { LeaseOrderRoom } from "@/db/init";
 
 export async function fullUpdateLeaseOrder(data) {
   if (!data.leaseOrderId) {
@@ -19,18 +18,9 @@ export async function fullUpdateLeaseOrder(data) {
 
   let transaction;
   try {
-    transaction = await sequelize.transaction();
+    transaction = await LeaseOrderRoom.sequelize.transaction();
 
-    let leaseOrder;
-    if (data.type === "property") {
-      leaseOrder = await LeaseOrderProperty.findByPk(data.leaseOrderId, {
-        transaction,
-      });
-    } else if (data.type === "room") {
-      leaseOrder = await LeaseOrderRoom.findByPk(data.leaseOrderId, {
-        transaction,
-      });
-    }
+    const leaseOrder = await LeaseOrderRoom.findByPk(data.leaseOrderId, { transaction });
 
     if (!leaseOrder) {
       await transaction.rollback();

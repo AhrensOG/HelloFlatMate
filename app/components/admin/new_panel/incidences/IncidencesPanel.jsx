@@ -12,6 +12,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 const IncidencesPanel = () => {
     const [owners, setOwners] = useState([]);
     const [properties, setProperties] = useState([]);
+    const [toDos, setToDos] = useState([]);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedIncidence, setSelectedIncidence] = useState(null);
@@ -28,9 +29,10 @@ const IncidencesPanel = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [ownersRes, propertiesRes] = await Promise.all([
+                const [ownersRes, propertiesRes, toDosRes] = await Promise.all([
                     fetch("/api/admin/user/simple/incidencesPanel/owner"),
                     fetch("/api/admin/property/simple/incidencesPanel"),
+                    fetch("/api/admin/to_do/incidence_panel"),
                 ]);
 
                 if (!ownersRes.ok || !propertiesRes.ok) {
@@ -39,9 +41,11 @@ const IncidencesPanel = () => {
 
                 const ownersData = await ownersRes.json();
                 const propertiesData = await propertiesRes.json();
+                const toDosData = await toDosRes.json();
 
                 setOwners(ownersData);
                 setProperties(propertiesData);
+                setToDos(toDosData);
             } catch (err) {
                 console.error("Error al cargar datos del panel:", err);
                 toast.info(
@@ -114,6 +118,7 @@ const IncidencesPanel = () => {
                 <CreateIncidenceModal
                     owners={owners}
                     properties={properties}
+                    toDos={toDos}
                     onClose={() => setIsCreateModalOpen(false)}
                     mutate={mutate}
                 />
@@ -123,6 +128,7 @@ const IncidencesPanel = () => {
                 <EditIncidenceModal
                     onClose={handleCloseEditModal}
                     incidence={selectedIncidence}
+                    toDos={toDos}
                     mutate={mutate}
                 />
             )}

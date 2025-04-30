@@ -16,6 +16,8 @@ const TYPE_LABELS = {
   GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
   MONTHLY: "Mensual",
   RESERVATION: "Reserva",
+  MAINTENANCE: "Mantenimiento",
+  ALL: "Todos",
 };
 
 const STATUS = {
@@ -131,12 +133,29 @@ const PaymentsTable = ({
   deletePayment,
   selectedStatusFilter,
   setSelectedStatusFilter,
+  selectedTypeFilter,
+  setSelectedTypeFilter,
+  selectedDescriptionFilter,
+  setSelectedDescriptionFilter,
+  typesAvailable,
+  descriptionsAvailable,
 }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isTypeDropdownOpen, setTypeDropdownOpen] = useState(false);
+  const [isDescriptionDropdownOpen, setDescriptionDropdownOpen] =
+    useState(false);
 
   const handleStatusChange = (status) => {
     setSelectedStatusFilter(status);
     setDropdownOpen(false);
+  };
+
+  const handleTypeChange = (type) => {
+    setSelectedTypeFilter(type);
+  };
+
+  const handleDescriptionChange = (description) => {
+    setSelectedDescriptionFilter(description);
   };
 
   const grouped = groupAndSortPayments(payments || []);
@@ -166,7 +185,7 @@ const PaymentsTable = ({
                 <ChevronDownIcon className="size-4" />
               </button>
               {isDropdownOpen && (
-                <div className="absolute left-0 mt-1 w-40 bg-white border rounded shadow-lg z-10">
+                <div className="absolute left-0 mt-1 w-auto bg-white border rounded shadow-lg z-10">
                   {["ALL", "PENDING", "APPROVED"].map((status) => (
                     <button
                       key={status}
@@ -178,11 +197,55 @@ const PaymentsTable = ({
                 </div>
               )}
             </th>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
-              Tipo
+            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4">
+              <button
+                onClick={() => setTypeDropdownOpen(!isTypeDropdownOpen)}
+                className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
+                {TYPE_LABELS[selectedTypeFilter] || "Tipo"}
+                <ChevronDownIcon className="size-4" />
+              </button>
+              {isTypeDropdownOpen && (
+                <div className="absolute left-0 mt-1 w-auto bg-white border rounded shadow-lg z-10 max-h-96 overflow-y-scroll">
+                  {["ALL", ...typesAvailable].map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => {
+                        handleTypeChange(type);
+                        setTypeDropdownOpen(false);
+                      }}
+                      className="block w-full text-left p-2 hover:bg-gray-100">
+                      {TYPE_LABELS[type] || type}
+                    </button>
+                  ))}
+                </div>
+              )}
             </th>
-            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
-              Descripción
+            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4">
+              <button
+                onClick={() =>
+                  setDescriptionDropdownOpen(!isDescriptionDropdownOpen)
+                }
+                className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
+                {selectedDescriptionFilter === "ALL"
+                  ? "Todas"
+                  : selectedDescriptionFilter || "Descripción"}
+                <ChevronDownIcon className="size-4" />
+              </button>
+              {isDescriptionDropdownOpen && (
+                <div className="absolute left-0 mt-1 w-auto bg-white border rounded shadow-lg z-10 max-h-96 overflow-y-scroll">
+                  {["ALL", ...descriptionsAvailable].map((desc) => (
+                    <button
+                      key={desc}
+                      onClick={() => {
+                        handleDescriptionChange(desc);
+                        setDescriptionDropdownOpen(false);
+                      }}
+                      className="block w-full text-left p-2 hover:bg-gray-100 truncate">
+                      {desc === "ALL" ? "Todas" : desc}
+                    </button>
+                  ))}
+                </div>
+              )}
             </th>
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Acciones
@@ -203,7 +266,7 @@ const PaymentsTable = ({
                   <tr
                     key={`${payment.id}${payment.type}`}
                     className="hover:bg-gray-100 even:bg-gray-50 transition-cursor cursor-pointer">
-                    <td className="border p-2 text-gray-700 text-start">
+                    <td className="border p-2 text-gray-700 text-start truncate max-w-60">
                       {(payment.user?.name || "") +
                         " " +
                         (payment.user?.lastName || "")}
