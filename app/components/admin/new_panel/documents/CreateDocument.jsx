@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import formatDateToDDMMYYYY from "../utils/formatDate";
 
 const modalStyles = {
     overlay: "fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50",
@@ -130,7 +131,7 @@ export default function CreateDocumentModal({ onClose, users, mutate }) {
                                     {selectedUser &&
                                         selectedUser.leaseOrdersRoom.map((order) => (
                                             <option key={order.id} value={order.id}>
-                                                {order.room?.serial}
+                                                {order.room?.serial} | {formatDateToDDMMYYYY(order.startDate)} - {formatDateToDDMMYYYY(order.endDate)}
                                             </option>
                                         ))}
                                 </Field>

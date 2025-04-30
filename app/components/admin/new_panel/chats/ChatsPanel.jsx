@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function ChatsPanel({ users = [], properties = [] }) {
+export default function ChatsPanel() {
     const [selectedChat, setSelectedChat] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [addModalOpen, setAddModalOpen] = useState(false);
@@ -24,6 +24,18 @@ export default function ChatsPanel({ users = [], properties = [] }) {
     } = useSWR("/api/admin/chat", fetcher, {
         refreshInterval: 300000,
     });
+
+    const {
+      data: usersData,
+  } = useSWR("/api/admin/user/chats_panel", fetcher, {
+      revalidateOnFocus: false
+  });
+
+  const {
+    data: propertiesData,
+} = useSWR("/api/admin/property/chats_panel", fetcher, {
+    revalidateOnFocus: false
+});
 
     const deleteParticipant = async (id) => {
         const toastId = toast.loading("Eliminando participante...");
@@ -182,7 +194,7 @@ export default function ChatsPanel({ users = [], properties = [] }) {
             {addModalOpen && (
                 <AddParticipantModal
                     chats={chats}
-                    users={users}
+                    users={usersData}
                     onClose={() => setAddModalOpen(false)}
                     onSubmit={addParticipant}
                 />
@@ -190,8 +202,8 @@ export default function ChatsPanel({ users = [], properties = [] }) {
 
             {createModalOpen && (
                 <CreateChatModal
-                    properties={properties}
-                    users={users}
+                    properties={propertiesData}
+                    users={usersData}
                     onClose={() => setCreateModalOpen(false)}
                     onSubmit={createChat}
                 />

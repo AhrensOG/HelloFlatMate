@@ -16,7 +16,7 @@ import IncidencesPanel from "./incidences/IncidencesPanel";
 import MaintenancePanel from "./maintenance/MaintenancePanel";
 import OwnerContractsPanel from "./ownerContracts/OwnerContractsPanel";
 
-const NewAdminPanel = ({ data }) => {
+const NewAdminPanel = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const section = searchParams.get("section") || "propiedades";
@@ -26,33 +26,29 @@ const NewAdminPanel = ({ data }) => {
             case "pre-reservas":
                 return <PreReservationsPanel />;
             case "reservas":
-                return <ReservationPanel data={{ clients: data.clients, properties: data.properties }} />;
+                return <ReservationPanel />;
             case "usuarios":
                 return (
-                    <UsersPanel
-                        properties={data.optionSerials}
-                        orders={[...data.allLeaseOrders]}
-                        allLeaseOrders={data.allLeaseOrders}
-                    />
+                    <UsersPanel />
                 );
             case "cobros":
-                return <PaymentsPanel users={data.allUsers?.clients || []} />;
+                return <PaymentsPanel />;
             case "habitaciones":
                 return <RoomsPanel />;
             case "documentos":
-                return <DocumentsPanel users={data.allUsers?.clients} />;
+                return <DocumentsPanel />;
             case "periodos":
                 return <RentalPeriodsPanel />;
             case "propiedades":
-                return <PropertiesPanel data={data.properties} />;
+                return <PropertiesPanel />;
             case "consumos":
-                return <ConsumptionsPanel users={data.allUsers?.clients} properties={data.optionSerials} />;
+                return <ConsumptionsPanel />;
             case "chats":
-                return <ChatsPanel users={data.allUsers} properties={data.optionSerials} />;
+                return <ChatsPanel />;
             case "incidencias":
                 return <IncidencesPanel />;
             case "mantenimiento":
-              return <MaintenancePanel />;
+                return <MaintenancePanel />;
             case "contratos": 
                 return <OwnerContractsPanel />
             default:

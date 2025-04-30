@@ -15,9 +15,17 @@ const SUPPLY_TYPE_LABELS = {
     GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
     MONTHLY: "Mensual",
     RESERVATION: "Reserva",
+    MAINTENANCE: "Mantenimiento",
 };
 
-export default function PaysModal({ data, onClose }) {
+const findLeaseOrderSerial = (payment, leaseOrdersRoom = []) => {
+  if (!payment?.leaseOrderId || !Array.isArray(leaseOrdersRoom)) return "-";
+
+  const match = leaseOrdersRoom.find((lo) => lo.id === payment.leaseOrderId);
+  return match?.room?.serial || "-";
+};
+
+export default function PaysModal({ data, orders, onClose }) {
     const [pays, setPays] = useState([]);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState("Estado");
@@ -221,9 +229,7 @@ export default function PaysModal({ data, onClose }) {
                                     )}
                                 </th>
                                 <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-[11rem]">Tipo</th>
-                                <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-[7rem]">Mes</th>
-                                {/* <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-[14rem]">Descripción</th> */}
-                                <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-[8rem]">Nombre</th>
+                                <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-[7rem]">Descripción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -238,7 +244,8 @@ export default function PaysModal({ data, onClose }) {
                                             >
                                                 <td colSpan={13} className="border p-2 text-gray-700 text-center font-bold">
                                                     Orden Nº: {handleNullValue(group[0]?.leaseOrderId)} / Room:{" "}
-                                                    {handleNullValue(group[0]?.leaseOrderInfo?.room?.serial)}
+                                                    {/* {handleNullValue(group[0]?.leaseOrderInfo?.room?.serial)} */}
+                                                    {findLeaseOrderSerial(group[0], orders)}
                                                 </td>
                                             </tr>
 
@@ -255,7 +262,8 @@ export default function PaysModal({ data, onClose }) {
                                                             transition={{ duration: 0.3 }}
                                                         >
                                                             <td className="border p-2 text-center">
-                                                                {handleNullValue(item?.leaseOrderInfo?.room?.serial)}
+                                                                {/* {handleNullValue(item?.leaseOrderInfo?.room?.serial)} */}
+                                                                {findLeaseOrderSerial(item, orders)}
                                                             </td>
                                                             <td className="border p-2 text-center text-gray700">
                                                                 {formatDateToDDMMYYYY(item?.date)}
@@ -276,15 +284,14 @@ export default function PaysModal({ data, onClose }) {
                                                                 {SUPPLY_TYPE_LABELS[handleNullValue(item?.type)] || "-"}
                                                             </td>
                                                             <td className="border p-2 text-center">
-                                                                {handleNullValue(
+                                                                {/* {handleNullValue(
                                                                     calculateMonthsBetweenDatesAndNames(
                                                                         item?.leaseOrderInfo?.startDate,
                                                                         item?.leaseOrderInfo?.endDate
                                                                     ).months[item?.quotaNumber - 1]
-                                                                )}
+                                                                )} */}
+                                                                {item.description || item.name || "-"}
                                                             </td>
-                                                            {/* <td className="border p-2 text-center">{handleNullValue(item?.description)}</td> */}
-                                                            <td className="border p-2 text-center">{handleNullValue(item?.name)}</td>
                                                         </motion.tr>
                                                     ))}
                                             </AnimatePresence>

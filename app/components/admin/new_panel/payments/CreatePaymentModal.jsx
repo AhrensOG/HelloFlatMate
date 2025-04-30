@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useFormik, Formik, Field, Form } from "formik";
 import { toast } from "sonner";
 import axios from "axios";
+import formatDateToDDMMYYYY from "../utils/formatDate";
 
 const TYPE_LABELS = {
   INTERNET: "WIFI",
@@ -12,6 +13,7 @@ const TYPE_LABELS = {
   GENERAL_SUPPLIES: "Suministros generales (agua, luz, gas)",
   MONTHLY: "Mensual",
   RESERVATION: "Reserva",
+  MAINTENANCE: "Mantenimiento",
 };
 
 const CreatePaymentModal = ({ users, onClose, mutate }) => {
@@ -42,16 +44,13 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-      onClick={() => onClose(false)}
-    >
+      onClick={() => onClose(false)}>
       <div
         className="relative bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[95%] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+        onClick={(e) => e.stopPropagation()}>
         <button
           onClick={() => onClose(false)}
-          className="absolute top-1 right-1 bg-gray-200 rounded-full w-5 h-5 text-sm flex items-center justify-center"
-        >
+          className="absolute top-1 right-1 bg-gray-200 rounded-full w-5 h-5 text-sm flex items-center justify-center">
           X
         </button>
         <h2 className="text-lg font-semibold pb-2">Crear Pago</h2>
@@ -84,8 +83,7 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
                 id: toastId,
               });
             }
-          }}
-        >
+          }}>
           {({ setFieldValue, values }) => (
             <Form className="space-y-4">
               <div className="w-full relative flex flex-col justify-center items-start">
@@ -103,8 +101,7 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
                       <li
                         key={user.id}
                         className="cursor-pointer p-1 hover:bg-gray-100"
-                        onClick={() => handleUserSelect(user, setFieldValue)}
-                      >
+                        onClick={() => handleUserSelect(user, setFieldValue)}>
                         {user.name} - {user.email}
                       </li>
                     ))}
@@ -117,14 +114,15 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
                   <Field
                     as="select"
                     name="leaseOrderId"
-                    className="outline-none border p-2 w-full"
-                  >
+                    className="outline-none border p-2 w-full">
                     <option value="">
                       Seleccionar orden de alquiler (room)
                     </option>
                     {selectedUser.leaseOrdersRoom.map((order) => (
                       <option key={order.id} value={order.id}>
-                        {order.room?.serial}
+                        {`${order.room?.serial} | ${formatDateToDDMMYYYY(
+                          order.startDate
+                        )} - ${formatDateToDDMMYYYY(order.endDate)}`}
                       </option>
                     ))}
                   </Field>
@@ -135,8 +133,7 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
                 <Field
                   as="select"
                   name="type"
-                  className="outline-none border p-2 w-full"
-                >
+                  className="outline-none border p-2 w-full">
                   <option value="">Seleccionar Tipo de cobro</option>
                   {Object.entries(TYPE_LABELS).map(([key, value]) => (
                     <option key={key} value={key}>
@@ -151,8 +148,7 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
                   <Field
                     as="select"
                     name="status"
-                    className="outline-none border p-2 w-full"
-                  >
+                    className="outline-none border p-2 w-full">
                     <option value="">Seleccionar estado</option>
                     <option value="PENDING">Pendiente</option>
                     <option value="PAID">Pagado</option>
@@ -164,8 +160,7 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
                   <Field
                     as="select"
                     name="status"
-                    className="outline-none border p-2 w-full"
-                  >
+                    className="outline-none border p-2 w-full">
                     <option value="">Seleccionar estado</option>
                     <option value="PENDING">Pendiente</option>
                     <option value="APPROVED">Pagado</option>
@@ -234,8 +229,7 @@ const CreatePaymentModal = ({ users, onClose, mutate }) => {
               </div>
               <button
                 type="submit"
-                className="bg-blue-500 text-white p-2 w-full"
-              >
+                className="bg-blue-500 text-white p-2 w-full">
                 Crear Pago
               </button>
             </Form>
