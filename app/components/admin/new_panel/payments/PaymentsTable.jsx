@@ -17,6 +17,7 @@ const TYPE_LABELS = {
   MONTHLY: "Mensual",
   RESERVATION: "Reserva",
   MAINTENANCE: "Mantenimiento",
+  ELECTRICITY: "Electricidad",
   ALL: "Todos",
 };
 
@@ -135,10 +136,11 @@ const PaymentsTable = ({
   setSelectedStatusFilter,
   selectedTypeFilter,
   setSelectedTypeFilter,
-  selectedDescriptionFilter,
-  setSelectedDescriptionFilter,
+  selectedDescriptionFilters,
+  setSelectedDescriptionFilters,
   typesAvailable,
   descriptionsAvailable,
+  isLoading,
 }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isTypeDropdownOpen, setTypeDropdownOpen] = useState(false);
@@ -152,10 +154,6 @@ const PaymentsTable = ({
 
   const handleTypeChange = (type) => {
     setSelectedTypeFilter(type);
-  };
-
-  const handleDescriptionChange = (description) => {
-    setSelectedDescriptionFilter(description);
   };
 
   const grouped = groupAndSortPayments(payments || []);
@@ -231,24 +229,44 @@ const PaymentsTable = ({
               onMouseLeave={() => setDescriptionDropdownOpen(false)}
               className="border border-t-0 p-2 text-center font-semibold text-gray-700 relative ml-4">
               <button className="flex items-center justify-center w-full gap-2 px-3 py-1 rounded-md">
-                {selectedDescriptionFilter === "ALL"
+                {selectedDescriptionFilters.length === 0
                   ? "Todas"
-                  : selectedDescriptionFilter || "Descripción"}
+                  : "Descripción"}
                 <ChevronDownIcon className="size-4" />
               </button>
               {isDescriptionDropdownOpen && (
                 <div className="absolute left-0 mt-1 w-auto bg-white border rounded shadow-lg z-10 max-h-96 overflow-y-scroll">
-                  {["ALL", ...descriptionsAvailable].map((desc) => (
+                  {descriptionsAvailable.map((desc) => {
+                    const selected = selectedDescriptionFilters.includes(desc);
+                    return (
+                      <label
+                        key={desc}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selected}
+                          onChange={() => {
+                            setSelectedDescriptionFilters((prev) =>
+                              selected
+                                ? prev.filter((d) => d !== desc)
+                                : [...prev, desc]
+                            );
+                          }}
+                        />
+                        <span className="truncate">{desc}</span>
+                      </label>
+                    );
+                  })}
+                  <div className="border-t p-2">
                     <button
-                      key={desc}
                       onClick={() => {
-                        handleDescriptionChange(desc);
+                        setSelectedDescriptionFilters([]);
                         setDescriptionDropdownOpen(false);
                       }}
-                      className="block w-full text-left p-2 hover:bg-gray-100 truncate">
-                      {desc === "ALL" ? "Todas" : desc}
+                      className="text-sm text-blue-600 hover:underline">
+                      Limpiar filtros
                     </button>
-                  ))}
+                  </div>
                 </div>
               )}
             </th>
@@ -258,7 +276,13 @@ const PaymentsTable = ({
           </tr>
         </thead>
         <tbody>
-          {Object.entries(grouped).length === 0 ? (
+          {isLoading ? (
+            <tr>
+              <td colSpan="8" className="text-center py-4 text-gray-500">
+                Buscando...
+              </td>
+            </tr>
+          ) : Object.entries(grouped).length === 0 ? (
             <tr>
               <td colSpan="8" className="text-center py-4 text-gray-500">
                 No hay pagos disponibles.

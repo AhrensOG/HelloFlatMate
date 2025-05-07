@@ -151,14 +151,20 @@ export async function getAllPayments({
   }
 
   if (description) {
-    const descLower = description.toLowerCase();
+    const descriptionList = description
+      .split(",")
+      .map((d) => d.trim().toLowerCase());
+
     filteredPayments = filteredPayments.filter((payment) => {
       const descText = (
         payment.description ||
         payment.name ||
         ""
       ).toLowerCase();
-      return descText.includes(descLower);
+
+      return descriptionList.some((filterDesc) =>
+        descText.includes(filterDesc)
+      );
     });
   }
 

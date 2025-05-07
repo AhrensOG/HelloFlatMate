@@ -15,8 +15,7 @@ const PaymentsPanel = () => {
 
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("ALL");
   const [selectedTypeFilter, setSelectedTypeFilter] = useState("ALL");
-  const [selectedDescriptionFilter, setSelectedDescriptionFilter] =
-    useState("ALL");
+  const [selectedDescriptionFilters, setSelectedDescriptionFilters] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
@@ -38,8 +37,8 @@ const PaymentsPanel = () => {
   } = useSWR(
     `/api/admin/payments?page=${page}&limit=100` +
       (selectedUser ? `&userId=${selectedUser.id}` : "") +
-      (selectedDescriptionFilter && selectedDescriptionFilter !== "ALL"
-        ? `&description=${encodeURIComponent(selectedDescriptionFilter)}`
+      (selectedDescriptionFilters.length > 0
+        ? `&description=${encodeURIComponent(selectedDescriptionFilters.join(","))}`
         : "") +
       (selectedStatusFilter && selectedStatusFilter !== "ALL"
         ? `&status=${encodeURIComponent(selectedStatusFilter)}`
@@ -70,7 +69,7 @@ const PaymentsPanel = () => {
     }
   );
 
-  if (!usersData || isLoading) {
+  if (!usersData) {
     return (
       <div className="h-screen flex flex-col p-4 gap-4 animate-pulse">
         <div className="space-y-6">
@@ -112,15 +111,10 @@ const PaymentsPanel = () => {
       selectedTypeFilter === "ALL" ||
       payment.type === selectedTypeFilter;
 
-    console.log(payment.type);
-
-    console.log(selectedTypeFilter);
-
-    const matchesDescription =
-      !selectedDescriptionFilter ||
-      selectedDescriptionFilter === "ALL" ||
-      payment.description === selectedDescriptionFilter ||
-      payment.name === selectedDescriptionFilter;
+      const matchesDescription =
+      selectedDescriptionFilters.length === 0 ||
+      selectedDescriptionFilters.includes(payment.description) ||
+      selectedDescriptionFilters.includes(payment.name);
 
     return matchesStatus && matchesType && matchesDescription;
   });
@@ -199,10 +193,11 @@ const PaymentsPanel = () => {
         setSelectedStatusFilter={setSelectedStatusFilter}
         selectedTypeFilter={selectedTypeFilter}
         setSelectedTypeFilter={setSelectedTypeFilter}
-        selectedDescriptionFilter={selectedDescriptionFilter}
-        setSelectedDescriptionFilter={setSelectedDescriptionFilter}
+        selectedDescriptionFilters={selectedDescriptionFilters}
+        setSelectedDescriptionFilters={setSelectedDescriptionFilters}
         typesAvailable={typesAvailable}
         descriptionsAvailable={descriptionsAvailable}
+        isLoading={isLoading}
       />
 
       {/* PAGINACIÓN */}
