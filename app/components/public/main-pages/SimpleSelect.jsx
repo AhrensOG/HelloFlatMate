@@ -39,7 +39,7 @@ const SimpleSelect = ({ options, title = "Seleccionar una opción", initValue, c
                 router.push("/ultimas-habitaciones");
                 break;
             case "todos":
-                router.push(`/pages/user/filtered`);
+                router.push(`/pages/filtered`);
                 break;
             default:
                 break;
