@@ -6,12 +6,14 @@ export async function GET(req) {
   const limit = parseInt(searchParams.get("limit") || "100");
   const startDate = searchParams.get("startDate") || null;
   const status = searchParams.get("status") || null;
+  const clientId = searchParams.get("clientId") || null
 
   const result = await getAllLeaseOrdersForReservationsPanel(
     page,
     limit,
     startDate,
-    status
+    status,
+    clientId
   );
   return result;
 }
