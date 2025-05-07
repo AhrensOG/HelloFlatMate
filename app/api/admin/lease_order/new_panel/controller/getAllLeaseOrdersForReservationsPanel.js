@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Op } from "sequelize"; // IMPORTANTE: importamos Op
+import { Op } from "sequelize";
 import {
   Client,
   Contract,
@@ -13,7 +13,8 @@ export async function getAllLeaseOrdersForReservationsPanel(
   page = 1,
   limit = 100,
   startDate = null,
-  status = null
+  status = null,
+  clientId
 ) {
   try {
     const offset = (page - 1) * limit;
@@ -29,6 +30,10 @@ export async function getAllLeaseOrdersForReservationsPanel(
 
     if (status) {
       whereConditions.status = status;
+    }
+
+    if (clientId) {
+      whereConditions.clientId = clientId;
     }
 
     const { rows: leaseOrders, count: total } =

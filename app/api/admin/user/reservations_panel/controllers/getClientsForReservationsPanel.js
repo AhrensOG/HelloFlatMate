@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function getClientsForReservationsPanel() {
   try {
     const clients = await Client.findAll({
-      attributes: ["id", "email"],
+      attributes: ["id", "email", "name", "lastName"],
       raw: true,
     });
 

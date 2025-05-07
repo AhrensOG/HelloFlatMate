@@ -10,6 +10,9 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function ReservationPanel() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [showClientDropdown, setShowClientDropdown] = useState(false);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -24,6 +27,7 @@ export default function ReservationPanel() {
     limit,
     ...(selectedDateFilter && { startDate: selectedDateFilter }),
     ...(selectedStatusFilter && { status: selectedStatusFilter }),
+    ...(selectedClientId && { clientId: selectedClientId }),
   }).toString();
 
   const {
@@ -57,26 +61,15 @@ export default function ReservationPanel() {
     (lo) => lo.status !== "REJECTED"
   );
 
-  const filteredOrders = orders.filter((lo) => {
-    const roomSerial = lo.room?.serial || "";
-    const clientName = lo.client?.name || "";
-    const clientLastName = lo.client?.lastName || "";
-    const clientEmail = lo.client?.email || "";
-    const fullname = `${clientName} ${clientLastName}`;
-
-    let statusEs = "";
-    if (lo.status === "PENDING") statusEs = "pendiente";
-    if (lo.status === "APPROVED") statusEs = "aprobada";
-
-    const searchString = searchQuery.toLowerCase();
-
-    const matchesSearchQuery =
-      roomSerial.toLowerCase().includes(searchString) ||
-      fullname.toLowerCase().includes(searchString) ||
-      clientEmail.toLowerCase().includes(searchString) ||
-      statusEs.toLowerCase().includes(searchString);
-
-    return matchesSearchQuery;
+  const sortedOrders = [...orders].sort((a, b) => {
+    const priority = {
+      PENDING: 0,
+      IN_PROGRESS: 1,
+      APPROVED: 2,
+      FINISHED: 3,
+      CANCELED: 4,
+    };
+    return priority[a.status] - priority[b.status];
   });
 
   const availableDates = [...(availablePeriods || [])];
@@ -110,17 +103,61 @@ export default function ReservationPanel() {
   const totalPages = ordersData?.totalPages || 1;
 
   return (
-    <div className="h-screen flex flex-col p-4 gap-4">
+    <div className="h-screen flex flex-col p-4 gap-4 relative">
       <div className="space-y-6">
         <h2 className="text-2xl font-bold">Reservas</h2>
-        <div className="w-full flex gap-2 items-center">
+        <div className="w-full flex flex-wrap gap-2 items-start relative">
           <input
             type="text"
-            placeholder="Buscar por código, nombre, apellido, email o estado..."
+            placeholder="Buscar cliente por nombre o email..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="border rounded px-3 py-2 w-[450px]"
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setShowClientDropdown(true);
+              setSelectedClientId("");
+            }}
+            onFocus={() => setShowClientDropdown(true)}
+            onBlur={() => setTimeout(() => setShowClientDropdown(false), 200)}
+            className="border rounded px-3 py-2 w-full max-w-[450px]"
           />
+
+          {showClientDropdown && clientsData && searchQuery && (
+            <div className="absolute top-11 left-0 z-10 w-[450px] border rounded bg-white shadow max-h-64 overflow-y-auto">
+              {clientsData
+                .filter(
+                  (client) =>
+                    client.name
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase()) ||
+                    client.email
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase())
+                )
+                .map((client) => (
+                  <div
+                    key={client.id}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      setSelectedClientId(client.id);
+                      setSearchQuery(`${client.name} ${client.lastName}`);
+                      setShowClientDropdown(false);
+                    }}>
+                    {client.name} {client.lastName} - {client.email}
+                  </div>
+                ))}
+              {clientsData.filter(
+                (client) =>
+                  client.name
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase()) ||
+                  client.email.toLowerCase().includes(searchQuery.toLowerCase())
+              ).length === 0 && (
+                <div className="px-4 py-2 text-gray-400">
+                  No se encontraron coincidencias
+                </div>
+              )}
+            </div>
+          )}
 
           <button
             onClick={handleOpenModalCreateOrder}
@@ -131,7 +168,7 @@ export default function ReservationPanel() {
       </div>
 
       <ReservationsTable
-        filteredOrders={filteredOrders}
+        filteredOrders={sortedOrders}
         handleOpenModal={handleOpenModal}
         handleOpenModalEdit={handleOpenModalEdit}
         availableDates={availableDates}
@@ -142,7 +179,7 @@ export default function ReservationPanel() {
       />
 
       {/* PAGINACIÓN */}
-      <div className="flex justify-center items-center gap-4 mt-6">
+      <div className="flex flex-wrap justify-center items-center gap-4 mt-6">
         <button
           disabled={page <= 1}
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
