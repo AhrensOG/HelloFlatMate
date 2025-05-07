@@ -142,7 +142,7 @@ const CategorySelector = ({
     // Función que se llama al hacer clic en el botón "Buscar"
     const handleSearch = () => {
         const queryString = buildQueryString();
-        const url = `${window.location.origin}/pages/user/filtered?${queryString}`;
+        const url = `${window.location.origin}/pages/filtered?${queryString}`;
 
         // Abrir en una nueva pestaña
         // window.open(url, "_blank", "noopener,noreferrer");
