@@ -1,28 +1,25 @@
-const preReservationTemplate = (name, lastName) => `
+const preReservationTemplate = (name, lastName, email, startDate, endDate, price) => `
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Solicitud aceptada - helloFlatMate</title>
+  <title>Solicitud enviada - helloFlatMate</title>
 </head>
 <body>
   <p>
-    Hola ${name} ${lastName},
+    Hola ${name} ${lastName} (${email}),
   </p>
   <p>
-    Para que tu reserva esté confirmada debes acceder a tu área de usuario, apartado <strong>“reservas”</strong>, y realizar el pago del <strong>primer mes de alquiler</strong> dentro de las próximas <strong>2 horas</strong>.
+    Tu solicitud para las fechas <strong>${startDate} - ${endDate}</strong> por un precio de <strong>${price}</strong> ha sido enviada. La revisamos y en breve contactaremos contigo.
   </p>
   <p>
-    Si transcurre el tiempo y no lo has realizado, la habitación seguirá disponible en la web para otros interesados.
+    ¡Gracias por tu paciencia!
   </p>
   <br/>
   <p>
-    Seguimos a tu disposición para cualquier consulta a través de este correo electrónico.
-  </p>
-  <p>
-    Un saludo,<br>
-    helloflatmate Team
+    Un saludo,<br/>
+    <strong>helloFlatmate</strong> Team
   </p>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
@@ -56,4 +53,5 @@ const preReservationTemplate = (name, lastName) => `
 </body>
 </html>`;
 
-export { preReservationTemplate };
+
+export default preReservationTemplate;

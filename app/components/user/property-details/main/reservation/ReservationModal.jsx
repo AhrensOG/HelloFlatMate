@@ -12,8 +12,11 @@ import SelectRentalPeriod from "./SelectRentalPeriod";
 import DatePicker from "./date_picker/DatePicker";
 import ReservationForm from "./ReservationForm";
 import { sendEmail } from "@/app/context/actions";
+import { useTranslations } from "next-intl";
+import preReservationTemplate from "@/utils/reservation_templates/preReservation";
 
 export default function ReservationModal({ callback, data, category, calendarType }) {
+  const t = useTranslations("reservation_modal")
     const router = useRouter();
     const [info, setInfo] = useState({
         startDate: "",
@@ -58,12 +61,12 @@ export default function ReservationModal({ callback, data, category, calendarTyp
         setIsSubmitting(true);
 
         if (!clausesAccepted) {
-            toast.info("Debes aceptar los términos y condiciones");
+            toast.info(t("terms_and_conditions"));
             setIsSubmitting(false);
             return;
         }
         if (info.startDate === "" || info.endDate === "" || !info.endDate || !info.startDate) {
-            toast.info("Recuerda seleccionar un periodo de alquiler");
+            toast.info(t("rental_period"));
             setIsSubmitting(false);
             return;
         }
@@ -84,39 +87,30 @@ export default function ReservationModal({ callback, data, category, calendarTyp
 
         setDataReservation(reservation);
 
-        const toastId = toast.loading("Procesando reserva...");
+        const toastId = toast.loading(t("reservation_submit_process_toast"));
 
         try {
             await axios.put("/api/user/reservation", reservation);
-            const response = await axios.post("/api/lease_order", reservation);
+            await axios.post("/api/lease_order", reservation);
+            const startDate = formatedDate(reservation.startDate);
+            const endDate = formatedDate(reservation.endDate);
             const emailData = {
-                to: process.env.NEXT_PUBLIC_HFM_MAIL,
-                subject: `Solicitud de pre-reserva ${reservation.propertySerial} - ${reservation.roomSerial}`,
-                text: `${reservation.name} ${reservation.lastName} - ${
-                    reservation.email
-                } ha realizado una pre-reserva. Fecha de alquiler: del ${formatedDate(reservation.startDate)} al ${formatedDate(
-                    reservation.endDate
-                )}.`,
+                to: reservation.user?.email,
+                subject: `Solicitud de reserva ${reservation.roomSerial}`,
+                html: preReservationTemplate(reservation.name, reservation.lastName, reservation.email, startDate, endDate, reservation.price),
+                cc: process.env.NEXT_PUBLIC_HFM_MAIL,
             };
+
             await sendEmail(emailData);
-            // if (
-            //   ["HELLO_ROOM", "HELLO_COLIVING", "HELLO_LANDLORD"].includes(category)
-            // ) {
-            //   await axios.patch("/api/rental_period", {
-            //     id: rentalPeriodId,
-            //     status: "RESERVED",
-            //   });
-            // }
-            toast.success("Reserva completada con éxito!", {
+            toast.success(t("reservation_submit_success_toast"), {
                 id: toastId,
-                description: "Seras redirigido.",
             });
             setTimeout(() => setIsSubmitting(false), 1000);
             setTimeout(() => router.push("/pages/user/reservations"), 1000);
         } catch (error) {
-            toast.info(`Error al procesar la reserva`, {
+            toast.info(t("reservation_submit_error_toast"), {
                 id: toastId,
-                description: "Intenta nuevamente o contacta al soporte",
+                description: t("reservation_submit_error_toast_2"),
             });
             setIsSubmitting(false);
             console.log(error);

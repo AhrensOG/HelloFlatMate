@@ -536,7 +536,15 @@
         }
     },
     "reservation_btn": {
-        "btn": "Reservar"
+        "btn": "Solicitar reserva"
+    },
+    "reservation_modal": {
+      "reservation_submit_process_toast": "Procesando solicitud...",
+      "terms_and_conditions": "Debes aceptar los términos y condiciones",
+      "rental_period": "Debes seleccionar un periodo de alquiler",
+      "reservation_submit_success_toast": "Solicitud enviada",
+      "reservation_submit_error_toast": "Error al enviar la solicitud",
+      "reservation_submit_error_toast_2": "Por favor, inténtalo de nuevo o contacte con el soporte"
     },
     "clauses": {
         "title": "Cláusulas del Contrato",
@@ -1074,11 +1082,11 @@
             "pending_sign": "Pendiente de firma",
             "p_1": "(strong)Tu reserva está pendiente de firma.(/strong) Sube la documentación y firma el contrato para finalizar el proceso.",
             "in_progress": "En progreso",
-            "p_2": "(strong)¡Listo para dar el siguiente paso!(/strong) Paga tu reserva para luego continuar con los pasos restantes y avanzar en tu reserva.",
+            "p_2": "(strong)¡Listo para dar el siguiente paso!(/strong) Paga ahora la primera mensualidad del alquiler y tu reserva quedará confirmada.",
             "in_review": "En revisión",
-            "p_3": "(strong)Tu reserva está en revisión.(/strong) Estamos verificando tu solicitúd; pronto recibirás una actualización.",
+            "p_3": "(strong)Tu solicitud está en revisión.(/strong) Estamos verificando tu solicitúd; pronto recibirás una actualización.",
             "completed": "Completadas",
-            "p_4": "(strong)¡Todo listo!(/strong) Tu reserva está confirmada y completa.",
+            "p_4": "(strong)¡Todo listo!(/strong) Tu reserva está confirmada y en curso.",
             "no_reservations": "No tienes reservas activas en este momento.",
             "question": "¿Tienes alguna pregunta sobre el proceso de reserva?",
             "write_us": "Escríbenos",

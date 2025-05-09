@@ -101,7 +101,8 @@ export default function Chat({ ownerPage = false }) {
           chat,
           `${chat.relatedModel?.serial} - Grupo`,
           "/chat/people.png",
-          "group"
+          "group",
+          `&relatedType=${chat.relatedType}&relatedId=${chat.relatedId}`
         )
       )}
 
@@ -125,7 +126,7 @@ export default function Chat({ ownerPage = false }) {
           name,
           "/chat/singleuser.png",
           "priv",
-          `&receiverId=${receiverId}`
+          `&receiverId=${receiverId}&relatedType=${chat.relatedType}&relatedId=${chat.relatedId}`
         );
       })}
 

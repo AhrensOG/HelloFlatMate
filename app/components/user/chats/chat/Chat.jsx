@@ -27,6 +27,8 @@ export default function Chat({ adminPage = false }) {
     const [socket, setSocket] = useState(false);
     const [isConnectedToRoom, setIsConnectedToRoom] = useState(false);
     const [hasMarkedAsRead, setHasMarkedAsRead] = useState(false); // ✅ Evita bucles
+    const relatedType = searchParams.get("relatedType");
+    const relatedId = searchParams.get("relatedId");
 
     //Funcion para pasar de arrayBuffer a file
     const arrayBufferToFile = (arrayBuffer, fileName, mimeType = "application/octet-stream") => {
@@ -314,9 +316,9 @@ export default function Chat({ adminPage = false }) {
         <div className={`flex flex-col h-full w-full ${adminPage ? "" : "md:max-h-[690px]"} overflow-hidden`}>
             <main className="flex flex-col justify-between items-center gorw h-full w-full">
                 <Suspense fallback={<div></div>}>
-                    <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} isGroup={typeChat === "group"} />
+                    <MessageContainer messages={messages} socketId={userId} isUploading={isUploading} isGroup={typeChat === "group"} relatedId={relatedId} type={typeChat} />
                 </Suspense>
-                <MessageInput onSendMessage={sendMessage} onSendFile={sendFile} />
+                <MessageInput onSendMessage={sendMessage} onSendFile={sendFile} relatedId={relatedId} type={typeChat} />
             </main>
         </div>
     );

@@ -529,7 +529,16 @@
         }
     },
     "reservation_btn": {
-        "btn": "Book"
+        "btn": "Request reservation"
+      },
+    "reservation_modal": {
+      "reservation_submit_process_toast": "Processing request...",
+      "terms_and_conditions": "You must accept the terms and conditions",
+      "rental_period": "You must select a rental period",
+      "reservation_submit_success_toast": "Reques sended",
+      "reservation_submit_error_toast": "An error occurred sending the request",
+      "reservation_submit_error_toast_2": "Please try again or contact support"
+
     },
     "clauses": {
         "title": "Contract Clauses",
@@ -1059,11 +1068,11 @@
             "pending_sign": "Pending Signature",
             "p_1": "(strong)Your reservation is pending signature.(/strong) Upload the documentation and sign the contract to complete the process.",
             "in_progress": "In Progress",
-            "p_2": "(strong>Ready to take the next step!(/strong) Pay for your reservation to proceed with the remaining steps and move forward with your booking.",
+            "p_2": "(strong>Ready to take the next step!(/strong) Pay now the first monthly payment of the rent and your reservation will be confirmed.",
             "in_review": "Under Review",
-            "p_3": "(strong)Your reservation is under review.(/strong) We are verifying your request; you will receive an update soon.",
+            "p_3": "(strong)Your request is under review.(/strong) We are verifying your request; you will receive an update soon.",
             "completed": "Completed",
-            "p_4": "(strong)All set!(/strong) Your reservation is confirmed and complete.",
+            "p_4": "(strong)All set!(/strong) Your reservation is confirmed and ongoing.",
             "no_reservations": "You have no active reservations at the moment.",
             "question": "Do you have any questions about the reservation process?",
             "write_us": "Write to us",

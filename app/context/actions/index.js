@@ -156,19 +156,28 @@ const loadContract = async (data) => {
 
 export const sendEmail = async (emailData) => {
     try {
-        const { to, subject, text } = emailData;
-
-        // Verificar si faltan datos
-        if (!to || !subject || !text) {
-            throw new Error("Missing required email data (to, subject, text)");
+        const { to, subject, text, html, cc } = emailData;
+        
+        if (!to || !subject) {
+            throw new Error("Missing required email data (to, subject)");
         }
 
-        // Realizar la solicitud POST al endpoint de envío de correos
-        await axios.post("/api/sendGrid", {
-            to,
-            subject,
-            text,
-        });
+        let mailOptions = {
+          to: to,
+          subject: subject,
+        };
+
+        if (text) {
+          mailOptions.text = text;
+        }
+        if (html) {
+          mailOptions.html = html;
+        }
+        if (cc) {
+          mailOptions.cc = cc;
+        }
+        
+        await axios.post("/api/sendGrid", mailOptions);
     } catch (error) {
         console.error("Error al enviar el correo:", error);
     }

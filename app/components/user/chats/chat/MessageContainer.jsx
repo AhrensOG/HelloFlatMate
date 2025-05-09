@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Message from "./Message";
 
-export default function MessageContainer({ messages, socketId, isUploading, isGroup }) {
+export default function MessageContainer({ messages, socketId, isUploading, isGroup, relatedId, type }) {
     const containerRef = useRef(null);
 
     useEffect(() => {

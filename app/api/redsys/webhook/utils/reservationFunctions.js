@@ -99,10 +99,27 @@ async function processReservation({
     // const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
 
     // 5️⃣ Enviar Correo
+
+    const email_startDate = new Date(successLeaseOrderRoom.startDate);
+    const email_endDate = new Date(successLeaseOrderRoom.endDate);
+
+    const formattedStartDate = email_startDate.toLocaleDateString("es-ES", {
+      timeZone: "Europe/Madrid",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    const formattedEndDate = email_endDate.toLocaleDateString("es-ES", {
+      timeZone: "Europe/Madrid",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
     await sendMailFunction({
       to: client.email,
       subject: `¡Reserva realizada correctamente! Alojamiento ${theRoom.serial}`,
-      html: reservationTemplate(client.name, client.lastName, theRoom.serial),
+      html: reservationTemplate(client.name, client.lastName, theRoom.serial, successLeaseOrderRoom.price, formattedStartDate, formattedEndDate),
       // attachments: [
       //   {
       //     content: pdfBase64,
