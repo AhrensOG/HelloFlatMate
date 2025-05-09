@@ -124,102 +124,173 @@ const PaymentsV2 = () => {
       const normalizedStatus =
         statusFilter === "COMPLETED" ? ["APPROVED", "PAID"] : ["PENDING"];
 
-      const monthlyPayments = (state.user?.rentPayments || [])
-        .filter((payment) => normalizedStatus.includes(payment.status))
-        .map((payment) => {
-          const matchedOrder = activeLeaseOrders.find(
-            (order) => order.id === payment.leaseOrderId
-          );
+      const paymentsRaw = [];
 
-          const isHelloLandlord =
-            matchedOrder?.room?.property?.category === "HELLO_LANDLORD";
+      // Rent Payments
+      for (const payment of state.user?.rentPayments || []) {
+        if (!normalizedStatus.includes(payment.status)) continue;
 
-          // Si es HELLO_LANDLORD y no es cuota 1 ni RESERVATION, lo excluimos
-          if (
-            !matchedOrder ||
-            (isHelloLandlord &&
-              payment.quotaNumber !== 1 &&
-              payment.type !== "RESERVATION")
-          ) {
-            return null;
-          }
+        const matchedOrder = activeLeaseOrders.find(
+          (order) => order.id === payment.leaseOrderId
+        );
 
-          const startDate = new Date(matchedOrder.startDate);
-          const paymentMonth = new Date(startDate);
-          paymentMonth.setMonth(
-            startDate.getUTCMonth() + payment.quotaNumber - 1
-          );
+        const isHelloLandlord =
+          matchedOrder?.room?.property?.category === "HELLO_LANDLORD";
 
-          return {
-            id: payment.id,
-            month: getMonthName(paymentMonth),
-            amount: payment.amount,
-            status: payment.status,
-            type: payment.type,
-            quotaNumber: payment.quotaNumber,
-            description: `${
-              payment.quotaNumber === 1 ? t("desc_reservation") : t("desc")
-            } - ${getMonthName(paymentMonth)}`,
-            title: `${
-              payment.quotaNumber === 1 ? t("desc_reservation") : t("desc")
-            }`,
-            paid: statusFilter === "COMPLETED",
-            orderType: "ROOM",
-            order: matchedOrder,
-            paymentType: payment.type,
-          };
-        })
-        .filter(Boolean);
+        if (
+          !matchedOrder ||
+          (isHelloLandlord &&
+            payment.quotaNumber !== 1 &&
+            payment.type !== "RESERVATION")
+        ) {
+          continue;
+        }
 
-      const supplyPayments = (state.user?.supplies || [])
-        .filter((sup) => normalizedStatus.includes(sup.status))
-        .map((sup) => {
-          const matchedOrder = activeLeaseOrders.find(
-            (o) => o.id === sup.leaseOrderId
-          );
+        const startDate = new Date(matchedOrder.startDate);
+        const paymentMonth = new Date(startDate);
+        paymentMonth.setMonth(
+          startDate.getUTCMonth() + payment.quotaNumber - 1
+        );
 
-          // Determinar si se debe aplicar sufijo
-          let quarterSuffix = "";
-          const isQuarteredType = ["INTERNET", "GENERAL_SUPPLIES"].includes(
-            sup.type
-          );
-
-          if (isQuarteredType) {
-            if (sup.name?.includes("2Q")) {
-              quarterSuffix = " 2Q";
-            } else {
-              quarterSuffix = " 1Q"; // Default si no contiene ninguno
-            }
-          }
-
-          return {
-            id: sup.id,
-            month: null,
-            amount: sup.amount,
-            status: sup.status,
-            type: sup.type,
-            quotaNumber: null,
-            description: `${t("supply_desc")} - ${getSupplyName(
-              sup.type
-            )}${quarterSuffix}`,
-            supplyLabel: `${SUPPLY_TYPE_LABELS[sup.type] || sup.type}`,
-            paid: statusFilter === "COMPLETED",
-            orderType: sup.leaseOrderType,
-            order: matchedOrder,
-            paymentType: "SUPPLY",
-          };
+        paymentsRaw.push({
+          id: payment.id,
+          month: getMonthName(paymentMonth),
+          amount: payment.amount,
+          status: payment.status,
+          type: payment.type,
+          quotaNumber: payment.quotaNumber,
+          description: `${
+            payment.quotaNumber === 1 ? t("desc_reservation") : t("desc")
+          } - ${getMonthName(paymentMonth)}`,
+          title: `${
+            payment.quotaNumber === 1 ? t("desc_reservation") : t("desc")
+          }`,
+          paid: statusFilter === "COMPLETED",
+          orderType: "ROOM",
+          order: matchedOrder,
+          paymentType: payment.type,
+          _source: "rent",
         });
+      }
 
-      return [...monthlyPayments, ...supplyPayments].sort((a, b) => {
-        const indexA = orderPriority.indexOf(a.type);
-        const indexB = orderPriority.indexOf(b.type);
+      // Supply Payments
+      for (const sup of state.user?.supplies || []) {
+        if (!normalizedStatus.includes(sup.status)) continue;
 
-        if (indexA === -1 && indexB === -1) return 0;
-        if (indexA === -1) return 1;
-        if (indexB === -1) return -1;
+        const matchedOrder = activeLeaseOrders.find(
+          (o) => o.id === sup.leaseOrderId
+        );
 
-        return indexA - indexB;
-      });
+        let quarterSuffix = "";
+        const isQuarteredType = ["INTERNET", "GENERAL_SUPPLIES"].includes(
+          sup.type
+        );
+
+        if (isQuarteredType) {
+          if (sup.name?.includes("2Q")) {
+            quarterSuffix = " 2Q";
+          } else {
+            quarterSuffix = " 1Q";
+          }
+        }
+
+        paymentsRaw.push({
+          id: sup.id,
+          month: null,
+          amount: sup.amount,
+          status: sup.status,
+          type: sup.type,
+          quotaNumber: null,
+          description: `${t("supply_desc")} - ${getSupplyName(
+            sup.type
+          )}${quarterSuffix}`,
+          supplyLabel: `${SUPPLY_TYPE_LABELS[sup.type] || sup.type}`,
+          paid: statusFilter === "COMPLETED",
+          orderType: sup.leaseOrderType,
+          order: matchedOrder,
+          paymentType: "SUPPLY",
+          _source: "supply",
+          _quarter: quarterSuffix.trim(),
+        });
+      }
+
+      const groupedByLease = new Map();
+
+      for (const payment of paymentsRaw) {
+        const leaseId = payment.order?.id;
+        if (!leaseId) continue;
+        if (!groupedByLease.has(leaseId)) {
+          groupedByLease.set(leaseId, []);
+        }
+        groupedByLease.get(leaseId).push(payment);
+      }
+
+      const allPaymentsSorted = [];
+
+      for (const [leaseId, payments] of groupedByLease.entries()) {
+        const lease = payments[0].order;
+        const start = new Date(lease.startDate);
+        const end = new Date(lease.endDate);
+        const months =
+          (end.getFullYear() - start.getFullYear()) * 12 +
+          (end.getMonth() - start.getMonth());
+
+        if (months <= 6) {
+          const fixedOrder = [
+            "DEPOSIT",
+            "AGENCY_FEES",
+            "GENERAL_SUPPLIES",
+            "INTERNET",
+            "RESERVATION",
+            "MONTHLY",
+            "CLEANUP",
+            "MAINTENANCE",
+            "OTHERS",
+          ];
+
+          payments.sort((a, b) => {
+            const ia = fixedOrder.indexOf(a.type);
+            const ib = fixedOrder.indexOf(b.type);
+            return ia - ib;
+          });
+
+          allPaymentsSorted.push(...payments);
+          continue;
+        }
+
+        const byType = (type, q = null) =>
+          payments.filter(
+            (p) => p.type === type && (q ? p._quarter === q : true)
+          );
+
+        const monthly = payments.filter((p) => p.type === "MONTHLY");
+        const half = Math.ceil(monthly.length / 2);
+        const monthly1 = monthly
+          .slice(0, half)
+          .sort((a, b) => a.quotaNumber - b.quotaNumber);
+        const monthly2 = monthly
+          .slice(half)
+          .sort((a, b) => a.quotaNumber - b.quotaNumber);
+
+        const ordered = [
+          ...byType("DEPOSIT"),
+          ...byType("AGENCY_FEES"),
+          ...byType("GENERAL_SUPPLIES", "1Q"),
+          ...byType("INTERNET", "1Q"),
+          ...byType("RESERVATION"),
+          ...monthly1,
+          ...byType("GENERAL_SUPPLIES", "2Q"),
+          ...byType("INTERNET", "2Q"),
+          ...monthly2,
+          ...byType("CLEANUP"),
+          ...byType("MAINTENANCE"),
+          ...byType("OTHERS"),
+        ];
+
+        allPaymentsSorted.push(...ordered);
+      }
+
+      return allPaymentsSorted;
     };
 
     setPaymentsToShow({
@@ -235,7 +306,9 @@ const PaymentsV2 = () => {
 
       if (!serial || !leaseOrder) return groups;
 
-      const leaseKey = `${formatDateToDDMMYYYY(leaseOrder.startDate)} - ${formatDateToDDMMYYYY(leaseOrder.endDate)}`;
+      const leaseKey = `${formatDateToDDMMYYYY(
+        leaseOrder.startDate
+      )} - ${formatDateToDDMMYYYY(leaseOrder.endDate)}`;
 
       if (!groups[serial]) {
         groups[serial] = {};
