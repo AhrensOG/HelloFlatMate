@@ -27,7 +27,6 @@ export async function getAllUsersForUsersPanel_SearchBar() {
           "no-store, no-cache, must-revalidate, proxy-revalidate",
         Pragma: "no-cache",
         Expires: "0",
-        "Surrogate-Control": "no-store",
       },
     });
   } catch (error) {
