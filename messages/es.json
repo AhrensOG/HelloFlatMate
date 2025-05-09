@@ -536,7 +536,15 @@
         }
     },
     "reservation_btn": {
-        "btn": "Reservar"
+        "btn": "Enviar solicitud"
+    },
+    "reservation_modal": {
+      "reservation_submit_process_toast": "Enviando solicitud...",
+      "terms_and_conditions": "Debes aceptar los términos y condiciones",
+      "rental_period": "Debes seleccionar un periodo de alquiler",
+      "reservation_submit_success_toast": "Solicitud enviada correctamente",
+      "reservation_submit_error_toast": "Error al enviar la solicitud",
+      "reservation_submit_error_toast_2": "Por favor, inténtalo de nuevo o contacte con el soporte"
     },
     "clauses": {
         "title": "Cláusulas del Contrato",

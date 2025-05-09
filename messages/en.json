@@ -529,7 +529,16 @@
         }
     },
     "reservation_btn": {
-        "btn": "Book"
+        "btn": "Send request"
+      },
+    "reservation_modal": {
+      "reservation_submit_process_toast": "Sending request...",
+      "terms_and_conditions": "You must accept the terms and conditions",
+      "rental_period": "You must select a rental period",
+      "reservation_submit_success_toast": "Reques sended successfully",
+      "reservation_submit_error_toast": "An error occurred sending the request",
+      "reservation_submit_error_toast_2": "Please try again or contact support"
+
     },
     "clauses": {
         "title": "Contract Clauses",

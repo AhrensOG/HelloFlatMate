@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { motion } from "framer-motion";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import ReservationCard from "./auxiliarComponents/ReservationCard";
@@ -7,14 +7,22 @@ import { Context } from "@/app/context/GlobalContext";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import HTMLReactParser from "html-react-parser";
+import { isUserLogged } from "@/app/context/actions/isUserLogged";
 
 const ReservationsV2 = () => {
-    const { state } = useContext(Context);
-    const activeReservations = state?.user?.leaseOrdersRoom || [];
+    const { state, dispatch } = useContext(Context);
     const t = useTranslations("user_profile_v2.reservations");
     const formatedStrongText = (str) => {
         return str.replace(/\(strong\)/g, "<strong>").replace(/\(\/strong\)/g, "</strong>");
     };
+
+    useEffect(() => {
+      isUserLogged(dispatch).catch((err) => {
+        console.log("Error al actualizar usuario:", err);
+      });
+    }, [dispatch]);
+
+    const activeReservations = state?.user?.leaseOrdersRoom || [];
 
     const inReviewReservations = activeReservations.filter(
         (order) => order.status === "IN_PROGRESS" && !order.isActive && !order.isSigned && order.inReview

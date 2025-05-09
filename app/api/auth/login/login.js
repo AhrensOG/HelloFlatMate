@@ -9,6 +9,29 @@ function encodeToken(role, accessToken, userId) {
     return Buffer.from(tokenPayload).toString("base64");
 }
 
+function parseDisplayName(displayName) {
+  if (typeof displayName !== "string" || !displayName.trim()) {
+    return {
+      firstName: "",
+      lastName: "",
+    };
+  }
+
+  const parts = displayName.trim().split(/\s+/);
+
+  if (parts.length === 1) {
+    return {
+      firstName: parts[0],
+      lastName: "",
+    };
+  }
+
+  return {
+    firstName: parts[0],
+    lastName: parts.slice(1).join(" "), // Soporta múltiples apellidos o nombre compuesto
+  };
+}
+
 const login = async (req) => {
     try {
         const body = await req.json();
@@ -25,10 +48,11 @@ const login = async (req) => {
 
             return NextResponse.json(user, { status: 200 });
         } else {
+            const names = parseDisplayName(body.name);
             const newUser = await Client.create({
                 id: body.id,
-                name: body.name || "Name",
-                lastName: body.name || "LastName",
+                name: names.firstName || "Name",
+                lastName: names.lastName || "LastName",
                 email: body.email,
                 profilePicture: body.profile_picture,
                 role: "CLIENT",
