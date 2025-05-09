@@ -4,19 +4,29 @@ import sendgrid from "@sendgrid/mail";
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 export async function sendMail(data) {
-  const { to, subject, text } = data;
-  if (!to || !subject || !text) {
-    console.error("Missing data (to / subject / text): ", data);
+  const { to, subject, text, html, cc } = data;
+  if (!to || !subject) {
+    console.error("Missing data (to / subject): ", data);
     return NextResponse.json("Missing data (to / subject / text)", {
       status: 400,
     });
   }
-  const mailOptions = {
+
+  let mailOptions = {
     from: process.env.MAIL_USER, // Debe ser un correo verificado en SendGrid
     to: to,
     subject: subject,
-    text: text,
   };
+
+  if (text) {
+    mailOptions.text = text;
+  }
+  if (html) {
+    mailOptions.html = html;
+  }
+  if (cc) {
+    mailOptions.cc = cc;
+  }
 
   try {
     const result = await sendgrid.send(mailOptions);

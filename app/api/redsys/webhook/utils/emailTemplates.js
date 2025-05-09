@@ -57,32 +57,42 @@ const baseTemplate = (name, lastName, serial, month) => `
 </body>
 </html>`;
 
-const reservationTemplate = (name, lastName, serial) => `
+const reservationTemplate = (name, lastName, serial, price, startDate, endDate) => `
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Confirmación de pago mensual - helloFlatMate</title>
+  <title>Reserva confirmada - helloFlatMate</title>
 </head>
 <body>
   <p>
-  ¡Gracias, ${name} ${lastName}! Por realizar el pago de reserva por el alojamiento ${serial}.
-  </p>
-  <br/>
-  <p>
-    Puede descargar el recibo desde su área de usuario de la web.
+    Gracias, ${name} ${lastName}, tu reserva del alojamiento <strong>${serial}</strong>, por <strong>${price}€</strong>, 
+    de fechas <strong>${startDate}</strong> a <strong>${endDate}</strong> está confirmada.
   </p>
   <p>
-    Si tiene alguna duda puede contactarnos a través de este correo electrónico.
+    Puedes descargar tu recibo desde el área de usuario de la web.
   </p>
+
+  <p><strong>Aquí te explicamos cómo continúa el proceso:</strong></p>
+  <ul>
+    <li>
+      El siguiente paso es subir a tu área de usuario la matrícula de estudios del curso <strong>2025 - 2026</strong> cuando la obtengas.
+    </li>
+    <li>
+      15 días antes del inicio del contrato deberás realizar los pagos oportunos del check-in (depósito, tasas, suministros y wifi) en la sección <strong>usuario/pagos</strong>.
+    </li>
+    <li>
+      Una vez pagado, podrás acceder a tu contrato y firmarlo online.
+    </li>
+  </ul>
+
   <p>
-    Correo: <a href="mailto:rooms@helloflatmate.com">rooms@helloflatmate.com</a>
+    Seguimos a tu disposición para cualquier consulta, respondiendo a este correo.
   </p>
-  <br/>
   <p>
     Un saludo,<br>
-    helloflatmate, SL
+    helloflatmate Team
   </p>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
@@ -95,7 +105,7 @@ const reservationTemplate = (name, lastName, serial) => `
         <p style="margin: 5px 0;">
           Address: C/ Campoamor 8, 1C, 46021 Valencia<br>
           Horario: 9 - 17 h (Lunes - Viernes)<br>
-          Website: <a href="https://www.helloflatmate.com" style="color: #0078d7; text-decoration: none;">www.helloflatmate.com</a>
+          Website: <a href="https://www.helloflatmate.com" style="color: #0078d7; text-decoration: none;">www.helloflatmate.com</a><br>
           Phone: +34 601 158 261
         </p>
 

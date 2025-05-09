@@ -116,8 +116,8 @@ export async function updateStatusLeaseOrder(data) {
 
             await sendMailFunction({
               to: client.email,
-              subject: `¡Tu pre-reserva está aprobada! Completa el proceso en tu cuenta`,
-              html: preReservationTemplate(client.name, client.lastName, room.serial),
+              subject: `Solicitud aceptada, ahora tienes que realizar el pago`,
+              html: preReservationTemplate(client.name, client.lastName),
               cc: HFM_MAIL,
             });
 

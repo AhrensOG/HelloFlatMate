@@ -13,6 +13,7 @@ import DatePicker from "./date_picker/DatePicker";
 import ReservationForm from "./ReservationForm";
 import { sendEmail } from "@/app/context/actions";
 import { useTranslations } from "next-intl";
+import preReservationTemplate from "@/utils/reservation_templates/preReservation";
 
 export default function ReservationModal({ callback, data, category, calendarType }) {
   const t = useTranslations("reservation_modal")
@@ -90,16 +91,16 @@ export default function ReservationModal({ callback, data, category, calendarTyp
 
         try {
             await axios.put("/api/user/reservation", reservation);
-            const response = await axios.post("/api/lease_order", reservation);
+            await axios.post("/api/lease_order", reservation);
+            const startDate = formatedDate(reservation.startDate);
+            const endDate = formatedDate(reservation.endDate);
             const emailData = {
-                to: process.env.NEXT_PUBLIC_HFM_MAIL,
-                subject: `Solicitud de pre-reserva ${reservation.propertySerial} - ${reservation.roomSerial}`,
-                text: `${reservation.name} ${reservation.lastName} - ${
-                    reservation.email
-                } ha realizado una pre-reserva. Fecha de alquiler: del ${formatedDate(reservation.startDate)} al ${formatedDate(
-                    reservation.endDate
-                )}.`,
+                to: reservation.user?.email,
+                subject: `Solicitud de reserva ${reservation.roomSerial}`,
+                html: preReservationTemplate(reservation.name, reservation.lastName, reservation.email, startDate, endDate, reservation.price),
+                cc: process.env.NEXT_PUBLIC_HFM_MAIL,
             };
+
             await sendEmail(emailData);
             toast.success(t("reservation_submit_success_toast"), {
                 id: toastId,
