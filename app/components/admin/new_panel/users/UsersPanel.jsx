@@ -14,6 +14,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 export default function UsersPanel() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const [page, setPage] = useState(1);
   const [limit] = useState(100);
@@ -40,7 +41,7 @@ export default function UsersPanel() {
     isLoading,
   } = useSWR(
     `/api/admin/user/users_panel?page=${page}&limit=${limit}${
-      selectedUser ? `&userId=${selectedUser.id}` : ""
+      selectedUser ? `&userId=${selectedUser.id}&role=${selectedUser.role}` : ""
     }`,
     fetcher,
     {
@@ -55,7 +56,13 @@ export default function UsersPanel() {
     { revalidateOnFocus: false }
   );
 
-  const users = paginatedData?.users || [];
+  const rawUsers = paginatedData?.users || [];
+  const orderedUsers = selectedUser
+    ? [
+        ...rawUsers.filter((u) => u.id === selectedUser.id),
+        ...rawUsers.filter((u) => u.id !== selectedUser.id),
+      ]
+    : rawUsers;
   const total = paginatedData?.total || 0;
 
   const handleOpenModal = (user) => {
@@ -116,13 +123,14 @@ export default function UsersPanel() {
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
+              setShowSuggestions(true);
               if (e.target.value === "") {
                 setSelectedUser(null);
               }
             }}
             className="border rounded px-3 py-2 w-96"
           />
-          {searchQuery && (
+          {searchQuery && showSuggestions && (
             <ul className="absolute top-12 bg-white border rounded w-96 shadow-md max-h-[400px] overflow-y-auto z-10">
               {usersForSearchBar
                 ?.filter((user) => {
@@ -141,6 +149,7 @@ export default function UsersPanel() {
                       setSelectedUser(user);
                       setSearchQuery(`${user.name} ${user.lastName}`);
                       setPage(1);
+                      setShowSuggestions(false);
                     }}>
                     {user.name} {user.lastName} - {user.email}
                   </li>
@@ -156,7 +165,7 @@ export default function UsersPanel() {
       </div>
 
       <UsersTable
-        filteredUsers={users}
+        filteredUsers={orderedUsers}
         handleOpenModal={handleOpenModal}
         handleOpenModalEdit={handleOpenModalEdit}
         handleOpenOrdersModal={handleOpenModalOrders}
@@ -174,7 +183,7 @@ export default function UsersPanel() {
         <span className="flex items-center">Página {page}</span>
         <button
           onClick={() => setPage((p) => p + 1)}
-          disabled={users.length < limit}
+          disabled={orderedUsers.length < limit}
           className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50">
           Siguiente
         </button>
