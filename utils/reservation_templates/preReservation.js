@@ -11,7 +11,7 @@ const preReservationTemplate = (name, lastName, email, startDate, endDate, price
     Hola ${name} ${lastName} (${email}),
   </p>
   <p>
-    Tu solicitud para las fechas <strong>${startDate} - ${endDate}</strong> por un precio de <strong>${price}</strong> ha sido enviada. La revisamos y en breve contactaremos contigo.
+    Tu solicitud para las fechas <strong>${startDate} - ${endDate}</strong> por un precio de <strong>${price}€</strong> ha sido enviada. La revisamos y en breve contactaremos contigo.
   </p>
   <p>
     ¡Gracias por tu paciencia!

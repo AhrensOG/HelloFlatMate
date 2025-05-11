@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const SuccessV2 = () => {
     return (
-        <div className="flex items-center justify-center p-4 h-full">
+        <div className="flex items-center justify-center p-4 w-full h-full">
             <div className="w-full p-6 text-center flex flex-col justify-center items-center">
                 <h1 className="text-3xl font-bold text-[#440cac] mb-4">
                     ¡Contrato firmado!

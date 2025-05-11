@@ -174,7 +174,7 @@ const OwnerSignature = () => {
                   />
                   <div className="p-4 text-sm text-gray-500 flex gap-4 border-t">
                     <DocumentTextIcon className="w-5 h-5" />
-                    Documento original proporcionado por helloFlatmate.
+                    Documento original proporcionado por helloflatmate.
                   </div>
                 </div>
                 {contract.isSigned ? (

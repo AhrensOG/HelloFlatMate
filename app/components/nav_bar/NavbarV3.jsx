@@ -67,29 +67,34 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
 
   const shouldShowIncidences = (() => {
     if (!user?.role) return true;
-  
+
     if (user.role === "CLIENT") {
-      if (!Array.isArray(user.leaseOrdersRoom) || user.leaseOrdersRoom.length === 0) {
+      if (
+        !Array.isArray(user.leaseOrdersRoom) ||
+        user.leaseOrdersRoom.length === 0
+      ) {
         return true;
       }
-  
+
       const allCategories = user.leaseOrdersRoom.map(
         (order) => order.room?.property?.category
       );
-  
+
       return allCategories.some((cat) => cat !== "HELLO_LANDLORD");
     }
-  
+
     if (user.role === "OWNER") {
       if (!Array.isArray(user.properties) || user.properties.length === 0) {
         return true;
       }
-  
-      const allCategories = user.properties.map((property) => property?.category);
-  
+
+      const allCategories = user.properties.map(
+        (property) => property?.category
+      );
+
       return allCategories.some((cat) => cat !== "HELLO_LANDLORD");
     }
-  
+
     return true;
   })();
 
@@ -141,6 +146,12 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
                 {t("owner_link_5")}
               </Link>
             )}
+            <Link
+              onClick={() => toggleMenu()}
+              href="/pages/owner/contracts"
+              className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
+              {t("owner_link_6")}
+            </Link>
             <Link
               onClick={() => toggleMenu()}
               href="/pages/owner/chats"

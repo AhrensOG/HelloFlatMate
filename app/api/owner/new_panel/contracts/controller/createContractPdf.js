@@ -97,7 +97,7 @@ export async function createContractPdf(data, userData) {
       });
 
       page.drawImage(hfmSigImg, {
-        x: width - marginX - signatureWidth,
+        x: width - marginX - signatureWidth - 50,
         y: baseY + 25,
         width: signatureWidth,
         height: signatureHeight,
@@ -112,7 +112,7 @@ export async function createContractPdf(data, userData) {
       });
 
       page.drawText(`Fdo: ${hfmFdoData}`, {
-        x: width - marginX - 180,
+        x: width - marginX - 160,
         y: baseY,
         size: 10,
         font,
