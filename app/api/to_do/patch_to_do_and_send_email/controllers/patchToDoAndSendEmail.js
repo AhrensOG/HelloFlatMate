@@ -106,8 +106,11 @@ async function sendToDoNotification({ type, todo }) {
     ],
   });
 
+  const shouldNotifyOwner = ["START", "COMPLETE", "CANCEL"].includes(type);
   const recipients = [
-    property.owner?.email,
+    ...(shouldNotifyOwner && property.owner?.email
+      ? [property.owner.email]
+      : []),
     ...activeTenants.map((t) => t.email),
   ].filter(Boolean);
 
