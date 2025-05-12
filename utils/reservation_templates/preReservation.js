@@ -19,7 +19,7 @@ const preReservationTemplate = (name, lastName, email, startDate, endDate, price
   <br/>
   <p>
     Un saludo,<br/>
-    <strong>helloFlatmate</strong> Team
+    <strong>helloflatmate</strong> Team
   </p>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
