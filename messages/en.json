@@ -778,7 +778,7 @@
                 "IN_PROGRESS": "In progress",
                 "INCOMPLETE": "Incomplete",
                 "FINISHED": "Finished",
-                "COMPLETE": "Complete"
+                "COMPLETE": "Ongoing"
             },
             "short_months": {
                 "1": "Jan",
@@ -1072,8 +1072,8 @@
             "p_2": "(strong>Ready to take the next step!(/strong) Pay now the first monthly payment of the rent and your reservation will be confirmed.",
             "in_review": "Under Review",
             "p_3": "(strong)Your request is under review.(/strong) We are verifying your request; you will receive an update soon.",
-            "completed": "Completed",
-            "p_4": "(strong)All set!(/strong) Your reservation is confirmed and ongoing.",
+            "completed": "Ongoing",
+            "p_4": "(strong)Ongoing contract!(/strong)",
             "no_reservations": "You have no active reservations at the moment.",
             "question": "Do you have any questions about the reservation process?",
             "write_us": "Write to us",

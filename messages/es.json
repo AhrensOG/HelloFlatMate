@@ -784,7 +784,7 @@
                 "IN_PROGRESS": "En progreso",
                 "INCOMPLETE": "Incompleto",
                 "FINISHED": "Finalizado",
-                "COMPLETE": "Completo"
+                "COMPLETE": "En curso"
             },
             "short_months": {
                 "1": "Ene",
@@ -1086,8 +1086,8 @@
             "p_2": "(strong)¡Listo para dar el siguiente paso!(/strong) Paga ahora la primera mensualidad del alquiler y tu reserva quedará confirmada.",
             "in_review": "En revisión",
             "p_3": "(strong)Tu solicitud está en revisión.(/strong) Estamos verificando tu solicitúd; pronto recibirás una actualización.",
-            "completed": "Completadas",
-            "p_4": "(strong)¡Todo listo!(/strong) Tu reserva está confirmada y en curso.",
+            "completed": "En curso",
+            "p_4": "(strong)¡Contrato en curso!(/strong)",
             "no_reservations": "No tienes reservas activas en este momento.",
             "question": "¿Tienes alguna pregunta sobre el proceso de reserva?",
             "write_us": "Escríbenos",
