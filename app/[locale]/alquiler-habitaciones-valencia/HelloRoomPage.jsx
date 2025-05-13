@@ -230,6 +230,11 @@ export default function HelloRoomPage() {
           // Si ambos son pasados, se puede decidir cómo manejarlos,
           // aquí simplemente los dejamos en el orden original.
           return 0;
+        })
+        .sort((a, b) => {
+          const isMoncadaA = a.property.zone === "Moncada";
+          const isMoncadaB = b.property.zone === "Moncada";
+          return isMoncadaA === isMoncadaB ? 0 : isMoncadaA ? 1 : -1;
         });
 
       setFilteredRooms(filteredRoomsList); // Actualizar habitaciones filtradas
@@ -350,8 +355,7 @@ export default function HelloRoomPage() {
         {/* Lista de habitaciones */}
         <div
           id="carousel-container"
-          className="w-full flex justify-center items-start"
-        >
+          className="w-full flex justify-center items-start">
           <div className="w-full max-w-screen-lg h-full gap-7 scrollbar-none p-4 flex flex-wrap justify-center items-start">
             {!state.properties || state.properties?.length === 0 ? (
               // Mostrar skeletons cuando no hay propiedades
@@ -388,6 +392,15 @@ export default function HelloRoomPage() {
                             property, // Adjuntar la propiedad completa para pasarla al componente
                           }))
                       )
+                      .sort((a, b) => {
+                        const isMoncadaA = a.property.zone === "Moncada";
+                        const isMoncadaB = b.property.zone === "Moncada";
+                        return isMoncadaA === isMoncadaB
+                          ? 0
+                          : isMoncadaA
+                          ? 1
+                          : -1;
+                      })
                       .map((room) => (
                         <PropertyCard
                           key={`${room.id}-room`}
@@ -409,8 +422,7 @@ export default function HelloRoomPage() {
                 {displayedRooms.map((room) => (
                   <div
                     key={`${room.id}-room`}
-                    className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden h-full"
-                  >
+                    className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden h-full">
                     <PropertyCard
                       property={room.property}
                       roomId={room.id}
@@ -434,8 +446,7 @@ export default function HelloRoomPage() {
               currentPage === 1
                 ? "opacity-50 cursor-not-allowed"
                 : "hover:bg-gray-300"
-            }`}
-          >
+            }`}>
             Prev
           </button>
           <span className="text-gray-700 font-semibold">
@@ -448,8 +459,7 @@ export default function HelloRoomPage() {
               currentPage === totalPages
                 ? "opacity-50 cursor-not-allowed"
                 : "hover:bg-gray-300"
-            }`}
-          >
+            }`}>
             Next
           </button>
         </div>
