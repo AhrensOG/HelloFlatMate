@@ -23,7 +23,7 @@ const baseTemplate = (name, lastName, serial, month) => `
   <br/>
   <p>
     Un saludo,<br>
-    helloflatmate, SL
+    <strong>helloflatmate</strong> Team
   </p>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
@@ -92,7 +92,7 @@ const reservationTemplate = (name, lastName, serial, price, startDate, endDate) 
   </p>
   <p>
     Un saludo,<br>
-    helloflatmate Team
+    <strong>helloflatmate</strong> Team
   </p>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
@@ -151,7 +151,7 @@ const supplyTemplate = (name, lastName, supplyName) => `
   <br/>
   <p>
     Un saludo,<br>
-    helloflatmate, SL
+    <strong>helloflatmate</strong> Team
   </p>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
@@ -210,7 +210,7 @@ const incidenceTemplate = (incidenceTitle) => `
   <br/>
   <p>
     Un saludo,<br>
-    helloflatmate, SL
+    <strong>helloflatmate</strong> Team
   </p>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
