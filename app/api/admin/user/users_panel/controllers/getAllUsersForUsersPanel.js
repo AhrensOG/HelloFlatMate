@@ -144,6 +144,13 @@ export async function getAllUsersForUsersPanel({
     if (userId && role) {
       const user = await getUserByRole(userId, role);
 
+  console.log("=== RENT PAYMENTS DIRECTO ===");
+  const payments = await RentPayment.findAll({ where: { leaseOrderId: 395 } });
+  console.log(payments); // ⛔ ¿sigue apareciendo?
+
+  console.log("=== RENT PAYMENTS EN USER ===");
+  console.log(user.rentPayments); // ¿se ve el eliminado?
+
       return NextResponse.json(
         {
           total: user ? 1 : 0,
