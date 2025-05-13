@@ -119,7 +119,7 @@ const CreateOwnerContractModal = ({ owners, onClose, mutate }) => {
             file: null,
             fileSigned: null,
             ownerFdoData: "",
-            hfmFdoData: "Alberto Borrás López Administrador",
+            hfmFdoData: "Alberto Borrás López",
             signedAt: "",
           }}
           onSubmit={handleSubmit}>
