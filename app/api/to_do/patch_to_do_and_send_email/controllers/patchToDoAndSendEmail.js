@@ -128,14 +128,14 @@ async function sendToDoNotification({ type, todo }) {
     COMPLETE: completeToDoTemplate(todo),
   };
 
-  // for (const email of recipients) {
-  //   await sendMailFunction({
-  //     to: email,
-  //     subject:
-  //       subjectByType[type] || "Notificación de servicio de mantenimiento",
-  //     html: htmlBodyByType[type] || "Servicio de mantenimiento generado.",
-  //   });
-  // }
+  for (const email of recipients) {
+    await sendMailFunction({
+      to: email,
+      subject:
+        subjectByType[type] || "Notificación de servicio de mantenimiento",
+      html: htmlBodyByType[type] || "Servicio de mantenimiento generado.",
+    });
+  }
 
   // await sendMailFunction({
   //   to: "ahrensgabriel09@gmail.com",
