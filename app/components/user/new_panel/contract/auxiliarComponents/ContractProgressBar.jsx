@@ -67,11 +67,11 @@ export default function ContractProgressBar() {
             user.howMetUs,
             user.destinationUniversity,
             user.homeUniversity,
-            user.arrivalDate,
-            user.arrivalTime,
+            // user.arrivalDate,
+            // user.arrivalTime,
             user.genre,
             user.country,
-            user.reasonForValencia,
+            // user.reasonForValencia,
             user.personalReview,
         ];
         const totalPersonal = personalFields.length;

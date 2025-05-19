@@ -57,15 +57,13 @@ export default function ProfileForm() {
                 howMetUs: user.howMetUs || "",
                 destinationUniversity: user.destinationUniversity || "",
                 homeUniversity: user.homeUniversity || "",
-                arrivalDate: user?.arrivalDate
-                    ? new Date(user.arrivalDate).toISOString().split("T")[0]
-                    : "",
-                arrivalTime: user?.arrivalTime ? user.arrivalTime : "",
+                // arrivalDate: user?.arrivalDate ? new Date(user.arrivalDate).toISOString().split("T")[0] : "",
+                // arrivalTime: user?.arrivalTime ? user.arrivalTime : "",
                 genre: user.genre || "",
                 country: user.country || "",
                 personalReview: user.personalReview || "",
-                reasonForValencia: user.reasonForValencia || "",
-                reasonForValenciaOther: user.reasonForValenciaOther || "-",
+                // reasonForValencia: user.reasonForValencia || "",
+                // reasonForValenciaOther: user.reasonForValenciaOther || "-",
             });
         }
     }, [state]);
@@ -294,7 +292,7 @@ export default function ProfileForm() {
                                 </label>
                                 <Field
                                     name="city"
-                                    placeholder="Ej: Valencia"
+                                    placeholder="Ciudad de tu vivienda habitual"
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
@@ -305,7 +303,7 @@ export default function ProfileForm() {
                                 </label>
                                 <Field
                                     name="street"
-                                    placeholder="Ej: Calle los Leones"
+                                    placeholder="Dirección de tu vivienda habitual"
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
                             </div>
@@ -427,7 +425,7 @@ export default function ProfileForm() {
                                 Datos Adicionales
                             </h2>
 
-                            <div className="mb-6 flex flex-col border border-gray-300 py-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
+                            {/* <div className="mb-6 flex flex-col border border-gray-300 py-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="px-3 text-[10px] font-semibold text-gray-600 uppercase">
                                     ¿Por qué vienes a Valencia?
                                 </label>
@@ -471,9 +469,9 @@ export default function ProfileForm() {
                                     <option value="A vivir">A vivir</option>
                                     <option value="Otro">Otro</option>
                                 </Field>
-                            </div>
+                            </div> */}
 
-                            <AnimatePresence>
+                            {/* <AnimatePresence>
                                 {values.reasonForValencia === "Otro" && (
                                     <motion.div
                                         key="reason-input"
@@ -502,7 +500,7 @@ export default function ProfileForm() {
                                         </div>
                                     </motion.div>
                                 )}
-                            </AnimatePresence>
+                            </AnimatePresence> */}
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
@@ -536,7 +534,7 @@ export default function ProfileForm() {
                                 </Field>
                             </div>
 
-                            <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
+                            {/* <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">
                                     Fecha de check-in
                                 </label>
@@ -556,7 +554,7 @@ export default function ProfileForm() {
                                     type="time"
                                     className="border-none font-bold text-gray-900 focus:outline-none"
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="mb-6 flex flex-col border border-gray-300 p-3 gap-2 hover:border-black rounded-md shadow-sm shadow-gray-100">
                                 <label className="text-[10px] font-semibold text-gray-600 uppercase">

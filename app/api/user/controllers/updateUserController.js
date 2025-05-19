@@ -53,7 +53,7 @@ export async function updateClient(data) {
 }
 
 const formatDate = (date) => {
-    if (!date.includes("/")) return null;
+    if (!date || !date.includes("/")) return null;
     const [day, month, year] = date.split("/");
     return `${year}-${month}-${day}`;
 };

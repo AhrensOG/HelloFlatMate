@@ -103,7 +103,7 @@ export default function DocsV2() {
                     </li>
                     <li>
                         <strong>Si eres nómada digital:</strong> Sube tu{" "}
-                        <strong>nómina</strong> o algún comprobante de ingresos.
+                        <strong>nómina</strong>.
                     </li>
                 </ul>
             </div>

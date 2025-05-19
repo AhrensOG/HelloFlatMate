@@ -77,7 +77,7 @@ const ContactForm = () => {
 
       {/* Formulario con Formik */}
       <motion.div
-        className="max-w-2xl w-full mx-auto bg-white shadow-lg rounded-lg"
+        className="max-w-2xl w-full mx-auto bg-white rounded-lg"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeInOut", delay: 0.5 }}
@@ -139,7 +139,7 @@ const ContactForm = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
+                className="bg-[#440CAC] hover:bg-[#440CAC]/90 duration-300 text-white px-6 py-3 rounded-md"
               >
                 {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
               </button>

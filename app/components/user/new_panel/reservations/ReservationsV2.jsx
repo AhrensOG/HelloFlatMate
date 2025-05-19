@@ -134,10 +134,10 @@ const ReservationsV2 = () => {
 
             <p className="text-gray-600 text-sm text-center mt-6">
                 {t("question")}{" "}
-                <Link href="#" className="text-[#440cac] font-semibold hover:underline">
+                <Link href="mailto:rooms@helloflatmate.com" className="text-[#440cac] font-semibold hover:underline">
                     {t("write_us")}
-                </Link>{" "}
-                {t("write_us_1")}
+                </Link>
+                {/* {t("write_us_1")} */}
             </p>
         </div>
     );
