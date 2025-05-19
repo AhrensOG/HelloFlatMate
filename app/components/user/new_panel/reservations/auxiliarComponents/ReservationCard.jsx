@@ -143,6 +143,8 @@ const ReservationCard = ({ data, user }) => {
       setTimeout(() => {
         formRef.current.submit();
       }, 500);
+
+      toast.success("Success" ,{ id: toastId });
     } catch (error) {
       console.error(t("error.error"), error.message);
       toast.error(t("error.info"), { id: toastId });
@@ -155,6 +157,7 @@ const ReservationCard = ({ data, user }) => {
       name="redsysForm"
       action={redsysData.redsysUrl}
       method="POST"
+      target="_blank"
       style={{ display: "none" }}>
       <input
         type="hidden"
