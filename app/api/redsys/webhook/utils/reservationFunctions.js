@@ -100,6 +100,12 @@ async function processReservation({
 
     // 5️⃣ Enviar Correo
 
+    const address = {
+      street: theRoom?.property?.street,
+      streetNumber: theRoom?.property?.streetNumber,
+      floor: theRoom?.property?.floor,
+    }
+
     const email_startDate = new Date(successLeaseOrderRoom.startDate);
     const email_endDate = new Date(successLeaseOrderRoom.endDate);
 
@@ -119,7 +125,7 @@ async function processReservation({
     await sendMailFunction({
       to: client.email,
       subject: `¡Reserva realizada correctamente! Alojamiento ${theRoom.serial}`,
-      html: reservationTemplate(client.name, client.lastName, theRoom.serial, successLeaseOrderRoom.price, formattedStartDate, formattedEndDate),
+      html: reservationTemplate(client.name, client.lastName, theRoom.serial, successLeaseOrderRoom.price, formattedStartDate, formattedEndDate, address),
       // attachments: [
       //   {
       //     content: pdfBase64,

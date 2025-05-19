@@ -1,4 +1,18 @@
-const preReservationTemplate = (name, lastName, email, startDate, endDate, price) => `
+const getLastTwoDigits = (serial) => {
+  if (typeof serial !== "string") return "";
+  return serial.slice(-2);
+};
+
+const preReservationTemplate = (
+  name,
+  lastName,
+  email,
+  startDate,
+  endDate,
+  price,
+  address,
+  serial
+) => `
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,7 +25,7 @@ const preReservationTemplate = (name, lastName, email, startDate, endDate, price
     Hola ${name} ${lastName} (${email}),
   </p>
   <p>
-    Tu solicitud para las fechas <strong>${startDate} - ${endDate}</strong> por un precio de <strong>${price}€</strong> ha sido enviada. La revisamos y en breve contactaremos contigo.
+    Tu solicitud para el alojamiento en Calle ${address.street} ${address.streetNumber} P${address.floor} ${getLastTwoDigits(serial)} para las fechas <strong>${startDate} - ${endDate}</strong> por un precio de <strong>${price}€</strong> ha sido enviada. La revisamos y en breve contactaremos contigo.
   </p>
   <p>
     ¡Gracias por tu paciencia!
@@ -52,6 +66,5 @@ const preReservationTemplate = (name, lastName, email, startDate, endDate, price
   </table>
 </body>
 </html>`;
-
 
 export default preReservationTemplate;

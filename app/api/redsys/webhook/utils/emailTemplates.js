@@ -1,3 +1,8 @@
+const getLastTwoDigits = (serial) => {
+  if (typeof serial !== "string") return "";
+  return serial.slice(-2);
+};
+
 const baseTemplate = (name, lastName, serial, month) => `
 <!DOCTYPE html>
 <html lang="es">
@@ -57,7 +62,15 @@ const baseTemplate = (name, lastName, serial, month) => `
 </body>
 </html>`;
 
-const reservationTemplate = (name, lastName, serial, price, startDate, endDate) => `
+const reservationTemplate = (
+  name,
+  lastName,
+  serial,
+  price,
+  startDate,
+  endDate,
+  address
+) => `
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -67,7 +80,11 @@ const reservationTemplate = (name, lastName, serial, price, startDate, endDate) 
 </head>
 <body>
   <p>
-    Gracias, ${name} ${lastName}, tu reserva del alojamiento <strong>${serial}</strong>, por <strong>${price}€</strong>, 
+    Gracias, ${name} ${lastName}, tu reserva del alojamiento en Calle ${
+  address.street
+} ${address.streetNumber} P${address.floor} ${getLastTwoDigits(
+  serial
+)}  <strong>${serial}</strong>, por <strong>${price}€</strong>, 
     de fechas <strong>${startDate}</strong> a <strong>${endDate}</strong> está confirmada.
   </p>
   <p>

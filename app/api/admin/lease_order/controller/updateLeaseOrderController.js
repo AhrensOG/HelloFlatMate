@@ -63,6 +63,12 @@ export async function updateStatusLeaseOrder(data) {
         });
         const roomsAvailable = property.rooms.filter((room) => room.status === "FREE");
 
+        const address = {
+          street: property?.street,
+          streetNumber: property?.streetNumber,
+          floor: property?.floor,
+        }
+
         if (data.action === "PENDING") {
             leaseOrderRoom.status = "PENDING";
             leaseOrderRoom.isActive = true;
@@ -113,11 +119,11 @@ export async function updateStatusLeaseOrder(data) {
                 chatId: groupChatId.id,
                 participantType: "CLIENT",
             });
-
+            
             await sendMailFunction({
               to: client.email,
               subject: `Solicitud aceptada, ahora tienes que realizar el pago`,
-              html: preReservationTemplate(client.name, client.lastName),
+              html: preReservationTemplate(client.name, client.lastName, address, room.serial),
               cc: HFM_MAIL,
             });
 

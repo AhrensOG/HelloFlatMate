@@ -1,4 +1,9 @@
-const preReservationTemplate = (name, lastName) => `
+const getLastTwoDigits = (serial) => {
+  if (typeof serial !== "string") return "";
+  return serial.slice(-2);
+};
+
+const preReservationTemplate = (name, lastName, address, serial) => `
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,7 +16,7 @@ const preReservationTemplate = (name, lastName) => `
     Hola ${name} ${lastName},
   </p>
   <p>
-    Para que tu reserva esté confirmada debes acceder a tu área de usuario, apartado <strong>“reservas”</strong>, y realizar el pago del <strong>primer mes de alquiler</strong> dentro de las próximas <strong>2 horas</strong>.
+    Para que tu reserva en Calle ${address.street} ${address.streetNumber} P${address.floor} ${getLastTwoDigits(serial)} esté confirmada debes acceder a tu área de usuario, apartado <strong>“reservas”</strong>, y realizar el pago del <strong>primer mes de alquiler</strong> dentro de las próximas <strong>2 horas</strong>.
   </p>
   <p>
     Si transcurre el tiempo y no lo has realizado, la habitación seguirá disponible en la web para otros interesados.

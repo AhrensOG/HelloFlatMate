@@ -306,6 +306,7 @@ export default function RoomDetails({ params }) {
                             startDate: null,
                             endDate: null,
                             price: roomData?.price,
+                            propertyInfo: data,
                             propertyId: data.id,
                             propertySerial: data.serial,
                             clientId: state?.user?.id,
