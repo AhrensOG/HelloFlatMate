@@ -78,45 +78,45 @@ export async function GET() {
 
     const resultados = [];
 
-    for (const client of clients) {
-      const lease = client.leaseOrdersRoom?.[0];
-      if (!lease || !lease.startDate || !lease.endDate) continue;
+    // for (const client of clients) {
+    //   const lease = client.leaseOrdersRoom?.[0];
+    //   if (!lease || !lease.startDate || !lease.endDate) continue;
 
-      const leaseStart = new Date(lease.startDate);
-      const leaseEnd = new Date(lease.endDate);
+    //   const leaseStart = new Date(lease.startDate);
+    //   const leaseEnd = new Date(lease.endDate);
 
-      if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
+    //   if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
 
-      const nextMonth = addMonthsToDate(now, 1);
-      const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
+    //   const nextMonth = addMonthsToDate(now, 1);
+    //   const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
 
-      const pendingRent = client.rentPayments.find(
-        (p) =>
-          p.leaseOrderId === lease.id &&
-          p.quotaNumber === expectedQuota &&
-          p.status === "PENDING"
-      );
+    //   const pendingRent = client.rentPayments.find(
+    //     (p) =>
+    //       p.leaseOrderId === lease.id &&
+    //       p.quotaNumber === expectedQuota &&
+    //       p.status === "PENDING"
+    //   );
 
-      if (pendingRent && client.email) {
-        const subject = "Recordatorio de pago vencido - helloFlatmate";
-        const html = latePaymentReminderTemplate();
+    //   if (pendingRent && client.email) {
+    //     const subject = "Recordatorio de pago vencido - helloFlatmate";
+    //     const html = latePaymentReminderTemplate();
 
-        // Descomentar para enviar correos reales
+    //     // Descomentar para enviar correos reales
 
-        await sendMailFunction({
-          to: client.email,
-          subject,
-          html,
-        });
+    //     await sendMailFunction({
+    //       to: client.email,
+    //       subject,
+    //       html,
+    //     });
 
-        resultados.push({
-          emailDestino: client.email,
-          leaseId: lease.id,
-          testSubject: subject,
-          testHtmlPreview: html.slice(0, 100) + "...", // solo muestra el inicio del mensaje
-        });
-      }
-    }
+    //     resultados.push({
+    //       emailDestino: client.email,
+    //       leaseId: lease.id,
+    //       testSubject: subject,
+    //       testHtmlPreview: html.slice(0, 100) + "...", // solo muestra el inicio del mensaje
+    //     });
+    //   }
+    // }
 
     return NextResponse.json(
       {

@@ -101,82 +101,82 @@ export async function GET() {
 
     const resultados = [];
 
-    for (const client of clients) {
-      const lease = client.leaseOrdersRoom?.[0];
-      if (!lease || !lease.startDate || !lease.endDate) continue;
+    // for (const client of clients) {
+    //   const lease = client.leaseOrdersRoom?.[0];
+    //   if (!lease || !lease.startDate || !lease.endDate) continue;
 
-      const leaseStart = new Date(lease.startDate);
-      const leaseEnd = new Date(lease.endDate);
+    //   const leaseStart = new Date(lease.startDate);
+    //   const leaseEnd = new Date(lease.endDate);
 
-      if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
+    //   if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
 
-      const nextMonth = addMonthsToDate(now, 1);
-      const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
-      const totalDuration = differenceInMonths(leaseEnd, leaseStart) + 1;
+    //   const nextMonth = addMonthsToDate(now, 1);
+    //   const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
+    //   const totalDuration = differenceInMonths(leaseEnd, leaseStart) + 1;
 
-      const pendingRent = client.rentPayments.find(
-        (p) =>
-          p.leaseOrderId === lease.id &&
-          p.quotaNumber === expectedQuota &&
-          p.status === "PENDING"
-      );
+    //   const pendingRent = client.rentPayments.find(
+    //     (p) =>
+    //       p.leaseOrderId === lease.id &&
+    //       p.quotaNumber === expectedQuota &&
+    //       p.status === "PENDING"
+    //   );
 
-      const suppliesPendientes = client.supplies.filter(
-        (s) => s.leaseOrderId === lease.id && s.status === "PENDING"
-      );
+    //   const suppliesPendientes = client.supplies.filter(
+    //     (s) => s.leaseOrderId === lease.id && s.status === "PENDING"
+    //   );
 
-      let typeKey = "";
+    //   let typeKey = "";
 
-      // Casos especiales
-      if (
-        todayMonth === 12 &&
-        totalDuration <= 7 &&
-        leaseEnd.getMonth() + 1 === 1
-      ) {
-        const limpieza = suppliesPendientes.find((s) => s.type === "CLEANUP");
-        if (limpieza) typeKey = "LIMPIEZA_ENERO";
-      }
+    //   // Casos especiales
+    //   if (
+    //     todayMonth === 12 &&
+    //     totalDuration <= 7 &&
+    //     leaseEnd.getMonth() + 1 === 1
+    //   ) {
+    //     const limpieza = suppliesPendientes.find((s) => s.type === "CLEANUP");
+    //     if (limpieza) typeKey = "LIMPIEZA_ENERO";
+    //   }
 
-      if (todayMonth === 1 && totalDuration >= 8) {
-        const suministro = suppliesPendientes.find(
-          (s) => s.type === "GENERAL_SUPPLIES" || s.type === "INTERNET"
-        );
-        if (suministro) typeKey = "SUMINISTROS_SEGUNDO_SEMESTRE";
-      }
+    //   if (todayMonth === 1 && totalDuration >= 8) {
+    //     const suministro = suppliesPendientes.find(
+    //       (s) => s.type === "GENERAL_SUPPLIES" || s.type === "INTERNET"
+    //     );
+    //     if (suministro) typeKey = "SUMINISTROS_SEGUNDO_SEMESTRE";
+    //   }
 
-      if (todayMonth === 5) {
-        const limpiezaJunio = suppliesPendientes.find(
-          (s) => s.type === "CLEANUP"
-        );
-        if (limpiezaJunio) typeKey = "LIMPIEZA_JUNIO";
-      }
+    //   if (todayMonth === 5) {
+    //     const limpiezaJunio = suppliesPendientes.find(
+    //       (s) => s.type === "CLEANUP"
+    //     );
+    //     if (limpiezaJunio) typeKey = "LIMPIEZA_JUNIO";
+    //   }
 
-      if (!typeKey && pendingRent) {
-        typeKey = "GENERICO";
-      }
+    //   if (!typeKey && pendingRent) {
+    //     typeKey = "GENERICO";
+    //   }
 
-      if (typeKey) {
-        const subject = subjectByType[typeKey];
-        const html = htmlBodyByType[typeKey];
+    //   if (typeKey) {
+    //     const subject = subjectByType[typeKey];
+    //     const html = htmlBodyByType[typeKey];
 
-        // Descomentar para enviar correos reales
+    //     // Descomentar para enviar correos reales
 
-        await sendMailFunction({
-          to: client.email,
-          subject,
-          html,
-        });
+    //     await sendMailFunction({
+    //       to: client.email,
+    //       subject,
+    //       html,
+    //     });
 
-        // Agregar para testing (ver en respuesta JSON)
-        resultados.push({
-          emailDestino: client.email,
-          leaseId: lease.id,
-          tipoEnvio: typeKey,
-          testSubject: subject,
-          testHtmlPreview: html.slice(0, 100) + "...", // Solo vista previa
-        });
-      }
-    }
+    //     // Agregar para testing (ver en respuesta JSON)
+    //     resultados.push({
+    //       emailDestino: client.email,
+    //       leaseId: lease.id,
+    //       tipoEnvio: typeKey,
+    //       testSubject: subject,
+    //       testHtmlPreview: html.slice(0, 100) + "...", // Solo vista previa
+    //     });
+    //   }
+    // }
 
     return NextResponse.json(
       {

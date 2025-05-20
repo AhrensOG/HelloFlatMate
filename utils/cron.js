@@ -3,18 +3,18 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const updateContracts = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/api/cron/update_contracts`);
-    console.log(
-      `Cron job ejecutado (update contracts) a las ${new Date().toLocaleString()}: Status ${
-        response.status
-      }`
-    );
-  } catch (error) {
-    console.error("Error al ejecutar updateContracts:", error);
-  }
-};
+// const updateContracts = async () => {
+//   try {
+//     const response = await axios.get(`${BASE_URL}/api/cron/update_contracts`);
+//     console.log(
+//       `Cron job ejecutado (update contracts) a las ${new Date().toLocaleString()}: Status ${
+//         response.status
+//       }`
+//     );
+//   } catch (error) {
+//     console.error("Error al ejecutar updateContracts:", error);
+//   }
+// };
 
 // Función para enviar recordatorio de primer aviso
 // const sendInitialReminders = async () => {
