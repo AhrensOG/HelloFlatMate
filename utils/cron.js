@@ -55,12 +55,12 @@ cron.schedule("0 0 * * *", () => {
 });
 
 // Ejecutar recordatorio inicial solo el día 20 a las 00:00
-cron.schedule("0 0 20 * *", () => {
-  console.log(
-    "📩 Ejecutando cron de recordatorio inicial (día 20 a las 00:00)"
-  );
-  sendInitialReminders();
-});
+// cron.schedule("0 0 20 * *", () => {
+//   console.log(
+//     "📩 Ejecutando cron de recordatorio inicial (día 20 a las 00:00)"
+//   );
+//   sendInitialReminders();
+// });
 
 // Ejecutar recordatorio de pagos vencidos solo el día 26 a las 00:00
 cron.schedule("0 0 26 * *", () => {
