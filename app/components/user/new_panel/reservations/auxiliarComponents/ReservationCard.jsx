@@ -26,6 +26,9 @@ const ReservationCard = ({ data, user }) => {
 
   const [redsysData, setRedsysData] = useState(null);
   const formRef = useRef(null);
+  const matchingContract = user?.contracts?.find(
+    (contract) => contract.leaseOrderId === data.id
+  );
 
   const formatDate = (dateString) => {
     try {
@@ -60,7 +63,11 @@ const ReservationCard = ({ data, user }) => {
       const day = date.getUTCDate().toString().padStart(2, "0");
       const month = months[date.getUTCMonth()];
       const year = date.getUTCFullYear();
-      return `${dayOfWeek}, ${day} ${month} ${year}`;
+      return (
+        <>
+          {dayOfWeek}, {day} {month} <strong>{year}</strong>
+        </>
+      );
     } catch (error) {
       console.error("Error al formatear la fecha:", error.message);
       return "Fecha inválida";
@@ -94,10 +101,16 @@ const ReservationCard = ({ data, user }) => {
         </span>
       );
     } else {
+      const now = new Date();
+      const startDate = new Date(data.startDate);
+      const isStartDateInFuture = startDate.getTime() > now.getTime();
+
       return (
         <span className="max-w-32 flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1.5 mb-2 text-[10px] uppercase font-semibold rounded-full">
           <CheckCircleIcon className="w-4 h-4" />{" "}
-          {t("reservation_status.COMPLETE")}
+          {isStartDateInFuture
+            ? t("reservation_status.APPROVED")
+            : t("reservation_status.COMPLETE")}
         </span>
       );
     }
@@ -144,7 +157,7 @@ const ReservationCard = ({ data, user }) => {
         formRef.current.submit();
       }, 500);
 
-      toast.success("Success" ,{ id: toastId });
+      toast.success("Success", { id: toastId });
     } catch (error) {
       console.error(t("error.error"), error.message);
       toast.error(t("error.info"), { id: toastId });
@@ -186,7 +199,18 @@ const ReservationCard = ({ data, user }) => {
         className="w-full bg-white shadow-md border border-gray-200 rounded-lg mt-6 p-6 flex flex-col md:flex-row gap-6">
         <div className="flex flex-col justify-between w-full">
           <div>
-            <div>{getStatusBadge()}</div>
+            <div className="w-full flex justify-between">
+              {getStatusBadge()}
+              {matchingContract?.url && (
+                <Link
+                  href={matchingContract.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[#440cac] font-semibold underline hover:text-[#33097e] transition">
+                  Contrato
+                </Link>
+              )}
+            </div>
             <h3 className="text-xl font-semibold text-gray-900">
               {t("code")}: {data.room?.serial || "Habitación sin nombre"}
             </h3>
@@ -194,14 +218,14 @@ const ReservationCard = ({ data, user }) => {
               {data.price ? `${data.price} €` : "Precio no disponible"}{" "}
               <span className="text-base text-gray-500">/ {t("month")}</span>
             </p>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-700 text-sm">
               {data.room?.property?.street +
                 " " +
                 data.room?.property?.streetNumber +
                 ", " +
                 data.room?.property?.postalCode || "N/A"}
             </p>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-700 text-sm">
               {formatDate(data.startDate)} - {formatDate(data.endDate)}
             </p>
           </div>

@@ -201,9 +201,9 @@ const PaymentsV2 = () => {
           status: sup.status,
           type: sup.type,
           quotaNumber: null,
-          description: `${t("supply_desc")} - ${getSupplyName(
-            sup.type
-          )}${quarterSuffix}`,
+          description: `${t("supply_desc")} - ${
+            sup.type === "CLEANUP" ? sup.name : getSupplyName(sup.type)
+          }${quarterSuffix}`,
           supplyLabel: `${SUPPLY_TYPE_LABELS[sup.type] || sup.type}`,
           paid: statusFilter === "COMPLETED",
           orderType: sup.leaseOrderType,

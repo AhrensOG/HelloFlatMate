@@ -778,7 +778,8 @@
                 "IN_PROGRESS": "In progress",
                 "INCOMPLETE": "Incomplete",
                 "FINISHED": "Finished",
-                "COMPLETE": "Ongoing"
+                "COMPLETE": "Ongoing",
+                "APPROVED": "Approved"
             },
             "short_months": {
                 "1": "Jan",
@@ -990,8 +991,8 @@
             },
             "nationality": "Nationality",
             "city": "City",
-            "address": "Address (street)",
-            "number": "Address Number",
+            "address": "Address of usual residence (street)",
+            "number": "Usual residence address number",
             "postal_code": "Postal Code",
             "emergency_contact": {
                 "h2": "Emergency Contact",
@@ -1027,7 +1028,7 @@
                 "address": "E.g. Calle los Leones",
                 "number": "E.g. 99",
                 "postal_code": "E.g. 46022",
-                "emergency_name": "Emergency Name",
+                "emergency_name": "In case of emergency contact with...",
                 "emergency_email": "Emergency Email",
                 "personal_review": "Share with us your interests, hobbies, and what kind of tenant you are.",
                 "home_university": "E.g. University of your Country",
@@ -1073,7 +1074,7 @@
             "in_review": "Under Review",
             "p_3": "(strong)Your request is under review.(/strong) We are verifying your request; you will receive an update soon.",
             "completed": "Ongoing",
-            "p_4": "(strong)Ongoing contract.(/strong)",
+            "p_4": "(strong)Approved contract.(/strong)",
             "no_reservations": "You have no active reservations at the moment.",
             "question": "Do you have any questions about the reservation process?",
             "write_us": "Write to us",

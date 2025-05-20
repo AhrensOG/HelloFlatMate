@@ -784,7 +784,8 @@
                 "IN_PROGRESS": "En progreso",
                 "INCOMPLETE": "Incompleto",
                 "FINISHED": "Finalizado",
-                "COMPLETE": "En curso"
+                "COMPLETE": "En curso",
+                "APPROVED": "Aprobado"
             },
             "short_months": {
                 "1": "Ene",
@@ -1004,8 +1005,8 @@
             },
             "nationality": "Nacionalidad",
             "city": "Ciudad",
-            "address": "Dirección (calle)",
-            "number": "Número de Dirección",
+            "address": "Dirección de residencia habitual (calle)",
+            "number": "Número de Dirección de residencia habitual",
             "postal_code": "Código Postal",
             "emergency_contact": {
                 "h2": "Contacto de Emergencia",
@@ -1041,7 +1042,7 @@
                 "address": "Ej: Calle los Leones",
                 "number": "Ej: 99",
                 "postal_code": "Ej: 46022",
-                "emergency_name": "Nombre de emergencia",
+                "emergency_name": "En caso de emergencia contactar con...",
                 "emergency_email": "Email de emergencia",
                 "personal_review": "Comparte con nosotros tus intereses, pasatiempos y qué tipo de inquilino eres.",
                 "home_university": "Ej: Universidad de tu Pais",
@@ -1087,7 +1088,8 @@
             "in_review": "En revisión",
             "p_3": "(strong)Tu solicitud está en revisión.(/strong) Estamos verificando tu solicitúd; pronto recibirás una actualización.",
             "completed": "En curso",
-            "p_4": "(strong)Contrato en curso.(/strong)",
+            "p_4": "(strong)Contrato aprobado.(/strong)",
+            "p_4_not_start_yet": "(strong)Contrato.(/strong)",
             "no_reservations": "No tienes reservas activas en este momento.",
             "question": "¿Tienes alguna pregunta sobre el proceso de reserva?",
             "write_us": "Escríbenos",
