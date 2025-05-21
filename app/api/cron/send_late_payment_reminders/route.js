@@ -98,7 +98,7 @@ export async function GET() {
     //   );
 
     //   if (pendingRent && client.email) {
-    //     const subject = "Recordatorio de pago vencido - helloFlatmate";
+    //     const subject = "Pendiente de pago - helloFlatmate";
     //     const html = latePaymentReminderTemplate();
 
     //     // Descomentar para enviar correos reales

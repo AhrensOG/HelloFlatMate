@@ -24,7 +24,7 @@ function differenceInMonths(date1, date2) {
 }
 
 const subjectByType = {
-  GENERICO: "Recordatorio de pago de renta - helloFlatmate",
+  GENERICO: "Comienza el período de pago - helloFlatmate",
   LIMPIEZA_ENERO: "Recordatorio de limpieza de enero - helloFlatmate",
   SUMINISTROS_SEGUNDO_SEMESTRE:
     "Recordatorio de pago de suministros e internet - helloFlatmate",
