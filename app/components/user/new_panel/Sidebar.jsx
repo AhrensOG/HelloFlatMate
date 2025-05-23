@@ -49,11 +49,11 @@ const Sidebar = () => {
       href: "/pages/user/reservations",
       icon: <CalendarIcon className="size-6" />,
     },
-    {
-      name: "Check-In",
-      href: "#",
-      icon: <CalendarDaysIcon className="size-6" />,
-    },
+    // {
+    //   name: "Check-In",
+    //   href: "#",
+    //   icon: <CalendarDaysIcon className="size-6" />,
+    // },
     {
       name: t("links.history"),
       href: "/pages/user/history",
