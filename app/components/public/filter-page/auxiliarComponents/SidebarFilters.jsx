@@ -18,7 +18,7 @@ const SidebarFilters = ({
       {/* Filtro: Periodo */}
       <div>
         {loadingPeriods ? (
-          <p>Cargando periodos...</p>
+          <div className="w-full h-10 bg-gray-100 animate-pulse mb-4 rounded" />
         ) : (
           <select
             className="mb-4 w-full p-2 border rounded"
@@ -42,7 +42,7 @@ const SidebarFilters = ({
       {/* Filtro: Zona */}
       <div>
         {loadingZones ? (
-          <p>Cargando zonas...</p>
+          <div className="w-full h-10 bg-gray-100 animate-pulse mb-4 rounded" />
         ) : (
           <select
             className="mb-4 w-full p-2 border rounded"

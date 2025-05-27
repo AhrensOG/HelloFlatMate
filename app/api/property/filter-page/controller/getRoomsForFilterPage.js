@@ -72,7 +72,6 @@ export async function getRoomsForFilterPage(query) {
     };
 
     const propertyFilters = {
-      isActive: true,
       status: { [Op.ne]: "DELETED" },
       ...(zoneArray.length > 0 && {
         zone: {
@@ -142,6 +141,7 @@ export async function getRoomsForFilterPage(query) {
       attributes: [
         "id",
         "name",
+        "serial",
         "price",
         "images",
         "isActive",
@@ -156,6 +156,7 @@ export async function getRoomsForFilterPage(query) {
 
       return {
         id: plain.id,
+        serial: plain.serial,
         name: plain.name,
         price: plain.price,
         images: [plain.images?.[0]] ?? null,

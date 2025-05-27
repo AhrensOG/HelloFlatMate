@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import SidebarFilters from "./auxiliarComponents/SidebarFilters";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -28,6 +29,9 @@ const FilterPageComponent = () => {
     max: 1000,
   });
   const [showFiltersMobile, setShowFiltersMobile] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [initializedFromURL, setInitializedFromURL] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -40,6 +44,59 @@ const FilterPageComponent = () => {
 
     return () => clearTimeout(timeout); // limpia el timeout si el usuario sigue arrastrando
   }, [localPrice]);
+
+  useEffect(() => {
+    const query = Object.fromEntries(searchParams.entries());
+
+    setFilters({
+      minPrice: query.minPrice ? parseInt(query.minPrice) : null,
+      maxPrice: query.maxPrice ? parseInt(query.maxPrice) : null,
+      bathroom:
+        query.bathroom === "true"
+          ? true
+          : query.bathroom === "false"
+          ? false
+          : null,
+      couple:
+        query.couple === "true"
+          ? true
+          : query.couple === "false"
+          ? false
+          : null,
+      rentalPeriod: query.rentalPeriod || null,
+      typology: query.typology || null,
+      category: query.category ? query.category.split(",") : [],
+      zone: query.zone ? query.zone.split(",") : [],
+      order: query.order || null,
+    });
+
+    setLocalPrice({
+      min: query.minPrice ? parseInt(query.minPrice) : 100,
+      max: query.maxPrice ? parseInt(query.maxPrice) : 1000,
+    });
+
+    setInitializedFromURL(true);
+  }, []);
+
+  useEffect(() => {
+    if (!initializedFromURL) return;
+
+    const params = new URLSearchParams();
+
+    if (filters.minPrice) params.set("minPrice", filters.minPrice);
+    if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
+    if (filters.bathroom !== null) params.set("bathroom", filters.bathroom);
+    if (filters.couple !== null) params.set("couple", filters.couple);
+    if (filters.rentalPeriod) params.set("rentalPeriod", filters.rentalPeriod);
+    if (filters.category?.length)
+      params.set("category", filters.category.join(","));
+    if (filters.typology) params.set("typology", filters.typology);
+    if (filters.zone?.length) params.set("zone", filters.zone.join(","));
+    if (filters.order) params.set("order", filters.order);
+
+    const newUrl = `/es/pages/filterv2?${params.toString()}`;
+    router.replace(newUrl);
+  }, [filters, initializedFromURL]);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -230,8 +287,9 @@ const FilterPageComponent = () => {
                   <h2 className="text-lg font-semibold text-gray-800 truncate">
                     {room.name}
                   </h2>
-                  <p className="text-blue-600 font-bold text-sm">
-                    €{room.price} <span>/ mes</span>
+                  <p className="text-blue-600 font-bold text-sm flex gap-1">
+                    €{room.price} <span>/ mes</span> -{" "}
+                    <span className="text-sm text-gray-500">{room.serial}</span>
                   </p>
                   <p className="text-sm text-gray-500">
                     {room.property?.zone} – {room.property?.street}{" "}

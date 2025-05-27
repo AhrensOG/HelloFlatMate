@@ -3,14 +3,14 @@ import { LeaseOrderRoom, Room } from "@/db/init";
 import { NextResponse } from "next/server";
 
 function formatPeriod(startDate, endDate) {
-  const format = (d) =>
-    d.toLocaleDateString("es-ES", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+  const formatter = new Intl.DateTimeFormat("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: "Europe/Madrid",
+  });
 
-  return `Del ${format(startDate)} al ${format(endDate)}`;
+  return `Del ${formatter.format(startDate)} al ${formatter.format(endDate)}`;
 }
 
 export async function getRentalPeriodsForFilterPage() {
