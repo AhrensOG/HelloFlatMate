@@ -175,7 +175,12 @@ const FilterPageComponent = () => {
             setLocalPrice={setLocalPrice}
             zones={zones}
             loadingZones={loadingZones}
-            rentalPeriods={rentalPeriods}
+            // rentalPeriods={rentalPeriods}
+            rentalPeriods={[
+              "Del 01/09/2025 al 30/06/2026",
+              "Del 01/09/2025 al 31/07/2026",
+              "Del 01/09/2025 al 31/01/2026",
+            ]}
             loadingPeriods={loadingPeriods}
             categoryOptions={categoryOptions}
             allCategoryValues={allCategoryValues}

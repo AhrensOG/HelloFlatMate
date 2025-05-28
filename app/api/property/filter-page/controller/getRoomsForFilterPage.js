@@ -97,7 +97,6 @@ export async function getRoomsForFilterPage(query) {
     const rentalPeriodFilters = rentalPeriod
       ? (() => {
           const parsed = parseRentalPeriodString(rentalPeriod);
-          console.log("PARSEADO:", parsed);
           if (!parsed) return undefined;
 
           return {
