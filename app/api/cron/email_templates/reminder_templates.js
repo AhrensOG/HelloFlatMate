@@ -141,6 +141,38 @@ const latePaymentReminderTemplate = () => `
 </html>
 `;
 
+const checkInReminderTemplate = () => `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recordatorio de registro de Check-In - helloFlatmate</title>
+</head>
+<body style="font-family: Arial, sans-serif; font-size: 14px; color: #333; line-height: 1.5;">
+  
+  <p>🇪🇸 ¡Hola!</p>
+  <p>Queremos recordarte que es necesario registrar tu <strong>fecha de Check-In</strong>.</p>
+  <p>Por favor, accede a tu área de usuario en <a href="https://www.helloflatmate.com" style="color: #0078d7; text-decoration: none;">www.helloflatmate.com</a>, inicia sesión y dirígete al apartado <strong>"Check-In"</strong>. Allí podrás seguir el proceso indicado para completar el registro.</p>
+  <p>Este paso es importante para garantizar tu correcta llegada y recepción. Si tienes dudas, puedes escribirnos por email: rooms@helloflatmate.com</p>
+  <p>¡Gracias por tu colaboración!</p>
+
+  <br>
+
+  <p>🇬🇧 Hello!</p>
+  <p>We would like to remind you to register your <strong>Check-In date</strong>.</p>
+  <p>Please go to your user area at <a href="https://www.helloflatmate.com" style="color: #0078d7; text-decoration: none;">www.helloflatmate.com</a>, log in and access the <strong>"Check-In"</strong> section. There you will be able to follow the steps to complete your registration.</p>
+  <p>This step is essential to ensure your proper arrival and welcome. If you have any questions, feel free to contact us by email: rooms@helloflatmate.com</p>
+  <p>Thank you for your cooperation!</p>
+
+  <br>
+
+  ${generateFooter()}
+  
+</body>
+</html>
+`;
+
 const generateFooter = () => `
 <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333;">
   <tr>
@@ -177,4 +209,5 @@ export {
   suppliesFeeFebruaryTemplate,
   cleaningFeeJuneTemplate,
   latePaymentReminderTemplate,
+  checkInReminderTemplate,
 };

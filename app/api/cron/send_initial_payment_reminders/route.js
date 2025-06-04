@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { Op } from "sequelize";
-import { Client, LeaseOrderRoom, RentPayment, Supply } from "@/db/init";
+import {
+  Client,
+  LeaseOrderRoom,
+  Property,
+  RentPayment,
+  Room,
+  Supply,
+} from "@/db/init";
 import validateHMACToken from "@/app/libs/lib";
 import {
   cleaningFeeJanuaryTemplate,
@@ -83,6 +90,20 @@ export async function GET() {
           model: LeaseOrderRoom,
           as: "leaseOrdersRoom",
           where: { id: { [Op.in]: leaseOrderIds } },
+          include: [
+            {
+              model: Room,
+              as: "room",
+              attributes: ["id"],
+              include: [
+                {
+                  model: Property,
+                  as: "property",
+                  attributes: ["category"],
+                },
+              ],
+            },
+          ],
         },
         {
           model: RentPayment,
@@ -101,82 +122,85 @@ export async function GET() {
 
     const resultados = [];
 
-    // for (const client of clients) {
-    //   const lease = client.leaseOrdersRoom?.[0];
-    //   if (!lease || !lease.startDate || !lease.endDate) continue;
+    for (const client of clients) {
+      const lease = client.leaseOrdersRoom?.[0];
+      if (!lease || !lease.startDate || !lease.endDate) continue;
 
-    //   const leaseStart = new Date(lease.startDate);
-    //   const leaseEnd = new Date(lease.endDate);
+      const propertyCategory = lease.room?.property?.category;
+      if (propertyCategory === "HELLO_LANDLORD") continue;
 
-    //   if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
+      const leaseStart = new Date(lease.startDate);
+      const leaseEnd = new Date(lease.endDate);
 
-    //   const nextMonth = addMonthsToDate(now, 1);
-    //   const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
-    //   const totalDuration = differenceInMonths(leaseEnd, leaseStart) + 1;
+      if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
 
-    //   const pendingRent = client.rentPayments.find(
-    //     (p) =>
-    //       p.leaseOrderId === lease.id &&
-    //       p.quotaNumber === expectedQuota &&
-    //       p.status === "PENDING"
-    //   );
+      const nextMonth = addMonthsToDate(now, 1);
+      const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
+      const totalDuration = differenceInMonths(leaseEnd, leaseStart) + 1;
 
-    //   const suppliesPendientes = client.supplies.filter(
-    //     (s) => s.leaseOrderId === lease.id && s.status === "PENDING"
-    //   );
+      const pendingRent = client.rentPayments.find(
+        (p) =>
+          p.leaseOrderId === lease.id &&
+          p.quotaNumber === expectedQuota &&
+          p.status === "PENDING"
+      );
 
-    //   let typeKey = "";
+      const suppliesPendientes = client.supplies.filter(
+        (s) => s.leaseOrderId === lease.id && s.status === "PENDING"
+      );
 
-    //   // Casos especiales
-    //   if (
-    //     todayMonth === 12 &&
-    //     totalDuration <= 7 &&
-    //     leaseEnd.getMonth() + 1 === 1
-    //   ) {
-    //     const limpieza = suppliesPendientes.find((s) => s.type === "CLEANUP");
-    //     if (limpieza) typeKey = "LIMPIEZA_ENERO";
-    //   }
+      let typeKey = "";
 
-    //   if (todayMonth === 1 && totalDuration >= 8) {
-    //     const suministro = suppliesPendientes.find(
-    //       (s) => s.type === "GENERAL_SUPPLIES" || s.type === "INTERNET"
-    //     );
-    //     if (suministro) typeKey = "SUMINISTROS_SEGUNDO_SEMESTRE";
-    //   }
+      // Casos especiales
+      if (
+        todayMonth === 12 &&
+        totalDuration <= 7 &&
+        leaseEnd.getMonth() + 1 === 1
+      ) {
+        const limpieza = suppliesPendientes.find((s) => s.type === "CLEANUP");
+        if (limpieza) typeKey = "LIMPIEZA_ENERO";
+      }
 
-    //   if (todayMonth === 5) {
-    //     const limpiezaJunio = suppliesPendientes.find(
-    //       (s) => s.type === "CLEANUP"
-    //     );
-    //     if (limpiezaJunio) typeKey = "LIMPIEZA_JUNIO";
-    //   }
+      if (todayMonth === 1 && totalDuration >= 8) {
+        const suministro = suppliesPendientes.find(
+          (s) => s.type === "GENERAL_SUPPLIES" || s.type === "INTERNET"
+        );
+        if (suministro) typeKey = "SUMINISTROS_SEGUNDO_SEMESTRE";
+      }
 
-    //   if (!typeKey && pendingRent) {
-    //     typeKey = "GENERICO";
-    //   }
+      if (todayMonth === 5) {
+        const limpiezaJunio = suppliesPendientes.find(
+          (s) => s.type === "CLEANUP"
+        );
+        if (limpiezaJunio) typeKey = "LIMPIEZA_JUNIO";
+      }
 
-    //   if (typeKey) {
-    //     const subject = subjectByType[typeKey];
-    //     const html = htmlBodyByType[typeKey];
+      if (!typeKey && pendingRent) {
+        typeKey = "GENERICO";
+      }
 
-    //     // Descomentar para enviar correos reales
+      if (typeKey) {
+        const subject = subjectByType[typeKey];
+        const html = htmlBodyByType[typeKey];
 
-    //     await sendMailFunction({
-    //       to: client.email,
-    //       subject,
-    //       html,
-    //     });
+        // Descomentar para enviar correos reales
 
-    //     // Agregar para testing (ver en respuesta JSON)
-    //     resultados.push({
-    //       emailDestino: client.email,
-    //       leaseId: lease.id,
-    //       tipoEnvio: typeKey,
-    //       testSubject: subject,
-    //       testHtmlPreview: html.slice(0, 100) + "...", // Solo vista previa
-    //     });
-    //   }
-    // }
+        await sendMailFunction({
+          to: client.email,
+          subject,
+          html,
+        });
+
+        // Agregar para testing (ver en respuesta JSON)
+        resultados.push({
+          emailDestino: client.email,
+          leaseId: lease.id,
+          tipoEnvio: typeKey,
+          testSubject: subject,
+          testHtmlPreview: html.slice(0, 100) + "...", // Solo vista previa
+        });
+      }
+    }
 
     return NextResponse.json(
       {

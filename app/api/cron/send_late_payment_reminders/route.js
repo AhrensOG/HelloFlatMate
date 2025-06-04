@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Op } from "sequelize";
-import { Client, LeaseOrderRoom, RentPayment } from "@/db/init";
+import { Client, LeaseOrderRoom, Property, RentPayment, Room } from "@/db/init";
 import validateHMACToken from "@/app/libs/lib";
 import { latePaymentReminderTemplate } from "../email_templates/reminder_templates";
 import { sendMailFunction } from "../../sendGrid/controller/sendMailFunction";
@@ -32,11 +32,11 @@ export async function GET() {
     const todayDay = now.getDate();
     const todayMonth = now.getMonth() + 1;
 
-    if (todayDay !== 26) {
+    if (todayDay < 26 || (todayDay - 26) % 2 !== 0) {
       return NextResponse.json(
         {
           message:
-            "Hoy no es día 26, no se envían recordatorios de vencimiento",
+            "No es un día válido para enviar recordatorios de vencimiento",
         },
         { status: 200 }
       );
@@ -66,6 +66,20 @@ export async function GET() {
           model: LeaseOrderRoom,
           as: "leaseOrdersRoom",
           where: { id: { [Op.in]: leaseOrderIds } },
+          include: [
+            {
+              model: Room,
+              as: "room",
+              attributes: ["id"],
+              include: [
+                {
+                  model: Property,
+                  as: "property",
+                  attributes: ["category"],
+                },
+              ],
+            },
+          ],
         },
         {
           model: RentPayment,
@@ -78,45 +92,48 @@ export async function GET() {
 
     const resultados = [];
 
-    // for (const client of clients) {
-    //   const lease = client.leaseOrdersRoom?.[0];
-    //   if (!lease || !lease.startDate || !lease.endDate) continue;
+    for (const client of clients) {
+      const lease = client.leaseOrdersRoom?.[0];
+      if (!lease || !lease.startDate || !lease.endDate) continue;
 
-    //   const leaseStart = new Date(lease.startDate);
-    //   const leaseEnd = new Date(lease.endDate);
+      const propertyCategory = lease.room?.property?.category;
+      if (propertyCategory === "HELLO_LANDLORD") continue;
 
-    //   if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
+      const leaseStart = new Date(lease.startDate);
+      const leaseEnd = new Date(lease.endDate);
 
-    //   const nextMonth = addMonthsToDate(now, 1);
-    //   const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
+      if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
 
-    //   const pendingRent = client.rentPayments.find(
-    //     (p) =>
-    //       p.leaseOrderId === lease.id &&
-    //       p.quotaNumber === expectedQuota &&
-    //       p.status === "PENDING"
-    //   );
+      const nextMonth = addMonthsToDate(now, 1);
+      const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
 
-    //   if (pendingRent && client.email) {
-    //     const subject = "Pendiente de pago - helloFlatmate";
-    //     const html = latePaymentReminderTemplate();
+      const pendingRent = client.rentPayments.find(
+        (p) =>
+          p.leaseOrderId === lease.id &&
+          p.quotaNumber === expectedQuota &&
+          p.status === "PENDING"
+      );
 
-    //     // Descomentar para enviar correos reales
+      if (pendingRent && client.email) {
+        const subject = "Pendiente de pago - helloFlatmate";
+        const html = latePaymentReminderTemplate();
 
-    //     await sendMailFunction({
-    //       to: client.email,
-    //       subject,
-    //       html,
-    //     });
+        // Descomentar para enviar correos reales
 
-    //     resultados.push({
-    //       emailDestino: client.email,
-    //       leaseId: lease.id,
-    //       testSubject: subject,
-    //       testHtmlPreview: html.slice(0, 100) + "...", // solo muestra el inicio del mensaje
-    //     });
-    //   }
-    // }
+        await sendMailFunction({
+          to: client.email,
+          subject,
+          html,
+        });
+
+        resultados.push({
+          emailDestino: client.email,
+          leaseId: lease.id,
+          testSubject: subject,
+          testHtmlPreview: html.slice(0, 100) + "...", // solo muestra el inicio del mensaje
+        });
+      }
+    }
 
     return NextResponse.json(
       {
