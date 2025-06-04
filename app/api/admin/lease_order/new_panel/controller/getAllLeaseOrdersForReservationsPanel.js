@@ -89,12 +89,12 @@ export async function getAllLeaseOrdersForReservationsPanel(
         limit,
         offset,
         order: [["date", "DESC"]],
-        raw: true,
-        nest: true,
+        // raw: true,
+        // nest: true,
       });
 
     const formattedOrders = leaseOrders.map((order) => ({
-      ...order,
+      ...order.toJSON(),
       type: "room",
     }));
 
