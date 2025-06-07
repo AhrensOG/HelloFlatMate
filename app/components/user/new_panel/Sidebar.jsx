@@ -49,11 +49,11 @@ const Sidebar = () => {
       href: "/pages/user/reservations",
       icon: <CalendarIcon className="size-6" />,
     },
-    // {
-    //   name: "Check-In",
-    //   href: "#",
-    //   icon: <CalendarDaysIcon className="size-6" />,
-    // },
+    {
+      name: "Check-In",
+      href: "https://calendly.com/rooms-hfm/30min",
+      icon: <CalendarDaysIcon className="size-6" />,
+    },
     {
       name: t("links.history"),
       href: "/pages/user/history",
@@ -104,11 +104,12 @@ const Sidebar = () => {
           <Link
             key={link.href}
             href={link.href}
+            target={link.href.startsWith("http") ? "_blank" : "_self"}
             className={`flex items-center text-lg font-bold gap-3 p-5 transition-all border-l-8 hover:border-[#440cac] hover:bg-slate-100 hover:text-[#440cac] ${
               pathname.includes(link.href)
                 ? "border-[#440cac] text-[#440cac]"
                 : "border-transparent"
-            }`}>
+            } ${link.name === "Check-In" && "text-red-500"}`}>
             <span>{link.icon}</span>
             {link.name}
           </Link>
