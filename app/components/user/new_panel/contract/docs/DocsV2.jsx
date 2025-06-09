@@ -12,14 +12,25 @@ export default function DocsV2() {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
 
-  if (!state?.user) return null;
-
   const searchParams = useSearchParams();
   const leaseOrderId = searchParams.get("lo");
+  const existingDoc = state.user?.documents?.find(
+    (doc) => doc.leaseOrderId == leaseOrderId
+  );
+  const urls = existingDoc?.urls || [];
+
   const queryString = searchParams.toString();
 
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
+
+  if (!state?.user) {
+    return (
+      <div className="w-full h-full p-6 text-center">
+        <p className="text-gray-700">Cargando usuario...</p>
+      </div>
+    );
+  }
 
   const handleFileChange = (e) => {
     const pickedFile = e.target.files?.[0];
@@ -38,11 +49,19 @@ export default function DocsV2() {
   };
 
   const handleUploadFile = async () => {
+    // ✅ Caso 1: Ya existe documento, simplemente continuar
+    if (urls.length > 0 && !file) {
+      router.push(`/es/pages/user/contractv2/payments?${queryString}`);
+      return;
+    }
+
+    // 🔴 Caso 2: No existe documento y no seleccionó uno nuevo
     if (!file) {
       toast.info("Primero selecciona un archivo, por favor.");
       return;
     }
 
+    // ✅ Caso 3: Subir archivo nuevo
     const toastId = toast.loading("Subiendo documento...");
     try {
       const uploadedArray = await uploadFiles([file]);
@@ -140,6 +159,29 @@ export default function DocsV2() {
         </div>
       )}
 
+      {urls.length > 0 && (
+        <div className="mt-6 space-y-2 text-sm text-gray-800">
+          <p className="font-semibold text-[#440cac]">Documento ya cargado:</p>
+          <ul className="list-disc ml-5">
+            {urls.map((url, index) => (
+              <li key={index}>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline hover:text-blue-800">
+                  Ver documento
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-red-600">
+            Ya existe un documento cargado. Si subes uno nuevo, se reemplazará
+            el actual.
+          </p>
+        </div>
+      )}
+
       <div className="mt-6 p-3 rounded-md bg-[#5ce0e5]/10 text-xs text-gray-700 leading-relaxed">
         <p className="font-semibold text-[#440cac] mb-1">Importante:</p>
         <ul className="list-disc ml-4">
@@ -155,7 +197,12 @@ export default function DocsV2() {
         <button
           type="button"
           onClick={handleUploadFile}
-          className="mt-4 w-full bg-[#440cac] text-white py-3 rounded-sm font-semibold hover:bg-[#440cac]/80 transition-colors">
+          disabled={!file && urls.length === 0}
+          className={`mt-4 w-full py-3 rounded-sm font-semibold transition-colors ${
+            !file && urls.length === 0
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-[#440cac] text-white hover:bg-[#440cac]/80"
+          }`}>
           Guardar y continuar
         </button>
       </div>
