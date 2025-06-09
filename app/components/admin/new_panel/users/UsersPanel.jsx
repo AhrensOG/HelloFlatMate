@@ -134,11 +134,15 @@ export default function UsersPanel() {
             <ul className="absolute top-12 bg-white border rounded w-96 shadow-md max-h-[400px] overflow-y-auto z-10">
               {usersForSearchBar
                 ?.filter((user) => {
-                  const q = searchQuery.toLowerCase();
-                  return (
-                    user.name.toLowerCase().includes(q) ||
-                    user.lastName.toLowerCase().includes(q) ||
-                    user.email.toLowerCase().includes(q)
+                  const terms = searchQuery
+                    .toLowerCase()
+                    .split(" ")
+                    .filter(Boolean);
+                  return terms.every(
+                    (term) =>
+                      user.name.toLowerCase().includes(term) ||
+                      user.lastName.toLowerCase().includes(term) ||
+                      user.email.toLowerCase().includes(term)
                   );
                 })
                 .map((user) => (
