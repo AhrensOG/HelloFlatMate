@@ -98,12 +98,23 @@ export async function middleware(request) {
 
   // ✅ Internacionalización: Verificar si el locale es válido
   if (!supportedLocales.includes(locale)) {
+    const cleanedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
+    const redirectUrl = new URL(request.url);
+    redirectUrl.pathname = `/${preferredLocale}${cleanedPath}`;
     console.log(
-      `🛑 Locale inválido. Redirigiendo a: /${preferredLocale}${pathname}${search}`
+      `🛑 Locale inválido. Redirigiendo a: ${redirectUrl.pathname}${redirectUrl.search}`
     );
-    return NextResponse.redirect(
-      new URL(`/${preferredLocale}${pathname}${search}`, request.url)
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  // ✅ Si el locale es válido pero diferente del preferido, redirigir también
+  if (locale !== preferredLocale) {
+    const redirectUrl = new URL(request.url);
+    redirectUrl.pathname = `/${preferredLocale}${pathname.slice(3)}`;
+    console.log(
+      `🌍 Locale actual ≠ preferido. Redirigiendo a: ${redirectUrl.pathname}${redirectUrl.search}`
     );
+    return NextResponse.redirect(redirectUrl);
   }
 
   const pathWithoutLocale = `/${segments.slice(2).join("/")}`;

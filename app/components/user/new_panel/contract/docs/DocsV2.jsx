@@ -51,7 +51,7 @@ export default function DocsV2() {
   const handleUploadFile = async () => {
     // ✅ Caso 1: Ya existe documento, simplemente continuar
     if (urls.length > 0 && !file) {
-      router.push(`/es/pages/user/contractv2/payments?${queryString}`);
+      router.push(`/pages/user/contractv2/payments?${queryString}`);
       return;
     }
 
@@ -88,7 +88,7 @@ export default function DocsV2() {
 
       await isUserLogged(dispatch);
 
-      router.push(`/es/pages/user/contractv2/payments?${queryString}`);
+      router.push(`/pages/user/contractv2/payments?${queryString}`);
     } catch (error) {
       console.error("Error al subir documentos:", error);
       toast.info("¡Ups! Ocurrió un error al subir el documento.", {
