@@ -19,6 +19,8 @@ export default function ReservationPanel() {
   const [isOpenCreateOrderModal, setIsOpenCreateOrderModal] = useState(false);
   const [selectedDateFilter, setSelectedDateFilter] = useState("");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
+  const [selectedActiveFilter, setSelectedActiveFilter] = useState("");
+  const [selectedSignedFilter, setSelectedSignedFilter] = useState("");
   const [page, setPage] = useState(1);
   const limit = 100;
 
@@ -28,6 +30,8 @@ export default function ReservationPanel() {
     ...(selectedDateFilter && { startDate: selectedDateFilter }),
     ...(selectedStatusFilter && { status: selectedStatusFilter }),
     ...(selectedClientId && { clientId: selectedClientId }),
+    ...(selectedActiveFilter && { isActive: selectedActiveFilter }),
+    ...(selectedSignedFilter && { isSigned: selectedSignedFilter }),
   }).toString();
 
   const {
@@ -176,6 +180,10 @@ export default function ReservationPanel() {
         setSelectedDateFilter={setSelectedDateFilter}
         selectedStatusFilter={selectedStatusFilter}
         setSelectedStatusFilter={setSelectedStatusFilter}
+        selectedActiveFilter={selectedActiveFilter}
+        setSelectedActiveFilter={setSelectedActiveFilter}
+        selectedSignedFilter={selectedSignedFilter}
+        setSelectedSignedFilter={setSelectedSignedFilter}
       />
 
       {/* PAGINACIÓN */}

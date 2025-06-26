@@ -19,9 +19,15 @@ const ReservationsTable = ({
   setSelectedDateFilter,
   selectedStatusFilter,
   setSelectedStatusFilter,
+  selectedActiveFilter,
+  setSelectedActiveFilter,
+  selectedSignedFilter,
+  setSelectedSignedFilter,
 }) => {
   const [isDateDropdownOpen, setDateDropdownOpen] = useState(false);
   const [isStatusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [isActiveDropdownOpen, setActiveDropdownOpen] = useState(false);
+  const [isSignedDropdownOpen, setSignedDropdownOpen] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDateFilter(date);
@@ -31,6 +37,16 @@ const ReservationsTable = ({
   const handleStatusChange = (status) => {
     setSelectedStatusFilter(status);
     setStatusDropdownOpen(false);
+  };
+
+  const handleActiveChange = (value) => {
+    setSelectedActiveFilter(value);
+    setActiveDropdownOpen(false);
+  };
+
+  const handleSignedChange = (value) => {
+    setSelectedSignedFilter(value);
+    setSignedDropdownOpen(false);
   };
 
   return (
@@ -55,17 +71,17 @@ const ReservationsTable = ({
                 <ChevronDownIcon className="size-4" />
               </button>
               {isDateDropdownOpen && (
-                <div className="absolute left-0 mt-1 w-auto bg-white border rounded shadow-lg z-10 max-h-96 overflow-y-scroll">
+                <div className="absolute left-0 mt-1 w-full bg-white border rounded shadow-lg z-10 max-h-96 overflow-y-scroll">
                   <button
                     onClick={() => handleDateChange("")}
-                    className="block w-full text-left p-2 hover:bg-gray-100">
+                    className="block w-full text-center p-2 hover:bg-gray-100">
                     Todos
                   </button>
                   {availableDates.map((date, index) => (
                     <button
                       key={index}
                       onClick={() => handleDateChange(date)}
-                      className="block w-full text-left p-2 hover:bg-gray-100">
+                      className="block w-full text-center p-2 hover:bg-gray-100">
                       {formatDateToDDMMYYYY(date)}
                     </button>
                   ))}
@@ -75,11 +91,70 @@ const ReservationsTable = ({
             <th className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700">
               Check-Out
             </th>
-            <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
-              ¿Activa?
+            <th
+              onMouseEnter={() => setActiveDropdownOpen(true)}
+              onMouseLeave={() => setActiveDropdownOpen(false)}
+              className="border border-t-0 p-2 w-28 text-center font-semibold text-gray-700 relative">
+              <button className="flex items-center justify-center w-full min-w-28 gap-2 px-3 py-1 rounded-md">
+                {selectedActiveFilter === "true"
+                  ? "Activa: Sí"
+                  : selectedActiveFilter === "false"
+                  ? "Activa: No"
+                  : "Activa"}
+                <ChevronDownIcon className="size-4" />
+              </button>
+              {isActiveDropdownOpen && (
+                <div className="absolute left-0 mt-1 w-full bg-white border rounded shadow-lg z-10">
+                  <button
+                    onClick={() => handleActiveChange("")}
+                    className="block w-full text-center p-2 hover:bg-gray-100">
+                    Todas
+                  </button>
+                  <button
+                    onClick={() => handleActiveChange("true")}
+                    className="block w-full text-center p-2 hover:bg-gray-100">
+                    Sí
+                  </button>
+                  <button
+                    onClick={() => handleActiveChange("false")}
+                    className="block w-full text-center p-2 hover:bg-gray-100">
+                    No
+                  </button>
+                </div>
+              )}
             </th>
-            <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700">
-              ¿Firmada?
+
+            <th
+              onMouseEnter={() => setSignedDropdownOpen(true)}
+              onMouseLeave={() => setSignedDropdownOpen(false)}
+              className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700 relative">
+              <button className="flex items-center justify-center w-full min-w-32 gap-2 px-3 py-1 rounded-md">
+                {selectedSignedFilter === "true"
+                  ? "Firmada: Sí"
+                  : selectedSignedFilter === "false"
+                  ? "Firmada: No"
+                  : "Firmada"}
+                <ChevronDownIcon className="size-4" />
+              </button>
+              {isSignedDropdownOpen && (
+                <div className="absolute left-0 mt-1 w-full bg-white border rounded shadow-lg z-10">
+                  <button
+                    onClick={() => handleSignedChange("")}
+                    className="block w-full text-center p-2 hover:bg-gray-100">
+                    Todas
+                  </button>
+                  <button
+                    onClick={() => handleSignedChange("true")}
+                    className="block w-full text-center p-2 hover:bg-gray-100">
+                    Sí
+                  </button>
+                  <button
+                    onClick={() => handleSignedChange("false")}
+                    className="block w-full text-center p-2 hover:bg-gray-100">
+                    No
+                  </button>
+                </div>
+              )}
             </th>
             <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">
               Fecha / Hora de arribo
@@ -96,17 +171,17 @@ const ReservationsTable = ({
                 <ChevronDownIcon className="size-4" />
               </button>
               {isStatusDropdownOpen && (
-                <div className="absolute left-0 mt-1 w-auto bg-white border rounded shadow-lg z-10 max-h-96 overflow-y-scroll">
+                <div className="absolute left-0 mt-1 w-full bg-white border rounded shadow-lg z-10 max-h-96 overflow-y-scroll">
                   <button
                     onClick={() => handleStatusChange("")}
-                    className="block w-full text-left p-2 hover:bg-gray-100">
+                    className="block w-full text-center p-2 hover:bg-gray-100">
                     Todos
                   </button>
                   {Object.keys(STATUS_LABELS).map((status) => (
                     <button
                       key={status}
                       onClick={() => handleStatusChange(status)}
-                      className="block w-full text-left p-2 hover:bg-gray-100">
+                      className="block w-full text-center p-2 hover:bg-gray-100">
                       {STATUS_LABELS[status]?.label}
                     </button>
                   ))}

@@ -14,7 +14,9 @@ export async function getAllLeaseOrdersForReservationsPanel(
   limit = 100,
   startDate = null,
   status = null,
-  clientId
+  clientId,
+  isActive,
+  isSigned
 ) {
   try {
     const offset = (page - 1) * limit;
@@ -34,6 +36,14 @@ export async function getAllLeaseOrdersForReservationsPanel(
 
     if (clientId) {
       whereConditions.clientId = clientId;
+    }
+
+    if (isActive !== undefined && isActive !== null) {
+      whereConditions.isActive = isActive === "true";
+    }
+
+    if (isSigned !== undefined && isSigned !== null) {
+      whereConditions.isSigned = isSigned === "true";
     }
 
     const { rows: leaseOrders, count: total } =
