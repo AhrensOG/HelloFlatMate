@@ -47,10 +47,8 @@ const UsersTable = ({ filteredUsers, handleOpenModal, handleOpenModalEdit, handl
                             Ver mas
                         </td>
                         <td
-                            className="border p-2 text-gray-700 text-center hover:underline"
+                            className="border p-2 w-28 text-gray-700 text-center hover:underline"
                             onClick={(e) => {
-                                console.log("user", user);
-
                                 e.stopPropagation();
                                 handleOpenPaysModal(user);
                             }}

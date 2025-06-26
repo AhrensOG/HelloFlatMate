@@ -94,7 +94,31 @@ export default function UsersPanel() {
   };
 
   const handleOpenModalOrders = (user) => {
-    setOrdersUser(user.leaseOrdersRoom || []);
+    if (!user) return;
+
+    const leaseOrders = user.leaseOrdersRoom || [];
+
+    const transformedOrders = leaseOrders.map((order) => {
+      const orderId = order.id;
+
+      const roomSerial = order.room?.serial || "N/A";
+      const startDate = order.startDate;
+      const endDate = order.endDate;
+
+      return {
+        id: orderId,
+        username: `${user.name} ${user.lastName}`.trim(),
+        room: roomSerial,
+        startDate,
+        endDate,
+        status: order.status,
+        isActive: order.isActive,
+        isSigned: order.isSigned,
+        inReview: order.inReview,
+      };
+    });
+
+    setOrdersUser(transformedOrders);
     setIsOpenOrdesModal(true);
   };
 

@@ -206,22 +206,22 @@ export default function PaysModal({ data, orders, onClose }) {
                                         {selectedStatus} <ChevronDownIcon className="size-3" />
                                     </button>
                                     {isDropdownOpen && (
-                                        <div className="absolute left-0 mt-1 w-32 bg-white border rounded shadow-lg z-10">
+                                        <div className="absolute left-0 mt-1 w-full bg-white border rounded shadow-lg z-10">
                                             <button
                                                 onClick={() => handleStatusChange("ALL")}
-                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                                className="block w-full text-center p-2 hover:bg-gray-100"
                                             >
                                                 Todos
                                             </button>
                                             <button
                                                 onClick={() => handleStatusChange("PENDING")}
-                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                                className="block w-full text-center p-2 hover:bg-gray-100"
                                             >
                                                 Pendiente
                                             </button>
                                             <button
                                                 onClick={() => handleStatusChange("PAID")}
-                                                className="block w-full text-left p-2 hover:bg-gray-100"
+                                                className="block w-full text-center p-2 hover:bg-gray-100"
                                             >
                                                 Pagado
                                             </button>

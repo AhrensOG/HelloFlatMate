@@ -69,7 +69,7 @@ const clientIncludes = [
   {
     model: LeaseOrderRoom,
     as: "leaseOrdersRoom",
-    attributes: ["id", "startDate", "endDate"],
+    attributes: ["id", "startDate", "endDate", "isActive", "isSigned", "inReview", "status"],
     include: {
       model: Room,
       as: "room",
