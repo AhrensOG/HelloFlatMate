@@ -185,11 +185,11 @@ export async function GET() {
 
         // Descomentar para enviar correos reales
 
-        await sendMailFunction({
-          to: client.email,
-          subject,
-          html,
-        });
+        // await sendMailFunction({
+        //   to: client.email,
+        //   subject,
+        //   html,
+        // });
 
         // Agregar para testing (ver en respuesta JSON)
         resultados.push({

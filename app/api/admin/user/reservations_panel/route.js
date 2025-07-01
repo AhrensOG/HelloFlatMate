@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getClientsForReservationsPanel } from "./controllers/getClientsForReservationsPanel";
 
 export async function GET(req) {
