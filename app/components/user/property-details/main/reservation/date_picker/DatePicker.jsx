@@ -139,8 +139,8 @@ export default function DatePicker({
 
   return (
     <AnimatePresence>
-      <div className="relative rounded-lg shadow-reservation-drop my-2 cursor-pointer">
-        <div className="p-3 rounded-lg text-base border bg-white border-white w-[19.4rem] flex justify-between items-center">
+      <div className="w-full relative rounded-lg shadow-reservation-drop my-2 cursor-pointer">
+        <div className="p-3 border border-gray-300 rounded-lg text-base  bg-white w-full flex justify-between items-center">
           <input
             onClick={handleShowDatePicker}
             value={getSelectedDateText()}
@@ -153,8 +153,7 @@ export default function DatePicker({
             onClick={handleShowDatePicker}
             className={`flex justify-center items-center transition-all duration-1000 ease-in-out h-[24px] w-[24px] rounded-full ${
               showDatePicker ? "bg-[#1C8CD65E] rotate-180" : ""
-            }`}
-          >
+            }`}>
             <ChevronUpIcon />
           </span>
         </div>
@@ -164,8 +163,7 @@ export default function DatePicker({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="my-1 bg-white p-3 rounded-md w-[19.4rem] min-h-[19.4rem]"
-          >
+            className="my-1 bg-white p-3 rounded-md w-full min-h-[19.4rem]">
             {/* Header */}
             <HeaderDatePicker
               year={{ year, setYear }}
@@ -184,13 +182,27 @@ export default function DatePicker({
 
             {/* Días de la semana */}
             <div className="grid grid-cols-7 gap-x-4 my-3">
-              <span className="text-[#B5BEC6] text-sm text-center">Dom</span>
-              <span className="text-[#B5BEC6] text-sm text-center">Lun</span>
-              <span className="text-[#B5BEC6] text-sm text-center">Mar</span>
-              <span className="text-[#B5BEC6] text-sm text-center">Mié</span>
-              <span className="text-[#B5BEC6] text-sm text-center">Jue</span>
-              <span className="text-[#B5BEC6] text-sm text-center">Vie</span>
-              <span className="text-[#B5BEC6] text-sm text-center">Sáb</span>
+              <span className="text-[#B5BEC6] text-sm md:text-base text-center">
+                Dom
+              </span>
+              <span className="text-[#B5BEC6] text-sm md:text-base text-center">
+                Lun
+              </span>
+              <span className="text-[#B5BEC6] text-sm md:text-base text-center">
+                Mar
+              </span>
+              <span className="text-[#B5BEC6] text-sm md:text-base text-center">
+                Mié
+              </span>
+              <span className="text-[#B5BEC6] text-sm md:text-base text-center">
+                Jue
+              </span>
+              <span className="text-[#B5BEC6] text-sm md:text-base text-center">
+                Vie
+              </span>
+              <span className="text-[#B5BEC6] text-sm md:text-base text-center">
+                Sáb
+              </span>
             </div>
 
             {/* Mes */}

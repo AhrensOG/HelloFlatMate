@@ -5,7 +5,7 @@ export function FooterDatePicker({ cancel, confirm }) {
         onClick={() => {
           cancel(true);
         }}
-        className="text-[#B5BEC6] hover:text-[#0C1660] "
+        className="text-gray-500 text-sm md:text-lg hover:text-[#0C1660] "
         type="button"
       >
         Cancelar
@@ -14,7 +14,7 @@ export function FooterDatePicker({ cancel, confirm }) {
         onClick={() => {
           confirm();
         }}
-        className="text-[#B5BEC6] hover:text-[#0C1660] "
+        className="text-[#440CAC] font-bold text-sm md:text-lg hover:text-[#440cac]/80 transition-all duration-300"
         type="button"
       >
         Seleccionar
