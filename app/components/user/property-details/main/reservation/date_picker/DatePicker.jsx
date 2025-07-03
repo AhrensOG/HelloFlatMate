@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Month from "./Month";
 import HeaderDatePicker from "./HeaderDatePicker";
 import { FooterDatePicker } from "./FooterDatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import { toast } from "sonner";
+
+const createLocalDate = (isoString) => {
+  const [year, month, day] = isoString.slice(0, 10).split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const toMidnightUTC = (date) => {
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  const d = date.getDate();
+  // Crea fecha a las 00:00 del día elegido en UTC
+  return new Date(Date.UTC(y, m, d)).toISOString();
+};
 
 export default function DatePicker({
   data,
@@ -25,17 +39,40 @@ export default function DatePicker({
 
   // Filtrar las fechas ocupadas que no tengan el estado "REJECTED"
   const occupiedDateRanges = occupedDates
-    .filter((order) => order.status !== "REJECTED")
+    .filter((order) => order.status !== "REJECTED" && order.status !== "IN_PROGRESS")
     .map((order) => ({
-      start: new Date(order.startDate),
-      end: new Date(order.endDate),
+      start: createLocalDate(order.startDate),
+      end: createLocalDate(order.endDate),
     }));
 
-  // Obtener el rango de fechas válidas de rentalPeriods
   const rentalDateRanges = rentalPeriods.map((period) => ({
-    start: new Date(period.rentalPeriod?.startDate),
-    end: new Date(period.rentalPeriod?.endDate),
+    start: createLocalDate(period.rentalPeriod?.startDate),
+    end: createLocalDate(period.rentalPeriod?.endDate),
   }));
+
+  // 🔑 Crear un mapa rápido de precios por día
+  const pricesByDay = useMemo(() => {
+    const map = {};
+    rentalPeriods.forEach((item) => {
+      item.rentalDayPrices.forEach((priceObj) => {
+        const localDate = createLocalDate(priceObj.date);
+        const dateStr = localDate.toISOString().slice(0, 10);
+        map[dateStr] = priceObj.price;
+      });
+    });
+    return map;
+  }, [rentalPeriods]);
+
+  const isRangeOccupied = (start, end) => {
+    const current = new Date(start);
+    while (current <= end) {
+      if (isDateOccupied(current)) {
+        return true; // Hay al menos un día ocupado
+      }
+      current.setDate(current.getDate() + 1);
+    }
+    return false; // Ningún día ocupado en el rango
+  };
 
   // Función para verificar si una fecha está ocupada o fuera del rango
   const isDateOccupied = (date) => {
@@ -83,7 +120,7 @@ export default function DatePicker({
   // Calcular la duración en días
   const calculateDuration = (start, end) => {
     const timeDiff = end.getTime() - start.getTime();
-    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convertir milisegundos a días
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1; // ✅ +1 para incluir ambos días
   };
 
   // Seleccionar fecha
@@ -111,17 +148,43 @@ export default function DatePicker({
     }
   };
 
+  const getPricesInRange = (start, end, pricesByDay) => {
+    const prices = [];
+    const current = new Date(start);
+    while (current <= end) {
+      const dateStr = current.toISOString().slice(0, 10);
+      if (pricesByDay[dateStr] != null) {
+        prices.push(pricesByDay[dateStr]);
+      }
+      current.setDate(current.getDate() + 1);
+    }
+    return prices;
+  };
+
   // Confirmar la selección de fechas
   const handleConfirmSelection = () => {
     if (startDate && endDate) {
+      if (isRangeOccupied(startDate, endDate)) {
+        toast.info(
+          "El rango seleccionado incluye días ocupados. Por favor elige otro."
+        );
+        return;
+      }
+
       const duration = calculateDuration(startDate, endDate);
+      const pricesInRange = getPricesInRange(startDate, endDate, pricesByDay);
+      const totalPrice = pricesInRange.reduce((acc, val) => acc + val, 0);
+
       setData({
         ...data,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        startDate: toMidnightUTC(startDate),
+        endDate: toMidnightUTC(endDate),
         duration: duration,
+        prices: pricesInRange, // ✅ lista de precios día a día
+        totalPrice: totalPrice, // ✅ suma de precios
       });
-      setShowDatePicker(false); // Cerrar el datepicker después de confirmar la selección
+
+      setShowDatePicker(false);
     }
   };
 
@@ -217,6 +280,7 @@ export default function DatePicker({
               endDate={endDate}
               isDateOccupied={isDateOccupied}
               rentalPeriods={rentalPeriods}
+              pricesByDay={pricesByDay} // 🚀 Pasamos el mapa de precios
             />
 
             <FooterDatePicker

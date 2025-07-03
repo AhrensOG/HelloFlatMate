@@ -1,5 +1,10 @@
 import Day from "./Day";
 
+const createLocalDate = (isoString) => {
+  const [year, month, day] = isoString.slice(0, 10).split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
 export default function Month({
   year,
   month,
@@ -10,11 +15,12 @@ export default function Month({
   rentalPeriods, // Pasamos rentalPeriods al componente
   startDate,
   endDate,
+  pricesByDay, // ✅ El mapa de precios recibido desde DatePicker
 }) {
   // Obtener el rango de fechas válidas de rentalPeriods
   const rentalDateRanges = rentalPeriods.map((period) => ({
-    start: new Date(period.rentalPeriod?.startDate),
-    end: new Date(period.rentalPeriod?.endDate),
+    start: createLocalDate(period.rentalPeriod?.startDate),
+    end: createLocalDate(period.rentalPeriod?.endDate),
   }));
 
   // Función para verificar si una fecha está dentro del rango de rentalPeriods
@@ -48,12 +54,14 @@ export default function Month({
         day: i,
         isDisabled: true,
         date: new Date(year, month - 1, i),
+        price: null,
       });
     }
 
     // Días del mes actual
     for (let i = 1; i <= lastOfCurrentMonth.getDate(); i++) {
       const currentDate = new Date(year, month, i);
+      currentDate.setHours(0, 0, 0, 0);
       const isDisabled =
         year === date.getFullYear() &&
         month === date.getMonth() &&
@@ -63,10 +71,14 @@ export default function Month({
       const isOccupied = isDateOccupied(currentDate);
       const isOutsideRentalRange = !isDateInRentalRange(currentDate);
 
+      const dateStr = currentDate.toISOString().slice(0, 10);
+      const price = pricesByDay?.[dateStr] || null;
+
       days.push({
         day: i,
-        isDisabled: isDisabled || isOccupied || isOutsideRentalRange,
+        isDisabled: isDisabled || isOccupied || isOutsideRentalRange || !price,
         date: currentDate,
+        price: price,
       });
     }
 
@@ -78,6 +90,7 @@ export default function Month({
         day: i,
         isDisabled: true,
         date: new Date(year, month + 1, i),
+        price: null,
       });
     }
 
@@ -87,7 +100,7 @@ export default function Month({
   // Renderiza los días
   const renderDays = () => {
     const days = generateDays();
-    const today = new Date(); // Obtiene la fecha de hoy
+    const today = new Date();
 
     return days.map((dayInfo, index) => {
       const isCurrentDay =
@@ -102,6 +115,12 @@ export default function Month({
 
       const isEndDate =
         endDate && dayInfo.date.toDateString() === endDate.toDateString();
+
+      const isInRange =
+        startDate &&
+        endDate &&
+        dayInfo.date > startDate &&
+        dayInfo.date < endDate;
 
       return (
         <Day
@@ -121,14 +140,12 @@ export default function Month({
           isEndDate={isEndDate}
           callback={selectDate}
           isDisabled={dayInfo.isDisabled}
+          price={dayInfo.price}
+          isInRange={isInRange}
         />
       );
     });
   };
 
-  return (
-    <div className="grid grid-cols-7 gap-x-4 gap-y-2 my-3 shadow-reservation-list">
-      {renderDays()}
-    </div>
-  );
+  return <div className="grid grid-cols-7 gap-5 my-3">{renderDays()}</div>;
 }

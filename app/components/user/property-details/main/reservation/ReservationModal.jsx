@@ -81,17 +81,16 @@ export default function ReservationModal({
       return;
     }
 
-    const price = calculatePrice(data.price, info.duration);
+    const price = data.calendar === "FULL" ? info.totalPrice : data.price;
     const startDate = info.startDate;
     const endDate = info.endDate;
-    const rentalPeriodId = info.rentalPeriodId;
     const reservation = {
       ...dataReservation,
       ...values,
       date: new Date().toISOString(),
       startDate: startDate,
       endDate: endDate,
-      price: data.price,
+      price: price,
       inReview: true,
     };
 
