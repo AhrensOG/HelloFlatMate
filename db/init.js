@@ -26,6 +26,7 @@ const Notification = require("./models/notification");
 const Incidence = require("./models/incidence");
 const ToDoMessage = require("./models/toDoMessage");
 const OwnerContract = require("./models/ownerContract");
+const RentalDayPrice = require("./models/rentalDayPrice");
 
 (async () => {
     try {
@@ -429,6 +430,17 @@ const OwnerContract = require("./models/ownerContract");
             constraints: false,
         });
 
+        // RentalDayPrice
+        RentalItem.hasMany(RentalDayPrice, {
+            as: "rentalDayPrices",
+            foreignKey: "rentalItemId",
+        });
+
+        RentalDayPrice.belongsTo(RentalItem, {
+            as: "rentalItem",
+            foreignKey: "rentalItemId",
+        });
+
         // Consumption
         Client.hasMany(Consumption, { as: "consumptions", foreignKey: "clientId" });
         Consumption.belongsTo(Client, { as: "client", foreignKey: "clientId" });
@@ -480,4 +492,5 @@ module.exports = {
     Incidence,
     ToDoMessage,
     OwnerContract,
+    RentalDayPrice,
 };
