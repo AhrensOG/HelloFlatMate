@@ -81,17 +81,16 @@ export default function ReservationModal({
       return;
     }
 
-    const price = calculatePrice(data.price, info.duration);
+    const price = data.calendar === "FULL" ? info.totalPrice : data.price;
     const startDate = info.startDate;
     const endDate = info.endDate;
-    const rentalPeriodId = info.rentalPeriodId;
     const reservation = {
       ...dataReservation,
       ...values,
       date: new Date().toISOString(),
       startDate: startDate,
       endDate: endDate,
-      price: data.price,
+      price: price,
       inReview: true,
     };
 
@@ -153,7 +152,7 @@ export default function ReservationModal({
       // onClick={callback}
     >
       <motion.aside
-        className="relative w-full sm:w-[80%] md:w-[60%] lg:w-[40%] bg-white sm:rounded-md shadow-lg max-h-screen sm:max-h-[95vh] overflow-y-auto scrollbar-none p-6 py-10 flex flex-col"
+        className="relative w-full sm:w-[80%] md:w-[60%] lg:w-[40%] bg-white sm:rounded-md shadow-lg max-h-screen sm:max-h-[90vh] overflow-y-auto scrollbar-none p-6 py-10 flex flex-col"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
@@ -178,6 +177,15 @@ export default function ReservationModal({
           Datos de solicitud para reserva
         </h2>
         <div className="space-y-5 flex flex-col justify-start items-center grow overflow-y-auto scrollbar-none">
+          <div className="w-full">
+            <span className="text-sm font-semibold text-[#440CAC] text-custom-gray-600">
+              {calendarType === "FULL"
+                ? `${t("reservation_total_amount_full_calendar")}: ${
+                    info.totalPrice ? info.totalPrice + " €" : "0 €"
+                  }`
+                : ""}
+            </span>
+          </div>
           {calendarType === "SIMPLE" ? (
             <SelectRentalPeriod
               data={rentalPeriods.filter(

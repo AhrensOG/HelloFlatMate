@@ -5,11 +5,13 @@ import RoomEditModal from "./RoomEditModal";
 import Link from "next/link";
 import { toast } from "sonner";
 import {
+  CalendarDaysIcon,
   ChevronDownIcon,
   PencilIcon,
   TrashIcon,
   WrenchIcon,
 } from "@heroicons/react/24/outline";
+import RentalDayPriceModal from "./RentalDayPriceModal";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -22,6 +24,7 @@ const TYPOLOGY_LABELS = {
 export default function RoomsPanel() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenCalendarModal, setIsOpenCalendarModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("Estado");
@@ -43,6 +46,21 @@ export default function RoomsPanel() {
   const handleOpenModal = (room) => {
     setSelectedRoom(room);
     setIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedRoom(null);
+    setIsOpen(false);
+  };
+
+  const handleOpenCalendarModal = (room) => {
+    setSelectedRoom(room);
+    setIsOpenCalendarModal(true);
+  };
+
+  const handleCloseCalendarModal = () => {
+    setSelectedRoom(null);
+    setIsOpenCalendarModal(false);
   };
 
   const normalize = (str) =>
@@ -136,6 +154,25 @@ export default function RoomsPanel() {
         description: "Intenta nuevamente o contacta al soporte.",
         id: toastId,
       });
+    }
+  };
+
+  const handleOnApplyDayPrice = async (data) => {
+    const toastId = toast.loading("Guardando precios...");
+
+    try {
+      await axios.post("/api/admin/rentalDayPrice", data);
+
+      toast.success("Precios aplicados correctamente", { id: toastId });
+
+      const updated = await mutate();
+
+      const refreshedRoom = updated.find((r) => r.id === selectedRoom.id);
+
+      setSelectedRoom(refreshedRoom);
+      return true;
+    } catch (err) {
+      toast.info("Error al guardar precios", { id: toastId });
     }
   };
 
@@ -270,6 +307,21 @@ export default function RoomsPanel() {
                     <td className="border p-2 text-gray-700 text-center">
                       <div className="w-full h-full flex gap-2 items-center justify-around">
                         <button
+                          disabled={room.calendar === "SIMPLE"}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenCalendarModal(room);
+                          }}>
+                          <CalendarDaysIcon
+                            title="Calendario"
+                            className={`size-6 ${
+                              room.calendar === "SIMPLE"
+                                ? "text-gray-400 opacity-30"
+                                : "text-blue-500"
+                            }`}
+                          />
+                        </button>
+                        <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleOpenModal(room);
@@ -315,7 +367,7 @@ export default function RoomsPanel() {
         {isOpen && (
           <RoomEditModal
             isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
+            onClose={handleCloseModal}
             data={selectedRoom}
             onSave={handleOnsave}
             deleteRentalItem={handleDeleteRentalItem}
@@ -324,6 +376,14 @@ export default function RoomsPanel() {
               rentalPeriodsError,
               rentalPeriodsLoading,
             }}
+          />
+        )}
+
+        {isOpenCalendarModal && (
+          <RentalDayPriceModal
+            onClose={handleCloseCalendarModal}
+            onApply={handleOnApplyDayPrice}
+            room={selectedRoom}
           />
         )}
       </div>

@@ -4,6 +4,7 @@ import {
   LeaseOrderProperty,
   LeaseOrderRoom,
   Property,
+  RentalDayPrice,
   RentalItem,
   RentalPeriod,
   Room,
@@ -67,10 +68,16 @@ export async function getPropertyById(id) {
             {
               model: RentalItem,
               as: "rentalItems",
-              include: {
-                model: RentalPeriod,
-                as: "rentalPeriod",
-              },
+              include: [
+                {
+                  model: RentalPeriod,
+                  as: "rentalPeriod",
+                },
+                {
+                  model: RentalDayPrice,
+                  as: "rentalDayPrices",
+                },
+              ],
             },
           ],
         },

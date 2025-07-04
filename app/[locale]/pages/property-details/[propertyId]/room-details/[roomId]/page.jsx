@@ -313,6 +313,7 @@ export default function RoomDetails({ params }) {
                             ownerId: data.ownerId,
                             roomId: roomData?.id,
                             roomSerial: roomData.serial,
+                            calendar: roomData?.calendar,
                             propertyName: roomData?.name,
                             user: state?.user,
                             rentalPeriods: roomData?.rentalItems,
