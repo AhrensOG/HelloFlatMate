@@ -177,6 +177,15 @@ export default function ReservationModal({
           Datos de solicitud para reserva
         </h2>
         <div className="space-y-5 flex flex-col justify-start items-center grow overflow-y-auto scrollbar-none">
+          <div className="w-full">
+            <span className="text-sm font-semibold text-[#440CAC] text-custom-gray-600">
+              {calendarType === "FULL"
+                ? `${t("reservation_total_amount_full_calendar")}: ${
+                    info.totalPrice ? info.totalPrice + " €" : "0 €"
+                  }`
+                : ""}
+            </span>
+          </div>
           {calendarType === "SIMPLE" ? (
             <SelectRentalPeriod
               data={rentalPeriods.filter(

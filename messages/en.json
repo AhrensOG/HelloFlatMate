@@ -533,6 +533,7 @@
         "btn": "Request reservation"
       },
     "reservation_modal": {
+      "reservation_total_amount_full_calendar": "Total amount",
       "reservation_submit_process_toast": "Processing request...",
       "terms_and_conditions": "You must accept the terms and conditions",
       "rental_period": "You must select a rental period",

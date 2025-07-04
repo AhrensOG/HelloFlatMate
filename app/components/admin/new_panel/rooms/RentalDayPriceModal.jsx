@@ -3,6 +3,59 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { toast } from "sonner";
 
+const softColors = [
+  "#FFB3BA",
+  "#FFDFBA",
+  "#FFFFBA",
+  "#BAFFC9",
+  "#BAE1FF",
+  "#CBAACB",
+  "#FFDAC1",
+  "#B5EAD7",
+  "#E2F0CB",
+  "#C7CEEA",
+  "#FFD6E0",
+  "#FAE3D9",
+  "#BBDED6",
+  "#8AC6D1",
+  "#B5EAD7",
+  "#E0BBE4",
+  "#957DAD",
+  "#D291BC",
+  "#FEC8D8",
+  "#FFDFD3",
+  "#E6E6FA",
+  "#F0E68C",
+  "#F5DEB3",
+  "#ADD8E6",
+  "#90EE90",
+  "#FFB6C1",
+  "#FFDAB9",
+  "#FFE4E1",
+  "#F08080",
+  "#FF69B4",
+  "#FFFACD",
+  "#D8BFD8",
+  "#FFEBCD",
+  "#E0FFFF",
+  "#AFEEEE",
+  "#98FB98",
+  "#F5F5DC",
+  "#FFF0F5",
+  "#F0FFF0",
+  "#F0FFFF",
+  "#FFF5EE",
+  "#F5F5F5",
+  "#F8F8FF",
+  "#FAFAD2",
+  "#FFEFD5",
+  "#FFE4B5",
+  "#FFDAB9",
+  "#EEE8AA",
+  "#B0E0E6",
+  "#87CEFA",
+];
+
 const formatDate = (date) =>
   date
     ? date.toLocaleDateString("es-ES", {
@@ -16,7 +69,6 @@ const RentalDayPriceModal = ({ onClose, onApply, room }) => {
   const [range, setRange] = useState({ from: undefined, to: undefined });
   const [price, setPrice] = useState("");
   const [selectedMonth, setSelectedMonth] = useState(new Date());
-
   const [lastPriceInfo, setLastPriceInfo] = useState({
     date: null,
     price: "N/A",
@@ -37,6 +89,41 @@ const RentalDayPriceModal = ({ onClose, onApply, room }) => {
     });
     return map;
   }, [rentalItem]);
+
+  const priceToColor = useMemo(() => {
+    const uniquePrices = [...new Set(Object.values(pricesByDay))];
+    const map = {};
+    uniquePrices.forEach((price, index) => {
+      map[price] = softColors[index % softColors.length];
+    });
+    return map;
+  }, [pricesByDay]);
+
+  const modifiers = useMemo(() => {
+    const priceModifiers = {};
+    Object.keys(priceToColor).forEach((price) => {
+      priceModifiers[`price-${price}`] = (date) => {
+        const dateStr = [
+          date.getFullYear(),
+          String(date.getMonth() + 1).padStart(2, "0"),
+          String(date.getDate()).padStart(2, "0"),
+        ].join("-");
+        return pricesByDay[dateStr] === Number(price);
+      };
+    });
+    return priceModifiers;
+  }, [priceToColor, pricesByDay]);
+
+  const modifiersStyles = useMemo(() => {
+    const styles = {};
+    Object.entries(priceToColor).forEach(([price, color]) => {
+      styles[`price-${price}`] = {
+        backgroundColor: color,
+        borderRadius: "9999px",
+      };
+    });
+    return styles;
+  }, [priceToColor]);
 
   const unpricedDaysCount = useMemo(() => {
     if (!periodStart || !periodEnd) return 0;
@@ -141,19 +228,8 @@ const RentalDayPriceModal = ({ onClose, onApply, room }) => {
             fixedWeeks
             showOutsideDays
             disabled={[{ before: periodStart }, { after: periodEnd }]}
-            modifiers={{
-              priced: (date) => {
-                const dateStr = [
-                  date.getFullYear(),
-                  String(date.getMonth() + 1).padStart(2, "0"),
-                  String(date.getDate()).padStart(2, "0"),
-                ].join("-");
-                return pricesByDay[dateStr];
-              },
-            }}
-            modifiersClassNames={{
-              priced: "bg-green-100 rounded-full",
-            }}
+            modifiers={modifiers}
+            modifiersStyles={modifiersStyles}
             onDayClick={(date) => {
               const dateStr = [
                 date.getFullYear(),
