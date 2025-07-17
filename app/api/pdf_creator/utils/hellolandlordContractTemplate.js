@@ -57,8 +57,11 @@ const hellolandlordContractTemplate = ({
   CUARTA. – RENTA.\n
   El arrendatario abonará al arrendador, en concepto de renta, la cantidad de ${monthlyRent} € mensuales, siempre por adelantado y dentro del período comprendido entre los días 20 y 25 de cada mes.\n
   En dicho precio no se incluyen los gastos relativos a los suministros de agua, luz e internet.\n
-  Dicha renta se abonará mediante transferencia bancaria o ingreso en la siguiente cuenta de EL ARRENDADOR, indicando en el concepto el nombre del inquilino:\n
-  IBAN Arrendador: ${landlordIBAN}\n
+  ${
+    roomNumber.startsWith("CPDF49P4") || roomNumber.startsWith("CC9P8")
+      ? "El pago de la renta mensual se realizará en efectivo, con la visita al piso por el agente de la zona mediante cita previa.\n"
+      : `Dicha renta se abonará mediante transferencia bancaria o ingreso en la siguiente cuenta de EL ARRENDADOR, indicando en el concepto el nombre del inquilino:\nIBAN Arrendador: ${landlordIBAN}\n`
+  }
   El incumplimiento reiterado de la obligación de pago o notificación del justificante del pago en el periodo fijado será motivo de resolución del contrato, dando derecho al arrendador a solicitar el desahucio, siendo por cuenta del ARRENDATARIO los gastos que estas acciones originen.\n
   El ARRENDATARIO es conocedor y asume que en caso de impago de las rentas deberá abandonar la vivienda, perdiendo las cantidades entregadas en concepto de fianza así como suministros de agua, luz, gas e internet.\n
   Del mismo modo, para el caso de que el arrendatario incumpla el plazo de pago de la renta, el ARRENDADOR podrá sancionar al ARRENDATARIO por dicho incumplimiento con 10€ por cada día de retraso en el pago.\n
