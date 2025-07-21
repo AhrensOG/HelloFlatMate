@@ -81,7 +81,7 @@ const PaymentsV2 = () => {
     if (!state?.user) return;
 
     const activeLeaseOrders = [...(state.user.leaseOrdersRoom || [])].filter(
-      (order) => order.isActive
+      (order) => order.isActive || order.status === "FINISHED"
     );
 
     const getMonthName = (date) => {
@@ -308,7 +308,7 @@ const PaymentsV2 = () => {
 
       const leaseKey = `${formatDateToDDMMYYYY(
         leaseOrder.startDate
-      )} - ${formatDateToDDMMYYYY(leaseOrder.endDate)}`;
+      )} - ${formatDateToDDMMYYYY(leaseOrder.endDate)} ${leaseOrder.status === "FINISHED" ? "(Periodo anterior)" : ""}`;
 
       if (!groups[serial]) {
         groups[serial] = {};
