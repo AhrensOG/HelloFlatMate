@@ -127,7 +127,7 @@ const hellocolivingContractTemplate = ({
   El presente contrato de arrendamiento únicamente entrará en vigor y será válido cuando se cumplan de manera simultánea las siguientes condiciones:\n
   - El ARRENDATARIO haya abonado las cantidades indicadas en la cláusula quinta en concepto de fianza, depósito, tarifa plana de internet y gastos de suministros.\n
   - El contrato haya sido firmado electrónicamente por ambas partes a través de la plataforma habilitada por Helloflatmate.\n
-  - El ARRENDATARIO cumpla con los requisitos de perfil establecidos por el ARRENDADOR, específicamente ser estudiante menor de 30 años de edad.\n
+  - El ARRENDATARIO cumpla con los requisitos de perfil establecidos por el ARRENDADOR, específicamente ser estudiante o joven trabajador menor de 35 años de edad.\n
   En caso de que el ARRENDATARIO no cumpla con alguno de estos requisitos, el contrato será considerado nulo, sin generar derechos ni obligaciones entre las partes.\n
   \n
   DECIMOQUINTA. – INCUMPLIMIENTO DE OBLIGACIONES.\n

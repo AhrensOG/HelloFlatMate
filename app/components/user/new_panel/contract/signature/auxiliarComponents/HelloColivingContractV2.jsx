@@ -386,7 +386,7 @@ export default function HelloColivingContractV2({
                         3) El ARRENDATARIO cumpla con los requisitos de perfil
                         establecidos por el ARRENDADOR,{" "}
                         <span className="font-semibold">
-                            específicamente ser estudiante menor de 30 años de
+                            específicamente ser estudiante o joven trabajador menor de 35 años de
                             edad
                         </span>
                         .
