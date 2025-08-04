@@ -1,4 +1,3 @@
-import { billBuilder } from "@/app/api/pdf_creator/utils/billBuilder";
 import { sendMailFunction } from "@/app/api/sendGrid/controller/sendMailFunction";
 import {
   Client,
@@ -35,6 +34,7 @@ async function processReservation({
             "floor",
             "typology",
             "category",
+            "zone",
           ],
         },
       }),
@@ -86,18 +86,6 @@ async function processReservation({
 
     console.log(`✅ Pago Reserva creado ID: ${rentPayment.id}`);
 
-    // // 4️⃣ Generar PDF
-    // const pdfData = preparePdfData({
-    //   rentPayment,
-    //   client,
-    //   theRoom,
-    //   order,
-    //   successLeaseOrderRoom,
-    // });
-
-    // const pdfBytes = await billBuilder(pdfData);
-    // const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
-
     // 5️⃣ Enviar Correo
 
     const address = {
@@ -134,14 +122,6 @@ async function processReservation({
         formattedEndDate,
         address
       ),
-      // attachments: [
-      //   {
-      //     content: pdfBase64,
-      //     filename: `factura_${rentPayment.id}.pdf`,
-      //     type: "application/pdf",
-      //     disposition: "attachment",
-      //   },
-      // ],
       cc: HFM_MAIL,
     });
 
@@ -168,60 +148,6 @@ async function processReservation({
       { status: 400 }
     );
   }
-}
-
-// 🚀 Preparar Datos para PDF
-function preparePdfData({
-  rentPayment,
-  client,
-  theRoom,
-  order,
-  successLeaseOrderRoom,
-}) {
-  return {
-    id: rentPayment.id,
-    clienteName: `${client.name || ""} ${client.lastName || ""}`,
-    clienteDni: client.idNum || "N/A",
-    clienteAddress: `${client.street || ""} ${client.streetNumber || ""}`,
-    clienteCity: `${client.city || ""} CP: ${client.postalCode || ""}`,
-    clientePhone: client.phone || "N/A",
-    clienteEmail: client.email || "N/A",
-    room: `${theRoom.property?.street} ${theRoom.property?.streetNumber} ${theRoom.property?.floor}`,
-    roomCode: theRoom.serial,
-    gender: theRoom.property?.typology
-      ? theRoom.property.typology === "MIXED"
-        ? "mixto"
-        : theRoom.property.typology === "ONLY_WOMEN"
-        ? "solo mujeres"
-        : theRoom.property.typology === "ONLY_MEN"
-        ? "solo hombres"
-        : "-"
-      : "-",
-    invoiceNumber: order,
-    invoicePeriod:
-      formatDate(successLeaseOrderRoom.startDate) +
-      " / " +
-      formatDate(successLeaseOrderRoom.endDate),
-    details: [
-      {
-        amount: rentPayment.amount,
-        date: rentPayment.date,
-        status: rentPayment.status,
-        id: rentPayment.paymentId,
-        quotaNumber: rentPayment.quotaNumber,
-      },
-    ],
-    totalAmount: rentPayment.amount,
-    returnBytes: true,
-  };
-}
-
-function formatDate(date) {
-  const newDate = new Date(date);
-  const year = newDate.getFullYear();
-  const month = String(newDate.getMonth() + 1).padStart(2, "0");
-  const day = String(newDate.getDate()).padStart(2, "0");
-  return `${day}-${month}-${year}`;
 }
 
 async function addSupplies(room, leaseOrder, client) {
@@ -253,6 +179,20 @@ async function addSupplies(room, leaseOrder, client) {
         ...supply,
       });
 
+    const isMoncada = room.property?.zone === "Moncada";
+
+    const getSupplyAmount = (type, quarter) => {
+      if (isMoncada) {
+        if (type === "GENERAL_SUPPLIES") {
+          return 220;
+        }
+        if (type === "INTERNET") {
+          return quarter === "2Q" ? 96 : 80;
+        }
+      }
+      return type === "GENERAL_SUPPLIES" ? 200 : 80;
+    };
+
     if (room.property?.category === "HELLO_LANDLORD") {
       pushSupply({ name: "Depósito", amount: 300, type: "DEPOSIT" });
       pushSupply({
@@ -262,12 +202,12 @@ async function addSupplies(room, leaseOrder, client) {
       });
       pushSupply({
         name: `Wifi ${shortTermLabel}`,
-        amount: 80,
+        amount: getSupplyAmount("INTERNET", shortTermLabel),
         type: "INTERNET",
       });
       pushSupply({
         name: `Suministros ${shortTermLabel}`,
-        amount: 200,
+        amount: getSupplyAmount("GENERAL_SUPPLIES", shortTermLabel),
         type: "GENERAL_SUPPLIES",
       });
     } else {
@@ -282,44 +222,52 @@ async function addSupplies(room, leaseOrder, client) {
         if (isLongTerm) {
           pushSupply({
             name: "Suministros 1Q",
-            amount: 200,
+            amount: getSupplyAmount("GENERAL_SUPPLIES", "1Q"),
             type: "GENERAL_SUPPLIES",
           });
           pushSupply({
             name: "Suministros 2Q",
-            amount: 200,
+            amount: getSupplyAmount("GENERAL_SUPPLIES", "2Q"),
             type: "GENERAL_SUPPLIES",
           });
         } else {
           pushSupply({
             name: `Suministros ${shortTermLabel}`,
-            amount: 200,
+            amount: getSupplyAmount("GENERAL_SUPPLIES", shortTermLabel),
             type: "GENERAL_SUPPLIES",
           });
         }
       } else {
         if (isLongTerm) {
-          pushSupply({ name: "Wifi 1Q", amount: 80, type: "INTERNET" });
+          pushSupply({
+            name: "Wifi 1Q",
+            amount: getSupplyAmount("INTERNET", "1Q"),
+            type: "INTERNET",
+          });
           pushSupply({
             name: "Suministros 1Q",
-            amount: 200,
+            amount: getSupplyAmount("GENERAL_SUPPLIES", "1Q"),
             type: "GENERAL_SUPPLIES",
           });
-          pushSupply({ name: "Wifi 2Q", amount: 80, type: "INTERNET" });
+          pushSupply({
+            name: "Wifi 2Q",
+            amount: getSupplyAmount("INTERNET", "2Q"),
+            type: "INTERNET",
+          });
           pushSupply({
             name: "Suministros 2Q",
-            amount: 200,
+            amount: getSupplyAmount("GENERAL_SUPPLIES", "2Q"),
             type: "GENERAL_SUPPLIES",
           });
         } else {
           pushSupply({
             name: `Wifi ${shortTermLabel}`,
-            amount: 80,
+            amount: getSupplyAmount("INTERNET", shortTermLabel),
             type: "INTERNET",
           });
           pushSupply({
             name: `Suministros ${shortTermLabel}`,
-            amount: 200,
+            amount: getSupplyAmount("GENERAL_SUPPLIES", shortTermLabel),
             type: "GENERAL_SUPPLIES",
           });
         }

@@ -21,6 +21,9 @@ export default function OrdersModal({ data, onClose }) {
       case "IN_PROGRESS":
         setSelectedStatus("En progreso");
         break;
+      case "PENDING":
+        setSelectedStatus("Pendiente");
+        break;
       case "APPROVED":
         setSelectedStatus("Aprobado");
         break;
@@ -94,6 +97,11 @@ export default function OrdersModal({ data, onClose }) {
                         En progreso
                       </button>
                       <button
+                        onClick={() => handleStatusChange("PENDING")}
+                        className="block w-full text-left p-2 hover:bg-gray-100">
+                        Pendiente
+                      </button>
+                      <button
                         onClick={() => handleStatusChange("APPROVED")}
                         className="block w-full text-left p-2 hover:bg-gray-100">
                         Aprobado
@@ -144,6 +152,8 @@ export default function OrdersModal({ data, onClose }) {
                       className={`${
                         lo.status === "IN_PROGRESS"
                           ? "text-blue-700"
+                          : lo.status === "PENDING"
+                          ? "text-yellow-500"
                           : lo.status === "APPROVED"
                           ? "text-green-700"
                           : lo.status === "FINISHED"
@@ -152,6 +162,8 @@ export default function OrdersModal({ data, onClose }) {
                       } border p-2 w-auto text-center`}>
                       {lo.status === "IN_PROGRESS"
                         ? "En progreso"
+                        : lo.status === "PENDING"
+                        ? "Pendiente"
                         : lo.status === "APPROVED"
                         ? "Aprobado"
                         : lo.status === "FINISHED"
