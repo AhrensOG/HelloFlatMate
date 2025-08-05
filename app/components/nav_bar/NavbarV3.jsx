@@ -177,6 +177,13 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
             </Link>
             <Link
               onClick={() => toggleMenu()}
+              target="_blank"
+              href="https://calendly.com/rooms-hfm/30min"
+              className="block transition-all px-6 py-3 text-base font-medium text-red-500 hover:bg-gray-100 hover:text-blue-500">
+              Check-In
+            </Link>
+            <Link
+              onClick={() => toggleMenu()}
               href="/pages/user/history"
               className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
               {t("user_link_3")}
