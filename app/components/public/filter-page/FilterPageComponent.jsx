@@ -26,7 +26,7 @@ const FilterPageComponent = () => {
   });
   const [localPrice, setLocalPrice] = useState({
     min: 100,
-    max: 1000,
+    max: 1500,
   });
   const [showFiltersMobile, setShowFiltersMobile] = useState(false);
   const router = useRouter();
@@ -72,7 +72,7 @@ const FilterPageComponent = () => {
 
     setLocalPrice({
       min: query.minPrice ? parseInt(query.minPrice) : 100,
-      max: query.maxPrice ? parseInt(query.maxPrice) : 1000,
+      max: query.maxPrice ? parseInt(query.maxPrice) : 1500,
     });
 
     setInitializedFromURL(true);
