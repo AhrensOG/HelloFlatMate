@@ -61,7 +61,7 @@ export async function getAllRooms() {
             {
               model: Client,
               as: "client",
-              attributes: ["name", "lastName", "email"],
+              attributes: ["name", "lastName", "email", "birthDate", "country", "destinationUniversity"],
             },
           ],
         },

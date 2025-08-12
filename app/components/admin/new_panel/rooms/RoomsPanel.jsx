@@ -12,6 +12,7 @@ import {
   WrenchIcon,
 } from "@heroicons/react/24/outline";
 import RentalDayPriceModal from "./RentalDayPriceModal";
+import formatDateToDDMMYYYY from "../utils/formatDate";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -204,6 +205,15 @@ export default function RoomsPanel() {
               <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">
                 Inquilino
               </th>
+              <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">
+                Fecha de Nacimiento
+              </th>
+              <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">
+                Nacionalidad
+              </th>
+              <th className="border border-t-0 p-2 w-48 text-center font-semibold text-gray-700">
+                Universidad
+              </th>
               <th className="border border-t-0 p-2 w-20 text-center font-semibold text-gray-700 relative">
                 <div className="w-full h-full flex items-center justify-center gap-1">
                   ¿Activo?
@@ -240,7 +250,7 @@ export default function RoomsPanel() {
                   )}
                 </div>
               </th>
-              <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
+              {/* <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
                 Zona
               </th>
               <th className="border border-t-0 p-2 w-32 text-center font-semibold text-gray-700">
@@ -248,7 +258,7 @@ export default function RoomsPanel() {
               </th>
               <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-52">
                 Direccion
-              </th>
+              </th> */}
               <th className="border border-t-0 p-2 w-40 text-center font-semibold text-gray-700">
                 Acciones
               </th>
@@ -292,10 +302,32 @@ export default function RoomsPanel() {
                         ? `${order.client?.name} ${order.client?.lastName} - ${order.client?.email}`
                         : "Sin inquilino"}
                     </td>
+                    <td className="border p-2 text-gray-700 text-center break-words">
+                      {order && order.client
+                        ? order.client?.birthDate
+                          ? formatDateToDDMMYYYY(order.client?.birthDate)
+                          : "Sin fecha de nacimiento"
+                        : "Sin fecha de nacimiento"}
+                    </td>
+                    <td className="border p-2 text-gray-700 text-center break-words">
+                      {order && order.client
+                        ? order.client?.country
+                          ? order.client?.country
+                          : "Sin nacionalidad"
+                        : "Sin nacionalidad"}
+                    </td>
+                    <td className="border p-2 text-gray-700 text-center break-words">
+                      {order && order.client
+                        ? order.client?.destinationUniversity
+                          ? order.client?.destinationUniversity
+                          : "Sin universidad de destino"
+                        : "Sin universidad de destino"}
+                    </td>
+
                     <td className="border p-2 text-gray-700 text-center">
                       {room.isActive ? "Si" : "No"}
                     </td>
-                    <td className="border p-2 text-gray-700 text-center">
+                    {/* <td className="border p-2 text-gray-700 text-center">
                       {room.property?.zone}
                     </td>
                     <td className="border p-2 text-gray-700 text-center">
@@ -303,7 +335,7 @@ export default function RoomsPanel() {
                     </td>
                     <td className="border p-2 text-gray-700 text-center">
                       {`${room.property?.street} ${room.property?.streetNumber}, ${room.property?.city}`}
-                    </td>
+                    </td> */}
                     <td className="border p-2 text-gray-700 text-center">
                       <div className="w-full h-full flex gap-2 items-center justify-around">
                         <button
