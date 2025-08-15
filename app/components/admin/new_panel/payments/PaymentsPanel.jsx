@@ -13,9 +13,13 @@ const PaymentsPanel = () => {
   const [showEditPaymentModal, setShowEditPaymentModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
 
+  const [selectedPayments, setSelectedPayments] = useState([]);
+
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("ALL");
   const [selectedTypeFilter, setSelectedTypeFilter] = useState("ALL");
-  const [selectedDescriptionFilters, setSelectedDescriptionFilters] = useState([]);
+  const [selectedDescriptionFilters, setSelectedDescriptionFilters] = useState(
+    []
+  );
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
@@ -38,7 +42,9 @@ const PaymentsPanel = () => {
     `/api/admin/payments?page=${page}&limit=100` +
       (selectedUser ? `&userId=${selectedUser.id}` : "") +
       (selectedDescriptionFilters.length > 0
-        ? `&description=${encodeURIComponent(selectedDescriptionFilters.join(","))}`
+        ? `&description=${encodeURIComponent(
+            selectedDescriptionFilters.join(",")
+          )}`
         : "") +
       (selectedStatusFilter && selectedStatusFilter !== "ALL"
         ? `&status=${encodeURIComponent(selectedStatusFilter)}`
@@ -111,7 +117,7 @@ const PaymentsPanel = () => {
       selectedTypeFilter === "ALL" ||
       payment.type === selectedTypeFilter;
 
-      const matchesDescription =
+    const matchesDescription =
       selectedDescriptionFilters.length === 0 ||
       selectedDescriptionFilters.includes(payment.description) ||
       selectedDescriptionFilters.includes(payment.name);
@@ -143,6 +149,27 @@ const PaymentsPanel = () => {
       toast.success("Cobro eliminado correctamente", { id: toastId });
     } catch (error) {
       toast.error("Error al eliminar el cobro", { id: toastId });
+    }
+  };
+
+  const deleteSelectedPayments = async () => {
+    if (selectedPayments.length === 0) {
+      toast.error("No hay cobros seleccionados");
+      return;
+    }
+
+    const toastId = toast.loading("Eliminando cobros...");
+    try {
+      await axios.post(
+        "/api/admin/payments/deleteSelectedPayments",
+        selectedPayments
+      );
+
+      setSelectedPayments([]);
+      await mutate();
+      toast.success("Cobros eliminados correctamente", { id: toastId });
+    } catch (error) {
+      toast.error("Error al eliminar los cobros", { id: toastId });
     }
   };
 
@@ -182,6 +209,20 @@ const PaymentsPanel = () => {
             className="w-[10rem] h-12 bg-[#0E1863] rounded-lg text-white flex justify-center items-center">
             Crear cobro
           </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              toast("Quieres eliminar los cobros seleccionados?", {
+                action: {
+                  label: "Confirmar",
+                  onClick: () => deleteSelectedPayments(),
+                },
+              });
+            }}
+            disabled={selectedPayments.length === 0}
+            className="w-auto h-12 px-4 bg-[#0E1863] rounded-lg text-white flex justify-center items-center">
+            Eliminar cobros seleccionados
+          </button>
         </div>
       </div>
 
@@ -198,6 +239,8 @@ const PaymentsPanel = () => {
         typesAvailable={typesAvailable}
         descriptionsAvailable={descriptionsAvailable}
         isLoading={isLoading}
+        selectedPayments={selectedPayments}
+        setSelectedPayments={setSelectedPayments}
       />
 
       {/* PAGINACIÓN */}

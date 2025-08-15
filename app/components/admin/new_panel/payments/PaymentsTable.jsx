@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import formatDateToDDMMYYYY from "../utils/formatDate";
 import { toast } from "sonner";
 import {
@@ -128,6 +128,16 @@ const groupAndSortPayments = (payments) => {
   return grouped;
 };
 
+// --------- NUEVO: tipos y helpers de selección ----------
+const toPaymentType = (rawType) =>
+  rawType === "MONTHLY"
+    ? "MONTHLY"
+    : rawType === "RESERVATION"
+    ? "RESERVATION"
+    : "SUPPLY";
+const keyOf = (sp) => `${sp.paymentId}:${sp.paymentType}`;
+// --------------------------------------------------------
+
 const PaymentsTable = ({
   payments,
   openEditPayment,
@@ -141,11 +151,37 @@ const PaymentsTable = ({
   typesAvailable,
   descriptionsAvailable,
   isLoading,
+  selectedPayments,
+  setSelectedPayments,
 }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isTypeDropdownOpen, setTypeDropdownOpen] = useState(false);
   const [isDescriptionDropdownOpen, setDescriptionDropdownOpen] =
     useState(false);
+
+  // --------- NUEVO: estado de seleccionados ----------
+
+  const selectedSet = useMemo(() => {
+    const s = new Set();
+    for (const sp of selectedPayments) s.add(keyOf(sp));
+    return s;
+  }, [selectedPayments]);
+
+  const isRowSelected = useCallback(
+    (id, rawType) => selectedSet.has(`${id}:${toPaymentType(rawType)}`),
+    [selectedSet]
+  );
+
+  const toggleRow = useCallback((id, rawType) => {
+    const paymentType = toPaymentType(rawType);
+    const k = `${id}:${paymentType}`;
+    setSelectedPayments((prev) => {
+      const exists = prev.some((p) => keyOf(p) === k);
+      if (exists) return prev.filter((p) => keyOf(p) !== k);
+      return [...prev, { paymentId: id, paymentType }];
+    });
+  }, []);
+  // ---------------------------------------------------
 
   const handleStatusChange = (status) => {
     setSelectedStatusFilter(status);
@@ -163,6 +199,11 @@ const PaymentsTable = ({
       <table className="min-w-full border-collapse">
         <thead className="sticky top-0 bg-white">
           <tr>
+            {/* NUEVO: columna del checkbox */}
+            <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-10">
+              {/* encabezado vacío intencional */}
+            </th>
+
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
               Usuario
             </th>
@@ -278,13 +319,13 @@ const PaymentsTable = ({
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan="8" className="text-center py-4 text-gray-500">
+              <td colSpan={9} className="text-center py-4 text-gray-500">
                 Buscando...
               </td>
             </tr>
           ) : Object.entries(grouped).length === 0 ? (
             <tr>
-              <td colSpan="8" className="text-center py-4 text-gray-500">
+              <td colSpan={9} className="text-center py-4 text-gray-500">
                 No hay pagos disponibles.
               </td>
             </tr>
@@ -295,6 +336,18 @@ const PaymentsTable = ({
                   <tr
                     key={`${payment.id}${payment.type}`}
                     className="hover:bg-gray-100 even:bg-gray-50 transition-cursor cursor-pointer">
+                    {/* NUEVO: checkbox por fila */}
+                    <td className="border p-2 text-center">
+                      <input
+                        type="checkbox"
+                        checked={isRowSelected(payment.id, payment.type)}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          toggleRow(payment.id, payment.type);
+                        }}
+                      />
+                    </td>
+
                     <td className="border p-2 text-gray-700 text-start truncate max-w-60">
                       {(payment.user?.name || "") +
                         " " +
