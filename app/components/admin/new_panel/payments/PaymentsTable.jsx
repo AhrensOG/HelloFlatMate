@@ -159,8 +159,7 @@ const PaymentsTable = ({
   const [isDescriptionDropdownOpen, setDescriptionDropdownOpen] =
     useState(false);
 
-  // --------- NUEVO: estado de seleccionados ----------
-
+  // --------- estado de seleccionados ----------
   const selectedSet = useMemo(() => {
     const s = new Set();
     for (const sp of selectedPayments) s.add(keyOf(sp));
@@ -172,15 +171,18 @@ const PaymentsTable = ({
     [selectedSet]
   );
 
-  const toggleRow = useCallback((id, rawType) => {
-    const paymentType = toPaymentType(rawType);
-    const k = `${id}:${paymentType}`;
-    setSelectedPayments((prev) => {
-      const exists = prev.some((p) => keyOf(p) === k);
-      if (exists) return prev.filter((p) => keyOf(p) !== k);
-      return [...prev, { paymentId: id, paymentType }];
-    });
-  }, []);
+  const toggleRow = useCallback(
+    (id, rawType) => {
+      const paymentType = toPaymentType(rawType);
+      const k = `${id}:${paymentType}`;
+      setSelectedPayments((prev) => {
+        const exists = prev.some((p) => keyOf(p) === k);
+        if (exists) return prev.filter((p) => keyOf(p) !== k);
+        return [...prev, { paymentId: id, paymentType }];
+      });
+    },
+    [setSelectedPayments]
+  );
   // ---------------------------------------------------
 
   const handleStatusChange = (status) => {
@@ -194,14 +196,76 @@ const PaymentsTable = ({
 
   const grouped = groupAndSortPayments(payments || []);
 
+  // ===== NUEVO: selección masiva (solo filas visibles) =====
+  const visibleKeys = useMemo(() => {
+    const keys = [];
+    for (const leases of Object.values(grouped)) {
+      for (const obj of Object.values(leases)) {
+        for (const p of obj.payments) {
+          keys.push(`${p.id}:${toPaymentType(p.type)}`);
+        }
+      }
+    }
+    return keys;
+  }, [grouped]);
+
+  const allSelected = useMemo(
+    () =>
+      visibleKeys.length > 0 && visibleKeys.every((k) => selectedSet.has(k)),
+    [visibleKeys, selectedSet]
+  );
+
+  const someSelected = useMemo(
+    () => visibleKeys.some((k) => selectedSet.has(k)) && !allSelected,
+    [visibleKeys, selectedSet, allSelected]
+  );
+
+  const toggleSelectAll = useCallback(() => {
+    setSelectedPayments((prev) => {
+      const prevSet = new Set(
+        prev.map((p) => `${p.paymentId}:${p.paymentType}`)
+      );
+      if (visibleKeys.length === 0) return prev;
+
+      // Si todos los visibles están seleccionados -> deseleccionar los visibles
+      if (visibleKeys.every((k) => prevSet.has(k))) {
+        return prev.filter(
+          (p) => !visibleKeys.includes(`${p.paymentId}:${p.paymentType}`)
+        );
+      }
+
+      // Faltan algunos -> agregarlos
+      const toAdd = [];
+      for (const k of visibleKeys) {
+        if (!prevSet.has(k)) {
+          const [paymentId, paymentType] = k.split(":");
+          toAdd.push({ paymentId, paymentType });
+        }
+      }
+      return [...prev, ...toAdd];
+    });
+  }, [setSelectedPayments, visibleKeys]);
+  // =========================================================
+
   return (
     <div className="flex-1 overflow-y-auto border rounded-lg contain-inline-size">
       <table className="min-w-full border-collapse">
         <thead className="sticky top-0 bg-white">
           <tr>
-            {/* NUEVO: columna del checkbox */}
+            {/* NUEVO: checkbox maestro */}
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700 w-10">
-              {/* encabezado vacío intencional */}
+              <input
+                type="checkbox"
+                checked={allSelected}
+                aria-checked={
+                  someSelected ? "mixed" : allSelected ? "true" : "false"
+                }
+                onChange={(e) => {
+                  e.stopPropagation();
+                  toggleSelectAll();
+                }}
+                aria-label="Seleccionar todos"
+              />
             </th>
 
             <th className="border border-t-0 p-2 text-center font-semibold text-gray-700">
@@ -336,7 +400,7 @@ const PaymentsTable = ({
                   <tr
                     key={`${payment.id}${payment.type}`}
                     className="hover:bg-gray-100 even:bg-gray-50 transition-cursor cursor-pointer">
-                    {/* NUEVO: checkbox por fila */}
+                    {/* checkbox por fila */}
                     <td className="border p-2 text-center">
                       <input
                         type="checkbox"
