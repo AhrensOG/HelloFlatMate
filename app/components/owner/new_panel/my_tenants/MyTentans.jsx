@@ -152,13 +152,13 @@ const MyTenants = () => {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="mt-2 space-y-4">
+                                className="mt-2 space-y-4 overflow-x-auto">
                                 {tenantsToShow.length > 0 ? (
                                   <div className="w-full flex gap-4">
                                     {tenantsToShow.map((order, i) => (
                                       <div
                                         key={i}
-                                        className="w-full flex flex-row flex-wrap justify-between items-start gap-4">
+                                        className="min-w-full flex flex-row flex-wrap justify-between items-start gap-4">
                                         <TenantCard
                                           order={{
                                             ...order,

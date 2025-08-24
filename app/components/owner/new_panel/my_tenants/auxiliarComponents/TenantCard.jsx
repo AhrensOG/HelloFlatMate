@@ -46,6 +46,8 @@ const TenantCard = ({ order, isOld = false }) => {
 
     const supplies = client.supplies?.filter((s) => s.leaseOrderId === order.id) || [];
 
+    const suppliesWithoutAgencyFees = supplies?.filter((s) => s.type !== "AGENCY_FEES") || [];
+
     return (
         <div className={`w-full lg:w-[48%] p-4 rounded-lg border ${cardBorder} bg-white shadow-sm flex flex-col gap-2`}>
             {/* Info básica */}
@@ -230,14 +232,14 @@ const TenantCard = ({ order, isOld = false }) => {
                             )}
 
                             {/* Supplies */}
-                            {supplies.length > 0 && (
+                            {suppliesWithoutAgencyFees.length > 0 && (
                                 <div>
                                     <h4 className="flex items-center gap-1 text-xs md:text-base font-semibold text-gray-700 mb-1">
                                         <TbTools className="text-[#440cac]" />
                                         {t("supplies.h4")}
                                     </h4>
                                     <div className="flex flex-col gap-2">
-                                        {supplies.map((supply, i) => (
+                                        {suppliesWithoutAgencyFees.map((supply, i) => (
                                             <div key={i} className="text-xs md:text-base text-gray-600 bg-gray-50 rounded-md px-3 py-2 shadow-sm">
                                                 <p>
                                                     <strong>{t("supplies.concept")}</strong>

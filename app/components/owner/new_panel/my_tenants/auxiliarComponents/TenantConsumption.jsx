@@ -35,7 +35,7 @@ const TenantConsumption = ({ order, isOld = false }) => {
 
   supplies.forEach((s) => {
     let period = "1Q";
-    if (s.name.includes("2Q")) period = "2Q";
+    if (s.name?.includes?.("2Q")) period = "2Q";
     grouped[period].supplies.push(s);
   });
 
@@ -58,11 +58,15 @@ const TenantConsumption = ({ order, isOld = false }) => {
 
         const internetConsumption = grouped[period].consumptions
           .filter((c) => c.type === "INTERNET")
-          .reduce((acc, c) => acc + c.amount, 0);
+          .reduce((acc, c) => acc + (c.amount || 0), 0);
 
         const generalConsumption = grouped[period].consumptions
           .filter((c) => c.type !== "INTERNET")
-          .reduce((acc, c) => acc + c.amount, 0);
+          .reduce((acc, c) => acc + (c.amount || 0), 0);
+
+        const nonInternetConsumptions = grouped[period].consumptions.filter(
+          (c) => c.type !== "INTERNET"
+        );
 
         return (
           <div key={period} className="mb-6">
@@ -76,12 +80,14 @@ const TenantConsumption = ({ order, isOld = false }) => {
             </h5>
             {internetSupply && (
               <p className="text-sm md:text-base text-gray-600">
-                <strong>Wifi:</strong> €{internetSupply.amount.toFixed(2)}
+                <strong>Wifi:</strong> €
+                {(internetSupply.amount || 0).toFixed(2)}
               </p>
             )}
             {generalSupply && (
               <p className="text-sm md:text-base text-gray-600">
-                <strong>Suministros:</strong> €{generalSupply.amount.toFixed(2)}
+                <strong>Suministros:</strong> €
+                {(generalSupply.amount || 0).toFixed(2)}
               </p>
             )}
             {!internetSupply && !generalSupply && (
@@ -94,8 +100,17 @@ const TenantConsumption = ({ order, isOld = false }) => {
             <h5 className="text-xs md:text-sm font-semibold text-gray-600 mt-4 mb-1">
               {t("total_consumed")}:
             </h5>
-            {grouped[period].consumptions.length > 0 ? (
-              grouped[period].consumptions.map((c, i) => (
+
+            {/* Si hubo aporte de INTERNET, siempre mostrar "Wifi: -importe €" */}
+            {internetSupply && (
+              <p className="text-sm md:text-base text-gray-700">
+                <span>Wifi:</span> 
+                {(internetSupply.amount || 0).toFixed(2)} €
+              </p>
+            )}
+
+            {nonInternetConsumptions.length > 0 ? (
+              nonInternetConsumptions.map((c, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-3 text-sm md:text-base text-gray-700 border p-2 rounded mt-2 bg-gray-50">
@@ -108,7 +123,7 @@ const TenantConsumption = ({ order, isOld = false }) => {
                         t("other")}
                     </p>
                     <p className="font-medium">
-                      {t("amount")}: {c.amount.toFixed(2)} €
+                      {t("amount")}: {(c.amount || 0).toFixed(2)} €
                     </p>
                     <p className="text-xs md:text-sm text-gray-500">
                       {t("consumption_startDate")}:{" "}
@@ -129,11 +144,11 @@ const TenantConsumption = ({ order, isOld = false }) => {
                   </div>
                 </div>
               ))
-            ) : (
+            ) : !internetSupply ? (
               <p className="text-sm text-gray-500 mt-2">
                 {t("no_consumptions")}
               </p>
-            )}
+            ) : null}
 
             {/* Balance final */}
             <h5 className="text-xs md:text-sm font-semibold text-gray-600 mt-4">
@@ -141,7 +156,13 @@ const TenantConsumption = ({ order, isOld = false }) => {
             </h5>
             <p className="text-sm md:text-base text-gray-700">
               <strong>Wifi:</strong> €
-              {((internetSupply?.amount || 0) - internetConsumption).toFixed(2)}
+              {
+                // Si hubo aporte de INTERNET, la diferencia para Wifi es 0
+                (internetSupply
+                  ? 0
+                  : (internetSupply?.amount || 0) - internetConsumption
+                ).toFixed(2)
+              }
             </p>
             <p className="text-sm md:text-base text-gray-700">
               <strong>Suministros:</strong> €
