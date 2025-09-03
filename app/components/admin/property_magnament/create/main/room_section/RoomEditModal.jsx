@@ -330,7 +330,7 @@ export default function RoomEditModal({ data, setData, showModal, selectedRoom, 
                 </div>
                 <div>
                     <label className="block text-sm mb-1" htmlFor="amountHelloflatmate">
-                        Monto de helloflatmate
+                        Monto de Helloflatmate IVA incluido
                     </label>
                     <input
                         type="number"
@@ -347,11 +347,15 @@ export default function RoomEditModal({ data, setData, showModal, selectedRoom, 
                     />
                 </div>
                 <div>
-                    <h3 className="block text-sm mb-1">Factura de helloflatmate con IVA</h3>
-                    <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
-                        {(parseInt(dataRoom?.amountHelloflatmate) || 0) - (parseInt(dataRoom?.amountHelloflatmate) * (dataRoom.IVA / 100) || 0)}
-                    </p>
+                  <h3 className="block text-sm mb-1">Factura de helloflatmate con IVA</h3>
+                  <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                    {(
+                      (Number(dataRoom?.amountHelloflatmate) || 0) -
+                      ((Number(dataRoom?.amountHelloflatmate) || 0) * (Number(dataRoom?.IVA) || 0) / 100)
+                    ).toFixed(2)}
+                  </p>
                 </div>
+
                 <div>
                     <label className="block text-sm mb-1" htmlFor="IVA">
                         IVA (%)
@@ -365,11 +369,15 @@ export default function RoomEditModal({ data, setData, showModal, selectedRoom, 
                         className="appearance-none outline-none w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
+
                 <div>
-                    <h3 className="block text-sm mb-1">Neto Propietario</h3>
-                    <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
-                        {(parseInt(dataRoom?.price) || 0) - (parseInt(dataRoom?.amountHelloflatmate) || 0)}
-                    </p>
+                  <h3 className="block text-sm mb-1">Monto Propietario</h3>
+                  <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                    {(
+                      (Number(dataRoom?.price) || 0) -
+                      (Number(dataRoom?.amountHelloflatmate) || 0)
+                    ).toFixed(2)}
+                  </p>
                 </div>
 
                 <div className="flex flex-col gap-3">

@@ -246,7 +246,7 @@ export default function RoomAddModal({ data, setData, showModal, propertyId, cat
                     </div>
                     <div>
                         <label className="block mb-1" htmlFor="amountHelloflatmate">
-                            Neto de helloflatmate
+                            Monto de Helloflatmate IVA incluido
                         </label>
                         <input
                             type="number"
@@ -265,32 +265,38 @@ export default function RoomAddModal({ data, setData, showModal, propertyId, cat
                 </div>
 
                 <div className="w-full flex flex-col gap-3">
-                    <div>
-                        <h3 className="block mb-1">Factura de helloflatmate con IVA</h3>
-                        <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
-                            {(parseInt(dataRoom?.amountHelloflatmate) || 0) - (parseInt(dataRoom?.amountHelloflatmate) * (dataRoom.IVA / 100) || 0)}
-                        </p>
-                    </div>
-                    <div>
-                        <label className="block mb-1" htmlFor="IVA">
-                            IVA (%)
-                        </label>
-                        <input
-                            type="number"
-                            id="IVA"
-                            name="IVA"
-                            value={dataRoom?.IVA || ""}
-                            onChange={(event) => setDataRoom({ ...dataRoom, IVA: event.target.value })}
-                            className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
-                        />
-                    </div>
+                  <div>
+                    <h3 className="block mb-1">Factura de helloflatmate con IVA</h3>
+                    <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                      {(
+                        (Number(dataRoom?.amountHelloflatmate) || 0) -
+                        ((Number(dataRoom?.amountHelloflatmate) || 0) * (Number(dataRoom?.IVA) || 0) / 100)
+                      ).toFixed(2)}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block mb-1" htmlFor="IVA">
+                      IVA (%)
+                    </label>
+                    <input
+                      type="number"
+                      id="IVA"
+                      name="IVA"
+                      value={dataRoom?.IVA || ""}
+                      onChange={(event) => setDataRoom({ ...dataRoom, IVA: event.target.value })}
+                      className="number-input-no-appearance appearance-none outline-none w-full p-2 border border-gray-300 rounded"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                    <h3 className="block text-sm mb-1">Neto Propietario</h3>
-                    <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
-                        {(parseInt(dataRoom?.price) || 0) - (parseInt(dataRoom?.amountHelloflatmate) || 0)}
-                    </p>
+                  <h3 className="block text-sm mb-1">Monto Propietario</h3>
+                  <p className="appearance-none outline-none w-full p-2 border border-gray-300 rounded">
+                    {(
+                      (Number(dataRoom?.price) || 0) -
+                      (Number(dataRoom?.amountHelloflatmate) || 0)
+                    ).toFixed(2)}
+                  </p>
                 </div>
 
                 {/* Periodos de alquiler */}
