@@ -72,10 +72,17 @@ const groupAndSortPayments = (payments) => {
     const duration =
       (end.getFullYear() - start.getFullYear()) * 12 +
       (end.getMonth() - start.getMonth());
+    const recencyTs = Math.max(start.getTime(), end.getTime());
 
     if (!grouped[userId]) grouped[userId] = {};
     if (!grouped[userId][leaseKey])
-      grouped[userId][leaseKey] = { duration, payments: [] };
+      grouped[userId][leaseKey] = {
+        duration,
+        payments: [],
+        start,
+        end,
+        recencyTs,
+      };
 
     grouped[userId][leaseKey].payments.push(payment);
   }
@@ -185,6 +192,9 @@ const PaymentsTable = ({
   );
   // ---------------------------------------------------
 
+  const sortLeaseEntries = (leasesObj) =>
+    Object.entries(leasesObj).sort(([, a], [, b]) => b.recencyTs - a.recencyTs);
+
   const handleStatusChange = (status) => {
     setSelectedStatusFilter(status);
     setDropdownOpen(false);
@@ -200,7 +210,8 @@ const PaymentsTable = ({
   const visibleKeys = useMemo(() => {
     const keys = [];
     for (const leases of Object.values(grouped)) {
-      for (const obj of Object.values(leases)) {
+      const sortedLeaseEntries = sortLeaseEntries(leases);
+      for (const [, obj] of sortedLeaseEntries) {
         for (const p of obj.payments) {
           keys.push(`${p.id}:${toPaymentType(p.type)}`);
         }
@@ -394,8 +405,9 @@ const PaymentsTable = ({
               </td>
             </tr>
           ) : (
-            Object.entries(grouped).map(([userId, leases]) =>
-              Object.entries(leases).map(([leaseKey, { payments }]) =>
+            Object.entries(grouped).map(([userId, leases]) => {
+              const sortedLeaseEntries = sortLeaseEntries(leases);
+              return sortedLeaseEntries.flatMap(([leaseKey, { payments }]) =>
                 payments.map((payment) => (
                   <tr
                     key={`${payment.id}${payment.type}`}
@@ -477,8 +489,8 @@ const PaymentsTable = ({
                     </td>
                   </tr>
                 ))
-              )
-            )
+              );
+            })
           )}
         </tbody>
       </table>
