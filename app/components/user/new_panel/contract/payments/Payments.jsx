@@ -69,7 +69,7 @@ export default function Payments() {
         );
 
         const selectSupplyByQuarter = (items) => {
-            if (items.length === 2 && leaseOrder) {
+            if (items.length >= 1 && leaseOrder) {
                 const startMonth =
                     new Date(leaseOrder.startDate).getUTCMonth() + 1;
                 const endMonth = new Date(leaseOrder.endDate).getUTCMonth() + 1;
@@ -85,8 +85,6 @@ export default function Payments() {
                     item.name.includes(desiredQuarter)
                 );
                 return match ? match : items[0];
-            } else if (items.length >= 1) {
-                return items[0];
             }
             return null;
         };
