@@ -39,7 +39,7 @@ export default function DatePicker({
 
   // Filtrar las fechas ocupadas que no tengan el estado "REJECTED"
   const occupiedDateRanges = occupedDates
-    .filter((order) => order.status !== "REJECTED" && order.status !== "IN_PROGRESS")
+    .filter((order) => order.status !== "REJECTED" && order.status !== "IN_PROGRESS" && order.status !== "FINISHED" && order.status !== "CANCELED")
     .map((order) => ({
       start: createLocalDate(order.startDate),
       end: createLocalDate(order.endDate),
