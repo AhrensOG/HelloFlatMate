@@ -95,6 +95,16 @@ export default function AddressModal({ data, setData, showModal, category }) {
                             className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
+                    <div>
+                        <label className="block text-sm mb-1">Referencia Catastral:</label>
+                        <input
+                            type="text"
+                            name="refCatastral"
+                            value={formData.refCatastral || ""} // Asegúrate de que el valor no sea undefined
+                            onChange={handleChange}
+                            className="w-full p-2 border border-gray-300 rounded"
+                        />
+                    </div>
                 </div>
                 <div className="flex justify-between w-full mt-4">
                     <button onClick={() => showModal(false)} className="text-black px-4 py-2 border border-[#0C1660] rounded-lg">

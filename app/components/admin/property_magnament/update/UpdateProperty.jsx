@@ -105,6 +105,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 postalCode: property?.postalCode,
                 floor: property?.floor,
                 door: property?.door,
+                refCatastral: property?.refCatastral || "",
             });
             setAmenities(property?.amenities || []);
             setMoreInfo({
@@ -202,6 +203,9 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 street: data.street,
                 streetNumber: data.streetNumber,
                 postalCode: data.postalCode,
+                refCatastral: data.refCatastral || "",
+                floor: data.floor || null,
+                door: data.door || null,
             });
         }
     };
@@ -281,6 +285,7 @@ export default function UpdateProperty({ data = false, category, handleBack }) {
                 postalCode: address.postalCode || null,
                 floor: parseInt(floor) || null,
                 door: door || null,
+                refCatastral: address.refCatastral || null,
                 size: parseInt(catAndSize.size) || null,
                 roomsCount: property.roomsCount || null,
                 bathrooms: parseInt(guestInfo.bathrooms) || null,

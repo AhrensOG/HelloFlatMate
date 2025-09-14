@@ -47,6 +47,10 @@ const propertyInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(10),
                 allowNull: true,
             },
+            refCatastral: {
+                type: DataTypes.STRING(200),
+                allowNull: true,
+            },
             size: {
                 type: DataTypes.INTEGER,
                 allowNull: true,

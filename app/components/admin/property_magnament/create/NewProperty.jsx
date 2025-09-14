@@ -334,6 +334,7 @@ export default function NewProperty({ category, handleBack }) {
         postalCode: "",
         floor: null,
         door: "",
+        refCatastral: "",
     });
     const [guestInfo, setGuestInfo] = useState({
         occupants: null,
@@ -484,6 +485,7 @@ export default function NewProperty({ category, handleBack }) {
         postalCode: address.postalCode || null,
         floor: address.floor || null,
         door: address.door || null,
+        refCatastral: address.refCatastral || null,
         size: parseInt(catAndSize.size) || null,
         roomsCount: dataRoom.length || null,
         bathrooms: parseInt(guestInfo.bathrooms) || null,

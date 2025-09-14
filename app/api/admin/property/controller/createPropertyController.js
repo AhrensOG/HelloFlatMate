@@ -3,8 +3,6 @@ import rentalPeriod, { sequelize } from "@/db/models/rentalPeriod";
 import { NextResponse } from "next/server";
 
 export async function createProperty(data) {
-    console.log(data);
-
     if (!data) {
         return NextResponse.json({ error: "El body no puede estar vacío" }, { status: 400 });
     }
@@ -57,6 +55,7 @@ export async function createProperty(data) {
             floor: data.floor || null,
             door: data.door || null,
             size: data.size || 0,
+            refCatastral: data.refCatastral || null,
             roomsCount: data.roomsCount || 0,
             bathrooms: data.bathrooms || 0,
             bed: data.bed || 0,
@@ -140,6 +139,7 @@ export async function cloneProperty(data) {
                 postalCode: data.postalCode || "", // Dejar vacío si no hay código postal
                 floor: data.floor ? parseInt(data.floor) : null, // Convierte a número o null si no existe
                 door: data.door || "",
+                refCatastral: data.refCatastral || null,
                 size: data.size ? parseInt(data.size) : null, // Convierte a número o null
                 roomsCount: data.roomsCount ? parseInt(data.roomsCount) : 0, // Valor por defecto 0 si no existe
                 bathrooms: data.bathrooms ? parseInt(data.bathrooms) : 0, // Valor por defecto 0 si no existe
