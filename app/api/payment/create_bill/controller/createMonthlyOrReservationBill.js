@@ -3,14 +3,14 @@ import { NextResponse } from "next/server";
 import { newBillBuilder } from "./newBillBuilder";
 
 const formatDate = (date) => {
-  if (!date) return 'Invalid date';
+  if (!date) return "Invalid date";
   const d = new Date(date);
-  if (isNaN(d.getTime())) return 'Invalid date'; // Fecha inválida
+  if (isNaN(d.getTime())) return "Invalid date"; // Fecha inválida
 
   const year = d.getUTCFullYear();
-  const month = String(d.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(d.getUTCDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  return `${day}-${month}-${year}`;
 };
 
 export async function createMonthlyOrReservationBill(data) {
@@ -71,7 +71,8 @@ export async function createMonthlyOrReservationBill(data) {
         amount: p.amount,
         date: p.date,
         id: p.id,
-        description: p.description,
+        description: (p.description || "").replace(/reserva/gi, "mensual"),
+        quotaNumber: p.quotaNumber,
       }))
       .sort((a, b) => b.quotaNumber - a.quotaNumber);
 

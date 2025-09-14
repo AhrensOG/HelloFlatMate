@@ -53,12 +53,47 @@ export async function newBillBuilder(data) {
     const logoWidth = 100; // Ajustar ancho del logo
     const logoHeight = (logoImage.height / logoImage.width) * logoWidth;
 
+    // Firma de la empresa debajo del total
+    const signaturePath = path.resolve(
+      process.cwd(),
+      "public/contract/signature.png"
+    );
+    const signatureBytes = fs.readFileSync(signaturePath);
+    const signatureImage = await pdfDoc.embedPng(signatureBytes);
+
+    const signatureWidth = 120; // ancho de la firma
+    const signatureHeight =
+      (signatureImage.height / signatureImage.width) * signatureWidth;
+
     // Dibujar el logo
     page.drawImage(logoImage, {
       x: logoX,
       y: logoY,
       width: logoWidth,
       height: logoHeight,
+    });
+
+    const companyInfoYStart = logoY; // un poco debajo del logo
+    page.drawText("CIF: B 98358963", {
+      x: logoX + 10,
+      y: companyInfoYStart,
+      size: 8,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    page.drawText("Calle Campoamor 8, 1ºA", {
+      x: logoX + 10,
+      y: companyInfoYStart - 8,
+      size: 8,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    page.drawText("46021 Valencia", {
+      x: logoX + 10,
+      y: companyInfoYStart - 16,
+      size: 8,
+      font,
+      color: rgb(0, 0, 0),
     });
 
     // Fecha en la parte superior derecha
@@ -207,6 +242,7 @@ export async function newBillBuilder(data) {
     currentRowY -= rowHeight;
     let isWhiteBackground = true;
     // Dibujar cada fila de detalles
+    paymentData.details.sort((a, b) => b.quotaNumber - a.quotaNumber);
     paymentData.details.forEach((detail) => {
       const bgColor = isWhiteBackground
         ? rgb(1, 1, 1)
@@ -274,13 +310,13 @@ export async function newBillBuilder(data) {
     });
 
     currentRowY -= rowHeight;
-    page.drawText("Total de pagos efectuados", {
-      x: width - margin - 170,
-      y: currentRowY + 40,
-      size: 10,
-      font: boldFont,
-      color: rgb(0, 0, 0),
-    });
+    // page.drawText("Total de pagos efectuados", {
+    //   x: width - margin - 170,
+    //   y: currentRowY + 40,
+    //   size: 10,
+    //   font: boldFont,
+    //   color: rgb(0, 0, 0),
+    // });
     currentRowY -= paddingVertical;
     const estimatedCharWidth = 5;
     const totalLabelWidth =
@@ -288,12 +324,12 @@ export async function newBillBuilder(data) {
     const totalValueWidth =
       totalPagos.toFixed(2).toString().length * estimatedCharWidth;
     const totalLineWidth = Math.max(totalLabelWidth, totalValueWidth);
-    page.drawLine({
-      start: { x: width - margin - totalLineWidth * 1.4, y: currentRowY + 35 },
-      end: { x: width - margin, y: currentRowY + 35 },
-      thickness: 1,
-      color: rgb(0.75, 0.75, 0.75),
-    });
+    // page.drawLine({
+    //   start: { x: width - margin - totalLineWidth * 1.4, y: currentRowY + 35 },
+    //   end: { x: width - margin, y: currentRowY + 35 },
+    //   thickness: 1,
+    //   color: rgb(0.75, 0.75, 0.75),
+    // });
     currentRowY -= paddingVertical;
     page.drawText("Total: " + totalPagos.toFixed(2).toString(), {
       x: width - margin - 170,
@@ -310,6 +346,15 @@ export async function newBillBuilder(data) {
       color: rgb(0.75, 0.75, 0.75),
     });
     currentRowY -= paddingVertical;
+
+    // Dibujar firma (ajustar posición si hace falta)
+    page.drawImage(signatureImage, {
+      x: width - (margin + 40) - signatureWidth, // alineada a la derecha
+      y: currentRowY - signatureHeight - -15, // un poco debajo del total
+      width: signatureWidth,
+      height: signatureHeight,
+    });
+
     const pdfBytes = await pdfDoc.save();
     const pdfStream = Buffer.from(pdfBytes);
     if (data.returnBytes) {
