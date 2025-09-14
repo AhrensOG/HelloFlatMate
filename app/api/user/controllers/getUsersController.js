@@ -37,7 +37,7 @@ export async function getUserById(id) {
               model: Room,
               as: "room",
               attributes: ["id", "serial", "images", "price"],
-              include: [{ model: Property, as: "property", include:[{model: Room, as: "rooms", attributes: ["id"]}], attributes: ["id", "serial", "images", "street", "streetNumber", "postalCode", "floor", "bathrooms", "category", "ownerId"] }],
+              include: [{ model: Property, as: "property", include:[{model: Room, as: "rooms", attributes: ["id"]}], attributes: ["id", "serial", "images", "street", "streetNumber", "postalCode", "floor", "bathrooms", "category", "ownerId", "refCatastral"] }],
             },
           ],
         },

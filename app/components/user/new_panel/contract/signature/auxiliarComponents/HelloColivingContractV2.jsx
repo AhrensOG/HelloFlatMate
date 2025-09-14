@@ -20,6 +20,7 @@ export default function HelloColivingContractV2({
     startDate,
     endDate,
     monthlyRent,
+    refCatastral,
     handleModal,
     isChecked,
     setIsChecked,
@@ -55,6 +56,8 @@ export default function HelloColivingContractV2({
                     <span className="font-semibold">{landlordDoorNumber}</span>
                     ª, Valencia{" "}
                     <span className="font-semibold">{landlordPostalCode}</span>
+                    {" "}- Ref Catastral {" "}
+                    <span className="font-semibold">{refCatastral}</span>
                 </p>
                 <p className="mb-4 text-sm break-words font-light">
                     Dicho inmueble se halla amueblado y consta de{" "}

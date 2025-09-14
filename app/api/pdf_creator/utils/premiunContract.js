@@ -18,6 +18,7 @@ const createPremiumContract = ({
   startDate,
   endDate,
   monthlyRent,
+  refCatastral
 }) => {
   return `CONTRATO DE ARRENDAMIENTO DE HABITACIÓN EN VIVIENDA COMPARTIDA\n
   
@@ -25,7 +26,7 @@ const createPremiumContract = ({
   
   REUNIDOS\n
   
-  De una parte, D./Dª ${landlordName}, como parte ARRENDADORA, siendo mayor de edad, con NIF ${landlordNIF}, propietario/a en pleno dominio del inmueble sito en Valencia: C/ ${landlordStreet} nº ${landlordStreetNumber} - PUERTA ${landlordDoorNumber}, Valencia ${landlordPostalCode}. Dicho inmueble se halla amueblado y consta de ${numberOfRooms} habitaciones, sala de estar, cocina y ${numberOfBathrooms} cuartos de baño.\n
+  De una parte, D./Dª ${landlordName}, como parte ARRENDADORA, siendo mayor de edad, con NIF ${landlordNIF}, propietario/a en pleno dominio del inmueble sito en Valencia: C/ ${landlordStreet} nº ${landlordStreetNumber} - PUERTA ${landlordDoorNumber}, Valencia ${landlordPostalCode} - Ref Catastral ${refCatastral}. Dicho inmueble se halla amueblado y consta de ${numberOfRooms} habitaciones, sala de estar, cocina y ${numberOfBathrooms} cuartos de baño.\n
   
   EL ARRENDADOR autoriza a helloflatmate S.L. con CIF B98358963, bajo mandato expreso, únicamente la formalización de este contrato.
   De otra parte, D/Dª ${tenantName}, mayor de edad, con D.N.I o pasaporte ${tenantID}, nº de teléfono ${tenantPhone}, email ${tenantEmail}, y con domicilio en ${tenantAddress}, C/ ${tenantStreet}, actuando como parte ARRENDATARIA, está interesado en arrendar la habitación n.º R${roomNumber} del mencionado inmueble.\n

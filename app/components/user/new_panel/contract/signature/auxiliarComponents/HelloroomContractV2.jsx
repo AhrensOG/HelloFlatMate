@@ -20,6 +20,7 @@ export default function HelloRoomContractV2({
     startDate,
     endDate,
     monthlyRent,
+    refCatastral,
     handleModal,
     isChecked,
     setIsChecked,
@@ -56,6 +57,8 @@ export default function HelloRoomContractV2({
                     <span className="font-semibold">{landlordDoorNumber}</span>
                     ª, Valencia{" "}
                     <span className="font-semibold">{landlordPostalCode}</span>
+                    {" "}- Ref Catastral {" "}
+                    <span className="font-semibold">{refCatastral}</span>
                 </p>
                 <p className="mb-4 text-sm break-words font-light">
                     Dicho inmueble se halla amueblado y consta de{" "}
@@ -583,20 +586,20 @@ export default function HelloRoomContractV2({
             contrato por duplicado en el lugar y fecha al principio indicados. */}
                 </p>
 
-                <div className="my-8 text-center w-full flex flex-wrap items-start justify-around">
+                {/* <div className="my-8 text-center w-full flex flex-wrap items-start justify-around">
                     <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
                         Firma ARRENDATARIA:{" "}
                     </p>
                     <p className="mb-4 text-sm break-words font-light flex flex-col justify-center items-center">
                         Firma ARRENDADORA:{" "}
-                        {/* <Image
+                        <Image
               src={"/contract/signature.png"}
               width={200}
               height={100}
               alt="Owner Signature"
-            /> */}
+            />
                     </p>
-                </div>
+                </div> */}
 
                 <h2 className="text-sm font-bold mb-4">
                     ANEXO I – NORMAS DE CONVIVENCIA

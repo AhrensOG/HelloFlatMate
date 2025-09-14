@@ -21,6 +21,7 @@ export default function HelloLandlordContractV2({
   startDate,
   endDate,
   monthlyRent,
+  refCatastral,
   handleModal,
   isChecked,
   setIsChecked,
@@ -45,7 +46,8 @@ export default function HelloLandlordContractV2({
         <p className="mb-4 text-sm font-light">
           <span className="font-semibold">
             C/ {landlordStreet} nº {landlordStreetNumber} - PUERTA{" "}
-            {landlordDoorNumber}, Valencia {landlordPostalCode}.
+            {landlordDoorNumber}, Valencia {landlordPostalCode} - Ref Catastral{" "}
+            {refCatastral}
           </span>
         </p>
         <p className="mb-4 text-sm font-light">

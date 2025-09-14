@@ -134,6 +134,7 @@ const ContractDetailV2 = () => {
     const monthlyRent = room?.price || "";
     const roomNumber = room?.serial || "";
     const propertyCategory = property?.category;
+    const refCatastral = property?.refCatastral || "-";
 
     // Datos del cliente (tenant)
     const info = state?.user;
@@ -175,6 +176,7 @@ const ContractDetailV2 = () => {
                 monthlyRent,
                 propertyCategory,
                 leaseOrderId: leaseOrder?.id,
+                refCatastral,
             };
 
             let dataContract = {
@@ -232,6 +234,7 @@ const ContractDetailV2 = () => {
                     startDate={startDate}
                     endDate={endDate}
                     monthlyRent={monthlyRent}
+                    refCatastral={refCatastral}
                     handleModal={setSignatureModal}
                     isChecked={isChecked}
                     setIsChecked={setIsChecked}
@@ -259,6 +262,7 @@ const ContractDetailV2 = () => {
                     startDate={startDate}
                     endDate={endDate}
                     monthlyRent={monthlyRent}
+                    refCatastral={refCatastral}
                     handleModal={setSignatureModal}
                     isChecked={isChecked}
                     setIsChecked={setIsChecked}
@@ -286,6 +290,7 @@ const ContractDetailV2 = () => {
                     startDate={startDate}
                     endDate={endDate}
                     monthlyRent={monthlyRent}
+                    refCatastral={refCatastral}
                     handleModal={setSignatureModal}
                     isChecked={isChecked}
                     setIsChecked={setIsChecked}
@@ -314,6 +319,7 @@ const ContractDetailV2 = () => {
                     startDate={startDate}
                     endDate={endDate}
                     monthlyRent={monthlyRent}
+                    refCatastral={refCatastral}
                     handleModal={setSignatureModal}
                     isChecked={isChecked}
                     setIsChecked={setIsChecked}
