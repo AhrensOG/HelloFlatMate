@@ -36,8 +36,10 @@ export async function PATCH(req) {
                     break;
                 case "OWNER":
                     selectUser = await Owner.findByPk(user.userId);
+                    break;
                 case "WORKER":
-                selectUser = await Worker.findByPk(user.userId);
+                    selectUser = await Worker.findByPk(user.userId);
+                    break;
                 default:
                     break;
             }
