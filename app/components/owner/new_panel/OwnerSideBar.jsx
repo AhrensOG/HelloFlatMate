@@ -61,6 +61,11 @@ const OwnerSidebar = () => {
           icon: <TbContract className="size-6" />,
         },
         {
+          name: t("links.name_8"),
+          href: "/pages/owner/tax-information",
+          icon: <TbContract className="size-6" />,
+        },
+        {
             name: "Chats",
             href: "/pages/owner/chats",
             icon: <ChatBubbleBottomCenterIcon className="size-6" />,
