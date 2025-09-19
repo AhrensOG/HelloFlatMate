@@ -154,7 +154,7 @@ export default function NavbarV3({ fixed = false, borderBottom = true }) {
             </Link>
             <Link
               onClick={() => toggleMenu()}
-              href="/pages/owner/contracts"
+              href="/pages/owner/tax-information"
               className="block transition-all px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-500">
               {t("owner_link_7")}
             </Link>
