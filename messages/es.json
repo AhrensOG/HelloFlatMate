@@ -11,6 +11,7 @@
         "owner_link_4": "Pagos",
         "owner_link_5": "Incidencias",
         "owner_link_6": "Contratos",
+        "owner_link_7": "Informe Fiscal",
         "user_link_1": "Perfil",
         "user_link_2": "Reservas",
         "user_link_3": "Histórico",
@@ -1454,7 +1455,8 @@
                 "name_4": "Suministros",
                 "name_5": "Pagos",
                 "name_6": "Incidencias",
-                "name_7": "Contratos"
+                "name_7": "Contratos",
+                "name_8": "Informe Fiscal"
             },
             "btn_logout": "Cerrar sesión"
         },

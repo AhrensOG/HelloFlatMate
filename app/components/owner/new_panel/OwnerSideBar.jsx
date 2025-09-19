@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRightStartOnRectangleIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, Squares2X2Icon, UserGroupIcon, UserIcon, WrenchIcon } from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, ChatBubbleBottomCenterIcon, CreditCardIcon, DocumentTextIcon, Squares2X2Icon, UserGroupIcon, UserIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
 import { Context } from "@/app/context/GlobalContext";
 import { logOut } from "@/app/firebase/logOut";
@@ -59,6 +59,11 @@ const OwnerSidebar = () => {
           name: t("links.name_7"),
           href: "/pages/owner/contracts",
           icon: <TbContract className="size-6" />,
+        },
+        {
+          name: t("links.name_8"),
+          href: "/pages/owner/tax-information",
+          icon: <DocumentTextIcon className="size-6" />,
         },
         {
             name: "Chats",

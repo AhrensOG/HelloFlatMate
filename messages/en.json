@@ -11,6 +11,7 @@
         "owner_link_4": "Payments",
         "owner_link_5": "Incidences",
         "owner_link_6": "Contracts",
+        "owner_link_7": "Tax Information",
         "user_link_1": "Profile",
         "user_link_2": "Reservations",
         "user_link_3": "History",
@@ -1440,7 +1441,8 @@
                 "name_4": "Supplies",
                 "name_5": "Payments",
                 "name_6": "Incidences",
-                "name_7": "Contract"
+                "name_7": "Contract",
+                "name_8": "Tax Information"
             },
             "btn_logout": "Log Out"
         },
