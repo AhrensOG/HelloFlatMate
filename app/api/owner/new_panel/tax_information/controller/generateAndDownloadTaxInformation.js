@@ -106,7 +106,7 @@ export async function generateAndDownloadTaxInformation(req) {
  * ──────────────────────────────────────────────────────────────── */
 async function fetchPropertyTreeOrThrow(ownerId) {
   const propertyInstance = await Property.findOne({
-    attributes: ["id", "serial", "street", "streetNumber", "floor"],
+    attributes: ["id", "serial", "street", "streetNumber", "floor", "category"],
     where: { ownerId },
     include: [
       {
@@ -221,13 +221,106 @@ function computeMonthlyReport(property, targetYear) {
 
   const rooms = Array.isArray(property.rooms) ? property.rooms : [];
 
-  // 1) FRA GESTION HFM por mes (solo meses con alguna lease en la propiedad)
-  const monthlyMgmtFees = new Array(12).fill(0);
-  // 2) TOTAL RENTAS por mes
-  const monthlyTotals = new Array(12).fill(0);
-  // 3) Filas por habitación
+  // Acumuladores comunes
+  const monthlyTotals = new Array(12).fill(0); // TOTAL RENTAS
+  const monthlyMgmtFees = new Array(12).fill(0); // FRA GESTION HFM
   const roomRows = [];
 
+  // ─────────────────────────────────────────────────────────
+  // RAMA ESPECIAL: HELLO_LANDLORD → solo primer mes (cuota 1)
+  // ─────────────────────────────────────────────────────────
+  if (property.category === "HELLO_LANDLORD") {
+    for (const room of rooms) {
+      const rowValues = new Array(12).fill(0);
+      const amountHF = Number(room.amountHelloflatmate || 0);
+      const orders = Array.isArray(room.leaseOrdersRoom)
+        ? room.leaseOrdersRoom
+        : [];
+
+      for (const order of orders) {
+        const s = parseUTC(order.startDate);
+        if (!s) continue;
+
+        // Solo cuenta si el mes de inicio cae en el año target
+        if (s.getUTCFullYear() !== targetYear) continue;
+        const startMonthIdx = s.getUTCMonth(); // 0..11
+
+        // Sumar pagos APPROVED cuota 1 de esta lease
+        const payments = Array.isArray(order?.client?.rentPayments)
+          ? order.client.rentPayments
+          : [];
+        const firstQuotaApprovedAmount = payments
+          .filter(
+            (p) =>
+              p?.leaseOrderId === order.id &&
+              p?.status === "APPROVED" &&
+              Number(p?.quotaNumber) === 1
+          )
+          .reduce((acc, p) => acc + Number(p.amount || 0), 0);
+
+        // Rentas del mes de inicio
+        rowValues[startMonthIdx] += firstQuotaApprovedAmount;
+
+        // FRA GESTION HFM solo en ese mes de inicio
+        monthlyMgmtFees[startMonthIdx] += amountHF;
+      }
+
+      // Totales
+      for (let i = 0; i < 12; i++) {
+        monthlyTotals[i] += rowValues[i];
+      }
+
+      roomRows.push({
+        roomSerial: room.serial ?? `Room-${room.id}`,
+        months: rowValues,
+        total: rowValues.reduce((a, n) => a + n, 0),
+      });
+    }
+
+    // RENTA NETA MES (aquí “MES” = realmente sólo habrá valores en meses de inicio)
+    const monthlyNet = monthlyTotals.map((v, i) => v - monthlyMgmtFees[i]);
+
+    // Mantenimiento por mes (igual que antes)
+    const monthlyMaintenance = new Array(12).fill(0);
+    const incidences = Array.isArray(property.incidences)
+      ? property.incidences
+      : [];
+    for (const inc of incidences) {
+      const d = inc?.date ? new Date(inc.date) : null;
+      const amt = Number(inc?.amount || 0);
+      if (!d || isNaN(amt)) continue;
+      if (d.getUTCFullYear() !== targetYear) continue;
+      monthlyMaintenance[d.getUTCMonth()] += amt;
+    }
+
+    // RENTA NETA FINAL
+    const monthlyNetFinal = monthlyNet.map((v, i) => v - monthlyMaintenance[i]);
+
+    const totalRentas = monthlyTotals.reduce((a, n) => a + n, 0);
+    const totalGestion = monthlyMgmtFees.reduce((a, n) => a + n, 0);
+    const totalMaintenance = monthlyMaintenance.reduce((a, n) => a + n, 0);
+    const totalNetaMes = monthlyNet.reduce((a, n) => a + n, 0);
+    const totalNetaFinal = monthlyNetFinal.reduce((a, n) => a + n, 0);
+
+    return {
+      months,
+      roomRows,
+      monthlyTotals,
+      monthlyMgmtFees,
+      monthlyNet, // “MES” pero con valores solo en inicios
+      monthlyMaintenance,
+      monthlyNetFinal,
+      totalRentas,
+      totalGestion,
+      totalMaintenance,
+      totalNetaMes,
+      totalNetaFinal,
+    };
+  }
+
+  // ─────────────────────────────────────────────────────────
+  // RAMA GENERAL (no HELLO_LANDLORD) → lógica mensual completa
+  // ─────────────────────────────────────────────────────────
   for (const room of rooms) {
     const rowValues = new Array(12).fill(0);
     const amountHF = Number(room.amountHelloflatmate || 0);
@@ -275,12 +368,9 @@ function computeMonthlyReport(property, targetYear) {
       }
     }
 
-    // Acumular totales por mes y marcar mgmt fee cuando hay cobertura
     for (let i = 0; i < 12; i++) {
       monthlyTotals[i] += rowValues[i];
-      if (roomCoversMonth[i]) {
-        monthlyMgmtFees[i] += amountHF; // solo meses con reserva
-      }
+      if (roomCoversMonth[i]) monthlyMgmtFees[i] += amountHF;
     }
 
     roomRows.push({
@@ -290,10 +380,8 @@ function computeMonthlyReport(property, targetYear) {
     });
   }
 
-  // 4) RENTA NETA MES = Total rentas - Fra gestión
   const monthlyNet = monthlyTotals.map((v, i) => v - monthlyMgmtFees[i]);
 
-  // 5) Mantenimiento mensual (0 si no hay incidencias)
   const monthlyMaintenance = new Array(12).fill(0);
   const incidences = Array.isArray(property.incidences)
     ? property.incidences
@@ -303,10 +391,9 @@ function computeMonthlyReport(property, targetYear) {
     const amt = Number(inc?.amount || 0);
     if (!d || isNaN(amt)) continue;
     if (d.getUTCFullYear() !== targetYear) continue;
-    monthlyMaintenance[d.getUTCMonth()] += amt; // 0..11
+    monthlyMaintenance[d.getUTCMonth()] += amt;
   }
 
-  // 6) RENTA NETA FINAL = RENTA NETA MES - Mantenimiento
   const monthlyNetFinal = monthlyNet.map((v, i) => v - monthlyMaintenance[i]);
 
   const totalRentas = monthlyTotals.reduce((a, n) => a + n, 0);
@@ -318,11 +405,11 @@ function computeMonthlyReport(property, targetYear) {
   return {
     months,
     roomRows,
-    monthlyTotals, // TOTAL RENTAS
-    monthlyMgmtFees, // FRA GESTION HFM (meses con reserva)
-    monthlyNet, // RENTA NETA MES (antes de mantenimiento)
-    monthlyMaintenance, // Mantenimiento por mes
-    monthlyNetFinal, // RENTA NETA final (después de mantenimiento)
+    monthlyTotals,
+    monthlyMgmtFees,
+    monthlyNet,
+    monthlyMaintenance,
+    monthlyNetFinal,
     totalRentas,
     totalGestion,
     totalMaintenance,
