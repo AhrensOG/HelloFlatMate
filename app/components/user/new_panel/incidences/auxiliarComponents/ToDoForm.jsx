@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import axios from "axios";
 import { uploadFiles } from "@/app/firebase/uploadFiles";
 import { useTranslations } from "next-intl";
+import incidenceTemplate from "@/utils/Incidence_templates/incidence";
+import { sendEmail } from "@/app/context/actions";
 
 const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
   const t = useTranslations("user_incidences");
@@ -113,6 +115,43 @@ const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
 
     try {
       await axios.post("/api/to_do/user_panel", dataToSend);
+
+      const orderProp = selectedOrder?.room?.property || {};
+      const address = {
+        street: orderProp.street,
+        streetNumber: orderProp.streetNumber,
+        floor: orderProp.floor,
+      };
+      const roomSerial = selectedOrder?.room?.serial || "";
+
+      const name = client?.name || "";
+      const lastName = client?.lastName || "";
+      const email = client?.email || "";
+
+      const html = incidenceTemplate({
+        name,
+        lastName,
+        email,
+        address,
+        roomSerial,
+        incidentSite: values.incidentSite,
+        incidentType: values.incidentType,
+        preferredTimeSlot: values.preferredTimeSlot,
+        isPresent: !!values.isPresent,
+        emergency: false,
+        clientMessage: values.clientMessage,
+        submittedAt: new Date(),
+      });
+
+      const to = process.env.NEXT_PUBLIC_HFM_MAIL;
+      const subject = `Nueva incidencia: ${values.incidentType} — ${
+        address.street
+      } ${address.streetNumber} ${
+        address.floor ? "P" + address.floor : ""
+      } ${roomSerial?.slice(-2)}`;
+
+      await sendEmail({ to, subject, html });
+
       toast.success(t("toast.success"), { id: toastId });
       await refetch();
       resetForm();
