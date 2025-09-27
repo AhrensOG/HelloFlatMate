@@ -115,6 +115,7 @@
         "link_privacy_policy": "Privacy policy",
         "link_cookies_policy": "Cookies policy",
         "link_terms_and_conditions": "Terms and conditions",
+        "link_legal_notice": "Legal notice",
         "title_tenants": "Tenants",
         "link_how_it_works": "How it works",
         "link_offers": "Offers",
@@ -214,6 +215,44 @@
         "21_desc": "Yes, with at least 2 days' notice and approval from flatmates. For stays longer than two days, they may ask for €5 per day to cover expenses.",
         "22_title": "Are pets allowed?",
         "22_desc": "No, although we love them."
+    },
+    "legal_notice": {
+      "title": "LEGAL NOTICE",
+
+      "sect_1_h2": "ENTITY INFORMATION",
+      "sect_1_p_1": "In compliance with Article 10 of Law 34/2002, of July 11, on Services of the Information Society and Electronic Commerce, HELLO FLAT MATE, S.L. informs you that it is registered in the Commercial Registry of VALENCIA T 9339, L 6621, F 109, S 8, H V 144134, I/A 4(18.01.23), with the following identification data:",
+      "sect_1_ul_li_1": "Company name: HELLO FLAT MATE, S.L.",
+      "sect_1_ul_li_2": "Tax ID (C.I.F.): B98358963",
+      "sect_1_ul_li_3": "Registered office: C/ CAMPOAMOR 8, 1º 46021 - VALENCIA (VALENCIA)",
+      "sect_1_ul_li_4": "Telephone: 601 158 261",
+      "sect_1_ul_li_5": "Email: rooms@helloflatmate.com",
+      "sect_1_ul_li_6": "Website: www.helloflatmate.com",
+      "sect_1_p_2": "All notifications and communications between users and HELLO FLAT MATE, S.L. will be considered effective, for all purposes, when made via postal mail or any of the means detailed above.",
+
+      "sect_2_h2": "TERMS OF ACCESS AND USE",
+      "sect_2_p_1": "This legal notice regulates the use of the website www.helloflatmate.com (hereinafter, THE WEBSITE), owned by HELLO FLAT MATE, S.L.",
+      "sect_2_p_2": "Browsing the HELLO FLAT MATE, S.L. website confers the condition of user and implies full and unreserved acceptance of each and every provision included in this Legal Notice, which may be subject to modifications.",
+      "sect_2_p_3": "The website and its services are free and open access. However, HELLO FLAT MATE, S.L. may condition the use of certain services offered on its website to the prior completion of the corresponding form.",
+      "sect_2_p_4": "All content on the website, such as texts, photographs, graphics, images, icons, technology, software, as well as its design and source codes, constitute a work owned by HELLO FLAT MATE, S.L., and no rights of exploitation over them shall be understood to be transferred to the user beyond what is strictly necessary for the correct use of the website.",
+      "sect_2_p_5": "The user guarantees the authenticity and timeliness of all data communicated to HELLO FLAT MATE, S.L. and shall be solely responsible for any false or inaccurate statements made.",
+      "sect_2_p_6": "The user undertakes to make proper use of the website in accordance with the law, good faith, public order, traffic customs, and this Legal Notice. The user shall be liable to HELLO FLAT MATE, S.L. or third parties for any damages that may be caused as a result of breaching this obligation.",
+
+      "sect_3_h2": "LINK POLICY AND DISCLAIMER",
+      "sect_3_p_1": "HELLO FLAT MATE, S.L. is not responsible for the content of external websites that users may access through links established on THE WEBSITE and declares that under no circumstances will it proceed to examine or exercise any control over the content of other network pages.",
+      "sect_3_p_2": "Likewise, it does not guarantee the technical availability, accuracy, truthfulness, validity, or legality of external sites not owned by it that may be accessed via links.",
+      "sect_3_p_3": "HELLO FLAT MATE, S.L. declares that it has adopted all necessary measures to prevent any damage that may arise for users of THE WEBSITE during browsing. Consequently, HELLO FLAT MATE, S.L. is not liable, under any circumstances, for any damages that users may suffer due to browsing the Internet.",
+
+      "sect_4_h2": "USE OF COOKIES AND STATISTICAL DATA",
+      "sect_4_p_1": "This website may collect data from its visitors through the use of cookies, where personal information related to browsing may be collected. To clearly and precisely know which cookies we use, their purposes, and how you can configure or disable them, please consult our cookies policy.",
+      "sect_4_p_2": "The user has the option to configure their browser so as to be notified of the reception of cookies, and, if desired, prevent them from being installed on their hard drive.",
+
+      "sect_5_h2": "DATA PROTECTION",
+      "sect_5_p": "In the event that personal data is collected on the website, please consult our privacy policy for further information.",
+
+      "sect_6_h2": "DISPUTE RESOLUTION. APPLICABLE LAW AND JURISDICTION",
+      "sect_6_p_1": "These General Terms of Use, as well as the use of the Website, shall be governed by Spanish legislation. For the resolution of any dispute, the parties shall submit to the Courts and Tribunals of the registered office of the website owner.",
+      "sect_6_p_2": "In the event that any provision of these General Terms of Use becomes unenforceable or invalid under applicable law or as a result of a judicial or administrative decision, such unenforceability or invalidity shall not render these General Terms of Use unenforceable or invalid as a whole.",
+      "sect_6_p_3": "In such cases, the company will proceed to modify or replace said provision with another that is valid and enforceable and that, as far as possible, achieves the objectives and purpose of the original provision."
     },
     "pryvacy": {
         "title": "Privacy Policy",

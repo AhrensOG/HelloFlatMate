@@ -116,6 +116,7 @@
         "link_privacy_policy": "Política de privacidad",
         "link_cookies_policy": "Política de cookies",
         "link_terms_and_conditions": "Términos y condiciones",
+        "link_legal_notice": "Aviso legal",
         "title_tenants": "Inquilinos",
         "link_how_it_works": "Cómo funciona",
         "link_clauses": "Cláusulas del contrato",
@@ -216,7 +217,44 @@
         "22_title": "¿Se admiten mascotas?",
         "22_desc": "No, aunque nos encantan."
     },
+    "legal_notice": {
+      "title": "AVISO LEGAL",
 
+      "sect_1_h2": "DATOS DE LA ENTIDAD",
+      "sect_1_p_1": "En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y Comercio Electrónico, HELLO FLAT MATE, S.L. le informa que se encuentra inscrita en el Registro Mercantil de VALENCIA T 9339, L 6621, F 109, S 8, H V 144134, I/A 4(18.01.23), siendo sus datos identificativos los siguientes:",
+      "sect_1_ul_li_1": "Denominación social: HELLO FLAT MATE, S.L.",
+      "sect_1_ul_li_2": "C.I.F.: B98358963",
+      "sect_1_ul_li_3": "Domicilio social: C/ CAMPOAMOR 8, 1º 46021 - VALENCIA (VALENCIA)",
+      "sect_1_ul_li_4": "Teléfono: 601 158 261",
+      "sect_1_ul_li_5": "Correo electrónico: rooms@helloflatmate.com",
+      "sect_1_ul_li_6": "Dominio WEB: www.helloflatmate.com",
+      "sect_1_p_2": "Todas las notificaciones y comunicaciones entre los usuarios y HELLO FLAT MATE, S.L. se considerarán eficaces, a todos los efectos, cuando se realicen a través de correo postal o cualquier otro medio de los detallados anteriormente.",
+
+      "sect_2_h2": "CONDICIONES DE ACCESO Y UTILIZACIÓN",
+      "sect_2_p_1": "El presente aviso legal regula el uso del sitio web www.helloflatmate.com (en adelante, LA WEB), del que es titular HELLO FLAT MATE, S.L.",
+      "sect_2_p_2": "La navegación por la web de HELLO FLAT MATE, S.L. atribuye la condición de usuario de este e implica la aceptación plena y sin reservas de todas y cada una de las disposiciones incluidas en este Aviso Legal, que pueden sufrir modificaciones.",
+      "sect_2_p_3": "El sitio web y sus servicios son de acceso libre y gratuito, no obstante, HELLO FLAT MATE, S.L. condiciona la utilización de algunos de los servicios ofrecidos en su web a la previa cumplimentación del correspondiente formulario.",
+      "sect_2_p_4": "Todos los contenidos del sitio web, como textos, fotografías, gráficos, imágenes, iconos, tecnología, software, así como su diseño y códigos fuente, constituyen una obra cuya propiedad pertenece a HELLO FLAT MATE, S.L., sin que puedan entenderse cedidos al usuario ninguno de los derechos de explotación sobre los mismos más allá de lo estrictamente necesario para el correcto uso de la web.",
+      "sect_2_p_5": "El usuario garantiza la autenticidad y actualidad de todos aquellos datos que comunique a HELLO FLAT MATE, S.L. y será el único responsable de las manifestaciones falsas o inexactas que realice.",
+      "sect_2_p_6": "El usuario se obliga a hacer un uso correcto del sitio web de conformidad con las leyes, la buena fe, el orden público, los usos del tráfico y el presente Aviso Legal. El usuario responderá frente a HELLO FLAT MATE, S.L. o frente a terceros, de cualesquiera daños y perjuicios que pudieran causarse como consecuencia del incumplimiento de dicha obligación.",
+
+      "sect_3_h2": "POLÍTICA DE ENLACES Y EXENCIONES DE RESPONSABILIDADES",
+      "sect_3_p_1": "HELLO FLAT MATE, S.L. no se hace responsable del contenido de las páginas web a las que el usuario pueda acceder a través de los enlaces establecidos en LA WEB y declara que en ningún caso procederá a examinar o ejercitar ningún tipo de control sobre el contenido de otras páginas de la red.",
+      "sect_3_p_2": "Asimismo, tampoco garantizará la disponibilidad técnica, exactitud, veracidad, validez o legalidad de páginas ajenas a su propiedad a las que se pueda acceder por medio de los enlaces.",
+      "sect_3_p_3": "HELLO FLAT MATE, S.L. declara haber adoptado todas las medidas necesarias para evitar cualesquiera daños que, a los usuarios de LA WEB, pudieran derivarse de la navegación por la misma. En consecuencia, HELLO FLAT MATE, S.L. no se hace responsable, en ningún caso, de los eventuales daños que por la navegación por Internet pudiera sufrir el usuario.",
+
+      "sect_4_h2": "USO DE COOKIES Y DATOS ESTADÍSTICOS",
+      "sect_4_p_1": "Esta página web puede recoger datos de sus visitantes por medio del uso de cookies, donde se recabará información personal relacionada con su navegación. Para conocer de manera clara y precisa las cookies que utilizamos, cuáles son sus finalidades y cómo puede configurarlas o deshabilitarlas, consulte nuestra política de cookies.",
+      "sect_4_p_2": "El usuario tiene la posibilidad de configurar su navegador de modo que se le informe de la recepción de cookies, pudiendo, si así lo desea, impedir que sean instaladas en su disco duro.",
+
+      "sect_5_h2": "PROTECCIÓN DE DATOS",
+      "sect_5_p": "En el caso de que en la web se recojan datos de carácter personal, para más información consulte la política de privacidad.",
+
+      "sect_6_h2": "RESOLUCIÓN DE CONTROVERSIAS. LEY APLICABLE Y JURISDICCIÓN",
+      "sect_6_p_1": "Las presentes Condiciones Generales de Uso, así como el uso del Espacio Web, se regirán por la legislación española. Para la resolución de cualquier controversia las partes se someterán a los Juzgados y Tribunales del domicilio social del responsable del sitio web.",
+      "sect_6_p_2": "En el supuesto de que cualquier estipulación de las presentes Condiciones Generales de Uso resultara inexigible o nula en virtud de la legislación aplicable o como consecuencia de una resolución judicial o administrativa, dicha inexigibilidad o nulidad no hará que las presentes Condiciones Generales de Uso resulten inexigibles o nulas en su conjunto.",
+      "sect_6_p_3": "En dichos casos, la empresa procederá a la modificación o sustitución de dicha estipulación por otra que sea válida y exigible y que, en la medida de lo posible, consiga el objetivo y pretensión reflejados en la estipulación original."
+    },
     "pryvacy": {
         "title": "Política de Privacidad",
         "p_1": " En HELLO FLAT MATE, S.L., nos tomamos muy en serio la privacidad y la protección de los datos personales. Esta política describe cómo recopilamos, usamos, almacenamos y compartimos su información de acuerdo con el Reglamento (UE) 2016/679 (Reglamento General de Protección de Datos, RGPD) y la Ley Orgánica 3/2018 (LOPDGDD). Al utilizar nuestros servicios, confirma que ha leído y entendido esta política.",
