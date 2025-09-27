@@ -23,6 +23,13 @@ export default function Auth() {
   const router = useRouter();
   const { state } = useContext(Context);
 
+  const [privacyWithAds, setPrivacyWithAds] = useState(false); // Acepto con publicidad
+  const [privacyWithoutAds, setPrivacyWithoutAds] = useState(false); // Acepto sin publicidad
+
+  const hasConsent = () =>
+    (privacyWithAds || privacyWithoutAds) &&
+    !(privacyWithAds && privacyWithoutAds);
+
   useEffect(() => {
     if (state.user) {
       router.push(redirect || "/");
@@ -106,8 +113,7 @@ export default function Auth() {
         />
       </div>
       <div
-        className={`auth-card flex flex-col mx-3 w-full max-w-xs sm:max-w-none sm:w-1/2 lg:w-1/3 gap-10 items-center font-normal text-base sm:justify-center sm:h-screen`}
-      >
+        className={`auth-card flex flex-col mx-3 w-full max-w-xs sm:max-w-none sm:w-1/2 lg:w-1/3 gap-10 items-center font-normal text-base sm:justify-center sm:h-screen`}>
         <Image
           className="logo-auth sm:block hidden"
           src="/auth/whiteLogo.png"
@@ -145,12 +151,12 @@ export default function Auth() {
           </button> */}
           <button
             type="button"
+            disabled={!hasConsent()}
             onClick={register ? () => openModal("google") : handleLoginGoogle}
             className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
             aria-label={
               register ? "Regístrate con Google" : "Iniciar con Google"
-            }
-          >
+            }>
             <span>
               <Image
                 src="/google-logo.svg"
@@ -176,8 +182,7 @@ export default function Auth() {
             // Formulario de inicio de sesión
             <form
               onSubmit={handleLoginWithEmail}
-              className="flex flex-col gap-4 w-full"
-            >
+              className="flex flex-col gap-4 w-full">
               <input
                 type="email"
                 value={email}
@@ -194,10 +199,72 @@ export default function Auth() {
                 className="border p-2 rounded-md drop-shadow-md"
                 required
               />
+
+              {/* Aviso + checkboxes (LOGIN por email) */}
+              <div className="text-sm text-gray-600 sm:text-white space-y-3">
+                <p>
+                  De conformidad con lo que establece la legislación vigente en
+                  materia de Protección de Datos de Carácter Personal, se le
+                  informa que los datos personales que nos facilite a través de
+                  dicho formulario serán tratados por{" "}
+                  <strong>HELLO FLAT MATE, S.L.</strong>, con la finalidad de
+                  gestionar su alta como usuario registrado. Para más
+                  información consulte la{" "}
+                  <Link
+                    href="/privacy-policy"
+                    target="_blank"
+                    className="text-blue-600 sm:text-white font-semibold underline">
+                    política de privacidad
+                  </Link>
+                  .
+                </p>
+
+                {/* Política de privacidad + publicidad */}
+                <label className="flex items-start gap-2">
+                  <input
+                    type="checkbox"
+                    checked={privacyWithAds}
+                    onChange={() => {
+                      const next = !privacyWithAds;
+                      setPrivacyWithAds(next);
+                      if (next) setPrivacyWithoutAds(false);
+                    }}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    He leído y acepto la política de privacidad de HELLO FLAT
+                    MATE, S.L., <strong>así como el envío de publicidad</strong>
+                    .
+                  </span>
+                </label>
+
+                {/* Política de privacidad sin publicidad */}
+                <label className="flex items-start gap-2">
+                  <input
+                    type="checkbox"
+                    checked={privacyWithoutAds}
+                    onChange={() => {
+                      const next = !privacyWithoutAds;
+                      setPrivacyWithoutAds(next);
+                      if (next) setPrivacyWithAds(false);
+                    }}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    He leído y acepto la política de privacidad de HELLO FLAT
+                    MATE, S.L.,{" "}
+                    <strong>
+                      pero no estoy interesado en recibir publicidad
+                    </strong>
+                    .
+                  </span>
+                </label>
+              </div>
+
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 sm:hover:bg-blue-500 sm:border sm:border-white drop-shadow-md"
-              >
+                disabled={!hasConsent()}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 sm:hover:bg-blue-500 sm:border sm:border-white drop-shadow-md disabled:opacity-60 disabled:cursor-not-allowed">
                 Iniciar Sesión
               </button>
             </form>

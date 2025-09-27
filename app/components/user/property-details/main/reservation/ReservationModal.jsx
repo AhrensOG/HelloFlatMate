@@ -30,8 +30,10 @@ export default function ReservationModal({
   });
   const [dataReservation, setDataReservation] = useState(data);
   const [rentalPeriods, setRentalPeriods] = useState(data.rentalPeriods);
-  const [clausesAccepted, setClausesAccepted] = useState(false);
-  const [clausesReaded, setClausesReaded] = useState(false);
+  const [privacyWithAds, setPrivacyWithAds] = useState(false);
+  const [privacyWithoutAds, setPrivacyWithoutAds] = useState(false);
+  const [contractClausesConfirmed, setContractClausesConfirmed] =
+    useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const calculatePrice = (price, duration) => {
@@ -65,11 +67,20 @@ export default function ReservationModal({
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    if (!clausesAccepted) {
-      toast.info(t("terms_and_conditions"));
+    const privacyOk = privacyWithAds || privacyWithoutAds;
+    if (!privacyOk) {
+      toast.info(
+        "Debes aceptar la política de privacidad (con o sin publicidad)."
+      );
       setIsSubmitting(false);
       return;
     }
+    if (!contractClausesConfirmed) {
+      toast.info("Debes confirmar que has leído las cláusulas del contrato.");
+      setIsSubmitting(false);
+      return;
+    }
+
     if (
       info.startDate === "" ||
       info.endDate === "" ||
@@ -215,10 +226,12 @@ export default function ReservationModal({
           <ReservationForm
             data={data}
             handleReservationSubmit={handleReservationSubmit}
-            clausesAccepted={clausesAccepted}
-            setClausesAccepted={setClausesAccepted}
-            clausesReaded={clausesReaded}
-            setClausesReaded={setClausesReaded}
+            privacyWithAds={privacyWithAds}
+            setPrivacyWithAds={setPrivacyWithAds}
+            privacyWithoutAds={privacyWithoutAds}
+            setPrivacyWithoutAds={setPrivacyWithoutAds}
+            contractClausesConfirmed={contractClausesConfirmed}
+            setContractClausesConfirmed={setContractClausesConfirmed}
             isSubmitting={isSubmitting}
           />
         </div>

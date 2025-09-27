@@ -27,10 +27,12 @@ const validationSchema = yup.object({
 const ReservationForm = ({
   data,
   handleReservationSubmit,
-  clausesAccepted,
-  setClausesAccepted,
-  clausesReaded,
-  setClausesReaded,
+  privacyWithAds,
+  setPrivacyWithAds,
+  privacyWithoutAds,
+  setPrivacyWithoutAds,
+  contractClausesConfirmed,
+  setContractClausesConfirmed,
   isSubmitting,
 }) => {
   return (
@@ -284,46 +286,90 @@ const ReservationForm = ({
             />
           </div>
 
-          {/* Checkbox de términos y condiciones */}
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              checked={clausesAccepted}
-              onChange={() => setClausesAccepted(!clausesAccepted)}
-              className="mr-2 focus:ring-1 focus:ring-blue-300"
-            />
-            <p className="text-sm text-gray-500">
-              Acepto los{" "}
-              <Link
-                href="/terminos-y-condiciones"
-                target="_blank"
-                className="text-blue-500 underline">
-                términos, condiciones{" "}
-              </Link>
-              y
-              <Link
+          {/* --- Texto legal + 3 checkboxes --- */}
+          <div className="text-xs text-gray-600 space-y-3">
+            <p>
+              De acuerdo a lo establecido en la legislación vigente en materia
+              de Protección de Datos de Carácter Personal, Reglamento 2016/679
+              General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018 de
+              5 de diciembre, de protección de datos de carácter personal y
+              garantía de los derechos digitales (LOPDGDD), se le informa que
+              los datos personales que nos facilite a través de dicho formulario
+              serán tratados por <strong>HELLO FLAT MATE, S.L.</strong>, con la
+              finalidad de gestionar su reserva. Para más información consulte
+              la{" "}
+              <a
                 href="/privacy-policy"
                 target="_blank"
-                className="text-blue-500 underline">
-                {" "}
-                politicas de privacidad
-              </Link>
+                className="text-blue-600 underline">
+                política de privacidad
+              </a>
+              .
             </p>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              checked={clausesReaded}
-              onChange={() => setClausesReaded(!clausesReaded)}
-              className="mr-2 focus:ring-1 focus:ring-blue-300"
-            />
-            <p className="text-sm text-gray-500">
-              Confirmo que he leído las cláusulas del contrato
-            </p>
+
+            {/* Política de privacidad + publicidad */}
+            <label className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                checked={privacyWithAds}
+                onChange={() => {
+                  setPrivacyWithAds(!privacyWithAds);
+                  if (!privacyWithAds) setPrivacyWithoutAds(false);
+                }}
+                className="mt-0.5"
+              />
+              <span>
+                He leído y acepto la política de privacidad de HELLO FLAT MATE,
+                S.L., <strong>así como el envío de publicidad</strong>.
+              </span>
+            </label>
+
+            {/* Política de privacidad sin publicidad */}
+            <label className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                checked={privacyWithoutAds}
+                onChange={() => {
+                  setPrivacyWithoutAds(!privacyWithoutAds);
+                  if (!privacyWithoutAds) setPrivacyWithAds(false);
+                }}
+                className="mt-0.5"
+              />
+              <span>
+                He leído y acepto la política de privacidad de HELLO FLAT MATE,
+                S.L.,{" "}
+                <strong>pero no estoy interesado en recibir publicidad</strong>.
+              </span>
+            </label>
+
+            {/* Confirmo que he leído las cláusulas del contrato */}
+            <label className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                checked={contractClausesConfirmed}
+                onChange={() =>
+                  setContractClausesConfirmed(!contractClausesConfirmed)
+                }
+                className="mt-0.5"
+              />
+              <span>
+                Confirmo que he leído las{" "}
+                <strong>cláusulas del contrato</strong>.
+              </span>
+            </label>
           </div>
 
           {/* Botón de reservación */}
-          <ReservationButton disabled={isSubmitting} callback={handleSubmit} />
+          <ReservationButton
+            disabled={
+              isSubmitting ||
+              !(
+                contractClausesConfirmed &&
+                (privacyWithAds || privacyWithoutAds)
+              )
+            }
+            callback={handleSubmit}
+          />
         </Form>
       )}
     </Formik>
