@@ -2,7 +2,7 @@ import { Incidence } from "@/db/init";
 import { NextResponse } from "next/server";
 
 export async function editIncidence(data) {
-    const { id, amount, date, url, type, title, description, status, paymentId, paymentDate, toDoId } = data;
+    const { id, amount, date, url, extraUrl, type, title, description, status, paymentId, paymentDate, toDoId } = data;
 
     if (!id) {
         return NextResponse.json({ error: "Missing ID" }, { status: 400 });
@@ -20,6 +20,7 @@ export async function editIncidence(data) {
                 amount: sanitize(amount),
                 date: sanitize(date),
                 url: sanitize(url),
+                extraUrl: sanitize(extraUrl),
                 type: sanitize(type),
                 title: sanitize(title),
                 description: sanitize(description),

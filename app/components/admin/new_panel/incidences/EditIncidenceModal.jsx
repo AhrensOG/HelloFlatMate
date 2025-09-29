@@ -8,18 +8,23 @@ import { uploadFiles } from "@/app/firebase/uploadFiles";
 const EditIncidenceModal = ({ onClose, incidence, toDos, mutate }) => {
       const [toDoSearch, setToDoSearch] = useState("");
       const [filteredToDos, setFilteredToDos] = useState([]);
-
     const handleSubmit = async (values) => {
         const toastId = toast.loading("Guardando cambios...");
         try {
             let files = [];
+            let extraFiles = [];
             if (values.bill) {
                 files = await uploadFiles([values.bill], "Incidencias");
+            }
+
+            if (values.extraDocument) {
+                extraFiles = await uploadFiles([values.extraDocument], "Incidencias");
             }
 
             await axios.put(`/api/admin/incidences`, {
                 ...values,
                 url: files.length > 0 ? files[0].url : values.url,
+                extraUrl: extraFiles.length > 0 ? extraFiles[0].url : values.extraUrl,
             });
             await mutate();
             toast.success("Incidencia actualizada correctamente.", {
@@ -57,7 +62,6 @@ const EditIncidenceModal = ({ onClose, incidence, toDos, mutate }) => {
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-            onClick={onClose}
         >
             <div
                 className="relative bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[95%] overflow-y-auto"
@@ -82,6 +86,7 @@ const EditIncidenceModal = ({ onClose, incidence, toDos, mutate }) => {
                         amount: incidence.amount || "",
                         date: incidence.date ? incidence.date.slice(0, 10) : "",
                         url: incidence.url || "",
+                        extraUrl: incidence.extraUrl || "",
                         bill: null,
                         status: incidence.status || "",
                         paymentId: incidence.paymentId || "",
@@ -277,6 +282,38 @@ const EditIncidenceModal = ({ onClose, incidence, toDos, mutate }) => {
                                     onChange={(event) =>
                                         setFieldValue(
                                             "bill",
+                                            event.currentTarget.files[0]
+                                        )
+                                    }
+                                />
+                            </div>
+
+                             {/* Extra URL y File */}
+                            <div className="flex flex-col space-y-2">
+                                <label className="text-xs font-light">
+                                    Documento extra actual
+                                </label>
+                                {values.extraUrl ? (
+                                    <Link
+                                        href={values.extraUrl}
+                                        target="_blank"
+                                        className="text-xs text-blue-500 underline"
+                                    >
+                                        Ver documento extra actual
+                                    </Link>
+                                ) : (
+                                    "Sin factura"
+                                )}
+                                <label className="text-xs font-light">
+                                    Reemplazar documento extra
+                                </label>
+                                <input
+                                    type="file"
+                                    name="extraDocument"
+                                    className="outline-none border p-2 w-full"
+                                    onChange={(event) =>
+                                        setFieldValue(
+                                            "extraDocument",
                                             event.currentTarget.files[0]
                                         )
                                     }

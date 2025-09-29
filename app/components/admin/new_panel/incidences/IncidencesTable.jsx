@@ -94,6 +94,9 @@ const IncidencesTable = ({ incidences, loading, error, onDelete, onEdit }) => {
                         Factura
                     </th>
                     <th className="border p-2 text-center font-semibold text-gray-700">
+                        Doc extra
+                    </th>
+                    <th className="border p-2 text-center font-semibold text-gray-700">
                         Acciones
                     </th>
                 </tr>
@@ -133,6 +136,20 @@ const IncidencesTable = ({ incidences, loading, error, onDelete, onEdit }) => {
                             {incidence.url ? (
                                 <a
                                     href={incidence.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 underline"
+                                >
+                                    Ver archivo
+                                </a>
+                            ) : (
+                                "-"
+                            )}
+                        </td>
+                        <td className="border p-2 text-center">
+                            {incidence.extraUrl ? (
+                                <a
+                                    href={incidence.extraUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-blue-600 underline"

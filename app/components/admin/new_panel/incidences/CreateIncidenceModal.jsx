@@ -70,13 +70,19 @@ const CreateIncidenceModal = ({ owners, properties, toDos, onClose, mutate }) =>
         const toastId = toast.loading("Creando incidencia...");
         try {
             let files = [];
+            let extraFiles = [];
             if (values.bill) {
                 files = await uploadFiles([values.bill], "Incidencias");
+            }
+
+            if (values.extraDocument) {
+                extraFiles = await uploadFiles([values.extraDocument], "Incidencias");
             }
 
             await axios.post("/api/admin/incidences", {
                 ...values, 
                 url: files.length > 0 ? files[0].url : null,
+                extraUrl: extraFiles.length > 0 ? extraFiles[0].url : null,
             });
             await mutate();
             toast.success("Incidencia creada correctamente", {
@@ -93,7 +99,6 @@ const CreateIncidenceModal = ({ owners, properties, toDos, onClose, mutate }) =>
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-            onClick={onClose}
         >
             <div
                 className="relative bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[95%] overflow-y-auto"
@@ -341,6 +346,24 @@ const CreateIncidenceModal = ({ owners, properties, toDos, onClose, mutate }) =>
                                     onChange={(event) =>
                                         setFieldValue(
                                             "bill",
+                                            event.currentTarget.files[0]
+                                        )
+                                    }
+                                    className="outline-none border p-2 w-full"
+                                />
+                            </div>
+
+                             {/* Archivo extra */}
+                            <div>
+                                <label className="text-xs font-light">
+                                    Documento extra
+                                </label>
+                                <input
+                                    type="file"
+                                    name="extraDocument"
+                                    onChange={(event) =>
+                                        setFieldValue(
+                                            "extraDocument",
                                             event.currentTarget.files[0]
                                         )
                                     }

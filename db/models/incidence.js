@@ -25,6 +25,10 @@ const incidenceInit = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            extraUrl: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             type: {
                 type: DataTypes.ENUM("OTHER", "MAINTENANCE"),
                 allowNull: false,
@@ -34,7 +38,7 @@ const incidenceInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             description: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: true,
             },
             status: {
