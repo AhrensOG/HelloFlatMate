@@ -57,19 +57,44 @@ const PaymentIncidenceCard = ({ incidence, onPayClick }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <span className={`text-sm px-3 py-1 rounded-full font-bold ${bg}`}>
-          {incidence.status === "APPROVED"
-            ? t("payment_card.status.approved")
-            : t("payment_card.status.pending")}
-        </span>
-        {incidence.status === "PENDING" && (
-          <button
-            className="text-white bg-blue-600 hover:bg-blue-700 text-sm font-semibold px-3 py-1 rounded shadow"
-            onClick={() => onPayClick?.(incidence)}>
-            {t("payment_card.pay")}
-          </button>
-        )}
+      {/* Columna derecha con status + botones + links */}
+      <div className="flex flex-col items-end gap-2">
+        <div className="flex items-center gap-3">
+          <span className={`text-sm px-3 py-1 rounded font-bold ${bg}`}>
+            {incidence.status === "APPROVED"
+              ? t("payment_card.status.approved")
+              : t("payment_card.status.pending")}
+          </span>
+          {incidence.status === "PENDING" && (
+            <button
+              className="text-white bg-blue-600 hover:bg-blue-700 text-sm font-semibold px-3 py-1 rounded shadow"
+              onClick={() => onPayClick?.(incidence)}>
+              {t("payment_card.pay")}
+            </button>
+          )}
+        </div>
+
+        {/* Links externos debajo del status */}
+        <div className="flex flex-col items-end text-sm pr-0.5">
+          {incidence.url && (
+            <Link
+              href={incidence.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline">
+              {t("payment_card.view_bill")}
+            </Link>
+          )}
+          {incidence.extraUrl && (
+            <Link
+              href={incidence.extraUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline">
+              {t("payment_card.view_extraUrl")}
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

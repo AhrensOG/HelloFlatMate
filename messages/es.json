@@ -1692,7 +1692,9 @@
               "pending": "Pendiente",
               "approved": "Pagado"
             },
-            "view_incidence": "Ver detalles del mantenimiento #"
+            "view_incidence": "Ver detalles del mantenimiento #",
+            "view_bill": "Ver factura",
+            "view_extraUrl": "Ver Doc extra"
           },
           "not_pend_pay": "No hay pagos pendientes.",
           "not_approved_pay": "No hay pagos realizados."

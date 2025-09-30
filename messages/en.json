@@ -1679,7 +1679,9 @@
               "pending": "Pending",
               "approved": "Paid"
             },
-            "view_incidence": "View detials of maintenance #"
+            "view_incidence": "View detials of maintenance #",
+            "view_bill": "View bill",
+            "view_extraUrl": "View extra doc"
           },
           "not_pend_pay": "No pending payments.",
           "not_approved_pay": "No paid payments."
