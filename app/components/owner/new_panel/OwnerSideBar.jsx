@@ -26,11 +26,11 @@ const OwnerSidebar = () => {
     }
 
     const links = [
-        {
-            name: t("links.name_1"),
-            href: "/pages/owner/dashboard",
-            icon: <Squares2X2Icon className="size-6" />,
-        },
+        // {
+        //     name: t("links.name_1"),
+        //     href: "/pages/owner/dashboard",
+        //     icon: <Squares2X2Icon className="size-6" />,
+        // },
         {
             name: t("links.name_2"),
             href: "/pages/owner/profile",

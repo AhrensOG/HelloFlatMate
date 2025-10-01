@@ -52,6 +52,27 @@ const MyTenants = () => {
   const isCurrentTenant = (order) =>
     new Date(order.startDate) <= now && new Date(order.endDate) >= now;
 
+  const formatDate = (dateLike) =>
+    new Intl.DateTimeFormat(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }).format(new Date(dateLike));
+
+  const LeasePeriodBadge = ({ start, end }) => (
+    <div
+      className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs md:text-sm text-blue-800"
+      aria-label="Lease period"
+      title={`${formatDate(start)} – ${formatDate(end)}`}>
+      <span className="select-none" aria-hidden>
+        📅
+      </span>
+      <span className="font-medium">{formatDate(start)}</span>
+      <span>–</span>
+      <span className="font-medium">{formatDate(end)}</span>
+    </div>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -141,8 +162,18 @@ const MyTenants = () => {
                           <div
                             className="bg-white p-3 border rounded cursor-pointer shadow-sm"
                             onClick={() => toggleRoom(room.serial)}>
-                            <h3 className="text-sm md:text-base font-medium text-hfm-dark">
-                              {t("room")} {room.serial}
+                            <h3 className="text-sm md:text-base font-medium text-hfm-dark flex flex-col md:flex-row md:items-center md:gap-2">
+                              <span>
+                                {t("room")} {room.serial}
+                              </span>
+
+                              {/* Mostrar período del primer tenant según tab activo */}
+                              {tenantsToShow.length > 0 && (
+                                <LeasePeriodBadge
+                                  start={tenantsToShow[0].startDate}
+                                  end={tenantsToShow[0].endDate}
+                                />
+                              )}
                             </h3>
                           </div>
                           <AnimatePresence>
