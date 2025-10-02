@@ -60,11 +60,11 @@ const OwnerSidebar = () => {
           href: "/pages/owner/contracts",
           icon: <TbContract className="size-6" />,
         },
-        {
-          name: t("links.name_8"),
-          href: "/pages/owner/tax-information",
-          icon: <DocumentTextIcon className="size-6" />,
-        },
+        // {
+        //   name: t("links.name_8"),
+        //   href: "/pages/owner/tax-information",
+        //   icon: <DocumentTextIcon className="size-6" />,
+        // },
         {
             name: "Chats",
             href: "/pages/owner/chats",
