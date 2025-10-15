@@ -25,7 +25,7 @@ export async function POST(request) {
       id,
       originalPdfUrl,
       ownerSignature,
-      hfmSignature = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/Firmas%2FhelloflatmateSignature.png?alt=media&token=d2049b5a-fccf-4407-bfcd-cd5d73f462a2",
+      hfmSignature = "https://firebasestorage.googleapis.com/v0/b/helloflatprueba.appspot.com/o/HFMSignature%2FnewSignature.png?alt=media&token=4c2b452e-fc91-4a19-91e9-3f3d6ae84958",
       ownerFdoData,
       hfmFdoData,
       startDate,
