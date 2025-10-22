@@ -99,7 +99,8 @@ const PaymentsV2 = () => {
         t("months.11"),
         t("months.12"),
       ];
-      return months[date.getMonth()] + " " + date.getFullYear();
+      // ⬇️ CAMBIO: Usar getUTCMonth y getUTCFullYear para ignorar la zona horaria local
+      return months[date.getUTCMonth()] + " " + date.getUTCFullYear();
     };
 
     const getSupplyName = (supplyType) => {
@@ -147,9 +148,12 @@ const PaymentsV2 = () => {
         }
 
         const startDate = new Date(matchedOrder.startDate);
-        const paymentMonth = new Date(startDate);
-        paymentMonth.setMonth(
-          startDate.getUTCMonth() + payment.quotaNumber - 1
+        const paymentMonth = new Date(
+          Date.UTC(
+            startDate.getUTCFullYear(),
+            startDate.getUTCMonth() + payment.quotaNumber - 1,
+            1 // Usar el día 1 para evitar problemas (ej. 31 de Nov no existe)
+          )
         );
 
         paymentsRaw.push({
@@ -173,7 +177,7 @@ const PaymentsV2 = () => {
         });
       }
 
-      // Supply Payments
+      // Supply Payments (sin cambios en esta sección)
       for (const sup of state.user?.supplies || []) {
         if (!normalizedStatus.includes(sup.status)) continue;
 
@@ -214,6 +218,7 @@ const PaymentsV2 = () => {
         });
       }
 
+      // El resto de la función (grouping y sorting) no necesita cambios
       const groupedByLease = new Map();
 
       for (const payment of paymentsRaw) {
@@ -300,6 +305,16 @@ const PaymentsV2 = () => {
   }, [state.user, t, t_supply]);
 
   const groupPaymentsBySerialAndLeaseOrder = (payments) => {
+    const createLocalDateFromUTC = (dateString) => {
+      if (!dateString) return new Date();
+      const utcDate = new Date(dateString);
+      return new Date(
+        utcDate.getUTCFullYear(),
+        utcDate.getUTCMonth(),
+        utcDate.getUTCDate()
+      );
+    };
+
     return payments.reduce((groups, payment) => {
       const serial = payment.order?.room?.serial || "Sin Orden";
       const leaseOrder = payment.order;
@@ -307,8 +322,10 @@ const PaymentsV2 = () => {
       if (!serial || !leaseOrder) return groups;
 
       const leaseKey = `${formatDateToDDMMYYYY(
-        leaseOrder.startDate
-      )} - ${formatDateToDDMMYYYY(leaseOrder.endDate)} ${leaseOrder.status === "FINISHED" ? "(Periodo anterior)" : ""}`;
+        createLocalDateFromUTC(leaseOrder.startDate)
+      )} - ${formatDateToDDMMYYYY(
+        createLocalDateFromUTC(leaseOrder.endDate)
+      )} ${leaseOrder.status === "FINISHED" ? "(Periodo anterior)" : ""}`;
 
       if (!groups[serial]) {
         groups[serial] = {};
