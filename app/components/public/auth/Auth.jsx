@@ -153,7 +153,7 @@ export default function Auth() {
             type="button"
             disabled={!hasConsent()}
             onClick={register ? () => openModal("google") : handleLoginGoogle}
-            className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth"
+            className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth disabled:cursor-not-allowed"
             aria-label={
               register ? "Regístrate con Google" : "Iniciar con Google"
             }>
@@ -167,6 +167,67 @@ export default function Auth() {
             </span>
             {register ? "Regístrate con Google" : "Iniciar con Google"}
           </button>
+
+          {register && (
+            <div className="text-sm text-gray-600 sm:text-white space-y-3">
+              <p>
+                De conformidad con lo que establece la legislación vigente en
+                materia de Protección de Datos de Carácter Personal, se le
+                informa que los datos personales que nos facilite a través de
+                dicho formulario serán tratados por{" "}
+                <strong>HELLO FLAT MATE, S.L.</strong>, con la finalidad de
+                gestionar su alta como usuario registrado. Para más información
+                consulte la{" "}
+                <Link
+                  href="/privacy-policy"
+                  target="_blank"
+                  className="text-blue-600 sm:text-white font-semibold underline">
+                  política de privacidad
+                </Link>
+                .
+              </p>
+
+              {/* Política de privacidad + publicidad */}
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={privacyWithAds}
+                  onChange={() => {
+                    const next = !privacyWithAds;
+                    setPrivacyWithAds(next);
+                    if (next) setPrivacyWithoutAds(false);
+                  }}
+                  className="mt-0.5"
+                />
+                <span>
+                  He leído y acepto la política de privacidad de HELLO FLAT
+                  MATE, S.L., <strong>así como el envío de publicidad</strong>.
+                </span>
+              </label>
+
+              {/* Política de privacidad sin publicidad */}
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={privacyWithoutAds}
+                  onChange={() => {
+                    const next = !privacyWithoutAds;
+                    setPrivacyWithoutAds(next);
+                    if (next) setPrivacyWithAds(false);
+                  }}
+                  className="mt-0.5"
+                />
+                <span>
+                  He leído y acepto la política de privacidad de HELLO FLAT
+                  MATE, S.L.,{" "}
+                  <strong>
+                    pero no estoy interesado en recibir publicidad
+                  </strong>
+                  .
+                </span>
+              </label>
+            </div>
+          )}
 
           {!register && (
             <span className="flex items-center text-sm font-thin w-full sm:text-white">
