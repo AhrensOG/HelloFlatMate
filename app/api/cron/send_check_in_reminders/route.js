@@ -51,11 +51,11 @@ export async function GET() {
 
       const html = checkInReminderTemplate();
 
-      // await sendMailFunction({
-      //   to: client.email,
-      //   subject: "Recordatorio de Check-In - helloflatmate",
-      //   html,
-      // });
+      await sendMailFunction({
+        to: client.email,
+        subject: "Recordatorio de Check-In - helloflatmate",
+        html,
+      });
 
       enviados.push({
         email: client.email,

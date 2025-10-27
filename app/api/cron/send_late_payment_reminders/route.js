@@ -104,8 +104,8 @@ export async function GET() {
 
       if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
 
-      const nextMonth = addMonthsToDate(now, 1);
-      const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
+      // const nextMonth = addMonthsToDate(now, 1);
+      const expectedQuota = differenceInMonths(now, leaseStart) + 1;
 
       const pendingRent = client.rentPayments.find(
         (p) =>
@@ -120,11 +120,11 @@ export async function GET() {
 
         // Descomentar para enviar correos reales
 
-        // await sendMailFunction({
-        //   to: client.email,
-        //   subject,
-        //   html,
-        // });
+        await sendMailFunction({
+          to: client.email,
+          subject,
+          html,
+        });
 
         resultados.push({
           emailDestino: client.email,
@@ -135,6 +135,28 @@ export async function GET() {
         });
       }
     }
+
+    // --- INICIO DE LA MODIFICACIÓN ---
+    if (resultados.length > 0) {
+      const adminEmail = "rooms.hfm@gmail.com";
+      const subject = "Pendiente de pago - helloFlatmate";
+      const html = latePaymentReminderTemplate();
+
+      try {
+        // Descomentar para enviar correo real al admin
+        await sendMailFunction({
+          to: adminEmail,
+          subject,
+          html,
+        });
+      } catch (adminEmailError) {
+        console.error(
+          `Error al enviar el email de resumen al admin:`,
+          adminEmailError
+        );
+      }
+    }
+    // --- FIN DE LA MODIFICACIÓN ---
 
     return NextResponse.json(
       {
