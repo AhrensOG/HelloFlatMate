@@ -40,30 +40,30 @@ export async function GET() {
 
     const enviados = [];
 
-    // for (const lease of leaseOrders) {
-    //   const diffDays = differenceInDays(new Date(lease.startDate), now);
+    for (const lease of leaseOrders) {
+      const diffDays = differenceInDays(new Date(lease.startDate), now);
 
-    //   if (!REMINDER_DAYS.includes(diffDays)) continue;
-    //   if (client.arrivalDate && client.arrivalTime) continue;
+      if (!REMINDER_DAYS.includes(diffDays)) continue;
+      if (client.arrivalDate && client.arrivalTime) continue;
 
-    //   const client = lease.client;
-    //   if (!client || !client.email) continue;
+      const client = lease.client;
+      if (!client || !client.email) continue;
 
-    //   const html = checkInReminderTemplate();
+      const html = checkInReminderTemplate();
 
-    //   await sendMailFunction({
-    //     to: client.email,
-    //     subject: "Recordatorio de Check-In - helloflatmate",
-    //     html,
-    //   });
+      // await sendMailFunction({
+      //   to: client.email,
+      //   subject: "Recordatorio de Check-In - helloflatmate",
+      //   html,
+      // });
 
-    //   enviados.push({
-    //     email: client.email,
-    //     leaseId: lease.id,
-    //     startDate: lease.startDate,
-    //     diffDays,
-    //   });
-    // }
+      enviados.push({
+        email: client.email,
+        leaseId: lease.id,
+        startDate: lease.startDate,
+        diffDays,
+      });
+    }
 
     return NextResponse.json(
       { enviados, total: enviados.length },

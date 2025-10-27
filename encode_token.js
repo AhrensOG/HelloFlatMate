@@ -15,11 +15,11 @@ function encodedToken() {
     hmac.update(secretPassword);
     const hash = hmac.digest("hex");
 
-    console.log("🔑 Hash generado:", hash);
+    // console.log("🔑 Hash generado:", hash);
 
     // Formatear el token
     const token = Buffer.from(`${secretPassword}:${hash}`).toString("base64");
-    console.log("✅ Token generado:", token);
+    // console.log("✅ Token generado:", token);
 
     return token;
 }

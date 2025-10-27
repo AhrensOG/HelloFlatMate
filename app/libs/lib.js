@@ -7,12 +7,12 @@ const validateHMACToken = (token, password, secretKey) => {
 
         // Decodificar el token en Base64
         const decoded = Buffer.from(token, "base64").toString("utf-8");
-        console.log("📝 Token decodificado:", decoded);
+        // console.log("📝 Token decodificado:", decoded);
 
         const [receivedPassword, hash] = decoded.split(":");
 
-        console.log("🔑 Password recibida:", receivedPassword);
-        console.log("🔑 Hash recibido:", hash);
+        console.log("🔑 Password recibida:", "----------------------------------------");
+        // console.log("🔑 Hash recibido:", "----------------------------------------");
 
         // Validar que el password coincide
         if (receivedPassword !== password) {
@@ -25,7 +25,7 @@ const validateHMACToken = (token, password, secretKey) => {
         hmac.update(password);
         const expectedHash = hmac.digest("hex");
 
-        console.log("🔑 Hash esperado:", expectedHash);
+        // console.log("🔑 Hash esperado:", expectedHash);
 
         // Comparar hashes
         return hash === expectedHash;
