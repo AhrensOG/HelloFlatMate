@@ -17,6 +17,30 @@ const TYPE_LABELS = {
   OTHER: "Otro",
 };
 
+const STATUS_ORDER = {
+  PENDING: 1,
+  IN_PROGRESS: 2,
+  COMPLETED: 3,
+  CANCELLED: 4,
+};
+
+const getRowClasses = (status) => {
+  const baseClasses = "transition-colors cursor-pointer";
+  switch (status) {
+    case "PENDING":
+      return `${baseClasses} bg-yellow-100 hover:bg-yellow-200`; // Amarillo
+    case "IN_PROGRESS":
+      return `${baseClasses} bg-blue-200 hover:bg-blue-300`; // Azul
+    case "COMPLETED":
+      return `${baseClasses} bg-green-100 hover:bg-green-200`; // Verde
+    case "CANCELLED":
+      return `${baseClasses} bg-gray-100 hover:bg-gray-200`; // Gris
+    default:
+      // Fallback para estados desconocidos o nulos
+      return `${baseClasses} hover:bg-gray-100 even:bg-gray-50`;
+  }
+};
+
 const MaintenanceTable = ({ tasks, loading, error, onDelete, onEdit }) => {
   const [selectedTask, setSelectedTask] = useState(null);
 
@@ -59,6 +83,12 @@ const MaintenanceTable = ({ tasks, loading, error, onDelete, onEdit }) => {
     );
   }
 
+  const sortedTasks = [...tasks].sort((a, b) => {
+    const orderA = STATUS_ORDER[a.status] || 99;
+    const orderB = STATUS_ORDER[b.status] || 99;
+    return orderA - orderB;
+  });
+
   return (
     <>
       <table className="min-w-full border-collapse">
@@ -100,10 +130,10 @@ const MaintenanceTable = ({ tasks, loading, error, onDelete, onEdit }) => {
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task) => (
+          {sortedTasks.map((task) => (
             <tr
               key={task.id}
-              className="hover:bg-gray-100 even:bg-gray-50 transition-colors cursor-pointer"
+              className={getRowClasses(task.status)}
               onClick={() => setSelectedTask(task)}>
               <td className="border p-2 text-center text-gray-700">
                 {task.id}
