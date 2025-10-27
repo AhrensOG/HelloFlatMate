@@ -117,6 +117,7 @@ const ContractDetailV2 = () => {
             day: "numeric",
             month: "long",
             year: "numeric",
+            timeZone: "UTC",
         }).format(date);
     };
 
