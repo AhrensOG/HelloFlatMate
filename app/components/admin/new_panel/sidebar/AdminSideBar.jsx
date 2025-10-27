@@ -21,10 +21,21 @@ import Image from "next/image";
 import { logOut } from "@/app/firebase/logOut";
 import { useRouter } from "next/navigation";
 import { TbContract } from "react-icons/tb";
+import useSWR from "swr";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const AdminSideBar = ({ onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
+  const { data: pendingCount } = useSWR(
+    "/api/admin/to_do/admin_notifications",
+    fetcher,
+    {
+      refreshInterval: 5 * 60 * 1000,
+    }
+  );
 
   const menuItems = [
     {
@@ -64,10 +75,6 @@ const AdminSideBar = ({ onSelect }) => {
       name: "Contratos",
       icon: <TbContract className="w-6 h-6" />,
     },
-    // {
-    //   name: "Cerrar sesión",
-    //   icon: <ArrowRightStartOnRectangleIcon className="w-6 h-6" />,
-    // },
   ];
 
   return (
@@ -75,9 +82,9 @@ const AdminSideBar = ({ onSelect }) => {
       <motion.div
         className="h-screen bg-white shadow-lg flex flex-col overflow-hidden border-r drop-shadow-xl rounded-r-xl relative min-w-14 max-w-[200px]"
         initial={{ width: "56px" }}
-        animate={{ width: isOpen ? "200px" : "56px" }} // Suavizar transición
+        animate={{ width: isOpen ? "200px" : "56px" }}
         exit={{ width: "56px" }}
-        transition={{ duration: 0.4, ease: "easeInOut" }} // Transición suave
+        transition={{ duration: 0.4, ease: "easeInOut" }}
         onMouseOver={() => setIsOpen(true)}
         onMouseOut={() => setIsOpen(false)}>
         {/* Logo Fixed */}
@@ -102,11 +109,16 @@ const AdminSideBar = ({ onSelect }) => {
               className="flex items-center px-4 py-3 rounded-lg cursor-pointer hover:bg-slate-50 transition-all duration-300 group"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.2 }}
               onClick={() => onSelect(item.name)}>
               {/* Icon */}
-              <div className="w-6 h-6 text-[#440cac] transition-colors duration-300">
+              <div className="relative w-6 h-6 text-[#440cac] transition-colors duration-300">
                 {item.icon}
+
+                {item.name === "Mantenimiento" && pendingCount > 0 && (
+                  <span className="absolute -top-2 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                    {pendingCount > 100 ? "99+" : pendingCount}
+                  </span>
+                )}
               </div>
 
               {/* Text */}
