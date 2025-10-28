@@ -135,8 +135,8 @@ export async function GET() {
 
       if (isNaN(leaseStart.getTime()) || isNaN(leaseEnd.getTime())) continue;
 
-      // const nextMonth = addMonthsToDate(now, 1);
-      const expectedQuota = differenceInMonths(now, leaseStart) + 1;
+      const nextMonth = addMonthsToDate(now, 1);
+      const expectedQuota = differenceInMonths(nextMonth, leaseStart) + 1;
       const totalDuration = differenceInMonths(leaseEnd, leaseStart) + 1;
 
       const pendingRent = client.rentPayments.find(
