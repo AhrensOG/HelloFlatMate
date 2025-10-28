@@ -184,11 +184,11 @@ export async function GET() {
 
         // Descomentar para enviar correos reales
 
-        await sendMailFunction({
-          to: client.email,
-          subject,
-          html,
-        });
+        // await sendMailFunction({
+        //   to: client.email,
+        //   subject,
+        //   html,
+        // });
 
         // Agregar para testing (ver en respuesta JSON)
         resultados.push({
@@ -209,11 +209,11 @@ export async function GET() {
 
       try {
         // Descomentar para enviar correo real al admin
-        await sendMailFunction({
-          to: adminEmail,
-          subject,
-          html,
-        });
+        // await sendMailFunction({
+        //   to: adminEmail,
+        //   subject,
+        //   html,
+        // });
       } catch (adminEmailError) {
         console.error(
           `Error al enviar el email de resumen al admin:`,
