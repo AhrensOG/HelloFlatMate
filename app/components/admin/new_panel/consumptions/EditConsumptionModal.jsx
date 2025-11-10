@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { uploadFiles } from "@/app/firebase/uploadFiles";
 
 const modalStyles = {
   overlay:
@@ -14,6 +15,7 @@ const modalStyles = {
   title: "text-lg font-semibold pb-2",
   input: "outline-none border p-2 w-full rounded",
   select: "outline-none border p-2 w-full rounded",
+  fileInput: "outline-none border p-2 w-full rounded cursor-pointer",
   buttonContainer: "flex justify-end gap-2 mt-4",
   saveButton: "bg-blue-500 text-white p-2 rounded hover:bg-blue-600",
   cancelButton: "bg-gray-400 text-white p-2 rounded hover:bg-gray-500",
@@ -36,6 +38,16 @@ export default function EditConsumptionModal({
   const handleSubmit = async (values) => {
     const toastId = toast.loading("Guardando...");
     try {
+      let fileUrl = consumption.url;
+
+      if (values.bill) {
+        toast.loading("Subiendo nueva factura...", { id: toastId });
+        const files = await uploadFiles([values.bill], "Consumos");
+        if (files.length > 0) {
+          fileUrl = files[0].url;
+        }
+      }
+
       await axios.put(`/api/admin/consumptions`, {
         amount: values.price,
         period: values.period,
@@ -43,6 +55,7 @@ export default function EditConsumptionModal({
         id: consumption.id,
         startDate: values.startDate,
         endDate: values.endDate,
+        url: fileUrl,
       });
       await mutate();
       await onClose();
@@ -78,10 +91,11 @@ export default function EditConsumptionModal({
             period: consumption.period,
             startDate: formatDate(consumption.startDate),
             endDate: formatDate(consumption.endDate),
+            bill: null,
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
-          {() => (
+          {({ setFieldValue }) => (
             <Form>
               <div className="mb-4">
                 <label className="text-xs font-light">Usuario</label>
@@ -157,6 +171,34 @@ export default function EditConsumptionModal({
                   type="date"
                   name="endDate"
                   className={modalStyles.input}
+                />
+              </div>
+
+              {/* <-- 4. AÑADIR CAMPO DE ARCHIVO --> */}
+              <div className="mb-4">
+                <label className="text-xs font-light">Factura Actual</label>
+                {consumption.url ? (
+                  <a
+                    href={consumption.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 text-sm underline block mb-2">
+                    Ver factura actual
+                  </a>
+                ) : (
+                  <p className="text-sm text-gray-500 mb-2">
+                    No hay factura subida.
+                  </p>
+                )}
+                <label className="text-xs font-light">
+                  Reemplazar Factura (Opcional)
+                </label>
+                <input
+                  type="file"
+                  className={modalStyles.fileInput}
+                  onChange={(event) =>
+                    setFieldValue("bill", event.currentTarget.files[0])
+                  }
                 />
               </div>
 
