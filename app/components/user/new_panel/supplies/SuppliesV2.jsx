@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
-import { FaWater, FaBolt, FaFire, FaWifi, FaFileInvoice } from "react-icons/fa";
+import { FaWater, FaBolt, FaFire, FaFileInvoice } from "react-icons/fa";
 import { Context } from "@/app/context/GlobalContext";
 import formatDateToDDMMYYYY from "@/app/components/admin/new_panel/utils/formatDate";
 import Link from "next/link";
@@ -11,7 +11,6 @@ const ICONS = {
   WATER: <FaWater className="text-blue-500" />,
   ELECTRICITY: <FaBolt className="text-yellow-500" />,
   GAS: <FaFire className="text-red-500" />,
-  INTERNET: <FaWifi className="text-green-500" />,
   GENERAL_SUPPLIES: <FaFileInvoice className="text-gray-500" />,
 };
 
@@ -25,7 +24,6 @@ const SuppliesV2 = () => {
     WATER: t("water"),
     ELECTRICITY: t("electricity"),
     GAS: t("gas"),
-    INTERNET: t("internet"),
     GENERAL_SUPPLIES: t("general_supplies"),
     OTHER: t("others"),
   };
@@ -45,6 +43,9 @@ const SuppliesV2 = () => {
         startDate,
         endDate,
       } = consumption;
+
+      if (type === "INTERNET") return;
+
       const leaseOrder = user.leaseOrdersRoom.find(
         (order) => order.id === leaseOrderRoomId
       );
@@ -69,9 +70,9 @@ const SuppliesV2 = () => {
     });
 
     user.supplies.forEach((supply) => {
-      if (["GENERAL_SUPPLIES", "INTERNET"].includes(supply.type)) {
+      if (["GENERAL_SUPPLIES"].includes(supply.type)) {
         const leaseOrder = user.leaseOrdersRoom.find(
-          (order) => order.id === supply.leaseOrderId
+          (order) => order.id === supply.leaseOrderId && supply.status === "PAID"
         );
         if (!leaseOrder) return;
 
@@ -113,84 +114,87 @@ const SuppliesV2 = () => {
               {t("code")} {periodKey}
             </h2>
 
-            {Object.keys(data.supplies).map((period) => (
-              <div key={period} className="mb-8 p-6 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-[#440cac] mb-4">
-                  {t("period")} {period}
-                </h3>
+            {Object.keys(data.supplies)
+              .sort()
+              .map((period) => (
+                <div key={period} className="mb-8 p-6 bg-gray-50 rounded-lg">
+                  <h3 className="font-semibold text-[#440cac] mb-4">
+                    {t("period")} {period}
+                  </h3>
 
-                <h4 className="font-semibold mb-2">{t("h4")}</h4>
-                {data.supplies[period].length > 0 ? (
-                  data.supplies[period].map((supply, idx) => (
-                    <p key={idx} className="text-sm font-medium">
-                      {supply.name}: €{supply.amount.toFixed(2)}
-                    </p>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-500">{t("p_2")}</p>
-                )}
+                  <h4 className="font-semibold mb-2">{t("h4")}</h4>
+                  {data.supplies[period].length > 0 ? (
+                    data.supplies[period].map((supply, idx) => (
+                      <p key={idx} className="text-sm font-medium">
+                        {supply.name}: €{supply.amount.toFixed(2)}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-500">{t("p_2")}</p>
+                  )}
 
-                <h4 className="font-semibold mt-6 mb-2">{t("h4_2")}</h4>
-                {data.consumptions[period]?.length > 0 ? (
-                  data.consumptions[period].map((consumption, idx) => (
-                    <div
-                      key={idx}
-                      className="p-4 border rounded-lg flex items-center gap-4 bg-white shadow-sm mb-2">
-                      {ICONS[consumption.type] || (
-                        <FaFileInvoice className="text-gray-400" />
-                      )}
-                      <div>
-                        <p className="text-sm font-semibold">
-                          {LABELS[consumption.type]}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {t("from")}{" "}
-                          {formatDateToDDMMYYYY(consumption.startDate)} -{" "}
-                          {t("to")} {formatDateToDDMMYYYY(consumption.endDate)}
-                        </p>
-                        <p className="font-bold text-[#440cac]">
-                          €{consumption.amount.toFixed(2)}
-                        </p>
-                        {consumption.url && (
-                          <Link
-                            href={consumption.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 text-sm underline">
-                            {t("show_bill")}
-                          </Link>
+                  <h4 className="font-semibold mt-6 mb-2">{t("h4_2")}</h4>
+                  {data.consumptions[period]?.length > 0 ? (
+                    data.consumptions[period].map((consumption, idx) => (
+                      <div
+                        key={idx}
+                        className="p-4 border rounded-lg flex items-center gap-4 bg-white shadow-sm mb-2">
+                        {ICONS[consumption.type] || (
+                          <FaFileInvoice className="text-gray-400" />
                         )}
+                        <div>
+                          <p className="text-sm font-semibold">
+                            {LABELS[consumption.type]}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {t("from")}{" "}
+                            {formatDateToDDMMYYYY(consumption.startDate)} -{" "}
+                            {t("to")}{" "}
+                            {formatDateToDDMMYYYY(consumption.endDate)}
+                          </p>
+                          <p className="font-bold text-[#440cac]">
+                            €{consumption.amount.toFixed(2)}
+                          </p>
+                          {consumption.url && (
+                            <Link
+                              href={consumption.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 text-sm underline">
+                              {t("show_bill")}
+                            </Link>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500">{t("p_3")}</p>
-                )}
+                    ))
+                  ) : (
+                    <p className="text-gray-500">{t("p_3")}</p>
+                  )}
 
-                <h4 className="font-semibold mt-6 mb-2">{t("h4_3")}</h4>
-                {data.supplies[period].map((supply) => {
-                  const totalConsumption =
-                    data.consumptions[period]
-                      ?.filter(
-                        (c) =>
-                          (c.type === "INTERNET" &&
-                            supply.type === "INTERNET") ||
-                          (c.type !== "INTERNET" &&
-                            supply.type === "GENERAL_SUPPLIES")
-                      )
-                      .reduce((acc, curr) => acc + curr.amount, 0) || 0;
+                  <h4 className="font-semibold mt-6 mb-2">{t("h4_3")}</h4>
+                  {data.supplies[period].map((supply) => {
+                    const totalConsumption =
+                      data.consumptions[period]
+                        ?.filter(
+                          (c) =>
+                            (c.type === "INTERNET" &&
+                              supply.type === "INTERNET") ||
+                            (c.type !== "INTERNET" &&
+                              supply.type === "GENERAL_SUPPLIES")
+                        )
+                        .reduce((acc, curr) => acc + curr.amount, 0) || 0;
 
-                  return (
-                    <p
-                      key={supply.name}
-                      className="text-sm font-semibold text-[#440cac]">
-                      {supply.name}: €
-                      {(supply.amount - totalConsumption).toFixed(2)}
-                    </p>
-                  );
-                })}
-              </div>
-            ))}
+                    return (
+                      <p
+                        key={supply.name}
+                        className="text-sm font-semibold text-[#440cac]">
+                        {supply.name}: €
+                        {(supply.amount - totalConsumption).toFixed(2)}
+                      </p>
+                    );
+                  })}
+                </div>
+              ))}
           </motion.div>
         ))
       ) : (
