@@ -5,10 +5,11 @@ export default async function pdfBuilder(
   clientSignatureUrl,
   ownerSignatureUrl,
   contractText,
+  hfmData,
   userData
 ) {
   try {
-    // Crear un nuevo documento PDF
+    // ... (Creación de PDF, fuentes y descarga de firmas - sin cambios)
     const pdfDoc = await PDFDocument.create();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -34,22 +35,17 @@ export default async function pdfBuilder(
     const clientSignatureImage = await pdfDoc.embedPng(clientSignatureBuffer);
     const ownerSignatureImage = await pdfDoc.embedPng(ownerSignatureBuffer);
 
-    // Tamaño de las firmas
-    const signatureWidth = 150;
-    const signatureHeight = 75;
-
-    // Añadir el contenido del contrato
+    const signatureWidth = 130;
+    const signatureHeight = 65;
     const { width, height } = page.getSize();
-    const margin = 50;
+    const margin = 40;
     let yPosition = height - margin - 20;
-    const maxWidth = width - 2 * margin; // Ancho máximo del texto
-    const fontSize = 12;
-    const lineHeight = fontSize * 1.2;
+    const maxWidth = width - 2 * margin;
+    const fontSize = 9;
+    const lineHeight = fontSize * 1.1;
+    const signatureSectionHeight = signatureHeight + 80;
 
-    // Altura necesaria para las firmas y datos del usuario
-    const signatureSectionHeight = signatureHeight + 100; // Espacio ajustado para firmas y userData
-
-    // Función para dividir el texto en líneas que se ajusten al ancho máximo
+    // ... (Función splitTextIntoLines - sin cambios)
     const splitTextIntoLines = (text, maxWidth, fontSize, font) => {
       const words = text.split(" ");
       let lines = [];
@@ -89,6 +85,7 @@ export default async function pdfBuilder(
         color: rgb(0, 0, 0),
       });
 
+      // --- Firma ARRENDADORA (Derecha - Empresa/HFM) ---
       page.drawImage(ownerSignatureImage, {
         x: width - margin - signatureWidth,
         y: margin + 60,
@@ -104,50 +101,102 @@ export default async function pdfBuilder(
         color: rgb(0, 0, 0),
       });
 
-      // Añadir los datos de userData si existen
+      // --- MODIFICADO: Añadir datos de userData (Izquierda - Cliente) ---
       if (userData) {
-        let yUserData = margin + 10; // Añadir espacio adicional entre las firmas y los datos
+        let yData = margin + 10;
 
         if (userData.IP) {
           page.drawText(`IP: ${userData.IP}`, {
-            x: margin,
-            y: yUserData,
+            x: margin, // Lado izquierdo
+            y: yData,
             size: fontSize,
             font: font,
             color: rgb(0, 0, 0),
           });
-          yUserData -= lineHeight;
+          yData -= lineHeight;
         }
 
         if (userData.device) {
           page.drawText(`Dispositivo: ${userData.device}`, {
-            x: margin,
-            y: yUserData,
+            x: margin, // Lado izquierdo
+            y: yData,
             size: fontSize,
             font: font,
             color: rgb(0, 0, 0),
           });
-          yUserData -= lineHeight;
+          yData -= lineHeight;
         }
 
         if (userData.browserName && userData.browserVersion) {
           page.drawText(
             `Navegador: ${userData.browserName} ${userData.browserVersion}`,
             {
-              x: margin,
-              y: yUserData,
+              x: margin, // Lado izquierdo
+              y: yData,
               size: fontSize,
               font: font,
               color: rgb(0, 0, 0),
             }
           );
-          yUserData -= lineHeight;
+          yData -= lineHeight;
         }
 
         if (userData.OS) {
           page.drawText(`SO: ${userData.OS}`, {
-            x: margin,
-            y: yUserData,
+            x: margin, // Lado izquierdo
+            y: yData,
+            size: fontSize,
+            font: font,
+            color: rgb(0, 0, 0),
+          });
+        }
+      }
+
+      // --- MODIFICADO: Añadir datos de hfmData (Derecha - Empresa) ---
+      if (hfmData) {
+        let yData = margin + 10;
+        const xDataRight = width - margin - signatureWidth;
+
+        if (hfmData.IP) {
+          page.drawText(`IP: ${hfmData.IP}`, {
+            x: xDataRight, // Lado derecho
+            y: yData,
+            size: fontSize,
+            font: font,
+            color: rgb(0, 0, 0),
+          });
+          yData -= lineHeight;
+        }
+
+        if (hfmData.device) {
+          page.drawText(`Dispositivo: ${hfmData.device}`, {
+            x: xDataRight, // Lado derecho
+            y: yData,
+            size: fontSize,
+            font: font,
+            color: rgb(0, 0, 0),
+          });
+          yData -= lineHeight;
+        }
+
+        if (hfmData.browserName && hfmData.browserVersion) {
+          page.drawText(
+            `Navegador: ${hfmData.browserName} ${hfmData.browserVersion}`,
+            {
+              x: xDataRight, // Lado derecho
+              y: yData,
+              size: fontSize,
+              font: font,
+              color: rgb(0, 0, 0),
+            }
+          );
+          yData -= lineHeight;
+        }
+
+        if (hfmData.OS) {
+          page.drawText(`SO: ${hfmData.OS}`, {
+            x: xDataRight, // Lado derecho
+            y: yData,
             size: fontSize,
             font: font,
             color: rgb(0, 0, 0),

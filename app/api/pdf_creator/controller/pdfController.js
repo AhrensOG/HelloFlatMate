@@ -18,7 +18,9 @@ export async function handleGetRequest(request) {
   const forwardedFor = request.headers.get("x-forwarded-for");
   const clientIp = forwardedFor
     ? forwardedFor.split(",")[0] // Si hay múltiples IPs, toma la primera
-    : request.headers.get("x-real-ip") || request.socket?.remoteAddress || "IP no disponible";
+    : request.headers.get("x-real-ip") ||
+      request.socket?.remoteAddress ||
+      "IP no disponible";
 
   // Utilizar UAParser para obtener los detalles del dispositivo, navegador y sistema operativo
   const parser = new UAParser();
@@ -35,6 +37,14 @@ export async function handleGetRequest(request) {
     browserName: browserName,
     browserVersion: browserVersion,
     OS: os,
+  };
+
+  const hfmData = {
+    IP: "149.50.146.96",
+    device: device,
+    browserName: browserName,
+    browserVersion: browserVersion,
+    OS: "Ubuntu",
   };
 
   // Lógica existente para obtener los valores y generar el PDF
@@ -66,6 +76,7 @@ export async function handleGetRequest(request) {
       clientSignatureUrl,
       ownerSignatureUrl,
       contractText,
+      hfmData,
       userData
     );
 
