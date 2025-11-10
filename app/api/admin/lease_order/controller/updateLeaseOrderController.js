@@ -66,7 +66,7 @@ export async function updateStatusLeaseOrder(data) {
         const address = {
           street: property?.street,
           streetNumber: property?.streetNumber,
-          floor: property?.floor,
+          door: property?.door || '',
         }
 
         if (data.action === "PENDING") {

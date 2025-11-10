@@ -25,7 +25,7 @@ const preReservationTemplate = (
     Hola ${name} ${lastName} (${email}),
   </p>
   <p>
-    Tu solicitud para el alojamiento en Calle ${address.street} ${address.streetNumber} P${address.floor} ${getLastTwoDigits(serial)} para las fechas <strong>${startDate} - ${endDate}</strong> por un precio de <strong>${price}€</strong> ha sido enviada. La revisamos y en breve contactaremos contigo.
+    Tu solicitud para el alojamiento en Calle ${address.street} ${address.streetNumber} P${address.door} ${getLastTwoDigits(serial)} para las fechas <strong>${startDate} - ${endDate}</strong> por un precio de <strong>${price}€</strong> ha sido enviada. La revisamos y en breve contactaremos contigo.
   </p>
   <p>
     ¡Gracias por tu paciencia!

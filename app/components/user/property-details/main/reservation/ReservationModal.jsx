@@ -117,7 +117,7 @@ export default function ReservationModal({
       const address = {
         street: reservation.propertyInfo?.street,
         streetNumber: reservation.propertyInfo?.streetNumber,
-        floor: reservation.propertyInfo?.floor,
+        door: reservation.propertyInfo?.door || '',
       };
       const emailData = {
         to: reservation.user?.email,
