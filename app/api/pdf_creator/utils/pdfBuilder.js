@@ -9,20 +9,17 @@ export default async function pdfBuilder(
   userData
 ) {
   try {
-    // ... (Creación de PDF, fuentes y descarga de firmas - sin cambios)
     const pdfDoc = await PDFDocument.create();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     let page = pdfDoc.addPage();
 
-    // Descargar las imágenes de las firmas
     const [clientSignatureResponse, ownerSignatureResponse] = await Promise.all(
       [
         axios.get(clientSignatureUrl, { responseType: "arraybuffer" }),
         axios.get(ownerSignatureUrl, { responseType: "arraybuffer" }),
       ]
     );
-
     const clientSignatureBuffer = Buffer.from(
       clientSignatureResponse.data,
       "binary"
@@ -31,30 +28,30 @@ export default async function pdfBuilder(
       ownerSignatureResponse.data,
       "binary"
     );
-
     const clientSignatureImage = await pdfDoc.embedPng(clientSignatureBuffer);
     const ownerSignatureImage = await pdfDoc.embedPng(ownerSignatureBuffer);
 
     const signatureWidth = 130;
     const signatureHeight = 65;
     const { width, height } = page.getSize();
-    const margin = 40;
-    let yPosition = height - margin - 20;
+    const margin = 50;
+    let yPosition = height - margin - 10;
     const maxWidth = width - 2 * margin;
     const fontSize = 9;
-    const lineHeight = fontSize * 1.1;
-    const signatureSectionHeight = signatureHeight + 80;
 
-    // ... (Función splitTextIntoLines - sin cambios)
+    const lineHeight = fontSize * 1.1;
+
+    const emptyLineSpacing = fontSize * 0.8;
+
+    const signatureSectionHeight = signatureHeight + 70;
+
     const splitTextIntoLines = (text, maxWidth, fontSize, font) => {
       const words = text.split(" ");
       let lines = [];
       let currentLine = "";
-
       for (const word of words) {
         const testLine = currentLine + word + " ";
         const testLineWidth = font.widthOfTextAtSize(testLine, fontSize);
-
         if (testLineWidth > maxWidth) {
           lines.push(currentLine.trim());
           currentLine = word + " ";
@@ -62,37 +59,30 @@ export default async function pdfBuilder(
           currentLine = testLine;
         }
       }
-
       lines.push(currentLine.trim());
       return lines;
     };
 
-    // Función para añadir las firmas y los datos de userData (si existen) a la página actual
     const addSignaturesAndUserDataToPage = () => {
-      // Añadir las firmas
       page.drawImage(clientSignatureImage, {
         x: margin,
-        y: margin + 60, // Ajustado para dejar más espacio
+        y: margin + 60,
         width: signatureWidth,
         height: signatureHeight,
       });
-
       page.drawText("Firma ARRENDATARIA", {
-        x: margin + 40,
-        y: margin + 40, // Ajustado para dejar más espacio
+        x: margin + 10,
+        y: margin + 40,
         size: fontSize,
         font: font,
         color: rgb(0, 0, 0),
       });
-
-      // --- Firma ARRENDADORA (Derecha - Empresa/HFM) ---
       page.drawImage(ownerSignatureImage, {
         x: width - margin - signatureWidth,
         y: margin + 60,
         width: signatureWidth,
         height: signatureHeight,
       });
-
       page.drawText("Firma ARRENDADORA", {
         x: width - margin - signatureWidth + 20,
         y: margin + 40,
@@ -100,14 +90,11 @@ export default async function pdfBuilder(
         font: font,
         color: rgb(0, 0, 0),
       });
-
-      // --- MODIFICADO: Añadir datos de userData (Izquierda - Cliente) ---
       if (userData) {
-        let yData = margin + 10;
-
+        let yData = margin + 20;
         if (userData.IP) {
           page.drawText(`IP: ${userData.IP}`, {
-            x: margin, // Lado izquierdo
+            x: margin,
             y: yData,
             size: fontSize,
             font: font,
@@ -115,10 +102,9 @@ export default async function pdfBuilder(
           });
           yData -= lineHeight;
         }
-
         if (userData.device) {
           page.drawText(`Dispositivo: ${userData.device}`, {
-            x: margin, // Lado izquierdo
+            x: margin,
             y: yData,
             size: fontSize,
             font: font,
@@ -126,12 +112,11 @@ export default async function pdfBuilder(
           });
           yData -= lineHeight;
         }
-
         if (userData.browserName && userData.browserVersion) {
           page.drawText(
             `Navegador: ${userData.browserName} ${userData.browserVersion}`,
             {
-              x: margin, // Lado izquierdo
+              x: margin,
               y: yData,
               size: fontSize,
               font: font,
@@ -140,10 +125,9 @@ export default async function pdfBuilder(
           );
           yData -= lineHeight;
         }
-
         if (userData.OS) {
           page.drawText(`SO: ${userData.OS}`, {
-            x: margin, // Lado izquierdo
+            x: margin,
             y: yData,
             size: fontSize,
             font: font,
@@ -151,15 +135,12 @@ export default async function pdfBuilder(
           });
         }
       }
-
-      // --- MODIFICADO: Añadir datos de hfmData (Derecha - Empresa) ---
       if (hfmData) {
-        let yData = margin + 10;
+        let yData = margin + 20;
         const xDataRight = width - margin - signatureWidth;
-
         if (hfmData.IP) {
           page.drawText(`IP: ${hfmData.IP}`, {
-            x: xDataRight, // Lado derecho
+            x: xDataRight,
             y: yData,
             size: fontSize,
             font: font,
@@ -167,10 +148,9 @@ export default async function pdfBuilder(
           });
           yData -= lineHeight;
         }
-
         if (hfmData.device) {
           page.drawText(`Dispositivo: ${hfmData.device}`, {
-            x: xDataRight, // Lado derecho
+            x: xDataRight,
             y: yData,
             size: fontSize,
             font: font,
@@ -178,12 +158,11 @@ export default async function pdfBuilder(
           });
           yData -= lineHeight;
         }
-
         if (hfmData.browserName && hfmData.browserVersion) {
           page.drawText(
             `Navegador: ${hfmData.browserName} ${hfmData.browserVersion}`,
             {
-              x: xDataRight, // Lado derecho
+              x: xDataRight,
               y: yData,
               size: fontSize,
               font: font,
@@ -192,10 +171,9 @@ export default async function pdfBuilder(
           );
           yData -= lineHeight;
         }
-
         if (hfmData.OS) {
           page.drawText(`SO: ${hfmData.OS}`, {
-            x: xDataRight, // Lado derecho
+            x: xDataRight,
             y: yData,
             size: fontSize,
             font: font,
@@ -205,15 +183,26 @@ export default async function pdfBuilder(
       }
     };
 
-    // Añadir el contenido línea por línea, reservando espacio para las firmas y los datos
     const lines = contractText.split("\n");
 
     for (const line of lines) {
-      let isTitle = line.startsWith("#"); // Suponiendo que los títulos comienzan con '#'
-      let isListItem = line.startsWith("-"); // Suponiendo que los elementos de lista comienzan con '-'
+      if (line.trim() === "") {
+        if (yPosition < margin + emptyLineSpacing + signatureSectionHeight) {
+          addSignaturesAndUserDataToPage();
+          page = pdfDoc.addPage();
+          yPosition = page.getHeight() - margin - 20;
+        }
+        yPosition -= emptyLineSpacing;
+        continue;
+      }
+
+      let isTitle = line.startsWith("#");
+      let isListItem = line.startsWith("-");
       let currentFont = isTitle ? boldFont : font;
       let currentFontSize = isTitle ? fontSize + 2 : fontSize;
-      let text = isListItem ? `• ${line.slice(1).trim()}` : line;
+      let text = isListItem
+        ? `• ${line.slice(1).trim()}`
+        : line.replace("#", "").trim();
 
       const wrappedLines = splitTextIntoLines(
         text,
@@ -222,27 +211,72 @@ export default async function pdfBuilder(
         currentFont
       );
 
-      for (const wrappedLine of wrappedLines) {
-        // Reservar espacio para las firmas y datos si se está cerca del final de la página
+      wrappedLines.forEach((wrappedLine, index) => {
+        const isLastLineOfParagraph = index === wrappedLines.length - 1;
+
         if (yPosition < margin + lineHeight + signatureSectionHeight) {
-          addSignaturesAndUserDataToPage(); // Añadir firmas y datos a la página actual antes de crear una nueva
+          addSignaturesAndUserDataToPage();
           page = pdfDoc.addPage();
           yPosition = page.getHeight() - margin - 20;
         }
 
-        // Dibujar el texto en la página
-        page.drawText(wrappedLine, {
-          x: margin,
-          y: yPosition,
-          size: currentFontSize,
-          font: currentFont,
-          color: rgb(0, 0, 0),
-        });
+        if (isTitle || isListItem || isLastLineOfParagraph) {
+          page.drawText(wrappedLine, {
+            x: margin,
+            y: yPosition,
+            size: currentFontSize,
+            font: currentFont,
+            color: rgb(0, 0, 0),
+          });
+        } else {
+          const words = wrappedLine.split(" ");
+          const numWords = words.length;
+          const numGaps = numWords - 1;
+
+          if (numGaps <= 0) {
+            page.drawText(wrappedLine, {
+              x: margin,
+              y: yPosition,
+              size: currentFontSize,
+              font: currentFont,
+              color: rgb(0, 0, 0),
+            });
+          } else {
+            let totalWordWidth = 0;
+            words.forEach((word) => {
+              totalWordWidth += currentFont.widthOfTextAtSize(
+                word,
+                currentFontSize
+              );
+            });
+
+            const remainingSpace = maxWidth - totalWordWidth;
+            const spacePerGap = remainingSpace / numGaps;
+
+            let currentX = margin;
+            words.forEach((word) => {
+              page.drawText(word, {
+                x: currentX,
+                y: yPosition,
+                size: currentFontSize,
+                font: currentFont,
+                color: rgb(0, 0, 0),
+              });
+              currentX +=
+                currentFont.widthOfTextAtSize(word, currentFontSize) +
+                spacePerGap;
+            });
+          }
+        }
+
         yPosition -= lineHeight;
+      });
+
+      if (isTitle) {
+        yPosition -= lineHeight * 0.5;
       }
     }
 
-    // Añadir las firmas y los datos de userData a la última página
     addSignaturesAndUserDataToPage();
 
     const pdfBytes = await pdfDoc.save();

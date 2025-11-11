@@ -61,7 +61,7 @@ const helloroomContractTemplate = ({
   El incumplimiento reiterado de la obligación de pago o notificación del justificante del pago en el periodo fijado será motivo de resolución del contrato, dando derecho al arrendador a solicitar el desahucio, siendo por cuenta del ARRENDATARIO los gastos que estas acciones originen.\n
   El ARRENDATARIO es conocedor y asume que en caso de impago de las rentas deberá abandonar la vivienda, perdiendo las cantidades entregadas en concepto de fianza así como suministros de agua, luz, gas e internet.\n
   Del mismo modo, para el caso de que el arrendatario incumpla el plazo de pago de la renta, el ARRENDADOR podrá sancionar al ARRENDATARIO por dicho incumplimiento con 10€ por cada día de retraso en el pago.\n
-  \n
+
   El ARRENDATARIO estará obligado a abonar junto a la renta del último mes de contrato, 50 € para la limpieza profunda de la vivienda. No obstante, el ARRENDATARIO deberá dejar la habitación, así como las zonas comunes totalmente limpias y sin enseres personales.\n
   En ese sentido, el ARRENDATARIO se responsabiliza solidariamente junto a sus compañeros a dejar la vivienda completamente limpia. En caso de que la vivienda no quede en las condiciones establecidas se descontará del depósito la cantidad de horas extra que se haya invertido en la limpieza de ésta.\n
   \n
@@ -70,15 +70,15 @@ const helloroomContractTemplate = ({
   Un depósito de TRESCIENTOS EUROS (300 €) en concepto de FIANZA. Este importe será devuelto entre 30 y 45 días tras la finalización del contrato, por parte del ARRENDADOR al ARRENDATARIO, mediante transferencia bancaria y una vez revisado que la vivienda se encuentra en perfecto estado y se hayan liquidado todos los gastos de suministros.\n
   \n
   El ARRENDATARIO correrá con los gastos bancarios que en su caso se devenguen con la devolución de la fianza, y en especial aquellos derivados del uso de otro método de devolución especial (Western Unión, Ria, MoneyGram…etc.).\n
-  \n
+
   Para el caso de que se encuentren desperfectos en la revisión que en su día se efectúe, así como recibos impagados por parte del ARRENDATARIO, el ARRENDADOR podrá deducir dichos importes de la cantidad a devolver del antes mencionado depósito.\n
-  \n
+
   La cantidad de DOSCIENTOS EUROS (200 €) en concepto de suministros de agua y luz por cada período de CINCO MESES de contrato. Una vez transcurrido dicho periodo, se calculará el importe exacto a abonar por parte del ARRENDATARIO en concepto de suministros, ajustando el importe abonado con el consumo real efectuado por el arrendatario.\n
-  \n
+
   En caso de que los gastos de suministros hayan sido superiores al importe abonado de 200 €, estas cantidades serán repercutidas al ARRENDATARIO por parte del ARRENDADOR.\n
-  \n
+
   La cantidad de OCHENTA EUROS (80 €) en concepto de TARIFA PLANA de internet por los primeros cinco meses de contrato.\n
-  \n
+
   Para los contratos de 10 meses, a final de enero, junto a la renta de febrero, se hará otra aportación para los siguientes 5 meses de contrato para los suministros y wifi.\n
   \n
   SEXTA. – DERECHO DE ACCESO A LA VIVIENDA DEL ARRENDADOR.\n
@@ -142,57 +142,57 @@ const helloroomContractTemplate = ({
   DECIMOSÉPTIMA. – SUMISIÓN.\n
   Los contratantes se someten expresamente a los Juzgados y Tribunales de la ciudad de Valencia para todas aquellas cuestiones litigiosas que pudieran derivarse del presente contrato, por ser el lugar donde se encuentra la habitación arrendada.\n
   \n
-  \n
+
   ANEXO I – NORMAS DE CONVIVENCIA\n
-  \n
+
   La parte arrendataria afirma que ha sido informada y se someterá durante toda la vigencia del contrato a las normas establecidas por la comunidad de propietarios, especialmente las relativas a la convivencia vecinal.\n
-  \n
+
   El arrendatario deberá tener especial cuidado con los ruidos, a cualquier hora:\n
-  \n
+
   En particular se establece que «se consideran actividades no tolerables» acciones como «gritar, vociferar o emplear un tono excesivamente alto de la voz humana o la actividad directa de las personas, movimiento de muebles y/o enseres, etc». Entra dentro de esta categoría usar aparatos e instrumentos musicales o acústicos, radio, televisión, cuando causen molestias.\n
-  \n
+
   Asimismo, se considera una actividad no tolerable «usar electrodomésticos o maquinaria susceptibles de producir ruidos» molestos; se pone el ejemplo de un taladro. Por último, se añade también «la posesión de animales sin adoptar las medidas necesarias para evitar que los ruidos producidos por éstos ocasionen molestias a los vecinos». El texto subraya que se consideran «especialmente gravosos» estos comportamientos cuando tengan lugar entre las 22.00 y las 8.00 horas.\n
-  \n
+
   También deberá cumplir y respetar las normas internas de convivencia razonable que sean decididas por la mayoría de los arrendatarios de la vivienda, entre las que se incluye el cumplimiento de los turnos de limpieza de zonas comunes, baños y cocina, bajar la basura y el resto de las tareas domésticas básicas.\n
-  \n
+
   Queda prohibida expresamente la tenencia de cualquier tipo de animal o mascota en la vivienda.\n
-  \n
+
   El arrendamiento de la habitación tiene incluido el uso de las zonas comunes de la vivienda. Se establecen como normas de utilización de zonas comunes de la vivienda las siguientes:\n
-  \n
+
   Uso de los cuartos de baño, cocina y sala de estar: se podrá utilizar en cualquier horario respetando en todo momento las necesidades de utilización del resto de usuarios.\n
-  \n
+
   El arrendatario acepta de forma expresa la prohibición de fumar dentro de cualquier dependencia de la vivienda, así como el consumo de sustancias estupefacientes. En caso de que se denuncie esta circunstancia por parte del resto de arrendatarios de la vivienda o de los vecinos, quedará el arrendador facultado para resolver el presente contrato con pérdida de las cantidades previamente abonadas en concepto de fianza y suministros abonadas por el arrendatario.\n
-  \n
+
   Además, tampoco se podrá llevar a cabo ningún tipo de fiesta, cena o comida multitudinaria en la vivienda. Máximo se admiten 3 invitados a la vez, entre todos los compañeros del piso.\n
-  \n
+
   Para el caso de que esta circunstancia sea denunciada por el resto de los arrendatarios de la vivienda o de los vecinos, quedará facultado el arrendador para resolver el presente contrato con la pérdida de la fianza abonada por el arrendatario:\n
-  \n
+
   Primer aviso por molestias vecinales (0€)\n
   Segundo aviso (200€) ampliación de fianza.\n
   Tercer aviso expulsión de la vivienda con pérdida de las aportaciones de fianza, suministros y wifi.\n
-  \n
+
   El arrendatario da su consentimiento expreso de poder compartir las zonas comunes de la vivienda con personas de distinto género, etnia, nacionalidad o religión.\n
-  \n
+
   Se hablará con educación y respeto o se penalizará con 100€ las faltas de respeto, insultos, etc al arrendador, a la agencia, a los trabajadores de mantenimiento y limpieza, o a los propios compañeros.\n
-  \n
+
   El arrendatario no podrá hacer uso de las habitaciones de la vivienda que no se encuentren arrendadas, siendo que para el caso de que efectivamente lo haga, podrá ser detraído el 100% de la cantidad entregada en concepto de fianza.\n
-  \n
+
   Queda terminantemente prohibido el encendido de velas, candelas, incienso y cualquier otro material que arda y pueda incendiar la habitación o el piso.\n
-  \n
+
   El arrendatario se obliga a estar en el grupo de Whatsapp del piso mientras resida en el piso.\n
-  \n
+
   Visitas-Se puede recibir visitas en el piso siempre y cuando se informe a los compañeros y a la agencia a través del grupo de Whatsapp y los compañeros estén de acuerdo. La duración de la estancia es de máximo 3 noches y no pueden coincidir más de 3 invitados de manera simultánea en la vivienda.\n
-  \n
+
   Si el invitado supera las 3 noches de estancia, deberá contribuir con 20 € /semana para los gastos comunes del piso, previa aceptación por parte de los compañeros y de la agencia. En ningún caso debe convertirse en una costumbre, sólo visitas esporádicas.\n
-  \n
+
   El visitante no puede dormir en las zonas comunes del piso, ni en el sofá. Siempre deberá hacerlo dentro de la habitación de su anfitrión.\n
-  \n
+
   No puede haber un invitado pernoctando en el piso cuando su anfitrión se encuentre fuera de la ciudad.\n
-  \n
+
   Para el supuesto de que el arrendatario extravíe las llaves de la vivienda o no las entregue a la finalización, deberá abonar los gastos ocasionados por el cambio de la cerradura de la puerta de entrada principal, más un juego de llaves por cada habitación de la vivienda y dos juegos de llaves extra que le corresponderá al arrendador.\n
-  \n
+
   Una vez finalizado el presente contrato, el arrendatario deberá dejar la habitación, así como las zonas comunes, totalmente limpias y sin enseres personales, tal y como la encontró a su llegada.\n
-  \n
+
   En caso de desperfectos ocasionados en las zonas comunes de la vivienda, y para el caso de que el causante de los daños no se identifique, responderán de los costes de las reparaciones pertinentes todos los inquilinos de forma solidaria con sus respectivas fianzas, sin perjuicio de que posteriormente puedan entablar las acciones legales pertinentes de forma interna para la restitución de dichos importes frente al responsable de los desperfectos.\n`;
 };
 
