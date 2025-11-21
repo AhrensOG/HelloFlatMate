@@ -91,7 +91,7 @@ async function processReservation({
     const address = {
       street: theRoom?.property?.street,
       streetNumber: theRoom?.property?.streetNumber,
-      floor: theRoom?.property?.floor,
+      floor: theRoom?.property?.door || "",
     };
 
     const email_startDate = new Date(successLeaseOrderRoom.startDate);

@@ -120,7 +120,7 @@ const ToDoForm = ({ leaseOrders = [], client, refetch }) => {
       const address = {
         street: orderProp.street,
         streetNumber: orderProp.streetNumber,
-        floor: orderProp.floor,
+        floor: orderProp.door || "",
       };
       const roomSerial = selectedOrder?.room?.serial || "";
 
