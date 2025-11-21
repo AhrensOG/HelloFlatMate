@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { Op } from "sequelize";
 import { Client, LeaseOrderRoom, Property, RentPayment, Room } from "@/db/init";
 import validateHMACToken from "@/app/libs/lib";
-import { latePaymentReminderTemplate } from "../email_templates/reminder_templates";
+import {
+  firstPaymentReminderTemplate,
+  latePaymentReminderTemplate,
+} from "../email_templates/reminder_templates";
 import { sendMailFunction } from "../../sendGrid/controller/sendMailFunction";
 
 function addMonthsToDate(date, months) {
@@ -115,16 +118,16 @@ export async function GET() {
       );
 
       if (pendingRent && client.email) {
-        const subject = "Pendiente de pago - helloFlatmate";
-        const html = latePaymentReminderTemplate();
+        const subject = "Comienza el período de pago - helloFlatmate";
+        const html = firstPaymentReminderTemplate();
 
         // Descomentar para enviar correos reales
 
-        // await sendMailFunction({
-        //   to: client.email,
-        //   subject,
-        //   html,
-        // });
+        await sendMailFunction({
+          to: client.email,
+          subject,
+          html,
+        });
 
         resultados.push({
           emailDestino: client.email,
@@ -139,16 +142,16 @@ export async function GET() {
     // --- INICIO DE LA MODIFICACIÓN ---
     if (resultados.length > 0) {
       const adminEmail = "rooms.hfm@gmail.com";
-      const subject = "Pendiente de pago - helloFlatmate";
-      const html = latePaymentReminderTemplate();
+      const subject = "Comienza el período de pago - helloFlatmate";
+      const html = firstPaymentReminderTemplate();
 
       try {
         // Descomentar para enviar correo real al admin
-        // await sendMailFunction({
-        //   to: adminEmail,
-        //   subject,
-        //   html,
-        // });
+        await sendMailFunction({
+          to: adminEmail,
+          subject,
+          html,
+        });
       } catch (adminEmailError) {
         console.error(
           `Error al enviar el email de resumen al admin:`,
