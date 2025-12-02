@@ -35,6 +35,7 @@ async function processReservation({
             "typology",
             "category",
             "zone",
+            "door",
           ],
         },
       }),
