@@ -12,8 +12,8 @@ import { Context } from "@/app/context/GlobalContext";
 import { logInWithEmailAndPassword } from "@/app/firebase/loginWithEmailAndPassword";
 
 export default function Auth() {
-  const searchParams = useSearchParams(); // Captura los parámetros de la URL
-  const redirect = searchParams.get("redirect"); // Obtén el valor del parámetro `redirect`
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const createAccount = searchParams.get("register");
   const [register, setRegister] = useState(createAccount ? true : false);
   const [isOpen, setIsOpen] = useState(false);
@@ -23,12 +23,24 @@ export default function Auth() {
   const router = useRouter();
   const { state } = useContext(Context);
 
-  const [privacyWithAds, setPrivacyWithAds] = useState(false); // Acepto con publicidad
-  const [privacyWithoutAds, setPrivacyWithoutAds] = useState(false); // Acepto sin publicidad
+  const [privacyWithAds, setPrivacyWithAds] = useState(false);
+  const [privacyWithoutAds, setPrivacyWithoutAds] = useState(false);
+
+  const [highlightConsent, setHighlightConsent] = useState(false);
 
   const hasConsent = () =>
     (privacyWithAds || privacyWithoutAds) &&
     !(privacyWithAds && privacyWithoutAds);
+
+  const triggerValidationHighlight = () => {
+    if (!hasConsent()) {
+      setHighlightConsent(true);
+      toast.info("Debe seleccionar una opción de privacidad.");
+      setTimeout(() => setHighlightConsent(false), 1500);
+      return true; // Hay error
+    }
+    return false; // Todo ok
+  };
 
   useEffect(() => {
     if (state.user) {
@@ -62,19 +74,12 @@ export default function Auth() {
   };
 
   const handleReject = () => {
-    setIsOpen(false); // Cerrar el modal al rechazar
-  };
-
-  const handleLoginFacebook = async () => {
-    try {
-      await logInWithFacebook();
-      return router.push(redirect || "/");
-    } catch (error) {
-      toast.info("Fallo la autenticación. Intente nuevamente.");
-    }
+    setIsOpen(false);
   };
 
   const handleLoginGoogle = async () => {
+    if (triggerValidationHighlight()) return;
+
     const toastId = toast.loading("Autenticando...");
     try {
       await logInWithGoogle();
@@ -89,6 +94,8 @@ export default function Auth() {
 
   const handleLoginWithEmail = async (e) => {
     e.preventDefault();
+    if (triggerValidationHighlight()) return;
+
     const toastId = toast.loading("Autenticando...");
     try {
       await logInWithEmailAndPassword(email, password);
@@ -100,6 +107,10 @@ export default function Auth() {
       });
     }
   };
+
+  const consentHighlightClass = highlightConsent
+    ? "ring-1 ring-yellow-400 p-3 rounded-lg bg-yellow-100/20 duration-300 animate-pulse"
+    : "transition-all duration-300";
 
   return (
     <section className="flex justify-center items-center w-full sm:bg-blue-500">
@@ -129,31 +140,19 @@ export default function Auth() {
           height={100}
         />
         <div className="buttons-auth flex flex-col gap-5 items-center w-full">
-          {/* <button
-            type="button"
-            onClick={
-              register ? () => openModal("facebook") : handleLoginFacebook
-            }
-            className="facebook-auth flex px-0.5 items-center justify-center text-center text-white bg-resolution-blue gap-4 rounded-xl w-[100%] h-[3.25rem] text-base"
-            aria-label={
-              register ? "Regístrate con Facebook" : "Iniciar con Facebook"
-            }
-          >
-            <span className="pl-0.5">
-              <Image
-                src="/face-logo.svg"
-                alt="Logo de Facebook"
-                width={24}
-                height={24}
-              />
-            </span>
-            {register ? "Regístrate con Facebook" : "Iniciar con Facebook"}
-          </button> */}
           <button
             type="button"
-            disabled={!hasConsent()}
-            onClick={register ? () => openModal("google") : handleLoginGoogle}
-            className="google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth disabled:cursor-not-allowed"
+            onClick={
+              register
+                ? () => {
+                    if (triggerValidationHighlight()) return;
+                    openModal("google");
+                  }
+                : handleLoginGoogle
+            }
+            className={`google-auth flex px-0.5 items-center justify-center text-center gap-4 rounded-xl w-[100%] h-[3.25rem] text-base text-black opacity-90 bg-white shadow-google-auth active:scale-95 transition-transform ${
+              !hasConsent() ? "opacity-70" : ""
+            }`}
             aria-label={
               register ? "Regístrate con Google" : "Iniciar con Google"
             }>
@@ -169,7 +168,8 @@ export default function Auth() {
           </button>
 
           {register && (
-            <div className="text-sm text-gray-600 sm:text-white space-y-3">
+            <div
+              className={`text-sm text-gray-600 sm:text-white space-y-3 ${consentHighlightClass}`}>
               <p>
                 De conformidad con lo que establece la legislación vigente en
                 materia de Protección de Datos de Carácter Personal, se le
@@ -187,8 +187,7 @@ export default function Auth() {
                 .
               </p>
 
-              {/* Política de privacidad + publicidad */}
-              <label className="flex items-start gap-2">
+              <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacyWithAds}
@@ -205,8 +204,7 @@ export default function Auth() {
                 </span>
               </label>
 
-              {/* Política de privacidad sin publicidad */}
-              <label className="flex items-start gap-2">
+              <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacyWithoutAds}
@@ -230,116 +228,100 @@ export default function Auth() {
           )}
 
           {!register && (
-            <span className="flex items-center text-sm font-thin w-full sm:text-white">
-              <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
-              {/* Línea izquierda */}
-              También puedes
-              <span className="flex-1 border-t border-gray-300 ml-2"></span>{" "}
-              {/* Línea derecha */}
-            </span>
-          )}
+            <>
+              <span className="flex items-center text-sm font-thin w-full sm:text-white">
+                <span className="flex-1 border-t border-gray-300 mr-2"></span>{" "}
+                También puedes
+                <span className="flex-1 border-t border-gray-300 ml-2"></span>{" "}
+              </span>
 
-          {!register && (
-            // Formulario de inicio de sesión
-            <form
-              onSubmit={handleLoginWithEmail}
-              className="flex flex-col gap-4 w-full">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Correo electrónico"
-                className="border p-2 rounded-md drop-shadow-md"
-                required
-              />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Contraseña"
-                className="border p-2 rounded-md drop-shadow-md"
-                required
-              />
+              <form
+                onSubmit={handleLoginWithEmail}
+                className="flex flex-col gap-4 w-full">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Correo electrónico"
+                  className="border p-2 rounded-md drop-shadow-md"
+                  required
+                />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Contraseña"
+                  className="border p-2 rounded-md drop-shadow-md"
+                  required
+                />
 
-              {/* Aviso + checkboxes (LOGIN por email) */}
-              <div className="text-sm text-gray-600 sm:text-white space-y-3">
-                <p>
-                  De conformidad con lo que establece la legislación vigente en
-                  materia de Protección de Datos de Carácter Personal, se le
-                  informa que los datos personales que nos facilite a través de
-                  dicho formulario serán tratados por{" "}
-                  <strong>HELLO FLAT MATE, S.L.</strong>, con la finalidad de
-                  gestionar su alta como usuario registrado. Para más
-                  información consulte la{" "}
-                  <Link
-                    href="/privacy-policy"
-                    target="_blank"
-                    className="text-blue-600 sm:text-white font-semibold underline">
-                    política de privacidad
-                  </Link>
-                  .
-                </p>
-
-                {/* Política de privacidad + publicidad */}
-                <label className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    checked={privacyWithAds}
-                    onChange={() => {
-                      const next = !privacyWithAds;
-                      setPrivacyWithAds(next);
-                      if (next) setPrivacyWithoutAds(false);
-                    }}
-                    className="mt-0.5"
-                  />
-                  <span>
-                    He leído y acepto la política de privacidad de HELLO FLAT
-                    MATE, S.L., <strong>así como el envío de publicidad</strong>
+                <div
+                  className={`text-sm text-gray-600 sm:text-white space-y-3 ${consentHighlightClass}`}>
+                  <p>
+                    De conformidad con lo que establece la legislación vigente
+                    en materia de Protección de Datos de Carácter Personal, se
+                    le informa que los datos personales que nos facilite a
+                    través de dicho formulario serán tratados por{" "}
+                    <strong>HELLO FLAT MATE, S.L.</strong>, con la finalidad de
+                    gestionar su alta como usuario registrado. Para más
+                    información consulte la{" "}
+                    <Link
+                      href="/privacy-policy"
+                      target="_blank"
+                      className="text-blue-600 sm:text-white font-semibold underline">
+                      política de privacidad
+                    </Link>
                     .
-                  </span>
-                </label>
+                  </p>
 
-                {/* Política de privacidad sin publicidad */}
-                <label className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    checked={privacyWithoutAds}
-                    onChange={() => {
-                      const next = !privacyWithoutAds;
-                      setPrivacyWithoutAds(next);
-                      if (next) setPrivacyWithAds(false);
-                    }}
-                    className="mt-0.5"
-                  />
-                  <span>
-                    He leído y acepto la política de privacidad de HELLO FLAT
-                    MATE, S.L.,{" "}
-                    <strong>
-                      pero no estoy interesado en recibir publicidad
-                    </strong>
-                    .
-                  </span>
-                </label>
-              </div>
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={privacyWithAds}
+                      onChange={() => {
+                        const next = !privacyWithAds;
+                        setPrivacyWithAds(next);
+                        if (next) setPrivacyWithoutAds(false);
+                      }}
+                      className="mt-0.5"
+                    />
+                    <span>
+                      He leído y acepto la política de privacidad de HELLO FLAT
+                      MATE, S.L.,{" "}
+                      <strong>así como el envío de publicidad</strong>.
+                    </span>
+                  </label>
 
-              <button
-                type="submit"
-                disabled={!hasConsent()}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 sm:hover:bg-blue-500 sm:border sm:border-white drop-shadow-md disabled:opacity-60 disabled:cursor-not-allowed">
-                Iniciar Sesión
-              </button>
-            </form>
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={privacyWithoutAds}
+                      onChange={() => {
+                        const next = !privacyWithoutAds;
+                        setPrivacyWithoutAds(next);
+                        if (next) setPrivacyWithAds(false);
+                      }}
+                      className="mt-0.5"
+                    />
+                    <span>
+                      He leído y acepto la política de privacidad de HELLO FLAT
+                      MATE, S.L.,{" "}
+                      <strong>
+                        pero no estoy interesado en recibir publicidad
+                      </strong>
+                      .
+                    </span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 sm:hover:bg-blue-500 sm:border sm:border-white drop-shadow-md active:scale-95 transition-transform">
+                  Iniciar Sesión
+                </button>
+              </form>
+            </>
           )}
-          {/* <p className="register-or-login-auth text-wrap text-xs sm:text-white">
-            {register ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?"}
-            <button
-              onClick={handleIsRegister}
-              className="a-auth text-resolution-blue pl-1 sm:text-white"
-              href="#"
-            >
-              {register ? " Iniciar Sesión" : " Regístrate"}
-            </button>
-          </p> */}
         </div>
         <AuthModal
           isOpen={isOpen}

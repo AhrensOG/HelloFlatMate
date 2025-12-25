@@ -178,7 +178,7 @@ export async function GET() {
         typeKey = "GENERICO";
       }
 
-      if (typeKey) {
+      if (typeKey && (pendingRent || suppliesPendientes.length > 0)) {
         const subject = subjectByType[typeKey];
         const html = htmlBodyByType[typeKey];
 
