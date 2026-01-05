@@ -73,7 +73,7 @@ const DocumentModal = ({ document, onClose, mutate }) => {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center z-30">
             <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose} />
             {/* Contenedor principal */}
             <div className="bg-white w-full max-w-md mx-auto rounded shadow p-6 relative text-sm z-50">
