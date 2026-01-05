@@ -114,7 +114,7 @@ export default function DocumentsPanel() {
                     onClick={() => {
                       console.log(user)
                       setSelectedUser(user);
-                      setSearchQuery(`${user.name} ${user.lastName} - ${user.email}`);
+                      setSearchQuery(`${user.name} - ${user.email}`);
                       setPage(1); // Reset a pág 1 al filtrar
                     }}>
                     <p className="font-semibold">

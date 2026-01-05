@@ -27,7 +27,7 @@ const PaymentsPanel = () => {
   const [page, setPage] = useState(1);
 
   const { data: usersData } = useSWR(
-    "/api/admin/user/payments_panel/only_users",
+    "/api/admin/user/payments_panel",
     fetcher,
     {
       revalidateOnFocus: false,
