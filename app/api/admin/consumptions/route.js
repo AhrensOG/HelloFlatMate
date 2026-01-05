@@ -13,7 +13,13 @@ export async function GET(req) {
     if (id) {
         return await getConsupmtionById(id);
     }
-    return await getAllConsumption();
+
+    // Parámetros de paginación y filtro
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 20;
+    const userId = searchParams.get("userId") || null;
+
+    return await getAllConsumption({ page, limit, userId });
 }
 
 export async function DELETE(req) {

@@ -176,19 +176,19 @@ export default function DocumentsPanel() {
                       doc.type === "CONTRACT" ? doc.url : doc.urls?.[0];
                     if (targetUrl) window.open(targetUrl, "_blank");
                   }}>
-                  <td className="p-3 text-center text-sm text-gray-500">
+                  <td className="p-3 text-center text-gray-500">
                     {doc.id}
                   </td>
-                  <td className="p-3 text-sm font-medium">{doc.name}</td>
-                  <td className="p-3 text-center text-sm">
+                  <td className="p-3 font-medium">{doc.name}</td>
+                  <td className="p-3 text-center">
                     {doc.client
                       ? `${doc.client.name} ${doc.client.lastName}`
                       : "N/A"}
                   </td>
-                  <td className="p-3 text-center text-sm">
+                  <td className="p-3 text-center">
                     {doc.leaseOrderId || "-"}
                   </td>
-                  <td className="p-3 text-center text-sm">
+                  <td className="p-3 text-center">
                     <span className="px-2 py-1 bg-gray-100 rounded text-xs uppercase">
                       {LABELS_TYPE[doc.type] || doc.type}
                     </span>
