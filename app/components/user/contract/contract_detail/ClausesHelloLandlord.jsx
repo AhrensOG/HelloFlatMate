@@ -1,9 +1,11 @@
 import React from "react";
 
-const Clauses = ({
+const ClausesHelloLandlord = ({
   startDate = "05/05/2025",
   endDate = "05/10/2025",
   monthlyRent = "-",
+  roomSerial = "-",
+  landlordIBAN = "ESXX XXXX XXXX XXXX XXXX",
 }) => {
   return (
     <div className="flex flex-col text-sm leading-relaxed text-gray-800">
@@ -82,12 +84,14 @@ const Clauses = ({
         En dicho precio no se incluyen los gastos relativos a los suministros de
         agua, luz e internet.
       </p>
+
+      {/* Lógica condicional según roomSerial proporcionada en el texto original */}
       <p className="mb-4 font-light break-words">
-        Dicha renta se abonará a través del área de usuario del{" "}
-        <span className="font-medium">ARRENDATARIO</span> de la página web
-        www.helloflatmate.com a través de la pasarela de pago, mediante tarjeta
-        de crédito o débito.
+        {roomSerial.startsWith("CPDF49P4") || roomSerial.startsWith("CC9P8")
+          ? "El pago de la renta mensual se realizará en efectivo, con la visita al piso por el agente de la zona mediante cita previa."
+          : `Dicha renta se abonará mediante transferencia bancaria o ingreso en la siguiente cuenta de EL ARRENDADOR, indicando en el concepto el nombre del inquilino: IBAN Arrendador: ${landlordIBAN}`}
       </p>
+
       <p className="mb-4 font-light break-words">
         El incumplimiento reiterado de la obligación de pago o notificación del
         justificante del pago en el periodo fijado será motivo de resolución del
@@ -227,7 +231,7 @@ const Clauses = ({
         circunstancia que tenga carácter imprevisible e inevitable que afecte al
         cumplimiento de las obligaciones contractuales, tales como, ad exemplum,
         acontecimientos naturales extraordinarios como inundaciones, terremotos,
-        caída de rayos, riadas, situaciones de epidemia y pandemia.
+        caída de rayos, situaciones de epidemia y pandemia.
       </p>
       <p className="mb-4 font-light break-words">
         Se exime al <span className="font-medium">ARRENDADOR</span> de cualquier
@@ -333,14 +337,15 @@ const Clauses = ({
         rociador de la manguera de la ducha, etc.
       </p>
       <p className="mb-4 font-light break-words">
-        Es obligación del arrendatario el mantenimiento correcto y diligente
-        tanto de la habitación alquilada como del resto de dependencias de la
-        vivienda.
+        Es obligación del <span className="font-medium">ARRENDATARIO</span> el
+        mantenimiento correcto y diligente tanto de la habitación alquilada como
+        del resto de dependencias de la vivienda.
       </p>
       <p className="mb-4 font-light break-words">
-        El arrendatario no podrá hacer agujeros en las paredes o puertas, así
-        como tampoco podrá hacer uso de pegamentos o gomas adhesivas que puedan
-        manchar o dañar las paredes o puertas.
+        El <span className="font-medium">ARRENDATARIO</span> no podrá hacer
+        agujeros en las paredes o puertas, así como tampoco podrá hacer uso de
+        pegamentos o gomas adhesivas que puedan manchar o dañar las paredes o
+        puertas.
       </p>
       <p className="mb-4 font-light break-words">
         Las reparaciones e incidencias serán abonadas por parte del{" "}
@@ -359,7 +364,7 @@ const Clauses = ({
         válido cuando se cumplan de manera simultánea las siguientes
         condiciones:
       </p>
-      <ul className="list-disc ml-5 mb-4 font-light space-y-1 text-left">
+      <ul className="list-disc ml-5 mb-4 font-light">
         <li>
           El <span className="font-medium">ARRENDATARIO</span> haya abonado las
           cantidades indicadas en la cláusula quinta en concepto de fianza,
@@ -428,7 +433,7 @@ const Clauses = ({
       </p>
 
       <h3 className="font-bold mb-2 text-left uppercase text-sm">
-        DECIMOSÉPTIMA. – SUMISIÓN.
+        DÉCIMOSEPTIMA. – SUMISIÓN.
       </h3>
       <p className="mb-4 font-light break-words">
         Los contratantes se someten expresamente a los Juzgados y Tribunales de
@@ -440,4 +445,4 @@ const Clauses = ({
   );
 };
 
-export default Clauses;
+export default ClausesHelloLandlord;

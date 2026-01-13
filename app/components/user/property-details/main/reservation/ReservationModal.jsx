@@ -117,7 +117,7 @@ export default function ReservationModal({
       const address = {
         street: reservation.propertyInfo?.street,
         streetNumber: reservation.propertyInfo?.streetNumber,
-        door: reservation.propertyInfo?.door || '',
+        door: reservation.propertyInfo?.door || "",
       };
       const emailData = {
         to: reservation.user?.email,
@@ -219,9 +219,11 @@ export default function ReservationModal({
             />
           ) : null}
           <ShowClauses
-            mothlyRent={data.price || 500}
+            monthlyRent={data.price || 500}
             startDate={formatedDate(info.startDate) || "-"}
             endDate={formatedDate(info.endDate) || "-"}
+            category={category}
+            roomSerial={data.roomSerial}
           />
           <ReservationForm
             data={data}
