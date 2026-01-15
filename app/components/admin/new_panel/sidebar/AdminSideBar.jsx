@@ -60,6 +60,10 @@ const AdminSideBar = ({ onSelect }) => {
       icon: <DocumentCurrencyEuroIcon className="w-6 h-6" />,
     },
     {
+      name: "Detalle Consumos",
+      icon: <DocumentCurrencyEuroIcon className="w-6 h-6" />,
+    },
+    {
       name: "Chats",
       icon: <ChatBubbleLeftRightIcon className="w-6 h-6" />,
     },
@@ -80,9 +84,9 @@ const AdminSideBar = ({ onSelect }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="h-screen bg-white shadow-lg flex flex-col overflow-hidden border-r drop-shadow-xl rounded-r-xl relative min-w-14 max-w-[200px]"
+        className="h-screen bg-white shadow-lg flex flex-col overflow-hidden border-r drop-shadow-xl rounded-r-xl relative min-w-14 max-w-[250px]"
         initial={{ width: "56px" }}
-        animate={{ width: isOpen ? "200px" : "56px" }}
+        animate={{ width: isOpen ? "250px" : "56px" }}
         exit={{ width: "56px" }}
         transition={{ duration: 0.4, ease: "easeInOut" }}
         onMouseOver={() => setIsOpen(true)}
@@ -106,7 +110,7 @@ const AdminSideBar = ({ onSelect }) => {
           {menuItems.map((item, index) => (
             <motion.div
               key={item.name}
-              className="flex items-center px-4 py-3 rounded-lg cursor-pointer hover:bg-slate-50 transition-all duration-300 group"
+              className="flex items-center px-4 py-2 rounded-lg cursor-pointer hover:bg-slate-50 transition-all duration-300 group"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
               onClick={() => onSelect(item.name)}>
