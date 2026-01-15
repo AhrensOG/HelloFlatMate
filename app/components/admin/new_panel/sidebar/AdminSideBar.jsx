@@ -15,6 +15,7 @@ import {
   DocumentCurrencyEuroIcon,
   ChatBubbleLeftRightIcon,
   WrenchScrewdriverIcon,
+  DocumentChartBarIcon,
 } from "@heroicons/react/24/outline";
 import { GrUserWorker } from "react-icons/gr";
 import Image from "next/image";
@@ -61,7 +62,7 @@ const AdminSideBar = ({ onSelect }) => {
     },
     {
       name: "Detalle Consumos",
-      icon: <DocumentCurrencyEuroIcon className="w-6 h-6" />,
+      icon: <DocumentChartBarIcon className="w-6 h-6" />,
     },
     {
       name: "Chats",
