@@ -70,7 +70,7 @@ const clientInit = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             personalReview: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(1000),
                 allowNull: true,
             },
             arrivalDate: {
