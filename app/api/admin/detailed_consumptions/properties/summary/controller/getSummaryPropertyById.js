@@ -1,8 +1,11 @@
 import { Room, LeaseOrderRoom, Client, Consumption, Supply } from "@/db/init";
 import { NextResponse } from "next/server";
+import { Op } from "sequelize";
 
 export async function getSummaryPropertyById(propertyId) {
   try {
+    const today = new Date();
+
     if (!propertyId) {
       return NextResponse.json(
         { error: "PropertyId es requerido" },
@@ -26,6 +29,12 @@ export async function getSummaryPropertyById(propertyId) {
       where: {
         roomId: roomIds,
         status: "APPROVED",
+        startDate: {
+          [Op.lte]: today, // startDate debe ser menor o igual a hoy
+        },
+        endDate: {
+          [Op.gte]: today, // endDate debe ser mayor o igual a hoy
+        },
       },
       attributes: [
         "id",
