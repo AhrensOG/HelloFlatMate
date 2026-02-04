@@ -29,6 +29,7 @@ export default function DetailedConsumptionsPanel() {
   // Estados para el Resumen Inferior
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [showSummary, setShowSummary] = useState(false);
+  const [showPreviousPeriod, setShowPreviousPeriod] = useState(false);
 
   // 1. Navegación: Propiedades
   const { data: allProperties } = useSWR(
@@ -135,40 +136,42 @@ export default function DetailedConsumptionsPanel() {
           </div>
           <div className="flex-1 overflow-y-auto p-3 space-y-1">
             {filteredProperties
-            .sort((a, b) => a.serial.localeCompare(b.serial))
-            .map((p) => (
-              <div key={p.id} className="rounded-lg">
-                <div
-                  onClick={() => toggleProperty(p.id, p)}
-                  className={`flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 rounded-lg ${selectedProperty?.id === p.id ? "bg-blue-50/50" : ""}`}>
-                  <div className="flex items-center gap-3">
-                    <HomeIcon
-                      className={`size-5 ${selectedProperty?.id === p.id ? "text-blue-600" : "text-gray-400"}`}
+              .sort((a, b) => a.serial.localeCompare(b.serial))
+              .map((p) => (
+                <div key={p.id} className="rounded-lg">
+                  <div
+                    onClick={() => toggleProperty(p.id, p)}
+                    className={`flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 rounded-lg ${selectedProperty?.id === p.id ? "bg-blue-50/50" : ""}`}>
+                    <div className="flex items-center gap-3">
+                      <HomeIcon
+                        className={`size-5 ${selectedProperty?.id === p.id ? "text-blue-600" : "text-gray-400"}`}
+                      />
+                      <span className="font-bold text-gray-700">
+                        {p.serial}
+                      </span>
+                    </div>
+                    <ChevronDownIcon
+                      className={`size-4 transition-transform ${expandedProperties.has(p.id) ? "rotate-180" : ""}`}
                     />
-                    <span className="font-bold text-gray-700">{p.serial}</span>
                   </div>
-                  <ChevronDownIcon
-                    className={`size-4 transition-transform ${expandedProperties.has(p.id) ? "rotate-180" : ""}`}
-                  />
+                  {expandedProperties.has(p.id) &&
+                    [...p.rooms]
+                      .sort((a, b) =>
+                        a.serial.localeCompare(b.serial, undefined, {
+                          numeric: true,
+                        }),
+                      )
+                      .map((r) => (
+                        <div
+                          key={r.id}
+                          onClick={() => setSelectedRoom(r)}
+                          className={`ml-8 mr-2 my-1 p-2 cursor-pointer rounded-md flex items-center gap-2 ${selectedRoom?.id === r.id ? "bg-blue-600 text-white" : "hover:bg-blue-50 text-gray-600"}`}>
+                          <TagIcon className="size-3" />
+                          <span>Habitación {r.serial}</span>
+                        </div>
+                      ))}
                 </div>
-                {expandedProperties.has(p.id) &&
-                  [...p.rooms]
-                    .sort((a, b) =>
-                      a.serial.localeCompare(b.serial, undefined, {
-                        numeric: true,
-                      }),
-                    )
-                    .map((r) => (
-                      <div
-                        key={r.id}
-                        onClick={() => setSelectedRoom(r)}
-                        className={`ml-8 mr-2 my-1 p-2 cursor-pointer rounded-md flex items-center gap-2 ${selectedRoom?.id === r.id ? "bg-blue-600 text-white" : "hover:bg-blue-50 text-gray-600"}`}>
-                        <TagIcon className="size-3" />
-                        <span>Habitación {r.serial}</span>
-                      </div>
-                    ))}
-              </div>
-            ))}
+              ))}
           </div>
         </div>
 
@@ -217,155 +220,156 @@ export default function DetailedConsumptionsPanel() {
         </div>
 
         {/* COL 3: DETALLE FINANCIERO */}
-         <div className="w-[40%] flex flex-col bg-white overflow-y-auto">
-        {!selectedLease ? (
-          <div className="h-full flex flex-col items-center justify-center text-gray-400 p-10 text-center opacity-40">
-            <InformationCircleIcon className="size-16 mb-4" />
-            <p className="text-lg font-bold">Resumen Financiero</p>
-            <p>
-              Seleccione un contrato para ver aportes y consumos por período.
-            </p>
-          </div>
-        ) : isLoadingFinancials ? (
-          <div className="p-8 animate-pulse space-y-6">
-            <div className="h-20 bg-gray-100 rounded-2xl" />
-            <div className="h-64 bg-gray-100 rounded-2xl" />
-          </div>
-        ) : (
-          <div className="flex-1 p-8 space-y-8 animate-in slide-in-from-right-4 duration-300">
-            <div className="bg-gray-900 text-white p-6 rounded-3xl shadow-xl flex items-center gap-4">
-              <UserCircleIcon className="size-12 text-blue-400" />
-              <div>
-                <h3 className="text-lg font-black tracking-tight">
-                  {financialData.name}{" "}
-                  {financialData.lastName ? financialData.lastName : ""}
-                </h3>
-                <p className="text-blue-300 text-lg opacity-80">
-                  {financialData.email}
-                </p>
-              </div>
+        <div className="w-[40%] flex flex-col bg-white overflow-y-auto">
+          {!selectedLease ? (
+            <div className="h-full flex flex-col items-center justify-center text-gray-400 p-10 text-center opacity-40">
+              <InformationCircleIcon className="size-16 mb-4" />
+              <p className="text-lg font-bold">Resumen Financiero</p>
+              <p>
+                Seleccione un contrato para ver aportes y consumos por período.
+              </p>
             </div>
+          ) : isLoadingFinancials ? (
+            <div className="p-8 animate-pulse space-y-6">
+              <div className="h-20 bg-gray-100 rounded-2xl" />
+              <div className="h-64 bg-gray-100 rounded-2xl" />
+            </div>
+          ) : (
+            <div className="flex-1 p-8 space-y-8 animate-in slide-in-from-right-4 duration-300">
+              <div className="bg-gray-900 text-white p-6 rounded-3xl shadow-xl flex items-center gap-4">
+                <UserCircleIcon className="size-12 text-blue-400" />
+                <div>
+                  <h3 className="text-lg font-black tracking-tight">
+                    {financialData.name}{" "}
+                    {financialData.lastName ? financialData.lastName : ""}
+                  </h3>
+                  <p className="text-blue-300 text-lg opacity-80">
+                    {financialData.email}
+                  </p>
+                </div>
+              </div>
 
-            {financialSummary?.map((sum) => (
-              <div
-                key={sum.period}
-                className={`border rounded-3xl overflow-hidden shadow-sm ${
-                  !sum.hasSupply
-                    ? "border-gray-200 bg-gray-50 opacity-60"
-                    : "border-gray-100"
-                }`}>
-                <div className="bg-gray-50 px-6 py-4 border-b flex justify-between items-center">
-                  <h4 className="font-black text-gray-700 uppercase">
-                    PERÍODO {sum.period}
-                  </h4>
-                  {sum.hasSupply ? (
-                    sum.isPending ? (
-                      <div className="flex items-center gap-1 text-amber-600 bg-amber-50 px-2 py-1 rounded text-[10px] font-bold">
-                        <ExclamationCircleIcon className="size-3" /> APORTE
-                        PENDIENTE
-                      </div>
+              {financialSummary?.map((sum) => (
+                <div
+                  key={sum.period}
+                  className={`border rounded-3xl overflow-hidden shadow-sm ${
+                    !sum.hasSupply
+                      ? "border-gray-200 bg-gray-50 opacity-60"
+                      : "border-gray-100"
+                  }`}>
+                  <div className="bg-gray-50 px-6 py-4 border-b flex justify-between items-center">
+                    <h4 className="font-black text-gray-700 uppercase">
+                      PERÍODO {sum.period}
+                    </h4>
+                    {sum.hasSupply ? (
+                      sum.isPending ? (
+                        <div className="flex items-center gap-1 text-amber-600 bg-amber-50 px-2 py-1 rounded text-[10px] font-bold">
+                          <ExclamationCircleIcon className="size-3" /> APORTE
+                          PENDIENTE
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded text-[10px] font-bold">
+                          <CheckCircleIcon className="size-3" /> APORTE
+                          REALIZADO
+                        </div>
+                      )
                     ) : (
-                      <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded text-[10px] font-bold">
-                        <CheckCircleIcon className="size-3" /> APORTE REALIZADO
+                      <div className="text-[10px] font-bold text-gray-400">
+                        SIN APORTE CARGADO
                       </div>
-                    )
+                    )}
+                  </div>
+
+                  {sum.hasSupply ? (
+                    <div className="p-6 space-y-4">
+                      <div className="grid grid-cols-2 gap-4 text-center">
+                        <div className="p-3 bg-white border border-gray-100 rounded-xl">
+                          <p className="text-[10px] font-bold text-gray-400 uppercase">
+                            Aportado
+                          </p>
+                          <p className="text-lg font-black text-gray-800">
+                            €{sum.totalAportado.toFixed(2)}
+                          </p>
+                        </div>
+                        <div className="p-3 bg-white border border-gray-100 rounded-xl">
+                          <p className="text-[10px] font-bold text-gray-400 uppercase">
+                            Consumido
+                          </p>
+                          <p className="text-lg font-black text-gray-800">
+                            €{sum.totalConsumido.toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div
+                        className={`p-4 rounded-2xl flex justify-between items-center ${
+                          sum.balance >= 0
+                            ? "bg-blue-600 text-white"
+                            : "bg-red-600 text-white"
+                        }`}>
+                        <span className="font-bold text-xs uppercase tracking-widest opacity-80">
+                          Balance
+                        </span>
+                        <span className="text-2xl font-black">
+                          €{sum.balance.toFixed(2)}
+                        </span>
+                      </div>
+
+                      <div className="space-y-2 mt-4">
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b pb-1">
+                          Desglose Consumos
+                        </p>
+                        {sum.consumptions.length > 0 ? (
+                          sum.consumptions.map((c, i) => (
+                            <div
+                              key={i}
+                              className="flex justify-between items-start group py-2 border-b border-gray-50 last:border-none">
+                              <div className="flex gap-2">
+                                <ArrowTrendingDownIcon className="size-3 text-red-400 mt-0.5" />
+                                <div className="flex flex-col">
+                                  <span className="font-bold text-gray-700 text-xs uppercase">
+                                    {c.type}
+                                  </span>
+                                  <span className="text-xs text-gray-600">
+                                    {formatDateToDDMMYYYY(c.startDate)} —{" "}
+                                    {formatDateToDDMMYYYY(c.endDate)}
+                                  </span>
+                                  {c.url && (
+                                    <a
+                                      href={c.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-xs text-blue-600 font-bold hover:underline">
+                                      Ver Factura
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                              <span className="font-bold text-red-600 whitespace-nowrap">
+                                - €{Number(c.amount).toFixed(2)}
+                              </span>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-center text-[10px] text-gray-400 py-2">
+                            Sin consumos cargados
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   ) : (
-                    <div className="text-[10px] font-bold text-gray-400">
-                      SIN APORTE CARGADO
+                    <div className="p-10 text-center flex flex-col items-center">
+                      <CreditCardIcon className="size-8 text-gray-300 mb-2" />
+                      <p className="text-gray-400 font-medium italic">
+                        No se ha registrado aporte para el período {sum.period}
+                      </p>
                     </div>
                   )}
                 </div>
-
-                {sum.hasSupply ? (
-                  <div className="p-6 space-y-4">
-                    <div className="grid grid-cols-2 gap-4 text-center">
-                      <div className="p-3 bg-white border border-gray-100 rounded-xl">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase">
-                          Aportado
-                        </p>
-                        <p className="text-lg font-black text-gray-800">
-                          €{sum.totalAportado.toFixed(2)}
-                        </p>
-                      </div>
-                      <div className="p-3 bg-white border border-gray-100 rounded-xl">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase">
-                          Consumido
-                        </p>
-                        <p className="text-lg font-black text-gray-800">
-                          €{sum.totalConsumido.toFixed(2)}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div
-                      className={`p-4 rounded-2xl flex justify-between items-center ${
-                        sum.balance >= 0
-                          ? "bg-blue-600 text-white"
-                          : "bg-red-600 text-white"
-                      }`}>
-                      <span className="font-bold text-xs uppercase tracking-widest opacity-80">
-                        Balance
-                      </span>
-                      <span className="text-2xl font-black">
-                        €{sum.balance.toFixed(2)}
-                      </span>
-                    </div>
-
-                    <div className="space-y-2 mt-4">
-                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b pb-1">
-                        Desglose Consumos
-                      </p>
-                      {sum.consumptions.length > 0 ? (
-                        sum.consumptions.map((c, i) => (
-                          <div
-                            key={i}
-                            className="flex justify-between items-start group py-2 border-b border-gray-50 last:border-none">
-                            <div className="flex gap-2">
-                              <ArrowTrendingDownIcon className="size-3 text-red-400 mt-0.5" />
-                              <div className="flex flex-col">
-                                <span className="font-bold text-gray-700 text-xs uppercase">
-                                  {c.type}
-                                </span>
-                                <span className="text-xs text-gray-600">
-                                  {formatDateToDDMMYYYY(c.startDate)} —{" "}
-                                  {formatDateToDDMMYYYY(c.endDate)}
-                                </span>
-                                {c.url && (
-                                  <a
-                                    href={c.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-blue-600 font-bold hover:underline">
-                                    Ver Factura
-                                  </a>
-                                )}
-                              </div>
-                            </div>
-                            <span className="font-bold text-red-600 whitespace-nowrap">
-                              - €{Number(c.amount).toFixed(2)}
-                            </span>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-center text-[10px] text-gray-400 py-2">
-                          Sin consumos cargados
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="p-10 text-center flex flex-col items-center">
-                    <CreditCardIcon className="size-8 text-gray-300 mb-2" />
-                    <p className="text-gray-400 font-medium italic">
-                      No se ha registrado aporte para el período {sum.period}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* PANEL INFERIOR: RESUMEN CONSOLIDADO */}
@@ -379,11 +383,29 @@ export default function DetailedConsumptionsPanel() {
             <TableCellsIcon
               className={`size-5 ${selectedProperty ? "text-blue-400" : "text-gray-600"}`}
             />
-            <span className="font-black uppercase tracking-widest text-[11px]">
-              {selectedProperty
-                ? `Resumen Consolidado: ${selectedProperty.serial}`
-                : "Seleccione una propiedad para comparar"}
-            </span>
+            <div className="flex items-center gap-4">
+              <span className="font-black uppercase tracking-widest text-[11px]">
+                {selectedProperty
+                  ? `Resumen Consolidado: ${selectedProperty.serial}`
+                  : "Seleccione una propiedad para comparar"}
+              </span>
+
+              {selectedProperty && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPreviousPeriod((v) => !v);
+                  }}
+                  className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-blue-400 hover:text-blue-300 transition-colors">
+                  {showPreviousPeriod ? "Periodo anterior" : "Periodo actual"}
+                  <ChevronRightIcon
+                    className={`size-3 transition-transform ${
+                      showPreviousPeriod ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-4">
             {isLoadingSummary && (
@@ -431,7 +453,10 @@ export default function DetailedConsumptionsPanel() {
                       }),
                     )
                     .map((room) => {
-                      const lease = room.activeLease;
+                      const lease = showPreviousPeriod
+                        ? room.previousLease
+                        : room.currentLease;
+
                       if (!lease)
                         return (
                           <tr key={room.id} className="text-gray-300">
@@ -441,7 +466,9 @@ export default function DetailedConsumptionsPanel() {
                             <td
                               colSpan={8}
                               className="px-4 py-3 italic text-center text-[10px]">
-                              Sin contrato activo
+                              {showPreviousPeriod
+                                ? "Sin periodo anterior"
+                                : "Sin contrato activo"}
                             </td>
                           </tr>
                         );

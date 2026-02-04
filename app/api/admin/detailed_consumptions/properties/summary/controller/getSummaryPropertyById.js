@@ -23,18 +23,10 @@ export async function getSummaryPropertyById(propertyId) {
     if (!rooms.length) return NextResponse.json([], { status: 200 });
     const roomIds = rooms.map((r) => r.id);
 
-    // 2. Obtener TODAS las Lease con status APPROVED para esas habitaciones
-    // Confiamos en que el admin ya pasó a FINISHED las anteriores.
-    const activeLeases = await LeaseOrderRoom.findAll({
+    // 2. Obtener TODAS las leases de esas habitaciones (sin filtrar por fecha ni status)
+    const allLeases = await LeaseOrderRoom.findAll({
       where: {
         roomId: roomIds,
-        status: "APPROVED",
-        startDate: {
-          [Op.lte]: today, // startDate debe ser menor o igual a hoy
-        },
-        endDate: {
-          [Op.gte]: today, // endDate debe ser mayor o igual a hoy
-        },
       },
       attributes: [
         "id",
@@ -44,34 +36,100 @@ export async function getSummaryPropertyById(propertyId) {
         "clientId",
         "roomId",
       ],
+      order: [
+        ["roomId", "ASC"],
+        ["startDate", "ASC"],
+      ],
       raw: true,
     });
 
-    if (!activeLeases.length) {
+    if (!allLeases.length) {
       return NextResponse.json(
-        rooms.map((r) => ({ ...r, activeLease: null })),
+        rooms.map((r) => ({
+          ...r,
+          currentLease: null,
+          previousLease: null,
+        })),
         { status: 200 },
       );
     }
 
-    const clientIds = activeLeases.map((l) => l.clientId);
-    const leaseIds = activeLeases.map((l) => l.id);
+    // 3. Agrupar leases por habitación
+    const leasesByRoom = new Map();
 
-    // 3. Consultas paralelas para Clientes, Consumos y Suministros
+    for (const lease of allLeases) {
+      if (!leasesByRoom.has(lease.roomId)) {
+        leasesByRoom.set(lease.roomId, []);
+      }
+      leasesByRoom.get(lease.roomId).push(lease);
+    }
+
+    // 4. Resolver current y previous por habitación
+    const roomLeaseMap = new Map();
+    const clientIds = new Set();
+    const leaseIds = new Set();
+
+    for (const [roomId, leases] of leasesByRoom.entries()) {
+      let currentLease = null;
+      let previousLease = null;
+
+      for (let i = 0; i < leases.length; i++) {
+        const l = leases[i];
+
+        // 1. Resolver CURRENT: debe estar activa en fecha y APPROVED
+        if (
+          l.status === "APPROVED" &&
+          new Date(l.startDate) <= today &&
+          new Date(l.endDate) >= today
+        ) {
+          currentLease = l;
+
+          // 2. Resolver PREVIOUS: buscar hacia atrás la válida
+          for (let j = i - 1; j >= 0; j--) {
+            const prev = leases[j];
+
+            // Evitar leases con mismo startDate (duplicadas por error)
+            if (new Date(prev.endDate) < new Date(currentLease.startDate)) {
+              previousLease = prev;
+              break;
+            }
+          }
+
+          break;
+        }
+      }
+
+      if (currentLease) {
+        clientIds.add(currentLease.clientId);
+        leaseIds.add(currentLease.id);
+      }
+
+      if (previousLease) {
+        clientIds.add(previousLease.clientId);
+        leaseIds.add(previousLease.id);
+      }
+
+      roomLeaseMap.set(roomId, {
+        currentLease,
+        previousLease,
+      });
+    }
+
+    // 5. Consultas paralelas para Clientes, Consumos y Suministros
     const [clients, consumptions, supplies] = await Promise.all([
       Client.findAll({
-        where: { id: clientIds },
+        where: { id: [...clientIds] },
         attributes: ["id", "name", "lastName", "email"],
         raw: true,
       }),
       Consumption.findAll({
-        where: { leaseOrderRoomId: leaseIds },
+        where: { leaseOrderRoomId: [...leaseIds] },
         attributes: ["amount", "period", "leaseOrderRoomId"],
         raw: true,
       }),
       Supply.findAll({
         where: {
-          leaseOrderId: leaseIds,
+          leaseOrderId: [...leaseIds],
           type: "GENERAL_SUPPLIES",
         },
         attributes: ["amount", "status", "leaseOrderId"],
@@ -79,26 +137,35 @@ export async function getSummaryPropertyById(propertyId) {
       }),
     ]);
 
-    // 4. Combinar la información
+    // 6. Combinar la información
     const finalData = rooms.map((room) => {
-      const lease = activeLeases.find((l) => l.roomId === room.id);
+      const leaseInfo = roomLeaseMap.get(room.id);
 
-      if (!lease) return { ...room, activeLease: null };
+      if (!leaseInfo) {
+        return {
+          ...room,
+          currentLease: null,
+          previousLease: null,
+        };
+      }
 
-      const client_info = clients.find((c) => c.id === lease.clientId);
-      const consumption_info = consumptions.filter(
-        (c) => c.leaseOrderRoomId === lease.id,
-      );
-      const supplies_info = supplies.filter((s) => s.leaseOrderId === lease.id);
+      const enrichLease = (lease) => {
+        if (!lease) return null;
+
+        return {
+          ...lease,
+          client: clients.find((c) => c.id === lease.clientId) || null,
+          consumptions: consumptions.filter(
+            (c) => c.leaseOrderRoomId === lease.id,
+          ),
+          supplies: supplies.filter((s) => s.leaseOrderId === lease.id),
+        };
+      };
 
       return {
         ...room,
-        activeLease: {
-          ...lease,
-          client: client_info,
-          consumptions: consumption_info,
-          supplies: supplies_info,
-        },
+        currentLease: enrichLease(leaseInfo.currentLease),
+        previousLease: enrichLease(leaseInfo.previousLease),
       };
     });
 
