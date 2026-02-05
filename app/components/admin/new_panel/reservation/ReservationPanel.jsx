@@ -21,12 +21,17 @@ export default function ReservationPanel() {
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
   const [selectedActiveFilter, setSelectedActiveFilter] = useState("");
   const [selectedSignedFilter, setSelectedSignedFilter] = useState("");
+  const [selectedSerial, setSelectedSerial] = useState(null);
   const [page, setPage] = useState(1);
   const limit = 100;
 
   const queryParams = new URLSearchParams({
     page,
     limit,
+    ...(selectedSerial && {
+      serial: selectedSerial.value,
+      serialType: selectedSerial.type,
+    }),
     ...(selectedDateFilter && { startDate: selectedDateFilter }),
     ...(selectedStatusFilter && { status: selectedStatusFilter }),
     ...(selectedClientId && { clientId: selectedClientId }),
@@ -46,24 +51,33 @@ export default function ReservationPanel() {
   const { data: clientsData } = useSWR(
     "/api/admin/user/reservations_panel",
     fetcher,
-    { revalidateOnFocus: false }
+    { revalidateOnFocus: false },
   );
 
   const { data: propertiesData } = useSWR(
     "/api/admin/property/reservations_panel",
     fetcher,
-    { revalidateOnFocus: false }
+    { revalidateOnFocus: false },
   );
 
   const { data: availablePeriods } = useSWR(
     "/api/admin/lease_order/new_panel/periods",
     fetcher,
-    { revalidateOnFocus: false }
+    { revalidateOnFocus: false },
+  );
+
+  const { data: serials } = useSWR(
+    "/api/admin/lease_order/new_panel/serials",
+    fetcher,
+    { revalidateOnFocus: false },
   );
 
   const orders = (ordersData?.leaseOrders || []).filter(
-    (lo) => lo.status !== "REJECTED"
+    (lo) => lo.status !== "REJECTED",
   );
+
+  const propertySerials = serials?.properties || [];
+  const roomSerials = serials?.rooms || [];
 
   const sortedOrders = [...orders].sort((a, b) => {
     const priority = {
@@ -117,6 +131,7 @@ export default function ReservationPanel() {
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
+              setSelectedSerial(null);
               setShowClientDropdown(true);
               setSelectedClientId("");
             }}
@@ -125,41 +140,86 @@ export default function ReservationPanel() {
             className="border rounded px-3 py-2 w-full max-w-[450px]"
           />
 
-          {showClientDropdown && clientsData && searchQuery && (
+          {showClientDropdown && searchQuery && (
             <div className="absolute top-11 left-0 z-10 w-[450px] border rounded bg-white shadow max-h-64 overflow-y-auto">
+              {/* === CLIENTES === */}
               {clientsData
-                .filter(
-                  (client) =>
-                    client.name
-                      .toLowerCase()
-                      .includes(searchQuery.toLowerCase()) ||
-                    client.email
-                      .toLowerCase()
-                      .includes(searchQuery.toLowerCase())
+                ?.filter(
+                  (c) =>
+                    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    c.email.toLowerCase().includes(searchQuery.toLowerCase()),
                 )
                 .map((client) => (
                   <div
-                    key={client.id}
+                    key={`client-${client.id}`}
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       setSelectedClientId(client.id);
+                      setSelectedSerial(null);
                       setSearchQuery(`${client.name} ${client.lastName}`);
                       setShowClientDropdown(false);
                     }}>
-                    {client.name} {client.lastName} - {client.email}
+                    👤 — {client.name} {client.lastName} - {client.email}
                   </div>
                 ))}
-              {clientsData.filter(
-                (client) =>
-                  client.name
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()) ||
-                  client.email.toLowerCase().includes(searchQuery.toLowerCase())
-              ).length === 0 && (
-                <div className="px-4 py-2 text-gray-400">
-                  No se encontraron coincidencias
-                </div>
-              )}
+
+              {/* === ROOMS === */}
+              {roomSerials
+                .filter((serial) =>
+                  serial.toLowerCase().includes(searchQuery.toLowerCase()),
+                )
+                .map((serial) => (
+                  <div
+                    key={`room-${serial}`}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      setSelectedSerial({ value: serial, type: "ROOM" });
+                      setSelectedClientId("");
+                      setSearchQuery(serial);
+                      setShowClientDropdown(false);
+                    }}>
+                    🚪 Habitación — {serial}
+                  </div>
+                ))}
+
+              {/* === PROPERTIES === */}
+              {propertySerials
+                .filter((serial) =>
+                  serial.toLowerCase().includes(searchQuery.toLowerCase()),
+                )
+                .map((serial) => (
+                  <div
+                    key={`property-${serial}`}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      setSelectedSerial({ value: serial, type: "PROPERTY" });
+                      setSelectedClientId("");
+                      setSearchQuery(serial);
+                      setShowClientDropdown(false);
+                    }}>
+                    🏠 Propiedad — {serial}
+                  </div>
+                ))}
+
+              {/* === EMPTY STATE === */}
+              {clientsData &&
+                roomSerials &&
+                propertySerials &&
+                clientsData.filter(
+                  (c) =>
+                    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    c.email.toLowerCase().includes(searchQuery.toLowerCase()),
+                ).length === 0 &&
+                roomSerials.filter((s) =>
+                  s.toLowerCase().includes(searchQuery.toLowerCase()),
+                ).length === 0 &&
+                propertySerials.filter((s) =>
+                  s.toLowerCase().includes(searchQuery.toLowerCase()),
+                ).length === 0 && (
+                  <div className="px-4 py-2 text-gray-400">
+                    No se encontraron coincidencias
+                  </div>
+                )}
             </div>
           )}
 

@@ -27,6 +27,7 @@ export async function getSummaryPropertyById(propertyId) {
     const allLeases = await LeaseOrderRoom.findAll({
       where: {
         roomId: roomIds,
+        status: { [Op.ne]: "CANCELED" },
       },
       attributes: [
         "id",
@@ -73,30 +74,35 @@ export async function getSummaryPropertyById(propertyId) {
       let currentLease = null;
       let previousLease = null;
 
-      for (let i = 0; i < leases.length; i++) {
-        const l = leases[i];
-
-        // 1. Resolver CURRENT: debe estar activa en fecha y APPROVED
+      // 1. Buscar CURRENT
+      for (const l of leases) {
         if (
           l.status === "APPROVED" &&
           new Date(l.startDate) <= today &&
           new Date(l.endDate) >= today
         ) {
           currentLease = l;
-
-          // 2. Resolver PREVIOUS: buscar hacia atrás la válida
-          for (let j = i - 1; j >= 0; j--) {
-            const prev = leases[j];
-
-            // Evitar leases con mismo startDate (duplicadas por error)
-            if (new Date(prev.endDate) < new Date(currentLease.startDate)) {
-              previousLease = prev;
-              break;
-            }
-          }
-
           break;
         }
+      }
+
+      // 2. Buscar PREVIOUS
+      if (currentLease) {
+        // Caso normal: previous respecto al current
+        previousLease =
+          [...leases]
+            .filter(
+              (l) => new Date(l.endDate) < new Date(currentLease.startDate),
+            )
+            .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))[0] ||
+          null;
+      } else {
+        // Caso SIN current: última lease pasada
+        previousLease =
+          [...leases]
+            .filter((l) => new Date(l.endDate) < today)
+            .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))[0] ||
+          null;
       }
 
       if (currentLease) {

@@ -79,7 +79,7 @@ export default function CreatePropertyConsumptionsModal({
             await mutate();
         } catch (error) {
             console.error(error);
-            toast.info("Error al guardar los datos.", { id: toastId });
+            toast.info("Error al guardar los datos.", { id: toastId, description: error?.response?.data?.error || error.message });
         }
     };
 

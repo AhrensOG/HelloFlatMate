@@ -9,6 +9,8 @@ export async function GET(req) {
   const clientId = searchParams.get("clientId") || null;
   const isActive = searchParams.get("isActive") || null;
   const isSigned = searchParams.get("isSigned") || null;
+  const serial = searchParams.get("serial") || null;
+  const serialType = searchParams.get("serialType") || null;
 
   const result = await getAllLeaseOrdersForReservationsPanel(
     page,
@@ -17,7 +19,9 @@ export async function GET(req) {
     status,
     clientId,
     isActive,
-    isSigned
+    isSigned,
+    serial,
+    serialType,
   );
   return result;
 }

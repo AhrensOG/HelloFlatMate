@@ -16,7 +16,9 @@ export async function getAllLeaseOrdersForReservationsPanel(
   status = null,
   clientId,
   isActive,
-  isSigned
+  isSigned,
+  serial,
+  serialType,
 ) {
   try {
     const offset = (page - 1) * limit;
@@ -46,16 +48,36 @@ export async function getAllLeaseOrdersForReservationsPanel(
       whereConditions.isSigned = isSigned === "true";
     }
 
+    // ====== INCLUDES DINÁMICOS (CAMBIO REAL) ======
+
+    const propertyInclude = {
+      model: Property,
+      as: "property",
+      attributes: ["id", "serial", "category", "ownerId"],
+    };
+
+    const roomInclude = {
+      model: Room,
+      as: "room",
+      attributes: ["id", "serial"],
+    };
+
+    if (serial && serialType === "ROOM") {
+      roomInclude.where = { serial };
+    }
+
+    if (serial && serialType === "PROPERTY") {
+      propertyInclude.where = { serial };
+    }
+
+    // =============================================
+
     const { rows: leaseOrders, count: total } =
       await LeaseOrderRoom.findAndCountAll({
         where: whereConditions,
         include: [
-          {
-            model: Property,
-            as: "property",
-            attributes: ["id", "serial", "category", "ownerId"],
-          },
-          { model: Room, as: "room", attributes: ["id", "serial"] },
+          propertyInclude,
+          roomInclude,
           {
             model: Client,
             as: "client",
@@ -92,15 +114,17 @@ export async function getAllLeaseOrdersForReservationsPanel(
                 as: "documents",
                 attributes: ["name", "urls"],
               },
-              { model: Contract, as: "contracts", attributes: ["name", "url"] },
+              {
+                model: Contract,
+                as: "contracts",
+                attributes: ["name", "url"],
+              },
             ],
           },
         ],
         limit,
         offset,
         order: [["date", "DESC"]],
-        // raw: true,
-        // nest: true,
       });
 
     const formattedOrders = leaseOrders.map((order) => ({
