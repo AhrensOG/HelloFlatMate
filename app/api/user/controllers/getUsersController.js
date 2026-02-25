@@ -41,12 +41,12 @@ export async function getUserById(id) {
             },
           ],
         },
-        { model: Document, as: "documents", attributes: ["id", "name", "type", "urls", "status", "leaseOrderId"] },
-        { model: Supply, as: "supplies", attributes: ["id", "paymentId", "name","type","amount","date","status","paymentDate","leaseOrderId","propertyId","clientId"] },
-        { model: Contract, as: "contracts", attributes: ["id", "leaseOrderId", "url"] },
+        { model: Document, separate: true, as: "documents", attributes: ["id", "name", "type", "urls", "status", "leaseOrderId"] },
+        { model: Supply, separate: true, as: "supplies", attributes: ["id", "paymentId", "name","type","amount","date","status","paymentDate","leaseOrderId","propertyId","clientId"] },
+        { model: Contract, separate: true, as: "contracts", attributes: ["id", "leaseOrderId", "url"] },
         // { model: ChatParticipant, as: "chats" },
-        { model: RentPayment, as: "rentPayments", attributes: ["id", "amount", "date","status","type","quotaNumber","paymentableId","leaseOrderId","paymentId", "description"] },
-        { model: Consumption, as: "consumptions", attributes: ["amount", "url", "type", "period", "leaseOrderRoomId", "startDate", "endDate"] },
+        { model: RentPayment, separate: true, as: "rentPayments", attributes: ["id", "amount", "date","status","type","quotaNumber","paymentableId","leaseOrderId","paymentId", "description"] },
+        { model: Consumption, separate: true, as: "consumptions", attributes: ["amount", "url", "type", "period", "leaseOrderRoomId", "startDate", "endDate"] },
       ],
     });
 

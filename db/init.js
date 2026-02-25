@@ -448,8 +448,15 @@ const RentalDayPrice = require("./models/rentalDayPrice");
         Consumption.belongsTo(LeaseOrderRoom, { as: "leaseOrderRoom", foreignKey: "leaseOrderRoomId" });
 
         // await connection.drop({ cascade: true })
-        await connection.sync({ alter: false });
-        console.log("Initializing DB");
+        // await connection.sync({ alter: false });
+        // console.log("Initializing DB");
+
+        try {
+            await connection.authenticate();
+            console.log("Conexión a la base de datos establecida correctamente.");
+        } catch (authError) {
+            console.error("No se pudo conectar a la base de datos:", authError);
+        }
 
         // DATA DE PRUEBA
 
