@@ -175,7 +175,7 @@
         "1_title": "Costes del servicio en hellostudio",
         "1_desc": "En hellostudio, el arrendatario está exento de pagar comisión por los servicios de intermediación, según la Ley de Arrendamientos Urbanos (LAU) y la Ley de Vivienda 12/23. Los costes incluyen dos mensualidades de fianza (precio equivalente al alquiler mensual) y, en algunos casos, el alta de suministros como luz, agua y gas. Los apartamentos pueden ser semi-amueblados o sin amueblar.",
         "2_title": "Costes de servicio en hellorooms, hellolandlord y hellocoliving",
-        "2_desc": "En hellorooms y hellolandlord, el coste del servicio incluye un pago único de 459,80€ (IVA incluido) abonado el día del check-in mediante tarjeta bancaria. Las habitaciones cuentan con todos los suministros activados, incluyendo internet, y ofrecen contratos flexibles de 5, 10 o 11 meses. La fianza es de 300€. En hellocoliving, las facturas de suministros están incluidas hasta un máximo de 50€/mes por persona. El coste del servicio incluye una fianza de 500€ y el pago de 1 mensualidad completa de alquiler.",
+        "2_desc": "En hellorooms y hellolandlord, el coste del servicio incluye un pago único de 459,80€ (IVA incluido) abonado el día del check-in mediante tarjeta bancaria. Las habitaciones cuentan con todos los suministros activados, incluyendo internet, y ofrecen contratos flexibles de 5, 10 o 11 meses. La fianza es de 500€. En hellocoliving, las facturas de suministros están incluidas hasta un máximo de 50€/mes por persona. El coste del servicio incluye una fianza de 500€ y el pago de 1 mensualidad completa de alquiler.",
         "3_title": "¿Con qué tipo de público trabaja helloflatmate?",
         "3_desc": "helloflatmate trabaja con estudiantes, nómadas digitales internacionales y personas en prácticas de empresa. Ninguno/a mayor de 30 años, excepto en los pisos para nómadas digitales o colivings, donde se permite hasta los 35 años.",
         "4_title": "¿Qué condiciones se aplican a contratos de larga estancia?",
@@ -211,7 +211,7 @@
         "19_title": "¿Qué hago si las zonas comunes no están bien al llegar?",
         "19_desc": "Avise a helloflatmate, y se organizará personal de limpieza. El coste será descontado de la fianza de los flatmates actuales.",
         "20_title": "¿Qué fianza tengo que entregar? ¿Cuándo y cómo lo hago?",
-        "20_desc": "hellorooms y hellolandlord requieren una fianza de 300€. hellocoliving requiere 500€, y hellostudios, una mensualidad. Se devuelve entre 30-45 días tras finalizar el contrato.",
+        "20_desc": "hellorooms y hellolandlord requieren una fianza de 500€. hellocoliving requiere 500€, y hellostudios, una mensualidad. Se devuelve entre 30-45 días tras finalizar el contrato.",
         "21_title": "¿Puede venir familia y amigos a visitarme y dormir en el piso?",
         "21_desc": "Sí, con al menos 2 días de antelación y la aprobación de los flatmates. Para estancias superiores a dos días, se pueden pedir 5€ por día para cubrir gastos.",
         "22_title": "¿Se admiten mascotas?",
@@ -341,7 +341,7 @@
 
         "sect_4_ul_li_1": "Suministros a nombre del propietario para mayor tranquilidad.",
         "sect_4_ul_li_2": "Contratos flexibles de 5, 10 o 11 meses según la vivienda.",
-        "sect_4_ul_li_3": "Una fianza asequible de tan solo 300€."
+        "sect_4_ul_li_3": "Una fianza asequible de tan solo 500€."
     },
     "helloroom_page": {
         "h3": "hellorooms son habitaciones equipadas y listas para mudarse desde el primer día, con Internet de alta velocidad y todos los servicios activos. Nos ocupamos de la gestión y el mantenimiento para que sólo te enfoques en estudiar, disfrutar y explorar Valencia. Comparte piso con otros estudiantes de edad similar y vive una experiencia única en un entorno diseñado para tu estilo de vida. <br /> <br /> Contigo desde la reserva hasta tu último día en Valencia.",

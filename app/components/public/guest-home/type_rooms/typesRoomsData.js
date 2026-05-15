@@ -9,7 +9,7 @@ Este producto, diseñado específicamente para satisfacer unas necesidades muy c
 Además, ofrecemos garantías a los propietarios de las viviendas para que acepten:
 - Los suministros a nombre de la propiedad.
 - Contratos flexibles de 5, 10 o 11 meses, según la vivienda.
-- Una fianza de tan solo 300€.
+- Una fianza de tan solo 500€.
 - Contratos sin necesidad de avales.`
 }
 
@@ -46,7 +46,7 @@ Este producto, diseñado específicamente para satisfacer unas necesidades muy c
 Además, ofrecemos garantías a los propietarios de las viviendas para que acepten:
 - Los suministros a nombre de la propiedad.
 - Contratos flexibles de 5, 10 o 11 meses, según la vivienda.
-- Una fianza de tan solo 300€.
+- Una fianza de tan solo 500€.
 - Contratos sin necesidad de avales.`
 }
 

@@ -45,7 +45,7 @@ const faq = {
     "Cada 5 meses se aportan 200€ como adelanto para suministros. En contratos de 5 meses, se paga al inicio. En contratos de 10 meses, se realiza al inicio y en enero, junto a la renta de febrero.\n\nEl propietario ajustará con facturas reales: si sobra, se devuelve; si falta, se pedirá un adelanto adicional.",
 
   "¿Qué fianza tengo que entregar? ¿Cuándo y cómo lo hago?":
-    "La fianza es de 350€ si la habitación tiene baño o terraza propia. Para el resto, la fianza es de 300€.",
+    "La fianza es de 350€ si la habitación tiene baño o terraza propia. Para el resto, la fianza es de 500€.",
 
   "¿Cómo hago mi reserva?":
     "1. Entra en www.helloflatmate.com, regístrate y completa los datos para crear tu cuenta. Recibirás un email para activar tu cuenta.\n\n2. Ingresa en www.helloflatmate.com e inicia sesión.\n\n3. Selecciona la habitación, fecha de contrato y dale a 'Reservar'.\n\n4. Verifica fechas y precio, y selecciona 'Pago Seguro con Tarjeta'. Completa el pago.\n\n5. Recibirás un email de confirmación y solicitud de documentos para formalizar el contrato. Días antes de tu llegada, recibirás instrucciones para el check-in.\n\n¡Bienvenido a helloflatmate!",

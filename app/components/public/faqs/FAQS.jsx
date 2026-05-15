@@ -290,7 +290,7 @@ export default function FAQS() {
                     <p>
                       Las habitaciones van sujetas a una fianza de 350€ si
                       tienen baño propio o terraza propia. Para el resto de
-                      habitaciones la fianza a entregar es de 300€.
+                      habitaciones la fianza a entregar es de 500€.
                     </p>
                   </>
                 ),
