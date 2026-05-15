@@ -46,6 +46,7 @@ export async function getAllProperties() {
     });
     return NextResponse.json(properties, { status: 200 });
   } catch (error) {
+    console.error("Error en getAllProperties:", error);
     return NextResponse.json(
       { error: "Error al obtener las propiedades" },
       { status: 500 }
@@ -182,6 +183,7 @@ export async function getPropertiesByOwnerId(id) {
 
     return NextResponse.json(properties, { status: 200 });
   } catch (error) {
+    console.error("Error en getPropertiesByOwnerId:", error);
     return NextResponse.json(
       { error: "Error al obtener las propiedades" },
       { status: 500 }

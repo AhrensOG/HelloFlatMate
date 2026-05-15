@@ -1,0 +1,636 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+ ○ Compiling /api/property ...
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./node_modules/sequelize/lib/index.mjs
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/property 200 in 7632ms
+ GET /api/property 200 in 1595ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./node_modules/sequelize/lib/index.mjs
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./node_modules/sequelize/lib/index.mjs
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+🌍 Locale actual ≠ preferido. Redirigiendo a: /es
+✅ Acceso permitido a ruta pública: /es
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/connection-manager.js
+./node_modules/sequelize/lib/dialects/sqlite/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./node_modules/sequelize/lib/index.mjs
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+ GET /es 200 in 17535ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+🌍 Locale actual ≠ preferido. Redirigiendo a: /es/pages/property-details/57
+✅ Acceso permitido a ruta pública: /es/pages/property-details/57
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+ GET /es/pages/property-details/57 200 in 12074ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/property/controller/getPropertyController.js
+./app/api/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/admin/to_do/admin_notifications/controllers/getToDosForNotifications.js
+./app/api/admin/to_do/admin_notifications/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/admin/to_do/admin_notifications/controllers/getToDosForNotifications.js
+./app/api/admin/to_do/admin_notifications/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/admin/to_do/admin_notifications/controllers/getToDosForNotifications.js
+./app/api/admin/to_do/admin_notifications/route.js
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=propiedades
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/index.js
+./db/init.js
+./app/api/admin/to_do/admin_notifications/controllers/getToDosForNotifications.js
+./app/api/admin/to_do/admin_notifications/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/to_do/admin_notifications 200 in 4413ms
+ GET /api/admin/property?simple=true 200 in 13360ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ GET /es/pages/admin/new-panel?section=propiedades 200 in 23610ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ GET /favicon.ico 200 in 1505ms
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/to_do/admin_notifications 200 in 3130ms
+ GET /api/admin/property?simple=true 200 in 3560ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=cobros
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=cobros
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/to_do/admin_notifications 200 in 2901ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ GET /api/admin/property?simple=true 200 in 3351ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/payments/filters/types 200 in 3991ms
+ GET /api/admin/payments/filters/descriptions 200 in 4174ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=propiedades
+ GET /api/admin/property?simple=true 200 in 684ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=habitaciones
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=habitaciones
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ GET /api/admin/payments?page=1&limit=100 200 in 9904ms
+ GET /api/admin/user/payments_panel 200 in 9947ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/rental_period 200 in 3578ms
+ GET /api/admin/room 200 in 4292ms
+ GET /api/admin/to_do/admin_notifications 200 in 221ms
+ GET /api/admin/payments/filters/descriptions 200 in 738ms
+ GET /api/admin/user/payments_panel 200 in 1188ms
+ GET /api/admin/payments/filters/types 200 in 1315ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=pre-reservas
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=pre-reservas
+ GET /api/admin/payments?page=1&limit=100 200 in 1856ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+API key does not start with "SG.".
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/user/payments_panel 200 in 1546ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=reservas
+ GET /api/admin/payments/filters/descriptions 200 in 3025ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=reservas
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ GET /api/admin/payments/filters/types 200 in 4026ms
+ GET /api/admin/payments?page=1&limit=100 200 in 4772ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/lease_order/new_panel/periods 200 in 6663ms
+ GET /api/admin/property/reservations_panel 200 in 6863ms
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/user/reservations_panel 200 in 7457ms
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/lease_order/new_panel?page=1&limit=100 200 in 8719ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=usuarios
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=usuarios
+ GET /api/admin/lease_order/new_panel/serials 200 in 8098ms
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/property/users_panel 200 in 4248ms
+ GET /api/admin/user/users_panel/users_for_search 200 in 9055ms
+ GET /api/admin/user/users_panel?page=1&limit=100 200 in 9094ms
+ GET /api/admin/lease_order 200 in 31545ms
+ GET /api/admin/to_do/admin_notifications 200 in 270ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=cobros
+ GET /api/admin/payments/filters/types 200 in 628ms
+ GET /api/admin/user/payments_panel 200 in 942ms
+ GET /api/admin/payments/filters/descriptions 200 in 972ms
+ GET /api/admin/payments?page=1&limit=100 200 in 1413ms
+ GET /api/admin/user/reservations_panel 200 in 361ms
+ GET /api/admin/property/reservations_panel 200 in 631ms
+ GET /api/admin/lease_order/new_panel/periods 200 in 634ms
+ GET /api/admin/lease_order/new_panel/serials 200 in 734ms
+ GET /api/admin/lease_order/new_panel?page=1&limit=100 200 in 993ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=periodos
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=periodos
+ GET /api/admin/rental_period 200 in 267ms
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+ ⚠ ./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/sequelize/lib/dialects/abstract/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/connection-manager.js
+./node_modules/sequelize/lib/dialects/mariadb/index.js
+./node_modules/sequelize/lib/sequelize.js
+./node_modules/sequelize/lib/index.js
+./db/models/rentalPeriod.js
+./app/api/admin/property/controller/createPropertyController.js
+./app/api/admin/property/route.js
+Conexión a la base de datos establecida correctamente.
+ GET /api/admin/user/documents_panel 200 in 4213ms
+ GET /api/admin/document/admin_panel?page=1&limit=100 200 in 4506ms
+ ✓ Compiled /api/admin/document/admin_panel in 855ms (1994 modules)
+ ✓ Compiled in 1155ms (1842 modules)
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+ GET /es/pages/admin/new-panel?section=documentos&_rsc=1gfay 200 in 313ms
+ ✓ Compiled in 819ms (1842 modules)
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+ GET /es/pages/admin/new-panel?section=documentos&_rsc=1gfay 200 in 125ms
+ ✓ Compiled in 763ms (1842 modules)
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+ GET /es/pages/admin/new-panel?section=documentos&_rsc=1gfay 200 in 115ms
+ ✓ Compiled in 774ms (1842 modules)
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+ GET /es/pages/admin/new-panel?section=documentos&_rsc=1gfay 200 in 124ms
+ ✓ Compiled in 718ms (1842 modules)
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+ GET /es/pages/admin/new-panel?section=documentos&_rsc=1gfay 200 in 113ms
+   Reload env: .env.local
+ ✓ Compiled in 668ms (3951 modules)
+✅ Acceso permitido a ruta pública: /es/pages/admin/new-panel?section=documentos
+ GET /es/pages/admin/new-panel?section=documentos&_rsc=1gfay 200 in 202ms
