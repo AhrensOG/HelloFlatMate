@@ -7,6 +7,7 @@ export async function getAllRooms() {
         const rooms = await Room.findAll();
         return NextResponse.json(rooms, { status: 200 });
     } catch (error) {
+        console.error("Error en getAllRooms:", error);
         return NextResponse.json({ error: "Error al obtener las habitaciones" }, { status: 500 });
     }
 }
@@ -18,6 +19,7 @@ export async function getRoomById(id) {
 
         return NextResponse.json(room, { status: 200 });
     } catch (error) {
+        console.error("Error en getRoomById:", error);
         return NextResponse.json({ error: "Error al obtener la habitacion" }, { status: 500 });
     }
 }
