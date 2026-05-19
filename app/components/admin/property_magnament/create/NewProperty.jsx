@@ -35,7 +35,7 @@ Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu pri
 
 Depósito
 
-El día de tu llegada dejarás 300 € en depósito.
+El día de tu llegada dejarás 500 € en depósito.
 
 La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
 
@@ -102,7 +102,7 @@ Cuando realizas la reserva de tu estudio, el importe pagado corresponde a tu pri
 
 Depósito
 
-El día de tu llegada dejarás 300 € en depósito.
+El día de tu llegada dejarás 500 € en depósito.
 
 La devolución del depósito está 100% garantizada, siempre que se cumplan las condiciones del contrato.
 

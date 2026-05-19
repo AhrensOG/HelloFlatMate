@@ -94,7 +94,7 @@ const reservationTemplate = (
   <p><strong>Aquí te explicamos cómo continúa el proceso:</strong></p>
   <ul>
     <li>
-      El siguiente paso es subir a tu área de usuario la matrícula de estudios del curso <strong>2025 - 2026</strong> cuando la obtengas.
+      El siguiente paso es subir a tu área de usuario la matrícula de estudios del curso <strong>2026 - 2027</strong> cuando la obtengas.
     </li>
     <li>
       15 días antes del inicio del contrato deberás realizar los pagos oportunos del check-in (depósito, tasas, suministros y wifi) en la sección <strong>usuario/pagos</strong>.

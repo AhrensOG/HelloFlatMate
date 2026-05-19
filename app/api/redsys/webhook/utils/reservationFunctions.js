@@ -195,7 +195,7 @@ async function addSupplies(room, leaseOrder, client) {
     };
 
     if (room.property?.category === "HELLO_LANDLORD") {
-      pushSupply({ name: "Depósito", amount: 300, type: "DEPOSIT" });
+      pushSupply({ name: "Depósito", amount: 500, type: "DEPOSIT" });
       pushSupply({
         name: "Tasa de la agencia",
         amount: 459.8,
@@ -215,7 +215,7 @@ async function addSupplies(room, leaseOrder, client) {
       // Depósito
       pushSupply({
         name: "Depósito",
-        amount: room.property?.category === "HELLO_COLIVING" ? 500 : 300,
+        amount: room.property?.category === "HELLO_COLIVING" ? 500 : 500,
         type: "DEPOSIT",
       });
 
